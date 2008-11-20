@@ -1,0 +1,70 @@
+body{margin:0;padding:0;font-family:verdana, tahoma, arial;font-size:15px;}
+a{cursor:pointer;}
+acronym{text-decoration:none;border:none;}
+.activetab, .dulltab {font-weight:bold;display:block;float:left;margin-top:6px;margin-left:4px;margin-right:6px;}
+.activetab{color:white;}
+.dulltab{color:#cdcdcd;}
+.dulltab img{-moz-opacity:0.6;opacity:0.6;filter:alpha(opacity=60);}
+.section{padding:10px;}
+.enl_date{border-bottom:solid 1px #804000;color:#201000;}
+.enl_client{border-bottom:solid 1px #400080;color:#100020;}
+.form div div{
+height:22px;
+}
+#tooltitle{}
+#tooltitle a{font-weight:bold;font-size:16px;color:white;margin-left:10px;margin-top:6px;display:block;}
+.sectiontitle{font-weight:bold;font-size:18px;}
+input{border:solid 1px #666666;}
+.sectionheader{font-size:13px;font-weight:bold;background-color:#dedede;margin-top:12px;margin-bottom:10px;padding-left:5px;}
+#statusbar a{font-size:12px;display:block;margin-top:2px;margin-left:2px;}
+.minicaletitle{
+position:relative;
+text-align:center;
+padding-left:20px;
+padding-right:20px;
+width:135px;
+margin-top:5px;
+margin-bottom:5px;
+}
+.minicaletitle span{
+}
+.minicaleprev{
+position:absolute;
+display:block;
+top:0px;
+left:5px;
+}
+.minicalenext{
+position:absolute;
+display:block;
+top:0px;
+right:5px;
+}
+
+.iconbuttons img{
+border:none;
+}
+
+.iconbuttons a{
+display:block;
+float:left;
+width:32px;
+height:32px;
+margin-right:15px;
+}
+
+.iconbuttons a:hover{
+margin-right:13px;
+border:solid 1px #664444;
+}
+#logoutlink{
+position:absolute;right:20px;top:14px;
+}
+
+#logoutlink a{
+text-decoration:none;
+}
+
+#logoutlink a:hover{
+color:#ff2222;
+}
