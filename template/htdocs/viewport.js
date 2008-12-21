@@ -74,7 +74,10 @@ viewcount=document.appsettings.viewcount;
 
 function showview(idx,lazy){
   var i;
-  if (document.viewindex!=null) gid('lv'+document.viewindex).tooltitle=gid('tooltitle').innerHTML;
+  
+  if (document.viewindex!=null) {
+	  gid('lv'+document.viewindex).tooltitle=gid('tooltitle').innerHTML;
+  }
 
   for (i=0;i<viewcount;i++){
     if (i!=idx) {
@@ -90,6 +93,14 @@ function showview(idx,lazy){
   }
   gid('lv'+idx).viewloaded=1;
   document.viewindex=idx;
+}
+
+function stackview(){ //used by auto-completes
+	gid('lv'+document.viewindex).tooltitle=gid('tooltitle').innerHTML;
+	gid('lv'+document.viewindex).style.display='none';
+	gid('lv'+(document.appsettings.viewcount-1)).style.display='block';
+	document.viewindex=document.appsettings.viewcount-1;
+
 }
 
 function authpump(){

@@ -1,4 +1,4 @@
 <?
 include_once "sql.php";
-$db=sql_get_db('localhost','gyrodemo','root','mnstudio');
+$db=sql_get_db('localhost','gyroscope','root','mnstudio');
 ?>

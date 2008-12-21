@@ -1,0 +1,7 @@
+v1.2
+----
+Added stackview in viewport.js, so autocomplete views won't disturb cached panels.
+
+v1.1
+----
+Added optional second parameter for showview() to specify cache/lazy-load mode
