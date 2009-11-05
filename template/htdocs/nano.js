@@ -1,54 +1,58 @@
-function gid(d){
-return document.getElementById(d);
-}
-function hb(){
-	var now=new Date(); var hb=now.getTime();
-	return hb;
-}
+/*
+Nano Ajax Library
+(c) Schien Dong, Antradar Software Inc.
+
+License: www.antradar.com/license.php
+Documentation: www.antradar.com/docs.php?article=nano-ajax-manual
+*/
+
+function gid(d){return document.getElementById(d);}
+
+function hb(){var now=new Date(); var hb=now.getTime();return hb;}
+
 function ajxb(u){
-  var rq=xmlHTTPRequestObject();
-  rq.open('GET',u+'&hb='+hb(),false);
-  rq.send(null);
-  return rq.responseText;	
+	var rq=xmlHTTPRequestObject();
+	rq.open('GET',u+'&hb='+hb(),false);
+	rq.send(null);
+	return rq.responseText;	
 }
+
 function ajxnb(rq,u,f){
-  rq.onreadystatechange=f;
-  rq.open('GET',u+'&hb='+hb(),true);
-  rq.send(null);  	
+	rq.onreadystatechange=f;
+	rq.open('GET',u+'&hb='+hb(),true);
+	rq.send(null);  	
 }
 
 function ajxpgn(c,u,d,e){
-  var ct=gid(c);
-  var f=function(c){
-    return function(){
-     if (rq.readyState==4){
-      if (ct.reqobj!=null){
-	ct.reqobj=null;
-      }
-      ct.innerHTML=rq.responseText;
-      if (d) ct.style.display='block';
-      if (e){
-	var i;
-	var scripts=gid(c).getElementsByTagName('script');
-	for (i=0;i<scripts.length;i++) eval(scripts[i].innerHTML);
-      }
-     }}	  
-  }	
-
-  var rq=xmlHTTPRequestObject();
-
-  if (ct.reqobj!=null) ct.reqobj.abort();
-  ct.reqobj=rq;
-  ajxnb(rq,u,f(c));
-
+	var ct=gid(c);
+	if (ct==null) return;
+	
+	var f=function(c){return function(){
+		if (rq.readyState==4){
+			if (ct.reqobj!=null){
+				ct.reqobj=null;
+			}
+			ct.innerHTML=rq.responseText;
+			if (d) ct.style.display='block';
+			if (e){
+				var i;
+				var scripts=gid(c).getElementsByTagName('script');
+				for (i=0;i<scripts.length;i++) eval(scripts[i].innerHTML);
+				scripts=null;
+			}
+		}	  
+	}}	
+	
+	var rq=xmlHTTPRequestObject();
+	
+	if (ct.reqobj!=null) ct.reqobj.abort();
+	ct.reqobj=rq;
+	ajxnb(rq,u,f(c));
 }
 
 
-function ajxjs(f,js){
-	if (f==null) {
-	  	eval(ajxb(js+'?'));
-	}
-}
+function ajxjs(f,js){if (f==null) eval(ajxb(js+'?'));}
+
 function ajxcss(f,css){
 	if (f==null) {
 	  	csl=document.createElement('link');
@@ -59,14 +63,28 @@ function ajxcss(f,css){
 	}
 }
 
+function xajx(url){
+	if (!document.xjs_transport){
+		var xjs=document.createElement('div');
+		document.body.appendChild(xjs);
+		document.xjs_transport=xjs;
+	}
+	
+	var xjs=document.xjs_transport;
+	xjs.innerHTML='';
+	var rq=document.createElement('script');
+	rq.setAttribute('src',url);
+	xjs.appendChild(rq);  
+}
+
+
 function xmlHTTPRequestObject() {
 	var obj = false;
-	var objectIDs = new Array("Microsoft.XMLHTTP","Msxml2.XMLHTTP","MSXML2.XMLHTTP.3.0","MSXML2.XMLHTTP.4.0");
+	var objs = ["Microsoft.XMLHTTP","Msxml2.XMLHTTP","MSXML2.XMLHTTP.3.0","MSXML2.XMLHTTP.4.0"];
 	var success = false;
-	var i=0;
-	for (i=0; !success && i < objectIDs.length; i++) {
+	for (var i=0; !success && i < objs.length; i++) {
 		try {
-			obj = new ActiveXObject(objectIDs[i]);
+			obj = new ActiveXObject(objs[i]);
 			success = true;
 		} catch (e) { obj = false; }
 	}

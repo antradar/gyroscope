@@ -38,6 +38,7 @@ if ($_POST['password']||$_POST['login']){
 <html>
 <head>
 	<title>Login</title>
+	<meta id="viewport" name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1; user-scalable=0;"/>
 	<script src="nano.js"></script>
 </head>
 <body>

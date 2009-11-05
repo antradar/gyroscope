@@ -1,3 +1,12 @@
+v1.4
+----
+Blocked XSS requests
+
+v1.3
+----
+Added iPhone view
+Added unicode support
+
 v1.2
 ----
 Added stackview in viewport.js, so autocomplete views won't disturb cached panels.

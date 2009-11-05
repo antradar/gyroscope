@@ -4,7 +4,9 @@ include 'adodb.php';
 
 include 'connect.php';
 include 'auth.php';
+include 'xss.php';
 
+xsscheck();
 login(true); //silent mode
 
 $cmd=$_GET['cmd'];
@@ -16,11 +18,46 @@ function GETVAL($key){
 }
 
 function GETSTR($key){
-  $val=$_GET[$key];
-  $val=str_replace("\'","'",$val);
-  $val=str_replace("'","\'",$val);
-  return $val;
+	$val=decode_unicode_url($_GET[$key]);
+	$val=str_replace("\'","'",$val);
+	$val=str_replace("'","\'",$val);
+	return $val;
 }
+
+function decode_unicode_url($str){
+  $res = '';
+
+  $i = 0;
+  $max = strlen($str) - 6;
+  while ($i <= $max)
+  {
+    $character = $str[$i];
+    if ($character == '%' && $str[$i + 1] == 'u')
+    {
+      $value = hexdec(substr($str, $i + 2, 4));
+      $i += 6;
+
+      if ($value < 0x0080) // 1 byte: 0xxxxxxx
+        $character = chr($value);
+      else if ($value < 0x0800) // 2 bytes: 110xxxxx 10xxxxxx
+        $character =
+            chr((($value & 0x07c0) >> 6) | 0xc0)
+          . chr(($value & 0x3f) | 0x80);
+      else // 3 bytes: 1110xxxx 10xxxxxx 10xxxxxx
+        $character =
+            chr((($value & 0xf000) >> 12) | 0xe0)
+          . chr((($value & 0x0fc0) >> 6) | 0x80)
+          . chr(($value & 0x3f) | 0x80);
+    }
+    else
+      $i++;
+
+    $res .= $character;
+  }
+
+  return $res . substr($str, $i);
+}
+
 
 /*
 	include additional modules here

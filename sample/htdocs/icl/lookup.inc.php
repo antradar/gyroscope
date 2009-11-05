@@ -112,7 +112,7 @@ function lookupcity(){
 		$city=str_replace("'","\'",$myrow['city']);
 ?>
 <div style="border-bottom:solid 1px #606060;">
-<a onclick="if (document.hotspot) document.hotspot.value='<?echo $city;?>'"><?echo $city;?></a>
+<a onclick="picklookup('<?echo $city;?>',null);"><?echo $city;?></a>
 </div>
 <?
 	}
@@ -142,7 +142,7 @@ function lookupprovince(){
 		$pvzip=$myrow['pvzip'];
 ?>
 <div style="border-bottom:solid 1px #606060;position:relative;">
-<a onclick="if (document.hotspot) document.hotspot.value='<?echo $pvzip;?>'"><?echo $pvname;?></a>
+<a onclick="picklookup('<?echo $pvzip;?>',null);"><?echo $pvname;?></a>
 <a style="position:absolute;top:0;right:6px;"><?echo $pvzip;?></a>
 </div>
 <?
