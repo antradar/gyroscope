@@ -26,7 +26,7 @@ lookupcity=function(d){
 	document.hotspot=d;
 	gid('tooltitle').innerHTML='<a>Cities</a>';
 	//showview(2,true);
-	ajxpgn('views',document.appsettings.codepage+'?cmd=lkcity&key='+key);
+	ajxpgn('lv0',document.appsettings.codepage+'?cmd=lkcity&key='+key);
 }
 
 
@@ -44,7 +44,7 @@ lookupprov=function(d){
 	document.hotspot=d;
 	gid('tooltitle').innerHTML='<a>Provinces</a>';
 	//showview(2,true);
-	ajxpgn('views',document.appsettings.codepage+'?cmd=lkprov&key='+key);
+	ajxpgn('lv0',document.appsettings.codepage+'?cmd=lkprov&key='+key);
 }
 
 
@@ -64,7 +64,7 @@ pickdate=function(d,def){
 	document.hotspot=d;
 	gid('tooltitle').innerHTML='<a>Calendar</a>';
 	//showview(2,true);
-	ajxpgn('views',document.appsettings.codepage+'?cmd=pkd&key='+key);
+	ajxpgn('lv0',document.appsettings.codepage+'?cmd=pkd&key='+key);
 }
 
 _pickdate=function(d){

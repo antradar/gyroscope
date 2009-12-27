@@ -1,3 +1,7 @@
+v1.5
+----
+enhanced iPhone view
+
 v1.4
 ----
 Blocked XSS requests

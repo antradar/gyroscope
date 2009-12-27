@@ -26,7 +26,7 @@ lookupcity=function(d){
 	document.hotspot=d;
 	gid('tooltitle').innerHTML='<a>Cities</a>';
 	//showview(2,true);
-	ajxpgn('views',document.appsettings.codepage+'?cmd=lkcity&key='+key);
+	ajxpgn('lv0',document.appsettings.codepage+'?cmd=lkcity&key='+key);
 }
 
 
@@ -44,7 +44,7 @@ lookupprov=function(d){
 	document.hotspot=d;
 	gid('tooltitle').innerHTML='<a>Provinces</a>';
 	//showview(2,true);
-	ajxpgn('views',document.appsettings.codepage+'?cmd=lkprov&key='+key);
+	ajxpgn('lv0',document.appsettings.codepage+'?cmd=lkprov&key='+key);
 }
 
 
@@ -64,7 +64,7 @@ pickdate=function(d,def){
 	document.hotspot=d;
 	gid('tooltitle').innerHTML='<a>Calendar</a>';
 	//showview(2,true);
-	ajxpgn('views',document.appsettings.codepage+'?cmd=pkd&key='+key);
+	ajxpgn('lv0',document.appsettings.codepage+'?cmd=pkd&key='+key);
 }
 
 _pickdate=function(d){
@@ -73,24 +73,4 @@ _pickdate=function(d){
 		pickdate(d);
 	}}
 	d.timer=setTimeout(f(d),200);
-}
-
-//show the calendar without erasing the entire left panel
-picklocaldate=function(did,d,def){
-	var key='';
-	if (d) key=encodeHTML(d.value);
-		else key=def;
-	document.hotspot=d;
-	ajxpgn(did,document.appsettings.codepage+'?cmd=pkd&key='+key+'&did='+did);
-}
-
-_picklocaldate=function(did,d){
-
-	if (d.timer) clearTimeout(d.timer);
-	var f=function(did,d){
-		return function(){
-		  picklocaldate(did,d);
-		}
-	}
-  d.timer=setTimeout(f(did,d),200);
 }

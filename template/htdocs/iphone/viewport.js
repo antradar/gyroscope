@@ -78,10 +78,8 @@ function showpanel(idx){
 }
 
 function showview(idx,lazy){
-	//showpanel(4);
-	
-	ajxpgn('views',document.appsettings.codepage+'?cmd=slv'+idx+'&hb='+hb(),true,true);	
-	return;
+	document.viewmode=1;
+	rotate();
 	
   var i;
   

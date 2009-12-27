@@ -1,0 +1,66 @@
+[Managing Tabs]
+
+
+[Implementing Views]
+
+Adding A Module Icon
+---------------------
+1. Create a new icon and add it to "showview()" section in index.php
+2. Add a new view panel in the <div id="lvX"> section
+X. implement the module
+  a. list view *
+  b. new record view *
+  c. show record view *
+
+Record List View
+----------------
+1. implement the slvX event; issue a select query to get all the base records
+2. render base records in a list, add addtab events to each row
+3. optional: implement pagination
+4. optional: implement type-ahead search  
+
+New Record View
+----------------
+1. add affordance for opening the new form tab (onclick="addtab(...)")
+2. implement display new form event message, e.g. addoffice
+3. implement new record creation event handler, e.g. (JavaScript) addoffice=function(...)
+4. implement new record creation server handler, e.g. (PHP Service) function addoffice(...)
+5. in JS handler, update all relevant views, close new form tab, open new tab for record editing
+  Tip: parse the returned auto_increment value using parseInt to handle error and remove white spaces
+
+Show Record View
+-------------------
+1. add affordance for displaying record details
+2. implement record display event message, e.g. showoffice
+3. implement each one-to-many view as separate functions, each function takes keys from either GET or call parameters
+4. add update record event to Update Record button
+5. implement JavaScript function that gathers all form data
+6. JavaScript function calls server side handler that stores the changes
+7. in JS handler, update all relevant views. (this is why one-to-many views are implemented as separate functions)
+
+Tip: carefully designed field name headers and function parameters make it possible to merge "updateoffice" and "addoffice" JavaScript functions into one.
+Tip: wrap addtab(...) calls with JavaScript functions such as "showoffice" for naming consistency and single points of modification.
+
+Look Ahead with Simple String Insertion
+----------------------------------------
+
+
+Look Ahead with Entity Value Insertion
+---------------------------------------
+
+[Managing Viewports]
+
+
+[Other Coding Pratices]
+
+Client-Side Form Validation
+----------------------------
+
+Encoding Form Fields
+---------------------
+
+Getting Form Values
+--------------------
+
+
+  

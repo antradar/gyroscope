@@ -1,9 +1,9 @@
 body{margin:0;padding:0;font-family:verdana, tahoma, arial;font-size:15px;}
 a{cursor:pointer;}
 acronym{text-decoration:none;border:none;}
-.activetab, .dulltab {font-weight:bold;margin-top:6px;margin-left:4px;margin-right:6px;}
-.activetab{color:#000000;}
-.dulltab{color:#cdcdcd;}
+.activetab, .dulltab {display:inline;font-size:16px;padding-right:5px;font-weight:bold;}
+.activetab{color:#363636;background:transparent url(at.png) repeat-x;}
+.dulltab{color:#cdcdcd;background:transparent url(dt.png) repeat-x;}
 .dulltab img{-moz-opacity:0.6;opacity:0.6;filter:alpha(opacity=60);}
 .section{padding:10px;}
 .enl_date{border-bottom:solid 1px #804000;color:#201000;}
@@ -11,8 +11,19 @@ acronym{text-decoration:none;border:none;}
 .form div div{
 height:22px;
 }
-#tooltitle{}
-#tooltitle a{font-weight:bold;font-size:16px;color:white;margin-left:10px;margin-top:6px;display:block;}
+
+.activetab .tabclose{background-image:url(tc.png);}
+.dulltab .tabclose{background-image:url(tcd.png);}
+
+#toolicons{height:40px;text-align:right;}
+
+#backlist{height:43px;background:transparent url(hbg.png) repeat-x top left;}
+#backlistbutton{display:block;padding-left:5px;padding-top:6px;}
+
+#tabtitles{background:transparent url(tbbg.png) repeat top left;border-bottom:solid 1px #6f6e6e;}
+
+#tooltitle{height:25px;background:transparent url(tbbg.png) repeat top left;border-bottom:solid 1px #6f6e6e;}
+#tooltitle a{font-weight:bold;font-size:16px;color:white;margin-left:10px;padding-top:3px;display:block;}
 .sectiontitle{font-weight:bold;font-size:18px;}
 input{border:solid 1px #666666;}
 .sectionheader{font-size:13px;font-weight:bold;background-color:#dedede;margin-top:12px;margin-bottom:10px;padding-left:5px;}
@@ -68,3 +79,6 @@ text-decoration:none;
 #logoutlink a:hover{
 color:#ff2222;
 }
+
+.litm{border-bottom:solid 1px #A6A8AA;background:transparent url(ra.png) no-repeat center right;}
+.litm a{display:block}
