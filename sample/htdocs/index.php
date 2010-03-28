@@ -26,6 +26,7 @@ document.appsettings={codepage:'<?echo $codepage;?>',viewcount:<?echo $viewcount
 <div id="lv1" style="display:none;width:100%;height:100%;overflow:auto;"></div>
 <div id="lv2" style="display:none;width:100%;height:100%;overflow:auto;"></div>
 <div id="lv3" style="display:none;width:100%;height:100%;overflow:auto;"></div>
+<div id="lv4" style="display:none;width:100%;height:100%;overflow:auto;"></div>
 
 </div>
 <div id="lefticons" style="position:absolute;top:0px;left:0;height:50px;background:transparent url(imgs/toolbar.jpg) repeat-x top left;" scale:cw="0">
@@ -47,8 +48,8 @@ document.appsettings={codepage:'<?echo $codepage;?>',viewcount:<?echo $viewcount
 <div id="statusinfo" style="border-top:solid 1px #666666;background:#dedede url(imgs/powered.png) no-repeat top right;position:absolute;left:0;height:24px;" scale:ny="25" scale:cw="0"></div>
 
 <!-- right panel -->
-<div id="tabtitles" style="background-color:#666666;position:absolute;left:220px;height:30px;top:50px;" scale:cw="220"></div>
-<div id="tabviews" style="overflow:auto;position:absolute;left:220px;height:30px;top:80px;" scale:cw="220" scale:ch="105"></div>
+<div id="tabtitles" style="background-color:#666666;position:absolute;left:225px;height:30px;top:50px;" scale:cw="225"></div>
+<div id="tabviews" style="overflow:auto;position:absolute;left:225px;height:30px;top:80px;" scale:cw="225" scale:ch="105"></div>
 
 <div id="sptr" style="background-color:white;border-left:solid 1px #666666;border-right:solid 1px #444444;position:absolute;left:218px;top:50px;height:30px;width:5px;font-size:1px;" scale:ch="74"></div>
 <script src="nano.js"></script>

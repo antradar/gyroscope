@@ -20,10 +20,7 @@ picklookup3=function(val,val2,val3){
 
 lookupcity=function(d){
 	var key=encodeHTML(d.value);
-	document.hotspot=d;
-	gid('tooltitle').innerHTML='<a>Cities</a>';
-	showview(2,true);
-	ajxpgn('lv2',document.appsettings.codepage+'?cmd=lkcity&key='+key);
+	listlookup(d,'City Lookup','lkcity&key='+key);
 }
 
 
@@ -38,10 +35,7 @@ function _lookupcity(d){
 
 lookupprov=function(d){
 	var key=encodeHTML(d.value);
-	document.hotspot=d;
-	gid('tooltitle').innerHTML='<a>Provinces</a>';
-	showview(2,true);
-	ajxpgn('lv2',document.appsettings.codepage+'?cmd=lkprov&key='+key);
+	listlookup(d,'Province Lookup','lkprov&key='+key);
 }
 
 
@@ -53,15 +47,27 @@ function _lookupprov(d){
 	d.timer=setTimeout(f(d),200);  
 }
 
+listlookup=function(d,title,command){
+	
+	document.hotspot=d;
+	gid('tooltitle').innerHTML='<a>'+title+'</a>';
+	var view;
+	if (document.viewindex!=null){
+		stackview();
+		view=document.appsettings.viewcount-1;
+	} else {
+		view=1;
+		showview(1);
+	}
+	ajxpgn('lv'+view,document.appsettings.codepage+'?cmd='+command);
+		
+}
+
 pickdate=function(d,def){
 	var key='';
 	if (d) key=encodeHTML(d.value);
 	else key=def;
-	
-	document.hotspot=d;
-	gid('tooltitle').innerHTML='<a>Calendar</a>';
-	showview(2,true);
-	ajxpgn('lv2',document.appsettings.codepage+'?cmd=pkd&key='+key);
+	listlookup(d,'Calendar','pkd&key='+key);
 }
 
 _pickdate=function(d){

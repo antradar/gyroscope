@@ -39,22 +39,22 @@ function showdatepicker(){
 ?>
 <div style="width:100%;text-align:center;">
 
-<div style="width:200px;position:relative;margin-top:5px;text-align:center;"><?echo adodb_date("M Y",$fd);?>
+<div style="width:100%;position:relative;margin-top:5px;text-align:center;"><?echo adodb_date("M Y",$fd);?>
 <span style="position:absolute;top:2px;left:12px;cursor:pointer;" onclick="if (!document.hotspot) {pickdate(null,'<?echo "$py-$pm"?>');return;} document.hotspot.value='<?echo "$py-$pm"?>';pickdate(document.hotspot);"><img src="imgs/calel.gif"></span>
 <span style="position:absolute;top:2px;right:12px;cursor:pointer;" onclick="if (!document.hotspot) {pickdate(null,'<?echo "$ny-$nm"?>');return;} document.hotspot.value='<?echo "$ny-$nm"?>';pickdate(document.hotspot);"><img src="imgs/caler.gif"></span>
 </div>
 
-<div id="calepicker" style="font-size:12px;width:200px;height:200px;margin:0 auto;margin-top:5px;">
+<div id="calepicker" style="font-size:12px;width:100%;height:200px;margin:0 auto;margin-top:5px;">
 <?for ($i=0;$i<7;$i++){?>
-<div style="margin-left:1px;width:25px;height:20px;border:solid 1px white;float:left;"><?echo $wdays[$i];?></div>
+<div style="margin-left:1px;width:12%;height:20px;border:solid 1px white;float:left;"><?echo $wdays[$i];?></div>
 <?}?>
 <?for ($i=0;$i<$w;$i++){?>
-<div style="margin-left:1px;margin-top:1px;width:25px;height:25px;border:solid 1px #999999;float:left;"></div>
+<div style="margin-left:1px;margin-top:1px;width:12%;height:25px;border:solid 1px #999999;float:left;"></div>
 <?}?>
 <?
 for ($i=1;$i<=$ld;$i++){
 ?>
-<div onclick="if (document.hotspot) document.hotspot.value='<?echo "$y-$m-$i"?>';else showday('<?echo "$y-$m-$i"?>');" style="cursor:pointer;margin-left:1px;margin-top:1px;width:25px;height:25px;border:solid 1px #444444;float:left;"><?echo $i;?></div>
+<div onclick="if (document.hotspot) document.hotspot.value='<?echo "$y-$m-$i"?>';else showday('<?echo "$y-$m-$i"?>');" style="cursor:pointer;margin-left:1px;margin-top:1px;width:12%;height:25px;border:solid 1px #444444;float:left;"><?echo $i;?></div>
 <?
 }
 ?>

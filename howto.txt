@@ -41,12 +41,19 @@ Show Record View
 Tip: carefully designed field name headers and function parameters make it possible to merge "updateoffice" and "addoffice" JavaScript functions into one.
 Tip: wrap addtab(...) calls with JavaScript functions such as "showoffice" for naming consistency and single points of modification.
 
-Look Ahead with Simple String Insertion
+Auto Complete with Simple String Insertion
 ----------------------------------------
+1. extend the record list view to use a keyword parameter to filter the results
+2. implement, and call a JavaScript lookup function with self reference. e.g. <input onkeyup="lookupcity(this);">
+3. the lookup function passes the field value to listlookup. e.g. listlookup(d,'City Lookup','lookupcity&key='+d.value);
+4. instead of displaying the record in list view, fill the lookup field with result: onclick="picklookup('<?echo $cityname;?>',<?echo $cityid;?>);"
 
-
-Look Ahead with Entity Value Insertion
+Auto Complette  with Entity Value Insertion
 ---------------------------------------
+Same steps as autocomplete with simple string insertion. 
+The picklookup JavaScript function populates a value2 field with the record's ID instead of a simple display name.
+e.g. var cityid=gid('new_cityid').value2;
+
 
 [Managing Viewports]
 

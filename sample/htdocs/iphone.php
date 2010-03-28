@@ -41,7 +41,7 @@ body{font-size:16px;font-family:helvetica;}
 	<div id="lv3" style="background-color:#ffffff;display:none;"></div>
 	<div id="lv4" style="background-color:#ffffff;display:none;"></div>
 </div>
-<div id="content" style="float:left;width:320px;">
+<div id="content" style="float:left;width:320px;overflow-x:auto;">
 
 <div id="backlist" style="display:none;"><a id="backlistbutton" onclick="navback();"><img src="iphone/bb.png"></a></div>
 
@@ -57,7 +57,7 @@ document.appsettings={codepage:'<?echo $codepage;?>',viewcount:<?echo $viewcount
 <script src="iphone/tabs.js"></script>
 <script src="iphone/viewport.js"></script>
 <script src="iphone/validators.js"></script>
-<script src="iphone/autocomplete.js"></script>
+<script src="autocomplete.js"></script>
 
 <script>
 function showdeck(){

@@ -1,3 +1,7 @@
+v1.6
+----
+various sample code fixes
+
 v1.5
 ----
 enhanced iPhone view

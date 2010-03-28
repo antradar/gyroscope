@@ -14,16 +14,27 @@ picklookup3=function(val,val2,val3){
 	}
 }
 
+listlookup=function(d,title,command){
+	
+	document.hotspot=d;
+	gid('tooltitle').innerHTML='<a>'+title+'</a>';
+	var view;
+	if (document.viewindex!=null){
+		stackview();
+		view=document.appsettings.viewcount-1;
+	} else {
+		view=1;
+		showview(1);
+	}
+	ajxpgn('lv'+view,document.appsettings.codepage+'?cmd='+command);
+		
+}
+
 pickdate=function(d,def){
 	var key='';
 	if (d) key=encodeHTML(d.value);
 	else key=def;
-	
-	document.hotspot=d;
-	gid('tooltitle').innerHTML='<a>Calendar</a>';
-	showview(0,true);
-	//we're reusing a view panel here. you could have a spare one just for lookups
-	ajxpgn('lv0',document.appsettings.codepage+'?cmd=pkd&key='+key);
+	listlookup(d,'Calendar','pkd&key='+key);
 }
 
 _pickdate=function(d){
