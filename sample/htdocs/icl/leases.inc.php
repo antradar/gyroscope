@@ -140,8 +140,8 @@ function addlease(){
 	$bmon=$datebs[1];
 	$bday=$datebs[2];
 	
-	$c_startdate=adodb_mktime(0,0,0,$amon,$aday,$ayear);
-	$c_enddate=adodb_mktime(23,59,59,$bmon,$bday,$byear);
+	$c_startdate=mktime(0,0,0,$amon,$aday,$ayear);
+	$c_enddate=mktime(23,59,59,$bmon,$bday,$byear);
 	
 	$mrent=GETVAL('mrent');
 	$deposit=GETVAL('deposit');
@@ -335,12 +335,12 @@ function updatelease(){
 	$bday=$datebs[2];
 	
 	
-	$c_startdate=adodb_mktime(0,0,0,$amon,$aday,$ayear);
+	$c_startdate=mktime(0,0,0,$amon,$aday,$ayear);
 	$nm=$bmon+1;
 	$ny=$byear;
 	
 	if ($nm>12) {$nm=$nm-12;$ny++;}
-	$c_enddate=adodb_mktime(23,59,59,$nm,0,$ny); //use the last day of month for scheduling
+	$c_enddate=mktime(23,59,59,$nm,0,$ny); //use the last day of month for scheduling
 	
 	$mrent=GETVAL('mrent');
 	$deposit=GETVAL('deposit');

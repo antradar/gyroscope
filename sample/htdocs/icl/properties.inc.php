@@ -1,5 +1,4 @@
 <?
-///+handler::slv1::listproperties]
 function listproperties(){
 	global $db;
 	global $HTTP_GET_VARS;
@@ -58,9 +57,6 @@ ajxjs(self.addlease,'leases.js');
 	}//mode
 }
 
-///-handler::slv1::listproperties]
-
-///+handler::dt1::showproperty]
 function showproperty(){
 	global $HTTP_GET_VARS;
 	global $db;
@@ -158,9 +154,7 @@ function showproperty(){
 
 <?
 }
-///-handler::dt1::showproperty]
 
-///+handler::npr::newproperty]
 function newproperty(){
 	global $db;
 	$llid=GETVAL('llid');
@@ -225,9 +219,6 @@ function newproperty(){
 <?
 }
 
-///-handler::npr::newproperty]
-
-///+handler::apr::addproperty]
 function addproperty(){
 	global $HTTP_RAW_POST_DATA;
 	global $db;
@@ -256,9 +247,6 @@ function addproperty(){
 	echo $prid;
 }
 
-///-handler::apr::addproperty]
-
-///+handler::prls::listpropertyleases]
 function listpropertyleases($prid=null){
 	global $db;
 	
@@ -293,39 +281,6 @@ onmouseover="hintstatus('Add Lease',this);">
 </div>
 <?
 }
-///-handler::prls::listpropertyleases]
-
-///+handler::upr::updateproperty]
-function updateproperty(){
-	global $HTTP_RAW_POST_DATA;
-	global $db;
-	
-	$prid=GETVAL('prid');
-	$zip=GETSTR('zip');
-	$zip=str_replace(' ','',$zip);
-	$zip=strtoupper($zip);
-	$addr=GETSTR('addr');
-	$unit=GETSTR('unit');
-	
-	$query="select * from properties where prid=$prid";
-	$rs=sql_query($query,$db);
-	$myrow=sql_fetch_array($rs);
-	
-	$city=GETSTR('city');
-	$country=GETSTR('country');
-	$prov=GETSTR('prov');
-	$nrooms=GETVAL('nrooms');
-	$nparking=GETVAL('nparking');
-	$desc=str_replace("'","\'",$HTTP_RAW_POST_DATA);
-		
-	$query="update properties set nparking=$nparking, addr='$addr',unit='$unit',city='$city',prov='$prov', ";
-	$query.=" country='$country',zip='$zip',nrooms='$nrooms',prdesc='$desc' ";
-	$query.=" where prid=$prid";
-	
-	$rs=sql_query($query,$db);
-}
-
-///-handler::upr::updateproperty]
 
 
 ?>

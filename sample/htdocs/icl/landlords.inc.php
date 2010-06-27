@@ -46,6 +46,8 @@ function listlandlords(){
 ///+handler::dt0::showlandlord]
 function showlandlord(){
 	global $db;
+	include_once 'icl/persons.inc.php';
+	
 	$llid=GETVAL('llid');
 
 	$query="select landlords.*, persons.* from landlords, persons where landlords.personid=persons.personid and landlords.llid=$llid";

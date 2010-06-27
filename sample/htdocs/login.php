@@ -38,28 +38,34 @@ if ($_POST['password']||$_POST['login']){
 <html>
 <head>
 	<title>Login</title>
-	<meta id="viewport" name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1; user-scalable=0;"/>
-	<script src="nano.js"></script>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name = "viewport" content = "width = 350, init-scale=1, user-scalable = yes" />
+<style>
+body{padding:0;margin:0;background-color:#E7E7E2;font-size:13px;font-family:arial,sans-serif;text-align:center;}
+#loginbox{border:solid 4px #ABADB0;width:300px;margin:0 auto;background-color:#FFFFFF;text-align:left;margin-top:60px;}
+</style>
 </head>
 <body>
-	<?echo $error_message;?>
-	<form method="POST">
-	<table>
-		<tr>
-			<td>Username:</td>
-			<td><input id="login" type="text" name="login"></td>
-		</tr>
-		<tr>
-			<td>Password:</td>
-			<td><input type="password" name="password"></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td><input type="submit" value="Continue"></td>
-		</tr>
-	</table>
-	</form>
+<div id="loginbox">
+	<form method="POST" style="padding:20px;margin:0;padding-top:10px;">
+	<!-- add your logo here <img src="imgs/logo.gif" -->
+	<?if ($error_message!=''){?>
+	<div style="color:#ab0200;font-weight:bold;padding-top:10px;"><?echo $error_message;?></div>
+	<?}?>
 	
+	<div style="padding-top:10px;">Username:</div>
+	<div style="padding-top:5px;padding-bottom:10px;">
+	<input style="width:100%" id="login" type="text" name="login"></div>
+	<div>Password:</div>
+	<div style="padding-top:5px;padding-bottom:15px;">
+	<input style="width:100%;" type="password" name="password"></div>
+	<div style="text-align:center;"><input style="width:100px;" type="submit" value="Sign In"></div>
+	</form>
+</div>	
+
+	<div style="text-align:right;font-size:12px;width:300px;margin:0 auto;padding-top:10px;">Powered by Antradar Gyroscope <img src="imgs/gyroscope.gif"></div>
+	
+	<script src="nano.js"></script>
 	<script>
 		gid('login').focus();
 	</script>

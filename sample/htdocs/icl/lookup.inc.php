@@ -35,8 +35,8 @@ function showdatepicker(){
 	$key=trim(GETSTR('key'));
 	
 	//get current month and year
-	$m=adodb_date("m")+0;
-	$y=adodb_date("Y");
+	$m=date("m")+0;
+	$y=date("Y");
 
 	//detect user intent
 	if ($key==($key+0)) {
@@ -57,19 +57,19 @@ function showdatepicker(){
 	if ($nm>12) {$ny++;$nm-=12;}
 	if ($pm<1) {$py--;$pm+=12;}
 
-	$fd=adodb_mktime(1,1,1,$m,1,$y);
-	$ld=adodb_date('j',adodb_mktime(23,59,59,$nm,0,$ny));
-	$w=adodb_date("w",$fd);
+	$fd=mktime(1,1,1,$m,1,$y);
+	$ld=date('j',mktime(23,59,59,$nm,0,$ny));
+	$w=date("w",$fd);
 
 	$wdays=array('Su','Mo','Tu','We','Th','Fr','Sa');
 
 	$start=$fd;
-	$end=adodb_mktime(23,59,59,$nm,0,$ny);
+	$end=mktime(23,59,59,$nm,0,$ny);
 
 ?>
 <div style="width:100%;text-align:center;">
 
-<div style="width:100%;position:relative;margin-top:5px;text-align:center;"><?echo adodb_date("M Y",$fd);?>
+<div style="width:100%;position:relative;margin-top:5px;text-align:center;"><?echo date("M Y",$fd);?>
 <span style="position:absolute;top:2px;left:12px;cursor:pointer;" onclick="if (!document.hotspot) {pickdate(null,'<?echo "$py-$pm"?>');return;} document.hotspot.value='<?echo "$py-$pm"?>';pickdate(document.hotspot);"><img src="imgs/calel.gif"></span>
 <span style="position:absolute;top:2px;right:12px;cursor:pointer;" onclick="if (!document.hotspot) {pickdate(null,'<?echo "$ny-$nm"?>');return;} document.hotspot.value='<?echo "$ny-$nm"?>';pickdate(document.hotspot);"><img src="imgs/caler.gif"></span>
 </div>

@@ -175,6 +175,7 @@ function addtenant(){
 function showtenant(){
 	global $db;
 	$tnid=GETVAL('tnid');
+	include_once 'icl/persons.inc.php';
 
 	$query="select tenants.*, persons.* from tenants, persons where tenants.personid=persons.personid and tenants.tnid=$tnid";
 	$rs=sql_query($query,$db);

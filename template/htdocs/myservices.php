@@ -1,7 +1,5 @@
 <?
 include 'settings.php';
-include 'adodb.php';
-
 
 include 'connect.php';
 include 'auth.php';
@@ -12,65 +10,42 @@ login(true); //silent mode
 
 $cmd=$_GET['cmd'];
 
-function GETVAL($key){
-  $val=$_GET[$key];
-  if (!is_numeric($val)) die('invalid parameter');
-  return $val;
-}
-
-function GETSTR($key){
-	$val=decode_unicode_url($_GET[$key]);
-	$val=str_replace("\'","'",$val);
-	$val=str_replace("'","\'",$val);
-	return $val;
-}
+function GETVAL($key){ $val=$_GET[$key]; if (!is_numeric($val)) die('invalid parameter'); return $val;}
+function GETSTR($key){ $val=decode_unicode_url($_GET[$key]); $val=str_replace("\'","'",$val); $val=str_replace("'","\'",$val); return $val; }
 
 function decode_unicode_url($str){
-  $res = '';
-
-  $i = 0;
-  $max = strlen($str) - 6;
-  while ($i <= $max)
-  {
-    $character = $str[$i];
-    if ($character == '%' && $str[$i + 1] == 'u')
-    {
-      $value = hexdec(substr($str, $i + 2, 4));
-      $i += 6;
-
-      if ($value < 0x0080) // 1 byte: 0xxxxxxx
-        $character = chr($value);
-      else if ($value < 0x0800) // 2 bytes: 110xxxxx 10xxxxxx
-        $character =
-            chr((($value & 0x07c0) >> 6) | 0xc0)
-          . chr(($value & 0x3f) | 0x80);
-      else // 3 bytes: 1110xxxx 10xxxxxx 10xxxxxx
-        $character =
-            chr((($value & 0xf000) >> 12) | 0xe0)
-          . chr((($value & 0x0fc0) >> 6) | 0x80)
-          . chr(($value & 0x3f) | 0x80);
-    }
-    else
-      $i++;
-
-    $res .= $character;
-  }
-
-  return $res . substr($str, $i);
+	$res = '';
+	
+	$i = 0; $max=strlen($str)-6;
+	
+	while ($i<=$max){
+		$c=$str[$i];
+		if ($c=='%'&&$str[$i + 1]=='u'){
+			$v=hexdec(substr($str,$i+2,4));
+			$i+=6;
+			
+			if ($v<0x0080) $c=chr($v); //1 byte
+			else if ($v<0x0800) $c=chr((($v&0x07c0)>>6)|0xc0).chr(($v&0x3f)|0x80); // 2 bytes: 110xxxxx 10xxxxxx
+			else $c=chr((($v&0xf000)>>12)|0xe0).chr((($v&0x0fc0)>>6)|0x80).chr(($v&0x3f)|0x80); // 3 bytes: 1110xxxx 10xxxxxx 10xxxxxx
+		} else $i++;
+		
+		$res.=$c;
+	}//while
+	
+	return $res . substr($str, $i);
 }
 
 
-/*
-	include additional modules here
-*/	
+//load only required modules
 
-include 'icl/utils.inc.php'; 
-include 'icl/module1.inc.php';
-include 'icl/module2.inc.php';
-include 'icl/lookup.inc.php';
+switch($cmd){
+	case 'slv0': case 'dt0': include 'icl/module1.inc.php'; break;
+	case 'slv1': case 'dt1': include 'icl/module2.inc.php'; break;
+	case 'pkd': include 'icl/lookup.inc.php'; break;
+	case 'pump': include 'icl/utils.inc.php'; break;
+}
 
-
-switch ($cmd){
+switch($cmd){
 
 //Entity 1
   case 'slv0': showlist1(); break;
@@ -162,6 +137,3 @@ function echo_message(){
 </div>	
 <?
 }
-
-die();
-?>
