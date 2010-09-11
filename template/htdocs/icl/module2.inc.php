@@ -5,12 +5,12 @@ function showlist2(){
 ?>
 <div class="section"><div style="margin-bottom:6px;">
 
-<div style="border-bottom:dashed 1px #444444;"><a onclick="show_module2_details(0,'E2 Item0');">E2 Item0</a></div>
-<div style="border-bottom:dashed 1px #444444;"><a onclick="show_module2_details(1,'E2 Item1');">E2 Item1</a></div>
-<div style="border-bottom:dashed 1px #444444;"><a onclick="show_module2_details(2,'E2 Item2');">E2 Item2</a></div>
-<div style="border-bottom:dashed 1px #444444;"><a onclick="show_module2_details(3,'E2 Item3');">E2 Item3</a></div>
-<div style="border-bottom:dashed 1px #444444;"><a onclick="show_module2_details(5,'E2 Item5');">E2 Item5</a></div>
-<div style="border-bottom:dashed 1px #444444;"><a onclick="show_module2_details(7,'E2 Item7');">E2 Item7</a></div>
+<div class="listitem"><a onclick="show_module2_details(0,'E2 Item0');">E2 Item0</a></div>
+<div class="listitem"><a onclick="show_module2_details(1,'E2 Item1');">E2 Item1</a></div>
+<div class="listitem"><a onclick="show_module2_details(2,'E2 Item2');">E2 Item2</a></div>
+<div class="listitem"><a onclick="show_module2_details(3,'E2 Item3');">E2 Item3</a></div>
+<div class="listitem"><a onclick="show_module2_details(5,'E2 Item5');">E2 Item5</a></div>
+<div class="listitem"><a onclick="show_module2_details(7,'E2 Item7');">E2 Item7</a></div>
 
 </div></div>
 &nbsp;

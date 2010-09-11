@@ -1,3 +1,7 @@
+v1.8
+----
+new graphics
+
 v1.7
 ----
 optimized memory usage

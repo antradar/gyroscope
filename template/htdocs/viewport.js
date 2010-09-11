@@ -44,8 +44,9 @@ function autosize(){
   }
   if (tabcount>0){
   var t=document.tabtitles[tabcount-1];
+  var topmargin=0; //change this if changing tab style
 //wrapping
-      document.rowcount=(t.offsetTop-6)/24+1;
+      document.rowcount=(t.offsetTop-topmargin)/24+1;
       if (!document.lastrowcount) document.lastrowcount=1;
       if (document.lastrowcount!=document.rowcount) {
         gid('tabtitles').style.height=30*document.rowcount+'px';

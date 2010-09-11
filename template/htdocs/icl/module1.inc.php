@@ -5,8 +5,8 @@ function showlist1(){
 	//in practice this list is usually populated by a data table
 ?>
 <div class="section"><div style="margin-bottom:6px;">
-<div style="border-bottom:dashed 1px #444444;"><a onclick="show_module1_details(0,'E1 Item0');">E1 Item0</a></div>
-<div style="border-bottom:dashed 1px #444444;"><a onclick="show_module1_details(1,'E1 Item1');">E1 Item1</a></div>
+<div class="listitem"><a onclick="show_module1_details(0,'E1 Item0');">E1 Item0</a></div>
+<div class="listitem"><a onclick="show_module1_details(1,'E1 Item1');">E1 Item1</a></div>
 </div></div>
 &nbsp;
 <script>
@@ -42,7 +42,7 @@ Showing Module 1 (E1) Details for Item # <?echo $m1id;?>
 function listM1M2s($m1id=null){
 	if ($m1id==null) $m1id=GETVAL('m1id'); //this makes the function callable by both internal and web calls
 	
-	//let's hard code some one two many relations here
+	//let's hard code some 1-N relations here
 	$m2s=array();
 	
 	if ($m1id==0) $m2s=array(

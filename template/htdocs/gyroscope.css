@@ -1,22 +1,46 @@
-body{margin:0;padding:0;font-family:verdana, tahoma, arial;font-size:13px;}
+/* Global Settings */
+body{margin:0;padding:0;}
+body, td{font-family:arial,sans-serif;font-size:13px;}
 a{cursor:pointer;}
 acronym{text-decoration:none;border:none;}
-.activetab, .dulltab {font-weight:bold;display:block;float:left;margin-top:6px;margin-left:4px;margin-right:6px;}
-.activetab{color:white;}
-.dulltab{color:#cdcdcd;}
-.dulltab img{-moz-opacity:0.6;opacity:0.6;filter:alpha(opacity=60);}
+
+/* Viewport and Loaders */
+#leftview{background-color:#fefefe;overflow:auto;position:absolute;left:0;width:220px;top:80px;}
+#tooltitle{background-image:url(imgs/lefttab.png);position:absolute;left:0;width:220px;height:30px;top:50px;}
+	#tooltitle a{font-weight:bold;font-size:16px;color:white;margin-left:10px;margin-top:6px;display:block;}
+#lefticons{position:absolute;top:0px;left:0;height:50px;}
+#sptr{background:transparent url(imgs/sptr.png) repeat-y top left;position:absolute;left:219px;top:80px;height:30px;width:7px;font-size:1px;}
+#tabtitles{background:transparent url(imgs/tabbg.gif) repeat top left;position:absolute;left:225px;height:30px;top:50px;}
+#statusinfo{border-top:solid 1px #666666;background:#D4EDC9 url(imgs/powered.png) no-repeat top right;position:absolute;left:0;height:24px;}
+
+#logoutlink{font-weight:bold;font-size:12px;position:absolute;right:10px;top:10px;}
+	#logoutlink a, #logoutlink a:visited{text-decoration:none;color:#000000;}
+	#logoutlink a:hover{color:#A9DA92;}
+
+/* Tabs */
+.tabclose{display:block;float:left;height:30px;width:30px;cursor:pointer;}
+.activetab a, .dulltab a{float:left;}
+.tt{padding-top:7px;font-size:12px;padding-left:5px;}
+.activetab .tabclose{background-image:url(imgs/close_on.png);}
+.dulltab .tabclose{background-image:url(imgs/close_off.png);}
+.activetab, .dulltab {font-weight:bold;display:block;float:left;height:30px;margin-right:6px;}
+.activetab{color:#ffffff;background:transparent url(imgs/tab_on.png) no-repeat top left;}
+.dulltab{color:#ffffff;background:transparent url(imgs/tab_off.png) no-repeat top left;}
+
+/* List */
+.listitem{border-bottom:solid 1px #D4EDC9;padding-bottom:2px;margin-bottom:3px;}
+
+
 .section{padding:10px;}
 .enl_date{border-bottom:solid 1px #804000;color:#201000;}
 .enl_client{border-bottom:solid 1px #400080;color:#100020;}
 .form div div{
 height:22px;
 }
-#tooltitle{}
-#tooltitle a{font-weight:bold;font-size:16px;color:white;margin-left:10px;margin-top:6px;display:block;}
+
 .sectiontitle{font-weight:bold;font-size:18px;}
 input{border:solid 1px #666666;}
-.sectionheader{font-size:13px;font-weight:bold;background-color:#dedede;margin-top:12px;margin-bottom:10px;padding-left:5px;}
-#statusbar a{font-size:12px;display:block;margin-top:2px;margin-left:2px;}
+.sectionheader{color:#ff0000;font-size:13px;font-weight:bold;background-color:#dedede;margin-top:12px;margin-bottom:10px;padding-left:5px;}
 .minicaletitle{
 position:relative;
 text-align:center;
@@ -55,18 +79,7 @@ margin-right:15px;
 
 .iconbuttons a:hover{
 margin-right:13px;
-border:solid 1px #664444;
-}
-#logoutlink{
-position:absolute;right:20px;top:14px;
-}
-
-#logoutlink a{
-text-decoration:none;
-}
-
-#logoutlink a:hover{
-color:#ff2222;
+border:solid 1px #ffffff;
 }
 
 .example{border:dashed 1px;color:#666666;font-family:monospace;padding:5px;margin-left:10px;}
