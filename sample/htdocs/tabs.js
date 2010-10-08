@@ -28,8 +28,9 @@ showtab=function(key){
 
 //wrapping
   var t=document.tabtitles[tabcount-1];
+  var topmargin=0; //change this if changing tab style
 
-      document.rowcount=(t.offsetTop-6)/24+1;
+      document.rowcount=(t.offsetTop-topmargin)/24+1;
       if (!document.lastrowcount) document.lastrowcount=1;
       if (document.lastrowcount!=document.rowcount) {
         gid('tabtitles').style.height=30*document.rowcount+'px';
@@ -54,7 +55,7 @@ function reloadtab(key,title,params,loadfunc){
   rq.open('GET',scn+params+'&hb='+hb(),true);
   rq.onreadystatechange=function(){
     if (rq.readyState==4){
-      document.tabtitles[tabid].innerHTML="<nobr><a onclick=\"showtab('"+key+"');\">"+title+"</a><a onclick=\"closetab('"+key+"')\">&nbsp;<img src=\"imgs/close.gif\"></a></nobr>";
+      document.tabtitles[tabid].innerHTML="<nobr><a class=\"tt\" onclick=\"showtab('"+key+"');\">"+title+"</a><a onclick=\"closetab('"+key+"')\"><span class=\"tabclose\"></span></a></nobr>";
       document.tabviews[tabid].innerHTML=rq.responseText;
       if (loadfunc!=null) loadfunc();
 	}
@@ -87,7 +88,7 @@ function addtab(key,title,params,loadfunc){
       c.style.overflow="auto";
       c.innerHTML=rq.responseText;
       var t=document.createElement('span');
-      t.innerHTML="<nobr><a onclick=\"showtab('"+key+"');\">"+title+"</a><a onclick=\"closetab('"+key+"')\">&nbsp;<img src=\"imgs/close.gif\"></a></nobr>";
+      t.innerHTML="<nobr><a class=\"tt\" onclick=\"showtab('"+key+"');\">"+title+"</a><a onclick=\"closetab('"+key+"')\"><span class=\"tabclose\"></span></a></nobr>";
       gid('tabtitles').appendChild(t);
       gid('tabviews').appendChild(c);
 

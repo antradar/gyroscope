@@ -1,3 +1,7 @@
+1.9
+----
+enhanced cookie security
+
 v1.8
 ----
 new graphics

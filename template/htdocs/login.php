@@ -5,6 +5,7 @@ include 'auth.php';
 setcookie('userid',NULL,time()-3600);
 setcookie('login',NULL,time()-3600);
 setcookie('auth',NULL,time()-3600);
+setcookie('auth2',NULL,time()-3600);
 setcookie('groupnames',NULL,time()-3600);
 
 $error_message='';
@@ -22,8 +23,10 @@ if ($_POST['password']||$_POST['login']){
 	  
 	  $groupnames=$myrow['groupnames'];
 	  $auth=md5($salt.$userid.$groupnames.$salt.$raw_login);
+	  $auth2=md5($salt2.$userid.$groupnames.$salt2.$raw_login);
 	  
 	  setcookie('auth',$auth);
+	  setcookie('auth2',$auth2);
 	  setcookie('userid',$userid);
 	  setcookie('login',$login);
 	  setcookie('groupnames',$groupnames);
