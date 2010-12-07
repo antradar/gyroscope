@@ -109,9 +109,11 @@ function authpump(){
   var rq=xmlHTTPRequestObject();
   var f=function(){
     if (rq.readyState==4){
-     if (stamp!=rq.responseText){
-       window.location.reload();
-     }
+	    if (rq.status==200||rq.status==304){
+		     if (stamp!=rq.responseText){
+		       window.location.reload();
+		     }
+ 		}
     }
   }
   rq.open('GET',document.appsettings.codepage+'?cmd=pump&hb='+stamp,true);
