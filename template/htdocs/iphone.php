@@ -12,8 +12,8 @@ $user=userinfo();
 	<link href='iphone/gyrodemo.css' type='text/css' rel='stylesheet'>
 <style>
 body{font-size:16px;font-family:helvetica;}
-.listitem{padding-left:10px;font-size:20px;height:30px;float:left;margin-right:3px;}
-.listitem a, .listitem a:hover, .listitem a:visited, .listitem a:link{
+.menuitem{padding-left:10px;font-size:20px;height:30px;float:left;margin-right:3px;}
+.menuitem a, .menuitem a:hover, .menuitem a:visited, .menuitem a:link{
 	display:block;
 	padding-top:3px;
 	color:#000000;
@@ -27,8 +27,8 @@ body{font-size:16px;font-family:helvetica;}
 <body onload="setTimeout(scrollTo, 0, 0, 1);">
 
 <div id="toolicons">
-	<div class="listitem"><a href=# onclick="showview(0);"><img src="imgs/bigicon1.gif" border="0"></a></div>
-	<div class="listitem"><a href=# onclick="showview(1);"><img src="imgs/bigicon2.gif" border="0"></a></div>
+	<div class="menuitem"><a href=# onclick="showview(0);"><img src="imgs/bigicon1.gif" border="0"></a></div>
+	<div class="menuitem"><a href=# onclick="showview(1);"><img src="imgs/bigicon2.gif" border="0"></a></div>
 	<a href="login.php?from=<?echo $_SERVER['PHP_SELF'];?>" style="padding-right:10px;font-size:14px;color:#000000;">Logout</a>
 </div><!-- toolicons -->
 

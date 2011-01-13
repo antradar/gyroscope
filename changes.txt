@@ -1,3 +1,8 @@
+2.1
+----
+iphone mode bug fixes (css name space, offline auth check)
+
+
 2.0
 ----
 detecting loss of internet connection
