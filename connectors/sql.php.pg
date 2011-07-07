@@ -1,0 +1,63 @@
+<?
+// Macronetic Hydra
+// Common SQL Interface
+// PostgreSQL implementation
+// (c) Antradar Software 1995-2006
+
+$SQL_ENGINE="PostgreSQL";
+
+function sql_get_db($dbhost,$dbsource,$dbuser,$dbpass){
+	$db=pg_connect("host=$dbhost dbname=$dbsource user=$dbuser password=$dbpass");
+	return $db;
+}
+
+function sql_query($query,$db){
+	return pg_query($db,$query);
+}
+
+function sql_fetch_array($rs){
+	return pg_fetch_array($rs);
+
+}
+
+function sql_insert_id($rs){
+	return pg_last_oid();
+}
+
+function sql_affected_rows($db,$rs){
+
+	return pg_num_rows($rs);
+}
+
+function sql_begin_transaction(){
+	die("sql.ard: not implemented!");
+}
+
+function sql_commit(){
+	die("sql.ard: not implemented!");
+}
+
+function sql_rollback(){
+	die("sql.ard: not implemented!");
+}
+
+/* Sample Use
+
+
+$db=sql_get_db("localhost","mnhydra","dbadmin","");
+$query="select * from languages";
+$rs=sql_query($query,$db);
+
+$rowcount=sql_affected_rows($db,$rs); 
+echo "affected rows: ".$rowcount."<br>";
+
+while ($myrow=sql_fetch_array($rs)){
+  $langself=$myrow['langself'];
+  echo $langself."<br>";
+}
+
+
+*/
+
+
+?>

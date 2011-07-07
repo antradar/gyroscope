@@ -1,0 +1,73 @@
+<?
+// Macronetic Hydra
+// Common SQL Interface
+// MSSQL implementation
+// (c) Antradar Software 1995-2006
+
+$SQL_ENGINE="MSSQL";
+
+function sql_get_db($dbhost,$dbsource,$dbuser,$dbpass){
+	$db = mssql_connect($dbhost,$dbuser,$dbpass);
+  	mssql_select_db($dbsource, $db);
+	return $db;
+}
+
+function sql_query($query,$db){
+	return mssql_query($query,$db);
+}
+
+function sql_fetch_array($rs){
+	return mssql_fetch_array($rs);
+
+}
+
+function sql_insert_id($rs){
+
+  $id = "";
+
+  $rs = mssql_query("SELECT @@identity AS id");
+  if ($row = mssql_fetch_row($rs)) {
+   $id = trim($row[0]);
+  }
+  mssql_free_result($rs);
+
+  return $id;
+}
+
+function sql_affected_rows($db,$rs){
+	return mssql_rows_affected($db);
+}
+
+function sql_begin_transaction(){
+	mssql_query("BEGIN TRANSACTION");
+}
+
+function sql_commit(){
+	mssql_query("COMMIT");
+}
+
+function sql_rollback(){
+	mssql_query("ROLLBACK");
+}
+
+/* Sample Use
+
+$db=sql_get_db("SERVERNAME\\USERNAME","mnhydra",NULL,NULL);
+$query="select * from pages";
+$rs=sql_query($query,$db);
+echo sql_affected_rows($db)." rows affected <br>";
+
+while ($myrow=sql_fetch_array($rs)){
+	$pagefilename=$myrow['pagefilename'];
+	$pageid=$myrow['pageid'];
+	$pagetype=$myrow['pagetype'];
+	$idepath="./ide/";
+	if ($pagetype==2) $pagefilename=$idepath.$pagefilename;
+
+	echo $pageid." ".$pagefilename."<br>";
+}
+
+*/
+
+
+?>
