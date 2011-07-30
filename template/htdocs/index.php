@@ -1,4 +1,5 @@
 <?
+//include 'https.php'; //enforcing HTTPS on production server
 include 'settings.php';
 
 //comment out the following lines to disable authentication

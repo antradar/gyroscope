@@ -1,3 +1,13 @@
+2.1.7
+-----
+logo change
+
+
+2.1.6
+----
+added optional https enforcement
+
+
 2.1.5
 ----
 included additional db connectors

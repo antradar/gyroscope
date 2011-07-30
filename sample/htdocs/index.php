@@ -1,4 +1,5 @@
 <?
+//include 'https.php'; //enforcing HTTPS
 include 'settings.php';
 include 'auth.php';
 login();
