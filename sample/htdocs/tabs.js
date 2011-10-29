@@ -18,6 +18,13 @@ showtab=function(key){
   
   currenttab=tabid;
 
+  if (!document.tabhistory) document.tabhistory=[];
+  
+  var lasttab=null;
+  if (document.tabhistory.length>0) lasttab=document.tabhistory[document.tabhistory.length-1];
+  
+  if (lasttab!=key) document.tabhistory.push(key);
+  
   for (i=0;i<tabcount;i++){
 	  if (i==tabid) continue;
 	  document.tabviews[i].style.display='none';
@@ -65,6 +72,7 @@ function reloadtab(key,title,params,loadfunc){
 function addtab(key,title,params,loadfunc){
   //bounce keys
   var i;
+  
   if (document.tablock!=null) return;
   document.tablock=true;
   
@@ -119,7 +127,24 @@ closetab=function(key){
 	  document.tabkeys[i]=document.tabkeys[i+1];	  
   }
   tabcount--;
-  if (currenttab==tabid) currenttab=0;
-  if (tabcount==0) {currenttab=-1; return;}
-  showtab(document.tabkeys[currenttab]);	
+  
+	if (document.tabhistory){
+		for (var i=0;i<document.tabhistory.length;i++) if (document.tabhistory[i]==key) document.tabhistory[i]=null;
+	}
+		
+	if (currenttab==tabid) {
+		currenttab=0;
+		var lasttab=null;
+		while (lasttab==null&&document.tabhistory.length>0){
+			lasttab=document.tabhistory.pop();	
+		}  
+		  
+		if (lasttab!=null) {
+			showtab(lasttab);
+			return;	
+		}
+	}
+	
+	if (tabcount==0) {currenttab=-1; return;}
+	showtab(document.tabkeys[currenttab]);	
 }
