@@ -42,7 +42,8 @@ showtab=function(key){
       if (document.lastrowcount!=document.rowcount) {
         gid('tabtitles').style.height=30*document.rowcount+'px';
         gid('tabviews').style.top=80+30*(document.rowcount-1)+'px';
-        gid('tabviews').setAttribute("scale:ch",105+30*(document.rowcount-1));
+        //gid('tabviews').setAttribute("scale:ch",105+30*(document.rowcount-1));
+		gid('tabviews').scalech=105+30*(document.rowcount-1);        
         scaleall(document.body);
       }
       document.lastrowcount=document.rowcount;
@@ -148,3 +149,23 @@ closetab=function(key){
 	if (tabcount==0) {currenttab=-1; return;}
 	showtab(document.tabkeys[currenttab]);	
 }
+
+Array.prototype.push = function() {
+    var n = this.length >>> 0;
+    for (var i = 0; i < arguments.length; i++) {
+	this[n] = arguments[i];
+	n = n + 1 >>> 0;
+    }
+    this.length = n;
+    return n;
+};
+
+Array.prototype.pop = function() {
+    var n = this.length >>> 0, value;
+    if (n) {
+	value = this[--n];
+	delete this[n];
+    }
+    this.length = n;
+    return value;
+};

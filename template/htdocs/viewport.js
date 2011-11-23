@@ -18,6 +18,8 @@ function scaleall(root){
   var idw=cw();
   
   var os=root.getElementsByTagName('div'); //AKB#2
+  
+  /*
   for (i=0;i<os.length;i++){
     var node=os[i];
     if(node.attributes){
@@ -31,6 +33,21 @@ function scaleall(root){
         node.style.height=(idh-node.attributes['scale:ch'].value)+'px';                        
     }
   }
+  */
+  gid('lefticons').style.width=idw+'px';
+  gid('leftview').style.height=(idh-105)+'px';
+  gid('tabtitles').style.width=(idw-225)+'px';
+  gid('tabviews').style.width=(idw-225)+'px';
+  gid('tabviews').style.height=(idh-105)+'px';
+  gid('sptr').style.height=(idh-104)+'px';
+  gid('statusinfo').style.top=(idh-25)+'px';
+  gid('statusinfo').style.width=idw+'px';
+
+  for (i=0;i<os.length;i++){
+    var node=os[i];
+    if (node.scalech) node.style.height=(idh-node.scalech)+'px';
+  }
+  
 }
 
 hinttimer=-2;

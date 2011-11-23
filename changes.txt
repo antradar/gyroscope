@@ -1,3 +1,8 @@
+2.3
+-----
+removed custom attributes dependency
+added array push/pop override for greater compatibility
+
 2.2
 -----
 added tab history/stack
