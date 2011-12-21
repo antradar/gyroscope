@@ -20,8 +20,8 @@ function sql_fetch_array($rs){
 
 }
 
-function sql_insert_id($rs){
-	return pg_last_oid();
+function sql_insert_id($db,$rs){
+	return pg_last_oid($rs);
 }
 
 function sql_affected_rows($db,$rs){

@@ -9,7 +9,6 @@ $user=userinfo();
 <head>
 	<title>Antradar Gyroscope&trade; &nbsp;Sample Application</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta id="viewport" name="viewport" content="width=320; initial-scale=0.85; maximum-scale=1.2; user-scalable=0;"/>
 	<link href='gyrodemo.css' type='text/css' rel='stylesheet'>
 </head>
 

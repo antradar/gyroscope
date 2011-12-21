@@ -23,9 +23,10 @@ function sql_fetch_array($rs){
 
 }
 
-function sql_insert_id($rs){
+function sql_insert_id($db,$rs=null){
 
-	return mysql_insert_id();
+	if (!isset($rs)) return mysql_insert_id();
+	return mysql_insert_id($db);
 }
 
 function sql_affected_rows($db,$rs){

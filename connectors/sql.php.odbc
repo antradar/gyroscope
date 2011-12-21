@@ -28,7 +28,7 @@ function sql_fetch_array($rs){
 
 }
 
-function sql_insert_id($rs){
+function sql_insert_id($db,$rs){
 
 	global $sql_conn_insertedid;
 	echo $sql_conn_insertedid;
