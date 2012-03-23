@@ -1,6 +1,7 @@
 <?
 function xsscheck(){
 	global $_SERVER;
+	header('X-Frame-Options: SAMEORIGIN');
 	$referer=$_SERVER['HTTP_REFERER'];
 	$referer=str_replace('http://','',$referer);
 	$referer=str_replace('https://','',$referer);

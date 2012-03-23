@@ -66,7 +66,7 @@ body{padding:0;margin:0;background-color:#E7E7E2;font-size:13px;font-family:aria
 	</form>
 </div>	
 
-	<div style="text-align:right;font-size:12px;width:300px;margin:0 auto;padding-top:10px;">Powered by Antradar Gyroscope <img src="imgs/gyroscope.gif"></div>
+	<div style="text-align:right;font-size:12px;width:300px;margin:0 auto;padding-top:10px;">Powered by Antradar Gyroscope</div>
 	
 	<script src="nano.js"></script>
 	<script>

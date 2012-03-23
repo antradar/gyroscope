@@ -40,7 +40,7 @@ height:22px;
 
 .sectiontitle{font-weight:bold;font-size:18px;}
 input{border:solid 1px #666666;}
-.sectionheader{color:#ff0000;font-size:13px;font-weight:bold;background-color:#dedede;margin-top:12px;margin-bottom:10px;padding-left:5px;}
+.sectionheader{color:#000000;font-size:13px;font-weight:bold;background-color:#dedede;margin-top:12px;margin-bottom:10px;padding-left:5px;}
 .minicaletitle{
 position:relative;
 text-align:center;

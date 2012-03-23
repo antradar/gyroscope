@@ -51,7 +51,7 @@ showtab=function(key){
 
 tablock=false;
 
-function reloadtab(key,title,params,loadfunc){
+function reloadtab(key,title,params,loadfunc,data){
 
   //if tab doesn't exist, ignore it
   var tabid=gettabid(key);
@@ -60,7 +60,8 @@ function reloadtab(key,title,params,loadfunc){
   var rq=xmlHTTPRequestObject();
 
   var scn=document.appsettings.codepage+'?cmd=';
-  rq.open('GET',scn+params+'&hb='+hb(),true);
+  rq.open('POST',scn+params+'&hb='+hb(),true);
+  rq.setRequestHeader('Content-Type','text/xml; charset=utf-8;');
   rq.onreadystatechange=function(){
     if (rq.readyState==4){
       document.tabtitles[tabid].innerHTML="<nobr><a class=\"tt\" onclick=\"showtab('"+key+"');\">"+title+"</a><a onclick=\"closetab('"+key+"')\"><span class=\"tabclose\"></span></a></nobr>";
@@ -68,9 +69,10 @@ function reloadtab(key,title,params,loadfunc){
       if (loadfunc!=null) loadfunc();
 	}
   }
-  rq.send(null);
+  rq.send(data);
 }
-function addtab(key,title,params,loadfunc){
+
+function addtab(key,title,params,loadfunc,data){
   //bounce keys
   var i;
   
@@ -87,7 +89,8 @@ function addtab(key,title,params,loadfunc){
 
   var rq=xmlHTTPRequestObject();
   var scn=document.appsettings.codepage+'?cmd=';
-  rq.open('GET',scn+params+'&hb='+hb(),true);
+  rq.open('POST',scn+params+'&hb='+hb(),true);
+  rq.setRequestHeader('Content-Type','text/xml; charset=utf-8;');
   rq.onreadystatechange=function(){
     if (rq.readyState==4){
       var c=document.createElement('div');
@@ -111,7 +114,7 @@ function addtab(key,title,params,loadfunc){
       document.tablock=null;
     }
   }
-  rq.send(null);
+  rq.send(data);
 }
 
 closetab=function(key){

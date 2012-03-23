@@ -1,19 +1,31 @@
-body{margin:0;padding:0;font-family:verdana, tahoma, arial;font-size:15px;}
+body{margin:0;padding:0;font-family:verdana, tahoma, arial;font-size:13px;}
 a{cursor:pointer;}
 acronym{text-decoration:none;border:none;}
-.activetab, .dulltab {display:inline;font-size:16px;padding-right:5px;font-weight:bold;}
-.activetab{color:#363636;background:transparent url(at.png) repeat-x;}
-.dulltab{color:#cdcdcd;background:transparent url(dt.png) repeat-x;}
-.dulltab img{-moz-opacity:0.6;opacity:0.6;filter:alpha(opacity=60);}
+
+
+/* Tabs */
+.tabclose{display:block;float:left;height:25px;width:25px;cursor:pointer;}
+.activetab a, .dulltab a{float:left;}
+.tt{padding-top:5px;font-size:12px;margin-left:5px;white-space:nowrap;max-width:50px;overflow:hidden;}
+.activetab .tabclose{background-image:url(tc.png);}
+.dulltab .tabclose{background-image:url(tcd.png);}
+.activetab, .dulltab {font-weight:bold;display:block;float:left;height:25px;margin-right:4px;}
+.activetab{color:#ffffff;background:transparent url(at.png) no-repeat top left;}
+.dulltab{color:#ffffff;background:transparent url(dt.png) no-repeat top left;}
+
+
 .section{padding:10px;}
 .enl_date{border-bottom:solid 1px #804000;color:#201000;}
 .enl_client{border-bottom:solid 1px #400080;color:#100020;}
+
 .form div div{
 height:22px;
 }
 
-.activetab .tabclose{background-image:url(tc.png);}
-.dulltab .tabclose{background-image:url(tcd.png);}
+.safetable td,.safetable th{float:left;display:block;margin-right:2px;width:120px;overflow:hidden;}
+.safetable tr{clear:both;border-bottom:solid 1px #dedede;display:block;}
+
+
 
 #toolicons{height:40px;text-align:right;}
 
@@ -22,11 +34,10 @@ height:22px;
 
 #tabtitles{background:transparent url(tbbg.png) repeat top left;border-bottom:solid 1px #6f6e6e;}
 
-#tooltitle{height:25px;background:transparent url(tbbg.png) repeat top left;border-bottom:solid 1px #6f6e6e;}
-#tooltitle a{font-weight:bold;font-size:16px;color:white;margin-left:10px;padding-top:3px;display:block;}
-.sectiontitle{font-weight:bold;font-size:18px;}
+#tooltitle a{font-weight:bold;font-size:15px;color:white;margin-left:10px;padding-top:3px;display:block;}
+.sectiontitle{font-weight:bold;font-size:14px;}
 input{border:solid 1px #666666;}
-.sectionheader{font-size:13px;font-weight:bold;background-color:#dedede;margin-top:12px;margin-bottom:10px;padding-left:5px;}
+.sectionheader{font-size:12px;font-weight:bold;background-color:#dedede;margin-top:12px;margin-bottom:10px;padding-left:5px;}
 #statusbar a{font-size:12px;display:block;margin-top:2px;margin-left:2px;}
 .minicaletitle{
 position:relative;

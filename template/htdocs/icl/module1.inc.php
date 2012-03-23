@@ -5,8 +5,9 @@ function showlist1(){
 	//in practice this list is usually populated by a data table
 ?>
 <div class="section"><div style="margin-bottom:6px;">
-<div class="listitem"><a onclick="show_module1_details(0,'E1 Item0');">E1 Item0</a></div>
-<div class="listitem"><a onclick="show_module1_details(1,'E1 Item1');">E1 Item1</a></div>
+<?for ($i=0;$i<20;$i++){?>
+<div class="listitem"><a onclick="show_module1_details(<?echo $i;?>,'E1 Item<?echo $i;?>');">E1 Item<?echo $i;?></a></div>
+<?}?>
 </div></div>
 &nbsp;
 <script>

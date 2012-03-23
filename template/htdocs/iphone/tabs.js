@@ -43,21 +43,24 @@ showtab=function(key,backnav){
 
 //wrapping
   var t=document.tabtitles[tabcount-1];
-
-      document.rowcount=(t.offsetTop-6)/24+1;
+  var topmargin=0;
+  
+      document.rowcount=(t.offsetTop-topmargin)/24+1;
       if (!document.lastrowcount) document.lastrowcount=1;
       if (document.lastrowcount!=document.rowcount) {
         //gid('tabtitles').style.height=30*document.rowcount+'px';
         //gid('tabviews').style.top=80+30*(document.rowcount-1)+'px';
         //gid('tabviews').setAttribute("scale:ch",105+30*(document.rowcount-1));
-        //scaleall(document.body);
+        gid('tabviews').scalech=105+25*(document.rowcount-1);
+        
+        scaleall(document.body);
       }
       document.lastrowcount=document.rowcount;
 }
 
 tablock=false;
 
-function reloadtab(key,title,params,loadfunc){
+function reloadtab(key,title,params,loadfunc,data){
 
   //if tab doesn't exist, ignore it
   var tabid=gettabid(key);
@@ -66,17 +69,18 @@ function reloadtab(key,title,params,loadfunc){
   var rq=xmlHTTPRequestObject();
 
   var scn=document.appsettings.codepage+'?cmd=';
-  rq.open('GET',scn+params+'&hb='+hb(),true);
+  rq.open('POST',scn+params+'&hb='+hb(),true);
+  rq.setRequestHeader('Content-Type','text/xml; charset=utf-8;');
   rq.onreadystatechange=function(){
     if (rq.readyState==4){
-      document.tabtitles[tabid].innerHTML="<nobr><a onclick=\"closetab('"+key+"')\"><span class=\"tabclose\"><img src=\"iphone/n.gif\"></span></a><a onclick=\"showtab('"+key+"');\">"+title+"</a></nobr>";
+      document.tabtitles[tabid].innerHTML="<nobr><a class=\"tt\" onclick=\"showtab('"+key+"');\">"+title+"</a><a onclick=\"closetab('"+key+"')\"><span class=\"tabclose\"></span></a></nobr>";
       document.tabviews[tabid].innerHTML=rq.responseText;
       if (loadfunc!=null) loadfunc();
 	}
   }
-  rq.send(null);
+  rq.send(data);
 }
-function addtab(key,title,params,loadfunc){
+function addtab(key,title,params,loadfunc,data){
   //bounce keys
   //showpanel(2);
   document.viewmode=2;
@@ -95,14 +99,15 @@ function addtab(key,title,params,loadfunc){
 
   var rq=xmlHTTPRequestObject();
   var scn=document.appsettings.codepage+'?cmd=';
-  rq.open('GET',scn+params+'&hb='+hb(),true);
+  rq.open('POST',scn+params+'&hb='+hb(),true);
+  rq.setRequestHeader('Content-Type','text/xml; charset=utf-8;');
   rq.onreadystatechange=function(){
     if (rq.readyState==4){
       var c=document.createElement('div');
       c.style.display='none';
       c.innerHTML=rq.responseText;
-      var t=document.createElement('div');
-      t.innerHTML="<nobr><a onclick=\"closetab('"+key+"')\"><span class=\"tabclose\"><img src=\"iphone/n.gif\"></span></a><a onclick=\"showtab('"+key+"');\">"+title+"</a></nobr> ";
+      var t=document.createElement('span');
+      t.innerHTML="<nobr><a class=\"tt\" onclick=\"showtab('"+key+"');\">"+title+"</a><a onclick=\"closetab('"+key+"')\"><span class=\"tabclose\"></span></a></nobr>";
       gid('tabtitles').appendChild(t);
       gid('tabviews').appendChild(c);
 
@@ -116,7 +121,7 @@ function addtab(key,title,params,loadfunc){
       document.tablock=null;
     }
   }
-  rq.send(null);
+  rq.send(data);
 }
 
 closetab=function(key){

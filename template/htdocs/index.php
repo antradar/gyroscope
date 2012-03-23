@@ -1,5 +1,8 @@
 <?
 //include 'https.php'; //enforcing HTTPS on production server
+
+include 'mswitch.php'; //auto switch to mobile version
+
 include 'settings.php';
 
 //comment out the following lines to disable authentication
@@ -39,6 +42,9 @@ document.appsettings={codepage:'<?echo $codepage;?>', viewcount:<?echo $viewcoun
 
 <div id="logoutlink">
 <a href="login.php?from=<?echo $_SERVER['PHP_SELF'];?>" onmouseover="hintstatus(this,'Logout');">logout <em><?echo $user['login'];?></em></a>
+<div style="padding-top:5px;font-weight:normal;">
+<a onclick="ajxjs(self.setaccountpass,'accounts.js');reloadtab('account','Account Settings','showaccount');addtab('account','Account Settings','showaccount');">Account Settings</a>
+</div>
 </div><!-- logout -->
 </div>
 </div>

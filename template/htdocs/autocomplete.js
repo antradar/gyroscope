@@ -16,6 +16,16 @@ picklookup3=function(val,val2,val3){
 
 listlookup=function(d,title,command){
 	
+	if (document.iphone_portrait&&!document.portraitlock){
+		if (gid('rotate_indicator')){
+			gid('rotate_indicator').style.display='block';
+			setTimeout(function(){
+				gid('rotate_indicator').style.display='none';
+			},1000);	
+		}
+		return;	
+	}
+	
 	document.hotspot=d;
 	gid('tooltitle').innerHTML='<a>'+title+'</a>';
 	var view;
@@ -34,6 +44,9 @@ pickdate=function(d,def){
 	var key='';
 	if (d) key=encodeHTML(d.value);
 	else key=def;
+	
+	if (self.portrait_ignore) portrait_ignore();
+		
 	listlookup(d,'Calendar','pkd&key='+key);
 }
 

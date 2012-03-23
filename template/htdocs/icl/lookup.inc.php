@@ -1,4 +1,5 @@
-<?
+<?php
+
 function showdatepicker(){
 	global $db;
 
@@ -62,4 +63,4 @@ for ($i=1;$i<=$ld;$i++){
 </div>
 <?
 }
-?>
+

@@ -53,7 +53,7 @@ function ajxpgn(c,u,d,e){
 
 function ajxjs(f,js){if (f==null) eval(ajxb(js+'?'));}
 
-function ajxcss(f,css){
+function ajxcss(f,css,cachekey){
 	if (f==null) {
 	  	csl=document.createElement('link');
 		csl.setAttribute('rel','stylesheet');
