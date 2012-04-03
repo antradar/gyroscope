@@ -1,3 +1,8 @@
+2.6.1
+-----
+fixed calendar layout bug in IE
+current date displayed in bold red
+
 2.6
 -----
 added account settings

@@ -36,6 +36,8 @@ function showdatepicker(){
 
 	$start=$fd;
 	$end=mktime(23,59,59,$nm,0,$ny);
+	
+	$today=date('Y-n-j');
 
 ?>
 <div style="width:100%;text-align:center;">
@@ -47,15 +49,21 @@ function showdatepicker(){
 
 <div id="calepicker" style="font-size:12px;width:100%;height:200px;margin:0 auto;margin-top:5px;">
 <?for ($i=0;$i<7;$i++){?>
-<div style="margin-left:1px;width:12%;height:20px;border:solid 1px white;float:left;"><?echo $wdays[$i];?></div>
+<div style="width:13%;float:left;">
+<div style="height:20px;border:solid 1px #ffffff;margin-left:1px;"><?echo $wdays[$i];?></div>
+</div>
 <?}?>
 <?for ($i=0;$i<$w;$i++){?>
-<div style="margin-left:1px;margin-top:1px;width:12%;height:25px;border:solid 1px #999999;float:left;"></div>
+<div style="width:13%;float:left;">
+<div style="height:25px;border:solid 1px #444444;margin:1px;"></div>
+</div>
 <?}?>
 <?
 for ($i=1;$i<=$ld;$i++){
 ?>
-<div onclick="if (document.hotspot) document.hotspot.value='<?echo "$y-$m-$i"?>';else showday('<?echo "$y-$m-$i"?>');" style="cursor:pointer;margin-left:1px;margin-top:1px;width:12%;height:25px;border:solid 1px #444444;float:left;"><?echo $i;?></div>
+<div onclick="if (document.hotspot) document.hotspot.value='<?echo "$y-$m-$i"?>';else showday('<?echo "$y-$m-$i"?>');" style="cursor:pointer;width:13%;float:left;">
+<div style="height:25px;border:solid 1px #444444;margin:1px;<?if ($today=="$y-$m-$i") echo 'font-weight:bold;color:#ab0200';?>"><?echo $i;?>
+</div></div>
 <?
 }
 ?>
