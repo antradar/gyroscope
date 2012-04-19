@@ -168,7 +168,7 @@ addtab('welcome','Welcome','wk');
 
 window.onorientationchange=rotate;
 rotate();
-
+scaleall(document.body);
 
 </script>
 </body>

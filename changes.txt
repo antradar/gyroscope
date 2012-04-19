@@ -1,3 +1,7 @@
+2.6.2
+-----
+loads MUCH fast in iphone view
+
 2.6.1
 -----
 fixed calendar layout bug in IE
