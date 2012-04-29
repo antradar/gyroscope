@@ -1,3 +1,7 @@
+2.7
+-----
+reload tab can inherit the current tab title via null parameter
+
 2.6.2
 -----
 loads MUCH fast in iphone view

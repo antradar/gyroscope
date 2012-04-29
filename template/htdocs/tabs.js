@@ -64,7 +64,7 @@ function reloadtab(key,title,params,loadfunc,data){
   rq.setRequestHeader('Content-Type','text/xml; charset=utf-8;');
   rq.onreadystatechange=function(){
     if (rq.readyState==4){
-      document.tabtitles[tabid].innerHTML="<nobr><a class=\"tt\" onclick=\"showtab('"+key+"');\">"+title+"</a><a onclick=\"closetab('"+key+"')\"><span class=\"tabclose\"></span></a></nobr>";
+      if (title) document.tabtitles[tabid].innerHTML="<nobr><a class=\"tt\" onclick=\"showtab('"+key+"');\">"+title+"</a><a onclick=\"closetab('"+key+"')\"><span class=\"tabclose\"></span></a></nobr>";
       document.tabviews[tabid].innerHTML=rq.responseText;
       if (loadfunc!=null) loadfunc();
 	}
