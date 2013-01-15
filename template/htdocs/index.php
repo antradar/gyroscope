@@ -36,8 +36,9 @@ document.appsettings={codepage:'<?echo $codepage;?>', viewcount:<?echo $viewcoun
 <div style="margin-top:5px;margin-left:10px;">
 <span class="iconbuttons">
 <!-- usually there is one entity icon per list view -->
-<acronym title="Entity 1"><a href=# onmouseover="hintstatus('Entity 1',this);" onclick="showview(0);"><img src="imgs/bigicon1.gif"></a></acronym>
-<acronym title="Entity 2"><a href=# onmouseover="hintstatus('Entity 2',this);" onclick="showview(1);"><img src="imgs/bigicon2.gif"></a></acronym>
+<input id="anchor_top" title="Top View" style="position:absolute;top:-60px;left:0;">
+<acronym title="Entity 1"><a href=# title="Entity 1" onmouseover="hintstatus('Entity 1',this);" onclick="showview(0);"><img src="imgs/bigicon1.gif"></a></acronym>
+<acronym title="Entity 2"><a href=# title="Entity 2" onmouseover="hintstatus('Entity 2',this);" onclick="showview(1);"><img src="imgs/bigicon2.gif"></a></acronym>
 </span><!-- iconbuttons -->
 
 <div id="logoutlink">
@@ -61,7 +62,9 @@ document.appsettings={codepage:'<?echo $codepage;?>', viewcount:<?echo $viewcoun
 <script src="viewport.js"></script>
 <script src="validators.js"></script>
 <script src="autocomplete.js"></script>
-
+<?if (isset($_GET['keynav'])){?>
+<script src="blind.js"></script>
+<?}?>
 <script>
 window.onresize=autosize;
 autosize();

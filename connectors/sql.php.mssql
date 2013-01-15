@@ -67,6 +67,11 @@ while ($myrow=sql_fetch_array($rs)){
 	echo $pageid." ".$pagefilename."<br>";
 }
 
+//paging example
+$query="with ps as (select *,row_number() over (order by firstname,lastname,personid) as rownumber from person)  
+	select * from ps where rownumber between 10 and 20";
+
+
 */
 
 

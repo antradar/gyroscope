@@ -29,7 +29,8 @@ acronym{text-decoration:none;border:none;}
 
 /* List */
 .listitem{border-bottom:solid 1px #D4EDC9;padding-bottom:2px;margin-bottom:3px;}
-
+.listitem a,.listitem a:link,.listitem a:visited,.listitem a:hover{text-decoration:none;color:#000000;}
+.listitem a:focus{color:#ab0200;}
 
 .section{padding:10px;}
 .enl_date{border-bottom:solid 1px #804000;color:#201000;}

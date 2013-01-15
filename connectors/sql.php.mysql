@@ -20,7 +20,10 @@ function sql_query($query,$db){
 
 function sql_fetch_array($rs){
 	return mysql_fetch_array($rs);
+}
 
+function sql_fetch_assoc($rs){
+	return mysql_fetch_assoc($rs);
 }
 
 function sql_insert_id($db,$rs=null){

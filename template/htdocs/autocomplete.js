@@ -36,7 +36,7 @@ listlookup=function(d,title,command){
 		view=1;
 		showview(1);
 	}
-	ajxpgn('lv'+view,document.appsettings.codepage+'?cmd='+command);
+	ajxpgn('lv'+view,document.appsettings.codepage+'?cmd='+command,true,true,'<input style="position:absolute;top:-60px;left:0;" id="lvtab_'+view+'">');
 		
 }
 

@@ -6,7 +6,7 @@ function showlist1(){
 ?>
 <div class="section"><div style="margin-bottom:6px;">
 <?for ($i=0;$i<20;$i++){?>
-<div class="listitem"><a onclick="show_module1_details(<?echo $i;?>,'E1 Item<?echo $i;?>');">E1 Item<?echo $i;?></a></div>
+<div class="listitem"><a href=# onclick="show_module1_details(<?echo $i;?>,'E1 Item<?echo $i;?>');return false;">E1 Item<?echo $i;?></a></div>
 <?}?>
 </div></div>
 &nbsp;

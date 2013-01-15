@@ -47,6 +47,8 @@ showtab=function(key){
         scaleall(document.body);
       }
       document.lastrowcount=document.rowcount;
+      
+  gid('rightview_'+key).focus();
 }
 
 tablock=false;
@@ -98,7 +100,7 @@ function addtab(key,title,params,loadfunc,data){
       c.style.width="100%";
       c.style.height="100%";
       c.style.overflow="auto";
-      c.innerHTML=rq.responseText;
+      c.innerHTML='<input id="rightview_'+key+'" style="position:absolute;top:-60px;left:0;" title='+title+'>'+rq.responseText;
       var t=document.createElement('span');
       t.innerHTML="<nobr><a class=\"tt\" onclick=\"showtab('"+key+"');\">"+title+"</a><a onclick=\"closetab('"+key+"')\"><span class=\"tabclose\"></span></a></nobr>";
       gid('tabtitles').appendChild(t);

@@ -1,5 +1,9 @@
 <?
-include 'connect.php';
+/*
+Antradar Gyroscope(tm)
+No-DB Login Screen
+*/
+
 include 'auth.php';
 
 setcookie('userid',NULL,time()-3600);
@@ -13,12 +17,17 @@ $error_message='';
 if ($_POST['password']||$_POST['login']){
   $password=md5($dbsalt.$_POST['password']);
   $raw_login=$_POST['login'];
-  $login=mysql_real_escape_string($raw_login);
-  
-  $query="select * from users where login='$login' and password='$password'";
-  $rs=sql_query($query,$db);  
-  if ($myrow=sql_fetch_array($rs)){
-	  
+
+  $users=array(
+  'admin'=>array('userid'=>132,'password'=>'f9aca5fa9b9376cb5a8705c29c2d2b5a','groupnames'=>'')
+  );
+
+  $login=strtolower($raw_login); //$login=mysql_real_escape_string($raw_login);
+
+//  $query="select * from users where login='$login' and password='$password'";
+//  $rs=sql_query($query,$db);  
+  if (in_array($login,array_keys($users))&&$users[$login]['password']==$password){
+	  $myrow=$users[$login];
 	  $userid=$myrow['userid'];
 	  
 	  $groupnames=$myrow['groupnames'];

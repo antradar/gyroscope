@@ -29,7 +29,9 @@ function login($silent=false){
 	$auth_=md5($salt.$userid.$groupnames.$salt.$login);
 	$auth2_=md5($salt2.$userid.$groupnames.$salt2.$login);
 	if (!isset($login)||($auth!=$auth_&&$auth2!=$auth_)||$auth==''||$auth2=='') {
-		if (!$silent) header('location: login.php?from='.$_SERVER['PHP_SELF']);
+		$tail='';
+		if (isset($_GET['keynav'])) $tail='?keynav';
+		if (!$silent) header('location: login.php?from='.$_SERVER['PHP_SELF'].$tail);
 		die();
 	}
 	if ($auth2==$auth_){

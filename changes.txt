@@ -1,3 +1,12 @@
+2.8
+-----
+enabled c+a+[Y/G/J/K] hotkeys for blind navigation, activated with "?keynav" switch
+
+
+2.7.1
+-----
+modified login page to prevent external domain redirect attack
+
 2.7
 -----
 reload tab can inherit the current tab title via null parameter
