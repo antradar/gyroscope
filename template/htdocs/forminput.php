@@ -4,6 +4,7 @@ function GETVAL($key){ $val=$_GET[$key]; if (!is_numeric($val)) die('invalid par
 function GETSTR($key){ $val=decode_unicode_url($_GET[$key]); $val=str_replace("\'","'",$val); $val=str_replace("'","\'",$val); return $val; }
 
 function decode_unicode_url($str){
+	$str=htmlentities($str); //French accent fix
 	$res = '';
 	
 	$i = 0; $max=strlen($str)-6;

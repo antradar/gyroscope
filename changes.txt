@@ -1,3 +1,7 @@
+2.8.1
+-----
+fixed encoding issues with some French accented characters
+
 2.8
 -----
 enabled c+a+[Y/G/J/K] hotkeys for blind navigation, activated with "?keynav" switch
