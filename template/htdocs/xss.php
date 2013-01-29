@@ -7,5 +7,8 @@ function xsscheck(){
 	$referer=str_replace('https://','',$referer);
 	$host=preg_quote($_SERVER['HTTP_HOST']);
 	$pattern='/^'.$host.'/';
-	if (!preg_match($pattern,$referer)&&$referer!='') die('XSS');
+	if (!preg_match($pattern,$referer)&&$referer!='') {
+		header('HTTP/1.0 403 Forbidden');
+		die();
+	}
 }

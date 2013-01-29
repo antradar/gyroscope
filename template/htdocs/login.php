@@ -1,6 +1,7 @@
 <?
 include 'connect.php';
 include 'auth.php';
+include 'xss.php';
 
 setcookie('userid',NULL,time()-3600);
 setcookie('login',NULL,time()-3600);
@@ -11,6 +12,8 @@ setcookie('groupnames',NULL,time()-3600);
 $error_message='';
 
 if ($_POST['password']||$_POST['login']){
+xsscheck();
+	
   $password=md5($dbsalt.$_POST['password']);
   $raw_login=$_POST['login'];
   $login=mysql_real_escape_string($raw_login);
