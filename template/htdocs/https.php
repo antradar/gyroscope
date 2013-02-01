@@ -6,6 +6,8 @@ if ($_SERVER['HTTPS']!='on'&&$_SERVER['REMOTE_ADDR']!='127.0.0.1') {
 	foreach ($_GET as $key=>$val){
 		$params.="&$key=$val";
 	}
+	$params=str_replace("\r",'-',$params);
+	$params=str_replace("\n",'-',$params);
 	if ($params!='') $target.="?$params";	
 	header('location: https://'.$target);
 	die();

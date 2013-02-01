@@ -6,13 +6,22 @@ include 'xss.php';
 setcookie('userid',NULL,time()-3600);
 setcookie('login',NULL,time()-3600);
 setcookie('auth',NULL,time()-3600);
-setcookie('auth2',NULL,time()-3600);
 setcookie('groupnames',NULL,time()-3600);
+
+$csrfkey=sha1($salt.'csrf'.$_SERVER['REMOTE_ADDR'].date('Y-m-j-g'));
+$csrfkey2=sha1($salt.'csrf'.$_SERVER['REMOTE_ADDR'].date('Y-m-j-g',time()-3600));
 
 $error_message='';
 
 if ($_POST['password']||$_POST['login']){
 xsscheck();
+
+	$cfk=$_POST['cfk'];
+	if ($cfk!=$csrfkey&&$cfk!=$csrfkey2){
+		header('HTTP/1.0 403 Forbidden');
+		header('Location: index.php');
+		die('Access Denied');		
+	}
 	
   $password=md5($dbsalt.$_POST['password']);
   $raw_login=$_POST['login'];
@@ -26,10 +35,8 @@ xsscheck();
 	  
 	  $groupnames=$myrow['groupnames'];
 	  $auth=md5($salt.$userid.$groupnames.$salt.$raw_login);
-	  $auth2=md5($salt2.$userid.$groupnames.$salt2.$raw_login);
 	  
 	  setcookie('auth',$auth);
-	  setcookie('auth2',$auth2);
 	  setcookie('userid',$userid);
 	  setcookie('login',$login);
 	  setcookie('groupnames',$groupnames);
@@ -37,6 +44,9 @@ xsscheck();
 	  if (isset($_GET['from'])) {
 		  $from=$_GET['from'];
 		  $from=str_replace('://','',$from);
+		  $from=str_replace("\r",'-',$from);
+		  $from=str_replace("\n",'-',$from);
+		  $from=str_replace(":",'-',$from);
 		  header('location: '.$from);
 	  } else header('location:index.php');
 	  
@@ -48,6 +58,7 @@ xsscheck();
 <head>
 	<title>Login</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="refresh" content="1800" />
 	<meta name = "viewport" content = "width = 350, init-scale=1, user-scalable = yes" />
 <style>
 body{padding:0;margin:0;background-color:#E7E7E2;font-size:13px;font-family:arial,sans-serif;text-align:center;}
@@ -69,6 +80,7 @@ body{padding:0;margin:0;background-color:#E7E7E2;font-size:13px;font-family:aria
 	<div style="padding-top:5px;padding-bottom:15px;">
 	<input style="width:100%;" type="password" name="password"></div>
 	<div style="text-align:center;"><input style="width:100px;" type="submit" value="Sign In"></div>
+	<input name="cfk" value="<?echo $csrfkey;?>" type="hidden">
 	</form>
 </div>	
 

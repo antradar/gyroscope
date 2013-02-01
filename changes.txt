@@ -1,6 +1,11 @@
+2.9
+-----
+CSRF protection for login form (hourly switch-over)
+Auth chaining (daily switch-over)
+
 2.8.2
 -----
-CSRF protection for login form
+CRLF protection for login form
 
 2.8.1
 -----
