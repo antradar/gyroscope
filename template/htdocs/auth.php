@@ -68,4 +68,3 @@ function userinfo(){
 	
 	return $info;
 }
-?>

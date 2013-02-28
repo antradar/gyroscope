@@ -74,7 +74,7 @@ function reloadtab(key,title,params,loadfunc,data){
   rq.send(data);
 }
 
-function addtab(key,title,params,loadfunc,data){
+function addtab(key,title,params,loadfunc,data,opts){
   //bounce keys
   var i;
   
@@ -102,7 +102,9 @@ function addtab(key,title,params,loadfunc,data){
       c.style.overflow="auto";
       c.innerHTML='<input id="rightview_'+key+'" style="position:absolute;top:-60px;left:0;" title='+title+'>'+rq.responseText;
       var t=document.createElement('span');
-      t.innerHTML="<nobr><a class=\"tt\" onclick=\"showtab('"+key+"');\">"+title+"</a><a onclick=\"closetab('"+key+"')\"><span class=\"tabclose\"></span></a></nobr>";
+      var tabhtml="<nobr><a class=\"tt\" onclick=\"showtab('"+key+"');\">"+title+"</a><a onclick=\"closetab('"+key+"')\"><span class=\"tabclose\"></span></a></nobr>";
+      if (opts!=null&&opts.noclose) tabhtml="<nobr><a class=\"tt\" onclick=\"showtab('"+key+"');\">"+title+"</a><span class=\"noclose\"></span></nobr>";
+      t.innerHTML=tabhtml;
       gid('tabtitles').appendChild(t);
       gid('tabviews').appendChild(c);
 

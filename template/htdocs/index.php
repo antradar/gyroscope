@@ -22,8 +22,13 @@ $user=userinfo();
 <script>
 document.appsettings={codepage:'<?echo $codepage;?>', viewcount:<?echo $viewcount;?>};
 </script>
-<style>
-</style>
+
+<div style="display:none;">
+	<img src="imgs/lefttab.png"><img src="imgs/tabbg.gif"><img src="imgs/tab_on.png"><img src="imgs/tab_off.png">
+	<img src="imgs/close_on.png"><img src="imgs/close_off.png"><img src="imgs/addrec.gif"><img src="imgs/mg.gif">
+	<img src="imgs/close_on_.png"><img src="imgs/close_off_.png">
+	<img src="imgs/calel.gif"><img src="imgs/caler.gif">	
+</div>
 
 <!-- left panel -->
 <div id="tooltitle"></div>
@@ -71,8 +76,13 @@ autosize();
 
 //showview(0); //uncomment this line if you want to load the first list automatically
 
-addtab('welcome','Welcome','wk');
+addtab('welcome','Welcome','wk',null,null,{noclose:1});
 setInterval(authpump,300000); //check if needs to re-login; comment this out to disable authentication
+
+window.onbeforeunload=function(){
+	return 'Are you sure you want to exit Gyroscope?';
+}
+
 </script>
 </body>
 </html>

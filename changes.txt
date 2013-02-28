@@ -1,3 +1,9 @@
+2.9.1
+-----
+non-closable tab mode
+preloads image resources
+exit warning
+
 2.9
 -----
 CSRF protection for login form (hourly switch-over)
