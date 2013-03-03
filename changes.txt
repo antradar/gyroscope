@@ -1,3 +1,7 @@
+2.9.2
+-----
+Opera Mini support (upgrade notice: convert all inline list lookups)
+
 2.9.1
 -----
 non-closable tab mode

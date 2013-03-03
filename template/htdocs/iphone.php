@@ -29,7 +29,7 @@ body{font-family:helvetica;}
 <div style="height:40px;position:fixed;width:100%;z-index:1000;top:0;background-color:#efefef;opacity:0.9"></div>
 <div id="toolicons" style="position:fixed;width:100%;z-index:2000;top:0;border-bottom:solid 1px #dedede;">
 
-	<div id="toollist" style="overflow:hidden;width:300px;height:35px;"><div style="width:1000px;">
+	<div id="toollist" style="overflow:auto;width:300px;height:35px;"><div style="width:1000px;">
 	
 	<div class="menuitem"><a href=# onclick="showview(0);"><img src="imgs/bigicon1.gif" border="0"></a></div>
 	<div class="menuitem"><a href=# onclick="showview(1);"><img src="imgs/bigicon2.gif" border="0"></a></div>
@@ -106,6 +106,7 @@ function rotate(){
 	//if (ori==null) ori=0; //debug
 	
 	if (ori==null) ori=90;
+	if (window.operamini) ori=0;	
 
 	setTimeout(scrollTo, 0, 0, 1);
 	
