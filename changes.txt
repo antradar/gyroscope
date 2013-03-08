@@ -1,3 +1,7 @@
+2.9.3
+-----
+Switched to MySQLi as default connector
+
 2.9.2
 -----
 Opera Mini support (upgrade notice: convert all inline list lookups)

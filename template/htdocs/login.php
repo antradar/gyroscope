@@ -25,7 +25,7 @@ xsscheck();
 	
   $password=md5($dbsalt.$_POST['password']);
   $raw_login=$_POST['login'];
-  $login=mysql_real_escape_string($raw_login);
+  $login=str_replace("'",'',$raw_login);
   
   $query="select * from users where login='$login' and password='$password'";
   $rs=sql_query($query,$db);  
