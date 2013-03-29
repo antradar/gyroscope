@@ -1,6 +1,7 @@
 <?
 include 'settings.php';
 include 'auth.php';
+include 'retina.php';
 login();
 $user=userinfo();
 ?>
@@ -31,8 +32,8 @@ body{font-family:helvetica;}
 
 	<div id="toollist" style="overflow:auto;width:300px;height:35px;"><div style="width:1000px;">
 	
-	<div class="menuitem"><a href=# onclick="showview(0);"><img src="imgs/bigicon1.gif" border="0"></a></div>
-	<div class="menuitem"><a href=# onclick="showview(1);"><img src="imgs/bigicon2.gif" border="0"></a></div>
+	<div class="menuitem"><a href=# onclick="showview(0);"><img src="imgs/bigicon1<?echo $rhd;?>.gif" border="0"></a></div>
+	<div class="menuitem"><a href=# onclick="showview(1);"><img src="imgs/bigicon2<?echo $rhd;?>.gif" border="0"></a></div>
 
 	</div></div>
 		
@@ -55,8 +56,8 @@ body{font-family:helvetica;}
 </div>
 <div id="content" style="float:left;width:320px;">
 
-	<div id="backlist" style="display:none;position:fixed;top:40px;width:320px;z-index:1000;"><a id="backlistbutton"><img onclick="navback();" src="iphone/bb.png"></a></div>
-	<div id="backlistshadow" style="display:none;width:320px;height:43px;"></div>
+	<div id="backlist" style="display:none;position:fixed;top:40px;width:100%;z-index:1000;"><a id="backlistbutton"><img onclick="navback();" src="iphone/bb.png"></a></div>
+	<div id="backlistshadow" style="display:none;width:100%;height:43px;"></div>
 
 	<div id="tabtitles" style="width:325px;position:fixed;z-index:1000;"></div>
 	<div id="tabtitleshadow" style="height:25px;width:100px;display:none;"></div>
@@ -101,7 +102,23 @@ function showdeck(){
 
 
 function rotate(){
+	
+<?
+	$ori_portrait_backward=0;
+	$ori_portrait_forward=0;
+	$ori_landscape_backward=-90;
+	$ori_landscape_forward=90;
 
+	$agent=$_SERVER['HTTP_USER_AGENT'];
+
+	if (preg_match('/playbook/i',$agent)) $ori_invert=1;
+	if ($ori_invert){
+		$ori_portrait_backward=-90;
+		$ori_portrait_forward=90;
+		$ori_landscape_backward=0;
+		$ori_landscape_forward=0;
+	}
+?>	
 	ori=window.orientation;
 	//if (ori==null) ori=0; //debug
 	
@@ -110,25 +127,32 @@ function rotate(){
 
 	setTimeout(scrollTo, 0, 0, 1);
 	
+	if (!document.appsettings.cw) document.appsettings.cw=320;
+	if (document.appsettings.cw<document.body.clientWidth) document.appsettings.cw=document.body.clientWidth;
+	
+	var cw=document.appsettings.cw;
+	
 	switch(ori){
-	case 0: //vertical 
+	case <?echo $ori_portrait_backward;?>: case <?echo $ori_portrait_forward;?>: 
+		var vw=document.body.clientWidth;
 		//gid('panel2').style.display='block';
 		showdeck();
-		gid('leftview').style.width='320px';
+		gid('leftview').style.width=vw+'px';
 		gid('backlist').style.display='block';
 		gid('backlistshadow').style.display='block';
 		gid('leftview').style.fontSize='25px';
-		gid('tooltitle').style.width='320px';
+		gid('tooltitle').style.width=vw+'px';
 		gid('toollist').style.width='280px';
 		gid('tabtitleshadow').style.display='none';
+		gid('content').style.width=vw+'px';
 		
 		ajxcss(self.cssloader,'iphone/portrait.css');
-		document.viewheight=350;
+		document.viewheight=vw+30;
 		document.iphone_portrait=1;
 
 		
 	break;
-	case 90: case -90: 
+	case <?echo $ori_landscape_forward;?>: case <?echo $ori_landscape_backward;?>: 
 		//gid('panel2').style.display='none';
 		gid('leftview').style.display='block';
 		gid('leftview').style.width='150px';
@@ -139,9 +163,10 @@ function rotate(){
 		gid('backlistshadow').style.display='none';
 		
 		gid('tooltitle').style.width='150px';
-		gid('toollist').style.width='450px';
+		gid('toollist').style.width=cw-50+'px';
 		gid('tabtitleshadow').style.display='block';
-		
+		gid('content').style.width=cw-155+'px';
+		gid('tabtitles').style.width=cw-155+'px';
 		ajxcss(self.cssloader,'iphone/landscape.css');
 		document.viewheight=210;
 
@@ -150,7 +175,6 @@ function rotate(){
 		gid('rotate_indicator').style.display='none';
 		
 	break;
-
 	}
 	
 	

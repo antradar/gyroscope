@@ -1,3 +1,8 @@
+2.9.4
+-----
+retina mode
+extended iphone mode for inverted orientation (playbook) and variable screen sizes (iphone5)
+
 2.9.3
 -----
 Switched to MySQLi as default connector

@@ -1,6 +1,6 @@
 /* Global Settings */
 body{margin:0;padding:0;}
-body, td{font-family:arial,sans-serif;font-size:13px;}
+body, td{font-family:arial,sans-serif;font-size:13px;-webkit-text-size-adjust:none;}
 a{cursor:pointer;}
 acronym{text-decoration:none;border:none;}
 
