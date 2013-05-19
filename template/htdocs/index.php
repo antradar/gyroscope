@@ -16,6 +16,7 @@ $user=userinfo();
 	<title>Antradar Gyroscope&trade; &nbsp;Starting Point</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link href='gyroscope.css' type='text/css' rel='stylesheet'>
+	<meta name="Version" content="Gyroscope 3.0">
 </head>
 
 <body onload="setTimeout(scrollTo, 0, 0, 1)">
@@ -27,7 +28,8 @@ document.appsettings={codepage:'<?echo $codepage;?>', viewcount:<?echo $viewcoun
 	<img src="imgs/lefttab.png"><img src="imgs/tabbg.gif"><img src="imgs/tab_on.png"><img src="imgs/tab_off.png">
 	<img src="imgs/close_on.png"><img src="imgs/close_off.png"><img src="imgs/addrec.gif"><img src="imgs/mg.gif">
 	<img src="imgs/close_on_.png"><img src="imgs/close_off_.png">
-	<img src="imgs/calel.gif"><img src="imgs/caler.gif">	
+	<img src="imgs/calel.gif"><img src="imgs/caler.gif">
+		
 </div>
 
 <!-- left panel -->
@@ -73,6 +75,7 @@ document.appsettings={codepage:'<?echo $codepage;?>', viewcount:<?echo $viewcoun
 <script>
 window.onresize=autosize;
 autosize();
+
 
 //showview(0); //uncomment this line if you want to load the first list automatically
 

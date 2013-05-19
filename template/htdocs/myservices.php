@@ -30,6 +30,7 @@ switch($cmd){
   case 'pump': include 'icl/utils.inc.php'; authpump(); break; //comment this out to disable authentication
   
   case 'wk': include 'icl/showwelcome.inc.php'; showwelcome(); break;
+  case 'showhelp': include 'icl/showhelp.inc.php'; showhelp(); break;
     
   default: echo 'unspecified interface:'.$cmd;
 }

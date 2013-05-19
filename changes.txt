@@ -1,3 +1,10 @@
+3.0
+-----
+help system & start up guide
+fixed tab icon bug caused by blind navigation feature
+included platform version
+
+
 2.9.4
 -----
 retina mode

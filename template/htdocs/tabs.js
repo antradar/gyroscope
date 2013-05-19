@@ -48,7 +48,7 @@ showtab=function(key){
       }
       document.lastrowcount=document.rowcount;
       
-  gid('rightview_'+key).focus();
+  if (gid('rightview_'+key)) gid('rightview_'+key).focus();
 }
 
 tablock=false;
@@ -100,7 +100,7 @@ function addtab(key,title,params,loadfunc,data,opts){
       c.style.width="100%";
       c.style.height="100%";
       c.style.overflow="auto";
-      c.innerHTML='<input id="rightview_'+key+'" style="position:absolute;top:-60px;left:0;" title='+title+'>'+rq.responseText;
+      c.innerHTML='<input id="rightview_'+key+'" style="position:absolute;top:-60px;left:0;" title='+encodeHTML(title)+'>'+rq.responseText;
       var t=document.createElement('span');
       var tabhtml="<nobr><a class=\"tt\" onclick=\"showtab('"+key+"');\">"+title+"</a><a onclick=\"closetab('"+key+"')\"><span class=\"tabclose\"></span></a></nobr>";
       if (opts!=null&&opts.noclose) tabhtml="<nobr><a class=\"tt\" onclick=\"showtab('"+key+"');\">"+title+"</a><span class=\"noclose\"></span></nobr>";
@@ -155,6 +155,10 @@ closetab=function(key){
 	
 	if (tabcount==0) {currenttab=-1; return;}
 	showtab(document.tabkeys[currenttab]);	
+}
+
+function showhelp(topic,title){
+	addtab('help_'+topic,'<img src="imgs/h.gif"> '+title,'showhelp&topic='+topic+'&title='+encodeHTML(title));	
 }
 
 Array.prototype.push = function() {
