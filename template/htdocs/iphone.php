@@ -189,7 +189,7 @@ function portrait_ignore(ttl){
 	setTimeout(function(){document.portraitlock=null;},ttl);
 }
 
-addtab('welcome','Welcome','wk');
+addtab('welcome','Welcome','wk',null,null,{noclose:true});
 
 window.onorientationchange=rotate;
 rotate();

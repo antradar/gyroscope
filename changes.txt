@@ -1,3 +1,28 @@
+3.4
+-----
+set leave confirmation conditional
+
+3.3
+-----
+live eviction stubs
+
+3.2
+-----
+non-closeable tab mode for reloadtab
+tab can be rekeyed during tab reload
+callback function has direct access to XHR object
+added tab lock to prevent duplicate requests
+improved iPhone tab handling
+tab system updated for sample project
+
+3.1.2
+-----
+icon separator style fix
+
+3.1
+-----
+added help system to mobile mode
+
 3.0
 -----
 help system & start up guide
@@ -39,7 +64,7 @@ fixed encoding issues with some French accented characters
 
 2.8
 -----
-enabled c+a+[Y/G/J/K] hotkeys for blind navigation, activated with "?keynav" switch
+enabled shift+alt+[Y/G/J/K] hotkeys for blind navigation, activated with "?keynav" switch
 
 
 2.7.1

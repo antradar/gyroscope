@@ -5,6 +5,8 @@ include 'connect.php';
 include 'auth.php';
 include 'xss.php';
 
+include 'retina.php';
+
 xsscheck();
 login(true); //silent mode
 
@@ -113,6 +115,7 @@ switch ($cmd){
 
 function showwelcome(){
 global $db;
+global $rhd;
 ?>
 <div class="section">
 <div class="sectiontitle">Quick Start</div>
@@ -120,10 +123,10 @@ global $db;
 <div>
 <div class="sectionheader">Leasing</div>
 <div style="padding-left:10px;">
-<div><a onclick="showview(0);"><img src="imgs/bll.gif"> Landlords</a></div>
-<div><a onclick="showview(2);"><img src="imgs/btn.gif"> Tenants</a></div>
-<div><a onclick="showview(1);"><img src="imgs/bpr.gif"> Properties</a></div>
-<div><a onclick="showview(3);"><img src="imgs/bls.gif"> Leases</a></div>
+<div><a onclick="showview(0);"><img src="imgs/bll<?echo $rhd;?>.gif" width="32"> Landlords</a></div>
+<div><a onclick="showview(2);"><img src="imgs/btn<?echo $rhd;?>.gif" width="32"> Tenants</a></div>
+<div><a onclick="showview(1);"><img src="imgs/bpr<?echo $rhd;?>.gif" width="32"> Properties</a></div>
+<div><a onclick="showview(3);"><img src="imgs/bls<?echo $rhd;?>.gif" width="32"> Leases</a></div>
 </div><!-- padding -->
 </div><!-- float -->
 

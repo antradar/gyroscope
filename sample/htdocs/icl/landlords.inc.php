@@ -199,7 +199,7 @@ function newlandlord(){
 ///+handler::al::addlandlord]
 function addlandlord(){
 	global $db;
-
+	
 	$fname=GETSTR('fname');
 	$lname=GETSTR('lname');
 	$addr=GETSTR('addr');
@@ -254,7 +254,7 @@ function addlandlord(){
 ///+handler::ul::updatelandlord]
 function updatelandlord(){
 	global $db;
-
+		
 	$fname=GETSTR('fname');
 	$lname=GETSTR('lname');
 	$addr=GETSTR('addr');
@@ -285,6 +285,8 @@ function updatelandlord(){
 	$query.="where personid=$personid";
 
 	$rs=sql_query($query,$db);
+	
+	showlandlord();
 }
 
 ///-handler::ul::updatelandlord]

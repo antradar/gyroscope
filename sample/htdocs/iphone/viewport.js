@@ -1,4 +1,7 @@
 function ch(){
+
+	//if (document.viewheight) return document.viewheight+105;
+	
   var w=cw();
   if (w*0.85<=485) return 270/0.85;
   if (window.innerHeight) return window.innerHeight;
@@ -18,19 +21,13 @@ function scaleall(root){
   var idw=cw();
   
   var os=root.getElementsByTagName('div'); //AKB#2
-  for (i=0;i<os.length;i++){
-    var node=os[i];
-    if(node.attributes){
-      if(node.attributes['scale:nx']) //AKB#3
-        node.style.left=idw-node.attributes['scale:nx'].value+'px';
-      if(node.attributes['scale:ny'])
-        node.style.top=idh-node.attributes['scale:ny'].value+'px';
-      if(node.attributes['scale:cw'])
-        node.style.width=(idw-node.attributes['scale:cw'].value)+'px';
-      if(node.attributes['scale:ch'])
-        node.style.height=(idh-node.attributes['scale:ch'].value)+'px';                        
-    }
+  
+	gid('tabviews').style.height=(idh-105)+'px';
+
+  if (document.rowcount){
+		gid('tabtitleshadow').style.height=(25*document.rowcount-1)	  
   }
+	   
 }
 
 hinttimer=-2;
@@ -78,6 +75,7 @@ function showpanel(idx){
 }
 
 function showview(idx,lazy){
+	
 	document.viewmode=1;
 	rotate();
 	

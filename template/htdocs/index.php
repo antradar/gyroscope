@@ -7,6 +7,10 @@ include 'settings.php';
 
 //comment out the following lines to disable authentication
 include 'auth.php';
+
+include 'evict.php';
+evict_check();
+
 login();
 $user=userinfo();
 
@@ -16,7 +20,7 @@ $user=userinfo();
 	<title>Antradar Gyroscope&trade; &nbsp;Starting Point</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link href='gyroscope.css' type='text/css' rel='stylesheet'>
-	<meta name="Version" content="Gyroscope 3.0">
+	<meta name="Version" content="Gyroscope 3.4">
 </head>
 
 <body onload="setTimeout(scrollTo, 0, 0, 1)">
@@ -45,11 +49,12 @@ document.appsettings={codepage:'<?echo $codepage;?>', viewcount:<?echo $viewcoun
 <!-- usually there is one entity icon per list view -->
 <input id="anchor_top" title="Top View" style="position:absolute;top:-60px;left:0;">
 <acronym title="Entity 1"><a href=# title="Entity 1" onmouseover="hintstatus('Entity 1',this);" onclick="showview(0);"><img src="imgs/bigicon1.gif"></a></acronym>
+<div class="break"><span></span></div>
 <acronym title="Entity 2"><a href=# title="Entity 2" onmouseover="hintstatus('Entity 2',this);" onclick="showview(1);"><img src="imgs/bigicon2.gif"></a></acronym>
 </span><!-- iconbuttons -->
 
 <div id="logoutlink">
-<a href="login.php?from=<?echo $_SERVER['PHP_SELF'];?>" onmouseover="hintstatus(this,'Logout');">logout <em><?echo $user['login'];?></em></a>
+<a onclick="skipconfirm();" href="login.php?from=<?echo $_SERVER['PHP_SELF'];?>" onmouseover="hintstatus(this,'Logout');">logout <em><?echo $user['login'];?></em></a>
 <div style="padding-top:5px;font-weight:normal;">
 <a onclick="ajxjs(self.setaccountpass,'accounts.js');reloadtab('account','Account Settings','showaccount');addtab('account','Account Settings','showaccount');">Account Settings</a>
 </div>
@@ -82,9 +87,22 @@ autosize();
 addtab('welcome','Welcome','wk',null,null,{noclose:1});
 setInterval(authpump,300000); //check if needs to re-login; comment this out to disable authentication
 
+skipconfirm=function(){
+	if (document.confirmskipper) clearTimeout(document.confirmskipper);
+	window.onbeforeunload=null;	
+	document.confirmskipper=setTimeout(function(){
+		window.onbeforeunload=function(){
+			return 'Are you sure you want to exit Gyroscope?';	
+		}	
+	},500);
+}
+
+
 window.onbeforeunload=function(){
 	return 'Are you sure you want to exit Gyroscope?';
 }
+
+
 
 </script>
 </body>

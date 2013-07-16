@@ -18,14 +18,21 @@ acronym{text-decoration:none;border:none;}
 	#logoutlink a:hover{color:#A9DA92;}
 
 /* Tabs */
-.tabclose{display:block;float:left;height:30px;width:30px;cursor:pointer;}
+.tabclose, .noclose{display:block;float:left;height:30px;width:30px;cursor:pointer;}
+.noclose{width:8px;}
 .activetab a, .dulltab a{float:left;}
 .tt{padding-top:7px;font-size:12px;padding-left:5px;}
+.tt img{vertical-align:middle;}
 .activetab .tabclose{background-image:url(imgs/close_on.png);}
 .dulltab .tabclose{background-image:url(imgs/close_off.png);}
+
+.activetab .noclose{background-image:url(imgs/close_on_.png);}
+.dulltab .noclose{background-image:url(imgs/close_off_.png);}
+
 .activetab, .dulltab {font-weight:bold;display:block;float:left;height:30px;margin-right:6px;}
 .activetab{color:#ffffff;background:transparent url(imgs/tab_on.png) no-repeat top left;}
 .dulltab{color:#ffffff;background:transparent url(imgs/tab_off.png) no-repeat top left;}
+
 
 /* List */
 .listitem{border-bottom:solid 1px #D4EDC9;padding-bottom:2px;margin-bottom:3px;}

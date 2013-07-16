@@ -7,6 +7,3 @@ die();
 }
 
 ///-handler::pump::authpump]
-
-
-?>

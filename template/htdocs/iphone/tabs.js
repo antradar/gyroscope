@@ -6,10 +6,10 @@ document.tabseq=[];
 
 currenttab=-1;
 gettabid=function(key){
-  var i;
-  for (i=0;i<tabcount;i++) if (document.tabkeys[i]==key) return i;
-  
-  return -1;	
+	var i;
+	for (i=0;i<tabcount;i++) if (document.tabkeys[i]==key) return i;
+	
+	return -1;	
 }
 
 navback=function(){
@@ -60,27 +60,50 @@ showtab=function(key,backnav){
 
 tablock=false;
 
-function reloadtab(key,title,params,loadfunc,data){
+function reloadtab(key,title,params,loadfunc,data,opts){
 
   //if tab doesn't exist, ignore it
   var tabid=gettabid(key);
   if (tabid==-1) return;
-  
+
+  if (document.tabtitles[tabid].tablock) return;
+  document.tabtitles[tabid].tablock=1;
+    
   var rq=xmlHTTPRequestObject();
 
   var scn=document.appsettings.codepage+'?cmd=';
   rq.open('POST',scn+params+'&hb='+hb(),true);
   rq.setRequestHeader('Content-Type','text/xml; charset=utf-8;');
+
   rq.onreadystatechange=function(){
     if (rq.readyState==4){
-      document.tabtitles[tabid].innerHTML="<nobr><a class=\"tt\" onclick=\"showtab('"+key+"');\">"+title+"</a><a onclick=\"closetab('"+key+"')\"><span class=\"tabclose\"></span></a></nobr>";
+      if (opts!=null&&opts.newkey){
+		      for (i=0;i<tabcount;i++) if (document.tabkeys[i]==opts.newkey) {console.warn('key collision; new key ignored');opts.newkey=key;}
+
+	      if (document.tabseq){
+		      for (var i=0;i<document.tabseq.length;i++){
+			  		if (document.tabseq[i]==key) document.tabseq[i]=opts.newkey;
+		      }
+	      }
+	      
+	      key=opts.newkey;	    
+
+  	  }
+  	  
+  	  var tabhtml="<nobr><a class=\"tt\" onclick=\"showtab('"+key+"');\">"+title+"</a><a onclick=\"closetab('"+key+"')\"><span class=\"tabclose\"></span></a></nobr>";
+	  if (opts!=null&&opts.noclose) tabhtml="<nobr><a class=\"tt\" onclick=\"showtab('"+key+"');\">"+title+"</a><span class=\"noclose\"></span></nobr>";
+  
+      if (title) document.tabtitles[tabid].innerHTML=tabhtml;
       document.tabviews[tabid].innerHTML=rq.responseText;
-      if (loadfunc!=null) loadfunc();
+      if (opts!=null&&opts.newkey) document.tabkeys[tabid]=opts.newkey;
+      document.tabtitles[tabid].tablock=null;
+      if (loadfunc!=null) loadfunc(rq);
 	}
   }
   rq.send(data);
 }
-function addtab(key,title,params,loadfunc,data){
+
+function addtab(key,title,params,loadfunc,data,opts){
   //bounce keys
   //showpanel(2);
   document.viewmode=2;
@@ -107,7 +130,9 @@ function addtab(key,title,params,loadfunc,data){
       c.style.display='none';
       c.innerHTML=rq.responseText;
       var t=document.createElement('span');
-      t.innerHTML="<nobr><a class=\"tt\" onclick=\"showtab('"+key+"');\">"+title+"</a><a onclick=\"closetab('"+key+"')\"><span class=\"tabclose\"></span></a></nobr>";
+      var tabhtml="<nobr><a class=\"tt\" onclick=\"showtab('"+key+"');\">"+title+"</a><a onclick=\"closetab('"+key+"')\"><span class=\"tabclose\"></span></a></nobr>";
+      if (opts!=null&&opts.noclose) tabhtml="<nobr><a class=\"tt\" onclick=\"showtab('"+key+"');\">"+title+"</a><span class=\"noclose\"></span></nobr>";
+      if (title) t.innerHTML=tabhtml;
       gid('tabtitles').appendChild(t);
       gid('tabviews').appendChild(c);
 
@@ -138,7 +163,28 @@ closetab=function(key){
 	  document.tabkeys[i]=document.tabkeys[i+1];	  
   }
   tabcount--;
-  if (currenttab==tabid) currenttab=0;
+
+	if (document.tabseq){
+		for (var i=0;i<document.tabseq.length;i++) if (document.tabseq[i]==key) document.tabseq[i]=null;
+	}
+		
+	if (currenttab==tabid) {
+		currenttab=0;
+		var lasttab=null;
+		while (lasttab==null&&document.tabseq.length>0){
+			lasttab=document.tabseq.pop();	
+		}  
+		  
+		if (lasttab!=null) {
+			showtab(lasttab);
+			return;	
+		}
+	}
+  
   if (tabcount==0) {currenttab=-1; return;}
   showtab(document.tabkeys[currenttab]);	
+}
+
+function showhelp(topic,title){
+	addtab('help_'+topic,'<img src="imgs/h.gif"> '+title,'showhelp&topic='+topic+'&title='+encodeHTML(title));	
 }

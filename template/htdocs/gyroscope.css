@@ -13,6 +13,9 @@ acronym{text-decoration:none;border:none;}
 #tabtitles{background:transparent url(imgs/tabbg.gif) repeat top left;position:absolute;left:225px;height:30px;top:50px;}
 #statusinfo{border-top:solid 1px #666666;background:#D4EDC9 url(imgs/powered.png) no-repeat top right;position:absolute;left:0;height:24px;}
 
+.break{border-right:solid 1px #cccccc;float:left;height:32px;margin-right:15px;font-size:1px;}
+.break span{display:block;border-right:solid 1px #f0f0f0;height:32px;}
+
 #logoutlink{font-weight:bold;font-size:12px;position:absolute;right:10px;top:10px;}
 	#logoutlink a, #logoutlink a:visited{text-decoration:none;color:#000000;}
 	#logoutlink a:hover{color:#A9DA92;}

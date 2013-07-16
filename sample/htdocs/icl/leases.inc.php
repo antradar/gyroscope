@@ -279,7 +279,7 @@ function listleasetenants($lsid=null,$prid=null){
 </table>
 <table style="margin-left:10px;margin-top:10px;">
 <tr><td>Tenant Name:</td>
-<td><input style="margin-top:5px;" id="ls<?echo $lsid;?>_newitem_<?echo $prid?>" onfocus="document.hotspot=this;" onkeyup="_lookuptenant(this);">
+<td><input style="margin-top:5px;" id="ls<?echo $lsid;?>_newitem_<?echo $prid?>" onfocus="lookuptenant(this);" onkeyup="_lookuptenant(this);">
 </td>
 </tr>
 <tr><td></td><td><button onclick="addtenanttolease('<?echo $lsid;?>','<?echo $prid;?>');">Add Tenant to Lease</button>

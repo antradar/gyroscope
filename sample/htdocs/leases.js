@@ -131,11 +131,7 @@ addlease=function(prid,lsid){
 }
 
 lookuptenant=function(d){
-var key=encodeHTML(d.value);
-document.hotspot=d;
-gid('tooltitle').innerHTML='<a>Tenant Search</a>';
-showview(2,true);
-ajxpgn('lv2',document.appsettings.codepage+'?cmd=lktn&key='+key);
+	listlookup(d,'Tenant Search','lktn&key='+encodeHTML(d.value));		
 }
 
 _lookuptenant=function(d){

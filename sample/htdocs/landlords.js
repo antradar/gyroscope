@@ -72,8 +72,8 @@ addlandlord=function(llid){
 
 
 	//create record
-	var params=document.appsettings.codepage+'?cmd=al';
-	if (llid!=null) params=document.appsettings.codepage+'?cmd=ul';
+	var params='al';
+	if (llid!=null) params='ul';
 
 	params+='&fname='+fname;
 	params+='&lname='+lname;
@@ -90,21 +90,27 @@ addlandlord=function(llid){
 		params+='&phones='+phones;
 		params+='&cells='+cells;
 		params+='&emails='+emails;
-		nllid=ajxb(params);
-		//clear existing form
-		closetab('new_landlord');
 		
-		//reload landlord list
-		ajxpgn('lv0',document.appsettings.codepage+'?cmd=slv0');
-		//display record
-		addtab('landlord_'+nllid,unescape(fname),'dt0&llid='+nllid);
+		
+		reloadtab('new_landlord',null,params,function(rq){
+			var nllid=rq.responseText;
+			if (nllid!=parseInt(nllid,10)){
+				alert("Oops, something went wrong\n"+nllid);
+				return;	
+			}
+			reloadtab('new_landlord',unescape(fname),'dt0&llid='+nllid,null,null,{newkey:'landlord_'+nllid});
+			if (document.viewindex==0) showview(0);	
+		});
+		
 	} else {
 		params+='&llid='+llid;
-		//reload landlord list
-		ajxb(params);
+		/*
 		ajxpgn('lv0',document.appsettings.codepage+'?cmd=slv0');
+		*/
 		//display record
-		reloadtab('landlord_'+llid,unescape(fname),'dt0&llid='+llid);	
+		reloadtab('landlord_'+llid,unescape(fname),params,function(){
+			if (document.viewindex==0) showview(0);	
+		});	
 	}
 }
 

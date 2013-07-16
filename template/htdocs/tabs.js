@@ -11,6 +11,7 @@ gettabid=function(key){
   return -1;	
 }
 
+
 showtab=function(key){
   var i;
   var tabid=gettabid(key);
@@ -53,12 +54,15 @@ showtab=function(key){
 
 tablock=false;
 
-function reloadtab(key,title,params,loadfunc,data){
+function reloadtab(key,title,params,loadfunc,data,opts){
 
   //if tab doesn't exist, ignore it
   var tabid=gettabid(key);
   if (tabid==-1) return;
-  
+
+  if (document.tabtitles[tabid].tablock) return;
+  document.tabtitles[tabid].tablock=1;
+    
   var rq=xmlHTTPRequestObject();
 
   var scn=document.appsettings.codepage+'?cmd=';
@@ -66,9 +70,23 @@ function reloadtab(key,title,params,loadfunc,data){
   rq.setRequestHeader('Content-Type','text/xml; charset=utf-8;');
   rq.onreadystatechange=function(){
     if (rq.readyState==4){
-      if (title) document.tabtitles[tabid].innerHTML="<nobr><a class=\"tt\" onclick=\"showtab('"+key+"');\">"+title+"</a><a onclick=\"closetab('"+key+"')\"><span class=\"tabclose\"></span></a></nobr>";
+      if (opts!=null&&opts.newkey){
+	      if (document.tabhistory){
+		      for (i=0;i<tabcount;i++) if (document.tabkeys[i]==opts.newkey) {console.warn('key collision; new key ignored');opts.newkey=key;}
+
+		      for (var i=0;i<document.tabhistory.length;i++){
+			  		if (document.tabhistory[i]==key) document.tabhistory[i]=opts.newkey;
+		      }
+		      key=opts.newkey;	    
+	      }
+  	  }
+	  var tabhtml="<nobr><a class=\"tt\" onclick=\"showtab('"+key+"');\">"+title+"</a><a onclick=\"closetab('"+key+"')\"><span class=\"tabclose\"></span></a></nobr>";
+      if (opts!=null&&opts.noclose) tabhtml="<nobr><a class=\"tt\" onclick=\"showtab('"+key+"');\">"+title+"</a><span class=\"noclose\"></span></nobr>";
+      if (title) document.tabtitles[tabid].innerHTML=tabhtml;
       document.tabviews[tabid].innerHTML=rq.responseText;
-      if (loadfunc!=null) loadfunc();
+      if (opts!=null&&opts.newkey) document.tabkeys[tabid]=opts.newkey;
+      document.tabtitles[tabid].tablock=null;
+      if (loadfunc!=null) loadfunc(rq);
 	}
   }
   rq.send(data);
@@ -114,7 +132,7 @@ function addtab(key,title,params,loadfunc,data,opts){
       tabcount++;
       showtab(key);
 
-      if (loadfunc!=null) loadfunc();
+      if (loadfunc!=null) loadfunc(rq);
       document.tablock=null;
     }
   }

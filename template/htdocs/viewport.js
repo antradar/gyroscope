@@ -134,6 +134,7 @@ function authpump(){
     if (rq.readyState==4){
 	    if (rq.status==200||rq.status==304){
 		     if (stamp!=rq.responseText){
+			   if (self.skipconfirm) skipconfirm();  
 		       window.location.reload();
 		     }
  		}
@@ -143,6 +144,8 @@ function authpump(){
   rq.onreadystatechange=f;
   rq.send(null);
 }
+
+
 
 function sv(d,v){gid(d).value=v;}
 

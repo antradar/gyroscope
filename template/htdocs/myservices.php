@@ -6,6 +6,10 @@ include 'auth.php';
 include 'xss.php';
 
 xsscheck();	
+
+include 'evict.php';
+evict_check();
+
 login(true); //silent mode
 
 $cmd=$_GET['cmd'];

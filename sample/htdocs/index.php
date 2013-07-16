@@ -64,7 +64,7 @@ document.appsettings={codepage:'<?echo $codepage;?>',viewcount:<?echo $viewcount
 window.onresize=autosize;
 autosize();
 showview(0);
-addtab('welcome','Welcome','wk');
+addtab('welcome','Welcome','wk',null,null,{noclose:true});
 setInterval(authpump,300000);
 </script>
 </body>
