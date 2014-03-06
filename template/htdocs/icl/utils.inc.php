@@ -2,7 +2,7 @@
 
 
 function authpump(){
-$hb=GETSTR('hb');
+$hb=$_GET['hb'];
 echo $hb;
 die();
 }
