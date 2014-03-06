@@ -4,7 +4,12 @@ function showdatepicker(){
 	global $db;
 
 	$key=trim(GETSTR('key'));
+
+	$mini=GETSTR('mini')+0;
 	
+	$dmini='';
+	if ($mini) $dmini=', 1';
+		
 	//get current month and year
 	$m=date("m")+0;
 	$y=date("Y");
@@ -40,28 +45,28 @@ function showdatepicker(){
 	$today=date('Y-n-j');
 
 ?>
-<div style="width:100%;text-align:center;">
+<div style="width:100%;text-align:center;padding-top:10px;">
 
 <div style="width:100%;position:relative;margin-top:5px;text-align:center;"><?echo date("M Y",$fd);?>
-<span style="position:absolute;top:2px;left:12px;cursor:pointer;" onclick="if (!document.hotspot) {pickdate(null,'<?echo "$py-$pm"?>');return;} document.hotspot.value='<?echo "$py-$pm"?>';pickdate(document.hotspot);"><img src="imgs/calel.gif"></span>
-<span style="position:absolute;top:2px;right:12px;cursor:pointer;" onclick="if (!document.hotspot) {pickdate(null,'<?echo "$ny-$nm"?>');return;} document.hotspot.value='<?echo "$ny-$nm"?>';pickdate(document.hotspot);"><img src="imgs/caler.gif"></span>
+<span style="position:absolute;top:2px;left:12px;cursor:pointer;" onclick="if (!document.hotspot) {pickdate(null,'<?echo "$py-$pm"?>'<?echo $dmini;?>);return;} document.hotspot.value='<?echo "$py-$pm"?>';pickdate(document.hotspot,null<?echo $dmini;?>);"><img class="img-calel" src="imgs/t.gif" width="5" height="12"></span>
+<span style="position:absolute;top:2px;right:12px;cursor:pointer;" onclick="if (!document.hotspot) {pickdate(null,'<?echo "$ny-$nm"?>'<?echo $dmini;?>);return;} document.hotspot.value='<?echo "$ny-$nm"?>';pickdate(document.hotspot,null<?echo $dmini;?>);"><img class="img-caler" src="imgs/t.gif" width="5" height="12"></span>
 </div>
 
 <div id="calepicker" style="font-size:12px;width:100%;height:200px;margin:0 auto;margin-top:5px;">
 <?for ($i=0;$i<7;$i++){?>
-<div style="width:13%;float:left;">
+<div style="width:14%;float:left;">
 <div style="height:20px;border:solid 1px #ffffff;margin-left:1px;"><?echo $wdays[$i];?></div>
 </div>
 <?}?>
 <?for ($i=0;$i<$w;$i++){?>
-<div style="width:13%;float:left;">
+<div style="width:14%;float:left;">
 <div style="height:25px;border:solid 1px #444444;margin:1px;"></div>
 </div>
 <?}?>
 <?
 for ($i=1;$i<=$ld;$i++){
 ?>
-<div onclick="if (document.hotspot) document.hotspot.value='<?echo "$y-$m-$i"?>';else showday('<?echo "$y-$m-$i"?>');" style="cursor:pointer;width:13%;float:left;">
+<div onclick="if (document.hotspot) {document.hotspot.value='<?echo "$y-$m-$i"?>';if (document.hotspot.lookupview) document.hotspot.lookupview.style.display='none';}else showday('<?echo "$y-$m-$i"?>');" style="cursor:pointer;width:14%;float:left;">
 <div style="height:25px;border:solid 1px #444444;margin:1px;<?if ($today=="$y-$m-$i") echo 'font-weight:bold;color:#ab0200';?>"><?echo $i;?>
 </div></div>
 <?
@@ -69,6 +74,7 @@ for ($i=1;$i<=$ld;$i++){
 ?>
 </div>
 </div>
+<div style="clear:both;"></div>
 <?
 }
 

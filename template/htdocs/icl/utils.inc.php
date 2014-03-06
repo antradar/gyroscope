@@ -6,5 +6,3 @@ $hb=GETSTR('hb');
 echo $hb;
 die();
 }
-
-?>

@@ -9,6 +9,7 @@ function xsscheck(){
 	$pattern='/^'.$host.'/';
 	if (!preg_match($pattern,$referer)&&$referer!='') {
 		header('HTTP/1.0 403 Forbidden');
+		header('X-STATUS: 403');
 		die();
 	}
 }

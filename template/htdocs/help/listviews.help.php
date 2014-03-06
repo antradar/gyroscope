@@ -25,6 +25,8 @@ function list#records#{
 <br><br>
 
 <textarea style="width:100%;height:300px;">
+&lt;?php
+
 function list#record#s(){
 	global $db;
 	$mode=GETSTR('mode');
@@ -36,8 +38,8 @@ function list#record#s(){
 
 ?&gt;
 <div class="section">
-<div style="margin:0;padding:0;font-size:12px;padding:5px 0;">
-<input id="#record#key" onkeyup="_inline_lookup#record#(this);">
+<div class="listbar">
+<input id="#record#key" class="img-mg" onkeyup="_inline_lookup#record#(this);">
 </div>
 <div id="#record#list">
 &lt;?		
@@ -59,10 +61,10 @@ function list#record#s(){
 ?&gt;
 <div style="font-size:12px;padding:10px 0;">
 &lt;?echo $page+1;?&gt; of &lt;?echo $maxpage+1;?&gt;
-&nbsp;
-<a href=# onclick="ajxpgn('#record#list',document.appsettings.codepage+'?cmd=slv0&page=&lt;?echo $page-1;?&gt;&mode=embed');return false;">&laquo; Prev</a>
+&amp;nbsp;
+<a href=# onclick="ajxpgn('#record#list',document.appsettings.codepage+'?cmd=slv0&page=&lt;?echo $page-1;?&gt;&mode=embed');return false;">&amp;laquo; Prev</a>
 |
-<a href=# onclick="ajxpgn('#record#list',document.appsettings.codepage+'?cmd=slv0&page=&lt;?echo $page+1;?&gt;&mode=embed');return false;">Next &raquo;</a>
+<a href=# onclick="ajxpgn('#record#list',document.appsettings.codepage+'?cmd=slv0&page=&lt;?echo $page+1;?&gt;&mode=embed');return false;">Next &amp;raquo;</a>
 </div>
 &lt;?		
 	}
@@ -87,7 +89,7 @@ function list#record#s(){
 </div>
 
 <script>
-gid('tooltitle').innerHTML='<a>Individuals</a>';
+gid('tooltitle').innerHTML='<a>#record#s</a>';
 ajxjs(self.show#record#,'#record#s.js');
 </script>
 &lt;?	

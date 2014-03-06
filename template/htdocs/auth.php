@@ -3,6 +3,10 @@
 	a passphrase (or a "salt") has to be set
 	comment out the timestamp for permanent login;
 */
+
+define ('GYROSCOPE_VERSION', '4.3');
+define ('GYROSCOPE_PROJECT', 'Gyroscope Project Template');
+
 $saltroot='gyroscope_demo';
 $salt=$saltroot.$_SERVER['REMOTE_ADDR'].date('Y-m-h');
 
@@ -32,7 +36,7 @@ function login($silent=false){
 	if (!isset($login)||($auth!=$auth_&&$auth!=$auth2_)||$auth=='') {
 		$tail='';
 		if (isset($_GET['keynav'])) $tail='?keynav';
-		if (!$silent) header('location: login.php?from='.$_SERVER['PHP_SELF'].$tail);
+		if (!$silent) header('location: login.php?from='.$_SERVER['PHP_SELF'].$tail); else {header('HTTP/1.0 403 Forbidden');header('X-STATUS: 403');}
 		die();
 	}
 	if ($auth==$auth2_){

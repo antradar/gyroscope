@@ -1,7 +1,13 @@
 <?
+include 'lb.php';
+//include 'https.php';
 include 'settings.php';
 include 'auth.php';
 include 'retina.php';
+
+include 'evict.php';
+evict_check();
+
 login();
 $user=userinfo();
 ?>
@@ -32,15 +38,16 @@ body{font-family:helvetica;}
 
 	<div id="toollist" style="overflow:auto;width:300px;height:35px;"><div style="width:1000px;">
 	
-	<div class="menuitem"><a href=# onclick="showview(0);"><img src="imgs/bigicon1<?echo $rhd;?>.gif" border="0"></a></div>
-	<div class="menuitem"><a href=# onclick="showview(1);"><img src="imgs/bigicon2<?echo $rhd;?>.gif" border="0"></a></div>
+	<div class="menuitem"><a href=# onclick="showview(0,null,1);"><img class="img-big1" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
+	<div class="menuitem"><a href=# onclick="showview(1,null,1);"><img  class="img-big2" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
 
 	</div></div>
 		
-	<a href="login.php?from=<?echo $_SERVER['PHP_SELF'];?>" style="position:absolute;top:10px;right:10px;"><img border="0" src="iphone/exit.png"></a>
+	<a href="login.php?from=<?echo $_SERVER['PHP_SELF'];?>" style="position:absolute;top:10px;right:10px;"><img border="0" width="16" height="16" src="imgs/t.gif" class="img-exit"></a>
 </div><!-- toolicons -->
 <div style="width:100%;height:40px;"></div>
 
+<div style="display:none;"><img src="imgs/t.gif"><img src="imgs/hourglass.gif"></div>
 <div id="leftview" style="float:left;width:150px;font-size:20px;margin-right:5px;">
 	<div id="tooltitle" style="width:150px;position:fixed;top:40px;z-index:1000;height:25px;"></div>
 	<div id="tooltitleshadow" style="width:150px;height:25px;"></div>
@@ -53,6 +60,11 @@ body{font-family:helvetica;}
 		<div id="lv5" style="background-color:#ffffff;display:none;"></div>
 		<div id="lv6" style="background-color:#ffffff;display:none;"></div>
 	</div>
+	<div id="lkv" style="height:100%;">
+		<div id="lkvtitle"><a id="lkvt"></a><img id="lkvx" src="imgs/t.gif" onclick="hidelookup();" width="25" height="25"></div>
+		<div id="lkvc"></div>
+	</div>
+	
 </div>
 <div id="content" style="float:left;width:320px;">
 
@@ -66,13 +78,10 @@ body{font-family:helvetica;}
 	<div id="statusinfo" style="display:none;"></div>
 </div>
 <div id="rotate_indicator" style="display:none;position:fixed;width:100px;height:100px;top:220px;left:110px;z-index:3000;background-image:url(iphone/flip.png);"></div>
-<div id="preloaders" style="display:none;">
-	<img src="iphone/tcd.png"><img src="iphone/dt.png"><img src="iphone/hbg.png">
-</div>
 <script>
 document.appsettings={codepage:'<?echo $codepage;?>',viewcount:<?echo $viewcount;?>};
 </script>
-<script src="iphone/nano.js"></script>
+<script src="nano.js"></script>
 <script src="iphone/tabs.js"></script>
 <script src="iphone/viewport.js"></script>
 <script src="iphone/validators.js"></script>
@@ -146,9 +155,11 @@ function rotate(){
 		gid('tabtitleshadow').style.display='none';
 		gid('content').style.width=vw+'px';
 		
-		ajxcss(self.cssloader,'iphone/portrait.css');
+		//ajxcss(self.cssloader,'iphone/portrait.css');
 		document.viewheight=vw+30;
 		document.iphone_portrait=1;
+		
+		hidelookup();
 
 		
 	break;
@@ -167,7 +178,7 @@ function rotate(){
 		gid('tabtitleshadow').style.display='block';
 		gid('content').style.width=cw-155+'px';
 		gid('tabtitles').style.width=cw-155+'px';
-		ajxcss(self.cssloader,'iphone/landscape.css');
+		//ajxcss(self.cssloader,'iphone/landscape.css');
 		document.viewheight=210;
 
 		scaleall(document.body);

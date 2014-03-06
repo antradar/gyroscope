@@ -27,7 +27,26 @@ function scaleall(root){
   if (document.rowcount){
 		gid('tabtitleshadow').style.height=(25*document.rowcount-1)	  
   }
-	   
+
+  gid('lkv').style.height=(idh-145)+'px';
+  gid('lkvc').style.height=(idh-150)+'px';
+  	   
+}
+
+function showlookup(){
+	var lkv=gid('lkv');
+	if (lkv.showing) return;
+	
+	lkv.showing=true;
+	lkv.style.left='0px';		
+}
+
+function hidelookup(){
+	var lkv=gid('lkv');
+	if (!lkv.showing) return;
+	
+	lkv.showing=null;
+	lkv.style.left='-220px';	
 }
 
 hinttimer=-2;
@@ -74,11 +93,11 @@ function showpanel(idx){
 	gid('panel'+idx).style.display='block';	
 }
 
-function showview(idx,lazy){
-	
+function showview(idx,lazy,force){
+	if (!force&&document.viewmode!=1&&document.iphone_portrait) return;	
 	document.viewmode=1;
 	rotate();
-	
+	hidelookup();
   var i;
   
   if (document.viewindex!=null) {

@@ -1,17 +1,97 @@
+4.3
+- added wait indicator only for slow queries (default > 800ms)
+- added tab wait indicators
+
+4.2.2
+- added date2stamp function in forminput.php
+
+4.2
+- added "cancelpickup" to pre-lock ID fields
+- moved "makelookup" to forminput.php
+- updated disabled input style
+
+4.1.2
+- https fix for Nginx Fcgi
+- x-status for instant kick
+
+4.1
+-----
+- set tab title by tab key
+
+4.0
+-----
+- updater
+
+3.9
+-----
+- variable column-, input widths for desktop and mobile
+- block the left view during look up
+- style upgrade
+- added Sakila sample
+
+3.8.4
+-----
+- identity-based auto lookup lock. assign id to lookup input, assign {id}_val2 to cancelation container
+- in-line lookup for id'ed lookups. use makelookup($id) function for mobile inline lookup
+- mini calendar view
+
+3.8.3
+-----
+mobile viewport left panel sync fix
+single cluster config point lb.php
+
+3.8.2
+-----
+email validation
+"force" flag required for "showview" in iphone mode
+mobile sprite fixes
+layout fix for rekeyed tabs 
+authpump fix
+sprite update (del, print)
+
+
+3.8.1
+-----
+unicode patch
+
+3.8
+-----
+toolbar sprite shared by desktop & mobile
+help system fix
+disabled faulty blind navigation panel hint
+use media query for rotation
+
+
+3.7
+-----
+re-enabled exit notification
+theme update
+version info defined in auth.php; shown in login and meta
+sprite icons for desktop mode *
+instant authpump *
+
+3.6
+-----
+dedicated view panel for auto-completes *
+
+3.5
+-----
+.break style fix
+
 3.4
 -----
-set leave confirmation conditional
+set leave confirmation conditional *
 
 3.3
 -----
-live eviction stubs
+live eviction stubs *
 
 3.2
 -----
-non-closeable tab mode for reloadtab
-tab can be rekeyed during tab reload
-callback function has direct access to XHR object
-added tab lock to prevent duplicate requests
+non-closeable tab mode for reloadtab *
+tab can be rekeyed during tab reload *
+callback function has direct access to XHR object *
+added tab lock to prevent duplicate requests *
 improved iPhone tab handling
 tab system updated for sample project
 
@@ -33,7 +113,7 @@ included platform version
 2.9.4
 -----
 retina mode
-extended iphone mode for inverted orientation (playbook) and variable screen sizes (iphone5)
+extended iphone mode for inverted orientation (playbook) and variable screen sizes (iphone5) *
 
 2.9.3
 -----
@@ -41,7 +121,7 @@ Switched to MySQLi as default connector
 
 2.9.2
 -----
-Opera Mini support (upgrade notice: convert all inline list lookups)
+Opera Mini support (upgrade notice: convert all inline list lookups) *
 
 2.9.1
 -----

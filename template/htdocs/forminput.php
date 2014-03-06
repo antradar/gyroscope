@@ -4,7 +4,9 @@ function GETVAL($key){ $val=$_GET[$key]; if (!is_numeric($val)) die('invalid par
 function GETSTR($key){ $val=decode_unicode_url($_GET[$key]); $val=str_replace("\'","'",$val); $val=str_replace("'","\'",$val); return $val; }
 
 function decode_unicode_url($str){
-	$str=htmlentities($str); //French accent fix
+	$str=utf8_encode($str);
+	//$str=htmlentities($str); //French accent fix
+	
 	$res = '';
 	
 	$i = 0; $max=strlen($str)-6;
@@ -24,4 +26,22 @@ function decode_unicode_url($str){
 	}//while
 	
 	return $res . substr($str, $i);
+}
+
+function date2stamp($date,$hour=0,$min=0,$sec=0){
+	$parts=explode('-',$date);
+	return mktime($hour,$min,$sec,$parts[1],$parts[2],$parts[0]);	
+}
+
+function makelookup($id,$fullscale=0){
+?>
+<div class="minilookup" id="<?echo $id;?>_lookup"><a id="<?echo $id;?>_lookup_closer" class="labelbutton closer" onclick="gid('<?echo $id;?>_lookup').style.display='none';">close</a>
+<div id="<?echo $id;?>_lookup_view" class="lookupview"<?if ($fullscale) echo ' style="height:auto;overflow:normal;"';?>></div></div>
+<?	
+}
+
+function cancelpickup($id){
+?>
+<a class="labelbutton" onclick="cancelpickup('<?echo $id;?>');">edit</a>
+<?	
 }

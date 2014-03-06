@@ -37,3 +37,13 @@ function valrate(d){
   d.style.borderColor='#666666';
   return true;
 }
+
+function valemail(d){
+  if (d.value=='x'||d.value.replace(/\S+?@\S+?\.\S+/g,'x')!='x'){
+    d.style.borderColor='red';
+    return false;
+  }
+
+  d.style.borderColor='#666666';
+  return true;
+}

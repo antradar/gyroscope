@@ -33,7 +33,7 @@ function ajxpgn(c,u,d,e){
 	var scripts=gid(c).getElementsByTagName('script');
 	for (i=0;i<scripts.length;i++) eval(scripts[i].innerHTML);
       }
-     }else ct.innerHTML="loading...";
+     }else ct.innerHTML='<img src="imgs/hourglass.gif" style="margin:5px;"><span style="opacity:0.5;">'+ct.innerHTML+'</span>';
      
      }	  
   }	

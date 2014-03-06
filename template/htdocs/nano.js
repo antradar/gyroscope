@@ -4,6 +4,8 @@ Nano Ajax Library
 
 License: www.antradar.com/license.php
 Documentation: www.antradar.com/docs.php?article=nano-ajax-manual
+
+Warning: this copy of Nano Ajax Library is modified for running in Gyroscope. Use the public version for general purpose applications.
 */
 
 function gid(d){return document.getElementById(d);}
@@ -23,24 +25,39 @@ function ajxnb(rq,u,f){
 	rq.send(null);  	
 }
 
-function ajxpgn(c,u,d,e,prepend,callback){
+function ajxpgn(c,u,d,e,prepend,callback,slowtimer){
 	var ct=gid(c);
 	if (ct==null) return;
 	if (prepend==null) prepend='';
 	
 	var f=function(c){return function(){
 		if (rq.readyState==4){
+			
+    	    var xtatus=rq.getResponseHeader('X-STATUS');
+		    if (rq.status==403||parseInt(xtatus,10)==403){
+				if (self.skipconfirm) skipconfirm(); 
+				window.location.href='login.php';
+				return;
+			}
+
 			if (ct.reqobj!=null){
 				ct.reqobj=null;
 			}
+
+			if (ct.slowtimer) clearTimeout(ct.slowtimer);
+			
 			ct.innerHTML=prepend+rq.responseText;
+			
 			if (d) ct.style.display='block';
+			
 			if (e){
 				var i;
 				var scripts=gid(c).getElementsByTagName('script');
 				for (i=0;i<scripts.length;i++) eval(scripts[i].innerHTML);
 				scripts=null;
 			}
+			
+			
 			if (callback) callback();
 		}	  
 	}}	
@@ -49,6 +66,13 @@ function ajxpgn(c,u,d,e,prepend,callback){
 	
 	if (ct.reqobj!=null) ct.reqobj.abort();
 	ct.reqobj=rq;
+	if (!slowtimer) slowtimer=800;
+	
+	ct.slowtimer=setTimeout(function(){
+		if (ct.style.display=='none') ct.style.display='block';
+		ct.innerHTML='<img src="imgs/hourglass.gif" style="margin:5px;"><span style="opacity:0.5;filter:alpha(opacity=50);color:#999999;">'+ct.innerHTML+'</span>';
+	},slowtimer);
+
 	ajxnb(rq,u,f(c));
 }
 
@@ -93,4 +117,8 @@ function xmlHTTPRequestObject() {
 
 	if (!obj) obj = new XMLHttpRequest();
 	return obj;
+}
+
+function updategyroscope(){
+	ajxpgn('gyroscope_updater',document.appsettings.codepage+'?cmd=updategyroscope',true,true);	
 }

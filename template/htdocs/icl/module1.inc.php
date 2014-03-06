@@ -1,6 +1,6 @@
 <?
 function showlist1(){
-
+	//sleep(3);
 	//here's a hard coded list of items
 	//in practice this list is usually populated by a data table
 ?>
@@ -20,6 +20,8 @@ function showlist1(){
 
 
 function showdetails1(){
+	sleep(3);
+	
 	$m1id=GETVAL('m1id');
 ?>
 

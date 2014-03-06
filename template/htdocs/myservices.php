@@ -1,4 +1,5 @@
 <?
+include 'lb.php';
 include 'settings.php';
 
 include 'connect.php';
@@ -34,8 +35,8 @@ switch($cmd){
   case 'pump': include 'icl/utils.inc.php'; authpump(); break; //comment this out to disable authentication
   
   case 'wk': include 'icl/showwelcome.inc.php'; showwelcome(); break;
+  case 'updategyroscope': include 'icl/updater.inc.php'; updategyroscope(); break;
   case 'showhelp': include 'icl/showhelp.inc.php'; showhelp(); break;
     
   default: echo 'unspecified interface:'.$cmd;
 }
-
