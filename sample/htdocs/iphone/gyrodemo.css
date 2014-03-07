@@ -28,6 +28,12 @@ height:22px;
 .safetable td,.safetable th{float:left;display:block;margin-right:2px;width:120px;overflow:hidden;}
 .safetable tr{clear:both;border-bottom:solid 1px #dedede;display:block;}
 
+#lkv{position:fixed;left:0;width:146px;top:80px;left:-220px;z-index:1001;}
+	
+#lkvtitle{background:transparent url(lefttab.png) no-repeat top right;height:25px;position:relative;}
+	#lkvtitle a{font-weight:bold;font-size:14px;color:white;margin-left:30px;margin-right:30px;padding-top:6px;display:block;}
+	#lkvx{position:absolute;top:0;right:0;cursor:pointer;}	
+	#lkvc{border-right:solid 1px #666666;overflow:auto;background-color:#ffffff;}
 
 
 #toolicons{height:40px;text-align:right;}

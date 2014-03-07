@@ -54,8 +54,18 @@ body{font-family:helvetica;}
 		<div id="lv4" style="background-color:#ffffff;display:none;"></div>
 		<div id="lv5" style="background-color:#ffffff;display:none;"></div>
 		<div id="lv6" style="background-color:#ffffff;display:none;"></div>
+				
 	</div>
+	
+	<div id="lkv" style="height:100%;">
+		<div id="lkvtitle"><a id="lkvt"></a><img id="lkvx" src="iphone/tcd.png" onclick="hidelookup();"></div>
+		<div id="lkvc"></div>
+	</div>
+	
 </div>
+
+
+
 <div id="content" style="float:left;width:320px;">
 
 	<div id="backlist" style="display:none;position:fixed;top:40px;width:100%;z-index:1000;"><a id="backlistbutton"><img onclick="navback();" src="iphone/bb.png"></a></div>
@@ -74,7 +84,7 @@ body{font-family:helvetica;}
 <script>
 document.appsettings={codepage:'<?echo $codepage;?>',viewcount:<?echo $viewcount;?>};
 </script>
-<script src="iphone/nano.js"></script>
+<script src="nano.js"></script>
 <script src="iphone/tabs.js"></script>
 <script src="iphone/viewport.js"></script>
 <script src="iphone/validators.js"></script>
@@ -152,7 +162,7 @@ function rotate(){
 		document.viewheight=vw+30;
 		document.iphone_portrait=1;
 
-		
+		hidelookup();		
 	break;
 	case <?echo $ori_landscape_forward;?>: case <?echo $ori_landscape_backward;?>: 
 		//gid('panel2').style.display='none';

@@ -1,3 +1,7 @@
+4.3.1
+- updated sakila wait indicators
+- minor fix in built-in help content
+
 4.3
 - added wait indicator only for slow queries (default > 800ms)
 - added tab wait indicators

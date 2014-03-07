@@ -36,6 +36,9 @@ function scaleall(root){
   */
   gid('lefticons').style.width=idw+'px';
   gid('leftview').style.height=(idh-105)+'px';
+  gid('lkv').style.height=(idh-145)+'px';
+  gid('lkvc').style.height=(idh-176)+'px';
+  
   gid('tabtitles').style.width=(idw-225)+'px';
   gid('tabviews').style.width=(idw-225)+'px';
   gid('tabviews').style.height=(idh-105)+'px';
@@ -92,6 +95,7 @@ viewcount=document.appsettings.viewcount;
 
 function showview(idx,lazy){
   var i;
+  hidelookup();
   
   if (document.viewindex!=null) {
 	  gid('lv'+document.viewindex).tooltitle=gid('tooltitle').innerHTML;
@@ -119,6 +123,22 @@ function showview(idx,lazy){
   document.viewindex=idx;
 }
 
+function showlookup(){
+	var lkv=gid('lkv');
+	if (lkv.showing) return;
+	
+	lkv.showing=true;
+	lkv.style.left='0px';		
+}
+
+function hidelookup(){
+	var lkv=gid('lkv');
+	if (!lkv.showing) return;
+	
+	lkv.showing=null;
+	lkv.style.left='-220px';	
+}
+
 function stackview(){ //used by auto-completes
 	gid('lv'+document.viewindex).tooltitle=gid('tooltitle').innerHTML;
 	gid('lv'+document.viewindex).style.display='none';
@@ -134,6 +154,7 @@ function authpump(){
     if (rq.readyState==4){
 	    if (rq.status==200||rq.status==304){
 		     if (stamp!=rq.responseText){
+			   if (self.skipconfirm) skipconfirm();  
 		       window.location.reload();
 		     }
  		}
@@ -143,6 +164,8 @@ function authpump(){
   rq.onreadystatechange=f;
   rq.send(null);
 }
+
+
 
 function sv(d,v){gid(d).value=v;}
 

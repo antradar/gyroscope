@@ -14,7 +14,7 @@ function formatphone($n){
 function listcontacts($personid=null){
 global $db;
 global $HTTP_GET_VARS;
-if (!isset($personid)) $personid=$HTTP_GET_VARS['pid'];
+if (!isset($personid)) $personid=$_GET['pid']+0;
 ?>
 <table style="margin-bottom:2px;margin-left:10px;">
 <?
@@ -50,9 +50,9 @@ function addcontact(){
 global $db;
 global $HTTP_GET_VARS;
 
-$pid=$HTTP_GET_VARS['pid'];
-$ctname=$HTTP_GET_VARS['ctname'];
-$ctval=$HTTP_GET_VARS['ctval'];
+$pid=$_GET['pid']+0;
+$ctname=$_GET['ctname'];
+$ctval=$_GET['ctval'];
 $query="insert into personcontacts (personid,ctname,ctval) values(";
 $query.="$pid,'$ctname','$ctval')";
 sql_query($query,$db);
@@ -65,7 +65,7 @@ function deletecontact(){
 global $db;
 global $HTTP_GET_VARS;
 
-$pcid=$HTTP_GET_VARS['pcid'];
+$pcid=$_GET['pcid'];
 //todo: authenticate by group
 
 $query="delete from personcontacts where pcid=$pcid";

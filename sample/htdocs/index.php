@@ -2,6 +2,7 @@
 //include 'https.php'; //enforcing HTTPS
 include 'settings.php';
 include 'auth.php';
+include 'mswitch.php';
 login();
 $user=userinfo();
 ?>
@@ -21,12 +22,17 @@ document.appsettings={codepage:'<?echo $codepage;?>',viewcount:<?echo $viewcount
 
 <!-- left panel -->
 <div id="tooltitle" style="background-color:#666666;position:absolute;left:0;width:220px;height:30px;top:50px;"></div>
-<div id="leftview" style="background-color:#fefefe;overflow:auto;position:absolute;left:0;width:220px;top:80px;" scale:ch="105">
-<div id="lv0" style="display:none;width:100%;height:100%;overflow:auto;"></div>
-<div id="lv1" style="display:none;width:100%;height:100%;overflow:auto;"></div>
-<div id="lv2" style="display:none;width:100%;height:100%;overflow:auto;"></div>
-<div id="lv3" style="display:none;width:100%;height:100%;overflow:auto;"></div>
-<div id="lv4" style="display:none;width:100%;height:100%;overflow:auto;"></div>
+	<div id="leftview" style="background-color:#fefefe;overflow:auto;position:absolute;left:0;width:220px;top:80px;" scale:ch="105">
+	<div id="lv0" style="display:none;width:100%;height:100%;overflow:auto;position:absolute;"></div>
+	<div id="lv1" style="display:none;width:100%;height:100%;overflow:auto;position:absolute;"></div>
+	<div id="lv2" style="display:none;width:100%;height:100%;overflow:auto;position:absolute;"></div>
+	<div id="lv3" style="display:none;width:100%;height:100%;overflow:auto;position:absolute;"></div>
+	<div id="lv4" style="display:none;width:100%;height:100%;overflow:auto;position:absolute;"></div>
+
+	<div id="lkv" style="height:100%;">
+		<div id="lkvtitle"><a id="lkvt"></a><img id="lkvx" src="imgs/close_off.png" onclick="hidelookup();"></div>
+		<div id="lkvc"></div>
+	</div>
 
 </div>
 <div id="lefticons" scale:cw="0">

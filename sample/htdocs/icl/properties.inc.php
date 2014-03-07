@@ -61,7 +61,7 @@ function showproperty(){
 	global $HTTP_GET_VARS;
 	global $db;
 	
-	$prid=$HTTP_GET_VARS['prid'];
+	$prid=$_GET['prid']+0;
 	$query="select properties.*,landlords.llid,persons.fname,persons.lname from properties,landlords,persons where properties.llid=landlords.llid and properties.prid=$prid and persons.personid=landlords.personid";
 	$rs=sql_query($query,$db);
 	$myrow=sql_fetch_array($rs);

@@ -1,0 +1,8 @@
+#tooltitle{height:25px;background:transparent url(tbbg.png) repeat top left;border-bottom:solid 1px #6f6e6e;width:320px;text-shadow:0 1px 0 #000000;}
+#lvviews{height:auto;overflow:visible;}
+#tabviews{overflow:visible;height:auto;}
+#content{height:auto;overflow:visible;}
+.listitem{border-bottom:solid 1px #efefef;padding:10px 0;font-size:16px;color:#696F7F;background:transparent url(rec_hd.gif) no-repeat center right;-webkit-background-size:17px 13px;background-size:17px 13px;}
+.listitem a{display:block;padding-right:15px;}
+
+.listlookup{width:250px;margin-bottom:15px;}

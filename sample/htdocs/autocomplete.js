@@ -1,7 +1,3 @@
-hashotspot=function(t){
-	if (t) return (document.hotspot&&document.hotspot.attributes['hst']&&document.hotspot.attributes['hst'].value==t);
-	else return document.hotspot;
-}
 
 picklookup=function(val,val2){
 	if (document.hotspot){
@@ -17,6 +13,58 @@ picklookup3=function(val,val2,val3){
 		document.hotspot.value3=val3;
 	}
 }
+
+listlookup=function(d,title,command){
+	
+	if (document.iphone_portrait&&!document.portraitlock){
+		if (gid('rotate_indicator')){
+			gid('rotate_indicator').style.display='block';
+			setTimeout(function(){
+				gid('rotate_indicator').style.display='none';
+			},1000);	
+		}
+		return;	
+	}
+	
+	document.hotspot=d;
+	if (gid('lkv')){
+		gid('lkvt').innerHTML=title;
+		ajxpgn('lkvc',document.appsettings.codepage+'?cmd='+command,true,true,'<input style="position:absolute;top:-60px;left:0;" id="lvtab_lookup">',showlookup);
+	} else {	
+		var view;
+		gid('tooltitle').innerHTML='<a>'+title+'</a>';
+		if (document.viewindex!=null){
+			stackview();
+			view=document.appsettings.viewcount-1;
+		} else {
+			view=1;
+			showview(1);
+		}
+		
+		ajxpgn('lv'+view,document.appsettings.codepage+'?cmd='+command,true,true,'<input style="position:absolute;top:-60px;left:0;" id="lvtab_'+view+'">');
+		
+	}	
+		
+}
+
+pickdate=function(d,def){
+	var key='';
+	if (d) key=encodeHTML(d.value);
+	else key=def;
+	
+	if (self.portrait_ignore) portrait_ignore();
+		
+	listlookup(d,'Calendar','pkd&key='+key);
+}
+
+_pickdate=function(d){
+	if (d.timer) clearTimeout(d.timer);
+	var f=function(d){return function(){
+		pickdate(d);
+	}}
+	d.timer=setTimeout(f(d),200);
+}
+
 
 lookupcity=function(d){
 	var key=encodeHTML(d.value);
@@ -47,33 +95,3 @@ function _lookupprov(d){
 	d.timer=setTimeout(f(d),200);  
 }
 
-listlookup=function(d,title,command){
-	
-	document.hotspot=d;
-	gid('tooltitle').innerHTML='<a>'+title+'</a>';
-	var view;
-	if (document.viewindex!=null){
-		stackview();
-		view=document.appsettings.viewcount-1;
-	} else {
-		view=1;
-		showview(1);
-	}
-	ajxpgn('lv'+view,document.appsettings.codepage+'?cmd='+command);
-		
-}
-
-pickdate=function(d,def){
-	var key='';
-	if (d) key=encodeHTML(d.value);
-	else key=def;
-	listlookup(d,'Calendar','pkd&key='+key);
-}
-
-_pickdate=function(d){
-	if (d.timer) clearTimeout(d.timer);
-	var f=function(d){return function(){
-		pickdate(d);
-	}}
-	d.timer=setTimeout(f(d),200);
-}

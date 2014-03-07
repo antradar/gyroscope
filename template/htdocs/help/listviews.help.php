@@ -3,6 +3,8 @@ A list view is typically invoked by clicking on a <a onclick="showhelp('menuicon
 <b>A basic list view template</b>:
 <br><br>
 <textarea style="width:100%;height:200px;">
+&lt;?php
+
 function list#records#{
 	global $db;
 	
@@ -77,9 +79,10 @@ function list#record#s(){
 		$#record#id=$myrow['#record#id'];
 		$fname=$myrow['fname'];
 		$lname=$myrow['lname'];
-		$db#record#name="$fname $lname";
+		$#record#title="$fname $lname";
+		$db#record#title=str_replace("'","\'",$#record#title);
 ?&gt;
-<div class="listitem"><a onclick="show#record#(&lt;?echo $#record#id;?&gt;,'&lt;?echo $db#record#name;?&gt;');">&lt;?echo $db#record#name;?&gt;</a></div>
+<div class="listitem"><a onclick="show#record#(&lt;?echo $#record#id;?&gt;,'&lt;?echo $db#record#title;?&gt;');">&lt;?echo $#record#title;?&gt;</a></div>
 &lt;?		
 	}//while
 	

@@ -27,8 +27,28 @@ function scaleall(root){
   if (document.rowcount){
 		gid('tabtitleshadow').style.height=(25*document.rowcount-1)	  
   }
-	   
+
+  gid('lkv').style.height=(idh-145)+'px';
+  gid('lkvc').style.height=(idh-150)+'px';
+  	   
 }
+
+function showlookup(){
+	var lkv=gid('lkv');
+	if (lkv.showing) return;
+	
+	lkv.showing=true;
+	lkv.style.left='0px';		
+}
+
+function hidelookup(){
+	var lkv=gid('lkv');
+	if (!lkv.showing) return;
+	
+	lkv.showing=null;
+	lkv.style.left='-220px';	
+}
+
 
 hinttimer=-2;
 
@@ -78,6 +98,8 @@ function showview(idx,lazy){
 	
 	document.viewmode=1;
 	rotate();
+	
+	hidelookup();
 	
   var i;
   
