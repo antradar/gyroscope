@@ -17,6 +17,7 @@ $user=userinfo();
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta id="viewport" name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1; user-scalable=0;"/>
 	<link href='iphone/gyrodemo.css' type='text/css' rel='stylesheet'>
+	<link href='toolbar.css' type='text/css' rel='stylesheet'>
 <style>
 body{font-family:helvetica;}
 .menuitem{padding-left:10px;font-size:20px;height:30px;float:left;margin-right:3px;}
@@ -38,8 +39,22 @@ body{font-family:helvetica;}
 
 	<div id="toollist" style="overflow:auto;width:300px;height:35px;"><div style="width:1000px;">
 	
-	<div class="menuitem"><a href=# onclick="showview(0,null,1);"><img class="img-big1" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
-	<div class="menuitem"><a href=# onclick="showview(1,null,1);"><img  class="img-big2" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
+	<?foreach ($toolbaritems as $ti){
+		if ($ti['type']=='break') continue;
+		if ($ti['noiphone']) continue;	
+		if ($ti['type']=='custom'){
+		?>
+		<?echo $ti['iphone'];?>
+		<?	
+			continue;
+		}
+		
+		$action='';
+		if (is_numeric($ti['viewindex'])) $action='showview('.$ti['viewindex'].',null,1);';
+		if ($ti['action']!='') $action.=$ti['action'];
+	?>
+	<div class="menuitem"><a href=# onclick="<?echo $action;?>"><img class="<?echo $ti['icon'];?>" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
+	<?}?>
 
 	</div></div>
 		
@@ -52,13 +67,9 @@ body{font-family:helvetica;}
 	<div id="tooltitle" style="width:150px;position:fixed;top:40px;z-index:1000;height:25px;"></div>
 	<div id="tooltitleshadow" style="width:150px;height:25px;"></div>
 	<div id="lvviews">
-		<div id="lv0" style="background-color:#ffffff;display:none;"></div>
-		<div id="lv1" style="background-color:#ffffff;display:none;"></div>
-		<div id="lv2" style="background-color:#ffffff;display:none;"></div>
-		<div id="lv3" style="background-color:#ffffff;display:none;"></div>
-		<div id="lv4" style="background-color:#ffffff;display:none;"></div>
-		<div id="lv5" style="background-color:#ffffff;display:none;"></div>
-		<div id="lv6" style="background-color:#ffffff;display:none;"></div>
+	<?for ($i=0;$i<=$viewcount;$i++){?>
+		<div id="lv<?echo $i;?>" style="background-color:#ffffff;display:none;"></div>
+	<?}?>	
 	</div>
 	<div id="lkv" style="height:100%;">
 		<div id="lkvtitle"><a id="lkvt"></a><img id="lkvx" src="imgs/t.gif" onclick="hidelookup();" width="25" height="25"></div>

@@ -21,6 +21,7 @@ $user=userinfo();
 	<title>Sakila-Gyroscope</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link href='gyroscope.css' type='text/css' rel='stylesheet'>
+	<link href='toolbar.css' type='text/css' rel='stylesheet'>
 	<meta name="Version" content="Gyroscope <?echo GYROSCOPE_VERSION?>">
 </head>
 
@@ -32,12 +33,9 @@ document.appsettings={codepage:'<?echo $codepage;?>', viewcount:<?echo $viewcoun
 <!-- left panel -->
 <div id="tooltitle"></div>
 <div id="leftview" scale:ch="105">
-	<div id="lv0" style="display:none;width:100%;height:100%;overflow:auto;position:absolute;"></div>
-	<div id="lv1" style="display:none;width:100%;height:100%;overflow:auto;position:absolute;"></div>
-	<div id="lv2" style="display:none;width:100%;height:100%;overflow:auto;position:absolute;"></div>
-	<div id="lv3" style="display:none;width:100%;height:100%;overflow:auto;position:absolute;"></div>
-	<div id="lv4" style="display:none;width:100%;height:100%;overflow:auto;position:absolute;"></div>
-	<!-- add more list view (lv) panels for additional entity groups -->
+	<?for ($i=0;$i<=$viewcount;$i++){?>
+	<div id="lv<?echo $i;?>" style="display:none;width:100%;height:100%;overflow:auto;position:absolute;"></div>
+	<?}?>
 	<div id="lkv" style="height:100%;">
 		<div id="lkvs"></div>
 		<div id="lkvtitle"><a id="lkvt"></a><img id="lkvx" width="30" height="30" class="img-close" src="imgs/t.gif" onclick="hidelookup();"></div>
@@ -48,13 +46,25 @@ document.appsettings={codepage:'<?echo $codepage;?>', viewcount:<?echo $viewcoun
 <div style="margin-top:5px;margin-left:10px;">
 <span class="iconbuttons">
 <!-- usually there is one entity icon per list view -->
-	<input id="anchor_top" title="Top View" style="position:absolute;top:-60px;left:0;">
-	<acronym title="Actors"><a href=# title="Actors" onmouseover="hintstatus('Actors',this);" onclick="showview(0);"><img class="img-actors" src="imgs/t.gif" width="32" height="32"></a></acronym>
-	<acronym title="Films"><a href=# title="Films" onmouseover="hintstatus('Films',this);" onclick="showview(1);"><img class="img-films" src="imgs/t.gif" width="32" height="32"></a></acronym>
-
-	<!-- use the separator to group icons -->
-	<div class="break"><span></span></div>
-
+<input id="anchor_top" title="Top View" style="position:absolute;top:-60px;left:-100px;width:20px;">
+<?foreach ($toolbaritems as $ti){
+	if ($ti['type']=='break') {
+		echo '<div class="break"><span></span></div>';continue;	
+	}
+	if ($ti['type']=='custom'){
+	?>
+	<?echo $ti['desktop'];?>
+	<?	
+		continue;
+	}
+	
+	$action='';
+	if (is_numeric($ti['viewindex'])) $action='showview('.$ti['viewindex'].');';
+	if ($ti['action']!='') $action.=$ti['action'];
+	
+?>	
+<acronym title="<?echo $ti['title'];?>"><a href=# title="<?echo $ti['title'];?>" onmouseover="hintstatus('<?echo $ti['title'];?>',this);" onclick="<?echo $action;?>"><img class="<?echo $ti['icon'];?>" src="imgs/t.gif" width="32" height="32"></a></acronym>
+<?}?>
 </span><!-- iconbuttons -->
 
 <div id="logoutlink">

@@ -1,3 +1,7 @@
+4.4
+- unified toolbar config and style in desktop and mobile view
+- style fixes
+
 4.3.1
 - updated sakila wait indicators
 - minor fix in built-in help content
