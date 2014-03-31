@@ -22,16 +22,20 @@ switch($cmd){
 //Accounts
   case 'showaccount': include 'icl/showaccount.inc.php'; showaccount(); break;
   case 'setaccount': include 'icl/setaccountpass.inc.php'; setaccountpass(); break;
-	
+
+//Reports & Audit
+  case 'slv0': include 'icl/listreports.inc.php'; listreports(); break;
+  case 'rptactionlog': include 'icl/rptactionlog.inc.php'; rptactionlog(); break;  
+  	
 //Actors
-  case 'slv0': include 'icl/listactors.inc.php'; listactors(); break;
+  case 'slv1': include 'icl/listactors.inc.php'; listactors(); break;
   case 'showactor': include 'icl/showactor.inc.php'; showactor(); break;
   case 'newactor': include 'icl/newactor.inc.php'; newactor(); break;
   case 'addactor': include 'icl/addactor.inc.php'; addactor(); break;
   case 'updateactor': include 'icl/updateactor.inc.php'; updateactor(); break;
 
 //Films
-  case 'slv1': include 'icl/listfilms.inc.php'; listfilms(); break;
+  case 'slv2': include 'icl/listfilms.inc.php'; listfilms(); break;
   case 'showfilm': include 'icl/showfilm.inc.php'; showfilm(); break;
   case 'listactorfilms': include 'icl/listactorfilms.inc.php'; listactorfilms(); break;
   case 'addfilmactor': include 'icl/addfilmactor.inc.php'; addfilmactor(); break;

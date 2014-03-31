@@ -6,7 +6,7 @@ showfilm=function(filmid,title){
 _inline_lookupfilm=function(d){
 	if (d.timer) clearTimeout(d.timer);
 	d.timer=setTimeout(function(){
-		ajxpgn('filmlist',document.appsettings.codepage+'?cmd=slv1&mode=embed&key='+encodeHTML(d.value));
+		ajxpgn('filmlist',document.appsettings.codepage+'?cmd=slv2&mode=embed&key='+encodeHTML(d.value));
 	},300
 	);	
 }

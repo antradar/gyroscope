@@ -1,3 +1,14 @@
+4.5
+- added action log and event audit
+
+4.4.2
+- added "noapos" convenient function to escape single quotes
+- added auto-generated welcome screen
+- internal help system hidden on live server
+
+4.4.1
+- setting explicit timezone in lb.php
+
 4.4
 - unified toolbar config and style in desktop and mobile view
 - style fixes

@@ -5,7 +5,7 @@ showactor=function(actorid,name){
 _inline_lookupactor=function(d){
 	if (d.timer) clearTimeout(d.timer);
 	d.timer=setTimeout(function(){
-		ajxpgn('actorlist',document.appsettings.codepage+'?cmd=slv0&mode=embed&key='+encodeHTML(d.value));
+		ajxpgn('actorlist',document.appsettings.codepage+'?cmd=slv1&mode=embed&key='+encodeHTML(d.value));
 	},300
 	);	
 }

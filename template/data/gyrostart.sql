@@ -1,33 +1,22 @@
-# phpMyAdmin SQL Dump
-# version 2.5.5-pl1
-# http://www.phpmyadmin.net
-#
-# Host: localhost
-# Generation Time: Oct 23, 2008 at 03:17 PM
-# Server version: 5.0.51
-# PHP Version: 4.4.2
-# 
-# Database : `gyrostart`
-# 
+CREATE TABLE actionlog (
+  alogid bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  userid int(20) unsigned NOT NULL,
+  logmessage varchar(255) NOT NULL,
+  rawobj longtext NOT NULL,
+  logdate varchar(20) NOT NULL,
+  PRIMARY KEY (alogid),
+  KEY logdate (logdate),
+  KEY userid (userid)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-# --------------------------------------------------------
 
-#
-# Table structure for table `users`
-#
-
-DROP TABLE IF EXISTS users;
 CREATE TABLE users (
-  userid int(10) unsigned NOT NULL auto_increment,
-  login varchar(20) NOT NULL default '',
-  `password` varchar(60) NOT NULL default '',
-  groupnames varchar(200) NOT NULL default 'users',
-  PRIMARY KEY  (userid)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+  userid int(10) unsigned NOT NULL AUTO_INCREMENT,
+  login varchar(20) NOT NULL DEFAULT '',
+  `password` varchar(60) NOT NULL DEFAULT '',
+  groupnames varchar(200) NOT NULL DEFAULT 'users',
+  PRIMARY KEY (userid)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-#
-# Dumping data for table `users`
-#
 
-INSERT INTO users VALUES (1, 'guest', 'f9aca5fa9b9376cb5a8705c29c2d2b5a', 'users');
-INSERT INTO users VALUES (2, 'admin', 'f9aca5fa9b9376cb5a8705c29c2d2b5a', 'users|admins');
+INSERT INTO users VALUES (1, 'admin', 'f9aca5fa9b9376cb5a8705c29c2d2b5a', 'users|admins');

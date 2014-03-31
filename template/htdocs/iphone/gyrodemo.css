@@ -130,6 +130,7 @@ color:#ff2222;
 .inp{width:180px;}
 .inpmed{width:120px;}
 .inpshort{width:80px;}
+.inplong.num, .inp.num, .inpmed.num, .inpshort.num{padding-left:0;padding-right:2px;text-align:right;}
 
 .subtable .inplong, .subtable .inp, .subtable .inpmed, .subtable .inpshort{margin-top:2px;}
 

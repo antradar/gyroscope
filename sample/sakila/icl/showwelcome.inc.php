@@ -17,8 +17,9 @@ function showwelcome(){
 		</p>
 		Click on an icon to start:<br><br>
 		
-		<a onclick="showview(0,null,1);"><img src="imgs/t.gif" class="img-actors" width="32" height="32"> </a> &nbsp; &nbsp;
-		<a onclick="showview(1,null,1);"><img src="imgs/t.gif" class="img-films" width="32" height="32"> </a><br><br>
+		<a onclick="showview(1,null,1);"><img src="imgs/t.gif" class="img-actors" width="32" height="32"> </a> &nbsp; &nbsp;
+		<a onclick="showview(2,null,1);"><img src="imgs/t.gif" class="img-films" width="32" height="32"> </a> &nbsp; &nbsp;
+		<a onclick="showview(0,null,1);"><img src="imgs/t.gif" class="img-reports" width="32" height="32"> </a><br><br>
 		
 	</div>
 

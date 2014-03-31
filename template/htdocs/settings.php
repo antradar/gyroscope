@@ -1,11 +1,13 @@
 <?
 //define constants that are shared by both front- and back-end code
+
 $codepage='myservices.php';
-$viewcount=2;
+$viewcount=3;
 
 $toolbaritems=array(
-	array('title'=>'List 1','viewindex'=>0,'icon'=>'img-big1'),
-	array('title'=>'List 2','viewindex'=>1,'icon'=>'img-big2'),
+	array('title'=>'List 1','viewindex'=>1,'icon'=>'img-big1'),
+	array('title'=>'List 2','viewindex'=>2,'icon'=>'img-big2'),
+	array('title'=>'Reports','viewindex'=>0,'icon'=>'img-reports'),
 	
 	//array('type'=>'break'), // divider
 	

@@ -22,5 +22,7 @@ function delfilm(){
 	$query="delete from film where film_id=$filmid";
 	sql_query($query,$db);
 	
-	echo "deleted Film #$filmid";	
+	echo "deleted Film #$filmid";
+	
+	logaction("deleted Film #$filmid",array('filmid'=>$filmid));
 }

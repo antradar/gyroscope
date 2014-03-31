@@ -1,7 +1,8 @@
 <?php
 
 function GETVAL($key){ $val=$_GET[$key]; if (!is_numeric($val)) die('invalid parameter'); return $val;}
-function GETSTR($key){ $val=decode_unicode_url($_GET[$key]); $val=str_replace("\'","'",$val); $val=str_replace("'","\'",$val); return $val; }
+function noapos($val){$val=str_replace("\\'","'",$val);$val=str_replace("\'","'",$val);$val=str_replace("'","\'",$val); return $val;}
+function GETSTR($key){ $val=decode_unicode_url($_GET[$key]); return noapos($val); }
 
 function decode_unicode_url($str){
 	$str=utf8_encode($str);
@@ -28,6 +29,12 @@ function decode_unicode_url($str){
 	return $res . substr($str, $i);
 }
 
+function date2stamp($date,$hour=0,$min=0,$sec=0){
+	$parts=explode('-',$date);
+	return mktime($hour,$min,$sec,$parts[1],$parts[2],$parts[0]);	
+}
+
+
 function makelookup($id,$fullscale=0){
 ?>
 <div class="minilookup" id="<?echo $id;?>_lookup"><a id="<?echo $id;?>_lookup_closer" class="labelbutton closer" onclick="gid('<?echo $id;?>_lookup').style.display='none';">close</a>
@@ -40,3 +47,27 @@ function cancelpickup($id){
 <a class="labelbutton" onclick="cancelpickup('<?echo $id;?>');">edit</a>
 <?	
 }
+
+function logaction($message,$rawobj=null){
+	$user=userinfo();
+	$userid=$user['userid'];
+	global $db;
+
+	if (!isset($rawobj)) $rawobj=array();
+	$message=noapos($message);
+
+	$cobj=array();
+	foreach ($rawobj as $k=>$v){
+		if (is_array($v)) continue;
+		$v=noapos($v);
+		$cobj[$k]=$v;
+	}
+	
+	$obj=json_encode($cobj);
+
+	$now=time();
+
+	$query="insert into actionlog(userid,logdate,logmessage,rawobj) values ($userid,'$now','$message','$obj')";
+	sql_query($query,$db);
+}
+
