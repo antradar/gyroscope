@@ -1,3 +1,6 @@
+4.5.1
+- adjusted load order; auth loads before settings
+
 4.5
 - added action log and event audit
 

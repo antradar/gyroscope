@@ -1,9 +1,9 @@
 <?
 include 'lb.php';
-include 'settings.php';
 
 include 'connect.php';
 include 'auth.php';
+include 'settings.php';
 include 'xss.php';
 
 xsscheck();	

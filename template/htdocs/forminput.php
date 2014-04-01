@@ -64,6 +64,7 @@ function logaction($message,$rawobj=null){
 	}
 	
 	$obj=json_encode($cobj);
+	$obj=str_replace("\\'","'",$obj);
 
 	$now=time();
 

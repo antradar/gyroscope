@@ -1,8 +1,8 @@
 <?
 include 'lb.php';
 //include 'https.php';
-include 'settings.php';
 include 'auth.php';
+include 'settings.php';
 include 'retina.php';
 
 include 'evict.php';

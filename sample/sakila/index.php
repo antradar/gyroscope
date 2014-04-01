@@ -4,10 +4,11 @@ include 'lb.php';
 
 include 'mswitch.php'; //auto switch to mobile version
 
-include 'settings.php';
 
 //comment out the following lines to disable authentication
 include 'auth.php';
+
+include 'settings.php';
 
 include 'evict.php';
 evict_check();
