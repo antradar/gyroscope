@@ -64,9 +64,9 @@ function list#record#s(){
 <div style="font-size:12px;padding:10px 0;">
 &lt;?echo $page+1;?&gt; of &lt;?echo $maxpage+1;?&gt;
 &amp;nbsp;
-<a href=# onclick="ajxpgn('#record#list',document.appsettings.codepage+'?cmd=slv0&page=&lt;?echo $page-1;?&gt;&mode=embed');return false;">&amp;laquo; Prev</a>
+<a href=# onclick="ajxpgn('#record#list',document.appsettings.codepage+'?cmd=slv1&page=&lt;?echo $page-1;?&gt;&mode=embed');return false;">&amp;laquo; Prev</a>
 |
-<a href=# onclick="ajxpgn('#record#list',document.appsettings.codepage+'?cmd=slv0&page=&lt;?echo $page+1;?&gt;&mode=embed');return false;">Next &amp;raquo;</a>
+<a href=# onclick="ajxpgn('#record#list',document.appsettings.codepage+'?cmd=slv1&page=&lt;?echo $page+1;?&gt;&mode=embed');return false;">Next &amp;raquo;</a>
 </div>
 &lt;?		
 	}
@@ -80,7 +80,7 @@ function list#record#s(){
 		$fname=$myrow['fname'];
 		$lname=$myrow['lname'];
 		$#record#title="$fname $lname";
-		$db#record#title=str_replace("'","\'",$#record#title);
+		$db#record#title=noapos(htmlspecialchars($#record#title));
 ?&gt;
 <div class="listitem"><a onclick="show#record#(&lt;?echo $#record#id;?&gt;,'&lt;?echo $db#record#title;?&gt;');">&lt;?echo $#record#title;?&gt;</a></div>
 &lt;?		
@@ -112,7 +112,7 @@ show#record#=function(#record#id,name){
 _inline_lookup#record#=function(d){
 	if (d.timer) clearTimeout(d.timer);
 	d.timer=setTimeout(function(){
-		ajxpgn('#record#list',document.appsettings.codepage+'?cmd=slv0&mode=embed&key='+encodeHTML(d.value));
+		ajxpgn('#record#list',document.appsettings.codepage+'?cmd=slv1&mode=embed&key='+encodeHTML(d.value));
 	},300
 	);	
 }

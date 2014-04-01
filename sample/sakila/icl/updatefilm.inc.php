@@ -20,6 +20,8 @@ function updatefilm(){
 	$query.=" where film_id=$filmid";
 	sql_query($query,$db);
 	
+	logaction("updated <u>$title</u>",array('filmid'=>$filmid,'lang'=>$languageid,'year'=>$year,'title'=>$title));
+	
 	//piggyback the film content
 	showfilm($filmid);	
 }

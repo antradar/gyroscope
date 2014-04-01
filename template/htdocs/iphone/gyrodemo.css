@@ -47,16 +47,12 @@ height:22px;
 .img-exit{background:transparent url(msprite.png) no-repeat -198px -7px;} /* 16x16 */
 
 
-.img-big1{background:transparent url(../imgs/toolbar.gif) no-repeat 0 0;} /* 32x32 */
-.img-big2{background:transparent url(../imgs/toolbar.gif) no-repeat -32px 0;}
-
-
 #backlist{height:43px;background:transparent url(hbg.png) repeat-x top left;}
 #backlistbutton{display:block;padding-left:5px;padding-top:6px;}
 
 #tabtitles{background:transparent url(tbbg.png) repeat top left;border-bottom:solid 1px #6f6e6e;}
 
-#tooltitle a{font-weight:bold;font-size:15px;color:white;margin-left:10px;padding-top:3px;display:block;}
+#tooltitle a{font-weight:bold;font-size:15px;color:white;margin-left:10px;padding-top:3px;display:block;white-space:nowrap;}
 .sectiontitle{font-weight:bold;font-size:14px;}
 input{border:solid 1px #666666;}
 .sectionheader{font-size:12px;font-weight:bold;background-color:#dedede;margin-top:12px;margin-bottom:10px;padding:3px 10px;}
@@ -134,6 +130,7 @@ color:#ff2222;
 .inp{width:180px;}
 .inpmed{width:120px;}
 .inpshort{width:80px;}
+.inplong.num, .inp.num, .inpmed.num, .inpshort.num{padding-left:0;padding-right:2px;text-align:right;}
 
 .subtable .inplong, .subtable .inp, .subtable .inpmed, .subtable .inpshort{margin-top:2px;}
 

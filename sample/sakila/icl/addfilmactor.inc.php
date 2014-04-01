@@ -12,7 +12,23 @@ function addfilmactor(){
 	$rs=sql_query($query,$db);
 	
 	$query="insert into film_actor (film_id,actor_id) values ($filmid,$actorid)";
-	if (!$myrow=sql_fetch_array($rs)) sql_query($query,$db);
+	if (!$myrow=sql_fetch_array($rs)) {
+		sql_query($query,$db);
+
+		$query="select title from film where film_id=$filmid";
+		$rs=sql_query($query,$db);
+		$myrow=sql_fetch_array($rs);
+		$title=$myrow['title'];
+		
+		$query="select * from actor where actor_id=$actorid";
+		$rs=sql_query($query,$db);
+		$myrow=sql_fetch_array($rs);
+		$name=$myrow['first_name'].' '.$myrow['last_name'];
+		
+		logaction("added <u>$name</u> to <u>$title</u>",array('filmid'=>$filmid,'actorid'=>$actorid,'title'=>$title,'name'=>$name));
+			
+	}
+	
 	
 	listfilmactors($filmid);	
 }

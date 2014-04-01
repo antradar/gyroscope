@@ -56,9 +56,6 @@ acronym{text-decoration:none;border:none;}
 .img-del{border:none;background:transparent url(imgs/sprite.png) no-repeat -264px -28px;width:12px;height:12px;} /* 12x12 */
 .img-print{border:none;background:transparent url(imgs/sprite.png) no-repeat -279px -27px;width:16px;height:16px;} /* 16x16 */
 
-.img-big1{background:transparent url(imgs/toolbar.gif) no-repeat 0 0;} /* 32x32 */
-.img-big2{background:transparent url(imgs/toolbar.gif) no-repeat -32px 0;}
-
 
 /* List */
 .listitem{border-bottom:solid 1px #D4EDC9;padding-bottom:2px;margin-bottom:3px;}
@@ -131,6 +128,8 @@ border:solid 1px #ffffff;
 .inp{width:220px;}
 .inpmed{width:180px;}
 .inpshort{width:80px;}
+
+.inplong.num, .inp.num, .inpmed.num, .inpshort.num{padding-left:0;padding-right:2px;text-align:right;}
 
 button{padding:5px 8px;border-radius:3px;border:solid 1px #999999;cursor:pointer;box-shadow:2px 2px 3px #999999;margin-top:5px;}
 button:active{padding:5px 7px 5px 9px;box-shadow:1px 1px 3px #999999;}

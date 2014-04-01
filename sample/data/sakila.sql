@@ -641,6 +641,18 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 
+CREATE TABLE actionlog (
+  alogid bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  userid bigint(20) unsigned NOT NULL,
+  logmessage varchar(255) NOT NULL,
+  rawobj longtext NOT NULL,
+  logdate varchar(20) NOT NULL,
+  PRIMARY KEY (alogid),
+  KEY logdate (logdate),
+  KEY userid (userid)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
 
 #
 # Table structure for table `users`
@@ -653,11 +665,10 @@ CREATE TABLE users (
   `password` varchar(60) NOT NULL default '',
   groupnames varchar(200) NOT NULL default 'users',
   PRIMARY KEY  (userid)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 #
 # Dumping data for table `users`
 #
 
-INSERT INTO users VALUES (1, 'guest', 'f9aca5fa9b9376cb5a8705c29c2d2b5a', 'users');
 INSERT INTO users VALUES (2, 'admin', 'f9aca5fa9b9376cb5a8705c29c2d2b5a', 'users|admins');

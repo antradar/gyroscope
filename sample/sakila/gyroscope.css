@@ -56,9 +56,6 @@ acronym{text-decoration:none;border:none;}
 .img-del{border:none;background:transparent url(imgs/sprite.png) no-repeat -264px -28px;width:12px;height:12px;} /* 12x12 */
 .img-print{border:none;background:transparent url(imgs/sprite.png) no-repeat -279px -27px;width:16px;height:16px;} /* 16x16 */
 
-.img-films{background:transparent url(imgs/toolbar.gif) no-repeat 0 0;} /* 32x32 */
-.img-actors{background:transparent url(imgs/toolbar.gif) no-repeat -32px 0;}
-
 
 /* List */
 .listitem{border-bottom:solid 1px #D4EDC9;padding-bottom:2px;margin-bottom:3px;}

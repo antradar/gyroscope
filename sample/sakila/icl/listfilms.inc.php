@@ -35,9 +35,9 @@ function listfilms(){
 <div style="font-size:12px;padding:10px 0;">
 <?echo $page+1;?> of <?echo $maxpage+1;?>
 &nbsp;
-<a href=# onclick="ajxpgn('filmlist',document.appsettings.codepage+'?cmd=slv1&page=<?echo $page-1;?>&mode=embed');return false;">&laquo; Prev</a>
+<a href=# onclick="ajxpgn('filmlist',document.appsettings.codepage+'?cmd=slv2&page=<?echo $page-1;?>&mode=embed');return false;">&laquo; Prev</a>
 |
-<a href=# onclick="ajxpgn('filmlist',document.appsettings.codepage+'?cmd=slv1&page=<?echo $page+1;?>&mode=embed');return false;">Next &raquo;</a>
+<a href=# onclick="ajxpgn('filmlist',document.appsettings.codepage+'?cmd=slv2&page=<?echo $page+1;?>&mode=embed');return false;">Next &raquo;</a>
 </div>
 <?		
 	}
