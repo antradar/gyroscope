@@ -60,6 +60,7 @@ function logaction($message,$rawobj=null){
 	foreach ($rawobj as $k=>$v){
 		if (is_array($v)) continue;
 		$v=noapos($v);
+		$v=str_replace('"','&quot;',$v);
 		$cobj[$k]=$v;
 	}
 	
