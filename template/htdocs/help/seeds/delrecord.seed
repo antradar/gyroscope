@@ -1,0 +1,17 @@
+<?php
+
+function del#record#(){
+	#record#id=GETVAL('#record#id');
+	global $db;
+	
+	$query="select * from #tablename# where #record#id=$#record#id";
+	$rs=sql_query($query,$db);
+	if (!myrow=sql_fetch_array($rs)) die('Invalid #record# record');
+	
+	$#dispfield#=$myrow['#dispfield#'];
+	
+	$query="delete from #tablename# where #record#id=$#record#id";
+	sql_query($query,$db);
+	
+	logaction("deleted #record# #$#record#id",array('#record#id'=>$#record#id,'#dispfield#'=>$#dispfield#));
+}

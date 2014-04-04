@@ -1,6 +1,49 @@
 <?php
+include 'help/seeds/seeds.php';
 
 function showguide(){
+	global $codegen_seeds;
+	
+	?>
+	
+	<div style="padding:10px;">
+		Generate Code: <select id="codegen_seed">
+		<option value=""></option>
+		<?
+		foreach ($codegen_seeds as $seed=>$label){
+		?>
+		<option value="<?echo $seed;?>"><?echo $label;?></option>
+		<?		
+		}
+		?>
+		</select>
+		<button onclick="ajxjs(self.codegen,'codegen.js');codegen_makeform();">Go</button>
+	</div>
+	
+	<div id="codegen_view">
+	
+	</div>
+	<?
+	
+	/*
+	quotecode('listview','listactors.php',array(
+		'viewindex'=>3,
+		'record'=>'actor',
+		'records'=>'actors',
+		'Record'=>'Actor',
+		'Records'=>'Actors',
+		'tablename'=>'actors',
+		'searchquery'=>"where fname like '$key%'",
+		'sortquery'=>'fname'
+	));
+	
+	return;
+	*/
+	
+	//makeconfigform('listview');
+	
+	
+	return;
 ?>
 <p>
 The Gyroscope UI consists of <a onclick="showhelp('menuicons','Configuring Menu Icons');"><u>Menu Icons</u></a>,
@@ -19,3 +62,6 @@ The help files in the <em>help/</em> folder can be safely removed. Though the he
 </p>
 <?
 }
+
+
+

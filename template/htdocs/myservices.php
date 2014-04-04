@@ -28,13 +28,18 @@ switch($cmd){
   case 'slv0': include 'icl/listreports.inc.php'; listreports(); break;
   case 'rptactionlog': include 'icl/rptactionlog.inc.php'; rptactionlog(); break;  
   
+//Codegen
+
+  case 'codegen_makeform': include 'help/codegen_makeform.inc.php'; codegen_makeform(); break;
+  case 'codegen_makecode': include 'help/codegen_makecode.inc.php'; codegen_makecode(); break;  
+  
 //Entity 1
   case 'slv1': include 'icl/module1.inc.php'; showlist1(); break;
-  case 'dt1': include 'icl/module1.inc.php'; showdetails1(); break;
+  case 'dt0': include 'icl/module1.inc.php'; showdetails1(); break;
 
 //Entity 2
   case 'slv2': include 'icl/module2.inc.php'; showlist2(); break;
-  case 'dt2': include 'icl/module2.inc.php'; showdetails2(); break;
+  case 'dt1': include 'icl/module2.inc.php'; showdetails2(); break;
 
   case 'pkd': include 'icl/lookup.inc.php'; showdatepicker(); break; //lookup
   case 'pump': include 'icl/utils.inc.php'; authpump(); break; //comment this out to disable authentication

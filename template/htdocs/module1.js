@@ -9,6 +9,6 @@ newrecord=function(){
 		if (parseInt(recordid,10)!=recordid) return;
 		reloadtab('record_new',null,'showrecord&recordid='+recordid,null,null,{newkey:'record_'+recordid});
 		if (document.viewindex==1) reajxpgn('recordlistlist','lv1');		
-	}	
+	});	
 }
 

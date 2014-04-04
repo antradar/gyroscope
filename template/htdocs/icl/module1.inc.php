@@ -20,7 +20,7 @@ function showlist1(){
 
 
 function showdetails1(){
-	sleep(3);
+	//sleep(3);
 	
 	$m1id=GETVAL('m1id');
 ?>

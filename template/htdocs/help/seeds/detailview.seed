@@ -1,0 +1,37 @@
+<?php
+
+function show#record#(#record#id=null){
+	if (!isset(#record#id)) #record#id=GETVAL('#record#id');
+	
+	global $db;
+	
+	$query="select * from #tablename# where #record#id=$#record#id";
+	$rs=sql_query($query,$db);
+	
+	if (!$myrow=sql_fetch_array($rs)) die('This #record# record has been removed');
+	
+	$#dispfield#=$myrow['#dispfield#'];
+?>
+<div class="section">
+	<div><?echo $#dispfield#;?></div>
+	<table>
+	<tr>
+		<td class="formlabel">#dispfield#:</td>
+		<td><input class="inp" id="#dispfield#_<?echo $#record#id;?>" value="<?echo htmlspecialchars($#dispfield#);?>"></td>
+	</tr>
+	<tr>
+		<td class="formlabel"></td>
+		<td><input class="inp" id="_<?echo $#record#id;?>"></td>
+	</tr>
+	<tr>
+		<td class="formlabel"></td>
+		<td><input class="inp" id="_<?echo $#record#id;?>"></td>
+	</tr>
+	
+	<tr><td></td><td>
+		<button onclick="update#record#(<?echo #record#id;?>);">Update</button>
+	</td></tr>
+	</table>
+</div>
+<?
+}

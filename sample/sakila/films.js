@@ -80,7 +80,7 @@ updatefilm=function(filmid){
 	var description=gid('filmdescription_'+filmid).value; //do not encode, send as raw POST	
 	
 	reloadtab('film_'+filmid,otitle.value,'updatefilm&'+params.join('&'),function(){
-		if (document.viewindex==1) showview(1);	
+		if (document.viewindex==2) reajxpgn('filmlist','lv1');	
 	}, description); //send descriptoin as raw POST
 	
 }
@@ -96,7 +96,7 @@ delfilm=function(filmid){
 		'delfilm&filmid='+filmid, //request to delete the film
 		function(){ //close the tab and update the left view upon database update
 			closetab('film_'+filmid); //or close after a 1-second delay: setTimeout(function(){closetab('film_'+filmid);},1000);
-			if (document.viewindex==1) showview(1);
+			if (document.viewindex==2) reajxpgn('filmlist','lv1');
 		}
 	);	
 }

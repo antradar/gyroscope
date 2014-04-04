@@ -1,0 +1,69 @@
+show#record#=function(#record#id,name){
+	addtab('#record#_'+#record#id,name,'show#record#&#record#id='+#record#id);	
+}
+
+_inline_lookup#record#=function(d){
+	if (d.timer) clearTimeout(d.timer);
+	d.timer=setTimeout(function(){
+		ajxpgn('#record#list',document.appsettings.codepage+'?cmd=slv#viewindex#&mode=embed&key='+encodeHTML(d.value));
+	},300
+	);	
+}
+
+show#record#=function(#record#id,title){
+	addtab('#record#_'+#record#id,title,'show#record#&#record#id='+#record#id);
+}
+
+add#record#=function(){
+	var o#dispfield#=gid('#dispfield#_new');
+	
+	valid=1;
+	
+	if (!valstr(o#dispfield#)) valid=0;
+	//add more validation rules
+	
+	if (!valid) return;
+	
+	var #dispfield#=encodeHTML(o#dispfield#.value);
+	var params=[];
+	params.push('#dispfield#='+#dispfield#);
+	
+	reloadtab('#record#_new',null,'add#record#&'+params.join('&'),function(req){
+		var #record#id=req.responseText;
+		if (parseInt(#record#id,10)!=#record#id) return;
+		
+		reloadtab('#record#_new',o#dispfield#.value,'show#record#&#record#id='+#record#id,null,null,{newkey:'#record#_'+#record#id});
+		
+		if (viewindex==#viewindex#) reajxpgn('#record#list','lv#viewindex#');
+	});
+	
+}
+
+update#record#=function(#record#id){
+	var o#dispfield#=gid('#dispfield#_'+#record#id);
+	
+	valid=1;
+	
+	if (!valstr(o#dispfield#)) valid=0;
+	//add more validation rules
+	
+	if (!valid) return;
+	
+	var #dispfield#=encodeHTML(o#dispfield#.value);
+	var params=[];
+	params.push('#dispfield#='+#dispfield#);
+	
+	reloadtab('#record#_'+#record#id,o#dispfield#.value,'update#record#&#record#id='+#record#id+'&'+params.join('&'),function(){
+		if (viewindex==#viewindex#) reajxpgn('#record#list','lv#viewindex#');
+	});
+	
+}
+
+
+del#record#=function(#record#id){
+	if (!confirm('Are you sure you want to remove this #record#?')) return;
+	
+	reloadtab('#record#_'+#record#id,null,'del#record#&#record#id='+#record#id,function(){
+		if (viewindex==#viewindex#) reajxpgn('#record#list','lv#viewindex#');
+	});
+}

@@ -1,0 +1,13 @@
+<?php
+
+function add#record#(){
+	$#dispfield#=GETSTR('#dispfield#');
+	
+	global $db;
+	
+	$query="insert into #tablename# (#dispfield#) values ('$#dispfield#') ";
+	$rs=sql_query($query,$db);
+	$#record#id=sql_insert_id($db,$rs);
+	
+	echo $#record#id; die();
+}
