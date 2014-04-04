@@ -1,3 +1,6 @@
+4.6
+- introduced reloadable ajxpgn
+
 4.5.1
 - adjusted load order; auth loads before settings
 

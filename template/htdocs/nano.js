@@ -25,10 +25,22 @@ function ajxnb(rq,u,f){
 	rq.send(null);  	
 }
 
+function reajxpgn(c,p){
+	var ct=gid(c);
+	if (ct==null) return;
+	if (!ct.reloadparams) {
+		if (p) reajxpgn(p); else console.warn('reload params not set');
+		return;
+	}
+	ajxpgn(c,ct.reloadparams.u,ct.reloadparams.d,ct.reloadparams.e,ct.reloadparams.prepend,ct.reloadparams.callack,ct.reloadparams.slowtimer);		
+}
+
 function ajxpgn(c,u,d,e,prepend,callback,slowtimer){
 	var ct=gid(c);
 	if (ct==null) return;
 	if (prepend==null) prepend='';
+	
+	ct.reloadparams={u:u,d:d,e:e,prepend:prepend,callback:callback,slowtimer:slowtimer};
 	
 	var f=function(c){return function(){
 		if (rq.readyState==4){

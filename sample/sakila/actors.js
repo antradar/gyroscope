@@ -44,7 +44,7 @@ newactor=function(){
 			);
 		
 		//update the actor list in parallel, if the actor list view is active		
-		if (document.viewindex==0) showview(0);	
+		if (document.viewindex==1) reajxpgn('actorlist','lv1');	
 	});
 		
 }
@@ -70,7 +70,7 @@ updateactor=function(actorid){
 	//update the current tab with new title and content, keep the tab key
 	reloadtab('actor_'+actorid, ofname.value+' '+olname.value, 'updateactor&'+params.join('&'),function(){
 		//update the actor list on the left as well
-		if (document.viewindex==0) showview(0);	
+		if (document.viewindex==1) reajxpgn('actorlist','lv1');	
 	});
 	
 }
