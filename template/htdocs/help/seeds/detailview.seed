@@ -1,11 +1,11 @@
 <?php
 
-function show#record#(#record#id=null){
-	if (!isset(#record#id)) #record#id=GETVAL('#record#id');
+function show#record#($#primarykey#=null){
+	if (!isset($#primarykey#)) $#primarykey#=GETVAL('#primarykey#');
 	
 	global $db;
 	
-	$query="select * from #tablename# where #record#id=$#record#id";
+	$query="select * from #tablename# where #primarykey#=$#primarykey#";
 	$rs=sql_query($query,$db);
 	
 	if (!$myrow=sql_fetch_array($rs)) die('This #record# record has been removed');
@@ -13,23 +13,28 @@ function show#record#(#record#id=null){
 	$#dispfield#=$myrow['#dispfield#'];
 ?>
 <div class="section">
-	<div><?echo $#dispfield#;?></div>
+	<div class="sectiontitle"><?echo $#dispfield#;?></div>
 	<table>
 	<tr>
 		<td class="formlabel">#dispfield#:</td>
-		<td><input class="inp" id="#dispfield#_<?echo $#record#id;?>" value="<?echo htmlspecialchars($#dispfield#);?>"></td>
+		<td><input class="inp" id="#dispfield#_<?echo $#primarykey#;?>" value="<?echo htmlspecialchars($#dispfield#);?>"></td>
 	</tr>
 	<tr>
 		<td class="formlabel"></td>
-		<td><input class="inp" id="_<?echo $#record#id;?>"></td>
+		<td><input class="inp" id="_<?echo $#primarykey#;?>"></td>
 	</tr>
 	<tr>
 		<td class="formlabel"></td>
-		<td><input class="inp" id="_<?echo $#record#id;?>"></td>
+		<td><input class="inp" id="_<?echo $#primarykey#;?>"></td>
 	</tr>
 	
 	<tr><td></td><td>
-		<button onclick="update#record#(<?echo #record#id;?>);">Update</button>
+		<button onclick="update#record#(<?echo $#primarykey#;?>);">Update</button>
+
+		&nbsp; &nbsp;
+		<button onclick="del#record#(<?echo $#primarykey#;?>);" style="color:#ffffff;background-color:#ab0200;">Delete</button>
+
+
 	</td></tr>
 	</table>
 </div>

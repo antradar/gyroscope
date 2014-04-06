@@ -14,7 +14,7 @@ function list#records#(){
 <div class="listbar">
 <input id="#record#key" class="img-mg" onkeyup="_inline_lookup#record#(this);">
 	<div>
-	<a onclick="addtab('#record#_new','New #c_record#','new#record#');"> <img src="imgs/t.gif" width="12" height="12">add a new #record#</a>
+	<a onclick="addtab('#record#_new','New #c_record#','new#record#');"> <img src="imgs/t.gif" class="img-addrec" width="12" height="12">add a new #record#</a>
 	</div>
 </div>
 
@@ -51,14 +51,14 @@ function list#records#(){
 	$rs=sql_query($query,$db);
 	
 	while ($myrow=sql_fetch_array($rs)){
-		$#record#id=$myrow['#record#id'];
+		$#primarykey#=$myrow['#primarykey#'];
 		$#dispfield#=$myrow['#dispfield#'];
 		
-		$#record#title="$#dispname#"; //change this if needed
+		$#record#title="$#dispfield#"; //change this if needed
 		
 		$db#record#title=noapos(htmlspecialchars($#record#title));
 ?>
-<div class="listitem"><a onclick="show#record#(<?echo $#record#id;?>,'<?echo $db#record#title;?>');"><?echo $#record#title;?></a></div>
+<div class="listitem"><a onclick="show#record#(<?echo $#primarykey#;?>,'<?echo $db#record#title;?>');"><?echo $#record#title;?></a></div>
 <?		
 	}//while
 	

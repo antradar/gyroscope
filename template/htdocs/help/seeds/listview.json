@@ -7,8 +7,9 @@
 	{"field":"c_records","disp":"Record Display Name (Plural)","def":"Clients"},
 
 	{"field":"tablename","disp":"DB Table Name","def":"clients"},
-	{"field":"searchquery","disp":"Search Filters","def":"where fname like '$key%'"},
-	{"field":"sortquery","disp":"Sort Filters","def":"order by fname"},
+	{"field":"primarykey","disp":"Primary Key","def":"clientid"},
+	{"field":"searchquery","disp":"Search Filters","def":"fname like '$key%' or lname like '$key%' or concat(fname,' ',lname) like '$key%'"},
+	{"field":"sortquery","disp":"Sort Filters","def":"fname, lname"},
 	
 	{"field":"dispfield","disp":"Display Field Name","def":"fname"}
 		
@@ -22,6 +23,7 @@
 	{"template":"newrecord","filename":"icl/new#record#.inc.php"},
 	{"template":"addrecord","filename":"icl/add#record#.inc.php"},
 	{"template":"delrecord","filename":"icl/del#record#.inc.php"},	
+	{"template":"updaterecord","filename":"icl/update#record#.inc.php"},	
 	{"template":"listview_switch","filename":"myservices.php <em>switch ($cmd){</em>"}
 ]
 }

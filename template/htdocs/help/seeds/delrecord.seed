@@ -1,17 +1,17 @@
 <?php
 
 function del#record#(){
-	#record#id=GETVAL('#record#id');
+	$#primarykey#=GETVAL('#primarykey#');
 	global $db;
 	
-	$query="select * from #tablename# where #record#id=$#record#id";
+	$query="select * from #tablename# where #primarykey#=$#primarykey#";
 	$rs=sql_query($query,$db);
-	if (!myrow=sql_fetch_array($rs)) die('Invalid #record# record');
+	if (!$myrow=sql_fetch_array($rs)) die('Invalid #record# record');
 	
 	$#dispfield#=$myrow['#dispfield#'];
 	
-	$query="delete from #tablename# where #record#id=$#record#id";
+	$query="delete from #tablename# where #primarykey#=$#primarykey#";
 	sql_query($query,$db);
 	
-	logaction("deleted #record# #$#record#id",array('#record#id'=>$#record#id,'#dispfield#'=>$#dispfield#));
+	logaction("deleted #Record# #$#primarykey# <u>$#dispfield#</u>",array('#primarykey#'=>$#primarykey#,'#dispfield#'=>$#dispfield#));
 }
