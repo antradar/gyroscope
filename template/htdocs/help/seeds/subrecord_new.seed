@@ -1,0 +1,26 @@
+<?php
+
+function new#record#($#masterkey#=null){
+	if (!isset($#masterkey#)) $#masterkey#=GETVAL('#masterkey#');
+	
+?>
+<div class="section">
+	<div class="sectiontitle">New #c_record#</div>
+	
+	<table>
+		<tr><td class="formlabel">#dispfield#:</td><td>
+			<input class="inp" id="#dispfield#_new">
+		</td></tr>
+		<tr>
+			<td class="formlabel"></td>
+			<td><input class="inp" id="_new"></td>
+		</tr>
+		
+		<tr><td></td><td>
+			<button onclick="add#record#(<?echo $#masterkey#?>);">Add #c_record#</button>
+		</td></tr>
+	</table>
+</div>
+<?
+
+}

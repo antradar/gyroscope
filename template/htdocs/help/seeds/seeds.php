@@ -2,8 +2,9 @@
 
 $codegen_seeds=array(
 	'listview'=>'Base Record',
-	'subrecord'=>'Subordinate Record',
-	'lookuplist'=>'Lookup List',
+	'subrecord'=>'Sub Record',
+	'lookup'=>'Lookup List',
+	'bridgelist'=>'Sub-Master Bridge List',
 	'directlist'=>'Direct List',
 	'uploader'=>'Uploader',
 	'tinymce'=>'Wysiwyg Editor'

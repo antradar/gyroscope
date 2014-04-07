@@ -76,13 +76,13 @@ function list#record#s(){
 	$rs=sql_query($query,$db);
 	
 	while ($myrow=sql_fetch_array($rs)){
-		$#record#id=$myrow['#record#id'];
+		$#primarykey#=$myrow['#primarykey#'];
 		$fname=$myrow['fname'];
 		$lname=$myrow['lname'];
 		$#record#title="$fname $lname";
 		$db#record#title=noapos(htmlspecialchars($#record#title));
 ?&gt;
-<div class="listitem"><a onclick="show#record#(&lt;?echo $#record#id;?&gt;,'&lt;?echo $db#record#title;?&gt;');">&lt;?echo $#record#title;?&gt;</a></div>
+<div class="listitem"><a onclick="show#record#(&lt;?echo $#primarykey#;?&gt;,'&lt;?echo $db#record#title;?&gt;');">&lt;?echo $#record#title;?&gt;</a></div>
 &lt;?		
 	}//while
 	
@@ -105,8 +105,8 @@ ajxjs(self.show#record#,'#record#s.js');
 <b>Template for <em>#records#.js</em></b>:
 
 <textarea style="width:100%;height:200px;">
-show#record#=function(#record#id,name){
-	addtab('#record#_'+#record#id,name,'show#record#&#record#id='+#record#id);	
+show#record#=function(#primarykey#,name){
+	addtab('#record#_'+#primarykey#,name,'show#record#&#primarykey#='+#primarykey#);	
 }
 
 _inline_lookup#record#=function(d){

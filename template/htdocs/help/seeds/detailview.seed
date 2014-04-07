@@ -14,6 +14,8 @@ function show#record#($#primarykey#=null){
 ?>
 <div class="section">
 	<div class="sectiontitle"><?echo $#dispfield#;?></div>
+
+	<div class="col">
 	<table>
 	<tr>
 		<td class="formlabel">#dispfield#:</td>
@@ -37,6 +39,12 @@ function show#record#($#primarykey#=null){
 
 	</td></tr>
 	</table>
+
+	</div>
+	<div class="col">
+
+	</div>
+	<div class="clear"></div>
 </div>
 <?
 }

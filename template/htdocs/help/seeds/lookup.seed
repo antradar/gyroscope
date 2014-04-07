@@ -1,0 +1,36 @@
+<?php
+
+function lookup#record#(){
+	global $db; 
+	$key=GETSTR('key');
+	
+	$page=$_GET['page']+0;
+	
+
+?>
+<div class="section">
+
+<?		
+	$clip=50;
+	
+	$query="select * from #lookuptable# ";
+	if ($key!='') $query.=" where (#searchquery#) ";
+	
+	$query.=" order by #sortquery# limit $clip";	
+	
+	$rs=sql_query($query,$db);
+	
+	while ($myrow=sql_fetch_array($rs)){
+		$#lookupkey#=$myrow['#lookupkey#'];
+		$#dispfield#=$myrow['#dispfield#'];
+		
+		$#record#title="$#dispfield#"; //change this if needed
+		
+		$db#record#title=noapos(htmlspecialchars($#record#title));
+?>
+<div class="listitem"><a onclick="picklookup('<?echo $db#record#title;?>',<?echo $#lookupkey#;?>);"><?echo $#record#title;?></a></div>
+<?		
+	}//while
+	
+
+}

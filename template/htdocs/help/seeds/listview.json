@@ -1,6 +1,6 @@
 {
 "fields":[
-	{"field":"viewindex","disp":"View Index","def":1,"numeric":1},
+	{"field":"viewindex","disp":"View Index","def":1,"numeric":1,"type":"viewindex"},
 	{"field":"record","disp":"Record Field Name","def":"client"},
 	{"field":"c_record","disp":"Record Display Name","def":"Client"},
 	{"field":"records","disp":"Record Field Name (Plural)","def":"clients"},

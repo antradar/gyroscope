@@ -1,0 +1,16 @@
+<?php
+
+function add#record#(){
+	$#masterkey#=GETVAL('#masterkey#');
+	$#dispfield#=GETSTR('#dispfield#');
+	
+	global $db;
+	
+	$query="insert into #tablename# (#masterkey#,#dispfield#) values ($#masterkey#,'$#dispfield#') ";
+	$rs=sql_query($query,$db);
+	$#primarykey#=sql_insert_id($db,$rs);
+
+	logaction("added #c_record# #$#primarykey# <u>$#dispfield#</u>",array('#primarykey#'=>$#primarykey#,'#dispfield#'=>"$#dispfield#"));
+	
+	echo $#primarykey#; die();
+}

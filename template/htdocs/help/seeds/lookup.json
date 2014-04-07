@@ -1,0 +1,29 @@
+{
+"fields":[
+	{"field":"lookuptable","disp":"Lookup DB Table","def":"products"},
+	{"field":"lookupkey","disp":"Lookup Primary Key","def":"productid"},
+	{"field":"primaryfield","disp":"Invoker Record Name","def":"order"},
+	{"field":"primaryrecords","disp":"Invoker Record Name (Pl.)","def":"orders"},
+
+	{"field":"primarykey","disp":"Invoker Primary Key","def":"orderid"},
+	
+	{"field":"searchquery","disp":"Search Filters","def":"productname like '%$key%'"},
+	{"field":"sortquery","disp":"Sort Filters","def":"productname"},
+	
+	{"field":"record","disp":"Lookup Field Name","def":"product"},
+	{"field":"c_record","disp":"Lookup Display Name","def":"Product"},
+	
+	{"field":"dispfield","disp":"Display Field Name","def":"productname"}
+		
+],
+
+"templates":[
+	{"template":"lookup_hooks","filename":"&lt;input "},	
+	{"template":"lookup_containers","filename":"&gt;<br>"},	
+	{"template":"lookup_js","filename":"add to autocomplete.js"},
+	{"template":"lookup_update","filename":"modify #primaryrecords#.js: update#primaryfield#=function(...){"}, 	
+	{"template":"lookup","filename":"icl/lookup#record#.inc.php"},	
+	{"template":"lookup_switch","filename":"myservices.php <em>switch ($cmd){</em>"}
+	
+]
+}
