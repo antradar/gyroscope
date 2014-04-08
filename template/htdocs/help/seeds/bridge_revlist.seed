@@ -6,8 +6,7 @@ function list#record##primaryrecords#($#lookupkey#=null){
 	global $db;
 	
 	$query="select * from #bridgetable#,#mastertable# 
-		where #bridgetable#.#lookupkey#=$#lookupkey# and #bridgetable#.#primarykey#=#mastertable#.#primarykey#
-	 	order by #sortquery#";
+		where #bridgetable#.#lookupkey#=$#lookupkey# and #bridgetable#.#primarykey#=#mastertable#.#primarykey#";
 	 	
 	 $rs=sql_query($query,$db);
 	 
@@ -19,8 +18,8 @@ function list#record##primaryrecords#($#lookupkey#=null){
 	 	$#primarykey#=$myrow['#primarykey#'];
 	 	$#bridgekey#=$myrow['#bridgekey#'];
 	 	
-	 	$#dispfield#=$myrow['#dispfield#'];
-	 	$title="$#dispfield#";
+	 	$#primarydispfield#=$myrow['#primarydispfield#'];
+	 	$title="$#primarydispfield#";
 	 	$dbtitle=htmlspecialchars(noapos($title));
 	 ?>
 	 <tr>

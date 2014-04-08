@@ -2,7 +2,7 @@
 
 include 'icl/list#primaryfield##records#.inc.php';
 
-function add#primaryfield##record#(){
+function del#primaryfield##record#(){
 	$#bridgekey#=GETVAL('#bridgekey#');
 	$#primarykey#=GETVAL('#primarykey#');
 
@@ -17,7 +17,7 @@ function add#primaryfield##record#(){
 	$query="delete from #bridgetable# where #bridgekey#=$#bridgekey# and #primarykey#=$#primarykey#";
 	$rs=sql_query($query,$db);
 	
-	logaction("unlinked #c_record# #$#lookupkey# from Order #$#primarykey#",array('#primarykey#'=>$#primarykey#,'#lookupkey#'=>$#lookupkey#,'#bridgekey#'=>$#bridgekey#));
+	logaction("unlinked #c_record# #$#lookupkey# from #primaryfield# #$#primarykey#",array('#primarykey#'=>$#primarykey#,'#lookupkey#'=>$#lookupkey#,'#bridgekey#'=>$#bridgekey#));
 	
 	list#primaryfield##records#($#primarykey#);
 }

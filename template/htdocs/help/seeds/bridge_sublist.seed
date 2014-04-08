@@ -1,4 +1,4 @@
-	<div class="sectiontitle"><?echo $#dispfield#;?></div>
-	<div id="#primaryfield##records#_<?echo $#primarykey#;?>">
-		<?list#primaryfield##records#($#primarykey#);?>
-	</div>
+		<div class="sectionheader">Related #records#</div>
+		<div id="#primaryfield##records#_<?echo $#primarykey#;?>">
+			<?list#primaryfield##records#($#primarykey#);?>
+		</div>

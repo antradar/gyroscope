@@ -13,7 +13,7 @@ function add#primaryfield##record#(){
 	$rs=sql_query($query,$db);
 	$#bridgekey#=sql_insert_id($db,$rs);
 	
-	logaction("linked Order #$#primarykey# with #c_record# #$#lookupkey#",array('#primarykey#'=>$#primarykey#,'#lookupkey#'=>$#lookupkey#,'#bridgekey#'=>$#bridgekey#));
+	logaction("linked #primaryfield# #$#primarykey# with #c_record# #$#lookupkey#",array('#primarykey#'=>$#primarykey#,'#lookupkey#'=>$#lookupkey#,'#bridgekey#'=>$#bridgekey#));
 	
 	list#primaryfield##records#($#primarykey#);
 }

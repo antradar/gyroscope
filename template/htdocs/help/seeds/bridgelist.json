@@ -5,6 +5,10 @@
 	{"field":"primaryfield","disp":"Master Entity Name","def":"order"},
 	{"field":"primaryrecords","disp":"Master Entity Name (Pl.)","def":"orders"},
 	{"field":"c_primaryrecords","disp":"Master Entity Label (Pl.)","def":"Orders"},
+	{"field":"primarydispfield","disp":"Master Display Field Name","def":"orderdate"},
+
+	{"field":"bridgetable","disp":"Bridge DB Table","def":"orderproducts"},
+	{"field":"bridgekey","disp":"Bridge Primary Key","def":"opid"},	
 
 
 	{"field":"lookuptable","disp":"Target DB Table","def":"products"},
@@ -17,17 +21,15 @@
 	{"field":"c_record","disp":"Target Entity Label","def":"Product"},
 	{"field":"records","disp":"Target Entity Name (Pl.)","def":"products"},
 	
-	{"field":"bridgetable","disp":"Bridge DB Table","def":"orderproducts"},
-	{"field":"bridgekey","disp":"Bridge Primary Key","def":"opid"},	
 	
-	{"field":"dispfield","disp":"Display Field Name","def":"productname"},
+	{"field":"dispfield","disp":"Target Display Field Name","def":"productname"},
 	{"field":"fieldlist","disp":"Additional Fields","def":"qty|Quantity\ncolor|Color","type":"fieldlist"}
 		
 ],
 
 "templates":[
-	{"template":"bridge_header","filename":"modify icl/show#record#.inc.php header"},	
-	{"template":"bridge_sublist","filename":"add sub section in <em>show#record#</em>:"},	
+	{"template":"bridge_header","filename":"modify icl/show#primaryfield#.inc.php header"},	
+	{"template":"bridge_sublist","filename":"add sub section in <em>show#primaryfield#</em>:"},	
 	{"template":"lookup_js","filename":"add to autocomplete.js"},
 	{"template":"bridge_jsadd","filename":"#primaryrecords#.js"}, 	
 	{"template":"lookup","filename":"icl/lookup#record#.inc.php"},
