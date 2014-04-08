@@ -15,18 +15,21 @@ show#record#=function(#primarykey#,title){
 }
 
 add#record#=function(){
-	var o#dispfield#=gid('#dispfield#_new');
+
+	var suffix='new';
+#iterator-fieldlist-getrecordjs#
 	
 	valid=1;
 	
-	if (!valstr(o#dispfield#)) valid=0;
+	//delete the excessive validate rules
+#iterator-fieldlist-validate#
 	//add more validation rules
 	
 	if (!valid) return;
-	
-	var #dispfield#=encodeHTML(o#dispfield#.value);
+
+#iterator-fieldlist-realvalues#	
 	var params=[];
-	params.push('#dispfield#='+#dispfield#);
+#iterator-fieldlist-parampush#
 	
 	reloadtab('#record#_new',null,'add#record#&'+params.join('&'),function(req){
 		var #primarykey#=req.responseText;
@@ -40,18 +43,20 @@ add#record#=function(){
 }
 
 update#record#=function(#primarykey#){
-	var o#dispfield#=gid('#dispfield#_'+#primarykey#);
+	var suffix=#primarykey#;
+#iterator-fieldlist-getrecordjs#
 	
 	valid=1;
 	
-	if (!valstr(o#dispfield#)) valid=0;
+	//delete the excessive validate rules
+#iterator-fieldlist-validate#
 	//add more validation rules
 	
 	if (!valid) return;
 	
-	var #dispfield#=encodeHTML(o#dispfield#.value);
+#iterator-fieldlist-realvalues#	
 	var params=[];
-	params.push('#dispfield#='+#dispfield#);
+#iterator-fieldlist-parampush#
 	
 	reloadtab('#record#_'+#primarykey#,o#dispfield#.value,'update#record#&#primarykey#='+#primarykey#+'&'+params.join('&'),function(){
 		if (document.viewindex==#viewindex#) reajxpgn('#record#list','lv#viewindex#');

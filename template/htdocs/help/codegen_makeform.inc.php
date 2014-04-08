@@ -24,10 +24,14 @@ function codegen_makeform($seed=null){
 		$numeric=$fld['numeric'];
 		$type=$fld['type'];
 		if ($type=='viewindex') $def=$defindex;
+		$tag='input'; $ctag='';
+		if ($type=='fieldlist') {$tag='textarea';$ctag=$def.'</textarea>';}
 ?>
 <tr>
-	<td class="formlabel" style="text-align:right;"><?echo $disp;?>:</td>
-	<td><input id="codegenfield_<?echo $field;?>" class="inp<?if ($numeric) echo 'short';?>"  onclick="select(this);" value="<?echo $def;?>"></td>
+	<td class="formlabel" style="text-align:right;" valign="top"><?echo $disp;?>:</td>
+	<td>
+		<<?echo $tag;?> id="codegenfield_<?echo $field;?>" class="inp<?if ($numeric) echo 'short';?> onclick="select(this);" value="<?echo $def;?>"><?echo $ctag;?>
+	</td>
 </tr>
 <?		
 	}//foreach	

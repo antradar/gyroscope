@@ -1,17 +1,19 @@
 {
 "fields":[
 	{"field":"viewindex","disp":"View Index","def":1,"numeric":1,"type":"viewindex"},
-	{"field":"record","disp":"Record Field Name","def":"client"},
-	{"field":"c_record","disp":"Record Display Name","def":"Client"},
-	{"field":"records","disp":"Record Field Name (Plural)","def":"clients"},
-	{"field":"c_records","disp":"Record Display Name (Plural)","def":"Clients"},
+	{"field":"record","disp":"Record Entity Name","def":"client"},
+	{"field":"c_record","disp":"Record Entity Label","def":"Client"},
+	{"field":"records","disp":"Record Entity Name (Plural)","def":"clients"},
+	{"field":"c_records","disp":"Record Entity Label (Plural)","def":"Clients"},
 
 	{"field":"tablename","disp":"DB Table Name","def":"clients"},
 	{"field":"primarykey","disp":"Primary Key","def":"clientid"},
 	{"field":"searchquery","disp":"Search Filters","def":"fname like '$key%' or lname like '$key%' or concat(fname,' ',lname) like '$key%'"},
 	{"field":"sortquery","disp":"Sort Filters","def":"fname, lname"},
 	
-	{"field":"dispfield","disp":"Display Field Name","def":"fname"}
+	{"field":"dispfield","disp":"Display Field Name","def":"fname"},
+	{"field":"fieldlist","disp":"List of Fields","def":"fname|Firstname\nlname|Lastname", "type":"fieldlist", "optional":1}
+
 		
 ],
 

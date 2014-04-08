@@ -32,6 +32,34 @@ function codegen_quotecode($seed,$filename,$opts){
 	foreach ($opts as $k=>$v){
 		$code=str_replace("#$k#",$v,$code);	
 	}
+
+	$code=preg_replace_callback('/#iterator-(\S+?)-(\S+?)#/',function($matches) use ($opts){
+		$listname=$matches[1];
+		$fieldlist=trim($opts[$listname]);
+		$fields=explode("\n",$fieldlist);
+		$tmpl='help/seeds/'.$matches[2].'.itr';
+		if (!file_exists($tmpl)) {echo '<div style="padding:10px 0;color:#ab0200;">missing iterator '.$matches[2].'.itr</div>';return '';}
+		$bc=file_get_contents($tmpl);
+		$str='';
+		$fc=count($fields);
+
+		foreach ($fields as $fidx=>$field){
+			if (trim($field)=='') continue;
+			$c=$bc;
+			foreach ($opts as $k=>$v) $c=str_replace("#$k#",$v,$c);
+			$parts=explode('|',$field);
+			foreach ($parts as $idx=>$part) {
+				$c=str_replace("#fld$idx#",$part,$c);
+			}
+			
+			if ($fidx<$fc-1) $c=preg_replace('/#delim([\S\s]+?)#/','${1}',$c);
+			else $c=preg_replace('/#delim([\S\s]+?)#/','',$c);
+
+			$str.=$c;
+		}
+		
+		return $str;
+	},$code);
 	
 	$lines=explode("\n",$code);
 	$height=200;

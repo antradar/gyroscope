@@ -2,11 +2,10 @@
 
 function add#record#(){
 	$#masterkey#=GETVAL('#masterkey#');
-	$#dispfield#=GETSTR('#dispfield#');
-	
+#iterator-fieldlist-servervars#		
 	global $db;
 	
-	$query="insert into #tablename# (#masterkey#,#dispfield#) values ($#masterkey#,'$#dispfield#') ";
+	$query="insert into #tablename# (#foreignkey#,#iterator-fieldlist-sqlflist#) values ($#foreignkey#,#iterator-fieldlist-sqlvlist#) ";
 	$rs=sql_query($query,$db);
 	$#primarykey#=sql_insert_id($db,$rs);
 

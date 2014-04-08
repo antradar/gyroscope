@@ -10,7 +10,7 @@ function show#record#($#primarykey#=null){
 	
 	if (!$myrow=sql_fetch_array($rs)) die('This #record# record has been removed');
 	
-	$#dispfield#=$myrow['#dispfield#'];
+#iterator-fieldlist-myrowlist#	
 	$#masterkey#=$myrow['#masterkey#'];
 	$#master_dispfield#=$myrow['#master_dispfield#'];
 	$recordtitle="$#master_dispfield#"; //change this
@@ -27,18 +27,8 @@ function show#record#($#primarykey#=null){
 			</a>
 		</td>
 	</tr>
-	<tr>
-		<td class="formlabel">#dispfield#:</td>
-		<td><input class="inp" id="#dispfield#_<?echo $#primarykey#;?>" value="<?echo htmlspecialchars($#dispfield#);?>"></td>
-	</tr>
-	<tr>
-		<td class="formlabel"></td>
-		<td><input class="inp" id="_<?echo $#primarykey#;?>"></td>
-	</tr>
-	<tr>
-		<td class="formlabel"></td>
-		<td><input class="inp" id="_<?echo $#primarykey#;?>"></td>
-	</tr>
+	
+#iterator-fieldlist-detailview#
 	
 	<tr><td></td><td>
 		<button onclick="update#record#(<?echo $#primarykey#;?>,<?echo $#foreignkey#;?>);">Update</button>

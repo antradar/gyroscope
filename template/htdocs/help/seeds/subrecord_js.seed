@@ -15,19 +15,20 @@ show#record#=function(#primarykey#,title){
 }
 
 add#record#=function(#masterkey#){
-	var o#dispfield#=gid('#dispfield#_new');
-	
+	var suffix='new';
+#iterator-fieldlist-getrecordjs#
 	valid=1;
 	
-	if (!valstr(o#dispfield#)) valid=0;
+	//delete the excessive validate rules
+#iterator-fieldlist-validate#
 	//add more validation rules
 	
 	if (!valid) return;
-	
-	var #dispfield#=encodeHTML(o#dispfield#.value);
+
+#iterator-fieldlist-realvalues#	
 	var params=[];
-	params.push('#masterkey#='+#masterkey#);
-	params.push('#dispfield#='+#dispfield#);
+	params.push('#masterkey#='+#masterkey#);	
+#iterator-fieldlist-parampush#
 	
 	reloadtab('#record#_new',null,'add#record#&'+params.join('&'),function(req){
 		var #primarykey#=req.responseText;
@@ -41,18 +42,20 @@ add#record#=function(#masterkey#){
 }
 
 update#record#=function(#primarykey#,#masterkey#){
-	var o#dispfield#=gid('#dispfield#_'+#primarykey#);
+	var suffix=#primarykey#;
+#iterator-fieldlist-getrecordjs#
 	
 	valid=1;
 	
-	if (!valstr(o#dispfield#)) valid=0;
+	//delete the excessive validate rules
+#iterator-fieldlist-validate#
 	//add more validation rules
 	
 	if (!valid) return;
 	
-	var #dispfield#=encodeHTML(o#dispfield#.value);
+#iterator-fieldlist-realvalues#	
 	var params=[];
-	params.push('#dispfield#='+#dispfield#);
+#iterator-fieldlist-parampush#
 	
 	reloadtab('#record#_'+#primarykey#,o#dispfield#.value,'update#record#&#primarykey#='+#primarykey#+'&'+params.join('&'),function(){
 		ajxpgn('#master_record##records#_'+#masterkey#,document.appsettings.codepage+'?cmd=list#master_record##records#&#masterkey#='+#masterkey#);

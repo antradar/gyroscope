@@ -1,11 +1,11 @@
 <?php
 
 function add#record#(){
-	$#dispfield#=GETSTR('#dispfield#');
 	
+#iterator-fieldlist-servervars#	
 	global $db;
 	
-	$query="insert into #tablename# (#dispfield#) values ('$#dispfield#') ";
+	$query="insert into #tablename# (#iterator-fieldlist-sqlflist#) values (#iterator-fieldlist-sqlvlist#) ";
 	$rs=sql_query($query,$db);
 	$#primarykey#=sql_insert_id($db,$rs);
 

@@ -10,25 +10,15 @@ function show#record#($#primarykey#=null){
 	
 	if (!$myrow=sql_fetch_array($rs)) die('This #record# record has been removed');
 	
-	$#dispfield#=$myrow['#dispfield#'];
+#iterator-fieldlist-myrowlist#	
 ?>
 <div class="section">
 	<div class="sectiontitle"><?echo $#dispfield#;?></div>
 
 	<div class="col">
 	<table>
-	<tr>
-		<td class="formlabel">#dispfield#:</td>
-		<td><input class="inp" id="#dispfield#_<?echo $#primarykey#;?>" value="<?echo htmlspecialchars($#dispfield#);?>"></td>
-	</tr>
-	<tr>
-		<td class="formlabel"></td>
-		<td><input class="inp" id="_<?echo $#primarykey#;?>"></td>
-	</tr>
-	<tr>
-		<td class="formlabel"></td>
-		<td><input class="inp" id="_<?echo $#primarykey#;?>"></td>
-	</tr>
+
+#iterator-fieldlist-detailview#
 	
 	<tr><td></td><td>
 		<button onclick="update#record#(<?echo $#primarykey#;?>);">Update</button>
