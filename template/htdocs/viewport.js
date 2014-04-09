@@ -93,6 +93,14 @@ function flashstatus(t,l){
 
 viewcount=document.appsettings.viewcount;
 
+function reloadview(idx,listid){
+	hidelookup();
+	if (document.viewindex!=idx) return;
+	
+	if (listid) reajxpgn(listid,'lv'+idx);
+	else showview(idx);
+}
+
 function showview(idx,lazy){
   var i;
 

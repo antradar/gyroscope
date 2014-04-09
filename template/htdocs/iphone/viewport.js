@@ -93,6 +93,14 @@ function showpanel(idx){
 	gid('panel'+idx).style.display='block';	
 }
 
+function reloadview(idx,listid){
+	hidelookup();
+	if (document.viewindex!=idx) return;
+	
+	if (listid) reajxpgn(listid,'lv'+idx);
+	else showview(idx);
+}
+
 function showview(idx,lazy,force){
 	if (!force&&document.viewmode!=1&&document.iphone_portrait) return;	
 	document.viewmode=1;

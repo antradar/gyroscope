@@ -3,24 +3,30 @@ include 'help/seeds/seeds.php';
 
 function showguide(){
 	global $codegen_seeds;
-	
 	?>
+		
+<!-- {{ -->	
+</div>
 	
-	<div style="padding:10px;">
-		Generate Code: <select id="codegen_seed">
-		<option value=""></option>
-		<?
-		foreach ($codegen_seeds as $seed=>$label){
+	<div id="codegenlist" style="padding:20px 20px;background-color:#444444;color:#ffffff;display:none;">
+		
+		<?foreach ($codegen_seeds as $seed=>$seedinfo){
+			$label=$seedinfo['name'];
 		?>
-		<option value="<?echo $seed;?>"><?echo $label;?></option>
-		<?		
+		<div style="float:left;width:100px;margin-right:10px;margin-bottom:10px;">
+			<a style="font-size:12px;background-color:#333333;border-radius:4px;padding:5px 8px;white-space:nowrap;" onclick="ajxjs(self.codegen,'codegen.js');codegen_makeform('<?echo $seed;?>');"><?echo $label;?></a>
+		</div>
+		<?	
 		}
 		?>
-		</select>
-		<button onclick="ajxjs(self.codegen,'codegen.js');codegen_makeform();">Go</button>
+		<div class="clear"></div>
+		
 	</div>
 	
-	<div id="codegen_view">
+</div class="section">
+<!-- }} -->	
+	
+	<div id="codegen_view" style="padding:20px;">
 	
 	</div>
 	<?

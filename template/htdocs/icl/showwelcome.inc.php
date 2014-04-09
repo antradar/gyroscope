@@ -9,11 +9,11 @@ function showwelcome(){
 	<?
 		//lazy way to generate a starter screen, but better than nothing
 		
-		auto_welcome();
-	
+		auto_welcome();	
+		showgyroscopeupdater();
+		
 		if ($_SERVER['REMOTE_ADDR']=='127.0.0.1') showguide(); else echo '<div style="padding-bottom:100px;"></div>';
 		
-		showgyroscopeupdater();
 	?>			
 
 	

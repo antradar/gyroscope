@@ -1,8 +1,8 @@
 codegen=function(){}
 
-codegen_makeform=function(){
-	var seed=gid('codegen_seed').value;
-	if (seed=='') return;
+codegen_makeform=function(seed){
+//	var seed=gid('codegen_seed').value;
+//	if (seed=='') return;
 	
 	ajxpgn('codegen_view',document.appsettings.codepage+'?cmd=codegen_makeform&seed='+seed);	
 }
@@ -42,3 +42,4 @@ codegen_makecode=function(seed){
 	
 	if (!valid) return;
 }
+

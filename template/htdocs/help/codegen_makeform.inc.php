@@ -1,12 +1,33 @@
 <?php
+include 'help/seeds/seeds.php';
 
 function codegen_makeform($seed=null){
 	global $toolbaritems;
 	if (!isset($seed)) $seed=GETSTR('seed');
+	global $codegen_seeds;
 	
+	$seedname=$codegen_seeds[$seed]['name'];
+	$desc=$codegen_seeds[$seed]['desc'];
+	$icon=$codegen_seeds[$seed]['icon'];
+		
+			
 	$fn='help/seeds/'.$seed.'.json';
 	if (!file_exists($fn)) {echo "This module is not available in the community edition of Gyroscope";return;}
 	
+?>
+<div class="sectiontitle" <?if ($desc!='') echo 'style="margin-bottom:10px;"';?>><?echo $seedname;?></div>
+<?
+if ($desc!=''){
+?>
+<div style="color:#444444;padding-bottom:20px; echo 'background:transparent url() no-repeat 0 0;';?>">
+<?if ($icon!=''){?>
+	<img src="help/seeds/icons/<?echo $icon;?>.png" style="float:left;margin-right:15px;">
+<?}?>
+	<div style="float:left;padding-top:5px;"><?echo $desc;?></div>
+	<div class="clear"></div>
+</div>
+<?	
+}//desc
 	$c=file_get_contents($fn);
 	$obj=json_decode(file_get_contents($fn),1) or die('error parsing form config file');
 
@@ -41,6 +62,6 @@ function codegen_makeform($seed=null){
 </td></tr>
 </table>
 
-<div id="codegen_codes"></div>
+<div id="codegen_codes" style="padding-top:20px;"></div>
 <?
 }

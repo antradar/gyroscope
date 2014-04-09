@@ -37,7 +37,7 @@ add#record#=function(){
 		
 		reloadtab('#record#_new',o#dispfield#.value,'show#record#&#primarykey#='+#primarykey#,null,null,{newkey:'#record#_'+#primarykey#});
 		
-		if (document.viewindex==#viewindex#) reajxpgn('#record#list','lv#viewindex#');
+		reloadview(#viewindex#,'#record#list');
 	});
 	
 }
@@ -59,7 +59,7 @@ update#record#=function(#primarykey#){
 #iterator-fieldlist-parampush#
 	
 	reloadtab('#record#_'+#primarykey#,o#dispfield#.value,'update#record#&#primarykey#='+#primarykey#+'&'+params.join('&'),function(){
-		if (document.viewindex==#viewindex#) reajxpgn('#record#list','lv#viewindex#');
+		reloadview(#viewindex#,'#record#list');
 	});
 	
 }
@@ -70,6 +70,6 @@ del#record#=function(#primarykey#){
 	
 	reloadtab('#record#_'+#primarykey#,null,'del#record#&#primarykey#='+#primarykey#,function(){
 		closetab('#record#_'+#primarykey#);
-		if (document.viewindex==#viewindex#) reajxpgn('#record#list','lv#viewindex#');
+		reloadview(#viewindex#,'#record#list');
 	});
 }
