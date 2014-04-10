@@ -1,0 +1,11 @@
+
+lookup#record#=function(d){
+	listlookup(d,'#c_record# Lookup','lookup#record#&key='+encodeHTML(d.value));
+}
+
+_lookup#record#=function(d){
+	if (d.timer) clearTimeout(d.timer);
+	d.timer=setTimeout(function(){
+		lookup#record#(d);
+	},300);
+}

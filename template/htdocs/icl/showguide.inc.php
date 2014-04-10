@@ -13,9 +13,7 @@ function showguide(){
 		<?foreach ($codegen_seeds as $seed=>$seedinfo){
 			$label=$seedinfo['name'];
 		?>
-		<div style="float:left;width:100px;margin-right:10px;margin-bottom:10px;">
-			<a style="font-size:12px;background-color:#333333;border-radius:4px;padding:5px 8px;white-space:nowrap;" onclick="ajxjs(self.codegen,'codegen.js');codegen_makeform('<?echo $seed;?>');"><?echo $label;?></a>
-		</div>
+			<a style="float:left;margin-right:15px;margin-bottom:10px;display:block;font-size:12px;background-color:#333333;border-radius:4px;padding:5px 8px;white-space:nowrap;" onclick="ajxjs(self.codegen,'codegen.js');codegen_makeform('<?echo $seed;?>');"><?echo $label;?></a>
 		<?	
 		}
 		?>

@@ -1,0 +1,4 @@
+		<div class="sectionheader">Related #c_primaryrecords#</div>
+		<div id="#record##primaryrecords#_<?echo $#lookupkey#;?>">
+			<?list#record##primaryrecords#($#lookupkey#);?>
+		</div>

@@ -1,0 +1,29 @@
+<?php
+
+function list#primaryfield##records#($#primarykey#=null){
+	if (!isset($#primarykey#)) $#primarykey#=GETVAL('#primarykey#');
+	
+	global $db;
+	global $codepage;
+	
+	$query="select * from #lookuptable# where #primarykey#=$#primarykey#";
+	$rs=sql_query($query,$db);
+	
+	while ($myrow=sql_fetch_array($rs)){
+		$#lookupkey#=$myrow['#lookupkey#'];
+#iterator-fieldlist-myrow#
+		$rectitle="$#dispfield#"; //change this
+		$drectitle=htmlspecialchars($rectitle);
+	?>
+	<div style="margin-bottom:5px;">
+		<a target=_blank href="<?echo $codepage;?>?cmd=download#primaryfield##record#&#lookupkey#=<?echo $#lookupkey#;?>"><?echo $drectitle;?></a> 
+		<a onclick="del#primaryfield##record#(<?echo $#lookupkey#;?>,<?echo $#primarykey#;?>);"><img src="imgs/t.gif" class="img-del"></a>
+	</div>
+	<?		
+	}//while	
+	
+	?>
+	<iframe style="width:90%;border:none;height:120px;" frameborder="no" src="<?echo $codepage;?>?cmd=embed#primaryfield##record#uploader&#primarykey#=<?echo $#primarykey#;?>&hb=<?echo time();?>"></iframe>
+	<?
+	
+}

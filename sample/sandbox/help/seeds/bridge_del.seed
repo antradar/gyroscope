@@ -1,0 +1,23 @@
+<?php
+
+include 'icl/list#primaryfield##records#.inc.php';
+
+function del#primaryfield##record#(){
+	$#bridgekey#=GETVAL('#bridgekey#');
+	$#primarykey#=GETVAL('#primarykey#');
+
+	global $db;
+	
+	$query="select * from #bridgetable# where #bridgekey#=$#bridgekey# and #primarykey#=$#primarykey#";
+	$rs=sql_query($query,$db);
+	if (!$myrow=sql_fetch_array($rs)) die('Failed to delete #record#');
+	
+	$#lookupkey#=$myrow['#lookupkey#'];
+	
+	$query="delete from #bridgetable# where #bridgekey#=$#bridgekey# and #primarykey#=$#primarykey#";
+	$rs=sql_query($query,$db);
+	
+	logaction("unlinked #c_record# #$#lookupkey# from #primaryfield# #$#primarykey#",array('#primarykey#'=>$#primarykey#,'#lookupkey#'=>$#lookupkey#,'#bridgekey#'=>$#bridgekey#));
+	
+	list#primaryfield##records#($#primarykey#);
+}

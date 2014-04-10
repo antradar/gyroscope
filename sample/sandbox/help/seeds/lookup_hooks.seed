@@ -1,0 +1,5 @@
+ <input id="#primaryfield#_#lookupkey#_<?echo $#primarykey#;?>"  
+	value="<?echo htmlspecialchars($#dispfield#);?>"
+	<?if ($#lookupkey#) echo 'disabled';?>
+	onfocus="lookup#record#(this);" onkeyup="_lookup#record#(this);">
+ 

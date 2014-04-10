@@ -1,0 +1,19 @@
+<?php
+
+include 'icl/list#primaryfield##records#.inc.php';
+
+function add#primaryfield##record#(){
+	$#primarykey#=GETVAL('#primarykey#');
+	$#lookupkey#=GETVAL('#lookupkey#');
+
+#iterator-fieldlist-servervars#
+	global $db;
+	
+	$query="insert into #bridgetable# (#primarykey#,#lookupkey#,#iterator-fieldlist-sqlflist#) values ($#primarykey#,$#lookupkey#,#iterator-fieldlist-sqlvlist#)";
+	$rs=sql_query($query,$db);
+	$#bridgekey#=sql_insert_id($db,$rs);
+	
+	logaction("linked #primaryfield# #$#primarykey# with #c_record# #$#lookupkey#",array('#primarykey#'=>$#primarykey#,'#lookupkey#'=>$#lookupkey#,'#bridgekey#'=>$#bridgekey#));
+	
+	list#primaryfield##records#($#primarykey#);
+}

@@ -1,0 +1,9 @@
+
+//#c_records#
+
+	case 'slv#viewindex#': include 'icl/list#records#.inc.php'; list#records#(); break;
+	case 'show#record#': include 'icl/show#record#.inc.php'; show#record#(); break;
+	case 'new#record#': include 'icl/new#record#.inc.php'; new#record#(); break;
+	case 'add#record#': include 'icl/add#record#.inc.php'; add#record#(); break;
+	case 'del#record#': include 'icl/del#record#.inc.php'; del#record#(); break;
+	case 'update#record#': include 'icl/update#record#.inc.php'; update#record#(); break;

@@ -134,3 +134,14 @@ function xmlHTTPRequestObject() {
 function updategyroscope(){
 	ajxpgn('gyroscope_updater',document.appsettings.codepage+'?cmd=updategyroscope',true,true);	
 }
+
+function encodeHTML(code){
+	code=escape(code);
+	code=code.replace(/\//g,"%2F");
+	code=code.replace(/\?/g,"%3F");
+	code=code.replace(/=/g,"%3D");
+	code=code.replace(/&/g,"%26");
+	code=code.replace(/@/g,"%40");
+	code=code.replace(/\+/g,"%2B");
+	return code;
+}

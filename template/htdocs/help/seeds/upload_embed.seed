@@ -1,0 +1,130 @@
+<?php
+set_time_limit(0);
+
+function embed#primaryfield##record#uploader(){
+	
+	$#primarykey#=GETVAL('#primarykey#');
+	
+	global $db;
+	global $codepage;
+
+	$path='../#primaryfield##records#/';
+		
+	$msg='';
+	
+	$query="select * from #mastertable# where #primarykey#=$#primarykey#";
+	$rs=sql_query($query,$db);
+	$myrow=sql_fetch_array($rs);
+	$#primarydispfield#=$myrow['#primarydispfield#'];
+	
+	
+	if ($_FILES['file']&&$_FILES['file']['name']){
+		//echo '<pre>';print_r($_FILES);echo '</pre>'; return;
+			
+		$file=$_FILES['file'];
+		$realfns=$file['tmp_name'];
+		$filesizes=$file['size'];
+		$filetypes=$file['type'];
+		
+		$ofn=noapos($file['name']);
+		
+			$realfn=$realfns;//[$idx];
+			$filesize=$filesizes;//[$idx];
+			$filetype=$filetypes;//[$idx];
+			
+#iterator-fieldlist-postvars#
+			$query="insert into #lookuptable#(#primarykey#,#iterator-fieldlist-sqlflist#) values ($#primarykey#,#iterator-fieldlist-sqlvlist#)";
+			$rs=sql_query($query,$db);
+			$#lookupkey#=sql_insert_id($db,$rs);
+			
+						
+			logaction("uploaded $ofn to <u>$#primarydispfield#</u>",array('#primarykey#'=>$#primarykey#,'file'=>$ofn,'#primarydispfield#'=>$#primarydispfield#,'#lookupkey#'=>$#lookupkey#));
+								
+			$dst=$path.$#lookupkey#.'#fileext#';
+			
+			if (!move_uploaded_file($realfn,$dst)){
+				$msg.='\n'."Failed to upload file as $dst";
+				logaction("error uploading $ofn",array('#lookupkey#'=>$#lookupkey#,'#primarykey#'=>$#primarykey#));
+				$query="delete from #lookuptable# where #lookupkey#=$#lookupkey#";
+				sql_query($query,$db);
+			}
+					
+		
+		if (!$_GET['diag']){
+?>
+<script>parent.list#primaryfield##records#(<?echo $#primarykey#;?>,"<?echo $msg;?>");</script>
+<?			
+		}
+		
+	}
+	
+	if ($_GET['diag']) return;
+	
+?>
+<html>
+<body style="padding:0;margin:0;">
+
+<form id="uploader" style="padding:0;margin:0;" method="POST" enctype="multipart/form-data">
+<input type="hidden" name="#primarykey#" value="<?echo $#primarykey#;?>">
+<input type="file" name="file" id="file">
+#iterator-fieldlist-formfields#
+<br>
+<button onclick="upload(this);return false;" id="uploadbutton">Upload</button>
+</form>
+<div id="cancel" style="display:none;font-size:12px;padding:5px 0;"><a href=# onclick="cancelupload();return false;"><u>cancel</u></a></div>
+<div id="debug" style="font-size:11px;"></div>
+<script src="nano.js"></script>
+<script>
+function cancelupload(){
+	var btn=gid('uploadbutton');
+	if (!btn.rq) return;
+	btn.rq.abort();	
+}
+
+function upload(d){
+	var file=gid('file');
+	var form=gid('uploader');
+	var rq=xmlHTTPRequestObject();
+
+	var html5=(self.FormData&&rq.upload&&file.files)?1:0;
+	if (!html5){
+		d.parentNode.submit();
+		return;
+	}
+
+	var fd=new FormData();
+	
+	fd.append('file',file.files[0]);
+	
+	fd.append('#primarykey#',<?echo $#primarykey#;?>);
+#iterator-fieldlist-fdappend#
+	rq.open('POST','<?echo $codepage;?>?cmd=embed#primaryfield##record#uploader&#primarykey#=<?echo $#primarykey#;?>&diag=1',true);
+
+	rq.upload.onprogress=function(e){
+		gid('cancel').style.display='block';
+		if (e.lengthComputable) gid('debug').innerHTML=Math.round(e.loaded*100/e.total)+'%';
+		else gid('debug').innerHTML='uploading...';
+	};
+	rq.onload=function(e){
+		gid('debug').innerHTML='uploaded';
+		gid('cancel').style.display='none';
+		if (e.target.responseText!=null&&e.target.responseText!='') alert(e.target.responseText);
+		parent.list#primaryfield##records#(<?echo $#primarykey#;?>,'');
+	}
+
+	rq.onabort=function(e){
+		gid('cancel').style.display='none';
+		gid('debug').innerHTML='canceled';	
+	}
+	
+	d.rq=rq;
+	
+	rq.send(fd);	
+}
+</script>
+
+</body>
+</html>
+<?
+		
+}

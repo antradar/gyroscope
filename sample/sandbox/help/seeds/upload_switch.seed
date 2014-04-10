@@ -1,0 +1,6 @@
+//#c_record# Uploader for #c_primaryrecords#
+
+  case 'list#primaryfield##records#': include 'icl/list#primaryfield##records#.inc.php'; list#primaryfield##records#(); break;
+  case 'embed#primaryfield##record#uploader': include 'icl/embed#primaryfield##record#uploader.inc.php'; embed#primaryfield##record#uploader(); break;
+  case 'download#primaryfield##record#': include 'icl/download#primaryfield##record#.inc.php'; download#primaryfield##record#(); break;
+  case 'del#primaryfield##record#': include 'icl/del#primaryfield##record#.inc.php'; del#primaryfield##record#(); break;

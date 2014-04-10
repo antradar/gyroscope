@@ -1,0 +1,15 @@
+{
+"templates":[
+	{"template":"detailview","filename":"icl/show#record#.php"}
+	
+],
+
+"fields":[
+	{"field":"viewindex","disp":"View Index","def":1,"numeric":1},
+	{"field":"record","disp":"Record Field Name","def":"client"},
+	{"field":"dispfield","disp":"Display Field Name","def":"fname"},
+	
+	{"field":"tablename","disp":"DB Table Name","def":"clients"}
+
+]
+}

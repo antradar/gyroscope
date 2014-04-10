@@ -1,0 +1,76 @@
+show#record#=function(#primarykey#,name){
+	addtab('#record#_'+#primarykey#,name,'show#record#&#primarykey#='+#primarykey#);	
+}
+
+_inline_lookup#record#=function(d){
+	if (d.timer) clearTimeout(d.timer);
+	d.timer=setTimeout(function(){
+		ajxpgn('#record#list',document.appsettings.codepage+'?cmd=slv#viewindex#&mode=embed&key='+encodeHTML(d.value));
+	},300
+	);	
+}
+
+show#record#=function(#primarykey#,title){
+	addtab('#record#_'+#primarykey#,title,'show#record#&#primarykey#='+#primarykey#);
+}
+
+add#record#=function(#masterkey#){
+	var suffix='new';
+#iterator-fieldlist-getrecordjs#
+	valid=1;
+	
+	//delete the excessive validate rules
+#iterator-fieldlist-validate#
+	//add more validation rules
+	
+	if (!valid) return;
+
+#iterator-fieldlist-realvalues#	
+	var params=[];
+	params.push('#masterkey#='+#masterkey#);	
+#iterator-fieldlist-parampush#
+	
+	reloadtab('#record#_new',null,'add#record#&'+params.join('&'),function(req){
+		var #primarykey#=req.responseText;
+		if (parseInt(#primarykey#,10)!=#primarykey#) return;
+		
+		reloadtab('#record#_new',o#dispfield#.value,'show#record#&#primarykey#='+#primarykey#,null,null,{newkey:'#record#_'+#primarykey#});
+		ajxpgn('#master_record##records#_'+#masterkey#,document.appsettings.codepage+'?cmd=list#master_record##records#&#masterkey#='+#masterkey#);
+		reloadview(#viewindex#,'#record#list');
+	});
+	
+}
+
+update#record#=function(#primarykey#,#masterkey#){
+	var suffix=#primarykey#;
+#iterator-fieldlist-getrecordjs#
+	
+	valid=1;
+	
+	//delete the excessive validate rules
+#iterator-fieldlist-validate#
+	//add more validation rules
+	
+	if (!valid) return;
+	
+#iterator-fieldlist-realvalues#	
+	var params=[];
+#iterator-fieldlist-parampush#
+	
+	reloadtab('#record#_'+#primarykey#,o#dispfield#.value,'update#record#&#primarykey#='+#primarykey#+'&'+params.join('&'),function(){
+		ajxpgn('#master_record##records#_'+#masterkey#,document.appsettings.codepage+'?cmd=list#master_record##records#&#masterkey#='+#masterkey#);
+		reloadview(#viewindex#,'#record#list');
+	});
+	
+}
+
+
+del#record#=function(#primarykey#,#masterkey#){
+	if (!confirm('Are you sure you want to remove this #record#?')) return;
+	
+	reloadtab('#record#_'+#primarykey#,null,'del#record#&#primarykey#='+#primarykey#,function(){
+		closetab('#record#_'+#primarykey#);
+		ajxpgn('#master_record##records#_'+#masterkey#,document.appsettings.codepage+'?cmd=list#master_record##records#&#masterkey#='+#masterkey#);		
+		reloadview(#viewindex#,'#record#list');
+	});
+}

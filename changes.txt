@@ -1,3 +1,10 @@
+4.7
+- codegen system "hashes & dashes"
+- added ajxpgn wrapper reloadview to auto close lookup lists
+- moved encodeHTML from viewport to nano
+- added sandbox app
+- removed default sample app
+
 4.6
 - introduced reloadable ajxpgn
 

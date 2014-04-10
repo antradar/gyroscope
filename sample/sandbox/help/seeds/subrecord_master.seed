@@ -1,0 +1,5 @@
+
+		<div class="sectionheader">#c_records#</div>
+		<div id="#master_record##records#_<?echo $#masterkey#;?>">
+			<?list#master_record##records#($#masterkey#);?>
+		</div>

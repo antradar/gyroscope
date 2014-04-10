@@ -1,0 +1,14 @@
+/*
+use toolbar.psp to generate toolbar.gif
+*/
+
+.img-actors{background:transparent url(imgs/toolbar.gif) no-repeat -160px 0;} /* 32x32 */
+.img-films{background:transparent url(imgs/toolbar.gif) no-repeat -128px 0;}
+.img-reports{background:transparent url(imgs/toolbar.gif) no-repeat -64px 0;}
+.img-tenants{background:transparent url(imgs/toolbar.gif) no-repeat -96px 0;}
+.img-leases{background:transparent url(imgs/toolbar.gif) no-repeat -416px 0;}
+.img-landlords{background:transparent url(imgs/toolbar.gif) no-repeat 0 0;}
+.img-products{background:transparent url(imgs/toolbar.gif) no-repeat -32px 0;}
+.img-orders{background:transparent url(imgs/toolbar.gif) no-repeat -384px 0;}
+.img-clients{background:transparent url(imgs/toolbar.gif) no-repeat -96px 0;}
+.img-properties{background:transparent url(imgs/toolbar.gif) no-repeat -32px 0;}

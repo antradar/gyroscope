@@ -1,0 +1,40 @@
+<?php
+
+function show#record#($#primarykey#=null){
+	if (!isset($#primarykey#)) $#primarykey#=GETVAL('#primarykey#');
+	
+	global $db;
+	
+	$query="select * from #tablename# where #primarykey#=$#primarykey#";
+	$rs=sql_query($query,$db);
+	
+	if (!$myrow=sql_fetch_array($rs)) die('This #record# record has been removed');
+	
+#iterator-fieldlist-myrowlist#	
+?>
+<div class="section">
+	<div class="sectiontitle"><?echo $#dispfield#;?></div>
+
+	<div class="col">
+	<table>
+
+#iterator-fieldlist-detailview#
+	
+	<tr><td></td><td>
+		<button onclick="update#record#(<?echo $#primarykey#;?>);">Update</button>
+
+		&nbsp; &nbsp;
+		<button onclick="del#record#(<?echo $#primarykey#;?>);" style="color:#ffffff;background-color:#ab0200;">Delete</button>
+
+
+	</td></tr>
+	</table>
+
+	</div>
+	<div class="col">
+
+	</div>
+	<div class="clear"></div>
+</div>
+<?
+}

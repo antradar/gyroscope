@@ -1,0 +1,1 @@
+	var #fld0#=encodeHTML(o#fld0#.value);

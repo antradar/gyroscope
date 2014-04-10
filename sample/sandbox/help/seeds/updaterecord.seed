@@ -1,0 +1,17 @@
+<?php
+
+include 'icl/show#record#.inc.php';
+
+function update#record#(){
+	$#primarykey#=GETVAL('#primarykey#');	
+#iterator-fieldlist-servervars#
+
+	global $db;
+
+	$query="update #tablename# set #iterator-fieldlist-update# where #primarykey#=$#primarykey#";
+	sql_query($query,$db);
+
+	logaction("updated #c_record# #$#primarykey# <u>$#dispfield#</u>",array('#primarykey#'=>$#primarykey#,'#dispfield#'=>"$#dispfield#"));
+
+	show#record#($#primarykey#);
+}

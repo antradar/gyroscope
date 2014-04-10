@@ -1,0 +1,17 @@
+<?php
+
+function del#record#(){
+	$#primarykey#=GETVAL('#primarykey#');
+	global $db;
+	
+	$query="select * from #tablename# where #primarykey#=$#primarykey#";
+	$rs=sql_query($query,$db);
+	if (!$myrow=sql_fetch_array($rs)) die('Invalid #record# record');
+	
+	$#dispfield#=$myrow['#dispfield#'];
+	
+	$query="delete from #tablename# where #primarykey#=$#primarykey#";
+	sql_query($query,$db);
+	
+	logaction("deleted #c_record# #$#primarykey# <u>$#dispfield#</u>",array('#primarykey#'=>$#primarykey#,'#dispfield#'=>$#dispfield#));
+}

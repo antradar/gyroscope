@@ -1,0 +1,38 @@
+
+add#primaryfield##record#=function(#primarykey#){
+	var suffix=#primarykey#;
+#iterator-fieldlist-getbridgerecordjs#
+	valid=1;
+	
+	//delete the excessive validate rules
+#iterator-fieldlist-validate#
+	//add more validation rules
+	var #lookupkey#=gid('#primaryfield##records#_#lookupkey#_'+#primarykey#).value2;
+	if (!#lookupkey#) {
+		alert('Pick a #record# from the list');
+		return;
+	}
+	
+	if (!valid) return;
+
+#iterator-fieldlist-realvalues#	
+	var params=[];
+	params.push('#primarykey#='+#primarykey#);
+	params.push('#lookupkey#='+#lookupkey#);
+#iterator-fieldlist-parampush#
+	ajxpgn('#primaryfield##records#_'+#primarykey#,document.appsettings.codepage+'?cmd=add#primaryfield##record#&'+params.join('&')
+		,true,true,'',function(){
+			ajxpgn('#record##primaryrecords#_'+#lookupkey#,document.appsettings.codepage+'?cmd=list#record##primaryrecords#&#lookupkey#='+#lookupkey#);
+		});
+
+}
+
+del#primaryfield##record#=function(#bridgekey#,#primarykey#,#lookupkey#){
+	if (!confirm('Are you sure you want to unlink this #record#?')) return;
+	
+	ajxpgn('#primaryfield##records#_'+#primarykey#,document.appsettings.codepage+'?cmd=del#primaryfield##record#&#bridgekey#='+#bridgekey#+'&#primarykey#='+#primarykey#	
+		,true,true,'',function(){
+			ajxpgn('#record##primaryrecords#_'+#lookupkey#,document.appsettings.codepage+'?cmd=list#record##primaryrecords#&#lookupkey#='+#lookupkey#);
+		});
+}
+

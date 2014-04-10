@@ -1,0 +1,9 @@
+
+list#primaryfield##records#=function(#primarykey#){
+	ajxpgn('#primaryfield##records#_'+#primarykey#,document.appsettings.codepage+'?cmd=list#primaryfield##records#&#primarykey#='+#primarykey#);
+}
+
+del#primaryfield##record#=function(#lookupkey#,#primarykey#){
+	if (!confirm('Are you sure you want to remove this #record#?')) return;
+	ajxpgn('#primaryfield##records#_'+#primarykey#,document.appsettings.codepage+'?cmd=del#primaryfield##record#&#lookupkey#='+#lookupkey#+'&#primarykey#='+#primarykey#);		
+}

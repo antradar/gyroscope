@@ -1,0 +1,44 @@
+{
+"fields":[
+	{"field":"viewindex","disp":"View Index","def":1,"numeric":1,"type":"viewindex"},
+	{"field":"master_record","disp":"Master Entity Name","def":"client"},
+	{"field":"c_master_record","disp":"Master Entity Label","def":"Client"},
+	{"field":"master_records","disp":"Master Entity Name (Pl.)","def":"clients"},
+	{"field":"master_tablename","disp":"Master DB Table","def":"clients"},
+
+	{"field":"masterkey","disp":"Master Primary Key","def":"clientid"},
+	{"field":"foreignkey","disp":"Foreign Key in Sub","def":"clientid"},
+	
+	{"field":"master_dispfield","disp":"Master Display Field Name","def":"fname"},	
+		
+	
+	{"field":"record","disp":"Record Entity Name","def":"order"},
+	{"field":"c_record","disp":"Record Entity Label","def":"Order"},
+	{"field":"records","disp":"Record Entity Name (Plural)","def":"orders"},
+	{"field":"c_records","disp":"Record Entity Label (Plural)","def":"Orders"},
+
+	{"field":"tablename","disp":"Sub DB Table Name","def":"clientorders"},
+	{"field":"primarykey","disp":"Sub Primary Key","def":"orderid"},
+	{"field":"searchquery","disp":"Search Filters","def":"orderid like '$key%'"},
+	{"field":"sortquery","disp":"Sort Filters","def":"orderdate desc"},
+	
+	{"field":"dispfield","disp":"Display Field Name","def":"orderdate"},
+	{"field":"fieldlist","disp":"List of Fields","def":"orderdate|Order Date\nshipping|Shipping Method", "type":"fieldlist", "optional":1}
+		
+],
+
+"templates":[
+	{"template":"listview_icon","filename":"settings.php <em>$toolbaritems</em>"},	
+	{"template":"sublistview","filename":"icl/list#records#.inc.php"},	
+	{"template":"subrecord_js","filename":"#records#.js"},
+	{"template":"subdetailview","filename":"icl/show#record#.inc.php"},
+	{"template":"subrecord_master_header","filename":"modify icl/show#master_record#.inc.php header"},	
+	{"template":"subrecord_master","filename":"show#master_record#.inc.php:<br>function show#master_record#(...){<br>..."},	
+	{"template":"subrecord_bridge","filename":"icl/list#master_record##records#.inc.php"},	
+	{"template":"subrecord_new","filename":"icl/new#record#.inc.php"},
+	{"template":"subrecord_add","filename":"icl/add#record#.inc.php"},
+	{"template":"delrecord","filename":"icl/del#record#.inc.php"},	
+	{"template":"updaterecord","filename":"icl/update#record#.inc.php"},	
+	{"template":"subrecord_switch","filename":"myservices.php <em>switch ($cmd){</em>"}
+]
+}

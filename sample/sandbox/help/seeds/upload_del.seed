@@ -1,0 +1,31 @@
+<?php
+
+include 'icl/list#primaryfield##records#.inc.php';
+
+function del#primaryfield##record#(){
+	$#lookupkey#=GETVAL('#lookupkey#');
+	$#primarykey#=GETVAL('#primarykey#');
+	
+	global $db;
+	
+	$query="select * from #mastertable#,#lookuptable# where #mastertable#.#primarykey#=$#primarykey# and #mastertable#.#primarykey#=#lookuptable#.#primarykey# and #lookuptable#.#lookupkey#=$#lookupkey#";
+	$rs=sql_query($query,$db);
+	if (!$myrow=sql_fetch_array($rs)){
+		echo "<div>Invalid deletion request</div>";	
+	} else {
+		
+		$#primarydispfield#=$myrow['#primarydispfield#'];
+		
+		$query="delete from #lookuptable# where #primarykey#=$#primarykey# and #lookupkey#=$#lookupkey#";
+		sql_query($query,$db);
+		
+		$fn='../../#primaryfield##records#/'.$#lookupkey#.'#fileext#';
+		if (file_exists($fn)) unlink($fn);
+		
+		logaction("removed #c_record# #$#lookupkey# from <u>$#primarydispfield#</u>",array('#primarykey#'=>$#primarykey#,'#lookupkey#'=>$#lookupkey#));
+		
+	}
+	
+	list#primaryfield##records#($#primarykey#);
+		
+}

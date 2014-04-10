@@ -1,0 +1,1 @@
+	fd.append('#fld0#',encodeHTML(gid('#fld0#').value));

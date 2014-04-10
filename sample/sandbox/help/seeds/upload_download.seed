@@ -1,0 +1,22 @@
+<?php
+
+function download#primaryfield##record#(){
+	$#lookupkey#=GETVAL('#lookupkey#');
+	
+	global $db;
+	
+	$query="select * from #lookuptable# where #lookupkey#=$#lookupkey#";
+	$rs=sql_query($query,$db);
+	if (!$myrow=sql_fetch_array($rs)) die('Missing Document #'.$#lookupkey#);
+	
+	$fn='../#primaryfield##records#/'.$#lookupkey#.'#fileext#';
+	$docfn=$myrow['#dispfield#'];
+	
+	
+	header('Content-Type: application/octet-stream');
+	header("Content-disposition: attachment; filename=$docfn");
+
+	clearstatcache();
+	echo readfile($fn);
+	die();	
+}

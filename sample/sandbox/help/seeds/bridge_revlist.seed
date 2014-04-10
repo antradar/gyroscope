@@ -1,0 +1,41 @@
+<?php
+
+function list#record##primaryrecords#($#lookupkey#=null){
+	if (!isset($#lookupkey#)) $#lookupkey#=GETVAL('#lookupkey#');
+	
+	global $db;
+	
+	$query="select * from #bridgetable#,#mastertable# 
+		where #bridgetable#.#lookupkey#=$#lookupkey# and #bridgetable#.#primarykey#=#mastertable#.#primarykey#";
+	 	
+	 $rs=sql_query($query,$db);
+	 
+	 ?>
+	 <table>
+	 <?
+	 
+	 while ($myrow=sql_fetch_array($rs)){
+	 	$#primarykey#=$myrow['#primarykey#'];
+	 	$#bridgekey#=$myrow['#bridgekey#'];
+	 	
+	 	$#primarydispfield#=$myrow['#primarydispfield#'];
+	 	$title="$#primarydispfield#";
+	 	$dbtitle=htmlspecialchars(noapos($title));
+	 ?>
+	 <tr>
+	 	<td>
+	 		<a onclick="ajxjs(self.show#primaryfield#,'#primaryrecords#.js');show#primaryfield#(<?echo $#primarykey#?>,'<?echo $dbtitle;?>');">
+	 		<u><?echo $title;?></u>
+	 		</a>
+	 	</td>
+	 	
+	 </tr>
+	 <?	
+	 }//while	
+	 ?>
+
+	 
+	 </table>
+	 <?
+	
+}
