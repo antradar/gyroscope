@@ -1,0 +1,22 @@
+<?php
+
+include 'icl/list#primaryfield##records#.inc.php';
+
+function del#primaryfield##record#(){
+	$#lookupkey#=GETVAL('#lookupkey#');
+	$#primarykey#=GETVAL('#primarykey#');
+
+	global $db;
+	
+	$query="select * from #lookuptable# where #lookupkey#=$#lookupkey# and #primarykey#=$#primarykey#";
+	$rs=sql_query($query,$db);
+	if (!$myrow=sql_fetch_array($rs)) die('Failed to delete #record#');
+	
+	
+	$query="delete from #lookuptable# where #lookupkey#=$#lookupkey# and #primarykey#=$#primarykey#";
+	$rs=sql_query($query,$db);
+	
+	logaction("unlinked #c_record# #$#lookupkey# from #primaryfield# #$#primarykey#",array('#primarykey#'=>$#primarykey#,'#lookupkey#'=>$#lookupkey#));
+	
+	list#primaryfield##records#($#primarykey#);
+}

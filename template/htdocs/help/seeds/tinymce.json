@@ -1,0 +1,22 @@
+{
+"fields":[
+	
+	{"field":"record","disp":"Entity Name","def":"product"},
+	{"field":"records","disp":"Entity Name (Pl.)","def":"products"},
+	{"field":"primarykey","disp":"Primary Key","def":"productid"},
+	{"field":"editfield","disp":"Field to Edit","def":"productdesc"}
+],
+
+"templates":[
+	{"template":"tinymce_setup","filename":"create the <u>tiny_mce</u> folder; edit index.php and iphone.php"},	
+	{"template":"tinymce_localizer","filename":"set localizer path to the blog media folder in settings.php"},	
+	{"template":"tinymce_editor","filename":"icl/show#record#.inc.php, icl/new#record#.inc.php"},	
+	{"template":"tinymce_jsinit","filename":"#records#.js"},
+	{"template":"tinymce_jscallback","filename":"patch <em>show#record#</em>, <em>add#record#</em>, <em>update#record#</em> with callback:"},
+	{"template":"tinymce_getter","filename":"#records#.js &nbsp; update field getters:<br>&nbsp; &nbsp; &nbsp; remove validators and param pushers for <em>#editfield#</em>"},
+	{"template":"tinymce_jsreload","filename":"#records#.js &nbsp; update#record# callback:"},
+	{"template":"tinymce_hook","filename":"icl/list#records#.inc.php add callback to adder:"},
+	{"template":"tinymce_saver","filename":"icl/update#record#.inc.php, icl/add#record#.inc.php &nbsp; localize images before saving:"},	
+	{"template":"tinymce_localicl","filename":"include the localizer for icl/update#record#.inc.php, icl/add#record#.inc.php"}	
+]
+}

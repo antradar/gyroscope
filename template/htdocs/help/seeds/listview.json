@@ -19,8 +19,8 @@
 
 "templates":[
 	{"template":"listview_icon","filename":"settings.php <em>$toolbaritems</em>"},
-	{"template":"listview","filename":"icl/list#records#.inc.php"},
 	{"template":"listview_js","filename":"#records#.js"},
+	{"template":"listview","filename":"icl/list#records#.inc.php"},
 	{"template":"detailview","filename":"icl/show#record#.inc.php"},
 	{"template":"newrecord","filename":"icl/new#record#.inc.php"},
 	{"template":"addrecord","filename":"icl/add#record#.inc.php"},

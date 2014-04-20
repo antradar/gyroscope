@@ -1,0 +1,5 @@
+//#primaryfield# Profile Uploader
+
+  case 'show#primaryfield#profile': include 'icl/show#primaryfield#profile.inc.php'; show#primaryfield#profile(); break;
+  case 'remove#primaryfield#profilepic': include 'icl/remove#primaryfield#profilepic.inc.php'; remove#primaryfield#profilepic(); break;
+  case 'embed#primaryfield#profileuploader': include 'icl/embed#primaryfield#profileuploader.inc.php'; embed#primaryfield#profileuploader(); break;

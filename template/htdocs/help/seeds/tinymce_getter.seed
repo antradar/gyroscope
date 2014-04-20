@@ -1,0 +1,3 @@
+
+	var #editfield#=tinyMCE.get('#editfield#_'+suffix).getContent();
+	

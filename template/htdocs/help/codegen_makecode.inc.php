@@ -37,7 +37,11 @@ function codegen_quotecode($seed,$filename,$opts){
 		$listname=$matches[1];
 		$fieldlist=trim($opts[$listname]);
 		$fields=explode("\n",$fieldlist);
-		$tmpl='help/seeds/'.$matches[2].'.itr';
+		$tmplfn=$matches[2];		
+		
+		$tmpl='help/seeds/'.$tmplfn.'.itr';
+		
+		
 		if (!file_exists($tmpl)) {echo '<div style="padding:10px 0;color:#ab0200;">missing iterator '.$matches[2].'.itr</div>';return '';}
 		$bc=file_get_contents($tmpl);
 		$str='';

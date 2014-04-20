@@ -1,0 +1,3 @@
+		<textarea style="width:100%;" 
+			class="#editfield#editor_<?echo $#primarykey#;?>" 
+			id="#editfield#_<?echo $#primarykey#;?>"><?echo htmlspecialchars($#editfield#);?></textarea>

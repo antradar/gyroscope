@@ -1,0 +1,23 @@
+<?php
+
+include 'icl/show#primaryfield#profile.inc.php';
+
+function remove#primaryfield#profilepic(){
+	$#primarykey#=GETVAL('#primarykey#');
+	
+	global $db;
+	
+		
+		
+	$query="update #tablename# set #picflag#=0 where #primarykey#=$#primarykey#";
+	sql_query($query,$db);
+		
+	$fn='#uploaddir#'.$#primarykey#.'#fileext#';
+	if (file_exists($fn)) unlink($fn);
+		
+	logaction("removed profile picture of #primaryfield# #$#primarykey#",array('#primarykey#'=>$#primarykey#));
+		
+	
+	show#primaryfield#profile($#primarykey#);
+		
+}

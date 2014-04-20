@@ -1,5 +1,0 @@
-
-<span id="#primaryfield#_#lookupkey#_<?echo $#primarykey#;?>_val2">
-	<?if ($#lookupkey#) cancelpickup('#primaryfield#_#lookupkey#_'.$#primarykey#);?>
-</span>
-<?makelookup('#primaryfield#_#lookupkey#_'.$#primarykey#);?>

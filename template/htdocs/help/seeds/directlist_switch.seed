@@ -1,0 +1,4 @@
+
+	case 'list#primaryfield##records#': include 'icl/list#primaryfield##records#.inc.php'; list#primaryfield##records#(); break;
+	case 'add#primaryfield##record#': include 'icl/add#primaryfield##record#.inc.php'; add#primaryfield##record#(); break;
+	case 'del#primaryfield##record#': include 'icl/del#primaryfield##record#.inc.php'; del#primaryfield##record#(); break;

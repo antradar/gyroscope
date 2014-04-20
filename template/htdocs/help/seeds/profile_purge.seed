@@ -1,0 +1,4 @@
+
+	$fn='#uploaddir#'.$#primarykey#.'#fileext#';
+	
+	if (file_exists($fn)) unlink($fn);

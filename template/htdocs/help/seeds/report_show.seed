@@ -1,0 +1,112 @@
+<?php
+
+function rpt#reportkey#(){
+	$rstart=GETSTR('start');
+	$rend=GETSTR('end');
+	$start=date2stamp($rstart);
+	$end=date2stamp($rend);
+	
+	global $codepage;
+	
+	$mode=GETSTR('mode');
+	
+	global $db;
+	
+	if ($mode!='embed'&&$mode!='xls'){
+?>
+<div class="section">
+	<div class="sectiontitle">#reporttitle# Report</div>
+
+	
+	<table>
+		<tr>
+			<td class="formlabel">Start:</td>
+			<td><input class="inpmed" id="rpt#reportkey#start" onfocus="pickdate(this);" onkeyup="_pickdate(this);"></td>
+		</tr>
+		<tr>
+			<td class="formlabel">End:</td>
+			<td><input class="inpmed" id="rpt#reportkey#end" onfocus="pickdate(this);" onkeyup="_pickdate(this);"></td>
+		</tr>
+		<tr><td></td><td>
+			<button onclick="
+				if (!valdate(gid('rpt#reportkey#start'))||!valdate(gid('rpt#reportkey#end'))) return;
+				ajxpgn('rptview_#reportkey#',document.appsettings.codepage+'?cmd=rpt#reportkey#&mode=embed&start='+gid('rpt#reportkey#start').value+'&end='+gid('rpt#reportkey#end').value);
+			">Go</button>
+		</td></tr>
+	</table>
+	
+	<div id="rptview_#reportkey#" style="padding:20px 0;">
+	
+	</div>
+		
+	<?
+	} else {//embed or xls
+	
+		if ($mode=='xls'){
+		
+			header("Content-type: application/vnd.ms-excel");
+			header('Content-Disposition: attachment; filename=#reportkey#-report.xls');
+?>
+<html xmlns:x="urn:schemas-microsoft-com:office:excel">
+<head>
+    <!--[if gte mso 9]>
+    <xml>
+        <x:ExcelWorkbook>
+            <x:ExcelWorksheets>
+                <x:ExcelWorksheet>
+                    <x:Name>#reporttitle# Report</x:Name>
+                    <x:WorksheetOptions>
+                        <x:Print>
+                            <x:ValidPrinterInfo/>
+                        </x:Print>
+                    </x:WorksheetOptions>
+                </x:ExcelWorksheet>
+            </x:ExcelWorksheets>
+        </x:ExcelWorkbook>
+    </xml>
+    <![endif]-->
+</head>					
+<body>			
+	<?
+		} else {
+	?>
+		<div style="padding:10px 0;font-size:12px;"><a target=_blank href="<?echo $codepage;?>?cmd=rpt#reportkey#&start=<?echo $rstart;?>&end=<?echo $rend;?>&mode=xls">download as Excel</a></div>
+	<?		
+		}	
+	
+		$query="select * from #tablename# where #datefield#>='$start' and #datefield#<='$end' order by #datefield# ";
+		
+		//range interception style:
+		
+		// $query="select * from #tablename# where #datefield#_start<='$end' and #datefield#_end>='$start' order by #datefield#_start";
+
+	?>
+	<table>	
+	<tr><td><b>Date</b></td>
+#iterator-fields-tableheader#
+	</tr>
+	<?
+	$rs=sql_query($query,$db);
+	
+	while ($myrow=sql_fetch_array($rs)){
+		$dispdate=date('M j, Y',$myrow['#datefield#']);
+#iterator-fields-myrow#		
+	?>
+	<tr>
+	<td><?echo $dispdate;?></td>
+#iterator-fields-tablerow#
+	</tr>
+	<?	
+	}//while
+	?>
+	</table>
+	<?
+	if ($mode=="xls"){
+	?>
+</body>
+</html>	
+	<?
+	}//xls footer	
+	
+	}
+}

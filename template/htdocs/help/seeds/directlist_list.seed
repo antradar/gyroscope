@@ -1,0 +1,46 @@
+<?php
+
+function list#primaryfield##records#($#primarykey#=null){
+	if (!isset($#primarykey#)) $#primarykey#=GETVAL('#primarykey#');
+	
+	global $db;
+	
+	$query="select * from #lookuptable# where #primarykey#=$#primarykey# order by #sortquery#";
+	 	
+	 $rs=sql_query($query,$db);
+	 
+	 ?>
+	 <table class="subtable">
+	 <tr>
+#iterator-fieldlist-tableheader#
+	 </tr>
+	 <?
+	 
+	 while ($myrow=sql_fetch_array($rs)){
+	 	$#lookupkey#=$myrow['#lookupkey#'];
+#iterator-fieldlist-myrow#	 	
+	 ?>
+	 <tr>
+#iterator-fieldlist-tablerow#	 	
+	 	<td valign="top">
+	 		<a onclick="del#primaryfield##record#(<?echo $#lookupkey#?>,<?echo $#primarykey#;?>);">
+	 		<img src="imgs/t.gif" class="img-del">
+	 		</a>
+	 	</td>
+	 </tr>
+	 <?	
+	 }//while	
+	 ?>
+	 
+	 <tr>
+
+#iterator-fieldlist-tableinsert#	 	
+	 	<td valign="center">
+	 		<button onclick="add#primaryfield##record#(<?echo $#primarykey#;?>);">Add #c_record#</button>
+	 	</td>
+	 </tr>
+	 
+	 </table>
+	 <?
+	
+}

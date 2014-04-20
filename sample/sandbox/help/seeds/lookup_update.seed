@@ -1,6 +1,0 @@
-
-	var #lookupkey#=gid('#primaryfield#_#lookupkey#_'+#primarykey#).value2;
-	if (!#lookupkey#) {
-		alert('Pick a #record# from the list');
-		return;
-	}

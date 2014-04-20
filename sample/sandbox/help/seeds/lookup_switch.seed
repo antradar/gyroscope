@@ -1,3 +1,0 @@
-
-
-	case 'lookup#record#': include 'icl/lookup#record#.inc.php'; lookup#record#(); break;

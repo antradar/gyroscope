@@ -1,0 +1,27 @@
+<?php
+
+function show#primaryfield#profile($#primarykey#=null){
+	if (!isset($#primarykey#)) $#primarykey#=GETVAL('#primarykey#');
+	
+	global $db;
+	global $codepage;
+	
+	$query="select * from #tablename# where #primarykey#=$#primarykey#";
+	$rs=sql_query($query,$db);
+	$myrow=sql_fetch_array($rs);
+	
+	$#picflag#=$myrow['#picflag#'];
+	if ($#picflag#){
+?>
+<img src="#uploaddir#<?echo $#primarykey#;?>#fileext#?hb=<?echo time();?>">
+<div style="padding:10px 0;">
+	<a onclick="remove#primaryfield#profilepic(<?echo $#primarykey#;?>)"><img src="imgs/t.gif" class="img-del"> remove picture</a>
+</div>
+<?	
+	}
+		
+	?>
+	<iframe style="width:90%;border:none;height:120px;" frameborder="no" src="<?echo $codepage;?>?cmd=embed#primaryfield#profileuploader&#primarykey#=<?echo $#primarykey#;?>&hb=<?echo time();?>"></iframe>
+	<?
+	
+}

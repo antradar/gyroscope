@@ -1,3 +1,0 @@
-	 	<td valign="center">
-			 <input class="inpmed" id="#primaryfield##records#_#fld0#_<?echo $#primarykey#;?>">  
-	 	</td>

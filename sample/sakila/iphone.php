@@ -94,7 +94,7 @@ document.appsettings={codepage:'<?echo $codepage;?>',viewcount:<?echo $viewcount
 <script src="nano.js"></script>
 <script src="iphone/tabs.js"></script>
 <script src="iphone/viewport.js"></script>
-<script src="iphone/validators.js"></script>
+<script src="validators.js"></script>
 <script src="autocomplete.js"></script>
 
 <script>

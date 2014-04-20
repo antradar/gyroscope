@@ -27,13 +27,11 @@
 "templates":[
 	{"template":"bridge_header","filename":"modify icl/show#primaryfield#.inc.php header"},	
 	{"template":"bridge_sublist","filename":"add sub section in <em>show#primaryfield#</em>:"},	
-	{"template":"lookup_js","filename":"add to autocomplete.js"},
 	{"template":"directlist_js","filename":"#primaryrecords#.js"}, 	
-	{"template":"lookup","filename":"icl/lookup#record#.inc.php"},
-	{"template":"bridge_add","filename":"icl/add#primaryfield##record#.inc.php"},	
-	{"template":"bridge_del","filename":"icl/del#primaryfield##record#.inc.php"},	
-	{"template":"bridge_list","filename":"icl/list#primaryfield##records#.inc.php"},
-	{"template":"bridge_switch","filename":"myservices.php <em>switch ($cmd){</em>"}
+	{"template":"directlist_add","filename":"icl/add#primaryfield##record#.inc.php"},	
+	{"template":"directlist_del","filename":"icl/del#primaryfield##record#.inc.php"},	
+	{"template":"directlist_list","filename":"icl/list#primaryfield##records#.inc.php"},
+	{"template":"directlist_switch","filename":"myservices.php <em>switch ($cmd){</em>"}
 	
 ]
 }

@@ -1,3 +1,8 @@
+4.8
+- added richtext editor w/ clean image paste and localization
+- removed help sub systems from sample apps
+- removed unused resource files
+
 4.7
 - codegen system "hashes & dashes"
 - added ajxpgn wrapper reloadview to auto close lookup lists

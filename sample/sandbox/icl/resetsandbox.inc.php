@@ -5,7 +5,7 @@ function resetsandbox(){
 
 
 	$rootfiles=array(
-		'settings.php','myservices.php',
+		'index.php','settings.php','myservices.php',
 		'autocomplete.js','blind.js','codegen.js','nano.js',
 		'accounts.js', 'sandbox.js','tabs.js','validators.js','viewport.js'
 	);

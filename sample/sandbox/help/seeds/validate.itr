@@ -1,1 +1,0 @@
-	if (!valstr(o#fld0#)) valid=0;

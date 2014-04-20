@@ -1,0 +1,124 @@
+<?php
+set_time_limit(0);
+
+include 'libresize.php'; //available with commercial license
+
+function embed#primaryfield#profileuploader(){
+	
+	$#primarykey#=GETVAL('#primarykey#');
+	
+	global $db;
+	global $codepage;
+
+	$path='#uploaddir#';
+		
+	$msg='';
+		
+	
+	if ($_FILES['file']&&$_FILES['file']['name']){
+		//echo '<pre>';print_r($_FILES);echo '</pre>'; return;
+			
+		$file=$_FILES['file'];
+		$realfns=$file['tmp_name'];
+		$filesizes=$file['size'];
+		$filetypes=$file['type'];
+		
+		$ofn=noapos($file['name']);
+		
+			$realfn=$realfns;//[$idx];
+			$filesize=$filesizes;//[$idx];
+			$filetype=$filetypes;//[$idx];
+			$dst=$path.$#primarykey#.'#fileext#';
+
+			$c=file_get_contents($realfn);
+			$img=imagecreatefromstring($c);
+			$thumb=image_cropfit($img,#thumbwidth#,#thumbheight#);
+			imagepng($thumb,$dst);
+			imagedestroy($thumb);
+			imagedestroy($img);
+			
+			$query="update #tablename# set #picflag#=1 where #primarykey#=$#primarykey#";
+			sql_query($query,$db);
+			
+						
+			logaction("uploaded $ofn to #primaryfield# #$#primarykey#",array('#primarykey#'=>$#primarykey#,'file'=>$ofn));
+								
+			
+					
+		
+		if (!$_GET['diag']){
+?>
+<script>parent.show#primaryfield#profile(<?echo $#primarykey#;?>,"<?echo $msg;?>");</script>
+<?			
+		}
+		
+	}
+	
+	if ($_GET['diag']) return;
+	
+?>
+<html>
+<body style="padding:0;margin:0;">
+
+<form id="uploader" style="padding:0;margin:0;" method="POST" enctype="multipart/form-data">
+<input type="hidden" name="#primarykey#" value="<?echo $#primarykey#;?>">
+<input type="file" name="file" id="file">
+<br>
+<button onclick="upload(this);return false;" id="uploadbutton">Upload</button>
+</form>
+<div id="cancel" style="display:none;font-size:12px;padding:5px 0;"><a href=# onclick="cancelupload();return false;"><u>cancel</u></a></div>
+<div id="debug" style="font-size:11px;"></div>
+<script src="nano.js"></script>
+<script>
+function cancelupload(){
+	var btn=gid('uploadbutton');
+	if (!btn.rq) return;
+	btn.rq.abort();	
+}
+
+function upload(d){
+	var file=gid('file');
+	var form=gid('uploader');
+	var rq=xmlHTTPRequestObject();
+
+	var html5=(self.FormData&&rq.upload&&file.files)?1:0;
+	if (!html5){
+		d.parentNode.submit();
+		return;
+	}
+
+	var fd=new FormData();
+	
+	fd.append('file',file.files[0]);
+	
+	fd.append('#primarykey#',<?echo $#primarykey#;?>);
+	rq.open('POST','<?echo $codepage;?>?cmd=embed#primaryfield#profileuploader&#primarykey#=<?echo $#primarykey#;?>&diag=1',true);
+
+	rq.upload.onprogress=function(e){
+		gid('cancel').style.display='block';
+		if (e.lengthComputable) gid('debug').innerHTML=Math.round(e.loaded*100/e.total)+'%';
+		else gid('debug').innerHTML='uploading...';
+	};
+	rq.onload=function(e){
+		gid('debug').innerHTML='uploaded';
+		gid('cancel').style.display='none';
+		if (e.target.responseText!=null&&e.target.responseText!='') alert(e.target.responseText);
+		parent.show#primaryfield#profile(<?echo $#primarykey#;?>,'');
+	}
+
+	rq.onabort=function(e){
+		gid('cancel').style.display='none';
+		gid('debug').innerHTML='canceled';	
+	}
+	
+	d.rq=rq;
+	
+	rq.send(fd);	
+}
+</script>
+
+</body>
+</html>
+<?
+		
+}

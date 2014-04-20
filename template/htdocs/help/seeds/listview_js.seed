@@ -10,9 +10,6 @@ _inline_lookup#record#=function(d){
 	);	
 }
 
-show#record#=function(#primarykey#,title){
-	addtab('#record#_'+#primarykey#,title,'show#record#&#primarykey#='+#primarykey#);
-}
 
 add#record#=function(){
 

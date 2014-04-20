@@ -29,7 +29,7 @@ function decode_unicode_url($str){
 	return $res . substr($str, $i);
 }
 
-function date2stamp($date,$hour=0,$min=0,$sec=0){
+function date2stamp($date,$hour=1,$min=1,$sec=1){
 	$parts=explode('-',$date);
 	return mktime($hour,$min,$sec,$parts[1],$parts[2],$parts[0]);	
 }
@@ -50,7 +50,7 @@ function cancelpickup($id){
 
 function logaction($message,$rawobj=null){
 	$user=userinfo();
-	$userid=$user['userid'];
+	$userid=$user['userid']+0;
 	global $db;
 
 	if (!isset($rawobj)) $rawobj=array();

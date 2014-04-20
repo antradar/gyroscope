@@ -9,21 +9,16 @@ function showwelcome(){
 	
 	<p style="width:80%;line-height:20px;">
 	Welcome to the playground of Antradar Gyroscope <?echo GYROSCOPE_VERSION;?>.<br><br>
-	Here you can use the <a class="labelbutton" onclick="gid('codegenlist').style.display='block';">code generator</a> to rapidly build prototypes against
+	You may use the Code Generator to rapidly build prototypes against
 	predefined data tables, such as Landlord-Property-Lease-Tenant or Film-Actor, which is bundled as a full demo in the Gyroscope package.
 	<br><br>
 	When you are done, simply click the <a style="background-color:#ab0200;" class="labelbutton" onclick="resetsandbox();">Reset All</a> button and start again.
 	</p>
-	
-	<?
-		//lazy way to generate a starter screen, but better than nothing
-		
+
+	<?		
 		auto_welcome();	
-		showgyroscopeupdater();
-		
-		if ($_SERVER['REMOTE_ADDR']=='127.0.0.1') showguide(); else echo '<div style="padding-bottom:100px;"></div>';
-		
-	?>			
+		showgyroscopeupdater();		
+	?>				
 
 	
 </div><!-- section -->

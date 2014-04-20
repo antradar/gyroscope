@@ -1,0 +1,18 @@
+<?php
+
+include 'icl/list#primaryfield##records#.inc.php';
+
+function add#primaryfield##record#(){
+	$#primarykey#=GETVAL('#primarykey#');
+
+#iterator-fieldlist-servervars#
+	global $db;
+	
+	$query="insert into #lookuptable# (#primarykey#,#iterator-fieldlist-sqlflist#) values ($#primarykey#,#iterator-fieldlist-sqlvlist#)";
+	$rs=sql_query($query,$db);
+	$#lookupkey#=sql_insert_id($db,$rs);
+	
+	logaction("linked #primaryfield# #$#primarykey# with #c_record# #$#lookupkey#",array('#primarykey#'=>$#primarykey#,'#lookupkey#'=>$#lookupkey#));
+	
+	list#primaryfield##records#($#primarykey#);
+}

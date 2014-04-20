@@ -1,0 +1,10 @@
+
+show#primaryfield#profile=function(#primarykey#){
+	ajxpgn('#primaryfield#profile_'+#primarykey#,document.appsettings.codepage+'?cmd=show#primaryfield#profile&#primarykey#='+#primarykey#);
+}
+
+remove#primaryfield#profilepic=function(#primarykey#){
+	if (!confirm('Are you sure you want to remove this profile picture?')) return;
+	ajxpgn('#primaryfield#profile_'+#primarykey#,document.appsettings.codepage+'?cmd=remove#primaryfield#profilepic&#primarykey#='+#primarykey#);
+}
+

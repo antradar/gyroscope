@@ -1,4 +1,0 @@
-Gyroscope documentation is available at
-
-http://www.antradar.com/docs-gyroscope-doc
-

@@ -1,0 +1,4 @@
+		<div class="sectionheader">#uploadertitle#</div>
+		<div id="#primaryfield#profile_<?echo $#primarykey#;?>">
+			<?show#primaryfield#profile($#primarykey#);?>
+		</div>

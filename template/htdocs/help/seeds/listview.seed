@@ -13,7 +13,7 @@ function list#records#(){
 <div class="section">
 <div class="listbar">
 <input id="#record#key" class="img-mg" onkeyup="_inline_lookup#record#(this);">
-	<div>
+	<div style="padding-top:10px;">
 	<a onclick="addtab('#record#_new','New #c_record#','new#record#');"> <img src="imgs/t.gif" class="img-addrec" width="12" height="12">add a new #record#</a>
 	</div>
 </div>
