@@ -29,8 +29,9 @@ function decode_unicode_url($str){
 	return $res . substr($str, $i);
 }
 
-function date2stamp($date,$hour=1,$min=1,$sec=1){
-	$parts=explode('-',$date);
+function date2stamp($date,$hour=0,$min=0,$sec=0){
+	$parts=explode('-',trim($date));
+	if (count($parts)!=3) return null;
 	return mktime($hour,$min,$sec,$parts[1],$parts[2],$parts[0]);	
 }
 

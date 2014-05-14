@@ -1,0 +1,4 @@
+	case 'pdf#doctype#': include 'icl/pdf#doctype#.inc.php'; pdf#doctype#(); break;
+	case 'lock#doctype#': include 'icl/lock#doctype#.inc.php'; lock#doctype#(); break;
+	case 'spdf#doctype#': include 'icl/spdf#doctype#.inc.php'; spdf#doctype#(); break;
+	case 'revoke#doctype#': include 'icl/revoke#doctype#.inc.php'; revoke#doctype#(); break;

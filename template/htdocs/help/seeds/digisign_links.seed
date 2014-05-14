@@ -1,0 +1,18 @@
+<?
+global $codepage;
+$#doctype#lock=$myrow['#doctype#lock'];
+?>
+
+<div id="#container#_<?echo $#key#;?>">		
+			#c_doctype#: 
+		<?if (!$#doctype#lock){?>
+			<a href="<?echo $codepage;?>?cmd=pdf#doctype#&#key#=<?echo $#key#;?>" target=_blank>preview</a>
+			&nbsp;
+			<a href=# onclick="lock#doctype#(<?echo $loanid;?>);return false;">confirm</a>
+		<?} else {?>
+			<a href="<?echo $codepage;?>?cmd=spdf#doctype#&#key#=<?echo $#key#;?>" target=_blank>view</a>
+			&nbsp;
+			<a href=# onclick="revoke#doctype#(<?echo $#key#;?>);return false;">revoke</a>
+			
+		<?}?>
+</div>

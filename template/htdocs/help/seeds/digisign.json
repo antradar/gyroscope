@@ -1,0 +1,23 @@
+{
+"fields":[
+	{"field":"record","disp":"Base Record Entity","def":"lease"},
+	{"field":"records","disp":"Base Record Entity (Pl.)","def":"leases"},
+	{"field":"container","disp":"Document Container","def":"leaseagreements"},
+	{"field":"key","disp":"Primary Key","def":"leaseid"},
+	{"field":"doctype","disp":"Document Type Entity","def":"agreement"},
+	{"field":"c_doctype","disp":"Document Type Label","def":"Agreement"},
+	{"field":"docpath","disp":"Document Path","def":"../../docs/"}
+		
+],
+
+"templates":[
+	{"template":"digisign_sql","filename":"add the lock field to the #records# table"},	
+	{"template":"digisign_links","filename":"add document links to the #record# view"},	
+	{"template":"digisign_js","filename":"add to #records#.js"},	
+	{"template":"digisign_pdf","filename":"icl/pdf#doctype#.inc.php"},	
+	{"template":"digisign_revoke","filename":"icl/revoke#doctype#.inc.php"},	
+	{"template":"digisign_lock","filename":"icl/lock#doctype#.inc.php"},	
+	{"template":"digisign_spdf","filename":"icl/spdf#doctype#.inc.php"}, 	
+	{"template":"digisign_switch","filename":"myservices.php"}	
+]
+}

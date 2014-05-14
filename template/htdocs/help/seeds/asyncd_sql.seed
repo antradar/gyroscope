@@ -1,0 +1,29 @@
+DROP TABLE IF EXISTS asyncdtasks;
+CREATE TABLE asyncdtasks (
+  taskid bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  tasktitle varchar(255) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '0',
+  addtime varchar(20) NOT NULL,
+  starttime varchar(20) DEFAULT NULL,
+  finishtime varchar(20) DEFAULT NULL,
+  command varchar(255) NOT NULL,
+  params longtext,
+  worker varchar(255) DEFAULT NULL,
+  sig varchar(60) DEFAULT NULL,
+  PRIMARY KEY (taskid),
+  KEY `status` (`status`),
+  KEY worker (worker),
+  KEY addtime (addtime),
+  KEY sig (sig)
+) ENGINE=MyISAM;
+
+
+DROP TABLE IF EXISTS asyncdworkers;
+CREATE TABLE asyncdworkers (
+  awid bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  worker varchar(255) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (awid),
+  UNIQUE KEY worker (worker),
+  KEY `status` (`status`)
+) ENGINE=MyISAM;

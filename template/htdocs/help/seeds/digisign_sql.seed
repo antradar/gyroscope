@@ -1,0 +1,2 @@
+alter table #records# add #doctype#lock tinyint( 1 ) unsigned default 0 not null;
+alter table #records# add index (#doctype#lock);

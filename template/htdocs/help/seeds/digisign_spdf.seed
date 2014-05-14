@@ -1,0 +1,25 @@
+<?php
+
+function spdf#doctype#(){
+	$#key#=GETVAL('#key#');
+	
+	global $db;
+	
+	$query="select * from #records# where #key#=$#key#";
+	$rs=sql_query($query,$db);
+	$myrow=sql_fetch_array($rs);
+	
+	$#doctype#lock=$myrow['#doctype#lock'];
+	if (!$#doctype#lock) die('cannot view a unfinalized document');
+	
+	$fn='#docpath#'.$#key#.'.#doctype#.pdf';
+	if (!file_exists($fn)) die('#doctype# file is missing');
+
+	//todo: use #doctype#.final.pdf if digitally signed AND finalized
+	
+	header('Content-Type: application/pdf');
+	echo file_get_contents($fn);
+
+	//todo: merge digital signatures using the positions in the .sig file
+		
+}

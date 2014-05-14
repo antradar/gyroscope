@@ -1,0 +1,35 @@
+<?php
+
+include_once 'pdf/tcpdf.php';
+
+function pdf#doctype#($lockpdf=0){
+	$#key#=GETVAL('#key#');
+	global $db;
+	
+		
+	$pdf = new TCPDF('p','pt',array(612,792));	
+	$pdf->AddPage();
+	
+
+	$pdf->WriteHTML("<b>#c_doctype#</b>");
+	
+	//digisig: save signature positions into a sigpos array
+	
+	
+	if ($lockpdf){
+		$pdf->Output('#docpath#'.$#key#.'.#doctype#.pdf','F');
+		logaction("locked #doctype# of #record# #$#key#",array('#key#'=>$#key#));
+
+		//digisig: save the sigpos array into a json file
+
+	} else {
+		$pages=$pdf->GetNumPages();
+		$pdf->SetPage(1,true);
+		$pdf->SetFontSize(28);
+		$pdf->Text(220,180,"DRAFT - PREVIEW ONLY");
+		$pdf->SetPage($pages,true);
+		
+		$pdf->Output();
+	}
+		
+}

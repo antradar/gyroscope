@@ -1,0 +1,28 @@
+<?php
+
+include 'icl/list#container#.inc.php';
+
+function revoke#doctype#(){
+	$#key#=GETVAL('#key#');
+	
+	global $db;
+
+	$fn='#docpath#'.$#key#.'.#doctype#.pdf';
+	if (file_exists($fn)) unlink($fn);
+
+	$fn='#docpath#'.$#key#.'.#doctype#.final.pdf';
+	if (file_exists($fn)) unlink($fn);
+
+	$fn='#docpath#'.$#key#.'.#doctype#.sig';
+	if (file_exists($fn)) unlink($fn);
+
+
+	
+	$query="update loans set #doctype#lock=0 where #key#=$#key#";
+	sql_query($query,$db);
+	
+	logaction("revoked #doctype# of #record# #$#key#",array('#key#'=>$#key#));	
+	
+	list#container#($#key#);	
+		
+}

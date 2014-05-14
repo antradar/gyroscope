@@ -1,0 +1,23 @@
+{
+"fields":[
+	{"field":"buttontext","disp":"Button Text","def":"Start"},
+	{"field":"waitid","disp":"Wait Indicator ID","def":"progress"},
+	{"field":"waittext","disp":"Wait Message","def":" processing..."},
+	{"field":"command","disp":"Command","def":"sendemails"},
+
+	{"field":"keyfield","disp":"Key/Master ID Field","def":"batchid"}
+		
+],
+
+"templates":[
+	{"template":"asyncd_sql","filename":"create asyncd tables"},	
+	{"template":"asyncd_switch","filename":"copy asyncd.js, libasyncd.php and icl/asyncdicl.inc.php"},	
+	{"template":"asyncd_button","filename":"include asyncd.js in index.php, iphone.php; implement the button:"},	
+	{"template":"asyncd_icl","filename":"modify icl/asyncdicl.inc.php"},	
+	{"template":"asyncd_watcher","filename":"modify button initializer/loader (.js)"},	
+	{"template":"asyncd_server","filename":"modify asyncd.php (the daemon)<br>&nbsp; change connection string in async_connect"},	
+	{"template":"asyncd_worker","filename":"asyncd_#command#.php"}, 	
+	{"template":"asyncd_daemon","filename":"/etc/init/asyncd.conf (requires Ubuntu 12.04+)"},	
+	{"template":"asyncd_debug","filename":"view output:"}		
+]
+}

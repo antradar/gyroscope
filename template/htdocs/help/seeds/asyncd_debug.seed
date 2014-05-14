@@ -1,0 +1,4 @@
+
+tail -f /var/log/upstart/asyncd.log
+
+# if no log files are recorded, run "apt-get upgrade" and reboot

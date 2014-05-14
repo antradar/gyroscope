@@ -1,3 +1,7 @@
+4.9
+- help system for AsyncD integration
+- help system for digital signing
+
 4.8
 - added richtext editor w/ clean image paste and localization
 - removed help sub systems from sample apps

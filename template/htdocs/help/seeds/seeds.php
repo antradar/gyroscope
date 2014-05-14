@@ -8,6 +8,10 @@ $codegen_seeds=array(
 	'lookup'=>array('name'=>'Lookup List','desc'=>'Any field in a record can be linked to another entity.<br>The Lookup List ensures the proper ID resolution.','icon'=>'lookup'),
 	'report'=>array('name'=>'Date-Range Report','desc'=>'','icon'=>''),
 	'uploader'=>array('name'=>'Uploader','desc'=>'A file uploader uses a data table to assign unique IDs to each upload;<br>The files will be renamed to have a generic extension.','icon'=>'upload'),
+	'profile'=>array('name'=>'Profile Picture','desc'=>'','icon'=>''),
+	'break1'=>array('type'=>'break'),
 	'tinymce'=>array('name'=>'Rich Text Editor','desc'=>'','icon'=>''),
-	'profile'=>array('name'=>'Profile Picture','desc'=>'','icon'=>'')
+	'asyncd'=>array('name'=>'AsyncD','desc'=>'The Distributed Asynchronous Data Processor forks a long-running process in the background while updating the web frontend its completion process.','icon'=>''),
+	'digisign'=>array('name'=>'Digital Signing','desc'=>'','icon'=>'')
+
 );

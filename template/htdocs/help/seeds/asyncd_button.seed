@@ -1,0 +1,4 @@
+	<button id="#command#button_<?echo $#keyfield#;?>" onclick="asyncdpgn(this,'#waitid#',
+		'#command#&#keyfield#=<?echo $#keyfield#;?>',
+		'processing...',function(){alert('done!');});">#buttontext#</button>
+	<span id="#waitid#"></span>

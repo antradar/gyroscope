@@ -1,0 +1,11 @@
+lock#doctype#=function(#key#){
+	if (!confirm('Are you sure you want to finalize this #doctype#?')) return;
+	
+	ajxpgn('#container#_'+#key#,document.appsettings.codepage+'?cmd=lock#doctype#&#key#='+#key#);	
+}
+
+revoke#doctype#=function(#key#){
+	if (!confirm('Are you sure you want to unlock this document and delete the current copy?')) return;
+	
+	ajxpgn('#container#_'+#key#,document.appsettings.codepage+'?cmd=revoke#doctype#&#key#='+#key#);	
+}

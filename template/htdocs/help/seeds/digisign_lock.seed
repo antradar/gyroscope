@@ -1,0 +1,18 @@
+<?php
+
+include 'icl/pdf#doctype#.inc.php';
+include 'icl/list#container#.inc.php';
+
+function lock#doctype#(){
+	$#key#=GETVAL('#key#');
+	
+	global $db;
+
+	pdf#doctype#($#key#,1);
+	
+	$query="update loans set #doctype#lock=1 where #key#=$#key#";
+	sql_query($query,$db);
+	
+	list#container#($#key#);	
+		
+}
