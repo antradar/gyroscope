@@ -15,6 +15,6 @@ function updateactor(){
 	//piggyback the content of the new actor; to be displayed in the same tab container
 	showactor($actorid);
 	
-	logaction("updated actor $fname $lname",array('actorid'=>$actorid,'fname'=>$fname,'lname'=>$lname));
+	logaction("updated actor $fname $lname",array('actorid'=>$actorid,'fname'=>$fname,'lname'=>$lname),array('rectype'=>'actor','recid'=>$actorid));
 	
 }

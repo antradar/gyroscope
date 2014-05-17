@@ -99,6 +99,7 @@ document.appsettings={codepage:'<?echo $codepage;?>',viewcount:<?echo $viewcount
 <script src="autocomplete.js"></script>
 
 <script>
+
 function showdeck(){
 	switch(document.viewmode){
 		
@@ -216,7 +217,10 @@ addtab('welcome','Welcome','wk',null,null,{noclose:true});
 window.onorientationchange=rotate;
 rotate();
 scaleall(document.body);
-
+</script>
+<script src="wss.js"></script>
+<script>
+<?include 'ws_js.php';?>
 </script>
 </body>
 </html>

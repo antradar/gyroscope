@@ -21,8 +21,13 @@ function delfilmactor(){
 	
 	$query="delete from film_actor where film_id=$filmid and actor_id=$actorid";
 	sql_query($query,$db);
-	
-	logaction("removed <u>$name</u> from <u>$title</u>",array('actorid'=>$actorid,'filmid'=>$filmid,'title'=>$title,'name'=>$name));
+
+	logaction("",array(),array('rectype'=>'actorfilms','recid'=>$actorid));
+		
+	logaction("removed <u>$name</u> from <u>$title</u>",array('actorid'=>$actorid,'filmid'=>$filmid,'title'=>$title,'name'=>$name),
+		array('rectype'=>'filmactors','recid'=>$filmid)
+	);
+		
 	
 	listfilmactors($filmid);	
 }

@@ -24,9 +24,14 @@ function addfilmactor(){
 		$rs=sql_query($query,$db);
 		$myrow=sql_fetch_array($rs);
 		$name=$myrow['first_name'].' '.$myrow['last_name'];
-		
-		logaction("added <u>$name</u> to <u>$title</u>",array('filmid'=>$filmid,'actorid'=>$actorid,'title'=>$title,'name'=>$name));
-			
+
+		logaction("",array(),array('rectype'=>'actorfilms','recid'=>$actorid));
+				
+		logaction("added <u>$name</u> to <u>$title</u>",array('filmid'=>$filmid,'actorid'=>$actorid,'title'=>$title,'name'=>$name),
+			array('rectype'=>'filmactors','recid'=>$filmid)
+		);
+
+					
 	}
 	
 	

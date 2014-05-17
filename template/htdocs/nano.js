@@ -13,6 +13,8 @@ function gid(d){return document.getElementById(d);}
 function hb(){var now=new Date(); var hb=now.getTime();return hb;}
 
 function ajxb(u){
+	if (document.wssid) u=u+'&wssid_='+document.wssid;
+	
 	var rq=xmlHTTPRequestObject();
 	rq.open('GET',u+'&hb='+hb(),false);
 	rq.send(null);
@@ -20,6 +22,7 @@ function ajxb(u){
 }
 
 function ajxnb(rq,u,f){
+	if (document.wssid) u=u+'&wssid_='+document.wssid;	
 	rq.onreadystatechange=f;
 	rq.open('GET',u+'&hb='+hb(),true);
 	rq.send(null);  	
@@ -42,6 +45,8 @@ function ajxpgn(c,u,d,e,prepend,callback,slowtimer){
 	
 	ct.reloadparams={u:u,d:d,e:e,prepend:prepend,callback:callback,slowtimer:slowtimer};
 	
+	if (document.wssid) u=u+'&wssid_='+document.wssid;
+			
 	var f=function(c){return function(){
 		if (rq.readyState==4){
 			

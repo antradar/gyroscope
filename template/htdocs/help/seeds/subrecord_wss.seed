@@ -1,0 +1,4 @@
+		case '#master_record##records#':
+			if (gid('#master_record##records#_'+recid)) gid('#master_record##records#_'+recid).style.backgroundColor=bgcolor;
+		break;
+		

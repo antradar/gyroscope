@@ -37,7 +37,8 @@
 	{"template":"subrecord_bridge","filename":"icl/list#master_record##records#.inc.php"},	
 	{"template":"subrecord_new","filename":"icl/new#record#.inc.php"},
 	{"template":"subrecord_add","filename":"icl/add#record#.inc.php"},
-	{"template":"delrecord","filename":"icl/del#record#.inc.php"},	
+	{"template":"subrecord_del","filename":"icl/del#record#.inc.php"},
+	{"template":"subrecord_wss","filename":"modify <em>wss_markchanges</em>  in wss.js"},		
 	{"template":"updaterecord","filename":"icl/update#record#.inc.php"},	
 	{"template":"subrecord_switch","filename":"myservices.php <em>switch ($cmd){</em>"}
 ]

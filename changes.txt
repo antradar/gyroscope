@@ -1,3 +1,6 @@
+5.0
+- added wss sync; enable in ws_js.php
+
 4.9
 - help system for AsyncD integration
 - help system for digital signing

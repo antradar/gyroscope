@@ -13,6 +13,8 @@ function gid(d){return document.getElementById(d);}
 function hb(){var now=new Date(); var hb=now.getTime();return hb;}
 
 function ajxb(u){
+	if (document.wssid) u=u+'&wssid_='+document.wssid;
+	
 	var rq=xmlHTTPRequestObject();
 	rq.open('GET',u+'&hb='+hb(),false);
 	rq.send(null);
@@ -20,6 +22,7 @@ function ajxb(u){
 }
 
 function ajxnb(rq,u,f){
+	if (document.wssid) u=u+'&wssid_='+document.wssid;	
 	rq.onreadystatechange=f;
 	rq.open('GET',u+'&hb='+hb(),true);
 	rq.send(null);  	
@@ -41,6 +44,8 @@ function ajxpgn(c,u,d,e,prepend,callback,slowtimer){
 	if (prepend==null) prepend='';
 	
 	ct.reloadparams={u:u,d:d,e:e,prepend:prepend,callback:callback,slowtimer:slowtimer};
+	
+	if (document.wssid) u=u+'&wssid_='+document.wssid;
 			
 	var f=function(c){return function(){
 		if (rq.readyState==4){
@@ -133,4 +138,15 @@ function xmlHTTPRequestObject() {
 
 function updategyroscope(){
 	ajxpgn('gyroscope_updater',document.appsettings.codepage+'?cmd=updategyroscope',true,true);	
+}
+
+function encodeHTML(code){
+	code=escape(code);
+	code=code.replace(/\//g,"%2F");
+	code=code.replace(/\?/g,"%3F");
+	code=code.replace(/=/g,"%3D");
+	code=code.replace(/&/g,"%26");
+	code=code.replace(/@/g,"%40");
+	code=code.replace(/\+/g,"%2B");
+	return code;
 }

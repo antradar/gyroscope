@@ -58,7 +58,7 @@ function embed#primaryfield##record#uploader(){
 		
 	}
 	
-	if ($_GET['diag']) return;
+	if ($_GET['diag']) {echo $msg;return;}
 	
 ?>
 <html>

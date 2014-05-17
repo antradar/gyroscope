@@ -117,7 +117,11 @@ window.onbeforeunload=function(){
 	return 'Are you sure you want to exit Gyroscope?';
 }
 
-
 </script>
+<script src="wss.js"></script>
+<script>
+<?include 'ws_js.php';?>
+</script>
+
 </body>
 </html>

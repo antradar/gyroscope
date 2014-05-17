@@ -49,10 +49,11 @@ function cancelpickup($id){
 <?	
 }
 
-function logaction($message,$rawobj=null){
+function logaction($message,$rawobj=null,$syncobj=null){
 	$user=userinfo();
 	$userid=$user['userid']+0;
 	global $db;
+	$wssid=$_GET['wssid_']+0;
 
 	if (!isset($rawobj)) $rawobj=array();
 	$message=noapos($message);
@@ -71,6 +72,13 @@ function logaction($message,$rawobj=null){
 	$now=time();
 
 	$query="insert into actionlog(userid,logdate,logmessage,rawobj) values ($userid,'$now','$message','$obj')";
+	
+	if ($syncobj!=''){
+		$sid=$wssid;
+		$rectype=$syncobj['rectype'];
+		$recid=$syncobj['recid']+0;
+		$query="insert into actionlog(userid,logdate,logmessage,rawobj,sid,rectype,recid) values ($userid,'$now','$message','$obj',$sid,'$rectype',$recid)";
+	}
 	sql_query($query,$db);
 }
 

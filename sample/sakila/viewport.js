@@ -179,13 +179,3 @@ function authpump(){
 
 function sv(d,v){gid(d).value=v;}
 
-function encodeHTML(code){
-	code=escape(code);
-	code=code.replace(/\//g,"%2F");
-	code=code.replace(/\?/g,"%3F");
-	code=code.replace(/=/g,"%3D");
-	code=code.replace(/&/g,"%26");
-	code=code.replace(/@/g,"%40");
-	code=code.replace(/\+/g,"%2B");
-	return code;
-}

@@ -76,6 +76,9 @@ function reloadtab(key,title,params,loadfunc,data,opts){
   var rq=xmlHTTPRequestObject();
 
   var scn=document.appsettings.codepage+'?cmd=';
+  
+  if (document.wssid) params=params+'&wssid_='+document.wssid;
+  
   rq.open('POST',scn+params+'&hb='+hb(),true);
   rq.setRequestHeader('Content-Type','text/xml; charset=utf-8;');
   
@@ -136,6 +139,8 @@ function addtab(key,title,params,loadfunc,data,opts){
 
   var rq=xmlHTTPRequestObject();
   var scn=document.appsettings.codepage+'?cmd=';
+  if (document.wssid) params=params+'&wssid_='+document.wssid;
+  
   rq.open('POST',scn+params+'&hb='+hb(),true);
   rq.setRequestHeader('Content-Type','text/xml; charset=utf-8;');
   
