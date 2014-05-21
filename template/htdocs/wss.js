@@ -40,7 +40,8 @@ if (window.WebSocket){
 	}
 	
 	document.websocket.onclose=function(e){
-		console.log('web socket closed');	
+		console.log('web socket closed, restarting in a sec');
+		setTimeout(function(){document.wssid=null;wss_init(userid,wsuri);},1000);	
 	}
 	
 }

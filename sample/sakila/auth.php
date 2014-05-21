@@ -4,7 +4,7 @@
 	comment out the timestamp for permanent login;
 */
 
-define ('GYROSCOPE_VERSION', '4.8');
+define ('GYROSCOPE_VERSION', '5.1');
 define ('GYROSCOPE_PROJECT', 'Sakila Demo');
 
 $saltroot='gyroscope_demo';

@@ -1,3 +1,6 @@
+5.1
+- web socket renegotiation upon disconnection
+
 5.0
 - added wss sync; enable in ws_js.php
 
