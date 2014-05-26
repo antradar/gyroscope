@@ -44,6 +44,8 @@ if (window.WebSocket){
 		setTimeout(function(){document.wssid=null;wss_init(userid,wsuri);},1000);	
 	}
 	
+} else {
+	gid('statusinfo').innerHTML='<a>Warning: WebSocket is not supported by this browser.</a>';	
 }
 }
 

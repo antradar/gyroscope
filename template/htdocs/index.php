@@ -16,6 +16,7 @@ login();
 $user=userinfo();
 
 ?>
+<!doctype html>
 <html>
 <head>
 	<title>Antradar Gyroscope&trade; &nbsp;Starting Point</title>

@@ -5,10 +5,7 @@ include 'connect.php';
 include 'auth.php';
 include 'xss.php';
 
-setcookie('userid',NULL,time()-3600);
-setcookie('login',NULL,time()-3600);
-setcookie('auth',NULL,time()-3600);
-setcookie('groupnames',NULL,time()-3600);
+
 
 $csrfkey=sha1($salt.'csrf'.$_SERVER['REMOTE_ADDR'].date('Y-m-j-g'));
 $csrfkey2=sha1($salt.'csrf'.$_SERVER['REMOTE_ADDR'].date('Y-m-j-g',time()-3600));
@@ -55,6 +52,11 @@ xsscheck();
 	  
 	  die();
   } else $error_message='invalid username or password';
+} else {
+	setcookie('userid',NULL,time()-3600);
+	setcookie('login',NULL,time()-3600);
+	setcookie('auth',NULL,time()-3600);
+	setcookie('groupnames',NULL,time()-3600);	
 }
 ?>
 <html>
