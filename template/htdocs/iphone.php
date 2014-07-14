@@ -132,7 +132,8 @@ function rotate(){
 
 	$agent=$_SERVER['HTTP_USER_AGENT'];
 
-	if (preg_match('/playbook/i',$agent)) $ori_invert=1;
+	if (preg_match('/playbook/i',$agent)||preg_match('/android/i',$agent)) $ori_invert=1;
+	
 	if ($ori_invert){
 		$ori_portrait_backward=-90;
 		$ori_portrait_forward=90;

@@ -71,13 +71,13 @@ function logaction($message,$rawobj=null,$syncobj=null){
 
 	$now=time();
 
-	$query="insert into actionlog(userid,logdate,logmessage,rawobj) values ($userid,'$now','$message','$obj')";
+	$query="insert into ".TABLENAME_ACTIONLOG."(userid,logdate,logmessage,rawobj) values ($userid,'$now','$message','$obj')";
 	
 	if ($syncobj!=''){
 		$sid=$wssid;
 		$rectype=$syncobj['rectype'];
 		$recid=$syncobj['recid']+0;
-		$query="insert into actionlog(userid,logdate,logmessage,rawobj,sid,rectype,recid) values ($userid,'$now','$message','$obj',$sid,'$rectype',$recid)";
+		$query="insert into ".TABLENAME_ACTIONLOG."(userid,logdate,logmessage,rawobj,sid,rectype,recid) values ($userid,'$now','$message','$obj',$sid,'$rectype',$recid)";
 	}
 	sql_query($query,$db);
 }

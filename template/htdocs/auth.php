@@ -4,8 +4,11 @@
 	comment out the timestamp for permanent login;
 */
 
-define ('GYROSCOPE_VERSION', '5.1');
+define ('GYROSCOPE_VERSION', '5.3.1');
 define ('GYROSCOPE_PROJECT', 'Gyroscope Project Template');
+define ('VENDOR_VERSION','');
+define ('VENDOR_INITIAL','');
+define ('VENDOR_NAME','');
 
 $saltroot='gyroscope_demo';
 $salt=$saltroot.$_SERVER['REMOTE_ADDR'].date('Y-m-h');

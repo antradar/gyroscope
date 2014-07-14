@@ -36,10 +36,15 @@ if (window.WebSocket){
 	}
 	
 	document.websocket.onerror=function(e){
+		document.nomoresocket=1;
 		console.log('web socket connection error');	
 	}
 	
 	document.websocket.onclose=function(e){
+		if (document.nomoresocket) {
+			console.log('no more reconnection');
+			return;
+		}
 		console.log('web socket closed, restarting in a sec');
 		setTimeout(function(){document.wssid=null;wss_init(userid,wsuri);},1000);	
 	}

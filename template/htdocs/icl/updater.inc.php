@@ -9,7 +9,7 @@ function updategyroscope(){
 	$devmode=$_SERVER['REMOTE_ADDR']=='127.0.0.1'?1:0;
 	
 	$gateway='https://www.antradar.com/gyroscope_updater.php';
-	$url=$gateway.'?version='.$version.'&devmode='.$devmode.'&project='.urlencode(GYROSCOPE_PROJECT);
+	$url=$gateway.'?version='.$version.'&devmode='.$devmode.'&project='.urlencode(GYROSCOPE_PROJECT).'&vendor='.urlencode(VENDOR_NAME).'&vendorversion='.VENDOR_VERSION;
 	
 		
 	$curl=curl_init($url);

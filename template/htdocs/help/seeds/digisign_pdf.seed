@@ -2,8 +2,8 @@
 
 include_once 'pdf/tcpdf.php';
 
-function pdf#doctype#($lockpdf=0){
-	$#key#=GETVAL('#key#');
+function pdf#doctype#($#key#=null,$lockpdf=0){
+	if (!isset($#key#)) $#key#=GETVAL('#key#');
 	global $db;
 	
 		

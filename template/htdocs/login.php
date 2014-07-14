@@ -27,7 +27,7 @@ xsscheck();
   $raw_login=$_POST['login'];
   $login=str_replace("'",'',$raw_login);
   
-  $query="select * from users where login='$login' and password='$password'";
+  $query="select * from ".TABLENAME_USERS." where login='$login' and password='$password'";
   $rs=sql_query($query,$db);  
   if ($myrow=sql_fetch_array($rs)){
 	  
@@ -93,7 +93,7 @@ body{padding:0;margin:0;background:transparent url(imgs/bgtile.png) repeat;font-
 </div>
 </div></div>	
 
-	<div style="color:#000000;text-align:right;font-size:12px;width:300px;margin:0 auto;padding-top:10px;">Powered by Antradar Gyroscope&trade; <?echo GYROSCOPE_VERSION?></div>
+	<div style="color:#000000;text-align:right;font-size:11px;width:300px;margin:0 auto;padding-top:10px;">Powered by Antradar Gyroscope&trade; <?echo GYROSCOPE_VERSION?><?if (VENDOR_VERSION!='') echo '.'.VENDOR_VERSION;?><?if (VENDOR_NAME) echo ' '.VENDOR_NAME.' Edition';?></div>
 	
 	<script src="nano.js"></script>
 	<script>

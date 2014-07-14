@@ -1,3 +1,17 @@
+5.3.1
+- added basic WSS handshake authentication
+- mobile orientation inversion for andriod devices
+- tablet height adjustment
+- disabled websocket for Samsung Smart TV even if websocket API is supported
+- changed POST encoding from text/xml to text/plain for better debugging
+- enhanced AsyncD interface
+
+5.3
+- extracted actionlog and users tablenames for 3rd party hybrid installation
+
+5.2.1
+- enabled versioning for whitelabeling
+
 5.2
 - warning message in status bar for non-websocket browsers
 - enforcing standard rendering mode

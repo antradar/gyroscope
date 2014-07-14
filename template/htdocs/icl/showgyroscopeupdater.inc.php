@@ -7,7 +7,7 @@ function showgyroscopeupdater(){
 ?>
 <div style="color:#444444;padding:10px 0;">
 	<div style="text-align:right;">
-		powered by Gyroscope <?echo GYROSCOPE_VERSION;?> &nbsp; &nbsp;
+		powered by Gyroscope <?echo GYROSCOPE_VERSION.' '.VENDOR_INITIAL.VENDOR_VERSION;?> &nbsp; &nbsp;
 		<a class="labelbutton" onclick="updategyroscope();">Check updates</a>
 		<?if ($_SERVER['REMOTE_ADDR']=='127.0.0.1'){
 		?>

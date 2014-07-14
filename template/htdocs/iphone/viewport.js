@@ -23,6 +23,7 @@ function scaleall(root){
   var os=root.getElementsByTagName('div'); //AKB#2
   
 	gid('tabviews').style.height=(idh-105)+'px';
+	gid('lvviews').style.height=(idh-105)+'px';
 
   if (document.rowcount){
 		gid('tabtitleshadow').style.height=(25*document.rowcount-1)	  

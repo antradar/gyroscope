@@ -1,6 +1,6 @@
-function #command#($params){
+function #command#($params,$taskid=null){
 	$#keyfield#=$params['#keyfield#'];
 
 	echo "running #command# $#keyfield#\r\n";
-	passthru('hhvm asyncd_#command#.php '.$#keyfield#);
+	passthru('php asyncd_#command#.php '.$#keyfield#.' '.$taskid);
 }
