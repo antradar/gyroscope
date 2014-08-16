@@ -81,6 +81,7 @@ Search: <input class="inpmed" id="actionlog_key" placeholder="Keyword in Action"
 <?}?>
 </div>
 
+<div class="stable">
 <table cellpadding="4">
 <tr>
 	<td style="padding-right:20px;"><b>Time</b></td><td><b>User</b></td><td><b>Action</b></td><td><b>Extra</b></td>
@@ -106,6 +107,8 @@ Search: <input class="inpmed" id="actionlog_key" placeholder="Keyword in Action"
 	}//while
 ?>
 </table>
+</div>
+
 </div>
 <?
 	

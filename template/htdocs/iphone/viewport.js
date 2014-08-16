@@ -127,6 +127,7 @@ function showview(idx,lazy,force){
   }
   gid('lv'+idx).viewloaded=1;
   document.viewindex=idx;
+  if (force&&self.onrotate) onrotate();
 }
 
 function stackview(){ //used by auto-completes

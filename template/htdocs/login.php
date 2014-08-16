@@ -64,7 +64,7 @@ xsscheck();
 	<title>Login</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta http-equiv="refresh" content="1800" />
-	<meta name = "viewport" content = "width = 350, init-scale=1, user-scalable = yes" />
+	<meta name = "viewport" content = "width = device-width, init-scale=1, user-scalable = yes" />
 <style>
 body{padding:0;margin:0;background:transparent url(imgs/bgtile.png) repeat;font-size:13px;font-family:arial,sans-serif;text-align:center;}
 #loginbox__{width:320px;margin:0 auto;background-color:rgba(200,200,200,0.4);margin-top:100px;border-radius:4px;}
@@ -75,7 +75,7 @@ body{padding:0;margin:0;background:transparent url(imgs/bgtile.png) repeat;font-
 <body>
 <div id="loginbox__"><div id="loginbox_">
 <div id="loginbox">
-	<form method="POST" style="padding:20px;margin:0;padding-top:10px;">
+	<form method="POST" style="padding:20px;margin:0;padding-top:10px;" onsubmit="return checkform();">
 	<img src="imgs/logo.png" style="margin:10px 0;">
 	<?if ($error_message!=''){?>
 	<div style="color:#ab0200;font-weight:bold;padding-top:10px;"><?echo $error_message;?></div>
@@ -86,7 +86,7 @@ body{padding:0;margin:0;background:transparent url(imgs/bgtile.png) repeat;font-
 	<input style="width:100%" id="login" type="text" name="login" autocomplete="off"></div>
 	<div>Password:</div>
 	<div style="padding-top:5px;padding-bottom:15px;">
-	<input style="width:100%;" type="password" name="password"></div>
+	<input style="width:100%;" id="password" type="password" name="password"></div>
 	<div style="text-align:center;"><input style="width:100px;" type="submit" value="Sign In"></div>
 	<input name="cfk" value="<?echo $csrfkey;?>" type="hidden">
 	</form>
@@ -97,6 +97,13 @@ body{padding:0;margin:0;background:transparent url(imgs/bgtile.png) repeat;font-
 	
 	<script src="nano.js"></script>
 	<script>
+		function checkform(){
+			if (gid('password').value=='') {
+				gid('password').focus();
+				return false;
+			}
+			return true;
+		}	
 		gid('login').focus();
 	</script>
 </body>

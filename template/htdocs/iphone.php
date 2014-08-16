@@ -125,7 +125,7 @@ function showdeck(){
 function rotate(){
 	
 <?
-	$ori_portrait_backward=0;
+	$ori_portrait_backward=180;
 	$ori_portrait_forward=0;
 	$ori_landscape_backward=-90;
 	$ori_landscape_forward=90;
@@ -133,30 +133,34 @@ function rotate(){
 	$agent=$_SERVER['HTTP_USER_AGENT'];
 
 	if (preg_match('/playbook/i',$agent)||preg_match('/android/i',$agent)) $ori_invert=1;
+	if (preg_match('/mobile/i',$agent)) $ori_invert=0; //do not invert any phones
 	
 	if ($ori_invert){
 		$ori_portrait_backward=-90;
 		$ori_portrait_forward=90;
-		$ori_landscape_backward=0;
+		$ori_landscape_backward=180;
 		$ori_landscape_forward=0;
 	}
 ?>	
-	ori=window.orientation;
-	//if (ori==null) ori=0; //debug
+	var ori=90;
+	if (window.matchMedia){
+		if (window.matchMedia('(orientation: landscape)').matches) ori=<?echo $ori_landscape_forward;?>;
+		else if (window.matchMedia('(orientation: portrait)').matches) ori=<?echo $ori_portrait_forward;?>;
+	}
 	
-	if (ori==null) ori=90;
 	if (window.operamini) ori=0;	
 
 	setTimeout(scrollTo, 0, 0, 1);
 	
 	if (!document.appsettings.cw) document.appsettings.cw=320;
 	if (document.appsettings.cw<document.body.clientWidth) document.appsettings.cw=document.body.clientWidth;
-	
+		
 	var cw=document.appsettings.cw;
+	var vw=document.body.clientWidth;
 	
 	switch(ori){
 	case <?echo $ori_portrait_backward;?>: case <?echo $ori_portrait_forward;?>: 
-		var vw=document.body.clientWidth;
+		
 		//gid('panel2').style.display='block';
 		showdeck();
 		gid('leftview').style.width=vw+'px';
@@ -168,7 +172,7 @@ function rotate(){
 		gid('tabtitleshadow').style.display='none';
 		gid('content').style.width=vw+'px';
 		
-		//ajxcss(self.cssloader,'iphone/portrait.css');
+		if (document.lastori==null||document.lastori!=ori) ajxcss(self.cssloader,'iphone/portrait.css');
 		document.viewheight=vw+30;
 		document.iphone_portrait=1;
 		
@@ -186,12 +190,12 @@ function rotate(){
 		gid('backlist').style.display='none';
 		gid('backlistshadow').style.display='none';
 		
-		gid('tooltitle').style.width='150px';
+		gid('tooltitle').style.width=vw+'px';
 		gid('toollist').style.width=cw-50+'px';
 		gid('tabtitleshadow').style.display='block';
 		gid('content').style.width=cw-155+'px';
 		gid('tabtitles').style.width=cw-155+'px';
-		//ajxcss(self.cssloader,'iphone/landscape.css');
+		if (document.lastori==null||document.lastori!=ori) ajxcss(self.cssloader,'iphone/landscape.css');
 		document.viewheight=210;
 
 		scaleall(document.body);
@@ -201,7 +205,7 @@ function rotate(){
 	break;
 	}
 	
-	
+	document.lastori=ori;
 
 }
 
@@ -215,9 +219,24 @@ function portrait_ignore(ttl){
 
 addtab('welcome','Welcome','wk',null,null,{noclose:true});
 
-window.onorientationchange=rotate;
-rotate();
+function onrotate(){
+	if (document.resizetimer) clearTimeout(document.resizetimer);
+	document.resizetimer=setTimeout(function(){
+		rotate();
+		setTimeout(rotate,500);
+	},100);
+}
+
+addtab('welcome','Welcome','wk',null,null,{noclose:true});
+
+if (typeof(window.onorientationchange)!='object') window.onresize=onrotate;
+else window.onorientationchange=onrotate;
+
+onrotate();
+
 scaleall(document.body);
+
+
 </script>
 <script src="wss.js"></script>
 <script>

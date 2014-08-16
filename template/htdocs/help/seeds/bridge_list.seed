@@ -12,6 +12,7 @@ function list#primaryfield##records#($#primarykey#=null){
 	 $rs=sql_query($query,$db);
 	 
 	 ?>
+	 <div class="stable">
 	 <table class="subtable">
 	 <tr>
 	 	<td><b>#c_record#</b></td>
@@ -59,6 +60,7 @@ function list#primaryfield##records#($#primarykey#=null){
 	 </tr>
 	 
 	 </table>
+	 </div>
 	 <?
 	
 }

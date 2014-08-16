@@ -10,6 +10,7 @@ function list#primaryfield##records#($#primarykey#=null){
 	 $rs=sql_query($query,$db);
 	 
 	 ?>
+	 <div class="stable">
 	 <table class="subtable">
 	 <tr>
 #iterator-fieldlist-tableheader#
@@ -41,6 +42,7 @@ function list#primaryfield##records#($#primarykey#=null){
 	 </tr>
 	 
 	 </table>
+	 </div>
 	 <?
 	
 }

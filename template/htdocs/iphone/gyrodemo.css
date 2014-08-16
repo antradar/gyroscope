@@ -1,4 +1,4 @@
-body,textarea,td{margin:0;padding:0;font-family:verdana, tahoma, arial;font-size:13px;}
+body,textarea,td{margin:0;padding:0;font-family:verdana, tahoma, arial;font-size:13px;-webkit-text-size-adjust:none;}
 a{cursor:pointer;}
 acronym{text-decoration:none;border:none;}
 
@@ -133,35 +133,24 @@ color:#ff2222;
 .inplong.num, .inp.num, .inpmed.num, .inpshort.num{padding-left:0;padding-right:2px;text-align:right;}
 
 .subtable .inplong, .subtable .inp, .subtable .inpmed, .subtable .inpshort{margin-top:2px;}
+.subtable button{white-space:nowrap;}
 
 .listbar{font-size:12px;padding:5px 0;}
 
 input:disabled{color:#000000;}
 
-@media screen and (orientation:portrait){
-	#tooltitle{height:25px;background:transparent url(tbbg.png) repeat top left;border-bottom:solid 1px #6f6e6e;width:320px;text-shadow:0 1px 0 #000000;}
-	#lvviews{height:auto;overflow:visible;}
-	#tabviews{overflow:visible;height:auto;}
-	#content{height:auto;overflow:visible;}
-	.listitem{border-bottom:solid 1px #efefef;padding:10px 0;font-size:16px;color:#696F7F;background:transparent url(rec_hd.gif) no-repeat center right;-webkit-background-size:17px 13px;background-size:17px 13px;}
-	.listitem a{display:block;padding-right:15px;}
-	
-	.listlookup{width:250px;margin-bottom:15px;}
+.stable{overflow:auto;}
+.stable td{padding:0 10px;font-size:11px;}
 
-	.img-mg{width:300px;height:24px;line-height:18px;background-position:-382px -87px;padding-left:20px;}
+.stable::-webkit-scrollbar {height:12px;}
+ 
+.stable::-webkit-scrollbar-track {
+	border-radius: 2px;
+	background:#fcfcfc url('darrow.png') no-repeat center center;
+	background-size:16px 10px;
 }
+ 
+.stable::-webkit-scrollbar-thumb { background-color:rgba(200,200,200,0.2); border-radius:2px;}
 
-@media screen and (orientation:landscape){
-	#tooltitle{height:25px;background:transparent url(msprite.png) no-repeat 0 -1px;width:150px;text-shadow:none;}
-	
-	#lvviews{height:210px;overflow:auto;}
-	#tabviews{overflow:auto;}
-	#content{overflow-x:auto;}
-	
-	.listitem{border-bottom:solid 1px #dedede;padding:5px 0;font-size:13px;color:#000000;background-image:none;}
-	.listitem a{display:inline;}
-	.img-mg{width:120px;padding-left:20px;}
-	
-	.listlookup{width:120px;margin-bottom:10px;}
-}
+
 

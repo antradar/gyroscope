@@ -29,6 +29,7 @@ showtab=function(key,backnav){
   rotate();
   var tabid=gettabid(key);
   if (tabid==-1) return;
+  if (self.onrotate) onrotate();
   currenttab=tabid;
   if (!backnav) document.tabseq.push(key);
   document.viewmode=2;

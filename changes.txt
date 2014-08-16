@@ -1,3 +1,24 @@
+5.5
+- dropped media query in favour of managed rotation styling
+- fixed android chrome keyboard interference
+
+5.4.2
+- unified rotation handling for better device support
+- fixed mobile view tab bar transparency
+- "auto next" on login screen
+
+5.4.1
+- better android PHONE support (rotation inversion, phased out orientation event in favor of mediaquery event)
+- all mobile browsers redirected to iPhone view
+
+5.4
+- added internal scrolling table (stable) for mobile view
+- improved login screen
+- full width single column in mobile portrait mode
+- adaptive column width in mobile landscape mode
+- orientation support for Firefox (Android)
+- fixed rotation code on Chrome (Android)
+
 5.3.1
 - added basic WSS handshake authentication
 - mobile orientation inversion for andriod devices

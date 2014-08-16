@@ -1,11 +1,20 @@
-#tooltitle{height:25px;background:transparent url(msprite.png) no-repeat 0 -1px;width:150px;text-shadow:none;}
+	
+	#tooltitle{height:25px;background:transparent url(msprite.png) no-repeat 0 -1px;width:150px;text-shadow:none;border-bottom:none;}
+	
+	#lvviews{height:210px;overflow:auto;}
+	#tabviews{overflow:auto;}
+	#content{overflow-x:auto;}
+	
+	.listitem{border-bottom:solid 1px #dedede;padding:5px 0;font-size:13px;color:#000000;background-image:none;}
+	.listitem a{display:inline;}
+	.img-mg{width:120px;padding-left:20px;}
+	
+	.listlookup{width:120px;margin-bottom:10px;}
+	
+	.col{float:left;width:40%;margin-right:8%;}
 
-#lvviews{height:210px;overflow:auto;}
-#tabviews{overflow:auto;}
-#content{overflow-x:auto;}
-
-.listitem{border-bottom:solid 1px #dedede;padding:5px 0;font-size:13px;color:#000000;background-image:none;}
-.listitem a{display:inline;}
-
-.listlookup{width:120px;margin-bottom:10px;}
-
+	.inplong{width:95%;}
+	.inp{width:90%;}
+	.inpmed{width:80%;}
+	.inpshort{width:50%;}
+	
