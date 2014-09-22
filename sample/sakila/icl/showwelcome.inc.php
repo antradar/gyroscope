@@ -15,6 +15,23 @@ function showwelcome(){
 		List Views, Detail Views, Lookups, Record Creation, Modification and Deletion, etc. You'll also see some of Gyroscope's latest features
 		such as Conditional Inline Lookup, Identity Locking, Cross Tab Synchronization, More Efficient Tab Reload, Mobile Optimized Layouts and so on. 
 		</p>
+
+	<p>
+	Gyroscope also offers a selection of convenient date/time pickers:
+	</p>
+
+	Date: <input id="datetest" onfocus="pickdate(this,{mini:0});" onkeyup="_pickdate(this,{mini:0});">
+	<?makelookup('datetest',1);?>
+
+	<br><br>
+	Time: <input id="timetest" onfocus="picktime(this,{start:9,end:17,mini:0});">
+	<?makelookup('timetest',1);?>
+
+	<br><br>
+	Date/Time: <input id="datetimetest" onfocus="pickdatetime(this,{start:7,end:20,mini:0});" onkeyup="_pickdatetime(this,{start:7,end:20,mini:0});">
+	<?makelookup('datetimetest',1);?>
+	<br><br>
+
 		Click on an icon to start:<br><br>
 		
 		<a onclick="showview(1,null,1);"><img src="imgs/t.gif" class="img-actors" width="32" height="32"> </a> &nbsp; &nbsp;
@@ -36,10 +53,13 @@ function showwelcome(){
 	</div>
 		
 	<div class="clear"></div>
-	
+
+
+
+
 	<?
-	//	showguide();
 	showgyroscopeupdater();
+	showguide();
 	?>			
 
 	

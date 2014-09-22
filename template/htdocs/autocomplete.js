@@ -42,8 +42,14 @@ picklookup3=function(val,val2,val3){
 
 listlookup=function(d,title,command,mini){
 	if (document.iphone_portrait) mini=1;
+	if (document.hotspot&&!d) d=document.hotspot;
+	if (mini&&!d) return;
+
 	if (mini&&d.id&&gid(d.id+'_lookup')){
-		if (document.hotspot&&document.hotspot.lookupview) document.hotspot.lookupview.style.display='none';
+		if (document.hotspot&&document.hotspot.lookupview) {
+			document.hotspot.lookupview.style.display='none';
+			document.hotspot.lookupview.innerHTML='';
+		}
 		gid(d.id+'_lookup').style.display='block';
 		ajxpgn(d.id+'_lookup_view',document.appsettings.codepage+'?cmd='+command);	
 		d.lookupview=gid(d.id+'_lookup');
@@ -85,20 +91,66 @@ listlookup=function(d,title,command,mini){
 		
 }
 
-pickdate=function(d,def,mini){
+pickdate=function(d,opts,def){
+	var key='';
+	if (d) key=encodeHTML(d.value);
+	else key=def;
+
+	if (!opts) opts={mini:0}
+	if (!opts.mini) opts.mini=0;	
+
+	if (self.portrait_ignore&&!opts.mini) portrait_ignore();
+		
+	listlookup(d,'Calendar','pkd&key='+key+'&mini='+(opts.mini?'1':'0'),opts.mini);
+}
+
+_pickdate=function(d,opts){
+	if (d.timer) clearTimeout(d.timer);
+	var f=function(d){return function(){
+		pickdate(d,null,opts);
+	}}
+	d.timer=setTimeout(f(d,opts),200);
+}
+
+pickdatetime=function(d,opts,def){
 	var key='';
 	if (d) key=encodeHTML(d.value);
 	else key=def;
 	
-	if (self.portrait_ignore&&!mini) portrait_ignore();
-		
-	listlookup(d,'Calendar','pkd&key='+key+'&mini='+(mini?'1':'0'),mini);
+	if (!opts) opts={start:8,end:22,mini:null}
+	if (!opts.mini) opts.mini=null;
+
+	if (self.portrait_ignore&&!opts.mini) portrait_ignore();
+	
+	listlookup(d,'Calendar','pkd&mode=datetime&key='+key+'&hstart='+opts.start+'&hend='+opts.end+'&mini='+(opts.mini?'1':'0'),opts.mini);
 }
 
-_pickdate=function(d,mini){
+_pickdatetime=function(d,opts,def){
 	if (d.timer) clearTimeout(d.timer);
 	var f=function(d){return function(){
-		pickdate(d,null,mini);
+		pickdatetime(d,opts);
 	}}
-	d.timer=setTimeout(f(d),200);
+	d.timer=setTimeout(f(d,opts),200);
 }
+
+picktime=function(d,opts,def){
+	var key='';
+	if (d) key=encodeHTML(d.value);
+	else key=def;
+
+	if (!opts) opts={start:8,end:22,mini:null}
+	if (!opts.mini) opts.mini=null;
+
+	if (self.portrait_ignore) portrait_ignore();
+	
+	listlookup(d,'Calendar','pkd&mode=datetime&nodate=1&key='+key+'&hstart='+opts.start+'&hend='+opts.end+'&mini='+(opts.mini?'1':'0'),opts.mini);
+}
+
+_picktime=function(d,opts,def){
+	if (d.timer) clearTimeout(d.timer);
+	var f=function(d){return function(){
+		picktime(d,null,opts);
+	}}
+	d.timer=setTimeout(f(d,opts),200);
+}
+

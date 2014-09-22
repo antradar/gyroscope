@@ -116,7 +116,8 @@ color:#ff2222;
 .labelbutton:hover{background-color:#000040;}
 
 .minilookup{width:200px;font-size:11px;display:none;position:relative;padding-top:16px;}
-.lookupview{height:120px;width:200px;overflow:auto;border:solid 1px #666666;box-shadow:2px 2px 4px #666666;}
+.lookupview{height:260px;width:200px;overflow:auto;border:solid 1px #666666;box-shadow:2px 2px 4px #666666;}
+.lookupview #timepicker{height:200px;overflow:auto;}
 .minilookup .closer{position:absolute;top:3px;right:5px;}
 .minilookup .listitem {background:none;}
 .minilookup .listitem a{padding:3px 0;margin:0;font-size:11px;display:inline;}
@@ -136,30 +137,6 @@ color:#ff2222;
 .listbar{font-size:12px;padding:5px 0;}
 input:disabled{color:#000000;}
 
-@media screen and (orientation:portrait){
-	#tooltitle{height:25px;background:transparent url(tbbg.png) repeat top left;border-bottom:solid 1px #6f6e6e;width:320px;text-shadow:0 1px 0 #000000;}
-	#lvviews{height:auto;overflow:visible;}
-	#tabviews{overflow:visible;height:auto;}
-	#content{height:auto;overflow:visible;}
-	.listitem{border-bottom:solid 1px #efefef;padding:10px 0;font-size:16px;color:#696F7F;background:transparent url(rec_hd.gif) no-repeat center right;-webkit-background-size:17px 13px;background-size:17px 13px;}
-	.listitem a{display:block;padding-right:15px;}
-	
-	.listlookup{width:250px;margin-bottom:15px;}
-
-	.img-mg{width:300px;height:24px;line-height:18px;background-position:-382px -87px;padding-left:20px;}
-}
-
-@media screen and (orientation:landscape){
-	#tooltitle{height:25px;background:transparent url(msprite.png) no-repeat 0 -1px;width:150px;text-shadow:none;}
-	
-	#lvviews{height:210px;overflow:auto;}
-	#tabviews{overflow:auto;}
-	#content{overflow-x:auto;}
-	
-	.listitem{border-bottom:solid 1px #dedede;padding:5px 0;font-size:13px;color:#000000;background-image:none;}
-	.listitem a{display:inline;}
-	.img-mg{width:120px;padding-left:20px;}
-	
-	.listlookup{width:120px;margin-bottom:10px;}
-}
+.stable{overflow:auto;}
+.stable td{padding:0 10px;}
 

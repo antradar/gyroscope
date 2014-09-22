@@ -35,7 +35,7 @@ function rptactionlog(){
 	$query="select * from ".TABLENAME_ACTIONLOG." left join ".TABLENAME_USERS." on ".TABLENAME_ACTIONLOG.".userid=".TABLENAME_USERS.".userid ";
 
 	if ($key!=''||$opairs!='') {
-		$query.=" where alogid!=0 ";
+		$query.=" where alogid!=0 and logmessage!='' ";
 		if ($key!='') $query.=" and (logmessage like '%$key%' or login like '$key%' or rawobj like '%$key%') ";
 		foreach ($pairs as $pair){
 			$parts=explode('=',$pair);
@@ -47,13 +47,13 @@ function rptactionlog(){
 		}
 
 	}  else {
-		$query.=" where logdate>='$start' and logdate<='$end' ";
+		$query.=" where logmessage!='' and logdate>='$start' and logdate<='$end' ";
 		
-		$q="select logdate from ".TABLENAME_ACTIONLOG." where logdate<'$start' order by logdate desc limit 1";
+		$q="select logdate from ".TABLENAME_ACTIONLOG." where logmessage!='' and logdate<'$start' order by logdate desc limit 1";
 		$rs=sql_query($q,$db);
 		if ($myrow=sql_fetch_array($rs)) $prevday=date('Y-n-j',$myrow['logdate']);
 
-		$q="select logdate from ".TABLENAME_ACTIONLOG." where logdate>'$end' order by logdate limit 1";
+		$q="select logdate from ".TABLENAME_ACTIONLOG." where logmessage!='' and logdate>'$end' order by logdate limit 1";
 		$rs=sql_query($q,$db);
 		if ($myrow=sql_fetch_array($rs)) $nextday=date('Y-n-j',$myrow['logdate']);
 				

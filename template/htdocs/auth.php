@@ -4,7 +4,7 @@
 	comment out the timestamp for permanent login;
 */
 
-define ('GYROSCOPE_VERSION', '5.5');
+define ('GYROSCOPE_VERSION', '5.6.1');
 define ('GYROSCOPE_PROJECT', 'Gyroscope Project Template');
 define ('VENDOR_VERSION','');
 define ('VENDOR_INITIAL','');

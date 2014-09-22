@@ -1,3 +1,10 @@
+5.6.1
+- bug fix multiple time picker in mini view
+- enabled stealth logging for cascading entries and wss notification
+
+5.6
+- date/time and time picker
+
 5.5
 - dropped media query in favour of managed rotation styling
 - fixed android chrome keyboard interference

@@ -117,7 +117,8 @@ border:solid 1px #ffffff;
 .labelbutton:hover{background-color:#000040;}
 
 .minilookup{width:200px;font-size:11px;display:none;position:relative;padding-top:16px;}
-.lookupview{height:120px;width:200px;overflow:auto;border:solid 1px #666666;box-shadow:2px 2px 4px #666666;}
+.lookupview{height:200px;width:200px;overflow:auto;border:solid 1px #666666;box-shadow:2px 2px 4px #666666;}
+.lookupview #timepicker{height:200px;overflow:auto;}
 .minilookup .closer{position:absolute;top:3px;right:5px;line-height:16px;}
 
 .clear{clear:both;}

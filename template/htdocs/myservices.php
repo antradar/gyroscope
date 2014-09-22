@@ -34,6 +34,7 @@ switch($cmd){
   case 'codegen_makecode': include 'help/codegen_makecode.inc.php'; codegen_makecode(); break;  
   
   case 'pkd': include 'icl/lookup.inc.php'; showdatepicker(); break; //lookup
+  case 'showtimepicker'; include 'icl/lookup.inc.php'; showtimepicker(); break;
   case 'pump': include 'icl/utils.inc.php'; authpump(); break; //comment this out to disable authentication
   
   case 'wk': include 'icl/showwelcome.inc.php'; showwelcome(); break;

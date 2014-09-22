@@ -6,6 +6,12 @@ function showwelcome(){
 ?>
 <div class="section">
 	<div class="sectiontitle">Welcome to Antradar Gyroscope</div>
+	
+	<? /* lookup sample
+	<input id="test" onfocus="pickdatetime(this,{mini:1,start:9,end:17});" onkeyup="_pickdatetime(this,{mini:1,start:5,end:17});">
+	<?makelookup('test',1);?>
+	*/?>
+	
 	<?
 		//lazy way to generate a starter screen, but better than nothing
 		

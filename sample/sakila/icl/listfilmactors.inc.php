@@ -6,6 +6,7 @@ function listfilmactors($filmid=null){
 	global $db;
 
 ?>
+<div class="stable">
 <table class="subtable">
 <?		
 	$query="select * from film_actor,actor where film_actor.actor_id=actor.actor_id and film_id=$filmid order by first_name,last_name";
@@ -30,5 +31,6 @@ function listfilmactors($filmid=null){
 	<?makelookup('filmactor_'.$filmid);?>
 </td></tr>
 </table>
+</div>
 <?	
 }

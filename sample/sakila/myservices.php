@@ -1,9 +1,9 @@
 <?
 include 'lb.php';
-
 include 'connect.php';
 include 'auth.php';
 include 'settings.php';
+
 include 'xss.php';
 
 xsscheck();	
@@ -25,7 +25,12 @@ switch($cmd){
 
 //Reports & Audit
   case 'slv0': include 'icl/listreports.inc.php'; listreports(); break;
-  case 'rptactionlog': include 'icl/rptactionlog.inc.php'; rptactionlog(); break;  
+  case 'rptactionlog': include 'icl/rptactionlog.inc.php'; rptactionlog(); break; 
+
+//Codegen
+
+  case 'codegen_makeform': include 'help/codegen_makeform.inc.php'; codegen_makeform(); break;
+  case 'codegen_makecode': include 'help/codegen_makecode.inc.php'; codegen_makecode(); break;   
   	
 //Actors
   case 'slv1': include 'icl/listactors.inc.php'; listactors(); break;
@@ -49,6 +54,7 @@ switch($cmd){
   case 'lookupactor': include 'icl/lookupactor.inc.php'; lookupactor(); break;
     
   case 'pkd': include 'icl/lookup.inc.php'; showdatepicker(); break; //lookup
+  case 'showtimepicker'; include 'icl/lookup.inc.php'; showtimepicker(); break;
   case 'pump': include 'icl/utils.inc.php'; authpump(); break; //comment this out to disable authentication
   
   case 'wk': include 'icl/showwelcome.inc.php'; showwelcome(); break;
