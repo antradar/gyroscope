@@ -15,7 +15,14 @@ setaccountpass=function(){
 		alert('Passwords mismatch');
 		return;
 	}
+	var rq=xmlHTTPRequestObject();
+	rq.open('POST',document.appsettings.fastlane+'?cmd=setaccount',true);
+	rq.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+	rq.onreadystatechange=function(){
+		if (rq.readyState==4){
+			alert(rq.responseText);	
+		}	
+	}
 	
-	var res=ajxb(document.appsettings.codepage+'?cmd=setaccount&oldpass='+oldpass+'&pass='+pass1);
-	alert(res);
+	rq.send('oldpass='+oldpass+'&pass='+pass1);
 }

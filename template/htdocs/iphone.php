@@ -1,7 +1,6 @@
 <?
 include 'lb.php';
 //include 'https.php';
-include 'auth.php';
 include 'settings.php';
 include 'retina.php';
 
@@ -20,7 +19,7 @@ $user=userinfo();
 	<link href='toolbar.css' type='text/css' rel='stylesheet'>
 <style>
 body{font-family:helvetica;}
-.menuitem{padding-left:10px;font-size:20px;height:30px;float:left;margin-right:3px;}
+.menuitem{padding-left:10px;height:30px;float:left;margin-right:3px;}
 .menuitem a, .menuitem a:hover, .menuitem a:visited, .menuitem a:link{
 	display:block;
 	padding-top:3px;
@@ -31,14 +30,15 @@ body{font-family:helvetica;}
 </style>
 
 </head>
-
 <body onload="setTimeout(scrollTo, 0, 0, 1);">
 
-<div style="height:40px;position:fixed;width:100%;z-index:1000;top:0;background-color:#efefef;opacity:0.9"></div>
+<div style="height:40px;position:fixed;width:100%;z-index:1000;top:0;background:#333333;opacity:0.9"></div>
 <div id="toolicons" style="position:fixed;width:100%;z-index:2000;top:0;border-bottom:solid 1px #dedede;">
 
-	<div id="toollist" style="overflow:auto;width:300px;height:35px;"><div style="width:1000px;">
-	
+	<div id="toollist" style="overflow:auto;width:100%;height:35px;"><div style="width:<?echo 50*(count($toolbaritems)+2);?>px;">
+		
+	<div class="menuitem"><a id="speechstart" href=# onclick="speech_startstop(1);return false;" style="display:none;"><img style="" class="img-speechrecog" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
+
 	<?foreach ($toolbaritems as $ti){
 		if ($ti['type']=='break') continue;
 		if ($ti['noiphone']) continue;	
@@ -53,18 +53,18 @@ body{font-family:helvetica;}
 		if (is_numeric($ti['viewindex'])) $action='showview('.$ti['viewindex'].',null,1);';
 		if ($ti['action']!='') $action.=$ti['action'];
 	?>
-	<div class="menuitem"><a href=# onclick="<?echo $action;?>"><img class="<?echo $ti['icon'];?>" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
+	<div class="menuitem"><a href=# onclick="<?echo $action;?>return false;"><img class="<?echo $ti['icon'];?>" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
 	<?}?>
 
 	</div></div>
 		
-	<a href="login.php?from=<?echo $_SERVER['PHP_SELF'];?>" style="position:absolute;top:10px;right:10px;"><img border="0" width="16" height="16" src="imgs/t.gif" class="img-exit"></a>
+	<a href="login.php?from=<?echo $_SERVER['PHP_SELF'];?>" style="position:absolute;top:10px;right:10px;"><img border="0" width="16" height="16" src="imgs/t.gif" class="admin-logout"></a>
 </div><!-- toolicons -->
-<div style="width:100%;height:40px;"></div>
+<div id="pusher" style="width:100%;height:50px;"></div>
 
 <div style="display:none;"><img src="imgs/t.gif"><img src="imgs/hourglass.gif"></div>
-<div id="leftview" style="float:left;width:150px;font-size:20px;margin-right:5px;">
-	<div id="tooltitle" style="width:150px;position:fixed;top:40px;z-index:1000;height:25px;"></div>
+<div id="leftview" style="float:left;margin-left:10px;width:210px;margin-right:10px;">
+	<div id="tooltitle" style="width:150px;position:fixed;top:50px;z-index:1000;height:25px;"></div>
 	<div id="tooltitleshadow" style="width:150px;height:25px;"></div>
 	<div id="lvviews">
 	<?for ($i=0;$i<=$viewcount;$i++){?>
@@ -72,7 +72,7 @@ body{font-family:helvetica;}
 	<?}?>	
 	</div>
 	<div id="lkv" style="height:100%;">
-		<div id="lkvtitle"><a id="lkvt"></a><img id="lkvx" src="imgs/t.gif" onclick="hidelookup();" width="25" height="25"></div>
+		<div id="lkvtitle"><a id="lkvt"></a><img id="lkvx" src="imgs/t.gif" onclick="hidelookup();" width="30" height="24"></div>
 		<div id="lkvc"></div>
 	</div>
 	
@@ -88,9 +88,17 @@ body{font-family:helvetica;}
 	<div id="tabviews" style=""></div>
 	<div id="statusinfo" style="display:none;"></div>
 </div>
-<div id="rotate_indicator" style="display:none;position:fixed;width:100px;height:100px;top:220px;left:110px;z-index:3000;background-image:url(iphone/flip.png);"></div>
+<div id="rotate_indicator" style="display:none;position:fixed;width:100px;height:100px;top:220px;left:110px;z-index:3000;"></div>
+<div id="fsmask"></div>
+<div id="fstitlebar">
+	<div id="fstitle"></div>
+	<a id="fsclose" onclick="closefs();"><img width="10" height="10" class="img-closeall" src="imgs/t.gif"></a>
+</div>
+<div id="fsview"></div>
+
+
 <script>
-document.appsettings={codepage:'<?echo $codepage;?>',viewcount:<?echo $viewcount;?>};
+document.appsettings={codepage:'<?echo $codepage;?>',fastlane:'<?echo $fastlane;?>', viewcount:<?echo $viewcount;?>};
 </script>
 <script src="nano.js"></script>
 <script src="iphone/tabs.js"></script>
@@ -164,11 +172,14 @@ function rotate(){
 		//gid('panel2').style.display='block';
 		showdeck();
 		gid('leftview').style.width=vw+'px';
+		gid('leftview').style.marginLeft=0;
 		gid('backlist').style.display='block';
 		gid('backlistshadow').style.display='block';
-		gid('leftview').style.fontSize='25px';
+		//gid('leftview').style.fontSize='25px';
 		gid('tooltitle').style.width=vw+'px';
-		gid('toollist').style.width='280px';
+		gid('tooltitle').style.top='40px';
+		gid('pusher').style.height='40px';
+		gid('toollist').style.width=document.documentElement.clientWidth-50+'px';//'280px';
 		gid('tabtitleshadow').style.display='none';
 		gid('content').style.width=vw+'px';
 		
@@ -183,18 +194,21 @@ function rotate(){
 	case <?echo $ori_landscape_forward;?>: case <?echo $ori_landscape_backward;?>: 
 		//gid('panel2').style.display='none';
 		gid('leftview').style.display='block';
-		gid('leftview').style.width='150px';
-		gid('leftview').style.fontSize='14px';
+		gid('leftview').style.width='210px';
+		gid('leftview').style.marginLeft='10px';
+		//gid('leftview').style.fontSize='14px';
 		gid('tabtitles').style.display='block';
 		gid('content').style.display='block';
 		gid('backlist').style.display='none';
 		gid('backlistshadow').style.display='none';
 		
 		gid('tooltitle').style.width=vw+'px';
+		gid('tooltitle').style.top='50px';
+		gid('pusher').style.height='50px';
 		gid('toollist').style.width=cw-50+'px';
 		gid('tabtitleshadow').style.display='block';
-		gid('content').style.width=cw-155+'px';
-		gid('tabtitles').style.width=cw-155+'px';
+		gid('content').style.width=cw-230+'px';
+		gid('tabtitles').style.width=cw-230+'px';
 		if (document.lastori==null||document.lastori!=ori) ajxcss(self.cssloader,'iphone/landscape.css');
 		document.viewheight=210;
 
@@ -242,5 +256,7 @@ scaleall(document.body);
 <script>
 <?include 'ws_js.php';?>
 </script>
+
+<script src="speech.js"></script>
 </body>
 </html>

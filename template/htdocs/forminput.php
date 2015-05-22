@@ -1,8 +1,9 @@
 <?php
 
-function GETVAL($key){ $val=$_GET[$key]; if (!is_numeric($val)) die('invalid parameter'); return $val;}
-function noapos($val){$val=str_replace("\\'","'",$val);$val=str_replace("\'","'",$val);$val=str_replace("'","\'",$val); return $val;}
+function GETVAL($key){ $val=$_GET[$key]; if (!is_numeric($val)){header('apperror:invalid parameter '.$key);die('invalid parameter '.$key);} return $val;}
+function noapos($val){if (is_callable('sql_escape')) return sql_escape($val); return addslashes($val);}
 function GETSTR($key){ $val=decode_unicode_url($_GET[$key]); return noapos($val); }
+function POSTSTR($key){ $val=decode_unicode_url($_POST[$key]); return noapos($val); }
 
 function decode_unicode_url($str){
 	$str=utf8_encode($str);
@@ -38,7 +39,7 @@ function date2stamp($date,$hour=0,$min=0,$sec=0){
 
 function makelookup($id,$fullscale=0){
 ?>
-<div class="minilookup" id="<?echo $id;?>_lookup"><a id="<?echo $id;?>_lookup_closer" class="labelbutton closer" onclick="gid('<?echo $id;?>_lookup').style.display='none';gid('<?echo $id;?>_lookup').innerHTML='';">close</a>
+<div class="minilookup" id="<?echo $id;?>_lookup"><a id="<?echo $id;?>_lookup_closer" class="labelbutton closer" onclick="gid('<?echo $id;?>_lookup').style.display='none';">close</a>
 <div id="<?echo $id;?>_lookup_view" class="lookupview"<?if ($fullscale) echo ' style="height:auto;overflow:normal;"';?>></div></div>
 <?	
 }
@@ -52,6 +53,8 @@ function cancelpickup($id){
 function logaction($message,$rawobj=null,$syncobj=null){
 	$user=userinfo();
 	$userid=$user['userid']+0;
+	$logname=$user['login'];
+	$logname=str_replace("'",'',$logname);
 	global $db;
 	$wssid=$_GET['wssid_']+0;
 
@@ -71,13 +74,13 @@ function logaction($message,$rawobj=null,$syncobj=null){
 
 	$now=time();
 
-	$query="insert into ".TABLENAME_ACTIONLOG."(userid,logdate,logmessage,rawobj) values ($userid,'$now','$message','$obj')";
+	$query="insert into ".TABLENAME_ACTIONLOG."(userid,logname,logdate,logmessage,rawobj) values ($userid,'$logname','$now','$message','$obj')";
 	
 	if ($syncobj!=''){
 		$sid=$wssid;
 		$rectype=$syncobj['rectype'];
 		$recid=$syncobj['recid']+0;
-		$query="insert into ".TABLENAME_ACTIONLOG."(userid,logdate,logmessage,rawobj,sid,rectype,recid) values ($userid,'$now','$message','$obj',$sid,'$rectype',$recid)";
+		$query="insert into ".TABLENAME_ACTIONLOG."(userid,logname,logdate,logmessage,rawobj,sid,rectype,recid) values ($userid,'$logname','$now','$message','$obj',$sid,'$rectype',$recid)";
 	}
 	sql_query($query,$db);
 }

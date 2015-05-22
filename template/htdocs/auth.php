@@ -4,7 +4,7 @@
 	comment out the timestamp for permanent login;
 */
 
-define ('GYROSCOPE_VERSION', '5.6.1');
+define ('GYROSCOPE_VERSION', '6.5');
 define ('GYROSCOPE_PROJECT', 'Gyroscope Project Template');
 define ('VENDOR_VERSION','');
 define ('VENDOR_INITIAL','');
@@ -14,6 +14,11 @@ $saltroot='gyroscope_demo';
 $salt=$saltroot.$_SERVER['REMOTE_ADDR'].date('Y-m-h');
 
 $dbsalt='gyroscope_demo'; //do not change this once it's set
+
+
+if (!is_callable(hash_equals)){
+	function hash_equals($a,$b){return $a==$b;}	
+}
 
 /*
 	this function should be called at the very beginning of the page
@@ -36,7 +41,7 @@ function login($silent=false){
 	
 	$auth_=md5($salt.$userid.$groupnames.$salt.$login);
 	$auth2_=md5($salt2.$userid.$groupnames.$salt2.$login);
-	if (!isset($login)||($auth!=$auth_&&$auth!=$auth2_)||$auth=='') {
+	if (!isset($login)||(!hash_equals($auth,$auth_)&&!hash_equals($auth,$auth2_))||$auth=='') {
 		$tail='';
 		if (isset($_GET['keynav'])) $tail='?keynav';
 		if (!$silent) header('location: login.php?from='.$_SERVER['PHP_SELF'].$tail); else {header('HTTP/1.0 403 Forbidden');header('X-STATUS: 403');}
@@ -51,7 +56,7 @@ function login($silent=false){
 
 function userinfo(){
 	global $salt;
-	global $salt2;
+	global $saltroot;
 	global $_COOKIE;
 	
 	//check cookie authenticity
@@ -59,10 +64,12 @@ function userinfo(){
 	$userid=$_COOKIE['userid'];
 	$auth=$_COOKIE['auth'];
 	$groupnames=$_COOKIE['groupnames'];
+	$salt2=$saltroot.$_SERVER['REMOTE_ADDR'].date('Y-m-h',time()-3600);
 	
 	$auth_=md5($salt.$userid.$groupnames.$salt.$login);
+	$auth2_=md5($salt2.$userid.$groupnames.$salt2.$login);
 	
-	if (!isset($login)||($auth!=$auth_&&$auth2!=$auth_)) return array('groups'=>array());
+	if (!isset($login)||(!hash_equals($auth,$auth_)&&!hash_equals($auth,$auth2_))) return array('groups'=>array());
 	
 	$info=array(
 		'login'=>$_COOKIE['login'],

@@ -13,7 +13,7 @@ function wss_init(){
 	$wssecret='asdf'; //sync this value in wss.php
 	$wsskey=md5($wssecret.date('H'));
 		
-	$wsuri='ws://localhost:9000/wss.php?WSS['.$wsskey.']';
+	$wsuri='ws://localhost:9000/wss.php?WSS'.$wsskey.'=';
 
 ?>
 wss_init('<?echo $userid;?>','<?echo $wsuri;?>');

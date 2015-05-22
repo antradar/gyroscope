@@ -16,19 +16,19 @@ function show#record#($#primarykey#=null){
 	<div class="sectiontitle"><?echo $#dispfield#;?></div>
 
 	<div class="col">
-	<table>
+
 
 #iterator-fieldlist-detailview#
 	
-	<tr><td></td><td>
+	<div class="inputrow">
 		<button onclick="update#record#(<?echo $#primarykey#;?>);">Update</button>
 
 		&nbsp; &nbsp;
-		<button onclick="del#record#(<?echo $#primarykey#;?>);" style="color:#ffffff;background-color:#ab0200;">Delete</button>
+		<button class="warn" onclick="del#record#(<?echo $#primarykey#;?>);">Delete</button>
 
 
-	</td></tr>
-	</table>
+	</div>
+
 
 	</div>
 	<div class="col">

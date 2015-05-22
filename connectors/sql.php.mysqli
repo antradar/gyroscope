@@ -6,6 +6,10 @@
 
 $SQL_ENGINE="MySQLi";
 
+function sql_escape($str){
+	return mysqli_real_escape_string($str);	
+}
+
 function sql_get_db($dbhost,$dbsource,$dbuser,$dbpass){
 	$db=mysqli_connect($dbhost,$dbuser,$dbpass,$dbsource);
 	return $db;

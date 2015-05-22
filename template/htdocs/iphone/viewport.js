@@ -3,7 +3,7 @@ function ch(){
 	//if (document.viewheight) return document.viewheight+105;
 	
   var w=cw();
-  if (w*0.85<=485) return 270/0.85;
+  //if (w*0.85<=485) return 270/0.85;
   if (window.innerHeight) return window.innerHeight;
   if (document.documentElement.clientHeight) return document.documentElement.clientHeight;
   return document.body.clientHeight;
@@ -26,11 +26,19 @@ function scaleall(root){
 	gid('lvviews').style.height=(idh-105)+'px';
 
   if (document.rowcount){
-		gid('tabtitleshadow').style.height=(25*document.rowcount-1)	  
+		gid('tabtitleshadow').style.height=(28*document.rowcount-1)	  
   }
 
   gid('lkv').style.height=(idh-145)+'px';
   gid('lkvc').style.height=(idh-150)+'px';
+  
+  gid('fsmask').style.width=idw+'px';
+  gid('fsmask').style.height=idh+'px';
+
+  gid('fsview').style.width=idw-20+'px';
+  gid('fsview').style.height=idh-50+'px';
+  
+  gid('fstitlebar').style.width=idw-20+'px';  
   	   
 }
 
@@ -39,7 +47,7 @@ function showlookup(){
 	if (lkv.showing) return;
 	
 	lkv.showing=true;
-	lkv.style.left='0px';		
+	lkv.style.left='10px';		
 }
 
 function hidelookup(){
@@ -47,7 +55,29 @@ function hidelookup(){
 	if (!lkv.showing) return;
 	
 	lkv.showing=null;
-	lkv.style.left='-220px';	
+	lkv.style.left='-230px';	
+}
+
+function showfs(func){
+	gid('fsmask').style.display='block';
+	gid('fstitlebar').style.display='block';
+	gid('fsview').style.display='block';
+	gid('fsclose').closeaction=func;
+}
+
+function closefs(){
+	gid('fsview').style.display='none';
+	gid('fstitlebar').style.display='none';
+	gid('fsmask').style.display='none';
+
+	if (gid('fsclose').closeaction) gid('fsclose').closeaction();	
+}
+
+function loadfs(title,cmd,func){
+	ajxpgn('fsview',document.appsettings.codepage+'?cmd='+cmd,1,0,'',function(){
+		gid('fstitle').innerHTML=title;	
+		showfs(func);	
+	});
 }
 
 hinttimer=-2;
@@ -62,12 +92,12 @@ function autosize(){
   if (tabcount>0){
   var t=document.tabtitles[tabcount-1];
 //wrapping
-      document.rowcount=(t.offsetTop-6)/24+1;
+      document.rowcount=(t.offsetTop-6)/28+1;
       if (!document.lastrowcount) document.lastrowcount=1;
       if (document.lastrowcount!=document.rowcount) {
-        gid('tabtitles').style.height=30*document.rowcount+'px';
-        gid('tabviews').style.top=80+30*(document.rowcount-1)+'px';
-        gid('tabviews').setAttribute("scale:ch",105+30*(document.rowcount-1));
+        gid('tabtitles').style.height=28*document.rowcount+'px';
+        gid('tabviews').style.top=80+28*(document.rowcount-1)+'px';
+        gid('tabviews').setAttribute("scale:ch",105+28*(document.rowcount-1));
       }
       scaleall(document.body);
       document.lastrowcount=document.rowcount;

@@ -17,24 +17,25 @@ show#record#=function(#primarykey#,title){
 add#record#=function(#masterkey#){
 	var suffix='new';
 #iterator-fieldlist-getrecordjs#
-	valid=1;
+	var valid=1;
+	var offender=null;
 	
 	//delete the excessive validate rules
 #iterator-fieldlist-validate#
 	//add more validation rules
 	
-	if (!valid) return;
+	if (!valid) {
+		if (offender&&offender.focus) offender.focus();
+		return;
+	}
 
 #iterator-fieldlist-realvalues#	
 	var params=[];
 	params.push('#masterkey#='+#masterkey#);	
 #iterator-fieldlist-parampush#
 	
-	reloadtab('#record#_new',null,'add#record#&'+params.join('&'),function(req){
-		var #primarykey#=req.responseText;
-		if (parseInt(#primarykey#,10)!=#primarykey#) return;
-		
-		reloadtab('#record#_new',o#dispfield#.value,'show#record#&#primarykey#='+#primarykey#,null,null,{newkey:'#record#_'+#primarykey#});
+	reloadtab('#record#_new',o#dispfield#.value,'add#record#&'+params.join('&'),function(req){
+		var #primarykey#=req.getResponseHeader('newrecid');		
 		ajxpgn('#master_record##records#_'+#masterkey#,document.appsettings.codepage+'?cmd=list#master_record##records#&#masterkey#='+#masterkey#);
 		reloadview(#viewindex#,'#record#list');
 	});
@@ -45,13 +46,17 @@ update#record#=function(#primarykey#,#masterkey#){
 	var suffix=#primarykey#;
 #iterator-fieldlist-getrecordjs#
 	
-	valid=1;
+	var valid=1;
+	var offender=null;
 	
 	//delete the excessive validate rules
 #iterator-fieldlist-validate#
 	//add more validation rules
 	
-	if (!valid) return;
+	if (!valid) {
+		if (offender&&offender.focus) offender.focus();
+		return;
+	}
 	
 #iterator-fieldlist-realvalues#	
 	var params=[];

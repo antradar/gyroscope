@@ -7,6 +7,8 @@ function showwelcome(){
 <div class="section">
 	<div class="sectiontitle">Welcome to Antradar Gyroscope</div>
 	
+
+	
 	<? /* lookup sample
 	<input id="test" onfocus="pickdatetime(this,{mini:1,start:9,end:17});" onkeyup="_pickdatetime(this,{mini:1,start:5,end:17});">
 	<?makelookup('test',1);?>
@@ -56,8 +58,8 @@ function auto_welcome(){
 	if ($ti['action']!='') $action.=$ti['action'];
 	
 ?>	
-	<div style="margin-bottom:10px;">
-	<a onclick="<?echo $action;?>"><img style="vertical-align:middle;margin-right:5px;" class="<?echo $ti['icon'];?>" src="imgs/t.gif" width="32" height="32"> <span style="vertical-align:middle;"><?echo $ti['title'];?></span></a>
+	<div style="margin-bottom:15px;">
+	<a onclick="<?echo $action;?>"><img style="vertical-align:middle;margin-right:5px;" class="<?echo $ti['icon'];?>-light" src="imgs/t.gif" width="32" height="32"> <span style="vertical-align:middle;"><?echo $ti['title'];?></span></a>
 	</div>
 	
 <?}//foreach

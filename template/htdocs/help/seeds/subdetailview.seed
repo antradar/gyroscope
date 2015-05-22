@@ -19,27 +19,27 @@ function show#record#($#primarykey#=null){
 <div class="section">
 	<div class="sectiontitle"><?echo $#dispfield#;?></div>
 	<div class="col">
-	<table>
-	<tr>
-		<td class="formlabel">#c_master_record#:</td>
-		<td>
+
+	<div class="inputrow">
+		<div class="formlabel">#c_master_record#:
+		
 			<a onclick="ajxjs(self.show#master_record#,'#master_records#.js');show#master_record#(<?echo $#masterkey#?>,'<?echo $dbrecordtitle;?>');">
 			<u><?echo $recordtitle;?></u>
 			</a>
-		</td>
-	</tr>
+		</div>
+	</div>
 	
 #iterator-fieldlist-detailview#
 	
-	<tr><td></td><td>
+	<div class="inputrow">
 		<button onclick="update#record#(<?echo $#primarykey#;?>,<?echo $#foreignkey#;?>);">Update</button>
 
 		&nbsp; &nbsp;
-		<button onclick="del#record#(<?echo $#primarykey#;?>,<?echo $#foreignkey#;?>);" style="color:#ffffff;background-color:#ab0200;">Delete</button>
+		<button class="warn" onclick="del#record#(<?echo $#primarykey#;?>,<?echo $#foreignkey#;?>);">Delete</button>
 
 
-	</td></tr>
-	</table>
+	</div>
+
 	</div>
 	<div class="col">
 

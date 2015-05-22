@@ -36,7 +36,7 @@ function rptactionlog(){
 
 	if ($key!=''||$opairs!='') {
 		$query.=" where alogid!=0 and logmessage!='' ";
-		if ($key!='') $query.=" and (logmessage like '%$key%' or login like '$key%' or rawobj like '%$key%') ";
+		if ($key!='') $query.=" and (logmessage like '%$key%' or login like '$key%' or rawobj like '%$key%' or logname like '%$key%') ";
 		foreach ($pairs as $pair){
 			$parts=explode('=',$pair);
 			$k=trim($parts[0]);
@@ -66,8 +66,8 @@ function rptactionlog(){
 ?>
 <div class="section">
 <form onsubmit="reloadtab('actionlog',null,'rptactionlog&key='+encodeHTML(gid('actionlog_key').value)+'&pairs='+encodeHTML(gid('actionlog_pairs').value));return false;">
-Search: <input class="inpmed" id="actionlog_key" placeholder="Keyword in Action" value="<?echo stripslashes($key);?>"> 
-	<input class="inpmed" id="actionlog_pairs" placeholder="Advanced Pattern" value="<?echo stripslashes($opairs);?>"> <input type="submit" value="Go">
+Search: <input id="actionlog_key" placeholder="Keyword in Action" value="<?echo stripslashes($key);?>"> 
+	<input id="actionlog_pairs" placeholder="Advanced Pattern" value="<?echo stripslashes($opairs);?>"> <input type="submit" value="Go">
 </form>
 
 <div style="padding:20px 30px;font-size:16px;<?if ($key!=''||$opairs!='') echo 'display:none;';?>">
@@ -89,9 +89,10 @@ Search: <input class="inpmed" id="actionlog_key" placeholder="Keyword in Action"
 <?
 	while ($myrow=sql_fetch_array($rs)){
 		$username=$myrow['login'];
+		if ($username=='') $username='<span style="color:#ee6666;">'.$myrow['logname'].'</span>';
 		$logdate=$myrow['logdate'];
-		$dlogdate=date('h:i:s',$logdate);
-		if ($key!=''||$opairs!='') $dlogdate=date('Y-n-j h:i:s',$logdate);
+		$dlogdate=date('H:i:s',$logdate);
+		if ($key!=''||$opairs!='') $dlogdate=date('Y-n-j H:i:s',$logdate);
 		$logmessage=$myrow['logmessage'];
 		$extra='';
 		$obj=json_decode($myrow['rawobj'],1);

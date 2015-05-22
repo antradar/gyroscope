@@ -18,5 +18,5 @@ function updategyroscope(){
 	curl_setopt($curl,CURLOPT_SSL_VERIFYHOST,0);
 	$res=curl_exec($curl);
 		
-	echo $res;
+	echo '<div class="section">'.$res.'</div>';
 }

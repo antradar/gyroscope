@@ -1,6 +1,106 @@
+6.5
+- resolved conflict between fastlane support and authenticated tool bar icons
+- password requests sent via POST to bypass server logging
+
+6.4
+- Virtual account support
+- Auth chaining and sync bug fix (2.9)
+- codegen improvements
+- nano.js: intercepting header errors
+- toolbar sprite fixes
+- "Tab" key trapper for textarea editors
+
+6.3.2
+- auth display fix
+- codegen: upload limit
+
+6.3.1
+- codegen: "first offender" validation
+- improved forminput filtering
+
+6.3
+- improved list search for better device compatibility
+- use hash_equals to prevent time-attack
+
+6.2
+- added a light version of faceted nav template
+
+6.1.2
+- added SQLSRV for SQL SERVER
+
+6.1.1
+- codegen: paging fix
+
+6.1
+
+- more extensive fastlane support
+- updated WSS key format (Firefox URL encoding fix)
+
+
+6.0
+- notion of "fastlane" (experimental)
+- introduced SVN merge boundary
+- improved custom MCE templates
+
+5.9.9
+- refined fullscreen loader
+- media library template fixes
+- updater uses fullscreen view
+- mobile fixes
+
+
+5.9.8
+- *fullscreen loader
+
+5.9.7
+- *user manager
+
+5.9.6
+- new Gyroscope logo
+- moved Antradar logo to updater view
+
+5.9.5
+- improved password initialization screen
+
+
+5.9.4
+- force password change before login
+- RTE: custom layout template support
+
+5.9.3
+- replaced tabulated layout with list layout in detail editors
+- mobile lookup bug fix
+
+5.9.2
+- mobile optimization
+- graphics update
+
+
+5.9.1
+- *reloadtab: server override (dropped "newkey" tab option)
+- legacy browser fixes
+- misc. codegen fixes
+
+5.9
+- *new skin (desktop only)
+- improved tab system
+
+5.8
+- added speech recognition
+- added status bar icons
+
+5.7
+- added close-all tab mode
+
+5.6.2
+- view port dimension fix
+- show main icons with text labels
+- panel update indicator
+
 5.6.1
 - bug fix multiple time picker in mini view
 - enabled stealth logging for cascading entries and wss notification
+- login screen optimized for mobile devices
 
 5.6
 - date/time and time picker

@@ -28,8 +28,8 @@ function list#master_record##records#($#masterkey#=null){
 	?>
 	</table>
 	<div class="listbar">
-		<a onclick="ajxjs(self.show#record#,'#records#.js');addtab('#record#_new','New #c_record#','new#record#&#masterkey#=<?echo $#masterkey#;?>');">
-			<img src="imgs/t.gif" class="img-addrec" width="12" height="12"> add a new #record#
+		<a class="recadder" onclick="ajxjs(self.show#record#,'#records#.js');addtab('#record#_new','New #c_record#','new#record#&#masterkey#=<?echo $#masterkey#;?>');">
+			<img src="imgs/t.gif" class="img-addrec" width="18" height="18"> add a new #record#
 		</a>	
 	</div>
 	<?

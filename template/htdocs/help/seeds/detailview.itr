@@ -1,4 +1,4 @@
-	<tr>
-		<td class="formlabel">#fld1#:</td>
-		<td><input class="inp" id="#fld0#_<?echo $#primarykey#;?>" value="<?echo htmlspecialchars($#fld0#);?>"></td>
-	</tr>
+	<div class="inputrow">
+		<div class="formlabel">#fld1#:</div>
+		<input class="inpmed" id="#fld0#_<?echo $#primarykey#;?>" value="<?echo htmlspecialchars($#fld0#);?>">
+	</div>

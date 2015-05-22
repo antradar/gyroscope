@@ -4,6 +4,9 @@ set_time_limit(0);
 function embed#primaryfield##record#uploader(){
 	
 	$#primarykey#=GETVAL('#primarykey#');
+
+	$dmaxsize=20;
+	$maxsize=1024*1024*$dmaxsize; //20 MB
 	
 	global $db;
 	global $codepage;
@@ -31,22 +34,28 @@ function embed#primaryfield##record#uploader(){
 			$realfn=$realfns;//[$idx];
 			$filesize=$filesizes;//[$idx];
 			$filetype=$filetypes;//[$idx];
+			$error=$file['error'];
 			
 #iterator-fieldlist-postvars#
-			$query="insert into #lookuptable#(#primarykey#,#iterator-fieldlist-sqlflist#) values ($#primarykey#,#iterator-fieldlist-sqlvlist#)";
-			$rs=sql_query($query,$db);
-			$#lookupkey#=sql_insert_id($db,$rs);
+
+			if ($error==2){
+				$msg='File too large';
+			} else {
+				$query="insert into #lookuptable#(#primarykey#,#iterator-fieldlist-sqlflist#) values ($#primarykey#,#iterator-fieldlist-sqlvlist#)";
+				$rs=sql_query($query,$db);
+				$#lookupkey#=sql_insert_id($db,$rs);
+				logaction("uploaded $ofn to <u>$#primarydispfield#</u>",array('#primarykey#'=>$#primarykey#,'file'=>$ofn,'#primarydispfield#'=>$#primarydispfield#,'#lookupkey#'=>$#lookupkey#));
 			
 						
-			logaction("uploaded $ofn to <u>$#primarydispfield#</u>",array('#primarykey#'=>$#primarykey#,'file'=>$ofn,'#primarydispfield#'=>$#primarydispfield#,'#lookupkey#'=>$#lookupkey#));
 								
-			$dst=$path.$#lookupkey#.'#fileext#';
+				$dst=$path.$#lookupkey#.'#fileext#';
 			
-			if (!move_uploaded_file($realfn,$dst)){
-				$msg.='\n'."Failed to upload file as $dst";
-				logaction("error uploading $ofn",array('#lookupkey#'=>$#lookupkey#,'#primarykey#'=>$#primarykey#));
-				$query="delete from #lookuptable# where #lookupkey#=$#lookupkey#";
-				sql_query($query,$db);
+				if (!move_uploaded_file($realfn,$dst)){
+					$msg.='\n'."Failed to upload file as $dst";
+					logaction("error uploading $ofn",array('#lookupkey#'=>$#lookupkey#,'#primarykey#'=>$#primarykey#));
+					$query="delete from #lookuptable# where #lookupkey#=$#lookupkey#";
+					sql_query($query,$db);
+				}
 			}
 					
 		
@@ -66,10 +75,11 @@ function embed#primaryfield##record#uploader(){
 
 <form id="uploader" style="padding:0;margin:0;" method="POST" enctype="multipart/form-data">
 <input type="hidden" name="#primarykey#" value="<?echo $#primarykey#;?>">
+<input type="hidden" name="MAX_FILE_SIZE" value="<?echo $maxsize;?>">
 <input type="file" name="file" id="file">
 #iterator-fieldlist-formfields#
 <br>
-<button onclick="upload(this);return false;" id="uploadbutton">Upload</button>
+<button onclick="upload(this);return false;" id="uploadbutton">Upload</button> (max <?echo $dmaxsize;?>MB)
 </form>
 <div id="cancel" style="display:none;font-size:12px;padding:5px 0;"><a href=# onclick="cancelupload();return false;"><u>cancel</u></a></div>
 <div id="debug" style="font-size:11px;"></div>
@@ -93,6 +103,13 @@ function upload(d){
 	}
 
 	var fd=new FormData();
+
+	var fsize=0;
+	if (file.files[0]&&file.files[0].size) fsize=file.files[0].size;
+	if (fsize><?echo $maxsize;?>){
+		alert('File too large. Upload a smaller file');
+		return;	
+	}
 	
 	fd.append('file',file.files[0]);
 	
@@ -108,7 +125,10 @@ function upload(d){
 	rq.onload=function(e){
 		gid('debug').innerHTML='uploaded';
 		gid('cancel').style.display='none';
-		if (e.target.responseText!=null&&e.target.responseText!='') alert(e.target.responseText);
+		if (e.target.responseText!=null&&e.target.responseText!='') {
+			alert(e.target.responseText);
+			return;
+		}
 		parent.list#primaryfield##records#(<?echo $#primarykey#;?>,'');
 	}
 

@@ -6,12 +6,12 @@ function new#record#(){
 <div class="section">
 	<div class="sectiontitle">New #c_record#</div>
 	
-	<table>
+	
 #iterator-fieldlist-newrecord#		
-		<tr><td></td><td>
+		<div class="inputrow">
 			<button onclick="add#record#();">Add #c_record#</button>
-		</td></tr>
-	</table>
+		</div>
+
 </div>
 <?
 

@@ -12,6 +12,8 @@ $csrfkey2=sha1($salt.'csrf'.$_SERVER['REMOTE_ADDR'].date('Y-m-j-g',time()-3600))
 
 $error_message='';
 
+$passreset=0;
+
 if ($_POST['password']||$_POST['login']){
 xsscheck();
 
@@ -27,11 +29,32 @@ xsscheck();
   $raw_login=$_POST['login'];
   $login=str_replace("'",'',$raw_login);
   
-  $query="select * from ".TABLENAME_USERS." where login='$login' and password='$password'";
+  $query="select * from ".TABLENAME_USERS." where login='$login' and password='$password' and active=1 and virtual=0";
   $rs=sql_query($query,$db);  
   if ($myrow=sql_fetch_array($rs)){
 	  
 	  $userid=$myrow['userid'];
+	  $passreset=$myrow['passreset'];
+
+	if ($_POST['passreset']){
+		$op=$_POST['password'];
+		$np=$_POST['newpassword'];
+		$np2=$_POST['newpassword2'];
+		if ($np!=$np2||$op==$np||trim($np)==''){
+			if ($np==$op) $error_message='new password must be different';
+			if ($np!=$np2) $error_message='new passwords mismatch';
+			if (trim($np)=='') $error_message='you must specify a new password';
+		} else {
+			$newpass=md5($dbsalt.$np);
+			$query="update users set password='$newpass', passreset=0 where userid=$userid";
+			sql_query($query,$db);
+			$passreset=0;	
+		}	  
+	}
+		  	  	  
+	  if ($passreset){
+
+	  } else {
 	  
 	  $groupnames=$myrow['groupnames'];
 	  $auth=md5($salt.$userid.$groupnames.$salt.$raw_login);
@@ -51,6 +74,7 @@ xsscheck();
 	  } else header('Location:index.php');
 	  
 	  die();
+  	}
   } else $error_message='invalid username or password';
 } else {
 	setcookie('userid',NULL,time()-3600);
@@ -64,36 +88,65 @@ xsscheck();
 	<title>Login</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta http-equiv="refresh" content="1800" />
-	<meta name = "viewport" content = "width = device-width, init-scale=1, user-scalable = yes" />
+	<meta name = "viewport" content = "width = device-width, init-scale=1, user-scalable=0" />
 <style>
 body{padding:0;margin:0;background:transparent url(imgs/bgtile.png) repeat;font-size:13px;font-family:arial,sans-serif;text-align:center;}
 #loginbox__{width:320px;margin:0 auto;background-color:rgba(200,200,200,0.4);margin-top:100px;border-radius:4px;}
 #loginbox_{padding:10px;}
 #loginbox{background-color:#FFFFFF;text-align:left;}
+.powered{color:#000000;text-align:right;font-size:12px;width:320px;margin:0 auto;padding-top:10px;}
+#loginbutton{width:140px;-webkit-appearance: none;}
+
+@media screen and (max-width:400px){
+	#loginbox__,.powered{width:90%;}
+	#loginbox__{margin-top:50px;}
+}
+
+@media screen and (max-width:300px){
+	#loginbutton{width:auto;padding-left:5px;padding-right:5px;}
+}
+
+@media screen and (max-width:260px){
+	.powered{text-align:center;}
+	.powered span{display:block;padding-top:3px;}
+}
 </style>
 </head>
 <body>
 <div id="loginbox__"><div id="loginbox_">
 <div id="loginbox">
 	<form method="POST" style="padding:20px;margin:0;padding-top:10px;" onsubmit="return checkform();">
-	<img src="imgs/logo.png" style="margin:10px 0;">
+	<img src="imgs/logo.png" style="margin:10px 0;width:100%;">
 	<?if ($error_message!=''){?>
 	<div style="color:#ab0200;font-weight:bold;padding-top:10px;"><?echo $error_message;?></div>
 	<?}?>
 	
-	<div style="padding-top:10px;">Username:</div>
+	<div style="padding-top:10px;">Username: <?if ($passreset){?><b><?echo stripslashes($_POST['login']);?></b> &nbsp; <a href="<?echo $_SERVER['PHP_SELF'];?>"><em>switch user</em></a><?}?></div>
 	<div style="padding-top:5px;padding-bottom:10px;">
-	<input style="width:100%" id="login" type="text" name="login" autocomplete="off"></div>
+	<input style="width:100%;<?if ($passreset) echo 'display:none;';?>" id="login" type="text" name="login" autocomplete="off" <?if ($passreset) echo 'readonly';?> value="<?if ($passreset) echo stripslashes($_POST['login']);?>"></div>
 	<div>Password:</div>
 	<div style="padding-top:5px;padding-bottom:15px;">
 	<input style="width:100%;" id="password" type="password" name="password"></div>
-	<div style="text-align:center;"><input style="width:100px;" type="submit" value="Sign In"></div>
+
+	<?if ($passreset){?>
+	<div>New Password:</div>
+	<div style="padding-top:5px;padding-bottom:15px;">
+	<input style="width:100%;" id="password" type="password" name="newpassword"></div>
+		
+	<div>Confirm New Password:</div>
+	<div style="padding-top:5px;padding-bottom:15px;">
+	<input style="width:100%;" id="password" type="password" name="newpassword2"></div>
+	<input type="hidden" name="passreset" value="1">
+	<?}?>
+	
+	<div style="text-align:center;"><input id="loginbutton" type="submit" value="<?echo $passreset?'Update Password':'Sign In';?>"></div>
 	<input name="cfk" value="<?echo $csrfkey;?>" type="hidden">
 	</form>
+	&nbsp;
 </div>
 </div></div>	
 
-	<div style="color:#000000;text-align:right;font-size:11px;width:300px;margin:0 auto;padding-top:10px;">Powered by Antradar Gyroscope&trade; <?echo GYROSCOPE_VERSION?><?if (VENDOR_VERSION!='') echo '.'.VENDOR_VERSION;?><?if (VENDOR_NAME) echo ' '.VENDOR_NAME.' Edition';?></div>
+	<div class="powered">Powered by Antradar Gyroscope&trade; <?echo GYROSCOPE_VERSION?><?if (VENDOR_VERSION!='') echo '.'.VENDOR_VERSION;?><?if (VENDOR_NAME) echo ' '.VENDOR_NAME.' Edition';?></div>
 	
 	<script src="nano.js"></script>
 	<script>
@@ -103,8 +156,12 @@ body{padding:0;margin:0;background:transparent url(imgs/bgtile.png) repeat;font-
 				return false;
 			}
 			return true;
-		}	
+		}
+		<?if ($passreset){?>
+		gid('password').focus();
+		<?}else{?>	
 		gid('login').focus();
+		<?}?>
 	</script>
 </body>
 </html>

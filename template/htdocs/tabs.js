@@ -1,12 +1,14 @@
-tabcount=0;
+document.tabcount=0;
 document.tabviews=[];
 document.tabkeys=[];
 document.tabtitles=[];
 
-currenttab=-1;
+document.currenttab=-1;
+document.flashcolor='#ffffc0';
+
 gettabid=function(key){
   var i;
-  for (i=0;i<tabcount;i++) if (document.tabkeys[i]==key) return i;
+  for (i=0;i<document.tabcount;i++) if (document.tabkeys[i]==key) return i;
   
   return -1;	
 }
@@ -17,7 +19,7 @@ showtab=function(key){
   var tabid=gettabid(key);
   if (tabid==-1) return;
   
-  currenttab=tabid;
+  document.currenttab=tabid;
 
   if (!document.tabhistory) document.tabhistory=[];
   
@@ -26,25 +28,24 @@ showtab=function(key){
   
   if (lasttab!=key) document.tabhistory.push(key);
   
-  for (i=0;i<tabcount;i++){
+  for (i=0;i<document.tabcount;i++){
 	  if (i==tabid) continue;
 	  document.tabviews[i].style.display='none';
 	  document.tabtitles[i].className='dulltab';
   }	
   document.tabviews[tabid].style.display='block';
   document.tabtitles[tabid].className='activetab';
-
 //wrapping
-  var t=document.tabtitles[tabcount-1];
+  var t=document.tabtitles[document.tabcount-1];
   var topmargin=0; //change this if changing tab style
 
-      document.rowcount=(t.offsetTop-topmargin)/24+1;
+      document.rowcount=(t.offsetTop-topmargin)/38+1;
       if (!document.lastrowcount) document.lastrowcount=1;
       if (document.lastrowcount!=document.rowcount) {
-        gid('tabtitles').style.height=30*document.rowcount+'px';
-        gid('tabviews').style.top=80+30*(document.rowcount-1)+'px';
+        gid('tabtitles').style.height=38*document.rowcount+'px';
+        gid('tabviews').style.top=122+38*(document.rowcount-1)+'px';
         //gid('tabviews').setAttribute("scale:ch",105+30*(document.rowcount-1));
-		gid('tabviews').scalech=105+30*(document.rowcount-1);
+		gid('tabviews').scalech=147+38*(document.rowcount-1);
         scaleall(document.body);
       }
       document.lastrowcount=document.rowcount;
@@ -76,31 +77,17 @@ function reloadtab(key,title,params,loadfunc,data,opts){
   var rq=xmlHTTPRequestObject();
 
   var scn=document.appsettings.codepage+'?cmd=';
+  if (opts&&opts.fastlane) scn=document.appsettings.fastlane+'?cmd=';
   
   if (document.wssid) params=params+'&wssid_='+document.wssid;
   
   rq.open('POST',scn+params+'&hb='+hb(),true);
-  rq.setRequestHeader('Content-Type','text/plain; charset=utf-8;');
+  rq.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
   
 	var ct=document.tabviews[tabid];
 	ct.slowtimer=setTimeout(function(){ct.innerHTML='<image src="imgs/hourglass.gif" style="margin:5px;">';},800);
 
-	if (opts!=null&&opts.newkey){
-		if (document.tabhistory){
-			for (i=0;i<tabcount;i++) if (document.tabkeys[i]==opts.newkey) {console.warn('key collision; new key ignored');opts.newkey=key;}
-			
-			for (var i=0;i<document.tabhistory.length;i++){
-				if (document.tabhistory[i]==key) document.tabhistory[i]=opts.newkey;
-			}
-			
-			key=opts.newkey;	    
-		}
-	}
 	
-	var tabhtml="<nobr><a class=\"tt\" onclick=\"showtab('"+key+"');\">"+title+"</a><a onclick=\"closetab('"+key+"')\"><span class=\"tabclose\"></span></a></nobr>";
-	if (opts!=null&&opts.noclose) tabhtml="<nobr><a class=\"tt\" onclick=\"showtab('"+key+"');\">"+title+"</a><span class=\"noclose\"></span></nobr>";
-	if (title) document.tabtitles[tabid].innerHTML=tabhtml;
-	if (opts!=null&&opts.newkey) {document.tabkeys[tabid]=opts.newkey;showtab(opts.newkey);}
     
   rq.onreadystatechange=function(){
     if (rq.readyState==4){
@@ -113,9 +100,42 @@ function reloadtab(key,title,params,loadfunc,data,opts){
 		  	window.location.href='login.php';
 		    return;
       }
-	    
+	   
+    document.tabtitles[tabid].tablock=null;
+      
+	var apperror=rq.getResponseHeader('apperror');
+	if (apperror!=null&&apperror!=''){
+		alert('Error: '+apperror);
+		
+		return;	
+	}
+	
+	var newkey=rq.getResponseHeader('newkey');
+
+	if (newkey!=null&&newkey!='') {
+		document.tabkeys[tabid]=newkey;
+		
+		if (document.tabhistory){
+			for (i=0;i<document.tabcount;i++) if (document.tabkeys[i]==key) {console.warn('key collision; new key ignored');newkey=key;}
+			
+			for (var i=0;i<document.tabhistory.length;i++){
+				if (document.tabhistory[i]==key) document.tabhistory[i]=newkey;
+			}
+		}
+		key=newkey;
+		
+	}  
+	
+	var newtitle=rq.getResponseHeader('newtitle');
+	if (newtitle!=null&&newtitle!=''){
+		title=newtitle;	
+	}	       
+	
+	var tabhtml="<nobr><a class=\"tt\" onclick=\"showtab('"+key+"');\">"+title+"</a><a onclick=\"closetab('"+key+"')\"><span class=\"tabclose\"></span></a></nobr>";
+	if (opts!=null&&opts.noclose) tabhtml="<nobr><a class=\"tt\" onclick=\"showtab('"+key+"');\">"+title+"</a><span class=\"noclose\"></span></nobr>";
+	if (title) document.tabtitles[tabid].innerHTML=tabhtml;
+	
       document.tabviews[tabid].innerHTML=rq.responseText;
-      document.tabtitles[tabid].tablock=null;
       if (loadfunc!=null) loadfunc(rq);
 	}
   }
@@ -129,7 +149,8 @@ function addtab(key,title,params,loadfunc,data,opts){
   if (document.tablock!=null) return;
   document.tablock=true;
   
-  for (i=0;i<tabcount;i++) {
+  for (i=0;i<document.tabcount;i++) {
+
 	if (document.tabkeys[i]==key) {
         showtab(key);
         document.tablock=null;
@@ -137,12 +158,18 @@ function addtab(key,title,params,loadfunc,data,opts){
 	}
   }
 
+
+
+  gid('tabviews').style.background=document.flashcolor;
+  setTimeout(function(){gid('tabviews').style.background='#ffffff';},500);      
+
   var rq=xmlHTTPRequestObject();
   var scn=document.appsettings.codepage+'?cmd=';
+  if (opts&&opts.fastlane) scn=document.appsettings.fastlane+'?cmd=';
   if (document.wssid) params=params+'&wssid_='+document.wssid;
   
   rq.open('POST',scn+params+'&hb='+hb(),true);
-  rq.setRequestHeader('Content-Type','text/plain; charset=utf-8;');
+  rq.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
   
   var c=document.createElement('div');
   c.style.display='none';
@@ -155,15 +182,19 @@ function addtab(key,title,params,loadfunc,data,opts){
   var t=document.createElement('span');
   var tabhtml="<nobr><a class=\"tt\" onclick=\"showtab('"+key+"');\">"+title+"</a><a onclick=\"closetab('"+key+"')\"><span class=\"tabclose\"></span></a></nobr>";
   if (opts!=null&&opts.noclose) tabhtml="<nobr><a class=\"tt\" onclick=\"showtab('"+key+"');\">"+title+"</a><span class=\"noclose\"></span></nobr>";
+  if (opts!=null&&opts.closeall) tabhtml="<nobr><a title=\"close all tabs\" onclick=\"resettabs('"+key+"');\" class=\"closeall\"></a><a class=\"tt\" style=\"padding-left:1px;\" onclick=\"showtab('"+key+"');\">"+title+"</a><span class=\"noclose\"></span></nobr>";
+  
   t.innerHTML=tabhtml;
   gid('tabtitles').appendChild(t);
   gid('tabviews').appendChild(c);
 
-  document.tabviews[tabcount]=c;
-  document.tabtitles[tabcount]=t;
-  document.tabkeys[tabcount]=key;
-  tabcount++;
+  document.tabviews[document.tabcount]=c;
+  document.tabtitles[document.tabcount]=t;
+  document.tabkeys[document.tabcount]=key;
+  document.tabcount++;
   showtab(key);
+  
+  if (document.tabcount>2&&gid('closeall')) gid('closeall').style.display='block';  
     
   rq.onreadystatechange=function(){
     if (rq.readyState==4){
@@ -176,11 +207,37 @@ function addtab(key,title,params,loadfunc,data,opts){
       }
       c.innerHTML='<input id="rightview_'+key+'" style="position:absolute;top:-60px;left:0;" title='+encodeHTML(title)+'>'+rq.responseText;
 
-      if (loadfunc!=null) loadfunc(rq);
       document.tablock=null;
+      if (loadfunc!=null) loadfunc(rq);
+      
     }
   }
   rq.send(data);
+}
+
+function resettabs(key){
+	if (!confirm('Are you sure you want to close all the tabs?')) return;
+	if (gid('closeall')) gid('closeall').style.display='none';
+	
+	var tabid=gettabid(key);
+	for (var i=0;i<document.tabcount;i++){
+		if (tabid==i) continue;
+				
+		if (document.tabtitles[i]!=null) gid('tabtitles').removeChild(document.tabtitles[i]);
+		if (document.tabviews[i]!=null) gid('tabviews').removeChild(document.tabviews[i]);
+		
+		document.tabtitles[i]=null;
+		document.tabviews[i]=null;
+		document.tabkeys[i]=null;
+	}
+	
+	document.tabcount=1;
+	document.currenttab=tabid;
+	
+	document.tabhistory=[];	
+	
+	showtab(key);
+	
 }
 
 closetab=function(key){
@@ -189,21 +246,25 @@ closetab=function(key){
     
   gid('tabtitles').removeChild(document.tabtitles[tabid]);
   gid('tabviews').removeChild(document.tabviews[tabid]);
+  document.tabtitles[tabid]=null;
+  document.tabviews[tabid]=null;  
 
   var i;
-  for (i=tabid;i<tabcount-1;i++){
+  for (i=tabid;i<document.tabcount-1;i++){
 	  document.tabtitles[i]=document.tabtitles[i+1];
 	  document.tabviews[i]=document.tabviews[i+1];
 	  document.tabkeys[i]=document.tabkeys[i+1];	  
   }
-  tabcount--;
+  document.tabcount--;
+  
+  if (document.tabcount<=2&&gid('closeall')) gid('closeall').style.display='none';
   
 	if (document.tabhistory){
 		for (var i=0;i<document.tabhistory.length;i++) if (document.tabhistory[i]==key) document.tabhistory[i]=null;
 	}
 		
-	if (currenttab==tabid) {
-		currenttab=0;
+	if (document.currenttab==tabid) {
+		document.currenttab=0;
 		var lasttab=null;
 		while (lasttab==null&&document.tabhistory.length>0){
 			lasttab=document.tabhistory.pop();	
@@ -215,8 +276,8 @@ closetab=function(key){
 		}
 	}
 	
-	if (tabcount==0) {currenttab=-1; return;}
-	showtab(document.tabkeys[currenttab]);	
+	if (document.tabcount==0) {document.currenttab=-1; return;}
+	showtab(document.tabkeys[document.currenttab]);	
 }
 
 function showhelp(topic,title){

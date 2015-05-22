@@ -50,7 +50,7 @@ if (window.WebSocket){
 	}
 	
 } else {
-	gid('statusinfo').innerHTML='<a>Warning: WebSocket is not supported by this browser.</a>';	
+	if (gid('wsswarn')) gid('wsswarn').style.display='inline';
 }
 }
 
@@ -59,7 +59,7 @@ function wss_markchanges(rectype,recid,corrected){
 	var fgcolor='#ab0200';
 	var bgcolor='#ffffcc';
 	if (corrected) {
-		fgcolor='#ffffff';
+		fgcolor='#000000';
 		bgcolor='transparent';
 	}
 	

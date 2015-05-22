@@ -1,0 +1,68 @@
+<?
+// Gyroscope
+// Common SQL Interface
+// Microsoft SQL Server (SQLSRV) implementation
+// (c) Antradar Software 1995-2015
+
+$SQL_ENGINE="SQLSRV";
+
+function sql_get_db($dbhost,$dbsource,$dbuser=null,$dbpass=null){
+	$config=array('Database'=>$dbsource);
+	if (isset($dbuser)) $config['UID']=$dbuser;
+	if (isset($dbpass)) $config['PWD']=$dbpass;
+
+	$db=sqlsrv_connect($dbhost,$config);
+	return $db;
+}
+
+function sql_query($query,$db){
+	$rs=sqlsrv_query($db,$query);
+	if (!$rs) {
+		$errors=sqlsrv_errors();
+		$message=$errors[0]['message'];
+		echo "sql_error: <u>".$query.'</u> '.$message;
+	}
+	return $rs;
+}
+
+function sql_fetch_array($rs){
+	return sqlsrv_fetch_array($rs);
+}
+
+function sql_fetch_assoc($rs){
+	return sqlsrv_fetch_array($rs,SQLSRV_FETCH_ASSOC);
+}
+
+function sql_insert_id($db,$rs=null){
+	$query="select @@IDENTITY";
+	$rs=sql_query($query,$db);
+	$myrow=sql_fetch_array($rs);
+	return $myrow[0];	
+}
+
+function sql_affected_rows($db,$rs){
+	return sqlsrv_rows_affected($db);
+}
+
+function sql_begin_transaction(){
+	die("sql.php: not implemented!");
+}
+
+function sql_commit(){
+	die("sql.php: not implemented!");
+}
+
+function sql_rollback(){
+	die("sql.php: not implemented!");
+}
+
+
+/* Sample Use
+$db=sql_get_db("PT-PC\SQLEXPRESS","SQLLHDB");
+$query="select top 5 * from CUSTOMER";
+$rs=sql_query($query,$db);
+echo sql_affected_rows($db)." rows affected <br>";
+while ($myrow=sql_fetch_assoc($rs)){
+	echo '<pre>'; print_r($myrow); echo '</pre>';
+}
+*/

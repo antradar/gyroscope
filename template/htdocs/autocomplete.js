@@ -12,6 +12,8 @@ picklookup=function(val,val2){
 					v2c.innerHTML='<a class="labelbutton" onclick="cancelpickup(\''+document.hotspot.id+'\');">edit</a>';
 			}
 		}
+		if (gid(document.hotspot.id+'_lookup')) gid(document.hotspot.id+'_lookup').style.display='none';
+		hidelookup();
 	}
 }
 
@@ -35,7 +37,8 @@ picklookup3=function(val,val2,val3){
 					v2c.innerHTML='<a class="labelbutton" onclick="cancelpickup(\''+document.hotspot.id+'\');">edit</a>';
 			}
 		}
-		
+		if (gid(document.hotspot.id+'_lookup')) gid(document.hotspot.id+'_lookup').style.display='none';
+		hidelookup();
 	}
 }
 
@@ -44,15 +47,17 @@ listlookup=function(d,title,command,mini){
 	if (document.iphone_portrait) mini=1;
 	if (document.hotspot&&!d) d=document.hotspot;
 	if (mini&&!d) return;
-
+	
 	if (mini&&d.id&&gid(d.id+'_lookup')){
+		if (document.hotspot&&gid(document.hotspot.id)) gid(document.hotspot.id+'_lookup').style.display='none';
 		if (document.hotspot&&document.hotspot.lookupview) {
 			document.hotspot.lookupview.style.display='none';
 			document.hotspot.lookupview.innerHTML='';
 		}
 		gid(d.id+'_lookup').style.display='block';
+		gid(d.id+'_lookup_view').style.display='block';
 		ajxpgn(d.id+'_lookup_view',document.appsettings.codepage+'?cmd='+command);	
-		d.lookupview=gid(d.id+'_lookup');
+		d.lookupview=gid(d.id+'_lookup_view');
 		
 		document.hotspot=d;
 		return;	
@@ -72,7 +77,7 @@ listlookup=function(d,title,command,mini){
 	
 	if (gid('lkv')){
 		gid('lkvt').innerHTML=title;
-		ajxpgn('lkvc',document.appsettings.codepage+'?cmd='+command,true,true,'<input style="position:absolute;top:-60px;left:0;" id="lvtab_lookup">',showlookup);
+		ajxpgn('lkvc',document.appsettings.codepage+'?cmd='+command,true,true,'',showlookup);
 	} else {	
 		var view;
 		gid('tooltitle').innerHTML='<a>'+title+'</a>';
@@ -84,7 +89,7 @@ listlookup=function(d,title,command,mini){
 			showview(1);
 		}
 		
-		ajxpgn('lv'+view,document.appsettings.codepage+'?cmd='+command,true,true,'<input style="position:absolute;top:-60px;left:0;" id="lvtab_'+view+'">');
+		ajxpgn('lv'+view,document.appsettings.codepage+'?cmd='+command,true,true,'');
 		
 	}	
 	
@@ -153,4 +158,53 @@ _picktime=function(d,opts,def){
 	}}
 	d.timer=setTimeout(f(d,opts),200);
 }
+
+
+//hook this event on textarea::onfocus
+
+filterkeys=function(d){
+	if (d.onkeydown!=null) return;
+	d.onkeydown=function(e){
+		var keycode;
+		if (e) keycode=e.keyCode; else keycode=event.keyCode;
+		if (keycode==9) {
+			var start=d.selectionStart;
+			var end=d.selectionEnd;
+			if (start==null){
+				if (document.selection){
+					var r=document.selection.createRange();
+					if (r==null) return 0;
+					var re = d.createTextRange();
+					var rc = re.duplicate();
+					re.moveToBookmark(r.getBookmark());
+					rc.setEndPoint('EndToStart',re);
+					start=rc.text.length;
+					var lastchar=d.value.substring(start,start+1).replace(/\s/g,'');
+					if (lastchar=='') start=start+2;
+					end=start;
+				}
+			}
+						
+			if (start!=null){
+				var val=d.value;
+				d.value=val.substring(0,start)+"\t"+val.substring(end);
+			}
+			
+			d.focus();
+			if (d.selectionStart) d.setSelectionRange(start+1,start+1);
+			return false;	
+		}
+	}	
+}
+
+// svn merge boundary 80dd22a0883aaa1f8cd09b09e81bdd9b - 
+
+
+// svn merge boundary bed99e5db57749f375e738c1c0258047 - 
+
+
+// svn merge boundary 182eb2eb0c3b7d16cf92c0972fe64bcc - 
+
+
+// svn merge boundary 4d373b247a04253ee05a972964f7a7f3 -
 

@@ -31,7 +31,7 @@ if ($desc!=''){
 	$c=file_get_contents($fn);
 	$obj=json_decode(file_get_contents($fn),1) or die('error parsing form config file');
 
-	$defindex=1;
+	$defindex=2;
 	foreach ($toolbaritems as $mi){if ($defindex<=$mi['viewindex']) $defindex=$mi['viewindex']+1;}
 	
 ?>

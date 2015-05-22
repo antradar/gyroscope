@@ -1,0 +1,136 @@
+<?php
+
+function #record#_countfield($fieldname,$limit=null){
+	global $db;
+	
+	$filters=#record#_makefilters();
+		
+	$query="select count(#tablename#.#primarykey#) as c, $fieldname from #tablename# ";
+		
+	$query.=" where #tablename#.#primarykey#!=0 ";
+
+	$query.=#record#_sqlfilters();
+	$query.=" group by $fieldname ";
+	
+	if ($limit!=null) $query.=" order by c desc limit $limit ";
+	else $query.=" order by $fieldname ";
+			
+	$rs=sql_query($query,$db);
+	$counts=array();
+	
+	while ($myrow=sql_fetch_array($rs)){
+		$c=$myrow['c'];
+		if ($c<=0) continue;
+		$key=$myrow[$fieldname];
+		if (trim($key)=='') continue;
+		$counts[$key]=$c;	
+	}
+	return $counts;	
+	
+}
+
+function #record#_sqlfilters(){
+	$filters='';
+	$key=GETSTR('key');
+	if ($key!='') $filters.=" and (#searchquery#) ";
+	
+#iterator-dimlist-dimlist#		
+	
+	return $filters;
+}
+
+function #record#_makefilters(){
+	$filters=array();
+
+#iterator-dimlist-navget#		
+		
+	return $filters;
+}
+
+function #record#_strfilters($filters){
+	
+	$filter='';
+	foreach ($filters as $key=>$val){
+		if (is_array($val)) foreach ($val as $k=>$v) $filter.='&'.$key.'['.$k.']=1';
+		else $filter.="&$key=".urlencode($val);
+
+	}
+	
+		
+	return $filter;
+}
+
+function #record#_shownav($title,$fieldname,$multi=null){
+	
+	$basefilters=#record#_makefilters();
+
+	
+	if (isset($basefilters[$fieldname])&&!$multi){
+		$myfilters=$basefilters;
+		unset($myfilters[$fieldname]);
+		$filter=#record#_strfilters($myfilters);
+?>
+<h3><?echo $title;?></h3>
+<a href=# onclick="ajxpgn('#record#list',document.appsettings.codepage+'?cmd=slv#viewindex#&mode=embed&key='+encodeHTML(gid('#record#key').value)+'<?echo $filter;?>');return false;">[x]</a> <?echo #record#_dispname($fieldname,$basefilters[$fieldname]);?>
+<?		
+		return;
+	}
+
+// end inline breadcrumb
+
+	$counts=#record#_countfield($fieldname);
+	if (count($counts)<=0) return;
+?>
+<h3><?echo $title;?></h3>
+<?	
+	$basefilters=#record#_makefilters();
+	//echo '~';print_r($basefilters);echo '~';
+	
+	foreach ($counts as $key=>$count){
+		$dispname=#record#_dispname($fieldname,$key);
+		$myfilters=$basefilters;
+		if ($multi){
+			if (!is_array($myfilters[$multi])) $myfilters[$multi]=array();
+			$myfilters[$multi][$key]=1;
+			if ($basefilters[$multi][$key]) unset($myfilters[$multi][$key]);
+		} else $myfilters[$fieldname]=$key;
+		$filters=#record#_strfilters($myfilters);
+		//echo '<pre>';print_r($filters);echo '</pre>';
+		/*
+		todo: use your container ids for navigation, breadcrumb and record list
+		*/
+		
+		?>
+<div>
+		<?
+		if ($multi){
+	?>		
+		<input <?if ($basefilters[$multi][$key]) echo 'checked';?> type="checkbox" href=# onclick="setfilter('nav','bc','list','ajaxnav.php','<?echo $filters;?>');return false;"> 
+	<?		
+		}
+
+?>
+	<a href=# onclick="ajxpgn('#record#list',document.appsettings.codepage+'?cmd=slv#viewindex#&mode=embed&key='+encodeHTML(gid('#record#key').value)+'<?echo $filters;?>');return false;"><?echo $dispname;?></a> 
+	<?
+	if (!$multi||!$basefilters[$multi][$key]||true){ //remove true to hide refinement count for selected multi fields
+	?>
+	<em>(<?echo $count;?>)</em>
+	<?}?>
+</div>
+<?
+	}
+}
+
+function #record#_dispname($fieldname,$key){
+	global $db;
+	
+	switch ($fieldname){
+		/*
+		todo: add field value to field name mapping
+		*/
+		default: return $key;
+	}	
+}
+
+
+

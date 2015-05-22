@@ -1,1 +1,1 @@
-	if (!valstr(o#fld0#)) valid=0;
+	if (!valstr(o#fld0#)) {valid=0; offender=offender||o#fld0#;}

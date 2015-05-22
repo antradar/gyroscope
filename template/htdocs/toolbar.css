@@ -2,6 +2,20 @@
 use toolbar.psp to generate toolbar.gif
 */
 
-.img-big1{background:transparent url(imgs/toolbar.gif) no-repeat 0 0;} /* 32x32 */
-.img-big2{background:transparent url(imgs/toolbar.gif) no-repeat -32px 0;}
-.img-reports{background:transparent url(imgs/toolbar.gif) no-repeat -64px 0;}
+.admin-logout{background:transparent url(imgs/toolbar.gif) no-repeat 0 0;}	
+.admin-settings{background:transparent url(imgs/toolbar.gif) no-repeat 0 -16px;}	
+.admin-user{background:transparent url(imgs/toolbar.gif) no-repeat -16px -16px;}
+.img-addrec{background:transparent url(imgs/toolbar.gif) no-repeat -32px -32px;}	
+
+.img-del{border:none;background:transparent url(imgs/toolbar.gif) no-repeat -52px -32px;width:12px;height:12px;vertical-align:middle;}
+.img-save{border:none;background:transparent url(imgs/toolbar.gif) no-repeat -52px -52px;width:12px;height:12px;vertical-align:middle;}
+.img-tick{border:none;background:transparent url(imgs/toolbar.gif) no-repeat -32px -53px;width:12px;height:12px;vertical-align:middle;}
+.img-xls{border:none;background:transparent url(imgs/toolbar.gif) no-repeat -64px -52px;width:12px;height:12px;vertical-align:middle;}
+
+.img-closeall{background:transparent url(imgs/toolbar.gif) no-repeat -21px -1px;vertical-align:middle;margin-right:4px;}
+
+.img-reports{background:transparent url(imgs/toolbar.gif) no-repeat -224px 0;}
+.img-reports-light{background:transparent url(imgs/toolbar.gif) no-repeat -224px -32px;}
+
+.img-speechrecog{background:transparent url(imgs/toolbar.gif) no-repeat -128px 0;}
+

@@ -1,5 +1,7 @@
 <?php
 
+include 'icl/show#record#.inc.php';
+
 function add#record#(){
 	
 #iterator-fieldlist-servervars#	
@@ -7,9 +9,16 @@ function add#record#(){
 	
 	$query="insert into #tablename# (#iterator-fieldlist-sqlflist#) values (#iterator-fieldlist-sqlvlist#) ";
 	$rs=sql_query($query,$db);
-	$#primarykey#=sql_insert_id($db,$rs);
+	$#primarykey#=sql_insert_id($db,$rs)+0;
 
+	if (!$#primarykey#) {
+		header('apperror:Error creating #c_record# record');die();
+	}
+	
 	logaction("added #c_record# #$#primarykey# <u>$#dispfield#</u>",array('#primarykey#'=>$#primarykey#,'#dispfield#'=>"$#dispfield#"));
 	
-	echo $#primarykey#; die();
+	header('newrecid:'.$#primarykey#);
+	header('newkey:#record#_'.$#primarykey#);
+	
+	show#record#($#primarykey#);
 }

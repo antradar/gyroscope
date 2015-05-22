@@ -1,5 +1,5 @@
-	
-	#tooltitle{height:25px;background:transparent url(msprite.png) no-repeat 0 -1px;width:150px;text-shadow:none;border-bottom:none;}
+	body{background:#f2f2f2;}
+	#tooltitle{height:24px;background:#f2f2f2 url(msprite.png) no-repeat 0 0;width:150px;text-shadow:none;border-bottom:none;}
 	
 	#lvviews{height:210px;overflow:auto;}
 	#tabviews{overflow:auto;}
@@ -7,7 +7,6 @@
 	
 	.listitem{border-bottom:solid 1px #dedede;padding:5px 0;font-size:13px;color:#000000;background-image:none;}
 	.listitem a{display:inline;}
-	.img-mg{width:120px;padding-left:20px;}
 	
 	.listlookup{width:120px;margin-bottom:10px;}
 	
@@ -17,4 +16,11 @@
 	.inp{width:90%;}
 	.inpmed{width:80%;}
 	.inpshort{width:50%;}
+
+@media screen and (max-width:1100px){
+	
+	.col{float:none;width:auto;margin:0 auto;margin-bottom:10px;}
+	.mceToolbar .mceSeparator, .mceToolbar .mce_link, .mceToolbar .mce_unlink{display:none !important;}
+	
+}
 	

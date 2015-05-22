@@ -1,6 +1,6 @@
 
 list#primaryfield##records#=function(#primarykey#,msg){
-	if (msg!=''){
+	if (msg!=null&&msg!=''){
 		alert(msg);
 		return;
 	}

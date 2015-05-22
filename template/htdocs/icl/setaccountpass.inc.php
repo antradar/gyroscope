@@ -5,9 +5,11 @@ function setaccountpass(){
 	global $db;
 	
 	$user=userinfo();
+	
 
-	$oldpass=md5($dbsalt.GETSTR('oldpass'));
-	$pass=md5($dbsalt.GETSTR('pass'));
+	$oldpass=md5($dbsalt.POSTSTR('oldpass'));
+	$pass=md5($dbsalt.POSTSTR('pass'));
+			
 
 	$userid=$user['userid']+0;
 
@@ -16,7 +18,7 @@ function setaccountpass(){
 
 	if (!$myrow=sql_fetch_array($rs)) die('Invalid password');
 
-	$query="update users set password='$pass' where userid=$userid";
+	$query="update users set password='$pass', passreset=0 where userid=$userid";
 	sql_query($query,$db);
 
 	echo 'Password changed'; 

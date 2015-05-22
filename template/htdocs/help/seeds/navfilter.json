@@ -1,0 +1,26 @@
+{
+"fields":[
+	{"field":"viewindex","disp":"View Index","def":1,"numeric":1,"type":"viewindex"},
+	{"field":"record","disp":"Record Entity Name","def":"material"},
+	{"field":"c_record","disp":"Record Entity Label","def":"Material"},
+	{"field":"records","disp":"Record Entity Name (Plural)","def":"materials"},
+	{"field":"c_records","disp":"Record Entity Label (Plural)","def":"Materials"},
+
+	{"field":"tablename","disp":"DB Table Name","def":"materials"},
+	{"field":"primarykey","disp":"Primary Key","def":"materialid"},
+	{"field":"searchquery","disp":"Search Filters","def":"materialname like '%$key%'"},
+	{"field":"sortquery","disp":"Sort Filters","def":"materialname, materialid"},
+	
+	{"field":"dispfield","disp":"Display Field Name","def":"materialname"},
+	{"field":"fieldlist","disp":"Basic Fields","def":"materialname|Name", "type":"fieldlist"},
+	{"field":"dimlist","disp":"Dimensions","def":"brand|Brand\ncolor|Color\nfinish|Finish", "type":"fieldlist", "optional":1}
+
+		
+],
+
+"templates":[
+	{"template":"navfilter_inc","filename":"modify icl/list#records#.inc.php"},
+	{"template":"navfilter_mod","filename":"modify <em>list#records#(...)</em>"},
+	{"template":"navfilter_nav","filename":"icl/#record#_nav.inc.php"}
+]
+}

@@ -6,6 +6,10 @@
 
 $SQL_ENGINE="PostgreSQL";
 
+function sql_escape($str){
+	return pg_escape_string($str);	
+}
+
 function sql_get_db($dbhost,$dbsource,$dbuser,$dbpass){
 	$db=pg_connect("host=$dbhost dbname=$dbsource user=$dbuser password=$dbpass");
 	return $db;

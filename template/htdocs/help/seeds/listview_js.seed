@@ -16,24 +16,24 @@ add#record#=function(){
 	var suffix='new';
 #iterator-fieldlist-getrecordjs#
 	
-	valid=1;
+	var valid=1;
+	var offender=null;
 	
 	//delete the excessive validate rules
 #iterator-fieldlist-validate#
 	//add more validation rules
 	
-	if (!valid) return;
+	if (!valid) {
+		if (offender&&offender.focus) offender.focus();
+		return;
+	}
 
 #iterator-fieldlist-realvalues#	
 	var params=[];
 #iterator-fieldlist-parampush#
 	
-	reloadtab('#record#_new',null,'add#record#&'+params.join('&'),function(req){
-		var #primarykey#=req.responseText;
-		if (parseInt(#primarykey#,10)!=#primarykey#) return;
-		
-		reloadtab('#record#_new',o#dispfield#.value,'show#record#&#primarykey#='+#primarykey#,null,null,{newkey:'#record#_'+#primarykey#});
-		
+	reloadtab('#record#_new',o#dispfield#.value,'add#record#&'+params.join('&'),function(req){
+		var #primarykey#=req.getResponseHeader('newrecid');		
 		reloadview(#viewindex#,'#record#list');
 	});
 	
@@ -43,13 +43,17 @@ update#record#=function(#primarykey#){
 	var suffix=#primarykey#;
 #iterator-fieldlist-getrecordjs#
 	
-	valid=1;
+	var valid=1;
+	var offender=null;
 	
 	//delete the excessive validate rules
 #iterator-fieldlist-validate#
 	//add more validation rules
 	
-	if (!valid) return;
+	if (!valid) {
+		if (offender&&offender.focus) offender.focus();
+		return;
+	}
 	
 #iterator-fieldlist-realvalues#	
 	var params=[];

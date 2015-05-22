@@ -11,6 +11,7 @@ $codegen_seeds=array(
 	'profile'=>array('name'=>'Profile Picture','desc'=>'','icon'=>''),
 	'break1'=>array('type'=>'break'),
 	'tinymce'=>array('name'=>'Rich Text Editor','desc'=>'','icon'=>''),
+	'navfilter'=>array('name'=>'Faceted Nav','desc'=>'Faceted navigation for list view. Make a standard list view first','icon'=>''),
 	'asyncd'=>array('name'=>'AsyncD','desc'=>'The Distributed Asynchronous Data Processor forks a long-running process in the background while updating the web frontend its completion process.','icon'=>''),
 	'digisign'=>array('name'=>'Digital Signing','desc'=>'','icon'=>'')
 

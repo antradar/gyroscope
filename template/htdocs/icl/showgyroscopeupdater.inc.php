@@ -7,8 +7,8 @@ function showgyroscopeupdater(){
 ?>
 <div style="color:#444444;padding:10px 0;">
 	<div style="text-align:right;">
-		powered by Gyroscope <?echo GYROSCOPE_VERSION.' '.VENDOR_INITIAL.VENDOR_VERSION;?> &nbsp; &nbsp;
-		<a class="labelbutton" onclick="updategyroscope();">Check updates</a>
+		<span style="font-size:12px;">powered by Antradar Gyroscope <?echo GYROSCOPE_VERSION.' '.VENDOR_INITIAL.VENDOR_VERSION;?> &nbsp; &nbsp;</span>
+		<a class="labelbutton" onclick="updategyroscope();" style="white-space:nowrap;">Check updates</a>
 		<?if ($_SERVER['REMOTE_ADDR']=='127.0.0.1'){
 		?>
 		&nbsp; <a class="labelbutton" onclick="gid('codegenlist').style.display='block';">CodeGen</a>

@@ -1,5 +1,10 @@
 
-show#primaryfield#profile=function(#primarykey#){
+show#primaryfield#profile=function(#primarykey#,msg){
+	if (msg!=null&&msg!=''){
+		alert(msg);
+		return;
+	}
+
 	ajxpgn('#primaryfield#profile_'+#primarykey#,document.appsettings.codepage+'?cmd=show#primaryfield#profile&#primarykey#='+#primarykey#);
 }
 

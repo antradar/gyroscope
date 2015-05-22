@@ -62,6 +62,13 @@ function ajxpgn(c,u,d,e,prepend,callback,slowtimer){
 			}
 
 			if (ct.slowtimer) clearTimeout(ct.slowtimer);
+
+			var apperror=rq.getResponseHeader('apperror');
+			if (apperror!=null&&apperror!=''){
+				alert('Error: '+apperror);
+				
+				return;	
+			}
 			
 			ct.innerHTML=prepend+rq.responseText;
 			
@@ -137,7 +144,8 @@ function xmlHTTPRequestObject() {
 }
 
 function updategyroscope(){
-	ajxpgn('gyroscope_updater',document.appsettings.codepage+'?cmd=updategyroscope',true,true);	
+	if (self.loadfs) loadfs('Gyroscope Updates','updategyroscope');
+	else ajxpgn('gyroscope_updater',document.appsettings.codepage+'?cmd=updategyroscope',true,true);	
 }
 
 function encodeHTML(code){

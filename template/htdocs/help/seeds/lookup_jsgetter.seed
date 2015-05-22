@@ -1,0 +1,11 @@
+	
+	var msg='';
+	var #lookupkey#=gid('#primaryfield#_#lookupkey#_'+#primarykey#).value2;
+	if (!o#lookupkey#){
+		msg="pick a #lookupkey# from the list\n";
+		valid=0;
+		offender=offender||o#lookupkey#;
+	}
+	
+	if (msg!='') alert(msg);
+	

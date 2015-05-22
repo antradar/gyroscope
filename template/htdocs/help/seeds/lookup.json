@@ -22,6 +22,7 @@
 	{"template":"lookup_hooks","filename":"create new input field:"},	
 	{"template":"lookup_containers","filename":"optional entity locking"},	
 	{"template":"lookup_js","filename":"add to autocomplete.js"},
+	{"template":"lookup_jsgetter","filename":"modify #primaryrecords#.js: add#primaryfield#=function(...){"},	
 	{"template":"lookup_update","filename":"modify #primaryrecords#.js: update#primaryfield#=function(...){"}, 	
 	{"template":"lookup","filename":"icl/lookup#record#.inc.php"},	
 	{"template":"lookup_switch","filename":"myservices.php <em>switch ($cmd){</em>"}

@@ -1,4 +1,4 @@
-	<tr>
-		<td class="formlabel">#fld1#:</td>
-		<td><input class="inp" id="#fld0#_new"></td>
-	</tr>
+	<div class="inputrow">
+		<div class="formlabel">#fld1#:</div>
+		<input class="inp" id="#fld0#_new">
+	</div>

@@ -6,6 +6,9 @@ include 'libresize.php'; //available with commercial license
 function embed#primaryfield#profileuploader(){
 	
 	$#primarykey#=GETVAL('#primarykey#');
+
+	$dmaxsize=20;
+	$maxsize=1024*1024*$dmaxsize; //20 MB
 	
 	global $db;
 	global $codepage;
@@ -29,19 +32,35 @@ function embed#primaryfield#profileuploader(){
 			$filesize=$filesizes;//[$idx];
 			$filetype=$filetypes;//[$idx];
 			$dst=$path.$#primarykey#.'#fileext#';
+			$error=$file['error'];
 
 			$c=file_get_contents($realfn);
-			$img=imagecreatefromstring($c);
-			$thumb=image_cropfit($img,#thumbwidth#,#thumbheight#);
-			imagepng($thumb,$dst);
-			imagedestroy($thumb);
-			imagedestroy($img);
+
+			$img=@imagecreatefromstring($c);
+			if (!$img){
+				$msg='Invalid image format. JPG and PNG only.';
+				if ($error==2) $msg='File too large';
+
+			} else {
+				$w=imagesx($img);
+				$h=imagesy($img);
+				if ($w>1500||$y>1000) {//increase this if you have more RAM
+					$msg='Image too large. Upload a smaller one.';
+					imagedestroy($img);
+				} else {
+					$thumb=image_cropfit($img,#thumbwidth#,#thumbheight#);
+					imagepng($thumb,$dst);
+					chmod($dst,0777);
+					imagedestroy($thumb);
+					imagedestroy($img);
 			
-			$query="update #tablename# set #picflag#=1 where #primarykey#=$#primarykey#";
-			sql_query($query,$db);
+					$query="update #tablename# set #picflag#=1 where #primarykey#=$#primarykey#";
+					sql_query($query,$db);
 			
 						
-			logaction("uploaded $ofn to #primaryfield# #$#primarykey#",array('#primarykey#'=>$#primarykey#,'file'=>$ofn));
+					logaction("uploaded $ofn to #primaryfield# #$#primarykey#",array('#primarykey#'=>$#primarykey#,'file'=>$ofn));
+				}
+			}
 								
 			
 					
@@ -54,7 +73,10 @@ function embed#primaryfield#profileuploader(){
 		
 	}
 	
-	if ($_GET['diag']) return;
+	if ($_GET['diag']) {
+		echo $msg;
+		return;
+	}
 	
 ?>
 <html>
@@ -62,9 +84,10 @@ function embed#primaryfield#profileuploader(){
 
 <form id="uploader" style="padding:0;margin:0;" method="POST" enctype="multipart/form-data">
 <input type="hidden" name="#primarykey#" value="<?echo $#primarykey#;?>">
+<input type="hidden" name="MAX_FILE_SIZE" value="<?echo $maxsize;?>">
 <input type="file" name="file" id="file">
 <br>
-<button onclick="upload(this);return false;" id="uploadbutton">Upload</button>
+<button onclick="upload(this);return false;" id="uploadbutton">Upload</button> (max <?echo $dmaxsize;?>MB)
 </form>
 <div id="cancel" style="display:none;font-size:12px;padding:5px 0;"><a href=# onclick="cancelupload();return false;"><u>cancel</u></a></div>
 <div id="debug" style="font-size:11px;"></div>
@@ -88,6 +111,14 @@ function upload(d){
 	}
 
 	var fd=new FormData();
+
+	var fsize=0;
+	if (file.files[0]&&file.files[0].size) fsize=file.files[0].size;
+	if (fsize><?echo $maxsize;?>){
+		alert('File too large. Upload a smaller file');
+		return;	
+	}
+
 	
 	fd.append('file',file.files[0]);
 	
@@ -102,7 +133,10 @@ function upload(d){
 	rq.onload=function(e){
 		gid('debug').innerHTML='uploaded';
 		gid('cancel').style.display='none';
-		if (e.target.responseText!=null&&e.target.responseText!='') alert(e.target.responseText);
+		if (e.target.responseText!=null&&e.target.responseText!='') {
+			alert(e.target.responseText);
+			return;
+		}
 		parent.show#primaryfield#profile(<?echo $#primarykey#;?>,'');
 	}
 

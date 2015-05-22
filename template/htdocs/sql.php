@@ -6,6 +6,10 @@
 
 $SQL_ENGINE="MySQL";
 
+function sql_escape($str){
+	return mysql_real_escape_string($str);	
+}
+
 function sql_get_db($dbhost,$dbsource,$dbuser,$dbpass){
 	$db=mysql_connect($dbhost,$dbuser,$dbpass);
 	mysql_select_db($dbsource,$db);
@@ -28,8 +32,15 @@ function sql_fetch_assoc($rs){
 
 function sql_insert_id($db,$rs=null){
 
-	if (!isset($rs)) return mysql_insert_id();
-	return mysql_insert_id($db);
+	global $db;
+	$query="select last_insert_id() as autoid";
+	$rs=sql_query($query,$db);
+	$myrow=sql_fetch_assoc($rs);
+	return $myrow['autoid'];
+	
+	//if (!isset($rs)) return mysql_insert_id();
+	//return mysql_insert_id($db);
+
 }
 
 function sql_affected_rows($db,$rs){

@@ -1,6 +1,12 @@
-
+	
+	var msg='';
 	var #lookupkey#=gid('#primaryfield#_#lookupkey#_'+#primarykey#).value2;
-	if (!#lookupkey#) {
-		alert('Pick a #record# from the list');
-		return;
+	if (!o#lookupkey#&&!o#lookupkey#.disabled){
+		msg="pick a #record# from the list\n";
+		valid=0;
+		offender=offender||o#lookupkey#;
 	}
+	
+	if (msg!='') alert(msg);
+
+	
