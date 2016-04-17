@@ -48,6 +48,10 @@ height:22px;
 
 #toolicons{height:40px;text-align:right;}
 
+#toollist{height:35px;}
+#backlist{top:40px;}
+#toolbg{height:40px;}
+#backlistshadow{height:43px;}
 .img-calel{background:transparent url(msprite.png) no-repeat -69px -114px;} /* 5x12 */
 .img-caler{background:transparent url(msprite.png) no-repeat -92px -114px;}
 
@@ -171,6 +175,8 @@ input:disabled{color:#000000;}
  
 .stable::-webkit-scrollbar-thumb { background-color:rgba(200,200,200,0.2); border-radius:2px;}
 
+.reloader{text-align:center;padding:8px 10px;background:#dedede;color:#444444;margin-bottom:10px;}
+.reloader a{display:block;}
 
 @media screen and (max-width:480px){
 	.mceToolbar .mce_image, .mceToolbar .mceSeparator, .mceToolbar .mce_code, 

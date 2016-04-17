@@ -11,3 +11,10 @@
 	.col{float:none;margin:0 auto;margin-bottom:20px;width:auto;}
 
 	.inplong, .inp, .inpmed, .inpshort{padding:3px;width:95%;}
+
+	#toolicons a img{margin:5px 3px;}
+	#toollist{height:45px;}
+	#backlist{top:50px;}
+	#toolbg{height:50px;}
+	#pusher{height:50px;}
+	#backlistshadow{height:53px;}

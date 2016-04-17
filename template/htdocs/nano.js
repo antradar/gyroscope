@@ -13,10 +13,13 @@ function gid(d){return document.getElementById(d);}
 function hb(){var now=new Date(); var hb=now.getTime();return hb;}
 
 function ajxb(u,data){
+	var method='POST';
+	if (data==null) method='GET';
+	
 	if (document.wssid) u=u+'&wssid_='+document.wssid;
 	
 	var rq=xmlHTTPRequestObject();
-	rq.open('POST',u+'&hb='+hb(),false);
+	rq.open(method, u+'&hb='+hb(),false);
 	rq.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
 	rq.send(data);
 	return rq.responseText;	

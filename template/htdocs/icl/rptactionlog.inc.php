@@ -65,19 +65,19 @@ function rptactionlog(){
 
 ?>
 <div class="section">
-<form onsubmit="reloadtab('actionlog',null,'rptactionlog&key='+encodeHTML(gid('actionlog_key').value)+'&pairs='+encodeHTML(gid('actionlog_pairs').value));return false;">
+<form onsubmit="reloadtab('actionlog',null,'rptactionlog&key='+encodeHTML(gid('actionlog_key').value)+'&pairs='+encodeHTML(gid('actionlog_pairs').value),null,null,{persist:true});return false;">
 Search: <input id="actionlog_key" placeholder="Keyword in Action" value="<?echo stripslashes($key);?>"> 
 	<input id="actionlog_pairs" placeholder="Advanced Pattern" value="<?echo stripslashes($opairs);?>"> <input type="submit" value="Go">
 </form>
 
 <div style="padding:20px 30px;font-size:16px;<?if ($key!=''||$opairs!='') echo 'display:none;';?>">
 <?if ($prevday){?>
-<a onclick="reloadtab('actionlog',null,'rptactionlog&date=<?echo $prevday;?>');"><img class="img-calel" width="5" height="12" src="imgs/t.gif"></a> 
+<a onclick="reloadtab('actionlog',null,'rptactionlog&date=<?echo $prevday;?>',null,null,{persist:true});"><img class="img-calel" width="5" height="12" src="imgs/t.gif"></a> 
 <?}?>
 &nbsp; &nbsp; <span style="font-size:18px;"><?echo date('M j, Y',$now);?></span>
 &nbsp; &nbsp;
 <?if ($nextday){?>
-<a onclick="reloadtab('actionlog',null,'rptactionlog&date=<?echo $nextday;?>');"><img class="img-caler" width="5" height="12" src="imgs/t.gif"></a>
+<a onclick="reloadtab('actionlog',null,'rptactionlog&date=<?echo $nextday;?>',null,null,{persist:true});"><img class="img-caler" width="5" height="12" src="imgs/t.gif"></a>
 <?}?>
 </div>
 

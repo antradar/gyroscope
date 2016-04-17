@@ -19,6 +19,7 @@ function add#record#(){
 	
 	header('newrecid:'.$#primarykey#);
 	header('newkey:#record#_'.$#primarykey#);
+	header('newparams:show#record#&#primarykey#='.$#primarykey#);
 	
 	show#record#($#primarykey#);
 }

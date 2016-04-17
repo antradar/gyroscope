@@ -21,6 +21,8 @@ function showuser($userid=null){
 	$groupnames=$myrow['groupnames'];
 	$groups=explode('|',$groupnames);
 	
+	header('newtitle: '.$login);
+	
 ?>
 <div class="section">
 	<div class="sectiontitle"><?echo $login;?></div>

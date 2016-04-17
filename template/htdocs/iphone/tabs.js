@@ -115,6 +115,13 @@ function reloadtab(key,title,params,loadfunc,data,opts){
 	var newkey=rq.getResponseHeader('newkey');
 
 	if (newkey!=null&&newkey!='') {
+		var newparams=rq.getResponseHeader('newparams');
+		if (newparams==null||newparams==''){
+			alert('Incomplete key change');
+			return;	
+		}
+		document.tabtitles[tabid].reloadinfo={params:newparams,loadfunc:loadfunc,data:null,opts:null};
+
 		document.tabkeys[tabid]=newkey;
 		
 		if (document.tabseq){
@@ -133,13 +140,15 @@ function reloadtab(key,title,params,loadfunc,data,opts){
 		title=newtitle;	
 	}	       
 		
+	if (opts&&opts.persist) document.tabtitles[tabid].reloadinfo={params:params,loadfunc:loadfunc,data:data,opts:opts};
+
 	var tabhtml="<nobr><a class=\"tt\" onclick=\"showtab('"+key+"');\">"+title+"</a><a onclick=\"closetab('"+key+"')\"><span class=\"tabclose\"></span></a></nobr>";
 	if (opts!=null&&opts.noclose) tabhtml="<nobr><a class=\"tt\" onclick=\"showtab('"+key+"');\">"+title+"</a><span class=\"noclose\"></span></nobr>";
   
     if (title) document.tabtitles[tabid].innerHTML=tabhtml;
 	
-  	  
-      document.tabviews[tabid].innerHTML=rq.responseText;
+  	  var reloader="<div class=\"reloader\"><a onclick=\"refreshtab('"+key+"');\">reload view</a></div>";
+      document.tabviews[tabid].innerHTML=reloader+rq.responseText;
       if (loadfunc!=null) loadfunc(rq);
 	}
   }
@@ -174,6 +183,8 @@ function addtab(key,title,params,loadfunc,data,opts){
   gid('tabviews').appendChild(c);
   c.slowtimer=setTimeout(function(){c.innerHTML='<image src="imgs/hourglass.gif" style="margin:5px;">';},800);
 
+  t.reloadinfo={params:params,loadfunc:loadfunc,data:data,opts:opts};
+
   document.tabviews[tabcount]=c;
   document.tabtitles[tabcount]=t;
   document.tabkeys[tabcount]=key;
@@ -191,8 +202,9 @@ function addtab(key,title,params,loadfunc,data,opts){
   rq.setRequestHeader('Content-Type','text/plain; charset=utf-8;');
   rq.onreadystatechange=function(){
     if (rq.readyState==4){
-	  if (c.slowtimer) clearTimeout(c.slowtimer);	    
-      c.innerHTML=rq.responseText;
+	  if (c.slowtimer) clearTimeout(c.slowtimer);
+	  var reloader="<div class=\"reloader\"><a onclick=\"refreshtab('"+key+"');\">reload view</a></div>";
+      c.innerHTML=reloader+rq.responseText;
 
       document.tablock=null;
       if (loadfunc!=null) loadfunc();
@@ -235,6 +247,19 @@ closetab=function(key){
   
   if (tabcount==0) {currenttab=-1; return;}
   showtab(document.tabkeys[currenttab]);	
+}
+
+function refreshtab(key){
+	
+  //if tab doesn't exist, ignore it
+  var tabid=gettabid(key);
+  if (tabid==-1) return;
+  
+  if (!confirm('Are you sure you want to refresh this tab?')) return;
+ 
+  var tab=document.tabtitles[tabid];
+  if (!tab.reloadinfo) return;
+  reloadtab(key,null,tab.reloadinfo.params,tab.reloadinfo.loadfunc,tab.reloadinfo.data,tab.reloadinfo.opts);
 }
 
 function showhelp(topic,title){

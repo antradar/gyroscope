@@ -1,3 +1,10 @@
+6.7.1
+- larger mobile portrait icons and reload buttons
+
+6.7
+- tab refresh on double click (explicit button in mobile view)
+- "persist" option in reload tab to indicate non-write reloads
+
 6.6
 - using POST on all ajax calls, with extra data field
 - dropped prepend feature in nano.js

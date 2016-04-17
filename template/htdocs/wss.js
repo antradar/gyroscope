@@ -43,6 +43,7 @@ if (window.WebSocket){
 	document.websocket.onclose=function(e){
 		if (document.nomoresocket) {
 			console.log('no more reconnection');
+			if (gid('wsswarn')) gid('wsswarn').style.display='inline';
 			return;
 		}
 		console.log('web socket closed, restarting in a sec');

@@ -32,10 +32,10 @@ body{font-family:helvetica;}
 </head>
 <body onload="setTimeout(scrollTo, 0, 0, 1);">
 
-<div style="height:40px;position:fixed;width:100%;z-index:1000;top:0;background:#333333;opacity:0.9"></div>
-<div id="toolicons" style="position:fixed;width:100%;z-index:2000;top:0;border-bottom:solid 1px #dedede;">
+<div id="toolbg" style="position:fixed;width:100%;z-index:1000;top:0;background:#333333;opacity:0.9"></div>
+<div id="toolicons" style="position:fixed;width:100%;z-index:2000;top:0;">
 
-	<div id="toollist" style="overflow:auto;width:100%;height:35px;"><div style="width:<?echo 50*(count($toolbaritems)+2);?>px;">
+	<div id="toollist" style="overflow:auto;width:100%;"><div style="width:<?echo 50*(count($toolbaritems)+2);?>px;">
 		
 	<div class="menuitem"><a id="speechstart" href=# onclick="speech_startstop(1);return false;" style="display:none;"><img style="" class="img-speechrecog" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
 
@@ -79,8 +79,8 @@ body{font-family:helvetica;}
 </div>
 <div id="content" style="float:left;width:320px;">
 
-	<div id="backlist" style="display:none;position:fixed;top:40px;width:100%;z-index:1000;"><a id="backlistbutton"><img onclick="navback();" src="iphone/bb.png"></a></div>
-	<div id="backlistshadow" style="display:none;width:100%;height:43px;"></div>
+	<div id="backlist" style="display:none;position:fixed;width:100%;z-index:1000;"><a id="backlistbutton"><img onclick="navback();" src="iphone/bb.png"></a></div>
+	<div id="backlistshadow" style="display:none;width:100%;"></div>
 
 	<div id="tabtitles" style="width:325px;position:fixed;z-index:1000;"></div>
 	<div id="tabtitleshadow" style="height:25px;width:100px;display:none;"></div>
@@ -177,7 +177,7 @@ function rotate(){
 		gid('backlistshadow').style.display='block';
 		//gid('leftview').style.fontSize='25px';
 		gid('tooltitle').style.width=vw+'px';
-		gid('tooltitle').style.top='40px';
+		//gid('tooltitle').style.top='40px';
 		gid('pusher').style.height='40px';
 		gid('toollist').style.width=document.documentElement.clientWidth-50+'px';//'280px';
 		gid('tabtitleshadow').style.display='none';
@@ -203,7 +203,7 @@ function rotate(){
 		gid('backlistshadow').style.display='none';
 		
 		gid('tooltitle').style.width=vw+'px';
-		gid('tooltitle').style.top='50px';
+		//gid('tooltitle').style.top='50px';
 		gid('pusher').style.height='50px';
 		gid('toollist').style.width=cw-50+'px';
 		gid('tabtitleshadow').style.display='block';

@@ -15,6 +15,8 @@ function show#record#($#primarykey#=null){
 	$#master_dispfield#=$myrow['#master_dispfield#'];
 	$recordtitle="$#master_dispfield#"; //change this
 	$dbrecordtitle=htmlspecialchars(noapos($recordtitle));
+	
+	header('newtitle:'.$#dispfield#);
 ?>
 <div class="section">
 	<div class="sectiontitle"><?echo $#dispfield#;?></div>

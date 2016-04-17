@@ -11,6 +11,8 @@ function show#record#($#primarykey#=null){
 	if (!$myrow=sql_fetch_array($rs)) die('This #record# record has been removed');
 	
 #iterator-fieldlist-myrowlist#	
+
+	header('newtitle:'.$#dispfield#);
 ?>
 <div class="section">
 	<div class="sectiontitle"><?echo $#dispfield#;?></div>

@@ -16,6 +16,12 @@
 	.inp{width:90%;}
 	.inpmed{width:80%;}
 	.inpshort{width:50%;}
+	#toolicons a img{margin:0;}
+	#toollist{height:35px;}
+	#backlist{top:40px;}
+	#toolbg{height:40px;}
+	#pusher{height:40px;}
+	#backlistshadow{height:43px;}
 
 @media screen and (max-width:1100px){
 	
