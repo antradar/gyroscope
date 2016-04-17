@@ -91,10 +91,10 @@ function reloadtab(key,title,params,loadfunc,data,opts){
   	if (document.wssid) params=params+'&wssid_='+document.wssid;
   	
 	rq.open('POST',scn+params+'&hb='+hb(),true);
-	rq.setRequestHeader('Content-Type','text/plain; charset=utf-8;');
+	rq.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
 	
 	var ct=document.tabviews[tabid];
-	ct.slowtimer=setTimeout(function(){ct.innerHTML='<image src="imgs/hourglass.gif" style="margin:5px;">';},800);
+	ct.slowtimer=setTimeout(function(){ct.innerHTML='<image class="hourglass" src="imgs/hourglass.gif" style="margin:5px;">';},800);
   
 
   
@@ -181,7 +181,7 @@ function addtab(key,title,params,loadfunc,data,opts){
   if (title) t.innerHTML=tabhtml;
   gid('tabtitles').appendChild(t);
   gid('tabviews').appendChild(c);
-  c.slowtimer=setTimeout(function(){c.innerHTML='<image src="imgs/hourglass.gif" style="margin:5px;">';},800);
+  c.slowtimer=setTimeout(function(){c.innerHTML='<image class="hourglass" src="imgs/hourglass.gif" style="margin:5px;">';},800);
 
   t.reloadinfo={params:params,loadfunc:loadfunc,data:data,opts:opts};
 
@@ -199,7 +199,7 @@ function addtab(key,title,params,loadfunc,data,opts){
   
   rq.open('POST',scn+params+'&hb='+hb(),true);
   
-  rq.setRequestHeader('Content-Type','text/plain; charset=utf-8;');
+  rq.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
   rq.onreadystatechange=function(){
     if (rq.readyState==4){
 	  if (c.slowtimer) clearTimeout(c.slowtimer);

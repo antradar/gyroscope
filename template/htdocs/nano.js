@@ -99,7 +99,7 @@ function ajxpgn(c,u,d,e,data,callback,slowtimer){
 	
 	ct.slowtimer=setTimeout(function(){
 		if (ct.style.display=='none') ct.style.display='block';
-		ct.innerHTML='<img src="imgs/hourglass.gif" style="margin:5px;"><span style="opacity:0.5;filter:alpha(opacity=50);color:#999999;">'+ct.innerHTML+'</span>';
+		ct.innerHTML='<img src="imgs/hourglass.gif" class="hourglass" style="margin:5px;"><span style="opacity:0.5;filter:alpha(opacity=50);color:#999999;">'+ct.innerHTML+'</span>';
 	},slowtimer);
 
 	ajxnb(rq,u,f(c),data);
@@ -151,6 +151,12 @@ function xmlHTTPRequestObject() {
 function updategyroscope(){
 	if (self.loadfs) loadfs('Gyroscope Updates','updategyroscope');
 	else ajxpgn('gyroscope_updater',document.appsettings.codepage+'?cmd=updategyroscope',true,true);	
+}
+
+function hdpromote(css){
+	if (typeof(document.documentElement.style.backgroundSize)=='string'&&window.devicePixelRatio>1){
+		ajxcss(self.bgupgrade,css);
+	}	
 }
 
 function encodeHTML(code){

@@ -102,6 +102,9 @@ body{font-family:helvetica;}
 document.appsettings={codepage:'<?echo $codepage;?>',fastlane:'<?echo $fastlane;?>', viewcount:<?echo $viewcount;?>};
 </script>
 <script src="nano.js"></script>
+<script>
+hdpromote('toolbar_hd.css');
+</script>
 <script src="iphone/tabs.js"></script>
 <script src="iphone/viewport.js"></script>
 <script src="validators.js"></script>
@@ -250,7 +253,6 @@ else window.onorientationchange=onrotate;
 onrotate();
 
 scaleall(document.body);
-
 
 </script>
 <script src="wss.js"></script>

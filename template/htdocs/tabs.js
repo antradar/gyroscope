@@ -85,7 +85,7 @@ function reloadtab(key,title,params,loadfunc,data,opts){
   rq.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
   
 	var ct=document.tabviews[tabid];
-	ct.slowtimer=setTimeout(function(){ct.innerHTML='<image src="imgs/hourglass.gif" style="margin:5px;">';},800);
+	ct.slowtimer=setTimeout(function(){ct.innerHTML='<image class="hourglass" src="imgs/hourglass.gif" style="margin:5px;">';},800);
 
 	
     
@@ -199,7 +199,7 @@ function addtab(key,title,params,loadfunc,data,opts){
   c.style.height="100%";
   c.style.overflow="auto";
   
-  c.slowtimer=setTimeout(function(){c.innerHTML='<image src="imgs/hourglass.gif" style="margin:5px;">';},800);
+  c.slowtimer=setTimeout(function(){c.innerHTML='<image class="hourglass" src="imgs/hourglass.gif" style="margin:5px;">';},800);
 
   var t=document.createElement('span');
   var tabhtml="<nobr><a class=\"tt\" ondblclick=\"refreshtab('"+key+"');\" onclick=\"showtab('"+key+"');\">"+title+"</a><a onclick=\"closetab('"+key+"')\"><span class=\"tabclose\"></span></a></nobr>";

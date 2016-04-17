@@ -5,7 +5,7 @@ function showgyroscopeupdater(){
 	global $db;
 	
 ?>
-<div style="color:#444444;padding:10px 0;">
+<div style="color:#444444;padding:10px 0;line-height:1.6em;">
 	<div style="text-align:right;">
 		<span style="font-size:12px;">powered by Antradar Gyroscope <?echo GYROSCOPE_VERSION.' '.VENDOR_INITIAL.VENDOR_VERSION;?> &nbsp; &nbsp;</span>
 		<a class="labelbutton" onclick="updategyroscope();" style="white-space:nowrap;">Check updates</a>

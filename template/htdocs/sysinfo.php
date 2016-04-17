@@ -1,51 +1,23 @@
+<?
+include 'lb.php';
+$ip=$_SERVER['REMOTE_ADDR'];
+if (isset($_SERVER['REMOTE_ADDR6'])) $ip=$_SERVER['REMOTE_ADDR6'];
+?>
+<!doctype html>
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta id="viewport" name="viewport" content="width=device-width" />
 	<title>Gyroscope Fitness Test</title>
-<style>
-.clear{clear:both;}
-
-body{padding:0;margin:0;font-family:arial, sans-serif; font-size:15px;text-align:center;}
-
-#canvas{padding:20px;padding-top:40px;text-align:left;width:560px;margin:0 auto;}
-
-.testrow{margin-bottom:6px;padding-bottom:4px;border-bottom:solid 1px #999999;}
-.testitem, .testresult{float:left;}
-.testitem{width:58%;margin-right:2%;}
-.testresult{width:40%;}
-.res_yes{color:#00ae00;}
-.res_no{color:#ab0200;}
-
-@media screen and (max-width:700px){
-	#canvas{width:80%;}
-}
-
-@media screen and (max-width:600px){
-	#canvas{width:auto;}	
-}
-
-@media screen and (max-width:420px){
-	.testitem{width:68%;}
-	.testresult{width:30%;}
-}
-
-@media screen and (max-width:310px){
-	.testitem{width:78%;}
-	.testresult{width:20%;}
-}	
-}
-</style>
+	<link rel="stylesheet" href="sysinfo_sd.css" type="text/css" />
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 </head>
 <body>
 <div id="canvas">
 <?php
 
-date_default_timezone_set('America/Toronto');
-
 $a=12147483648;
 $b=$a|0;
-
 include 'connect.php';
 include 'auth.php';
 
@@ -72,8 +44,9 @@ $tests=array(
 'MySQL results charset'=>array('res'=>$csets['character_set_results']=='latin1','message'=>$csets['character_set_results']),
 'MySQL server charset'=>array('res'=>$csets['character_set_server']=='latin1','message'=>$csets['character_set_server']),
 '64-bit integer'=>array('res'=>$a==$b,'message'=>''),
-'Date beyond 2038'=>array('res'=>'2412-12-12'==date('Y-n-j',13978113132),'message'=>'')
-
+'Date beyond 2038'=>array('res'=>'2412-12-12'==date('Y-n-j',13978113132),'message'=>''),
+'IPv6 Socket'=>array('res'=>strpos($ip,':')!==false,'message'=>$ip),
+'Server'=>array('res'=>2,'message'=>$_SERVER['SERVER_SOFTWARE'])
 );
 
 $classes=array('no','yes','');
@@ -95,6 +68,33 @@ foreach ($tests as $test=>$result){
 }
 
 ?>
+<div class="testrow">
+	<div class="testitem">HD Sprite</div>
+	<div class="testresult">
+		<div id="gyroscope"></div>
+		<span id="hdbg"><span class="res_no">No</span></span>
+	</div>
+	<div class="clear"></div>
 </div>
+
+<div class="testrow">
+	<div class="testitem">WebSocket</div>
+	<div class="testresult">
+		<span id="wss"><span class="res_no">No</span></span>
+	</div>
+	<div class="clear"></div>
+</div>
+
+
+</div>
+<script src="nano.js"></script>
+<script>
+	if (typeof(document.documentElement.style.backgroundSize)=='string'){
+		gid('hdbg').innerHTML='<span class="res_yes">Yes</span>';	
+		if (window.devicePixelRatio>1) 	ajxcss(self.bgupgrade,'sysinfo_hd.css?hb='+hb());
+		else gid('hdbg').innerHTML='<span style="color:#ffab00;">Deactivated</span>';
+	}
+	if (window.WebSocket) gid('wss').innerHTML='<span class="res_yes">Yes</span>';
+</script>
 </body>
 </html>

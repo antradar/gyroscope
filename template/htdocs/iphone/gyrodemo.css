@@ -183,6 +183,10 @@ input:disabled{color:#000000;}
 .reloader{text-align:center;padding:8px 10px;background:#dedede;color:#444444;margin-bottom:10px;}
 .reloader a{display:block;}
 
+.listsearch_ input{display:block;}
+.listsearch .searchsubmit{opacity:0;visibility:hidden;}
+.listsearch{background:transparent url(../imgs/bmg.gif) no-repeat 100% 5px;background-size:16px 16px;}
+
 @media screen and (max-width:1330px){
 	.col{width:49%;margin-right:1%;}
 	.minorcol{width:38%;margin-right:2%;}

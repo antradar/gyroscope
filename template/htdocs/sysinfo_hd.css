@@ -1,0 +1,3 @@
+#gyroscope{width:93px;height:50px;background:transparent url(gyroscope_hd.png) no-repeat 0 -50px;transition:background-position 300ms;image-rendering:crisp-edges;-ms-interpolation-mode:bicubic;}
+#gyroscope{background-size:93px 100px;}
+#gyroscope:hover{background-position:0 0;}

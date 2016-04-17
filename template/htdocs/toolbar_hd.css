@@ -1,0 +1,17 @@
+.admin-logout, .admin-settings, .admin-user, #speechstart img,
+.img-addrec, .img-del, .img-save, .img-tick, .img-xls, .img-pdf, .img-speechrecog,
+.img-closeall, .img-speechrecog, .img-reports, .img-reports-light, .img-xls, .img-pdf
+{background-image:url(imgs/toolbar_hd.gif);background-size:448px 64px;}	
+
+.hourglass{height:6px;}
+
+/*
+.listsearch_ input{display:block;}
+.listsearch .searchsubmit{opacity:0;visibility:hidden;}
+.listsearch{background:transparent url(imgs/bmg.gif) no-repeat 100% 5px;background-size:16px 16px;}
+*/
+
+#statusinfo{background:#BBCDD5 url(imgs/gshd.png) no-repeat top right;background-size:150px 24px;}
+
+#applogo img{visibility:hidden;}
+#applogo{background:transparent url(imgs/clogo_hd.gif) no-repeat 0 0; background-size:157px 56px;}

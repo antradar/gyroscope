@@ -48,7 +48,7 @@ document.appsettings={codepage:'<?echo $codepage;?>', fastlane:'<?echo $fastlane
 <span class="iconbuttons">
 <!-- usually there is one entity icon per list view -->
 <input id="anchor_top" title="Top View" style="position:absolute;top:-60px;left:-100px;width:20px;">
-<a class="noblink"><img src="imgs/clogo.gif" border="0"></a>
+<a class="noblink" id="applogo"><img src="imgs/clogo.gif" border="0"></a>
 <?foreach ($toolbaritems as $ti){
 	if ($ti['type']=='break') {
 		echo '<div class="break"><span></span></div>';continue;	
@@ -102,6 +102,9 @@ document.appsettings={codepage:'<?echo $codepage;?>', fastlane:'<?echo $fastlane
 <div id="fsview"></div>
 
 <script src="nano.js"></script>
+<script>
+hdpromote('toolbar_hd.css');
+</script>
 <script src="tabs.js"></script>
 <script src="viewport.js"></script>
 <script src="validators.js"></script>
