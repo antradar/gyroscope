@@ -20,6 +20,9 @@ function showuser($userid=null){
 	$passreset=$myrow['passreset'];
 	$groupnames=$myrow['groupnames'];
 	$groups=explode('|',$groupnames);
+	$needcert=$myrow['needcert'];
+	$certname=$myrow['certname'];
+	if ($certname=='') $certname='<em>not set</em>';
 	
 	header('newtitle: '.$login);
 	
@@ -51,6 +54,15 @@ function showuser($userid=null){
 	
 	<div class="inputrow">
 		<input type="checkbox" id="passreset_<?echo $userid;?>" <?if ($passreset) echo 'checked';?>> force password reset upon login
+	</div>
+
+	<div class="inputrow" id="cardsettings_<?echo $userid;?>">
+		<div class="formlabel">ID Card: &nbsp; 
+			<span style="font-weight:normal;" id="cardstatus_<?echo $userid;?>"><?echo $certname;?></span> <a class="labelbutton" onclick="loadsmartcard(<?echo $userid;?>);">load card</a>
+			<span style="display:none;"><textarea id="cert_<?echo $userid;?>" value=""></textarea></span>
+		</div>
+		<input type="checkbox" id="needcert_<?echo $userid;?>" <?if ($needcert) echo 'checked';?>> card must be present at sign-in
+
 	</div>
 	
 	<div class="inputrow">

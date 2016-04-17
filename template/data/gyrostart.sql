@@ -29,10 +29,13 @@ CREATE TABLE `users` (
   `password` varchar(60) NOT NULL DEFAULT '',
   `passreset` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `groupnames` varchar(200) NOT NULL DEFAULT 'users',
+  `certhash` varchar(60) DEFAULT NULL,
+  `needcert` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `certname` varchar(255) DEFAULT NULL,  
   PRIMARY KEY (`userid`),
   KEY `active` (`active`),
   KEY `virtual` (`virtual`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
-INSERT INTO `users` VALUES (1,'guest',1,0,'f9aca5fa9b9376cb5a8705c29c2d2b5a',1,'users'),(2,'admin',1,0,'f9aca5fa9b9376cb5a8705c29c2d2b5a',0,'users|admins|accounts');
+INSERT INTO `users` VALUES (101,'admin',1,0,'f9aca5fa9b9376cb5a8705c29c2d2b5a',0,'users|admins|accounts',null,0,null);
 

@@ -22,6 +22,7 @@ $user=userinfo();
 	<link href='gyroscope.css' type='text/css' rel='stylesheet'>
 	<link href='toolbar.css' type='text/css' rel='stylesheet'>
 	<meta name="Version" content="Gyroscope <?echo GYROSCOPE_VERSION?>">
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 </head>
 
 <body onload="setTimeout(scrollTo, 0, 0, 1)">
@@ -145,6 +146,14 @@ window.onbeforeunload=function(){
 </script>
 
 <script src="speech.js"></script>
+<script src="smartcard.js"></script>
+<script>
+document.smartcard=true;
+smartcard_init('cardreader',{
+	'noplugin':function(){document.smartcard=null;},
+	'nohttps':function(){document.smartcard=null;}
+});
+</script>
 
 </body>
 </html>

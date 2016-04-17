@@ -164,6 +164,7 @@ _picktime=function(d,opts,def){
 
 filterkeys=function(d){
 	if (d.onkeydown!=null) return;
+		
 	d.onkeydown=function(e){
 		var keycode;
 		if (e) keycode=e.keyCode; else keycode=event.keyCode;

@@ -2,7 +2,11 @@
 include 'settings.php';
 ?>
 showuser=function(userid,name){
-	addtab('user_'+userid,name,'showuser&userid='+userid,null,null,{fastlane:1});	
+	addtab('user_'+userid,name,'showuser&userid='+userid,function(){
+		if (gid('cardsettings_'+userid)){
+			if (!document.smartcard) gid('cardsettings_'+userid).style.display='none';
+		}
+	},null,{fastlane:1});	
 }
 
 _inline_lookupuser=function(d){
@@ -76,10 +80,25 @@ adduser=function(){
 	params.push('groupnames='+groupnames);	
 	
 	reloadtab('user_new',ologin.value,'adduser&'+params.join('&'),function(req){
-		var userid=req.getResponseHeader('newrecid');		
+		var userid=req.getResponseHeader('newrecid');
+		if (!document.smartcard) gid('cardsettings_'+userid).style.display='none';		
 		reloadview(1,'userlist');
 	},newpass);
 	
+}
+
+loadsmartcard=function(userid){
+	if (document.cardreader){
+	  cert=document.cardreader.getcert();
+	  if (cert){
+		gid('cardstatus_'+userid).innerHTML=cert.CN;
+		gid('cert_'+userid).value=cert.certificateAsHex;
+		return true;
+	  }//cert
+	} else {//no reader
+		alert('Smartcard reader not supported');
+		return false;
+	}	
 }
 
 updateuser=function(userid){
@@ -88,8 +107,12 @@ updateuser=function(userid){
 	
 	var active=0;
 	var virtual=0;
+	var needcert=0;
+
 	if (gid('active_'+suffix).checked) active=1;
 	if (gid('virtual_'+suffix).checked) virtual=1;
+	if (gid('needcert_'+suffix).checked) needcert=1;
+
 
 	var passreset=0;
 	if (gid('passreset_'+suffix).checked) passreset=1;
@@ -118,6 +141,11 @@ updateuser=function(userid){
 	var login=encodeHTML(ologin.value);
 	
 	var groupnames=['users'];
+
+	var certname=encodeHTML(gid('cardstatus_'+userid).innerHTML);
+	var cert=encodeHTML(gid('cert_'+userid).value);
+
+	newpass=encodeHTML(newpass);
 	
 	if (!virtual){
 	<?
@@ -137,12 +165,15 @@ updateuser=function(userid){
 	params.push('login='+login);
 	params.push('active='+active);
 	params.push('virtual='+virtual);
+	params.push('needcert='+needcert);
 	params.push('passreset='+passreset);
 	params.push('groupnames='+groupnames);
 	
 	reloadtab('user_'+userid,ologin.value,'updateuser&userid='+userid+'&'+params.join('&'),function(){
+		if (!document.smartcard) gid('cardsettings_'+userid).style.display='none';
 		reloadview(1,'userlist');
-	},newpass,{fastlane:1});
+		flashstatus('User '+login+' has been updated', 3000);
+	},"pass="+newpass+"&needcert="+needcert+"&certname="+certname+"&cert="+cert,{fastlane:1});
 	
 }
 

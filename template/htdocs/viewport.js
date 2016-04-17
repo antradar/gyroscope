@@ -216,3 +216,46 @@ function authpump(){
 
 
 function sv(d,v){gid(d).value=v;}
+
+if (document.createEvent){
+	document.keyboard=[];
+	
+	document.onkeyup=function(e){
+		var keycode;
+		if (e) keycode=e.keyCode; else keycode=event.keyCode;	
+		document.keyboard['key_'+keycode]=null;
+		delete document.keyboard['key_'+keycode];
+		
+	}
+	
+	document.onkeydown=function(e){
+		var keycode;
+		if (e) keycode=e.keyCode; else keycode=event.keyCode;	
+		document.keyboard['key_'+keycode]=1;
+		
+		if (document.keyboard['key_13']&&document.keyboard['key_17']){
+			picktop();	
+		}
+	}
+	
+	function picktop(){
+		document.keyboard=[];
+		if (!document.hotspot) return;
+		if (!gid('lkvc')) return;
+		var os=gid('lkvc').getElementsByTagName('a');
+		var target=null;
+		for (var i=0;i<os.length;i++){
+			var o=os[i];
+			if (o.parentNode&&(o.parentNode.className=='listitem'||o.attributes.pickable)&&o.onclick!=null){
+				target=o;
+				break;	
+			}
+		}//for
+		if (!target) return;
+		
+		var event=document.createEvent('Events');
+		event.initEvent('click',true,false);
+		target.dispatchEvent(event);
+		
+	}
+}

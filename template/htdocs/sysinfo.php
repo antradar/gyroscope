@@ -41,6 +41,8 @@ body{padding:0;margin:0;font-family:arial, sans-serif; font-size:15px;text-align
 <div id="canvas">
 <?php
 
+date_default_timezone_set('America/Toronto');
+
 $a=12147483648;
 $b=$a|0;
 

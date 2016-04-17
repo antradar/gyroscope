@@ -15,8 +15,15 @@ function updateuser(){
 	$virtual=GETVAL('virtual');
 	$passreset=GETVAL('passreset');
 
-	$newpass=noapos(file_get_contents('php://input'));
+	$newpass=QETSTR('pass');
 	$np=md5($dbsalt.$newpass);
+
+	$certname=QETSTR('certname');
+	$needcert=GETVAL('needcert');
+	$cert=QETSTR('cert');
+
+	$certhash=md5($dbsalt.$cert);
+
 		
 	$groupnames=GETSTR('groupnames');
 	
@@ -33,8 +40,10 @@ function updateuser(){
 		header('apperror: User already exists. Use a different login.');die();		
 	}
 
-	$query="update users set login='$login',active=$active, virtual=$virtual, passreset='$passreset', groupnames='$groupnames' ";
+	$query="update users set login='$login',active=$active, virtual=$virtual, needcert=$needcert, passreset='$passreset', groupnames='$groupnames' ";
 	if (!$virtual&&$newpass!='') $query.=", password='$np' ";
+	if (trim($cert)!='') $query.=", certname='$certname', certhash='$certhash' ";
+
 	$query.=" where userid=$userid";
 	sql_query($query,$db);
 

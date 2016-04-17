@@ -36,6 +36,24 @@ xsscheck();
 	  $userid=$myrow['userid'];
 	  $passreset=$myrow['passreset'];
 
+	  $needcert=$myrow['needcert'];
+	  $certid=$_POST['certid'];
+	  $certhash=md5($dbsalt.$certid);
+	  $certhash_=$myrow['certhash'];
+
+	  $certokay=1;
+
+	  if ($needcert){
+		if ($certhash!=$certhash_){
+			$certerror='Invalid ID card';
+			$certokay=0;
+		}
+		if ($certid=='') {
+			$certerror='A smart card is required to sign in';
+			$certokay=0;
+		}
+	  }
+
 	if ($_POST['passreset']){
 		$op=$_POST['password'];
 		$np=$_POST['newpassword'];
@@ -55,7 +73,8 @@ xsscheck();
 	  if ($passreset){
 
 	  } else {
-	  
+
+	if ($certokay){	  
 	  $groupnames=$myrow['groupnames'];
 	  $auth=md5($salt.$userid.$groupnames.$salt.$raw_login);
 	  
@@ -74,6 +93,9 @@ xsscheck();
 	  } else header('Location:index.php');
 	  
 	  die();
+		} else {
+			$error_message=$certerror;
+		}
   	}
   } else $error_message='invalid username or password';
 } else {
@@ -89,6 +111,7 @@ xsscheck();
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta http-equiv="refresh" content="1800" />
 	<meta name = "viewport" content = "width = device-width, init-scale=1, user-scalable=0" />
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 <style>
 body{padding:0;margin:0;background:transparent url(imgs/bgtile.png) repeat;font-size:13px;font-family:arial,sans-serif;text-align:center;}
 #loginbox__{width:320px;margin:0 auto;background-color:rgba(200,200,200,0.4);margin-top:100px;border-radius:4px;}
@@ -96,6 +119,9 @@ body{padding:0;margin:0;background:transparent url(imgs/bgtile.png) repeat;font-
 #loginbox{background-color:#FFFFFF;text-align:left;}
 .powered{color:#000000;text-align:right;font-size:12px;width:320px;margin:0 auto;padding-top:10px;}
 #loginbutton{width:140px;-webkit-appearance: none;}
+#cardlink, #passlink{text-align:center;padding-top:10px;}
+
+#cardinfo{padding:5px;font-size:12px;padding-left:26px;background:#fcfcdd url(imgs/smartcard.png) no-repeat 5px 50%;margin-bottom:10px;display:none;}
 
 @media screen and (max-width:400px){
 	#loginbox__,.powered{width:90%;}
@@ -124,9 +150,12 @@ body{padding:0;margin:0;background:transparent url(imgs/bgtile.png) repeat;font-
 	<div style="padding-top:10px;">Username: <?if ($passreset){?><b><?echo stripslashes($_POST['login']);?></b> &nbsp; <a href="<?echo $_SERVER['PHP_SELF'];?>"><em>switch user</em></a><?}?></div>
 	<div style="padding-top:5px;padding-bottom:10px;">
 	<input style="width:100%;<?if ($passreset) echo 'display:none;';?>" id="login" type="text" name="login" autocomplete="off" <?if ($passreset) echo 'readonly';?> value="<?if ($passreset) echo stripslashes($_POST['login']);?>"></div>
-	<div>Password:</div>
-	<div style="padding-top:5px;padding-bottom:15px;">
-	<input style="width:100%;" id="password" type="password" name="password"></div>
+
+	<div id="passview">
+		<div>Password:</div>
+		<div style="padding-top:5px;padding-bottom:15px;">
+		<input style="width:100%;" id="password" type="password" name="password"></div>
+	
 
 	<?if ($passreset){?>
 	<div>New Password:</div>
@@ -138,9 +167,22 @@ body{padding:0;margin:0;background:transparent url(imgs/bgtile.png) repeat;font-
 	<input style="width:100%;" id="password" type="password" name="newpassword2"></div>
 	<input type="hidden" name="passreset" value="1">
 	<?}?>
+
+	<div id="cardinfo"></div>
 	
-	<div style="text-align:center;"><input id="loginbutton" type="submit" value="<?echo $passreset?'Update Password':'Sign In';?>"></div>
+		<div  style="text-align:center;"><input id="loginbutton" type="submit" value="<?echo $passreset?'Update Password':'Sign In';?>"></div>
+		<div id="cardlink">
+			<a href=# onclick="cardauth();return false;">Load ID Card</a>
+		</div>
+	</div><!-- passview -->
+	<div id="cardview" style="display:none;">
+		<div style="text-align:center;"><input id="loginbutton" type="submit" value="Sign In" onclick="if (!cardauth()) return false;"></div>
+		<div id="passlink">
+			<a href=# onclick="passview();return false;">Sign in with password</a>
+		</div>
+	</div>
 	<input name="cfk" value="<?echo $csrfkey;?>" type="hidden">
+	<div style="display:none;"><textarea name="certid" id="certid"></textarea></div>
 	</form>
 	&nbsp;
 </div>
@@ -151,7 +193,7 @@ body{padding:0;margin:0;background:transparent url(imgs/bgtile.png) repeat;font-
 	<script src="nano.js"></script>
 	<script>
 		function checkform(){
-			if (gid('password').value=='') {
+			if (gid('password').value=='') { //&&gid('certid').value==''
 				gid('password').focus();
 				return false;
 			}
@@ -163,5 +205,46 @@ body{padding:0;margin:0;background:transparent url(imgs/bgtile.png) repeat;font-
 		gid('login').focus();
 		<?}?>
 	</script>
+
+<script src="smartcard.js"></script>
+<script>
+smartcard_init('reader',{
+	'noplugin':function(){gid('cardlink').style.display='none';},
+	'nohttps':function(){gid('cardlink').style.display='none';}
+});
+
+function cardview(){
+	gid('passview').style.display='none';
+	gid('cardview').style.display='block';
+}
+
+function passview(){
+	gid('cardview').style.display='none';
+	gid('passview').style.display='block';
+}
+
+function cardauth(){
+/*
+	if (gid('login').value=='') {
+		gid('login').focus();
+		return;
+	}
+*/
+	if (document.reader){
+	  cert=document.reader.getcert();
+	  if (cert){
+		gid('certid').value=cert.certificateAsHex;
+		gid('cardinfo').innerHTML=cert.CN;
+		gid('cardinfo').style.display='block';
+		return true;
+	  }//cert
+	} else {//no reader
+		alert('Smartcard reader not supported');
+		return false;
+	}
+}
+
+</script>
+
 </body>
 </html>

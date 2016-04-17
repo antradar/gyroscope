@@ -17,6 +17,7 @@ $user=userinfo();
 	<meta id="viewport" name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1; user-scalable=0;"/>
 	<link href='iphone/gyrodemo.css' type='text/css' rel='stylesheet'>
 	<link href='toolbar.css' type='text/css' rel='stylesheet'>
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 <style>
 body{font-family:helvetica;}
 .menuitem{padding-left:10px;height:30px;float:left;margin-right:3px;}
@@ -178,7 +179,7 @@ function rotate(){
 		//gid('leftview').style.fontSize='25px';
 		gid('tooltitle').style.width=vw+'px';
 		//gid('tooltitle').style.top='40px';
-		gid('pusher').style.height='40px';
+		gid('pusher').style.height='50px';
 		gid('toollist').style.width=document.documentElement.clientWidth-50+'px';//'280px';
 		gid('tabtitleshadow').style.display='none';
 		gid('content').style.width=vw+'px';
