@@ -2,7 +2,8 @@
 add#primaryfield##record#=function(#primarykey#){
 	var suffix=#primarykey#;
 #iterator-fieldlist-getbridgerecordjs#
-	valid=1;
+	var valid=1;
+	var offender=null;
 	
 	//delete the excessive validate rules
 #iterator-fieldlist-validate#
@@ -18,14 +19,12 @@ add#primaryfield##record#=function(#primarykey#){
 #iterator-fieldlist-realvalues#	
 	
 	var params=[];
-	params.push('#primarykey#='+#primarykey#);
-	params.push('#lookupkey#='+#lookupkey#);
 #iterator-fieldlist-parampush#
 
 	document.hotspot=null;
 
-	ajxpgn('#primaryfield##records#_'+#primarykey#,document.appsettings.codepage+'?cmd=add#primaryfield##record#&'+params.join('&')
-		,true,true,'',function(){
+	ajxpgn('#primaryfield##records#_'+#primarykey#,document.appsettings.codepage+'?cmd=add#primaryfield##record#&#primarykey#='+#primarykey#+'&#lookupkey#='+#lookupkey#
+		,true,true,params.join('&'),function(){
 			ajxpgn('#record##primaryrecords#_'+#lookupkey#,document.appsettings.codepage+'?cmd=list#record##primaryrecords#&#lookupkey#='+#lookupkey#);
 		});
 
@@ -34,8 +33,8 @@ add#primaryfield##record#=function(#primarykey#){
 del#primaryfield##record#=function(#bridgekey#,#primarykey#,#lookupkey#){
 	if (!confirm('Are you sure you want to unlink this #record#?')) return;
 	
-	ajxpgn('#primaryfield##records#_'+#primarykey#,document.appsettings.codepage+'?cmd=del#primaryfield##record#&#bridgekey#='+#bridgekey#+'&#primarykey#='+#primarykey#	
-		,true,true,'',function(){
+	ajxpgn('#primaryfield##records#_'+#primarykey#,document.appsettings.codepage+'?cmd=del#primaryfield##record#'	
+		,true,true,'#bridgekey#='+#bridgekey#+'&#primarykey#='+#primarykey#,function(){
 			ajxpgn('#record##primaryrecords#_'+#lookupkey#,document.appsettings.codepage+'?cmd=list#record##primaryrecords#&#lookupkey#='+#lookupkey#);
 		});
 }

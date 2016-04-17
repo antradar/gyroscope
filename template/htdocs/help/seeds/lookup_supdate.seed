@@ -1,0 +1,6 @@
+
+$query="update ... ";
+
+if ($#lookupkey#) $query.=" ,#lookupkey#=$#lookupkey# ";
+
+$query.=" ...";

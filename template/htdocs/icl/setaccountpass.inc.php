@@ -7,8 +7,8 @@ function setaccountpass(){
 	$user=userinfo();
 	
 
-	$oldpass=md5($dbsalt.POSTSTR('oldpass'));
-	$pass=md5($dbsalt.POSTSTR('pass'));
+	$oldpass=md5($dbsalt.QETSTR('oldpass'));
+	$pass=md5($dbsalt.QETSTR('pass'));
 			
 
 	$userid=$user['userid']+0;

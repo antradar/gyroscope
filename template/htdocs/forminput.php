@@ -1,9 +1,10 @@
 <?php
 
 function GETVAL($key){ $val=$_GET[$key]; if (!is_numeric($val)){header('apperror:invalid parameter '.$key);die('invalid parameter '.$key);} return $val;}
+function QETVAL($key){ $val=$_POST[$key]; if (!is_numeric($val)){header('apperror:invalid parameter '.$key);die('invalid parameter '.$key);} return $val;}
 function noapos($val){if (is_callable('sql_escape')) return sql_escape($val); return addslashes($val);}
 function GETSTR($key){ $val=decode_unicode_url($_GET[$key]); return noapos($val); }
-function POSTSTR($key){ $val=decode_unicode_url($_POST[$key]); return noapos($val); }
+function QETSTR($key){ $val=decode_unicode_url($_POST[$key]); return noapos($val); }
 
 function decode_unicode_url($str){
 	$str=utf8_encode($str);

@@ -85,7 +85,6 @@ function loadfs(title,cmd,func){
 	});
 }
 
-hinttimer=-2;
 
 function autosize(){
 
@@ -112,15 +111,16 @@ function autosize(){
 }
 
 function hintstatus(d,t){
-  if (hinttimer!=-2) clearTimeout(hinttimer);
+  if (document.hinttimer) clearTimeout(document.hinttimer);
   gid('statusc').innerHTML='<a>'+t+'</a>';
   d.onmouseout=function(){
     gid('statusc').innerHTML='';
   }
 }
 function flashstatus(t,l){
-  gid('statusinfo').innerHTML=t;
-  hinttimer=setTimeout(function(){gid('statusinfo').innerHTML='';},l);
+  if (document.hinttimer) clearTimeout(document.hinttimer);
+  gid('statusc').innerHTML=t;
+  document.hinttimer=setTimeout(function(){gid('statusc').innerHTML='';},l);
 }
 
 viewcount=document.appsettings.viewcount;
@@ -200,7 +200,7 @@ function authpump(){
   var f=function(){
     if (rq.readyState==4){
 	    var xtatus=rq.getResponseHeader('X-STATUS');	    
-	    if (rq.status==200||rq.status==304||rq.status==403||parseInt(xtatus,10)==403){
+	    if (rq.status==200||rq.status==304||rq.status==403||(xtatus|0)==403){
 		     if (stamp!=rq.responseText){
 			   if (self.skipconfirm) skipconfirm();  
 		       window.location.reload();

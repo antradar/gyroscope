@@ -1,7 +1,7 @@
 	
 	var msg='';
-	var #lookupkey#=gid('#primaryfield#_#lookupkey#_'+#primarykey#).value2;
-	if (!o#lookupkey#){
+	var #lookupkey#=o#lookupkey#.value2;
+	if (!#lookupkey#){
 		msg="pick a #lookupkey# from the list\n";
 		valid=0;
 		offender=offender||o#lookupkey#;

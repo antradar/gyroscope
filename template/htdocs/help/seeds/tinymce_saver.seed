@@ -1,6 +1,5 @@
 
-	$#editfield#=file_get_contents('php://input');
-	$#editfield#=noapos($#editfield#);
+	$#editfield#=QETSTR(#editfield#);
 	$#editfield#=str_replace('>&nbsp;</','></',$#editfield#);
 	
 	//Image localizer stores images locally and allows direct pasting in Firefox

@@ -1,3 +1,11 @@
+6.6
+- using POST on all ajax calls, with extra data field
+- dropped prepend feature in nano.js
+- added sysinfo tool
+
+6.5.1
+- improved hint status to make fast updates noticeable
+
 6.5
 - resolved conflict between fastlane support and authenticated tool bar icons
 - password requests sent via POST to bypass server logging

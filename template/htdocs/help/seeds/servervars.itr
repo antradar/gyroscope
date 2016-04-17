@@ -1,1 +1,1 @@
-	$#fld0#=GETSTR('#fld0#');
+	$#fld0#=QETSTR('#fld0#');

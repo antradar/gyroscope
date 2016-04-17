@@ -86,7 +86,7 @@ body{font-family:helvetica;}
 	<div id="tabtitleshadow" style="height:25px;width:100px;display:none;"></div>
 
 	<div id="tabviews" style=""></div>
-	<div id="statusinfo" style="display:none;"></div>
+	<div id="statusinfo" style="display:none;"><div id="statusc"></div></div>
 </div>
 <div id="rotate_indicator" style="display:none;position:fixed;width:100px;height:100px;top:220px;left:110px;z-index:3000;"></div>
 <div id="fsmask"></div>

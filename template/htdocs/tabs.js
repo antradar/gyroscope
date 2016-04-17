@@ -95,7 +95,7 @@ function reloadtab(key,title,params,loadfunc,data,opts){
 	  if (ct.slowtimer) clearTimeout(ct.slowtimer);
 	    
 	  var xtatus=rq.getResponseHeader('X-STATUS');
-	  if (rq.status==403||parseInt(xtatus,10)==403){
+	  if (rq.status==403||(xtatus|0)==403){
 		    if (self.skipconfirm) skipconfirm(); 
 		  	window.location.href='login.php';
 		    return;
@@ -200,7 +200,7 @@ function addtab(key,title,params,loadfunc,data,opts){
     if (rq.readyState==4){
 	  if (c.slowtimer) clearTimeout(c.slowtimer);
 	  var xtatus=rq.getResponseHeader('X-STATUS');
-	  if (rq.status==403||parseInt(xtatus,10)==403){
+	  if (rq.status==403||(xtatus|0)==403){
 		    if (self.skipconfirm) skipconfirm(); 
 		  	window.location.href='login.php';
 		    return;
