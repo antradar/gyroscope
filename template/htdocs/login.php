@@ -2,7 +2,7 @@
 include 'lb.php';
 include 'lang.php';
 
-//include 'https.php'; //enforcing HTTPS on production server
+if ($usehttps) include 'https.php'; 
 include 'connect.php';
 include 'auth.php';
 include 'xss.php';
@@ -121,7 +121,7 @@ if ($_POST['password']||$_POST['login']){
 	<title><?tr('login');?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta http-equiv="refresh" content="1800" />
-	<meta name = "viewport" content = "width = device-width, init-scale=1, user-scalable=0" />
+	<meta name = "viewport" content = "width=device-width, init-scale=1.0, user-scalable=no" />
 	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 <style>
 body{padding:0;margin:0;background:transparent url(imgs/bgtile.png) repeat;font-size:13px;font-family:arial,sans-serif;text-align:center;}

@@ -8,7 +8,7 @@ function show#record#($#primarykey#=null){
 	$query="select * from #tablename#,#master_tablename# where #tablename#.#foreignkey#=#master_tablename#.#masterkey# and #primarykey#=$#primarykey#";
 	$rs=sql_query($query,$db);
 	
-	if (!$myrow=sql_fetch_array($rs)) die('This #record# record has been removed');
+	if (!$myrow=sql_fetch_array($rs)) die(_tr('record_removed'));
 	
 #iterator-fieldlist-myrowlist#	
 	$#masterkey#=$myrow['#masterkey#'];
@@ -23,7 +23,7 @@ function show#record#($#primarykey#=null){
 	<div class="col">
 
 	<div class="inputrow">
-		<div class="formlabel">#c_master_record#:
+		<div class="formlabel"><?tr('list_#master_record#_stab');?>:
 		
 			<a onclick="ajxjs(self.show#master_record#,'#master_records#.js');show#master_record#(<?echo $#masterkey#?>,'<?echo $dbrecordtitle;?>');">
 			<u><?echo $recordtitle;?></u>
@@ -34,10 +34,10 @@ function show#record#($#primarykey#=null){
 #iterator-fieldlist-detailview#
 	
 	<div class="inputrow">
-		<button onclick="update#record#(<?echo $#primarykey#;?>,<?echo $#foreignkey#;?>);">Update</button>
+		<button onclick="update#record#(<?echo $#primarykey#;?>,<?echo $#foreignkey#;?>);"><?tr('button_update');?></button>
 
 		&nbsp; &nbsp;
-		<button class="warn" onclick="del#record#(<?echo $#primarykey#;?>,<?echo $#foreignkey#;?>);">Delete</button>
+		<button class="warn" onclick="del#record#(<?echo $#primarykey#;?>,<?echo $#foreignkey#;?>);"><?tr('button_delete');?></button>
 
 
 	</div>

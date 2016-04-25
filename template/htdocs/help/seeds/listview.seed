@@ -20,7 +20,7 @@ function list#records#(){
 	</form>
 
 	<div style="padding-top:10px;">
-	<a class="recadder" onclick="addtab('#record#_new','New #c_record#','new#record#');"> <img src="imgs/t.gif" class="img-addrec" width="18" height="18">add a new #record#</a>
+	<a class="recadder" onclick="addtab('#record#_new','<?tr('list_#record#_add_tab');?>','new#record#');"> <img src="imgs/t.gif" class="img-addrec" width="18" height="18"><?tr('list_#record#_add');?></a>
 	</div>
 </div>
 
@@ -74,7 +74,7 @@ function list#records#(){
 </div>
 
 <script>
-gid('tooltitle').innerHTML='<a>#c_records#</a>';
+gid('tooltitle').innerHTML='<a><?tr('icon_#records#');?></a>';
 ajxjs(self.show#record#,'#records#.js');
 </script>
 <?	

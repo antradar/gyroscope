@@ -5,6 +5,7 @@ $langs=array(
 	'en'=>'English',
 //	'de'=>'Deutsch',
 //	'ru'=>'Русский',
+//	'zh'=>'中文',
 //	'he'=>'עברית'
 );
 

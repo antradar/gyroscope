@@ -1,6 +1,6 @@
 <?
 include 'lb.php';
-//include 'https.php'; //enforcing HTTPS on production server
+if ($usehttps) include 'https.php';
 
 include 'mswitch.php'; //auto switch to mobile version
 
@@ -101,7 +101,7 @@ document.appsettings={codepage:'<?echo $codepage;?>', fastlane:'<?echo $fastlane
 </div>
 
 <!-- right panel -->
-<div id="tabtitles" scale:cw="225"> <a id="closeall" style="" onclick="resettabs('welcome');"><b><img src="imgs/t.gif" class="img-closeall" width="10" height="10">Close All</b></a> </div>
+<div id="tabtitles" scale:cw="225"> <a id="closeall" style="" onclick="resettabs('welcome');"><b><img src="imgs/t.gif" class="img-closeall" width="10" height="10"><?tr('close_all_tabs');?></b></a> </div>
 <div id="tabviews" style="overflow:auto;position:absolute;left:295px;height:30px;top:122px;" scale:cw="225" scale:ch="105"></div>
 
 <div id="sptr" scale:ch="104"></div>

@@ -18,6 +18,8 @@
 ],
 
 "templates":[
+	{"template":"listview_lang","filename":"add entries to lang/dict.<em style=\"color:#000099;\">en</em>.php"},	
+	{"template":"listview_langjs","filename":"add entries to lang/dict.<em style=\"color:#000099;\">en</em>.js"},	
 	{"template":"listview_icon","filename":"settings.php <em>$toolbaritems</em>"},
 	{"template":"listview_js","filename":"#records#.js"},
 	{"template":"listview","filename":"icl/list#records#.inc.php"},
@@ -25,7 +27,7 @@
 	{"template":"newrecord","filename":"icl/new#record#.inc.php"},
 	{"template":"addrecord","filename":"icl/add#record#.inc.php"},
 	{"template":"delrecord","filename":"icl/del#record#.inc.php"},	
-	{"template":"updaterecord","filename":"icl/update#record#.inc.php"},	
+	{"template":"updaterecord","filename":"icl/update#record#.inc.php"},
 	{"template":"listview_switch","filename":"myservices.php <em>switch ($cmd){</em>"}
 ]
 }

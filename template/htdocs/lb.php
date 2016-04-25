@@ -1,5 +1,7 @@
 <?php
 
+//$usehttps=1; //enforcing HTTPS on production server
+
 date_default_timezone_set('America/Toronto');
 
 define ('TABLENAME_USERS','users');

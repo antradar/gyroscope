@@ -179,7 +179,7 @@ updateuser=function(userid){
 
 
 deluser=function(userid){
-	if (!confirm('Are you sure you want to remove this user?')) return;
+	if (!confirm(document.dict['confirm_user_delete'])) return;
 	
 	reloadtab('user_'+userid,null,'deluser&userid='+userid,function(){
 		closetab('user_'+userid);

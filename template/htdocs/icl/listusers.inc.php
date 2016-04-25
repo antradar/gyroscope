@@ -17,7 +17,7 @@ function listusers(){
 <div class="listbar">
 <input id="userkey" class="img-mg" onkeyup="_inline_lookupuser(this);">
 	<div style="padding-top:10px;margin-bottom:10px;">
-	<a class="recadder" onclick="addtab('user_new','New User','newuser');"> <img src="imgs/t.gif" class="img-addrec" width="18" height="18">add a new user</a>
+	<a class="recadder" onclick="addtab('user_new','<?tr('list_user_add_tab');?>','newuser');"> <img src="imgs/t.gif" class="img-addrec" width="18" height="18"><?tr('list_user_add');?></a>
 	</div>
 </div>
 
@@ -76,7 +76,7 @@ function listusers(){
 </div>
 
 <script>
-gid('tooltitle').innerHTML='<a>Users</a>';
+gid('tooltitle').innerHTML='<a><?tr('list_users');?></a>';
 ajxjs(self.showuser,'users_js.php');
 </script>
 <?	

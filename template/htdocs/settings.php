@@ -12,8 +12,7 @@ $fastlane='phpx-services.php'; //change this name if HAProxy is set up to route 
 $viewcount=3;
 
 $userroles=array(
-	'admins'=>'standard admin privileges',
-	'accounts'=>'manage user accounts'
+	'accounts'=>_tr('rights_accounts')
 );
 
 // smb 80dd22a0 - 

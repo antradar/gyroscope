@@ -13,7 +13,7 @@ function showaccount(){
 <div class="sectionheader"><?tr('password');?></div>
 <table>
 
-<tr><td>Current Password:</td>
+<tr><td><?tr('current_password');?>:</td>
 <td><input id="accountpass" type="password"></td>
 </tr>
 

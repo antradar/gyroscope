@@ -40,7 +40,7 @@ function date2stamp($date,$hour=0,$min=0,$sec=0){
 
 function makelookup($id,$fullscale=0){
 ?>
-<div class="minilookup" id="<?echo $id;?>_lookup"><a id="<?echo $id;?>_lookup_closer" class="labelbutton closer" onclick="gid('<?echo $id;?>_lookup').style.display='none';">close</a>
+<div class="minilookup" id="<?echo $id;?>_lookup"><a id="<?echo $id;?>_lookup_closer" class="labelbutton closer" onclick="gid('<?echo $id;?>_lookup').style.display='none';"><?tr('lookup_closer')?></a>
 <div id="<?echo $id;?>_lookup_view" class="lookupview"<?if ($fullscale) echo ' style="height:auto;overflow:normal;"';?>></div></div>
 <?	
 }

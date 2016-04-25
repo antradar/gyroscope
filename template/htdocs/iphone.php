@@ -1,6 +1,7 @@
 <?
 include 'lb.php';
-//include 'https.php';
+if ($usehttps) include 'https.php';
+
 include 'settings.php';
 include 'retina.php';
 
@@ -14,7 +15,7 @@ $user=userinfo();
 <head>
 	<title>Antradar Gyroscope&trade; Mobile</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta id="viewport" name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1; user-scalable=0;"/>
+	<meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 	<link href='iphone/gyrodemo.css' type='text/css' rel='stylesheet'>
 	<link href='toolbar.css' type='text/css' rel='stylesheet'>
 	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
@@ -80,7 +81,7 @@ body{font-family:helvetica;}
 </div>
 <div id="content" style="float:left;width:320px;">
 
-	<div id="backlist" style="display:none;position:fixed;width:100%;z-index:1000;"><a id="backlistbutton"><img onclick="navback();" src="iphone/bb.png"></a></div>
+	<div id="backlist" style="display:none;position:fixed;width:100%;z-index:1000;"><a id="backlistbutton"><img onclick="navback();" src="iphone/bb_<?echo $lang;?>.png"></a></div>
 	<div id="backlistshadow" style="display:none;width:100%;"></div>
 
 	<div id="tabtitles" style="width:325px;position:fixed;z-index:1000;"></div>

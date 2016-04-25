@@ -17,6 +17,6 @@ function download#primaryfield##record#(){
 	header("Content-disposition: attachment; filename=$docfn");
 
 	clearstatcache();
-	echo readfile($fn);
+	echo file_get_contents($fn);
 	die();	
 }

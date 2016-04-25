@@ -12,7 +12,7 @@ function add#record#(){
 	$#primarykey#=sql_insert_id($db,$rs)+0;
 
 	if (!$#primarykey#) {
-		header('apperror:Error creating #c_record# record');die();
+		header('apperror:'._tr('error_creating_record'));die();
 	}
 	
 	logaction("added #c_record# #$#primarykey# <u>$#dispfield#</u>",array('#primarykey#'=>$#primarykey#,'#dispfield#'=>"$#dispfield#"));

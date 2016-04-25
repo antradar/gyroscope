@@ -1,3 +1,8 @@
+7.1
+- daylight saving indicator in time picker
+- language supported integrated in Codegen
+- instant logout in mobile mode
+
 7.0
 - icon scroller in desktop view
 - multiple UI language support

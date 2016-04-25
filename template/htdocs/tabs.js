@@ -204,7 +204,7 @@ function addtab(key,title,params,loadfunc,data,opts){
   var t=document.createElement('span');
   var tabhtml="<nobr><a class=\"tt\" ondblclick=\"refreshtab('"+key+"');\" onclick=\"showtab('"+key+"');\">"+title+"</a><a onclick=\"closetab('"+key+"')\"><span class=\"tabclose\"></span></a></nobr>";
   if (opts!=null&&opts.noclose) tabhtml="<nobr><a class=\"tt\" ondblclick=\"refreshtab('"+key+"');\" onclick=\"showtab('"+key+"');\">"+title+"</a><span class=\"noclose\"></span></nobr>";
-  if (opts!=null&&opts.closeall) tabhtml="<nobr><a title=\"close all tabs\" onclick=\"resettabs('"+key+"');\" class=\"closeall\"></a><a class=\"tt\" ondblclick=\"refreshtab('"+key+"');\" style=\"padding-left:1px;\" onclick=\"showtab('"+key+"');\">"+title+"</a><span class=\"noclose\"></span></nobr>";
+  if (opts!=null&&opts.closeall) tabhtml="<nobr><a title=\""+document.dict['close_all_tabs']+"\" onclick=\"resettabs('"+key+"');\" class=\"closeall\"></a><a class=\"tt\" ondblclick=\"refreshtab('"+key+"');\" style=\"padding-left:1px;\" onclick=\"showtab('"+key+"');\">"+title+"</a><span class=\"noclose\"></span></nobr>";
   
   t.innerHTML=tabhtml;
   gid('tabtitles').appendChild(t);
@@ -240,7 +240,7 @@ function addtab(key,title,params,loadfunc,data,opts){
 }
 
 function resettabs(key){
-	if (!confirm('Are you sure you want to close all the tabs?')) return;
+	if (!confirm(document.dict['confirm_close_all_tabs'])) return;
 	if (gid('closeall')) gid('closeall').style.display='none';
 	
 	var tabid=gettabid(key);

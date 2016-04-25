@@ -34,26 +34,26 @@ function showuser($userid=null){
 
 
 	<div class="inputrow">
-		<div class="formlabel">Account Login:</div>
+		<div class="formlabel"><?tr('username');?>:</div>
 		<input class="inpmed" id="login_<?echo $userid;?>" value="<?echo htmlspecialchars($login);?>">
 	</div>
 	<div class="inputrow">
-		<input type="checkbox" id="active_<?echo $userid;?>" <?if ($active) echo 'checked';?>> active account
+		<input type="checkbox" id="active_<?echo $userid;?>" <?if ($active) echo 'checked';?>> <?tr('account_active');?>
 		&nbsp;&nbsp;
-		<input type="checkbox" id="virtual_<?echo $userid;?>" <?if ($virtual) echo 'checked';?> onclick="if (this.checked) gid('userpasses_<?echo $userid;?>').style.display='none'; else gid('userpasses_<?echo $userid;?>').style.display='block';"> virtual account
+		<input type="checkbox" id="virtual_<?echo $userid;?>" <?if ($virtual) echo 'checked';?> onclick="if (this.checked) gid('userpasses_<?echo $userid;?>').style.display='none'; else gid('userpasses_<?echo $userid;?>').style.display='block';"> <?tr('account_virtual');?>
 	</div>
 	<div id="userpasses_<?echo $userid;?>" style="<?if ($virtual) echo 'display:none;';?>">
 	<div class="inputrow">
-		<div class="formlabel">New Password:</div>
+		<div class="formlabel"><?tr('new_password');?>:</div>
 		<input class="inp" id="newpass_<?echo $userid;?>" type="password">
 	</div>
 	<div class="inputrow">
-		<div class="formlabel">Confirm Password:</div>
+		<div class="formlabel"><?tr('repeat_password');?>:</div>
 		<input class="inp" id="newpass2_<?echo $userid;?>" type="password">
 	</div>
 	
 	<div class="inputrow">
-		<input type="checkbox" id="passreset_<?echo $userid;?>" <?if ($passreset) echo 'checked';?>> force password reset upon login
+		<input type="checkbox" id="passreset_<?echo $userid;?>" <?if ($passreset) echo 'checked';?>> <?tr('account_login_reset');?>
 	</div>
 
 	<div class="inputrow" id="cardsettings_<?echo $userid;?>">
@@ -66,7 +66,7 @@ function showuser($userid=null){
 	</div>
 	
 	<div class="inputrow">
-		<div class="formlabel">Roles:</div>
+		<div class="formlabel"><?tr('account_roles');?>:</div>
 		<?foreach ($userroles as $role=>$label){
 		?>
 		<div style="padding-left:10px;margin-bottom:3px;">
@@ -78,10 +78,10 @@ function showuser($userid=null){
 	</div><!-- userpasses -->
 	
 	<div class="inputrow">
-		<button onclick="updateuser(<?echo $userid;?>);">Update</button>
+		<button onclick="updateuser(<?echo $userid;?>);"><?tr('button_update');?></button>
 
 		&nbsp; &nbsp;
-		<button class="warn" onclick="deluser(<?echo $userid;?>);">Delete</button>
+		<button class="warn" onclick="deluser(<?echo $userid;?>);"><?tr('button_delete');?></button>
 
 
 	</div>

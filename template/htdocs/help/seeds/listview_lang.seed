@@ -1,0 +1,6 @@
+	'icon_#records#'=>'#c_records#',
+	'list_#record#_stab'=>'#c_record#',
+	'button_#record#_add'=>'Add #c_record#',
+	'list_#record#_add_tab'=>'New #c_record#',
+	'list_#record#_add'=>'add a #record#',	
+#iterator-fieldlist-formlang#		

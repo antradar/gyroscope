@@ -8,7 +8,7 @@ function show#record#($#primarykey#=null){
 	$query="select * from #tablename# where #primarykey#=$#primarykey#";
 	$rs=sql_query($query,$db);
 	
-	if (!$myrow=sql_fetch_array($rs)) die('This #record# record has been removed');
+	if (!$myrow=sql_fetch_array($rs)) die(_tr('record_removed'));
 	
 #iterator-fieldlist-myrowlist#	
 
@@ -23,10 +23,10 @@ function show#record#($#primarykey#=null){
 #iterator-fieldlist-detailview#
 	
 	<div class="inputrow">
-		<button onclick="update#record#(<?echo $#primarykey#;?>);">Update</button>
+		<button onclick="update#record#(<?echo $#primarykey#;?>);"><?tr('button_update');?></button>
 
 		&nbsp; &nbsp;
-		<button class="warn" onclick="del#record#(<?echo $#primarykey#;?>);">Delete</button>
+		<button class="warn" onclick="del#record#(<?echo $#primarykey#;?>);"><?tr('button_delete');?></button>
 
 
 	</div>

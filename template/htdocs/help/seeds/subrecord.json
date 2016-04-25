@@ -28,6 +28,8 @@
 ],
 
 "templates":[
+	{"template":"listview_lang","filename":"add entries to lang/dict.<em style=\"color:#000099;\">en</em>.php"},	
+	{"template":"listview_langjs","filename":"add entries to lang/dict.<em style=\"color:#000099;\">en</em>.js"},	
 	{"template":"listview_icon","filename":"settings.php <em>$toolbaritems</em>"},	
 	{"template":"sublistview","filename":"icl/list#records#.inc.php"},	
 	{"template":"subrecord_js","filename":"#records#.js"},

@@ -2,6 +2,8 @@
 
 function showdatepicker(){
 	global $db;
+	global $dict_mons;
+	global $dict_wdays;
 
 	$key=trim(GETSTR('key'));
 	
@@ -51,17 +53,19 @@ function showdatepicker(){
 	$ld=date('j',mktime(23,59,59,$nm,0,$ny));
 	$w=date("w",$fd);
 
-	$wdays=array('Su','Mo','Tu','We','Th','Fr','Sa');
+	$wdays=$dict_wdays;
 
 	$start=$fd;
 	$end=mktime(23,59,59,$nm,0,$ny);
 	
 	$today=date('Y-n-j');
+	
+	$dmdate=_tr('yearmonth',array('mon'=>$dict_mons[date('n',$fd)],'year'=>date('Y',$fd)));
 
 ?>
 <div style="width:100%;text-align:center;padding-top:10px;" id="cale_daypicker">
 
-<div style="width:100%;position:relative;margin-top:5px;text-align:center;"><?echo date("M Y",$fd);?>
+<div style="width:100%;position:relative;margin-top:5px;text-align:center;"><?echo $dmdate;?>
 <span style="position:absolute;top:2px;left:12px;cursor:pointer;" onclick="<?if ($mode=='datetime'){?>
 pickdatetime(null,{start:'<?echo $hstart;?>',end:'<?echo $hend;?>',mini:<?echo $mini;?>},'<?echo "$py-$pm"?>');
 <?} else {?>
@@ -98,7 +102,7 @@ for ($i=1;$i<=$ld;$i++){
 </div>
 <div style="clear:both;"></div>
 
-<div id="timepicker" style="display:none;">
+<div id="timepicker" style="display:none;width:100%;position:relative;">
 	
 </div>
 <?
@@ -113,6 +117,7 @@ function showtimepicker($y=null,$m=null,$d=null,$start=null,$end=null,$res=null,
 		
 		if ($_GET['start']) $start=$_GET['start'];
 		if ($_GET['end']) $end=$_GET['end'];
+		if ($end==24) $end=26;
 
 		$res=GETSTR('res');	
 	}
@@ -133,6 +138,8 @@ function showtimepicker($y=null,$m=null,$d=null,$start=null,$end=null,$res=null,
 	$nextres=$res/4;
 	if ($res==15) $nextres=1;
 	
+	$daykey=date('Y-n-j',$base);
+	$ldaykey=date('Y-n-j',$base-3600);
 	
 	for ($i=$rstart-$res*60;$i<=$rend;$i+=$res*60){
 	
@@ -143,14 +150,22 @@ function showtimepicker($y=null,$m=null,$d=null,$start=null,$end=null,$res=null,
 
 		$picked=date('Y-n-j',$val).' '.$t;
 		if ($_GET['nodate']) $picked=$t;
+		$ds=date('I',$val);
+		if ($ds) $picked.=' *';
+
+		$dkey=date('Y-n-j',$val-3600);
+		$mdkey=date('Y-n-j',$val);
+		if ($dkey!=$daykey&&$dkey!=$ldaykey) continue;
 	?>
 		<div style="position:relative;height:30px;border-bottom:solid 1px #999999;">
 			<?if ($i>$rstart-$res*60){?>
-			<a style="padding:10px 5px;display:block;margin-right:50px;" onclick="picklookup('<?echo $picked;?>',<?echo $val;?>);"><?echo $t;?></a>
+			<a style="padding:10px 5px;display:block;margin-right:50px;" onclick="picklookup('<?echo $picked;?>',<?echo $val;?>);"><?echo $t;?>
+				<?if ($ds){?><img src="imgs/t.gif" class="daylightsaving"><?}?>
+			</a>
 			<?}?>
-			<?if ($res>1){?>
+			<?if ($res>1&&$mdkey==$daykey){?>
 			<a style="position:absolute;display:block;padding:1px 5px;font-size:10px;border-radius:5px;background-color:#666666;color:#ffffff;top:20px;right:10px;"
-				onclick="this.style.display='none';ajxpgn('subtime_<?echo $i;?>',document.appsettings.codepage+'?cmd=showtimepicker&nodate=<?echo $_GET['nodate']+0;?>&y=<?echo $y;?>&m=<?echo $m;?>&d=<?echo $d;?>&rstart=<?echo $hstart;?>&rend=<?echo $hend;?>&res=<?echo $nextres;?>');">more</a>
+				onclick="this.style.display='none';ajxpgn('subtime_<?echo $i;?>',document.appsettings.codepage+'?cmd=showtimepicker&nodate=<?echo $_GET['nodate']+0;?>&y=<?echo $y;?>&m=<?echo $m;?>&d=<?echo $d;?>&rstart=<?echo $hstart;?>&rend=<?echo $hend;?>&res=<?echo $nextres;?>');">...</a>
 			<?}?>
 		</div>
 		<div id="subtime_<?echo $i;?>" style="margin:0 10px;">

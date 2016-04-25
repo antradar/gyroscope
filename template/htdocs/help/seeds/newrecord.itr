@@ -1,4 +1,4 @@
 	<div class="inputrow">
-		<div class="formlabel">#fld1#:</div>
+		<div class="formlabel"><?tr('#record#_label_#fld0#');?>:</div>
 		<input class="inp" id="#fld0#_new">
 	</div>

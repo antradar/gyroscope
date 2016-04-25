@@ -3,10 +3,11 @@
 function showgyroscopeupdater(){
 	
 	global $db;
+	global $dict_dir;
 	
 ?>
 <div style="color:#444444;padding:10px 0;line-height:1.6em;">
-	<div style="text-align:right;">
+	<div style="text-align:right;direction:<?echo $dict_dir;?>;">
 		<span style="font-size:12px;"><?tr('powered_by_',array('power'=>'Antradar Gyroscope '.GYROSCOPE_VERSION.' '.VENDOR_INITIAL.VENDOR_VERSION));?> &nbsp; &nbsp;</span>
 		<a class="labelbutton" onclick="updategyroscope();" style="white-space:nowrap;"><?tr('check_updates');?></a>
 		<?if ($_SERVER['REMOTE_ADDR']=='127.0.0.1'){

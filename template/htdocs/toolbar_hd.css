@@ -1,5 +1,5 @@
 .admin-logout, .admin-settings, .admin-user, #speechstart img,
-.beltprev, .beltnext,
+.beltprev, .beltnext, .daylightsaving,
 .img-addrec, .img-del, .img-save, .img-tick, .img-xls, .img-pdf, .img-speechrecog,
 .img-closeall, .img-speechrecog, .img-reports, .img-reports-light, .img-xls, .img-pdf
 {background-image:url(imgs/toolbar_hd.gif);background-size:448px 64px;}	

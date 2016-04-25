@@ -30,6 +30,19 @@ while ($myrow=sql_fetch_assoc($rs)){
 	$csets[$myrow['Variable_name']]=$myrow['Value'];
 }
 
+$trx=null;
+
+$query="show variables like '%at_trx_commit%'";
+$rs=sql_query($query,$db);
+if ($myrow=sql_fetch_assoc($rs)) $trx=$myrow['Value'];
+
+$tablespace='';
+
+$query="show variables like '%innodb_file_per_table%'";
+$rs=sql_query($query,$db);
+if ($myrow=sql_fetch_assoc($rs)) $tablespace=$myrow['Value'];
+
+
 //echo '<pre>'; print_r($csets); echo '</pre>';
 
 $seg=memory_get_usage(1)/1024/256;
@@ -43,6 +56,8 @@ $tests=array(
 'MySQL database charset'=>array('res'=>$csets['character_set_database']=='latin1','message'=>$csets['character_set_database']),
 'MySQL results charset'=>array('res'=>$csets['character_set_results']=='latin1','message'=>$csets['character_set_results']),
 'MySQL server charset'=>array('res'=>$csets['character_set_server']=='latin1','message'=>$csets['character_set_server']),
+'InnoDB trx level'=>array('res'=>$trx==2,'message'=>$trx),
+'InnoDB table space'=>array('res'=>$tablespace=='ON','message'=>$tablespace),
 '64-bit integer'=>array('res'=>$a==$b,'message'=>''),
 'Date beyond 2038'=>array('res'=>'2412-12-12'==date('Y-n-j',13978113132),'message'=>''),
 'IPv6 Socket'=>array('res'=>strpos($ip,':')!==false,'message'=>$ip),

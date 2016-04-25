@@ -8,12 +8,13 @@ function showwelcome(){
 	<div class="sectiontitle"><?tr('hometab_welcome');?></div>
 	
 
-	
-	<? /* lookup sample
-	<input id="test" onfocus="pickdatetime(this,{mini:1,start:9,end:17});" onkeyup="_pickdatetime(this,{mini:1,start:5,end:17});">
+<?
+/*
+	<input id="test" onfocus="pickdatetime(this,{mini:1,start:0,end:24});" onkeyup="_pickdatetime(this,{mini:1,start:0,end:24});">
+	<span id="test_val2"></span>
 	<?makelookup('test',1);?>
-	*/?>
-	
+*/
+?>	
 	<?
 		//lazy way to generate a starter screen, but better than nothing
 		
@@ -34,18 +35,8 @@ function auto_welcome(){
 	?>
 	<div class="section">
 	
-	<div class="col">
 	<?
 	foreach ($toolbaritems as $ti){
-	if ($ti['type']=='break') {
-	?>
-	<!-- {{ -->
-	</div>
-	<div class="col">
-	<!-- }} -->
-	<?
-		continue;	
-	}
 	if ($ti['type']=='custom'){
 	?>
 	<?echo $ti['desktop'];?>
@@ -58,16 +49,13 @@ function auto_welcome(){
 	if ($ti['action']!='') $action.=$ti['action'];
 	
 ?>	
-	<div style="margin-bottom:15px;">
+	<div style="margin-bottom:20px;" class="welcometile">
 	<a onclick="<?echo $action;?>"><img style="vertical-align:middle;margin-right:5px;" class="<?echo $ti['icon'];?>-light" src="imgs/t.gif" width="32" height="32"> <span style="vertical-align:middle;"><?echo $ti['title'];?></span></a>
 	</div>
 	
 <?}//foreach
 ?>
 
-		<div class="clear"></div>
-	
-	</div>
 	
 	<div class="clear"></div>
 </div>

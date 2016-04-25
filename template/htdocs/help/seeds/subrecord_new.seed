@@ -5,11 +5,11 @@ function new#record#($#masterkey#=null){
 	
 ?>
 <div class="section">
-	<div class="sectiontitle">New #c_record#</div>
+	<div class="sectiontitle"><?tr('list_#record#_add_tab');?></div>
 	
 #iterator-fieldlist-newrecord#
 		<div class="inputrow">
-			<button onclick="add#record#(<?echo $#masterkey#?>);">Add #c_record#</button>
+			<button onclick="add#record#(<?echo $#masterkey#?>);"><?tr('button_#record#_add')?></button>
 		</div>
 </div>
 <?

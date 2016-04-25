@@ -61,14 +61,14 @@ update#record#=function(#primarykey#){
 	
 	reloadtab('#record#_'+#primarykey#,o#dispfield#.value,'update#record#&#primarykey#='+#primarykey#,function(){
 		reloadview(#viewindex#,'#record#list');
-		flashstatus('Updated '+o#dispfield#.value,5000);
+		flashstatus(document.dict['statusflash_updated']+o#dispfield#.value,5000);
 	},params.join('&'));
 	
 }
 
 
 del#record#=function(#primarykey#){
-	if (!confirm('Are you sure you want to remove this #record#?')) return;
+	if (!confirm(document.dict['confirm_#record#_delete'])) return;
 	
 	reloadtab('#record#_'+#primarykey#,null,'del#record#&#primarykey#='+#primarykey#,function(){
 		closetab('#record#_'+#primarykey#);

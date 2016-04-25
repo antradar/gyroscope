@@ -1,2 +1,2 @@
 
-	array('title'=>'#c_records#','viewindex'=>#viewindex#,'icon'=>'img-#records#'),
+	array('title'=>_tr('icon_#records#'),'viewindex'=>#viewindex#,'icon'=>'img-#records#'),

@@ -102,6 +102,13 @@ function reloadtab(key,title,params,loadfunc,data,opts){
   rq.onreadystatechange=function(){
     if (rq.readyState==4){
 	  if (ct.slowtimer) clearTimeout(ct.slowtimer);
+	  
+	  var xtatus=rq.getResponseHeader('X-STATUS');
+	  if (rq.status==403||(xtatus|0)==403){
+		    if (self.skipconfirm) skipconfirm(); 
+		  	window.location.href='login.php';
+		    return;
+      }	  
 	    
       document.tabtitles[tabid].tablock=null;
       
@@ -203,6 +210,14 @@ function addtab(key,title,params,loadfunc,data,opts){
   rq.onreadystatechange=function(){
     if (rq.readyState==4){
 	  if (c.slowtimer) clearTimeout(c.slowtimer);
+	  
+	  var xtatus=rq.getResponseHeader('X-STATUS');
+	  if (rq.status==403||(xtatus|0)==403){
+		    if (self.skipconfirm) skipconfirm(); 
+		  	window.location.href='login.php';
+		    return;
+      }
+	  
 	  var reloader="<div class=\"reloader\"><a onclick=\"refreshtab('"+key+"');\">"+document.dict['tab_reload']+"</a></div>";
       c.innerHTML=reloader+rq.responseText;
 
