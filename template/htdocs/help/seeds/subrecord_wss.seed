@@ -1,4 +1,4 @@
 		case '#master_record##records#':
-			if (gid('#master_record##records#_'+recid)) gid('#master_record##records#_'+recid).style.backgroundColor=bgcolor;
+			if (gid('#master_record##records#_'+recid)) {gid('#master_record##records#_'+recid).style.backgroundColor=bgcolor;hit=1;}
 		break;
 		

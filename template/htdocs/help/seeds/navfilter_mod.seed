@@ -1,2 +1,4 @@
 
+
 #iterator-dimlist-navinc#
+	#record#_shownav('#multifield#','#multifield#','#multifield#s'); //multi

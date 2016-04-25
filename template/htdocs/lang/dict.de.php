@@ -50,5 +50,7 @@ $dict=array(
 
 	'list_users'=>'Benutzer',
 	'list_user_add'=>'Benutzer hizufÃ¼gen',
-	'list_user_add_tab'=>'Neuer Benutzer'
+	'list_user_add_tab'=>'Neuer Benutzer',
+	'csrf_expire'=>'Es ist schon eine Weile her, seit du diese Seite geöffnet wird. Melden Sie sich erneut an.'
+		
 );

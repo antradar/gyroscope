@@ -1,3 +1,13 @@
+7.2
+- timepicker daylight saving. e.g.:
+  picktime(this,{start:0,end:24,y:2015,m:11,d:1});
+
+7.1.1
+- revised navfilter template for multi-select support
+- wss notification for pinned tabs
+- csrf expiry warning
+- improved icon sprite template
+
 7.1
 - daylight saving indicator in time picker
 - language supported integrated in Codegen

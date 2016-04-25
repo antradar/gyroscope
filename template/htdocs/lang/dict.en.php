@@ -51,6 +51,7 @@ $dict=array(
 	'hometab_welcome'=>'Welcome to Antradar Gyroscope',	
 	'list_users'=>'Users',
 	'list_user_add'=>'add a user',
-	'list_user_add_tab'=>'New User'
+	'list_user_add_tab'=>'New User',
+	'csrf_expire'=>'You\'ve been on this screen for some time. For better security, please sign in again.'
 	
 );

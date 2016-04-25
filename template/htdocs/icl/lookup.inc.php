@@ -18,13 +18,19 @@ function showdatepicker(){
 	if ($mini) $dmini=', 1';
 		
 	//get current month and year
-	$m=date("m")+0;
+	$m=date("n")+0;
 	$y=date("Y");
+	$d=date('j');
+
 
 	if ($_GET['nodate']) {
+		if ($_GET['y']) $y=$_GET['y'];
+		if ($_GET['m']) $m=$_GET['m'];
+		if ($_GET['d']) $d=$_GET['d'];
+		
 ?>
 <div id="timepicker">
-	<?showtimepicker($y,$m,1,$hstart,$hend,60);?>
+	<?showtimepicker($y,$m,$d,$hstart,$hend,60);?>
 </div>
 <?	
 		return;	

@@ -35,7 +35,7 @@ $toolbaritems=array(
 
 
 /*
-	//uncommet to test belt slider
+	//uncomment to test belt slider
 	
 
 	array('title'=>'Reports 2','viewindex'=>0,'icon'=>'img-reports'),

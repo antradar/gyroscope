@@ -68,13 +68,15 @@ function wss_markchanges(rectype,recid,corrected){
 	add custom notifiers here
 	*/
 	
+	var hit=0;
+	
 	switch(rectype){
 		case 'filmactors':
-			if (gid('filmactors_'+recid)) gid('filmactors_'+recid).style.backgroundColor=bgcolor;
+			if (gid('filmactors_'+recid)) {gid('filmactors_'+recid).style.backgroundColor=bgcolor;hit=1;}
 		break;
 		
 		case 'actorfilms':
-			if (gid('actorfilms_'+recid)) gid('actorfilms_'+recid).style.backgroundColor=bgcolor;
+			if (gid('actorfilms_'+recid)) {gid('actorfilms_'+recid).style.backgroundColor=bgcolor;hit=1;}
 		break;		
 		
 		default:
@@ -84,8 +86,15 @@ function wss_markchanges(rectype,recid,corrected){
 	
 	var tabid=gettabid(rectype+'_'+recid);
 	if (tabid&&document.tabtitles[tabid]){
+		hit=1;
 		if (corrected) document.tabtitles[tabid].style.color=fgcolor;
 		else document.tabtitles[tabid].style.color=fgcolor;	
+	}	
+	
+	if (hit){
+		if (!document.orgtitle) document.orgtitle=document.title;
+		document.title=document.orgtitle+' *';
+		setTimeout(function(){document.title=document.orgtitle;},100);
 	}	
 }
 	

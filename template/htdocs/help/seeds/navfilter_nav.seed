@@ -6,8 +6,10 @@ function #record#_countfield($fieldname,$limit=null){
 	$filters=#record#_makefilters();
 		
 	$query="select count(#tablename#.#primarykey#) as c, $fieldname from #tablename# ";
+	if ($fieldname=='#multifield#') $query.=" , #multitable# "; //multi
 		
 	$query.=" where #tablename#.#primarykey#!=0 ";
+	if ($fieldname=='#multifield#') $query.=" and #multitable#.#primarykey#=#tablename#.#primarykey# "; //multi
 
 	$query.=#record#_sqlfilters();
 	$query.=" group by $fieldname ";
@@ -34,6 +36,12 @@ function #record#_sqlfilters(){
 	$key=GETSTR('key');
 	if ($key!='') $filters.=" and (#searchquery#) ";
 	
+	if (is_array($_GET['#multifield#s'])) {
+		foreach ($_GET['#multifield#s'] as $#multifield#=>$flag) 
+			$filters.=' and exists (select * from #multitable# where #multitable#.#primarykey#=#tablename#.#primarykey# and #multifield#='.$#multifield#.')';
+	}
+	
+	
 #iterator-dimlist-dimlist#		
 	
 	return $filters;
@@ -41,6 +49,12 @@ function #record#_sqlfilters(){
 
 function #record#_makefilters(){
 	$filters=array();
+	
+	if (is_array($_GET['#multifield#s'])){
+		$filters['#multifield#s']=array();
+		foreach ($_GET['#multifield#s'] as $#multifield#=>$flag) $filters['#multifield#s'][$#multifield#]=1;
+	 }
+	
 
 #iterator-dimlist-navget#		
 		

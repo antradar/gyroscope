@@ -22,6 +22,6 @@ $dict=array(
 	
 	'icon_reports'=>'Отчеты',
 	'tab_welcome'=>'Здравствуйте',
-	'hometab_welcome'=>'Добро пожаловать в Antradar Gyroscope',	
-	
+	'hometab_welcome'=>'Добро пожаловать в Antradar Gyroscope',
+	'csrf_expire'=>'Это было время, так как вы открыли эту страницу. Войдите в систему снова.'	
 );

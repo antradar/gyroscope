@@ -26,88 +26,88 @@ if ($_POST['password']||$_POST['login']){
 
 	$cfk=$_POST['cfk'];
 	if ($cfk!=$csrfkey&&$cfk!=$csrfkey2){
-		header('HTTP/1.0 403 Forbidden');
-		header('X-STATUS: 403');
-		header('Location: index.php');
-		die('Access Denied');		
-	}
 	
-  $password=md5($dbsalt.$_POST['password']);
-  $raw_login=$_POST['login'];
-  $login=str_replace("'",'',$raw_login);
-  
-  $query="select * from ".TABLENAME_USERS." where login='$login' and password='$password' and active=1 and virtual=0";
-  $rs=sql_query($query,$db);  
-  if ($myrow=sql_fetch_array($rs)){
-	  
-	  $userid=$myrow['userid'];
-	  $passreset=$myrow['passreset'];
-
-	  $needcert=$myrow['needcert'];
-	  $certid=$_POST['certid'];
-	  $certhash=md5($dbsalt.$certid);
-	  $certhash_=$myrow['certhash'];
-
-	  $certokay=1;
-
-	  if ($needcert){
-		if ($certhash!=$certhash_){
-			$certerror='Invalid ID card';
-			$certokay=0;
-		}
-		if ($certid=='') {
-			$certerror='A smart card is required to sign in';
-			$certokay=0;
-		}
-	  }
-
-	if ($_POST['passreset']){
-		$op=$_POST['password'];
-		$np=$_POST['newpassword'];
-		$np2=$_POST['newpassword2'];
-		if ($np!=$np2||$op==$np||trim($np)==''){
-			if ($np==$op) $error_message=_tr('new_password_must_be_different');
-			if ($np!=$np2) $error_message=_tr('mismatching_password');
-			if (trim($np)=='') $error_message=_tr('must_provide_new_password');
-		} else {
-			$newpass=md5($dbsalt.$np);
-			$query="update users set password='$newpass', passreset=0 where userid=$userid";
-			sql_query($query,$db);
-			$passreset=0;	
-		}	  
-	}
-		  	  	  
-	  if ($passreset){
-
-	  } else {
-
-	if ($certokay){	  
-	  $groupnames=$myrow['groupnames'];
-	  $auth=md5($salt.$userid.$groupnames.$salt.$raw_login);
-	  
-	  setcookie('auth',$auth);
-	  setcookie('userid',$userid);
-	  setcookie('login',$login);
-	  setcookie('groupnames',$groupnames);
-	  if (!in_array($_POST['lang'],array_keys($langs))) $_POST['lang']=$deflang;
-	  
-	  setcookie('userlang',$_POST['lang'],time()+3600*24*30*6); //keep for 6 months
-	  
-	  if (isset($_GET['from'])&&trim($_GET['from'])!='') {
-		  $from=$_GET['from'];
-		  $from=str_replace('://','',$from);
-		  $from=str_replace("\r",'-',$from);
-		  $from=str_replace("\n",'-',$from);
-		  $from=str_replace(":",'-',$from);
-		  header('Location: '.$from);
-	  } else header('Location:index.php');
-	  
-	  die();
-		} else {
-			$error_message=$certerror;
-		}
-  	}
-  } else $error_message=_tr('invalid_password');
+		$error_message=_tr('csrf_expire');
+	} else {
+	
+		$password=md5($dbsalt.$_POST['password']);
+		$raw_login=$_POST['login'];
+		$login=str_replace("'",'',$raw_login);
+		
+		$query="select * from ".TABLENAME_USERS." where login='$login' and password='$password' and active=1 and virtual=0";
+		$rs=sql_query($query,$db);  
+		
+		if ($myrow=sql_fetch_array($rs)){
+			
+			$userid=$myrow['userid'];
+			$passreset=$myrow['passreset'];
+			
+			$needcert=$myrow['needcert'];
+			$certid=$_POST['certid'];
+			$certhash=md5($dbsalt.$certid);
+			$certhash_=$myrow['certhash'];
+			
+			$certokay=1;
+			
+			if ($needcert){
+				if ($certhash!=$certhash_){
+					$certerror='Invalid ID card';
+					$certokay=0;
+				}
+				if ($certid=='') {
+					$certerror='A smart card is required to sign in';
+					$certokay=0;
+				}
+			}
+			
+			if ($_POST['passreset']){
+				$op=$_POST['password'];
+				$np=$_POST['newpassword'];
+				$np2=$_POST['newpassword2'];
+				if ($np!=$np2||$op==$np||trim($np)==''){
+					if ($np==$op) $error_message=_tr('new_password_must_be_different');
+					if ($np!=$np2) $error_message=_tr('mismatching_password');
+					if (trim($np)=='') $error_message=_tr('must_provide_new_password');
+				} else {
+					$newpass=md5($dbsalt.$np);
+					$query="update users set password='$newpass', passreset=0 where userid=$userid";
+					sql_query($query,$db);
+					$passreset=0;	
+				}	  
+			}
+			  	  	  
+			if ($passreset){
+			
+			} else {
+				if ($certokay){	  
+					$groupnames=$myrow['groupnames'];
+					$auth=md5($salt.$userid.$groupnames.$salt.$raw_login);
+					
+					setcookie('auth',$auth);
+					setcookie('userid',$userid);
+					setcookie('login',$login);
+					setcookie('groupnames',$groupnames);
+					if (!in_array($_POST['lang'],array_keys($langs))) $_POST['lang']=$deflang;
+					
+					setcookie('userlang',$_POST['lang'],time()+3600*24*30*6); //keep for 6 months
+					
+					if (isset($_GET['from'])&&trim($_GET['from'])!='') {
+					  $from=$_GET['from'];
+					  $from=str_replace('://','',$from);
+					  $from=str_replace("\r",'-',$from);
+					  $from=str_replace("\n",'-',$from);
+					  $from=str_replace(":",'-',$from);
+					  header('Location: '.$from);
+					} else header('Location:index.php');
+					die();
+				} else {
+					$error_message=$certerror;
+				}//certokay
+			}//passreset
+		} else $error_message=_tr('invalid_password'); //passcheck
+	
+	}//csrf
+	
 } else {
 	setcookie('userid',NULL,time()-3600);
 	setcookie('login',NULL,time()-3600);

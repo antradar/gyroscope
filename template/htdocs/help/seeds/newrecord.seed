@@ -4,7 +4,7 @@ function new#record#(){
 
 ?>
 <div class="section">
-	<div class="sectiontitle"><?tr('list_#record#_tab');?></div>
+	<div class="sectiontitle"><?tr('list_#record#_add_tab');?></div>
 	
 	
 #iterator-fieldlist-newrecord#		

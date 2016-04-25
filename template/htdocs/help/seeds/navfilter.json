@@ -13,6 +13,10 @@
 	
 	{"field":"dispfield","disp":"Display Field Name","def":"materialname"},
 	{"field":"fieldlist","disp":"Basic Fields","def":"materialname|Name", "type":"fieldlist"},
+	
+	{"field":"multitable","disp":"Multi-Select Table (optional)","def":"materialfeatures"},
+	{"field":"multifield","disp":"Multi-Select Field ID (optional)","def":"featureid"},
+	
 	{"field":"dimlist","disp":"Dimensions","def":"brand|Brand\ncolor|Color\nfinish|Finish", "type":"fieldlist", "optional":1}
 
 		

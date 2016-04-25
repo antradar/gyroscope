@@ -143,12 +143,12 @@ picktime=function(d,opts,def){
 	if (d) key=encodeHTML(d.value);
 	else key=def;
 
-	if (!opts) opts={start:8,end:22,mini:null}
+	if (!opts) opts={start:8,end:22,y:0,m:0,d:0,mini:null}
 	if (!opts.mini) opts.mini=null;
 
 	if (self.portrait_ignore) portrait_ignore();
 	
-	listlookup(d,'Calendar','pkd&mode=datetime&nodate=1&key='+key+'&hstart='+opts.start+'&hend='+opts.end+'&mini='+(opts.mini?'1':'0'),opts.mini);
+	listlookup(d,'Calendar','pkd&mode=datetime&nodate=1&key='+key+'&hstart='+opts.start+'&hend='+opts.end+'&y='+opts.y+'&m='+opts.m+'&d='+opts.d+'&mini='+(opts.mini?'1':'0'),opts.mini);
 }
 
 _picktime=function(d,opts,def){
