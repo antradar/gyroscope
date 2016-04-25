@@ -14,6 +14,7 @@ picklookup=function(val,val2){
 		}
 		if (gid(document.hotspot.id+'_lookup')) gid(document.hotspot.id+'_lookup').style.display='none';
 		hidelookup();
+		if (document.hotspot.onchange) document.hotspot.onchange();
 	}
 }
 
@@ -21,6 +22,8 @@ cancelpickup=function(c){
 	if (gid(c)) {gid(c).disabled=''; gid(c).value='';gid(c).focus();}
 	if (gid(c+'_val2')) gid(c+'_val2').innerHTML='';
 	gid(c).value2=null;
+	gid(c).value3=null;
+	if (document.hotspot.onchange) document.hotspot.onchange();
 }
 
 picklookup3=function(val,val2,val3){
@@ -39,6 +42,7 @@ picklookup3=function(val,val2,val3){
 		}
 		if (gid(document.hotspot.id+'_lookup')) gid(document.hotspot.id+'_lookup').style.display='none';
 		hidelookup();
+		if (document.hotspot.onchange) document.hotspot.onchange();
 	}
 }
 

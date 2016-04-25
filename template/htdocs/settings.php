@@ -62,9 +62,13 @@ $toolbaritems=array(
 	
 	
 	//array('type'=>'break'), // divider
+
+	//$user['groups']['admins']?array('title'=>'Super','viewindex'=>1,'icon'=>'img-super'):null, //filter by user access
 	
 	//array('title'=>'List 1','viewindex'=>1,'icon'=>'img-big1','noiphone'=>1), //hide in mobile view
 	//array('title'=>'Demo','viewindex'=>1,'icon'=>'img-big1','action'=>"alert('custom action');"), //custom action
 	//array('title'=>'Demo','viewindex'=>null,'icon'=>'img-big1','action'=>"alert('custom action');"), //custom action without list view
 	//array('type'=>'custom','desktop'=>'D','iphone'=>'<div class="menuitem">M</div>'), //custom icon
 );
+
+foreach ($toolbaritems as $idx=>$item) if (!$item) unset($toolbaritems[$idx]);

@@ -65,7 +65,7 @@ function #record#_strfilters($filters){
 	
 	$filter='';
 	foreach ($filters as $key=>$val){
-		if (is_array($val)) foreach ($val as $k=>$v) $filter.='&'.$key.'['.$k.']=1';
+		if (is_array($val)) foreach ($val as $k=>$v) $filter.='&'.$key.'['.urlencode($k).']=1';
 		else $filter.="&$key=".urlencode($val);
 
 	}

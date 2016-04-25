@@ -89,12 +89,13 @@ adduser=function(){
 
 loadsmartcard=function(userid){
 	if (document.cardreader){
-	  cert=document.cardreader.getcert();
+	  document.cardreader.getcert(function(cert){
 	  if (cert){
 		gid('cardstatus_'+userid).innerHTML=cert.CN;
 		gid('cert_'+userid).value=cert.certificateAsHex;
 		return true;
 	  }//cert
+	  });
 	} else {//no reader
 		alert('Smartcard reader not supported');
 		return false;

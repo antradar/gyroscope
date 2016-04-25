@@ -4,7 +4,7 @@
 	comment out the timestamp for permanent login;
 */
 
-define ('GYROSCOPE_VERSION', '7.2');
+define ('GYROSCOPE_VERSION', '7.3');
 define ('GYROSCOPE_PROJECT', 'Gyroscope Project Template');
 define ('VENDOR_VERSION','');
 define ('VENDOR_INITIAL','');
@@ -16,7 +16,7 @@ $salt=$saltroot.$_SERVER['REMOTE_ADDR'].date('Y-m-h');
 $dbsalt='gyroscope_demo'; //do not change this once it's set
 
 
-if (!is_callable(hash_equals)){
+if (!is_callable('hash_equals')){
 	function hash_equals($a,$b){return $a==$b;}	
 }
 

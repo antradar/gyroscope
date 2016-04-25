@@ -130,8 +130,8 @@ body{padding:0;margin:0;background:transparent url(imgs/bgtile.png) repeat;font-
 #loginbox{background-color:#FFFFFF;text-align:left;}
 .powered{color:#000000;text-align:right;font-size:12px;width:320px;margin:0 auto;padding-top:10px;}
 #loginbutton{width:140px;-webkit-appearance: none;}
-#cardlink, #passlink{text-align:center;padding-top:10px;}
-
+#cardlink, #passlink{display:none;text-align:center;padding-top:10px;}
+#cardlink{display:none;}
 #cardinfo{padding:5px;font-size:12px;padding-left:26px;background:#fcfcdd url(imgs/smartcard.png) no-repeat 5px 50%;margin-bottom:10px;display:none;}
 
 @media screen and (max-width:400px){
@@ -240,7 +240,8 @@ body{padding:0;margin:0;background:transparent url(imgs/bgtile.png) repeat;font-
 <script>
 smartcard_init('reader',{
 	'noplugin':function(){gid('cardlink').style.display='none';},
-	'nohttps':function(){gid('cardlink').style.display='none';}
+	'nohttps':function(){gid('cardlink').style.display='none';},
+	'inited':function(){gid('cardlink').style.display='block';}	
 });
 
 function cardview(){
@@ -261,13 +262,14 @@ function cardauth(){
 	}
 */
 	if (document.reader){
-	  cert=document.reader.getcert();
+	  document.reader.getcert(function(cert){
 	  if (cert){
 		gid('certid').value=cert.certificateAsHex;
 		gid('cardinfo').innerHTML=cert.CN;
 		gid('cardinfo').style.display='block';
 		return true;
-	  }//cert
+	  }
+	  });
 	} else {//no reader
 		alert('Smartcard reader not supported');
 		return false;

@@ -1,3 +1,12 @@
+7.3
+- updated smart card reader (smartcard.js) in response to Chrome 4.8's NPAPI deprecation
+  : https://installer.id.ee/?lang=eng
+  : https://chrome.google.com/webstore/detail/ckjefchnfjhjfedoccjbhjpbncimppeg
+
+- supports null toolbar items and more concise toolbar access control syntax
+- lookup fields' onchange functions are triggered by lookup picker
+
+
 7.2
 - timepicker daylight saving. e.g.:
   picktime(this,{start:0,end:24,y:2015,m:11,d:1});

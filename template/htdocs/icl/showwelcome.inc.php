@@ -9,12 +9,13 @@ function showwelcome(){
 	
 <?
 /*
-	<input id="test" onfocus="pickdatetime(this,{mini:1,start:0,end:24});" onkeyup="_pickdatetime(this,{mini:1,start:0,end:24});">
+	<input id="test" onfocus="pickdatetime(this,{start:0,end:24});" onkeyup="_pickdatetime(this,{mini:1,start:0,end:24});">
 	<span id="test_val2"></span>
 	<?makelookup('test',1);?>
 	<br><br>
-	<input id="test2" onfocus="picktime(this,{mini:1,start:0,end:24,y:2015,m:11,d:1});" onkeyup="picktime(this,{start:0,end:24,y:2015,m:11,d:1});">
+	<input id="test2" onfocus="picktime(this,{start:0,end:24,y:2015,m:11,d:1});" onkeyup="picktime(this,{start:0,end:24,y:2015,m:11,d:1});">
 	<?makelookup('test2',1);?>
+
 */
 ?>
 	<?

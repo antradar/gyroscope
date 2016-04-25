@@ -6,6 +6,7 @@ Tested against plugin version 3.8.1.1116
 
 Documentation: http://www.antradar.com/doc-smartcard-js
 Plugin Installer: https://installer.id.ee/?lang=eng
+Chrome Extension: https://chrome.google.com/webstore/detail/ckjefchnfjhjfedoccjbhjpbncimppeg
 
 
 Quick Start:
@@ -25,32 +26,55 @@ Certificate Info: {id, certificateAsHex, CN, issuerCN, validFrom, validTo}
 
 */
 
-function smartcard_init(objname,funcs){
+function smartcard_init(objname,funcs,deferred){
 
 	if (!funcs){
 		funcs={
 			'noplugin':function(){alert('Smartcard reader plugin not installed.');},
-			'nohttps':function(){alert('HTTPS must be enabled');}			
+			'nohttps':function(){alert('HTTPS must be enabled');},
+			'inited':function(){}			
 		}
 	}
 
 
 	if (document.location.href.indexOf("https://")==-1){funcs.nohttps(); return;}
 
-	var div=document.createElement('div');
-	div.style.visibility='hidden';
-	div.innerHTML='<object id="cardreader_'+objname+'" type="application/x-digidoc" style="width: 1px; height: 1px; visibility: hidden;"></object>';
+	
+	if (navigator.userAgent.indexOf("Chrome")!=-1){
+		if (!deferred){
+			window.onload=function(){smartcard_init(objname,funcs,1);}
+			return;
+		}
 
-	document.body.appendChild(div);
+		if (!window.TokenSigning) {
 
-	var digidoc=document.getElementById('cardreader_'+objname);
+			funcs.noplugin(); return;	
+		}	
 
-	if (!digidoc.version) {funcs.noplugin();return;}
+		var digidoc=new window.TokenSigning();
+		
+	} else {
 
-	digidoc.getcert=function(){
-		try{
-			return document.getElementById('cardreader_'+objname).getCertificate();
-		} catch (e){return null;}
+		var div=document.createElement('div');
+		div.style.visibility='hidden';
+		div.innerHTML='<object id="cardreader_'+objname+'" type="application/x-digidoc" style="width: 1px; height: 1px; visibility: hidden;"></object>';
+	
+		document.body.appendChild(div);
+	
+		var digidoc=document.getElementById('cardreader_'+objname);
+	
+		if (!digidoc.version) {funcs.noplugin();return;}
+	
+	}
+
+	digidoc.getcert=function(callback){
+		if (document.getElementById('cardreader_'+objname)){
+			try{
+				callback(document.getElementById('cardreader_'+objname).getCertificate());
+			} catch (e){callback(null);return;}
+		} else {
+			digidoc.getCertificate({lang:'en'}).then(function(res){callback({'certificateAsHex':res.hex,'CN':'(ID Card Holder)'});},function(res){callback(null);});
+		}
 	}
 
 	digidoc.signdoc=function(certid,hash){
@@ -58,6 +82,8 @@ function smartcard_init(objname,funcs){
 			return digidoc.sign(certid,hash,'');
 		} catch (e){return null;}
 	}
+	
+	if (funcs.inited) funcs.inited();
 
 	document[objname]=digidoc;
 

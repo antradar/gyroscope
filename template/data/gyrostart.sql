@@ -33,6 +33,7 @@ CREATE TABLE `users` (
   `needcert` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `certname` varchar(255) DEFAULT NULL,  
   PRIMARY KEY (`userid`),
+  UNIQUE KEY `login` (`login`),
   KEY `active` (`active`),
   KEY `virtual` (`virtual`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
