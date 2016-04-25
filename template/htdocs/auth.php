@@ -4,7 +4,7 @@
 	comment out the timestamp for permanent login;
 */
 
-define ('GYROSCOPE_VERSION', '6.9.1');
+define ('GYROSCOPE_VERSION', '7.0');
 define ('GYROSCOPE_PROJECT', 'Gyroscope Project Template');
 define ('VENDOR_VERSION','');
 define ('VENDOR_INITIAL','');
@@ -38,9 +38,9 @@ function login($silent=false){
 	$auth=$_COOKIE['auth'];
 
 	$groupnames=$_COOKIE['groupnames'];
-	
 	$auth_=md5($salt.$userid.$groupnames.$salt.$login);
 	$auth2_=md5($salt2.$userid.$groupnames.$salt2.$login);
+
 	if (!isset($login)||(!hash_equals($auth,$auth_)&&!hash_equals($auth,$auth2_))||$auth=='') {
 		$tail='';
 		if (isset($_GET['keynav'])) $tail='?keynav';

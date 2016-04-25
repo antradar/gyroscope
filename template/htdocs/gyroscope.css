@@ -5,6 +5,13 @@ table{line-height:25px;}
 table.subtable{line-height:18px;}
 a{cursor:pointer;}
 acronym{text-decoration:none;border:none;}
+acronym.help{cursor:help;border-bottom:dotted 1px #4444ee;}
+
+#iconbelt{height:48px;position:relative;width:400px;overflow:hidden;float:left;}
+#topicons{position:absolute;top:0;left:0;transition:left 500ms;}
+
+#beltprev{visibility:hidden;margin-right:5px;}
+#beltnext{margin-left:5px;margin-right:0;}
 
 /* Viewport and Loaders */
 #leftview{background-color:#ffffff;position:absolute;left:20px;width:260px;top:122px;transition:background 250ms;-webkit-transition:background 250ms;}

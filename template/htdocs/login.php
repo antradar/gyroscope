@@ -1,10 +1,11 @@
 <?
 include 'lb.php';
+include 'lang.php';
+
 //include 'https.php'; //enforcing HTTPS on production server
 include 'connect.php';
 include 'auth.php';
 include 'xss.php';
-
 
 
 $csrfkey=sha1($salt.'csrf'.$_SERVER['REMOTE_ADDR'].date('Y-m-j-g'));
@@ -14,8 +15,14 @@ $error_message='';
 
 $passreset=0;
 
-if ($_POST['password']||$_POST['login']){
-xsscheck();
+if (in_array($_POST['lang'],array_keys($langs))) {
+	$lang=$_POST['lang'];include 'lang/dict.'.$lang.'.php';  
+	setcookie('userlang',$_POST['lang'],time()+3600*24*30*6); //keep for 6 months
+}
+
+if ($_POST['password']||$_POST['login']){	
+	
+	xsscheck();
 
 	$cfk=$_POST['cfk'];
 	if ($cfk!=$csrfkey&&$cfk!=$csrfkey2){
@@ -59,9 +66,9 @@ xsscheck();
 		$np=$_POST['newpassword'];
 		$np2=$_POST['newpassword2'];
 		if ($np!=$np2||$op==$np||trim($np)==''){
-			if ($np==$op) $error_message='new password must be different';
-			if ($np!=$np2) $error_message='new passwords mismatch';
-			if (trim($np)=='') $error_message='you must specify a new password';
+			if ($np==$op) $error_message=_tr('new_password_must_be_different');
+			if ($np!=$np2) $error_message=_tr('mismatching_password');
+			if (trim($np)=='') $error_message=_tr('must_provide_new_password');
 		} else {
 			$newpass=md5($dbsalt.$np);
 			$query="update users set password='$newpass', passreset=0 where userid=$userid";
@@ -82,6 +89,9 @@ xsscheck();
 	  setcookie('userid',$userid);
 	  setcookie('login',$login);
 	  setcookie('groupnames',$groupnames);
+	  if (!in_array($_POST['lang'],array_keys($langs))) $_POST['lang']=$deflang;
+	  
+	  setcookie('userlang',$_POST['lang'],time()+3600*24*30*6); //keep for 6 months
 	  
 	  if (isset($_GET['from'])&&trim($_GET['from'])!='') {
 		  $from=$_GET['from'];
@@ -97,17 +107,18 @@ xsscheck();
 			$error_message=$certerror;
 		}
   	}
-  } else $error_message='invalid username or password';
+  } else $error_message=_tr('invalid_password');
 } else {
 	setcookie('userid',NULL,time()-3600);
 	setcookie('login',NULL,time()-3600);
 	setcookie('auth',NULL,time()-3600);
 	setcookie('groupnames',NULL,time()-3600);	
 }
+
 ?>
 <html>
 <head>
-	<title>Login</title>
+	<title><?tr('login');?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta http-equiv="refresh" content="1800" />
 	<meta name = "viewport" content = "width = device-width, init-scale=1, user-scalable=0" />
@@ -147,36 +158,47 @@ body{padding:0;margin:0;background:transparent url(imgs/bgtile.png) repeat;font-
 	<div style="color:#ab0200;font-weight:bold;padding-top:10px;"><?echo $error_message;?></div>
 	<?}?>
 	
-	<div style="padding-top:10px;">Username: <?if ($passreset){?><b><?echo stripslashes($_POST['login']);?></b> &nbsp; <a href="<?echo $_SERVER['PHP_SELF'];?>"><em>switch user</em></a><?}?></div>
+	<div style="padding-top:10px;"><?tr('username');?>: <?if ($passreset){?><b><?echo stripslashes($_POST['login']);?></b> &nbsp; <a href="<?echo $_SERVER['PHP_SELF'];?>"><em><?tr('switch_user');?></em></a><?}?></div>
 	<div style="padding-top:5px;padding-bottom:10px;">
 	<input style="width:100%;<?if ($passreset) echo 'display:none;';?>" id="login" type="text" name="login" autocomplete="off" <?if ($passreset) echo 'readonly';?> value="<?if ($passreset) echo stripslashes($_POST['login']);?>"></div>
 
 	<div id="passview">
-		<div>Password:</div>
+		<div><?tr('password');?>:</div>
 		<div style="padding-top:5px;padding-bottom:15px;">
 		<input style="width:100%;" id="password" type="password" name="password"></div>
 	
 
 	<?if ($passreset){?>
-	<div>New Password:</div>
+	<div><?tr('new_password');?>:</div>
 	<div style="padding-top:5px;padding-bottom:15px;">
 	<input style="width:100%;" id="password" type="password" name="newpassword"></div>
 		
-	<div>Confirm New Password:</div>
+	<div><?tr('repeat_password');?>:</div>
 	<div style="padding-top:5px;padding-bottom:15px;">
 	<input style="width:100%;" id="password" type="password" name="newpassword2"></div>
 	<input type="hidden" name="passreset" value="1">
 	<?}?>
 
+	<div style="width:100%;margin-bottom:10px;<?if (count($langs)<2) echo 'display:none;';?>"><select style="width:100%;" name="lang" onchange="document.skipcheck=true;">
+	<?
+	foreach ($langs as $langkey=>$label){
+	?>
+	<option value="<?echo $langkey;?>" <?if ($lang==$langkey) echo 'selected';?>><?echo $label;?></option>
+	<?	
+	}//foreach
+	?>
+	</select>
+	</div>
+	
 	<div id="cardinfo"></div>
 	
-		<div  style="text-align:center;"><input id="loginbutton" type="submit" value="<?echo $passreset?'Update Password':'Sign In';?>"></div>
+		<div  style="text-align:center;"><input id="loginbutton" type="submit" value="<?echo $passreset?_tr('change_password'):_tr('signin');?>"></div>
 		<div id="cardlink">
 			<a href=# onclick="cardauth();return false;">Load ID Card</a>
 		</div>
 	</div><!-- passview -->
 	<div id="cardview" style="display:none;">
-		<div style="text-align:center;"><input id="loginbutton" type="submit" value="Sign In" onclick="if (!cardauth()) return false;"></div>
+		<div style="text-align:center;"><input id="loginbutton" type="submit" value="<?tr('signin');?>" onclick="if (!cardauth()) return false;"></div>
 		<div id="passlink">
 			<a href=# onclick="passview();return false;">Sign in with password</a>
 		</div>
@@ -187,16 +209,24 @@ body{padding:0;margin:0;background:transparent url(imgs/bgtile.png) repeat;font-
 	&nbsp;
 </div>
 </div></div>	
-
-	<div class="powered">Powered by Antradar Gyroscope&trade; <?echo GYROSCOPE_VERSION?><?if (VENDOR_VERSION!='') echo '.'.VENDOR_VERSION;?><?if (VENDOR_NAME) echo ' '.VENDOR_NAME.' Edition';?></div>
+	<?
+	$version=GYROSCOPE_VERSION;
+	if (VENDOR_VERSION!='') $version.=VENDOR_VERSION;
+	if (VENDOR_NAME) $version.=' '.VENDOR_NAME;
+	$power='Antradar Gyroscope&trade; '.$version;
+	?>
+	<div class="powered"><?tr('powered_by_',array('power'=>$power));?></div>
 	
 	<script src="nano.js"></script>
 	<script>
 		function checkform(){
+			if (document.skipcheck) return true;
 			if (gid('password').value=='') { //&&gid('certid').value==''
 				gid('password').focus();
+				if (gid('login').value=='') gid('login').focus();
 				return false;
 			}
+			
 			return true;
 		}
 		<?if ($passreset){?>

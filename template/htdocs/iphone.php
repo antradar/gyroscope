@@ -101,6 +101,7 @@ body{font-family:helvetica;}
 <script>
 document.appsettings={codepage:'<?echo $codepage;?>',fastlane:'<?echo $fastlane;?>', viewcount:<?echo $viewcount;?>};
 </script>
+<script src="lang/dict.<?echo $lang;?>.js"></script>
 <script src="nano.js"></script>
 <script>
 hdpromote('toolbar_hd.css');
@@ -235,7 +236,7 @@ function portrait_ignore(ttl){
 	setTimeout(function(){document.portraitlock=null;},ttl);
 }
 
-addtab('welcome','Welcome','wk',null,null,{noclose:true});
+addtab('welcome','<?tr('tab_welcome');?>','wk',null,null,{noclose:true});
 
 function onrotate(){
 	if (document.resizetimer) clearTimeout(document.resizetimer);

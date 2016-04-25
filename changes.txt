@@ -1,3 +1,7 @@
+7.0
+- icon scroller in desktop view
+- multiple UI language support
+
 6.9
 - added "hdpromote" to nano.js
 - HD icons and logos

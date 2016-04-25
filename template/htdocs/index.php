@@ -49,6 +49,11 @@ document.appsettings={codepage:'<?echo $codepage;?>', fastlane:'<?echo $fastlane
 <!-- usually there is one entity icon per list view -->
 <input id="anchor_top" title="Top View" style="position:absolute;top:-60px;left:-100px;width:20px;">
 <a class="noblink" id="applogo"><img src="imgs/clogo.gif" border="0"></a>
+
+<a id="beltprev" onclick="beltprev();"><img class="beltprev" src="imgs/t.gif" width="16" height="32"></a>
+
+<div id="iconbelt">
+<div id="topicons" style="left:0;">
 <?foreach ($toolbaritems as $ti){
 	if ($ti['type']=='break') {
 		echo '<div class="break"><span></span></div>';continue;	
@@ -68,15 +73,22 @@ document.appsettings={codepage:'<?echo $codepage;?>', fastlane:'<?echo $fastlane
 <?/* <acronym title="<?echo $ti['title'];?>"> */?>
 <a onmouseover="hintstatus(this,'<?echo $ti['title'];?>');" onclick="<?echo $action;?>"><img class="<?echo $ti['icon'];?>" src="imgs/t.gif" width="32" height="32"><br><?echo $ti['title']?></a>
 <? /* </acronym> */ ?>
-<?}?>
+<?
+}//foreach
+?>
+</div><!-- topicons -->
+</div><!-- iconbelt -->
+
+<a id="beltnext" onclick="beltnext();"><img class="beltnext" src="imgs/t.gif" width="16" height="32"></a>
+
 </span><!-- iconbuttons -->
 
 <div id="logoutlink">
 <img src="imgs/t.gif" width="16" height="16" class="admin-user"><?echo $user['login'];?>
 &nbsp; &nbsp;
-<acronym title="Account Settings"><a title="Account Settings" onclick="ajxjs(self.setaccountpass,'accounts.js');reloadtab('account','Account Settings','showaccount');addtab('account','Account Settings','showaccount');<?if ($user['groups']['accounts']){?>ajxjs(self.showuser,'users_js.php');showview(1);<?}?>return false;"><img src="imgs/t.gif" width="16" height="16" class="admin-settings"></a></acronym>
+<acronym title="<?tr('account_settings');?>"><a title="<?tr('account_settings');?>" onclick="ajxjs(self.setaccountpass,'accounts.js');reloadtab('account','<?tr('account_settings');?>','showaccount');addtab('account','<?tr('account_settings');?>','showaccount');<?if ($user['groups']['accounts']){?>ajxjs(self.showuser,'users_js.php');showview(1);<?}?>return false;"><img src="imgs/t.gif" width="16" height="16" class="admin-settings"></a></acronym>
 &nbsp;
-<acronym title="Sign Out"><a title="Sign Out" onclick="skipconfirm();" href="login.php?from=<?echo $_SERVER['PHP_SELF'];?>" onmouseover="hintstatus(this,'Logout');"><img src="imgs/t.gif" width="16" height="16" class="admin-logout"></a></acronym>
+<acronym title="<?tr('signout');?>"><a title="<?tr('signout');?>" onclick="skipconfirm();" href="login.php?from=<?echo $_SERVER['PHP_SELF'];?>" onmouseover="hintstatus(this,'Logout');"><img src="imgs/t.gif" width="16" height="16" class="admin-logout"></a></acronym>
 </div><!-- logout -->
 </div>
 </div>
@@ -101,6 +113,7 @@ document.appsettings={codepage:'<?echo $codepage;?>', fastlane:'<?echo $fastlane
 </div>
 <div id="fsview"></div>
 
+<script src="lang/dict.<?echo $lang;?>.js"></script>
 <script src="nano.js"></script>
 <script>
 hdpromote('toolbar_hd.css');
@@ -115,12 +128,12 @@ hdpromote('toolbar_hd.css');
 <script>
 window.onresize=autosize;
 autosize();
-
+setTimeout(function(){scaleall(document.body);},100);
 
 //showview(0); //uncomment this line if you want to load the first list automatically
 
 
-addtab('welcome','Welcome','wk',null,null,{noclose:1});
+addtab('welcome','<?tr('tab_welcome');?>','wk',null,null,{noclose:1});
 
 
 
@@ -132,14 +145,14 @@ skipconfirm=function(){
 	window.onbeforeunload=null;	
 	document.confirmskipper=setTimeout(function(){
 		window.onbeforeunload=function(){
-			return 'Are you sure you want to exit Gyroscope?';	
+			return document.dict['confirm_exit'];	
 		}	
 	},500);
 }
 
 
 window.onbeforeunload=function(){
-	return 'Are you sure you want to exit Gyroscope?';
+	return document.dict['confirm_exit'];
 }
 
 </script>

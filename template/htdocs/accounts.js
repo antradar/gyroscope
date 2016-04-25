@@ -12,7 +12,7 @@ setaccountpass=function(){
 	var pass2=encodeHTML(opass2.value);
 
 	if (pass1!=pass2){
-		alert('Passwords mismatch');
+		alert(document.dict['mismatching_password']);
 		return;
 	}
 	var rq=xmlHTTPRequestObject();

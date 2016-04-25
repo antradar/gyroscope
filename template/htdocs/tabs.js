@@ -157,7 +157,7 @@ function refreshtab(key){
   var tabid=gettabid(key);
   if (tabid==-1) return;
   
-  if (!confirm('Are you sure you want to refresh this tab?')) return;
+  if (!confirm(document.dict['confirm_refresh_tab'])) return;
  
   var tab=document.tabtitles[tabid];
   if (!tab.reloadinfo) return;

@@ -7,6 +7,9 @@ use toolbar.psp to generate toolbar.gif
 .admin-user{background:transparent url(imgs/toolbar.gif) no-repeat -16px -16px;}
 .img-addrec{background:transparent url(imgs/toolbar.gif) no-repeat -32px -32px;}	
 
+.beltprev{border:none;background:transparent url(imgs/toolbar.gif) no-repeat -64px 0;width:16px;height:32px;vertical-align:middle;}
+.beltnext{border:none;background:transparent url(imgs/toolbar.gif) no-repeat -80px 0;width:16px;height:32px;vertical-align:middle;}
+
 .img-del{border:none;background:transparent url(imgs/toolbar.gif) no-repeat -52px -32px;width:12px;height:12px;vertical-align:middle;}
 .img-save{border:none;background:transparent url(imgs/toolbar.gif) no-repeat -52px -52px;width:12px;height:12px;vertical-align:middle;}
 .img-tick{border:none;background:transparent url(imgs/toolbar.gif) no-repeat -32px -53px;width:12px;height:12px;vertical-align:middle;}

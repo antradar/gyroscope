@@ -9,7 +9,7 @@ picklookup=function(val,val2){
 			var v2c=gid(document.hotspot.id+'_val2');
 			if (v2c){
 					gid(document.hotspot.id).disabled='disabled';
-					v2c.innerHTML='<a class="labelbutton" onclick="cancelpickup(\''+document.hotspot.id+'\');">edit</a>';
+					v2c.innerHTML='<a class="labelbutton" onclick="cancelpickup(\''+document.hotspot.id+'\');">'+document.dict['edit']+'</a>';
 			}
 		}
 		if (gid(document.hotspot.id+'_lookup')) gid(document.hotspot.id+'_lookup').style.display='none';
@@ -34,7 +34,7 @@ picklookup3=function(val,val2,val3){
 			var v2c=gid(document.hotspot.id+'_val2');
 			if (v2c){
 					gid(document.hotspot.id).disabled='disabled';
-					v2c.innerHTML='<a class="labelbutton" onclick="cancelpickup(\''+document.hotspot.id+'\');">edit</a>';
+					v2c.innerHTML='<a class="labelbutton" onclick="cancelpickup(\''+document.hotspot.id+'\');">'+document.dict['edit']+'</a>';
 			}
 		}
 		if (gid(document.hotspot.id+'_lookup')) gid(document.hotspot.id+'_lookup').style.display='none';

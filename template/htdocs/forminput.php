@@ -47,7 +47,7 @@ function makelookup($id,$fullscale=0){
 
 function cancelpickup($id){
 ?>
-<a class="labelbutton" onclick="cancelpickup('<?echo $id;?>');">edit</a>
+<a class="labelbutton" onclick="cancelpickup('<?echo $id;?>');"><?tr('pickup_edit');?></a>
 <?	
 }
 

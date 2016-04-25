@@ -13,11 +13,13 @@ function cw(){
 }
 
 function scaleall(root){
+    
   var i,j;
   var idh=ch();
   var idw=cw();
   
   var os=root.getElementsByTagName('div'); //AKB#2
+  
   
   /*
   for (i=0;i<os.length;i++){
@@ -54,13 +56,56 @@ function scaleall(root){
   gid('fsview').style.height=idh-70+'px';
   
   gid('fstitlebar').style.width=idw-20+'px';
+  
+  gid('iconbelt').style.width=idw-gid('applogo').offsetWidth-gid('logoutlink').offsetWidth-120+'px';
+  
+  var beltwidth=0;
+  var items=gid('topicons').getElementsByTagName('a');
+  for (var i=0;i<items.length;i++) beltwidth+=items[i].offsetWidth+22;
+  gid('topicons').style.width=beltwidth+'px';
+  
+  if (gid('topicons').offsetWidth>gid('iconbelt').offsetWidth) {
+	gid('beltprev').style.display='block';
+	gid('beltnext').style.display='block';	  
+  } else {
+	gid('beltprev').style.display='none';
+	gid('beltnext').style.display='none';
+	gid('topicons').style.left=0;
+	gid('topicons').beltidx=0;
+	gid('beltprev').style.visibility='hidden';	  
+	gid('beltnext').style.visibility='visible';	
+	  
+  }
 
+  if (gid('topicons').offsetWidth+parseInt(gid('topicons').style.left.replace('px',''),10)>gid('iconbelt').offsetWidth) gid('beltnext').style.visibility='visible'; 
+  else gid('beltnext').style.visibility='hidden';
 
-  for (i=0;i<os.length;i++){
+  for (var i=0;i<os.length;i++){
     var node=os[i];
     if (node.scalech) node.style.height=(idh-node.scalech)+'px';
   }
   
+}
+
+function beltprev(){
+	var topicons=gid('topicons');
+	if (!topicons.beltidx) topicons.beltidx=0;
+	topicons.beltidx--;
+	if (topicons.beltidx<0) topicons.beltidx=0;
+	if (topicons.beltidx==0) gid('beltprev').style.visibility='hidden';
+	topicons.style.left=-100*topicons.beltidx+'px';
+	gid('beltnext').style.visibility='visible';	
+}
+
+function beltnext(){
+	var topicons=gid('topicons');
+	if (!topicons.beltidx) topicons.beltidx=0;
+	topicons.beltidx++;
+	topicons.style.left=-100*topicons.beltidx+'px';	
+	gid('beltprev').style.visibility='visible';
+	if (topicons.offsetWidth+parseInt(topicons.style.left.replace('px',''),10)>gid('iconbelt').offsetWidth) gid('beltnext').style.visibility='visible';
+	else gid('beltnext').style.visibility='hidden';
+
 }
 
 function showfs(func){

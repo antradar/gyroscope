@@ -8,26 +8,26 @@ function showaccount(){
 ?>
 <div class="section">
 
-<div class="sectiontitle">Account Settings</div>
+<div class="sectiontitle"><?tr('account_settings');?></div>
 
-<div class="sectionheader">Password</div>
+<div class="sectionheader"><?tr('password');?></div>
 <table>
 
 <tr><td>Current Password:</td>
 <td><input id="accountpass" type="password"></td>
 </tr>
 
-<tr><td>New Password:</td>
+<tr><td><?tr('new_password');?>:</td>
 <td><input id="accountpass1" type="password"></td>
 </tr>
 
-<tr><td>Verify Password:</td>
+<tr><td><?tr('repeat_password');?>:</td>
 <td><input id="accountpass2" type="password"></td>
 </tr>
 
 <tr><td></td>
 <td>
-<button onclick="setaccountpass();">Change Password</button>
+<button onclick="setaccountpass();"><?tr('change_password');?></button>
 </td>
 </tr>
 

@@ -1,4 +1,5 @@
 <?
+include 'lang.php';
 
 //comment out the following lines to disable authentication
 include 'auth.php';
@@ -31,8 +32,24 @@ $user=userinfo();
 
 
 $toolbaritems=array(
-	array('title'=>'Reports','viewindex'=>0,'icon'=>'img-reports'),
+	array('title'=>_tr('icon_reports'),'viewindex'=>0,'icon'=>'img-reports'),
+
+
+/*
+	//uncommet to test belt slider
 	
+
+	array('title'=>'Reports 2','viewindex'=>0,'icon'=>'img-reports'),
+	array('title'=>'Reports 3','viewindex'=>0,'icon'=>'img-reports'),
+	array('title'=>'Reports 4','viewindex'=>0,'icon'=>'img-reports'),
+	array('title'=>'Reports 5','viewindex'=>0,'icon'=>'img-reports'),
+	array('title'=>'Reports 6','viewindex'=>0,'icon'=>'img-reports'),
+	array('title'=>'Reports 7','viewindex'=>0,'icon'=>'img-reports'),
+	array('title'=>'Reports 8','viewindex'=>0,'icon'=>'img-reports'),
+	array('title'=>'Reports 9','viewindex'=>0,'icon'=>'img-reports'),
+	array('title'=>'Reports 10','viewindex'=>0,'icon'=>'img-reports'),
+*/
+		
 // svn merge boundary 80dd22a0883aaa1f8cd09b09e81bdd9b - 
 
 

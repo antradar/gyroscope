@@ -5,7 +5,7 @@ include 'icl/showguide.inc.php';
 function showwelcome(){
 ?>
 <div class="section">
-	<div class="sectiontitle">Welcome to Antradar Gyroscope</div>
+	<div class="sectiontitle"><?tr('hometab_welcome');?></div>
 	
 
 	

@@ -147,7 +147,7 @@ function reloadtab(key,title,params,loadfunc,data,opts){
   
     if (title) document.tabtitles[tabid].innerHTML=tabhtml;
 	
-  	  var reloader="<div class=\"reloader\"><a onclick=\"refreshtab('"+key+"');\">reload view</a></div>";
+  	  var reloader="<div class=\"reloader\"><a onclick=\"refreshtab('"+key+"');\">"+document.dict['tab_reload']+"</a></div>";
       document.tabviews[tabid].innerHTML=reloader+rq.responseText;
       if (loadfunc!=null) loadfunc(rq);
 	}
@@ -203,7 +203,7 @@ function addtab(key,title,params,loadfunc,data,opts){
   rq.onreadystatechange=function(){
     if (rq.readyState==4){
 	  if (c.slowtimer) clearTimeout(c.slowtimer);
-	  var reloader="<div class=\"reloader\"><a onclick=\"refreshtab('"+key+"');\">reload view</a></div>";
+	  var reloader="<div class=\"reloader\"><a onclick=\"refreshtab('"+key+"');\">"+document.dict['tab_reload']+"</a></div>";
       c.innerHTML=reloader+rq.responseText;
 
       document.tablock=null;
@@ -255,7 +255,7 @@ function refreshtab(key){
   var tabid=gettabid(key);
   if (tabid==-1) return;
   
-  if (!confirm('Are you sure you want to refresh this tab?')) return;
+  if (!confirm(document.dict['confirm_refresh_tab'])) return;
  
   var tab=document.tabtitles[tabid];
   if (!tab.reloadinfo) return;
