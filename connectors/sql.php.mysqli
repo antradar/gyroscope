@@ -7,7 +7,8 @@
 $SQL_ENGINE="MySQLi";
 
 function sql_escape($str){
-	return mysqli_real_escape_string($str);	
+	global $db;
+	return mysqli_real_escape_string($db,$str);
 }
 
 function sql_get_db($dbhost,$dbsource,$dbuser,$dbpass){
