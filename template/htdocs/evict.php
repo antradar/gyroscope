@@ -8,6 +8,8 @@ function evict_check(){
 	//$logins=array('admin'); //test; comment this out on live server
 	
 	$user=userinfo();
+	if (!isset($user)||!isset($user['login'])) return;
+	
 	$login=$user['login'];
 	if (in_array($login,$logins)) evict_user($login);
 		

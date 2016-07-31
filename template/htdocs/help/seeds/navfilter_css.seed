@@ -1,0 +1,16 @@
+.navgroup{border:solid 1px #dedede;padding:10px;margin:0;margin-bottom:20px;}
+.navtitle{text-transform:uppercase;margin-bottom:5px;font-size:14px;font-weight:bold;color:#333333;}
+
+.neglabel{font-style:italic;font-size:14px;margin-bottom:5px;}
+.neggroup{padding-left:20px;margin-bottom:20px;font-size:14px;}
+
+.navfilter{margin-bottom:5px;}
+.navfilter a, .navfilter a:hover, .navfilter a:visited, .navfilter a:link{text-decoration:none;color:#333333;}
+.navfilter a:hover{text-decoration:underline;}
+.navfilter em{color:#666666;font-size:14px;}
+
+.navfilter .filterclear, .navfilter .filterclear:hover, .navfilter .filterclear:link, .navfilter .filterclear:visited{text-decoration:none;color:#ab0200;}
+.filterclear, .filterclear:hover, .filterclear:link, .filterclear:visited{text-decoration:none;color:#ab0200;}
+.navfilter .filterneg, .navfilter .filterneg:hover, .navfilter .filterneg:link, .navfilter .filterneg:visited{text-decoration:none;color:#ab0200;}
+
+.filterneg acronym{border:none;text-decoration:none;}

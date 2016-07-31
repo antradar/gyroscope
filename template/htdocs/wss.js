@@ -1,12 +1,14 @@
-
-function wss_init(userid,wsuri){
+function wss_init(userid,wsuri,wsskey){
 if (window.WebSocket){
-	
-	document.websocket=new WebSocket(wsuri);
+	if (document.wsskey) wsskey=document.wsskey;
+	document.websocket=new WebSocket(wsuri+'?WSS'+wsskey+'=');	
 	
 	document.websocket.onopen=function(e){
 		console.log('web socket connected');	
 		document.websocket.send('{"type":"getsid","userid":'+userid+'}');
+		document.wssready=true;
+		document.nomoresocket=0;
+		if (gid('wsswarn')) gid('wsswarn').style.display='none';
 	}
 	
 	document.websocket.onmessage=function(e){
@@ -36,18 +38,23 @@ if (window.WebSocket){
 	}
 	
 	document.websocket.onerror=function(e){
-		document.nomoresocket=1;
+		if (!document.nomoresocket) document.nomoresocket=0;
+		document.nomoresocket++;
 		console.log('web socket connection error');	
 	}
 	
 	document.websocket.onclose=function(e){
-		if (document.nomoresocket) {
+		document.wssready=null;
+		if (gid('wsswarn')) gid('wsswarn').style.display='inline';
+		if (document.nomoresocket&&document.nomoresocket>5) {
 			console.log('no more reconnection');
-			if (gid('wsswarn')) gid('wsswarn').style.display='inline';
+			
 			return;
 		}
-		console.log('web socket closed, restarting in a sec');
-		setTimeout(function(){document.wssid=null;wss_init(userid,wsuri);},1000);	
+		console.log('web socket closed, restarting in 3 secs. reconnect attempt #'+document.nomoresocket);
+		if (self.authpump) authpump();
+		if (document.wsskey) wsskey=document.wsskey;		
+		setTimeout(function(){if (document.wsskey) wsskey=document.wsskey;document.wssid=null;wss_init(userid,wsuri,wsskey);},3000);	
 	}
 	
 } else {
@@ -71,14 +78,12 @@ function wss_markchanges(rectype,recid,corrected){
 	var hit=0;
 	
 	switch(rectype){
-		case 'filmactors':
-			if (gid('filmactors_'+recid)) {gid('filmactors_'+recid).style.backgroundColor=bgcolor;hit=1;}
+		case 'reauth': ajxpgn('statusc',document.appsettings.codepage+'?cmd=reauth',0,0,'',function(){flashstatus('User credential updated',1000);authpump();});hit=1; break;
+
+		case 'templatetypetemplates':
+			if (gid('templatetypetemplates_'+recid)) {gid('templatetypetemplates_'+recid).style.backgroundColor=bgcolor;hit=1;}
 		break;
-		
-		case 'actorfilms':
-			if (gid('actorfilms_'+recid)) {gid('actorfilms_'+recid).style.backgroundColor=bgcolor;hit=1;}
-		break;		
-		
+						
 		default:
 
 			
@@ -88,13 +93,14 @@ function wss_markchanges(rectype,recid,corrected){
 	if (tabid&&document.tabtitles[tabid]){
 		hit=1;
 		if (corrected) document.tabtitles[tabid].style.color=fgcolor;
-		else document.tabtitles[tabid].style.color=fgcolor;	
+		else document.tabtitles[tabid].style.color=fgcolor;
+
+		if (gid('tabreloader_'+rectype+'_'+recid)) gid('tabreloader_'+rectype+'_'+recid).style.background='#ffcccc';
 	}	
 	
 	if (hit){
 		if (!document.orgtitle) document.orgtitle=document.title;
 		document.title=document.orgtitle+' *';
-		setTimeout(function(){document.title=document.orgtitle;},100);
+		setTimeout(function(){document.title=document.orgtitle;},200);
 	}	
 }
-	

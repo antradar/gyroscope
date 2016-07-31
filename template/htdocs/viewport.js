@@ -108,11 +108,13 @@ function beltnext(){
 
 }
 
-function showfs(func){
+function showfs(func,initfunc){
+	scaleall(document.body);
 	gid('fsmask').style.display='block';
 	gid('fstitlebar').style.display='block';
 	gid('fsview').style.display='block';
 	gid('fsclose').closeaction=func;
+	if (initfunc) initfunc();
 }
 
 function closefs(){
@@ -123,10 +125,10 @@ function closefs(){
 	if (gid('fsclose').closeaction) gid('fsclose').closeaction();	
 }
 
-function loadfs(title,cmd,func){
+function loadfs(title,cmd,func,initfunc){
 	ajxpgn('fsview',document.appsettings.codepage+'?cmd='+cmd,1,0,'',function(){
 		gid('fstitle').innerHTML=title;	
-		showfs(func);	
+		showfs(func,initfunc);	
 	});
 }
 
@@ -166,9 +168,11 @@ function flashstatus(t,l){
   if (document.hinttimer) clearTimeout(document.hinttimer);
   gid('statusc').innerHTML=t;
   document.hinttimer=setTimeout(function(){gid('statusc').innerHTML='';},l);
+  if (window.Notification){
+	var n=new Notification('Gyroscope',{body:t});  
+  }
 }
 
-viewcount=document.appsettings.viewcount;
 
 function reloadview(idx,listid){
 	hidelookup();
@@ -179,8 +183,6 @@ function reloadview(idx,listid){
 }
 
 function showview(idx,lazy){
-  var i;
-
   hidelookup();
     
   if (document.viewindex!=null) {
@@ -190,14 +192,14 @@ function showview(idx,lazy){
   var callback=function(id){return function(){
 	//gid('lvtab_'+id).focus();  
   }}
-
-  for (i=0;i<viewcount;i++){
+ 
+  for (var k=0; k<document.appsettings.views.length;k++){
+	var i=document.appsettings.views[k];
     if (i!=idx) {
       gid('lv'+i).style.display='none';
     } else {
-      if (!lazy||document.viewindex==idx||!gid('lv'+i).viewloaded)
-      
-	      ajxpgn('lv'+i,document.appsettings.codepage+'?cmd=slv'+i+'&hb='+hb(),true,true,'',callback(i));
+      if (!lazy||document.viewindex==idx||!gid('lv'+i).viewloaded)      
+	      ajxpgn('lv'+i,document.appsettings.codepage+'?cmd=slv_'+i.replace(/\./g,'__')+'&hb='+hb(),true,true,'',callback(i));
       else {
 	      gid('lv'+idx).style.display='block';
 	      gid('tooltitle').innerHTML=gid('lv'+idx).tooltitle;
@@ -234,8 +236,8 @@ function hidelookup(){
 function stackview(){ //used by auto-completes
 	gid('lv'+document.viewindex).tooltitle=gid('tooltitle').innerHTML;
 	gid('lv'+document.viewindex).style.display='none';
-	gid('lv'+(document.appsettings.viewcount-1)).style.display='block';
-	document.viewindex=document.appsettings.viewcount-1;
+	gid('lv'+(document.appsettings.views[document.appsettings.views.length-1])).style.display='block';
+	document.viewindex=document.appsettings.views[document.appsettings.views.length-1];
 
 }
 
@@ -249,7 +251,9 @@ function authpump(){
 		     if (stamp!=rq.responseText){
 			   if (self.skipconfirm) skipconfirm();  
 		       window.location.reload();
+		       return;
 		     }
+		     if (rq.getResponseHeader('wsskey')) document.wsskey=rq.getResponseHeader('wsskey');
  		}
     }
   }
@@ -270,7 +274,6 @@ if (document.createEvent){
 		if (e) keycode=e.keyCode; else keycode=event.keyCode;	
 		document.keyboard['key_'+keycode]=null;
 		delete document.keyboard['key_'+keycode];
-		
 	}
 	
 	document.onkeydown=function(e){

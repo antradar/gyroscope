@@ -1,6 +1,6 @@
 {
 "fields":[
-	{"field":"viewindex","disp":"View Index","def":1,"numeric":1,"type":"viewindex"},
+	{"field":"viewindex","disp":"View Index","def":"codegen.orders"},
 	{"field":"master_record","disp":"Master Entity Name","def":"client"},
 	{"field":"c_master_record","disp":"Master Entity Label","def":"Client"},
 	{"field":"master_records","disp":"Master Entity Name (Pl.)","def":"clients"},
@@ -31,7 +31,8 @@
 	{"template":"listview_lang","filename":"add entries to lang/dict.<em style=\"color:#000099;\">en</em>.php"},	
 	{"template":"listview_langjs","filename":"add entries to lang/dict.<em style=\"color:#000099;\">en</em>.js"},	
 	{"template":"listview_icon","filename":"settings.php <em>$toolbaritems</em>"},	
-	{"template":"sublistview","filename":"icl/list#records#.inc.php"},	
+	{"template":"sublistview","filename":"icl/list#records#.inc.php"},
+	{"template":"sublistmasterdel","filename":"modify #master_records#.js, <em>del#master_record#</em> callback"},	
 	{"template":"subrecord_js","filename":"#records#.js"},
 	{"template":"subdetailview","filename":"icl/show#record#.inc.php"},
 	{"template":"subrecord_master_header","filename":"modify icl/show#master_record#.inc.php header"},	

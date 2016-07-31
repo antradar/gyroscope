@@ -4,6 +4,9 @@
 // MySQL implementation
 // (c) Antradar Software 1995-2006
 
+if (!defined('MYSQLI_STORE_RESULT')) define('MYSQLI_STORE_RESULT',0);
+if (!defined('MYSQLI_ASYNC')) define('MYSQLI_ASYNC',8);
+
 $SQL_ENGINE="MySQL";
 
 function sql_escape($str){
@@ -47,16 +50,20 @@ function sql_affected_rows($db,$rs){
 	return mysql_affected_rows($db);
 }
 
-function sql_begin_transaction(){
-	die("sql.ard: not implemented!");
+function sql_begin_transaction($db){
+	$query="begin";
+	mysql_query($query,$db);	
+	
 }
 
-function sql_commit(){
-	die("sql.ard: not implemented!");
+function sql_commit($db){
+	$query="commit";
+	mysql_query($query,$db);	
 }
 
 function sql_rollback(){
-	die("sql.ard: not implemented!");
+	$query="rollback";
+	mysql_query($query,$db);	
 }
 
 /* Sample Use
@@ -78,6 +85,3 @@ echo sql_affected_rows($db)." rows affected <br>";
   }
 
 */
-
-
-?>

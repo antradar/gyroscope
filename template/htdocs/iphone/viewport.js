@@ -58,14 +58,34 @@ function hidelookup(){
 	lkv.style.left='-230px';	
 }
 
-function showfs(func){
+function setnosleep(mode){
+	var ua = {android: /Android/ig.test(navigator.userAgent),ios: /AppleWebKit/.test(navigator.userAgent) && /Mobile\/\w+/.test(navigator.userAgent)};
+	if (ua.android){
+		if (mode) gid('nosleepvideo').play(); else gid('nosleepvideo').pause();
+	}
+
+	if (ua.ios){
+		if (mode){
+			document.nosleeptimer=setInterval(function(){window.location.href='/';window.setTimeout(window.stop,0);},10000);
+		} else {
+			if (document.nosleeptimer) clearInterval(document.nosleeptimer);
+
+		}
+	}
+}
+
+
+function showfs(func,initfunc){
+	
 	gid('fsmask').style.display='block';
 	gid('fstitlebar').style.display='block';
 	gid('fsview').style.display='block';
 	gid('fsclose').closeaction=func;
+	if (initfunc) initfunc();
 }
 
 function closefs(){
+	setnosleep(false);
 	gid('fsview').style.display='none';
 	gid('fstitlebar').style.display='none';
 	gid('fsmask').style.display='none';
@@ -73,10 +93,11 @@ function closefs(){
 	if (gid('fsclose').closeaction) gid('fsclose').closeaction();	
 }
 
-function loadfs(title,cmd,func){
+function loadfs(title,cmd,func,initfunc){
+	setnosleep(true);
 	ajxpgn('fsview',document.appsettings.codepage+'?cmd='+cmd,1,0,'',function(){
 		gid('fstitle').innerHTML=title;	
-		showfs(func);	
+		showfs(func,initfunc);	
 	});
 }
 
@@ -112,17 +133,16 @@ function hintstatus(t,d){
     gid('statusinfo').innerHTML='';
   }
 }
+
 function flashstatus(t,l){
   gid('statusinfo').innerHTML=t;
   hinttimer=setTimeout(function(){gid('statusinfo').innerHTML='';},l);
+  if (window.Notification){
+	var n=new Notification('Gyroscope',{body:t});  
+  } 
+
 }
 
-viewcount=document.appsettings.viewcount;
-
-function showpanel(idx){
-	for (var i=0;i<5;i++) gid('panel'+i).style.display='none';
-	gid('panel'+idx).style.display='block';	
-}
 
 function reloadview(idx,listid){
 	hidelookup();
@@ -137,18 +157,18 @@ function showview(idx,lazy,force){
 	document.viewmode=1;
 	rotate();
 	hidelookup();
-  var i;
   
   if (document.viewindex!=null) {
 	  gid('lv'+document.viewindex).tooltitle=gid('tooltitle').innerHTML;
   }
 
-  for (i=0;i<viewcount;i++){
+  for (var k=0;k<document.appsettings.views.length;k++){
+	var i=document.appsettings.views[k];
     if (i!=idx) {
       gid('lv'+i).style.display='none';
     } else {
       if (!lazy||document.viewindex==idx||!gid('lv'+i).viewloaded)
-	      ajxpgn('lv'+i,document.appsettings.codepage+'?cmd=slv'+i+'&hb='+hb(),true,true);
+	      ajxpgn('lv'+i,document.appsettings.codepage+'?cmd=slv_'+i.replace(/\./g,'__')+'&hb='+hb(),true,true);
       else {
 	      gid('lv'+idx).style.display='block';
 	      gid('tooltitle').innerHTML=gid('lv'+idx).tooltitle;
@@ -163,8 +183,8 @@ function showview(idx,lazy,force){
 function stackview(){ //used by auto-completes
 	gid('lv'+document.viewindex).tooltitle=gid('tooltitle').innerHTML;
 	gid('lv'+document.viewindex).style.display='none';
-	gid('lv'+(document.appsettings.viewcount-1)).style.display='block';
-	document.viewindex=document.appsettings.viewcount-1;
+	gid('lv'+(document.appsettings.views[document.appsettings.views.length-1])).style.display='block';
+	document.viewindex=document.appsettings.views[document.appsettings.views.length-1];
 
 }
 
@@ -176,7 +196,9 @@ function authpump(){
 	    if (rq.status==200||rq.status==304){
 		     if (stamp!=rq.responseText){
 		       window.location.reload();
+		       return;
 		     }
+		     if (rq.getResponseHeader('wsskey')) document.wsskey=rq.getResponseHeader('wsskey');
  		}
     }
   }

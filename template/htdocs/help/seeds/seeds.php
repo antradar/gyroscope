@@ -7,11 +7,21 @@ $codegen_seeds=array(
 	'bridgelist'=>array('name'=>'Record Bridge','desc'=>'A record bridge connects the side list in a base record to another base record.<br>Record Bridge is an advanced case of Direct List','icon'=>'bridge'),
 	'lookup'=>array('name'=>'Lookup List','desc'=>'Any field in a record can be linked to another entity.<br>The Lookup List ensures the proper ID resolution.','icon'=>'lookup'),
 	'report'=>array('name'=>'Date-Range Report','desc'=>'','icon'=>''),
-	'uploader'=>array('name'=>'Uploader','desc'=>'A file uploader uses a data table to assign unique IDs to each upload;<br>The files will be renamed to have a generic extension.','icon'=>'upload'),
-	'profile'=>array('name'=>'Profile Picture','desc'=>'','icon'=>''),
 	'break1'=>array('type'=>'break'),
+	'profile'=>array('name'=>'1-1 Image Uploader','desc'=>'','icon'=>''),
+	'album'=>array('name'=>'1-N Image Uploader','desc'=>'','icon'=>''),
+	'uploader'=>array('name'=>'1-N File Uploader','desc'=>'A file uploader uses a data table to assign unique IDs to each upload;<br>The files will be renamed to have a generic extension.','icon'=>'upload'),
+	'break2'=>array('type'=>'break'),
 	'tinymce'=>array('name'=>'Rich Text Editor','desc'=>'','icon'=>''),
-	'navfilter'=>array('name'=>'Faceted Nav','desc'=>'Faceted navigation for list view. Make a standard list view first','icon'=>''),
+	'sortlist'=>array('name'=>'Drag & Drop Sort List','desc'=>'','icon'=>''),
+	
+	'fnav'=>array('name'=>'Faceted navigation','icon'=>'','package'=>1,
+		'items'=>array(
+			'gnav'=>array('name'=>'Frontend - Standard','desc'=>'Classic front-end faceted navigation','icon'=>''),
+			'gnavi'=>array('name'=>'Frontend - Multicore','desc'=>'High-performance front-end navigation; specific server hardware and setup required','icon'=>''),
+			'navfilter'=>array('name'=>'Gyroscope Backend','desc'=>'Faceted navigation for list view. Make a standard list view first','icon'=>'')
+		)
+	),
 	'asyncd'=>array('name'=>'AsyncD','desc'=>'The Distributed Asynchronous Data Processor forks a long-running process in the background while updating the web frontend its completion process.','icon'=>''),
 	'digisign'=>array('name'=>'Digital Signing','desc'=>'','icon'=>'')
 

@@ -1,8 +1,9 @@
 <?
 include 'lb.php';
 include 'lang.php';
+include 'forminput.php';
 
-if ($usehttps) include 'https.php'; 
+if (isset($usehttps)&&$usehttps) include 'https.php'; 
 include 'connect.php';
 include 'auth.php';
 include 'xss.php';
@@ -15,12 +16,12 @@ $error_message='';
 
 $passreset=0;
 
-if (in_array($_POST['lang'],array_keys($langs))) {
+if (isset($_POST['lang'])&&in_array($_POST['lang'],array_keys($langs))) {
 	$lang=$_POST['lang'];include 'lang/dict.'.$lang.'.php';  
 	setcookie('userlang',$_POST['lang'],time()+3600*24*30*6); //keep for 6 months
 }
 
-if ($_POST['password']||$_POST['login']){	
+if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['login'])&&$_POST['login']) ){	
 	
 	xsscheck();
 
@@ -34,10 +35,18 @@ if ($_POST['password']||$_POST['login']){
 		$raw_login=$_POST['login'];
 		$login=str_replace("'",'',$raw_login);
 		
-		$query="select * from ".TABLENAME_USERS." where login='$login' and password='$password' and active=1 and virtual=0";
+		$query="select * from ".TABLENAME_USERS." where login='$login' and active=1 and virtualuser=0";
 		$rs=sql_query($query,$db);  
 		
+		$passok=0;
+		
 		if ($myrow=sql_fetch_array($rs)){
+			$enc=$myrow['password'];
+			$dec=decstr($enc,$dbsalt);
+			if ($password==$dec) $passok=1;
+		}
+		
+		if ($passok){
 			
 			$userid=$myrow['userid'];
 			$passreset=$myrow['passreset'];
@@ -46,6 +55,8 @@ if ($_POST['password']||$_POST['login']){
 			$certid=$_POST['certid'];
 			$certhash=md5($dbsalt.$certid);
 			$certhash_=$myrow['certhash'];
+			
+			$dispname=$myrow['dispname'];
 			
 			$certokay=1;
 			
@@ -60,8 +71,8 @@ if ($_POST['password']||$_POST['login']){
 				}
 			}
 			
-			if ($_POST['passreset']){
-				$op=$_POST['password'];
+			if (isset($_POST['passreset'])&&$_POST['passreset']){
+				$op=md5($dbsalt.$_POST['password']);
 				$np=$_POST['newpassword'];
 				$np2=$_POST['newpassword2'];
 				if ($np!=$np2||$op==$np||trim($np)==''){
@@ -69,7 +80,7 @@ if ($_POST['password']||$_POST['login']){
 					if ($np!=$np2) $error_message=_tr('mismatching_password');
 					if (trim($np)=='') $error_message=_tr('must_provide_new_password');
 				} else {
-					$newpass=md5($dbsalt.$np);
+					$newpass=encstr(md5($dbsalt.$np),$dbsalt);
 					$query="update users set password='$newpass', passreset=0 where userid=$userid";
 					sql_query($query,$db);
 					$passreset=0;	
@@ -81,15 +92,18 @@ if ($_POST['password']||$_POST['login']){
 			} else {
 				if ($certokay){	  
 					$groupnames=$myrow['groupnames'];
-					$auth=md5($salt.$userid.$groupnames.$salt.$raw_login);
+					$auth=md5($salt.$userid.$groupnames.$salt.$raw_login.$salt.$dispname);
 					
 					setcookie('auth',$auth);
 					setcookie('userid',$userid);
 					setcookie('login',$login);
+					setcookie('dispname',$dispname);
 					setcookie('groupnames',$groupnames);
-					if (!in_array($_POST['lang'],array_keys($langs))) $_POST['lang']=$deflang;
 					
-					setcookie('userlang',$_POST['lang'],time()+3600*24*30*6); //keep for 6 months
+					if (isset($_POST['lang'])){
+						if (!in_array($_POST['lang'],array_keys($langs))) $_POST['lang']=$deflang;
+						setcookie('userlang',$_POST['lang'],time()+3600*24*30*6); //keep for 6 months
+					}
 					
 					if (isset($_GET['from'])&&trim($_GET['from'])!='') {
 					  $from=$_GET['from'];
@@ -111,6 +125,7 @@ if ($_POST['password']||$_POST['login']){
 } else {
 	setcookie('userid',NULL,time()-3600);
 	setcookie('login',NULL,time()-3600);
+	setcookie('dispname',NULL,time()-3600);
 	setcookie('auth',NULL,time()-3600);
 	setcookie('groupnames',NULL,time()-3600);	
 }
@@ -118,11 +133,14 @@ if ($_POST['password']||$_POST['login']){
 ?>
 <html>
 <head>
-	<title><?tr('login');?></title>
+	<title><?echo GYROSCOPE_PROJECT;?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta http-equiv="refresh" content="1800" />
-	<meta name = "viewport" content = "width=device-width, init-scale=1.0, user-scalable=no" />
+	<meta name = "viewport" content = "width=device-width, user-scalable=no" />
 	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+	
+	<?include 'appicon.php';?>
+	
 <style>
 body{padding:0;margin:0;background:transparent url(imgs/bgtile.png) repeat;font-size:13px;font-family:arial,sans-serif;text-align:center;}
 #loginbox__{width:320px;margin:0 auto;background-color:rgba(200,200,200,0.4);margin-top:100px;border-radius:4px;}

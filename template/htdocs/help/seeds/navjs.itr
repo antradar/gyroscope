@@ -1,0 +1,1 @@
+	ajxpgn('#fld0#',document.appsettings.codepage+'?cmd=#fld1#&mode=embed&key='+encodeHTML(gid('#searchkey#').value)+filter);

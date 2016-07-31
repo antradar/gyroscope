@@ -1,0 +1,1 @@
+	case '#fld1#': include 'icl/#fld1#.inc.php'; #fld1#(); break;

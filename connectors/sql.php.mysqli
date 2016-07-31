@@ -1,14 +1,17 @@
-<?
+<?php
 // Macronetic Hydra
 // Common SQL Interface
 // MySQLi implementation
 // (c) Antradar Software 1995-2013
 
+if (!defined('MYSQLI_STORE_RESULT')) define('MYSQLI_STORE_RESULT',0);
+if (!defined('MYSQLI_ASYNC')) define('MYSQLI_ASYNC',8);
+
 $SQL_ENGINE="MySQLi";
 
 function sql_escape($str){
 	global $db;
-	return mysqli_real_escape_string($db,$str);
+	return mysqli_real_escape_string($db,$str);	
 }
 
 function sql_get_db($dbhost,$dbsource,$dbuser,$dbpass){
@@ -16,15 +19,20 @@ function sql_get_db($dbhost,$dbsource,$dbuser,$dbpass){
 	return $db;
 }
 
-function sql_query($query,$db){
-	$rs=mysqli_query($db,$query);
-	if (!$rs) echo "sql_error: ".$query;
+function sql_query($query,$db,$mode=MYSQLI_STORE_RESULT){
+	$rs=mysqli_query($db,$query,$mode);
+			
+	if ((!$rs)&&$mode==MYSQLI_STORE_RESULT) echo "sql_error: ".$query.' '.mysqli_error();
 	return $rs;
 }
 
 function sql_fetch_array($rs){
 	return mysqli_fetch_array($rs);
 
+}
+
+function sql_fetch_assoc($rs){
+	return mysqli_fetch_assoc($rs);
 }
 
 function sql_insert_id($db,$rs=null){
@@ -68,4 +76,3 @@ echo sql_affected_rows($db)." rows affected <br>";
   }
 
 */
-

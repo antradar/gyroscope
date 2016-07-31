@@ -11,8 +11,8 @@ function showguide(){
 	<div id="codegenlist" style="padding:20px 20px;background-color:#444444;color:#ffffff;display:none;">
 		
 		<?foreach ($codegen_seeds as $seed=>$seedinfo){
-			$label=$seedinfo['name'];
-			$type=$seedinfo['type'];
+			$label=isset($seedinfo['name'])?$seedinfo['name']:'';
+			$type=isset($seedinfo['type'])?$seedinfo['type']:'';
 			if ($type=='break'){
 			?>
 		<div class="clear"></div>

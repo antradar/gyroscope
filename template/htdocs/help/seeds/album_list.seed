@@ -1,0 +1,27 @@
+<?php
+
+function list#primaryfield##records#($#primarykey#=null){
+	if (!isset($#primarykey#)) $#primarykey#=GETVAL('#primarykey#');
+	
+	global $db;
+	global $codepage;
+	
+	$query="select * from #lookuptable# where #primarykey#=$#primarykey#";
+	$rs=sql_query($query,$db);
+	
+	while ($myrow=sql_fetch_array($rs)){
+		$#lookupkey#=$myrow['#lookupkey#'];
+	?>
+	<div style="margin-bottom:5px;float:left;width:49%;margin-right:1%;">
+		<img src="#uploaddir#<?echo $#lookupkey#;?>.thumb.png" style="display:block;width:100%;">
+		<a onclick="del#primaryfield##record#(<?echo $#lookupkey#;?>,<?echo $#primarykey#;?>);"><img src="imgs/t.gif" class="img-del"></a>
+	</div>
+		
+	<?		
+	}//while	
+	
+	?>
+	<iframe style="width:90%;border:none;height:200px;" frameborder="no" src="<?echo $codepage;?>?cmd=embed#primaryfield##record#uploader&#primarykey#=<?echo $#primarykey#;?>&hb=<?echo time();?>"></iframe>
+	<?
+	
+}

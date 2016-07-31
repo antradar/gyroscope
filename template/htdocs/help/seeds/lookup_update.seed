@@ -1,14 +1,15 @@
-	
 	var msg='';
+	
+	
 	var #lookupkey#=o#lookupkey#.value2;
-	if (!#lookupkey#&&!o#lookupkey#.disabled){
-		msg="pick a #record# from the list\n";
+	if (!#lookupkey#&&!o#lookupkey#.disabled){ //remove the second clause to enforce the field
+		msg="pick a #c_record# from the list\n";
 		valid=0;
 		offender=offender||o#lookupkey#;
 	}
 	
 	if (msg!='') alert(msg);
 	
-	if (!#lookupkey#) #lookupkey#=0;
-
+	//...
 	
+	if (!#lookupkey#) {if (o#lookupkey#.disabled) #lookupkey#=0; else #lookupkey#=-1;}

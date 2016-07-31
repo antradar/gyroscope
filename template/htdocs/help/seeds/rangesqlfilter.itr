@@ -1,0 +1,2 @@
+	if (is_numeric($_REQUEST['#fld0#_a'])) $filters.=' and #fld0#>='.$_REQUEST['#fld0#_a'];
+	if (is_numeric($_REQUEST['#fld0#_b'])) $filters.=' and #fld0#<='.$_REQUEST['#fld0#_b'];

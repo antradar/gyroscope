@@ -8,8 +8,11 @@ document.dict={
 'confirm_user_delete':'Are you sure you want to remove this user?',	
 'statusflash_updated':'Updated: ',
 
-
-
+'confirm_templatetype_delete':'Are you sure you want to remove this template class?',
+'confirm_template_delete':'Are you sure you want to remove this template?',
+'confirm_reportsetting_delete':'Are you sure you want to remove this report setting?',
+	
+	
 
 
 

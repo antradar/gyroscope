@@ -1,2 +1,2 @@
 
-	array('title'=>_tr('icon_#records#'),'viewindex'=>#viewindex#,'icon'=>'img-#records#'),
+	'#viewindex#'=>array('title'=>_tr('icon_#records#'),'icon'=>'img-#records#','modversion'=>1),

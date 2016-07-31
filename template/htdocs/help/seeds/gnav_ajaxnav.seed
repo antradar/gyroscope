@@ -1,0 +1,10 @@
+<?php
+
+include_once 'connect.php';
+include_once '#prefix#nav.lib.php';
+$cmd=$_GET['cmd'];
+
+switch($cmd){
+	case 'nav': shownavs(); break;
+	case 'list': showrecords(); break;
+}

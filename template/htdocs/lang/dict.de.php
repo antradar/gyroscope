@@ -9,7 +9,9 @@ $dict=array(
 	'signin'=>'Anmelden',
 	'username'=>'Benutzername',
 	'password'=>'Passwort',
-	
+
+	'dispname'=>'Anzeigename',
+		
 	'account_settings'=>'Konteneinstellungen',	
 	'signout'=>'Abmelden',
 	

@@ -1,6 +1,6 @@
 {
 "fields":[
-	{"field":"viewindex","disp":"View Index","def":1,"numeric":1,"type":"viewindex"},
+	{"field":"viewindex","disp":"Module Key","def":"codegen.clients"},
 	{"field":"record","disp":"Record Entity Name","def":"client"},
 	{"field":"c_record","disp":"Record Entity Label","def":"Client"},
 	{"field":"records","disp":"Record Entity Name (Plural)","def":"clients"},

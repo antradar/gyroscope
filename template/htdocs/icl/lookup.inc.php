@@ -8,6 +8,9 @@ function showdatepicker(){
 	$key=trim(GETSTR('key'));
 	
 	$mode=GETSTR('mode');
+	$tz=GETSTR('tz');
+	if ($tz=='undefined') $tz='';
+	if ($tz!='') date_default_timezone_set($tz);	
 
 	$mini=GETSTR('mini')+0;
 	
@@ -30,7 +33,7 @@ function showdatepicker(){
 		
 ?>
 <div id="timepicker">
-	<?showtimepicker($y,$m,$d,$hstart,$hend,60);?>
+	<?showtimepicker($y,$m,$d,$hstart,$hend,60,1,$tz);?>
 </div>
 <?	
 		return;	
@@ -71,17 +74,17 @@ function showdatepicker(){
 ?>
 <div style="width:100%;text-align:center;padding-top:10px;" id="cale_daypicker">
 
-<div style="width:100%;position:relative;margin-top:5px;text-align:center;"><?echo $dmdate;?>
+<div style="width:100%;position:relative;margin-top:5px;text-align:center;"><a class="hovlink" onclick="listlookup(document.hotspot,'Calendar','pickdatemonths&defyear=<?echo $y;?>&mode=<?echo $mode;?>&mini=<?echo $mini;?>&tz=<?echo $tz;?>&hstart=<?echo $hstart;?>&hend=<?echo $hend;?>');"><?echo $dmdate;?></a>
 <span style="position:absolute;top:2px;left:12px;cursor:pointer;" onclick="<?if ($mode=='datetime'){?>
-pickdatetime(null,{start:'<?echo $hstart;?>',end:'<?echo $hend;?>',mini:<?echo $mini;?>},'<?echo "$py-$pm"?>');
+pickdatetime(null,{start:'<?echo $hstart;?>',end:'<?echo $hend;?>',mini:<?echo $mini;?>,tz:'<?echo $tz;?>'},'<?echo "$py-$pm"?>');
 <?} else {?>
-if (!document.hotspot) {pickdate(null,{mini:<?echo $mini;?>},'<?echo "$py-$pm"?>');return;} document.hotspot.value='<?echo "$py-$pm"?>';pickdate(document.hotspot,{mini:<?echo $mini;?>},null);
+if (!document.hotspot) {pickdate(null,{mini:<?echo $mini;?>,tz:'<?echo $tz;?>'},'<?echo "$py-$pm"?>');return;} document.hotspot.value='<?echo "$py-$pm"?>';pickdate(document.hotspot,{mini:<?echo $mini;?>,tz:'<?echo $tz;?>'},null);
 <?}?>"><img class="img-calel" src="imgs/t.gif" width="5" height="12"></span>
 
 <span style="position:absolute;top:2px;right:12px;cursor:pointer;" onclick="<?if ($mode=='datetime'){?>
-pickdatetime(null,{start:'<?echo $hstart;?>',end:'<?echo $hend;?>',mini:<?echo $mini;?>},'<?echo "$ny-$nm"?>');
+pickdatetime(null,{start:'<?echo $hstart;?>',end:'<?echo $hend;?>',mini:<?echo $mini;?>,tz:'<?echo $tz;?>'},'<?echo "$ny-$nm"?>');
 <?} else {?>
-if (!document.hotspot) {pickdate(null,{mini:<?echo $mini;?>},'<?echo "$ny-$nm"?>');return;} document.hotspot.value='<?echo "$ny-$nm"?>';pickdate(document.hotspot,{mini:<?echo $mini;?>},null);<?}?>"><img class="img-caler" src="imgs/t.gif" width="5" height="12"></span>
+if (!document.hotspot) {pickdate(null,{mini:<?echo $mini;?>,tz:'<?echo $tz;?>'},'<?echo "$ny-$nm"?>');return;} document.hotspot.value='<?echo "$ny-$nm"?>';pickdate(document.hotspot,{mini:<?echo $mini;?>,tz:'<?echo $tz;?>'},null);<?}?>"><img class="img-caler" src="imgs/t.gif" width="5" height="12"></span>
 </div>
 
 <div id="calepicker" style="font-size:12px;width:100%;height:200px;margin:0 auto;margin-top:5px;">
@@ -98,7 +101,7 @@ if (!document.hotspot) {pickdate(null,{mini:<?echo $mini;?>},'<?echo "$ny-$nm"?>
 <?
 for ($i=1;$i<=$ld;$i++){
 ?>
-<div onclick="<?if ($mode!='datetime'){?>if (document.hotspot) {document.hotspot.value='<?echo "$y-$m-$i"?>'; if (document.hotspot.lookupview) document.hotspot.lookupview.style.display='none';}else showday('<?echo "$y-$m-$i"?>');<?} else {?>gid('cale_daypicker').style.display='none';ajxpgn('timepicker',document.appsettings.codepage+'?cmd=showtimepicker&y=<?echo $y;?>&m=<?echo $m;?>&d=<?echo $i;?>&start=<?echo $hstart;?>&end=<?echo $hend;?>&res=60',1);<?}?>" style="cursor:pointer;width:14%;float:left;">
+<div onclick="<?if ($mode!='datetime'){?>if (document.hotspot) {document.hotspot.value='<?echo "$y-$m-$i"?>'; if (document.hotspot.lookupview) document.hotspot.lookupview.style.display='none';if (gid(document.hotspot.id+'_lookup')) gid(document.hotspot.id+'_lookup').style.display='none';}else showday('<?echo "$y-$m-$i"?>');<?} else {?>gid('cale_daypicker').style.display='none';ajxpgn('timepicker',document.appsettings.codepage+'?cmd=showtimepicker&y=<?echo $y;?>&m=<?echo $m;?>&d=<?echo $i;?>&start=<?echo $hstart;?>&end=<?echo $hend;?>&res=60&tz=<?echo $tz;?>',1);<?}?>" style="cursor:pointer;width:14%;float:left;">
 <div style="height:25px;border:solid 1px #444444;margin:1px;<?if ($today=="$y-$m-$i") echo 'font-weight:bold;color:#ab0200';?>"><?echo $i;?>
 </div></div>
 <?
@@ -114,7 +117,9 @@ for ($i=1;$i<=$ld;$i++){
 <?
 }
 
-function showtimepicker($y=null,$m=null,$d=null,$start=null,$end=null,$res=null,$h24=1){
+function showtimepicker($y=null,$m=null,$d=null,$start=null,$end=null,$res=null,$h24=1,$tz=null){
+	if (!isset($tz)) $tz=GETSTR('tz');
+	if ($tz!='') date_default_timezone_set($tz);	
 	
 	if (!isset($y)){
 		$y=GETVAL('y');
@@ -171,7 +176,7 @@ function showtimepicker($y=null,$m=null,$d=null,$start=null,$end=null,$res=null,
 			<?}?>
 			<?if ($res>1&&$mdkey==$daykey){?>
 			<a style="position:absolute;display:block;padding:1px 5px;font-size:10px;border-radius:5px;background-color:#666666;color:#ffffff;top:20px;right:10px;"
-				onclick="this.style.display='none';ajxpgn('subtime_<?echo $i;?>',document.appsettings.codepage+'?cmd=showtimepicker&nodate=<?echo $_GET['nodate']+0;?>&y=<?echo $y;?>&m=<?echo $m;?>&d=<?echo $d;?>&rstart=<?echo $hstart;?>&rend=<?echo $hend;?>&res=<?echo $nextres;?>');">...</a>
+				onclick="this.style.display='none';ajxpgn('subtime_<?echo $i;?>',document.appsettings.codepage+'?cmd=showtimepicker&nodate=<?echo $_GET['nodate']+0;?>&y=<?echo $y;?>&m=<?echo $m;?>&d=<?echo $d;?>&rstart=<?echo $hstart;?>&rend=<?echo $hend;?>&res=<?echo $nextres;?>&tz=<?echo $tz;?>');">...</a>
 			<?}?>
 		</div>
 		<div id="subtime_<?echo $i;?>" style="margin:0 10px;">
@@ -181,4 +186,48 @@ function showtimepicker($y=null,$m=null,$d=null,$start=null,$end=null,$res=null,
 		
 	} //for i
 	
+}
+
+function pickdatemonths(){
+	$defyear=GETVAL('defyear');
+	global $dict_mons;
+	
+	$mode=GETSTR('mode');
+	$tz=GETSTR('tz');
+	if ($tz=='undefined') $tz='';
+	if ($tz!='') date_default_timezone_set($tz);	
+
+	$mini=GETSTR('mini')+0;
+	
+	$hstart=GETSTR('hstart');
+	$hend=GETSTR('hend');
+	
+	$dmini='';
+	if ($mini) $dmini=', 1';	
+	
+	$myyear=date('Y');
+	$mymon=date('n');
+
+?>		
+<div style="width:100%;position:relative;margin-top:5px;text-align:center;">
+	<span classa="hovlink" onclicka="listlookup(this,'Calendar','pickdateyears&defyear=<?echo $defyear;?>');"><?echo $defyear;?></span>
+	<span style="position:absolute;top:2px;left:12px;cursor:pointer;" onclick="listlookup(document.hotspot,'Calendar','pickdatemonths&defyear=<?echo $defyear-1;?>&mode=<?echo $mode;?>&mini=<?echo $mini;?>&tz=<?echo $tz;?>&hstart=<?echo $hstart;?>&hend=<?echo $hend;?>');"><img class="img-calel" src="imgs/t.gif" width="5" height="12"></span>
+	<span style="position:absolute;top:2px;right:12px;cursor:pointer;" onclick="listlookup(document.hotspot,'Calendar','pickdatemonths&defyear=<?echo $defyear+1;?>&mode=<?echo $mode;?>&mini=<?echo $mini;?>&tz=<?echo $tz;?>&hstart=<?echo $hstart;?>&hend=<?echo $hend;?>');"><img class="img-caler" src="imgs/t.gif" width="5" height="12"></span>
+</div>
+<div class="section">
+<?
+	for ($i=1;$i<=12;$i++){
+	?>
+	<?if ($mode=='datetime'){?>
+		<a onclick="document.hotspot.value='<?echo $defyear.'-'.$i;?>';pickdatetime(document.hotspot,{start:'<?echo $hstart;?>',end:'<?echo $hend;?>',mini:<?echo $mini;?>,tz:'<?echo $tz;?>'});" style="<?if ($defyear==$myyear&&$i==$mymon) echo 'color:#ab0200;'?>;display:block;float:left;width:23%;margin-right:1%;margin-left:1%;padding:10px 0;text-align:center;"><?echo $dict_mons[$i];?></a>	
+	<?}else{?>
+		<a onclick="document.hotspot.value='<?echo $defyear.'-'.$i;?>';pickdate(document.hotspot,{mini:<?echo $mini;?>,tz:'<?echo $tz;?>'});" style="<?if ($defyear==$myyear&&$i==$mymon) echo 'color:#ab0200;'?>;display:block;float:left;width:23%;margin-right:1%;margin-left:1%;padding:10px 0;text-align:center;"><?echo $dict_mons[$i];?></a>
+	<?	
+	}//mode
+	
+	}
+?>
+	<div class="clear"></div>
+</div>
+<?		
 }

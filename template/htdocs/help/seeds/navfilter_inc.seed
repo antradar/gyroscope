@@ -1,2 +1,54 @@
 <?php
-include 'icl/#record#_nav.inc.php';
+include 'icl/#entity#_nav.inc.php';
+
+
+function #cmd#(){
+	global $db;
+	
+	$mode=GETSTR('mode');
+
+				
+	if ($mode!='embed'){
+?>
+<div class="section">
+
+	<div class="sectiontitle">#entity#</div>
+
+	<div>
+		<input id="serverkey" onkeyup="if (this.timer) clearTimeout(this.timer); this.timer=setTimeout(function(){ajxpgn('#container#',document.appsettings.codepage+'?cmd=#cmd#&mode=embed&key='+encodeHTML(gid('#searchkey#').value)+gid('searchfilter_server').value);},200);">
+	</div>
+	
+	<div id="#container#">
+	
+<?
+} //mode	
+
+		server_shownavs('#container#','#cmd#');
+		
+		$sqlfilter=#entity#_sqlfilters();
+		
+		echo "<br><br> Filter: $sqlfilter";
+		
+		//add pagination and rendering code on your own
+		
+		$query="select * from #mastertable# where #mastertable#.#primarykey#!=0 $sqlfilter";
+		$rs=sql_query($query,$db);
+		while ($myrow=sql_fetch_assoc($rs)){
+		
+		?>
+		<div><?echo $myrow['#dispfield#'];?></div>
+		<?
+		
+		}//while
+		
+if ($mode!='embed'){
+		?>
+	</div>
+
+</div>
+<?	
+} //mode
+
+
+		
+}

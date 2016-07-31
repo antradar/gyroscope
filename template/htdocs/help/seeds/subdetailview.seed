@@ -16,7 +16,8 @@ function show#record#($#primarykey#=null){
 	$recordtitle="$#master_dispfield#"; //change this
 	$dbrecordtitle=htmlspecialchars(noapos($recordtitle));
 	
-	header('newtitle:'.$#dispfield#);
+	header('newtitle:'.base64_encode($#dispfield#));
+	header('parenttab: #master_record#_'.$#masterkey#);
 ?>
 <div class="section">
 	<div class="sectiontitle"><?echo $#dispfield#;?></div>

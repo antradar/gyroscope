@@ -1,0 +1,1 @@
+	if ($fieldname=='#fld1#') $query.=", #fld0# "; //multi

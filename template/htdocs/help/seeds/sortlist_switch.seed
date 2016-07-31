@@ -1,0 +1,2 @@
+
+	case 'swap#record#pos': include 'icl/swap#record#pos.inc.php'; swap#record#pos(); break;

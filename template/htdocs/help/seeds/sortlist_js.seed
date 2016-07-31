@@ -1,0 +1,95 @@
+#record#_mousedown=function(d,tmid){
+	var dragging;
+	var posy=d.offsetTop;
+	var oy;
+		
+	var c=gid('#record#list');
+	var ch=c.offsetHeight;
+	
+	var sd=gid('#record#shadow');
+	var label=d.getElementsByTagName('a')[0].innerHTML;
+	if (!d.inited){
+		d.onmousemove=function(e){
+			if (!dragging){
+				dragging=true;
+				document.dragtmid=tmid;
+				
+				if (e) oy=e.clientY; else oy=event.clientY;
+				
+				sd.style.display='block';
+				sd.style.top=posy+'px';
+				sd.innerHTML=label;
+			
+				dragging=true;
+				d.style.opacity=0.5;
+				return;	
+			}
+			
+			var y;
+			if (e) y=e.clientY; else y=event.clientY;
+			var newy=posy+y-oy;
+			if (newy<0) newy=0;
+			if (newy>ch) newy=ch;
+			
+			sd.style.top=newy+'px';
+				
+		}	
+		
+		d.onmouseup=function(e){
+			d.style.opacity=1;
+			sd.style.display='none';
+			d.onmousemove=null;
+			d.inited=null;
+			d.onmouseup=null;
+			d.onmousemove=null;
+			dragging=null;
+			sd.onmouseup=null;
+			document.onmousemove=null;
+			document.onmouseup=null;
+			
+			
+			if (document.targettm) {//perform swapping
+				var targetid=document.targettm.tmid;
+				document.targettm.style.borderBottom='solid 1px #d4edc9';
+				document.targettm=null;
+				var params=gid('#record#list').reloadparams;
+				var newparams=params;
+				if (params) {
+					newparams=newparams.u.replace(document.appsettings.codepage+'?cmd=slv_codegen__#records#','');
+					newparams=newparams.replace('tmid=','oldtmid=').replace('targetid=','oldtargetid');
+				} else newparams='';
+				ajxpgn('#record#list',document.appsettings.codepage+'?cmd=swap#record#pos&mode=embed&tmid='+document.dragtmid+'&targetid='+targetid+'&'+newparams,0,0,'',function(){
+					gid('#record#list').reloadparams=params;
+				});
+			}
+			
+			document.dragtmid=null;
+			
+		}
+		
+		document.onmouseup=d.onmouseup;
+		document.onmousemove=d.onmousemove;
+		sd.onmouseup=d.onmouseup;
+		
+		d.inited=true;
+	}
+}
+
+#record#_mouseover=function(d,tmid,parent){
+	if (!document.dragtmid) return;
+	d.tmid=tmid;
+	var tg=d.parentNode;
+	if (parent) tg=d;
+	
+	tg.style.borderTop='solid 1px #ffab00';
+	tg.style.borderLeft='solid 5px #ffab00';
+	document.targettm=d;	
+	
+	d.onmouseout=function(){
+		if (!document.dragtmid) return;
+		document.targettm=null;
+		tg.style.borderTop='none';
+		tg.style.borderLeft='solid 5px #dedede';
+	}
+}
+

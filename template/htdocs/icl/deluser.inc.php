@@ -1,4 +1,5 @@
 <?php
+include 'icl/reauth.inc.php';
 
 function deluser(){
 	$userid=GETVAL('userid');
@@ -16,5 +17,6 @@ function deluser(){
 	$query="delete from users where userid=$userid";
 	sql_query($query,$db);
 	
-	logaction("deleted User #$userid <u>$login</u>",array('userid'=>$userid,'login'=>$login));
+	logaction("updated User #$userid <u>$login</u>",array('userid'=>$userid,'login'=>"$login"),array('rectype'=>'reauth','recid'=>$userid));
+	reauth();
 }

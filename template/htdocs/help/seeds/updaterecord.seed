@@ -11,7 +11,9 @@ function update#record#(){
 	$query="update #tablename# set #iterator-fieldlist-update# where #primarykey#=$#primarykey#";
 	sql_query($query,$db);
 
-	logaction("updated #c_record# #$#primarykey# <u>$#dispfield#</u>",array('#primarykey#'=>$#primarykey#,'#dispfield#'=>"$#dispfield#"));
+	logaction("updated #c_record# #$#primarykey# <u>$#dispfield#</u>",
+		array('#primarykey#'=>$#primarykey#,'#dispfield#'=>"$#dispfield#"),
+		array('rectype'=>'#record#','recid'=>$#primarykey#));
 
 	show#record#($#primarykey#);
 }

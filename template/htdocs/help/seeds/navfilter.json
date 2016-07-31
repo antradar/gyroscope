@@ -1,30 +1,28 @@
 {
 "fields":[
-	{"field":"viewindex","disp":"View Index","def":1,"numeric":1,"type":"viewindex"},
-	{"field":"record","disp":"Record Entity Name","def":"material"},
-	{"field":"c_record","disp":"Record Entity Label","def":"Material"},
-	{"field":"records","disp":"Record Entity Name (Plural)","def":"materials"},
-	{"field":"c_records","disp":"Record Entity Label (Plural)","def":"Materials"},
-
-	{"field":"tablename","disp":"DB Table Name","def":"materials"},
-	{"field":"primarykey","disp":"Primary Key","def":"materialid"},
-	{"field":"searchquery","disp":"Search Filters","def":"materialname like '%$key%'"},
-	{"field":"sortquery","disp":"Sort Filters","def":"materialname, materialid"},
+	{"field":"entity","disp":"Entity","def":"server"},
+	{"field":"container","disp":"Container","def":"serverdash"},
+	{"field":"cmd","disp":"Command","def":"dashservers"},
+	{"field":"searchkey","disp":"Search Key","def":"serverkey"},
 	
-	{"field":"dispfield","disp":"Display Field Name","def":"materialname"},
-	{"field":"fieldlist","disp":"Basic Fields","def":"materialname|Name", "type":"fieldlist"},
+	{"field":"mastertable","disp":"Base Record Table","def":"servers"},
+	{"field":"primarykey","disp":"Primary Key","def":"serverid"},
 	
-	{"field":"multitable","disp":"Multi-Select Table (optional)","def":"materialfeatures"},
-	{"field":"multifield","disp":"Multi-Select Field ID (optional)","def":"featureid"},
+	{"field":"dispfield","disp":"Display Field","def":"domains"},
 	
-	{"field":"dimlist","disp":"Dimensions","def":"brand|Brand\ncolor|Color\nfinish|Finish", "type":"fieldlist", "optional":1}
-
-		
+	{"field":"dimlist","disp":"Dimensions","def":"os|OS\noperator|Operator", "type":"fieldlist"},	
+	{"field":"multifields","disp":"Multi-Select Fields (optional)","def":"serverparts|partname|Parts","type":"fieldlist","optional":1},
+	{"field":"rangelist","disp":"Range Filters","def":"memorybase|RAM", "type":"fieldlist","optional":1},			
+	{"field":"viewlist","disp":"Additional Views","def":"servermap|viewservermap\nserverstats|viewserverstats", "type":"fieldlist","optional":1}			
 ],
 
 "templates":[
-	{"template":"navfilter_inc","filename":"modify icl/list#records#.inc.php"},
-	{"template":"navfilter_mod","filename":"modify <em>list#records#(...)</em>"},
-	{"template":"navfilter_nav","filename":"icl/#record#_nav.inc.php"}
+	{"template":"navfilter_nav","filename":"If used in a list, set #entity#list as Container, slv_codegen__#entity#s as Command in codegen<br>icl/#entity#_nav.inc.php"},
+	{"template":"navfilter_inc","filename":"container code"},
+	{"template":"navfilter_js","filename":"add to <em>autocomplete.js</em>"},
+	{"template":"navfilter_css","filename":"recommended CSS in <em>toolbar.css</em>"},
+	{"template":"navfilter_switch","filename":"add to <em>myservices.php</em>"},
+	{"template":"navfilter_mod","filename":"optional list integration"}
+
 ]
 }

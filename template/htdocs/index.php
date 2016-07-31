@@ -1,6 +1,6 @@
 <?
 include 'lb.php';
-if ($usehttps) include 'https.php';
+if (isset($usehttps)&&$usehttps) include 'https.php';
 
 include 'mswitch.php'; //auto switch to mobile version
 
@@ -17,25 +17,26 @@ $user=userinfo();
 <!doctype html>
 <html>
 <head>
-	<title>Antradar Gyroscope&trade; &nbsp;Starting Point</title>
+	<title><?echo GYROSCOPE_PROJECT;?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link href='gyroscope.css' type='text/css' rel='stylesheet'>
 	<link href='toolbar.css' type='text/css' rel='stylesheet'>
 	<meta name="Version" content="Gyroscope <?echo GYROSCOPE_VERSION?>">
 	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+	
 </head>
 
 <body onload="setTimeout(scrollTo, 0, 0, 1)">
 <script>
-document.appsettings={codepage:'<?echo $codepage;?>', fastlane:'<?echo $fastlane;?>', viewcount:<?echo $viewcount;?>};
+document.appsettings={codepage:'<?echo $codepage;?>', fastlane:'<?echo $fastlane;?>', views:<?echo json_encode(array_keys($toolbaritems));?>};
 </script>
 
 <div style="display:none;"><img src="imgs/t.gif"><img src="imgs/hourglass.gif"></div>
 <!-- left panel -->
 <div id="tooltitle"></div>
 <div id="leftview" scale:ch="105"><div id="leftview_">
-	<?for ($i=0;$i<=$viewcount;$i++){?>
-	<div id="lv<?echo $i;?>" style="display:none;width:100%;height:100%;overflow:auto;position:absolute;"></div>
+	<?foreach ($toolbaritems as $modid=>$ti){?>
+	<div id="lv<?echo $modid;?>" style="display:none;width:100%;height:100%;overflow:auto;position:absolute;"></div>
 	<?}?>
 	<div id="lkv" style="height:100%;">
 		<div id="lkvs"></div>
@@ -54,21 +55,28 @@ document.appsettings={codepage:'<?echo $codepage;?>', fastlane:'<?echo $fastlane
 
 <div id="iconbelt">
 <div id="topicons" style="left:0;">
-<?foreach ($toolbaritems as $ti){
-	if ($ti['type']=='break') {
+<?foreach ($toolbaritems as $modid=>$ti){
+	if (isset($ti['type'])&&$ti['type']=='break') {
 		echo '<div class="break"><span></span></div>';continue;	
 	}
-	if ($ti['type']=='custom'){
+	if (isset($ti['type'])&&$ti['type']=='custom'){
 	?>
 	<?echo $ti['desktop'];?>
 	<?	
 		continue;
 	}
 	
-	$action='';
-	if (is_numeric($ti['viewindex'])) $action='showview('.$ti['viewindex'].');';
-	if ($ti['action']!='') $action.=$ti['action'];
-	
+	$action="showview('".$modid."');";
+	if (isset($ti['action'])&&$ti['action']!='') $action=$ti['action'];
+	if (!isset($ti['icon'])||$ti['icon']=='') continue;
+
+	if (isset($ti['groups'])){
+		$canview=0;
+		$gs=explode('|',$ti['groups']);
+		foreach ($gs as $g) if (isset($user['groups'][$g])) $canview=1;
+		if (!$canview) continue;	
+	}
+		
 ?>	
 <?/* <acronym title="<?echo $ti['title'];?>"> */?>
 <a onmouseover="hintstatus(this,'<?echo $ti['title'];?>');" onclick="<?echo $action;?>"><img class="<?echo $ti['icon'];?>" src="imgs/t.gif" width="32" height="32"><br><?echo $ti['title']?></a>
@@ -84,9 +92,9 @@ document.appsettings={codepage:'<?echo $codepage;?>', fastlane:'<?echo $fastlane
 </span><!-- iconbuttons -->
 
 <div id="logoutlink">
-<img src="imgs/t.gif" width="16" height="16" class="admin-user"><?echo $user['login'];?>
+<acronym title="<?echo $user['dispname'];?>"><img src="imgs/t.gif" width="16" height="16" class="admin-user"></acronym><span id="labellogin"><?echo $user['login'];?></span><span id="labeldispname" style="display:none;"><?echo $user['dispname'];?></span>
 &nbsp; &nbsp;
-<acronym title="<?tr('account_settings');?>"><a title="<?tr('account_settings');?>" onclick="ajxjs(self.setaccountpass,'accounts.js');reloadtab('account','<?tr('account_settings');?>','showaccount');addtab('account','<?tr('account_settings');?>','showaccount');<?if ($user['groups']['accounts']){?>ajxjs(self.showuser,'users_js.php');showview(1);<?}?>return false;"><img src="imgs/t.gif" width="16" height="16" class="admin-settings"></a></acronym>
+<acronym title="<?tr('account_settings');?>"><a title="<?tr('account_settings');?>" onclick="ajxjs(self.setaccountpass,'accounts.js');reloadtab('account','<?tr('account_settings');?>','showaccount');addtab('account','<?tr('account_settings');?>','showaccount');return false;"><img src="imgs/t.gif" width="16" height="16" class="admin-settings"></a></acronym>
 &nbsp;
 <acronym title="<?tr('signout');?>"><a title="<?tr('signout');?>" onclick="skipconfirm();" href="login.php?from=<?echo $_SERVER['PHP_SELF'];?>" onmouseover="hintstatus(this,'Logout');"><img src="imgs/t.gif" width="16" height="16" class="admin-logout"></a></acronym>
 </div><!-- logout -->
@@ -96,6 +104,7 @@ document.appsettings={codepage:'<?echo $codepage;?>', fastlane:'<?echo $fastlane
 	<span id="statusicons">
 	<a id="speechstart" onclick="speech_startstop();" onmouseover="hintstatus(this,'click to activate speech recognition');"><img src="imgs/t.gif"></a>
 	<img id="wsswarn" src="imgs/t.gif" onmouseover="hintstatus(this,'websocket not supported');">
+	<img onclick="this.style.display='none';" id="barcodewarn" src="imgs/t.gif" onmouseover="hintstatus(this,'barcode scanner not active');">
 	</span>
 	<span id="statusc"></span>
 </div>
@@ -130,15 +139,13 @@ window.onresize=autosize;
 autosize();
 setTimeout(function(){scaleall(document.body);},100);
 
-//showview(0); //uncomment this line if you want to load the first list automatically
-
 
 addtab('welcome','<?tr('tab_welcome');?>','wk',null,null,{noclose:1});
 
 
 
 
-setInterval(authpump,300000); //check if needs to re-login; comment this out to disable authentication
+setInterval(authpump,60000); //check if needs to re-login; comment this out to disable authentication
 
 skipconfirm=function(){
 	if (document.confirmskipper) clearTimeout(document.confirmskipper);
@@ -162,6 +169,16 @@ window.onbeforeunload=function(){
 </script>
 
 <script src="speech.js"></script>
+
+<?/*
+<script src="barcodescanner.js"></script>
+<script>
+	window.onblur=function(){if (gid('barcodewarn')) gid('barcodewarn').style.display='inline';}
+	window.onfocus=function(){if (gid('barcodewarn')) gid('barcodewarn').style.display='none';}
+</script>
+*/
+?>
+
 <script src="smartcard.js"></script>
 <script>
 document.smartcard=true;
@@ -170,6 +187,9 @@ smartcard_init('cardreader',{
 	'nohttps':function(){document.smartcard=null;}
 });
 </script>
-
+<script src="tiny_mce/mceloader.js"></script>
+<script>
+if (window.Notification) Notification.requestPermission();
+</script>
 </body>
 </html>

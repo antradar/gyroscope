@@ -6,24 +6,26 @@
 	{"field":"records","disp":"Entity Name Plural","def":"actors"},
 	{"field":"tablename","disp":"DB Table Name","def":"actors"},
 	{"field":"primarykey","disp":"Primary Key","def":"actorid"},	
+	{"field":"mediatype","disp":"Media Type","def":"profile"},		
 	{"field":"picflag","disp":"Picture Flag Field","def":"haspic"},
-	{"field":"uploadertitle","disp":"Uploader Title","def":"Profile Picture"},
-	{"field":"uploaddir","disp":"Upload Director","def":"../images/bio/"},
+	{"field":"uploaddir","disp":"Upload Directory","def":"../images/bio/"},
 
 	{"field":"thumbwidth","disp":"Thumbnail Width","def":"100"},
 	{"field":"thumbheight","disp":"Thumbnail Height","def":"150"},
-	
-	{"field":"fileext","disp":"Generic File Extension","def":".img"}
+
+	{"field":"fileext","disp":"Generic File Extension","def":".png"},
+	{"field":"tinypngapi","disp":"TinyPNG API Key","def":"","optional":1}	
 		
 ],
 
 "templates":[
 	{"template":"profile_header","filename":"modify icl/show#primaryfield#.inc.php header"},	
-	{"template":"profile_sublist","filename":"add sub section in <em>show#primaryfield#</em>:"},	
-	{"template":"profile_list","filename":"icl/show#primaryfield#profile.inc.php"},	
-	{"template":"profile_embed","filename":"icl/embed#primaryfield#profileuploader.inc.php"},	
+	{"template":"profile_sublist","filename":"add sub section in <em>show#primaryfield#</em>:"},
+	{"template":"album_settings","filename":"add to <em>settings.php</em>"},			
+	{"template":"profile_list","filename":"icl/show#primaryfield##mediatype#.inc.php"},	
+	{"template":"profile_embed","filename":"icl/embed#primaryfield##mediatype#uploader.inc.php"},	
 	{"template":"profile_js","filename":"#records#.js"},
-	{"template":"profile_remove","filename":"icl/remove#primaryfield#profilepic.inc.php"},
+	{"template":"profile_remove","filename":"icl/remove#primaryfield##mediatype#pic.inc.php"},
 	{"template":"profile_purge","filename":"modify icl/del#primaryfield#.php"}, 	
 	{"template":"profile_switch","filename":"myservices.php <em>switch ($cmd){</em>"}
 	

@@ -72,7 +72,7 @@ function codegen_quotecode($seed,$filename,$opts){
 ?>
 <div><input type="checkbox"> <b><?echo $filename;?></b></div>
 <div style="margin:5px 10px;">
-<textarea style="width:100%;padding:5px;height:<?echo $height;?>px;font-family:monospace;font-size:12px;">
+<textarea spellcheck="false" style="width:100%;padding:5px;height:<?echo $height;?>px;font-family:monospace;font-size:12px;">
 <?echo $code;?>
 
 </textarea>

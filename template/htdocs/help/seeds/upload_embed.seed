@@ -11,7 +11,7 @@ function embed#primaryfield##record#uploader(){
 	global $db;
 	global $codepage;
 
-	$path='../#primaryfield##records#/';
+	$path='../../#primaryfield##records#/';
 		
 	$msg='';
 	
@@ -36,12 +36,15 @@ function embed#primaryfield##record#uploader(){
 			$filetype=$filetypes;//[$idx];
 			$error=$file['error'];
 			
+			$finfo = finfo_open(FILEINFO_MIME_TYPE);
+			$mimetype=noapos(finfo_file($finfo, $realfn));
+			
 #iterator-fieldlist-postvars#
 
 			if ($error==2){
 				$msg='File too large';
 			} else {
-				$query="insert into #lookuptable#(#primarykey#,#iterator-fieldlist-sqlflist#) values ($#primarykey#,#iterator-fieldlist-sqlvlist#)";
+				$query="insert into #lookuptable#(#primarykey#,ofn,mimetype,#iterator-fieldlist-sqlflist#) values ($#primarykey#,'$ofn','$mimetype',#iterator-fieldlist-sqlvlist#)";
 				$rs=sql_query($query,$db);
 				$#lookupkey#=sql_insert_id($db,$rs);
 				logaction("uploaded $ofn to <u>$#primarydispfield#</u>",array('#primarykey#'=>$#primarykey#,'file'=>$ofn,'#primarydispfield#'=>$#primarydispfield#,'#lookupkey#'=>$#lookupkey#));
@@ -74,6 +77,10 @@ function embed#primaryfield##record#uploader(){
 <body style="padding:0;margin:0;">
 
 <form id="uploader" style="padding:0;margin:0;" method="POST" enctype="multipart/form-data">
+<div id="dropzone" style="display:none;margin:20px 0;padding:10px;border:dashed 2px #dedede;text-align:center;font-size:20px;color:#dedede;">
+	<span id="dropzonetext">Drag and drop file here</span>
+	<span id="dropzoneprogress"></span>
+</div>
 <input type="hidden" name="#primarykey#" value="<?echo $#primarykey#;?>">
 <input type="hidden" name="MAX_FILE_SIZE" value="<?echo $maxsize;?>">
 <input type="file" name="file" id="file">
@@ -91,7 +98,7 @@ function cancelupload(){
 	btn.rq.abort();	
 }
 
-function upload(d){
+function upload(d,dfiles){
 	var file=gid('file');
 	var form=gid('uploader');
 	var rq=xmlHTTPRequestObject();
@@ -104,14 +111,17 @@ function upload(d){
 
 	var fd=new FormData();
 
+	var binfile=file.files[0];
+	if (dfiles) binfile=dfiles[0];
+	
 	var fsize=0;
-	if (file.files[0]&&file.files[0].size) fsize=file.files[0].size;
+	if (binfile&&binfile.size) fsize=binfile.size;
 	if (fsize><?echo $maxsize;?>){
 		alert('File too large. Upload a smaller file');
 		return;	
 	}
 	
-	fd.append('file',file.files[0]);
+	fd.append('file',binfile);
 	
 	fd.append('#primarykey#',<?echo $#primarykey#;?>);
 #iterator-fieldlist-fdappend#
@@ -119,8 +129,10 @@ function upload(d){
 
 	rq.upload.onprogress=function(e){
 		gid('cancel').style.display='block';
-		if (e.lengthComputable) gid('debug').innerHTML=Math.round(e.loaded*100/e.total)+'%';
-		else gid('debug').innerHTML='uploading...';
+		if (e.lengthComputable) {
+			gid('debug').innerHTML=Math.round(e.loaded*100/e.total)+'%';
+			gid('dropzoneprogress').innerHTML=gid('debug').innerHTML;
+		} else gid('debug').innerHTML='uploading...';
 	};
 	rq.onload=function(e){
 		gid('debug').innerHTML='uploaded';
@@ -134,13 +146,42 @@ function upload(d){
 
 	rq.onabort=function(e){
 		gid('cancel').style.display='none';
-		gid('debug').innerHTML='canceled';	
+		gid('debug').innerHTML='canceled';
+		gid('dropzonetext').innerHTML='Upload canceled';
+		gid('dropzoneprogress').innerHTML='';	
 	}
 	
 	d.rq=rq;
 	
 	rq.send(fd);	
 }
+
+if (self.FormData&&'draggable' in document.createElement('span')){
+		gid('dropzone').style.display='block';
+		gid('dropzone').ondragover=function(){this.style.borderColor='#848cf7';this.style.color='#848cf7';return false;}
+		gid('dropzone').ondragleave=function(){this.style.borderColor='#dedede';this.style.color='#dedede';return false;}
+		gid('dropzone').ondragend=function(){this.style.borderColor='#dedede';this.style.color='#dedede';return false;}
+		gid('dropzone').ondrop=function(e){
+			var files=e.dataTransfer.files;
+			if (!files||files.length==0){
+				gid('dropzonetext').innerHTML='invalid file';
+				gid('dropzoneprogress').innerHTML='';
+				return false;
+			}			
+			if (files.length>1){
+				gid('dropzonetext').innerHTML='multiple upload not supported';
+				gid('dropzoneprogress').innerHTML='';
+				return false;	
+			}
+			var fns=[];
+			for (var i=0;i<files.length;i++) fns.push(files[i].name);
+			gid('dropzonetext').innerHTML=files[0].name;
+			gid('dropzoneprogress').innerHTML='';
+			upload(gid('uploadbutton'),files);
+			return false;	
+		}
+}
+
 </script>
 
 </body>

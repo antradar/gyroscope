@@ -70,7 +70,7 @@ function reloadtab(key,title,params,loadfunc,data,opts){
   //if tab doesn't exist, ignore it
   var tabid=gettabid(key);
   if (tabid==-1) return;
-
+  
   if (document.tabtitles[tabid].tablock) return;
   document.tabtitles[tabid].tablock=1;
     
@@ -85,7 +85,7 @@ function reloadtab(key,title,params,loadfunc,data,opts){
   rq.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
   
 	var ct=document.tabviews[tabid];
-	ct.slowtimer=setTimeout(function(){ct.innerHTML='<image class="hourglass" src="imgs/hourglass.gif" style="margin:5px;">';},800);
+	ct.slowtimer=setTimeout(function(){ct.innerHTML='<image class="hourglass" src="imgs/hourglass.gif">';},800);
 
 	
     
@@ -105,7 +105,7 @@ function reloadtab(key,title,params,loadfunc,data,opts){
       
 	var apperror=rq.getResponseHeader('apperror');
 	if (apperror!=null&&apperror!=''){
-		alert('Error: '+apperror);
+		alert('Error: '+Base64.decode(apperror));
 		
 		return;	
 	}
@@ -118,6 +118,10 @@ function reloadtab(key,title,params,loadfunc,data,opts){
 			alert('Incomplete key change');
 			return;	
 		}
+		
+		var newloadfunc=rq.getResponseHeader('newloadfunc');
+		if (newloadfunc!=null&&newloadfunc!='') loadfunc=function(){eval(newloadfunc)};
+		
 		document.tabtitles[tabid].reloadinfo={params:newparams,loadfunc:loadfunc,data:null,opts:null};
 		
 		document.tabkeys[tabid]=newkey;
@@ -133,9 +137,15 @@ function reloadtab(key,title,params,loadfunc,data,opts){
 		
 	}  
 	
+	var parenttab=rq.getResponseHeader('parenttab');
+	if (parenttab!=null&&parenttab!='') {		
+		document.tabviews[tabid].parenttab=parenttab;
+	}
+	
+	
 	var newtitle=rq.getResponseHeader('newtitle');
 	if (newtitle!=null&&newtitle!=''){
-		title=newtitle;	
+		title=Base64.decode(newtitle);	
 	}	       
 	
 	if (opts&&opts.persist) document.tabtitles[tabid].reloadinfo={params:params,loadfunc:loadfunc,data:data,opts:opts};
@@ -161,6 +171,7 @@ function refreshtab(key){
  
   var tab=document.tabtitles[tabid];
   if (!tab.reloadinfo) return;
+  tab.style.color='#000000';
   reloadtab(key,null,tab.reloadinfo.params,tab.reloadinfo.loadfunc,tab.reloadinfo.data,tab.reloadinfo.opts);
 }
 
@@ -199,13 +210,12 @@ function addtab(key,title,params,loadfunc,data,opts){
   c.style.height="100%";
   c.style.overflow="auto";
   
-  c.slowtimer=setTimeout(function(){c.innerHTML='<image class="hourglass" src="imgs/hourglass.gif" style="margin:5px;">';},800);
+  c.slowtimer=setTimeout(function(){c.innerHTML='<image class="hourglass" src="imgs/hourglass.gif">';},800);
 
   var t=document.createElement('span');
   var tabhtml="<nobr><a class=\"tt\" ondblclick=\"refreshtab('"+key+"');\" onclick=\"showtab('"+key+"');\">"+title+"</a><a onclick=\"closetab('"+key+"')\"><span class=\"tabclose\"></span></a></nobr>";
   if (opts!=null&&opts.noclose) tabhtml="<nobr><a class=\"tt\" ondblclick=\"refreshtab('"+key+"');\" onclick=\"showtab('"+key+"');\">"+title+"</a><span class=\"noclose\"></span></nobr>";
   if (opts!=null&&opts.closeall) tabhtml="<nobr><a title=\""+document.dict['close_all_tabs']+"\" onclick=\"resettabs('"+key+"');\" class=\"closeall\"></a><a class=\"tt\" ondblclick=\"refreshtab('"+key+"');\" style=\"padding-left:1px;\" onclick=\"showtab('"+key+"');\">"+title+"</a><span class=\"noclose\"></span></nobr>";
-  
   t.innerHTML=tabhtml;
   gid('tabtitles').appendChild(t);
   gid('tabviews').appendChild(c);
@@ -229,6 +239,19 @@ function addtab(key,title,params,loadfunc,data,opts){
 		  	window.location.href='login.php';
 		    return;
       }
+      
+	var apperror=rq.getResponseHeader('apperror');
+	if (apperror!=null&&apperror!=''){
+		alert('Error: '+Base64.decode(apperror));
+		document.tablock=null;
+		return;	
+	}      
+      
+		var parenttab=rq.getResponseHeader('parenttab');
+		if (parenttab!=null&&parenttab!='') {		
+			t.parenttab=parenttab;
+		}
+      
       c.innerHTML='<input id="rightview_'+key+'" style="position:absolute;top:-60px;left:0;" title='+encodeHTML(title)+'>'+rq.responseText;
 
       document.tablock=null;
@@ -238,6 +261,7 @@ function addtab(key,title,params,loadfunc,data,opts){
   }
   rq.send(data);
 }
+
 
 function resettabs(key){
 	if (!confirm(document.dict['confirm_close_all_tabs'])) return;
@@ -267,7 +291,7 @@ function resettabs(key){
 closetab=function(key){
   var tabid=gettabid(key);
   if (tabid==-1) return;
-    
+      
   gid('tabtitles').removeChild(document.tabtitles[tabid]);
   gid('tabviews').removeChild(document.tabviews[tabid]);
   document.tabtitles[tabid]=null;
@@ -302,6 +326,46 @@ closetab=function(key){
 	
 	if (document.tabcount==0) {document.currenttab=-1; return;}
 	showtab(document.tabkeys[document.currenttab]);	
+}
+
+function closetabs(rectype){
+	if (!document.tabkeys) return;
+	
+	var cf=function(tk){return function(){
+		closetab(tk);	
+	}}
+	
+	for (var i=0; i<document.tabkeys.length; i++){
+		var tabkey=document.tabkeys[i];
+		var id=tabkey.replace(rectype+'_','');
+		if (parseInt(id,10)==id) setTimeout(cf(tabkey),i*50);	
+	}
+}
+
+function closetabtree(root,sub){
+	if (!document.tabkeys) return;
+	
+	if (!sub) document.toclose=[];
+
+	for (var i=0; i<document.tabkeys.length; i++){
+		var tab=document.tabtitles[i];
+		var tabkey=document.tabkeys[i];
+		if (tab.parenttab==root) closetabtree(tabkey,1);
+	}
+	
+	document.toclose.push(root);
+	
+	if (!sub) {
+
+		var cf=function(tk){return function(){
+			closetab(tk);	
+		}}
+					
+		for (var i=0; i<document.toclose.length; i++){
+			var tabkey=document.toclose[i];
+			setTimeout(cf(tabkey),i*50);	
+		}
+	}
 }
 
 function showhelp(topic,title){

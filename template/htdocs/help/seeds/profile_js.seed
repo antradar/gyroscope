@@ -1,15 +1,15 @@
 
-show#primaryfield#profile=function(#primarykey#,msg){
+show#primaryfield##mediatype#=function(#primarykey#,msg){
 	if (msg!=null&&msg!=''){
 		alert(msg);
 		return;
 	}
 
-	ajxpgn('#primaryfield#profile_'+#primarykey#,document.appsettings.codepage+'?cmd=show#primaryfield#profile&#primarykey#='+#primarykey#);
+	ajxpgn('#primaryfield##mediatype#_'+#primarykey#,document.appsettings.codepage+'?cmd=show#primaryfield##mediatype#&#primarykey#='+#primarykey#);
 }
 
-remove#primaryfield#profilepic=function(#primarykey#){
-	if (!confirm('Are you sure you want to remove this profile picture?')) return;
-	ajxpgn('#primaryfield#profile_'+#primarykey#,document.appsettings.codepage+'?cmd=remove#primaryfield#profilepic&#primarykey#='+#primarykey#);
+remove#primaryfield##mediatype#pic=function(#primarykey#){
+	if (!confirm('Are you sure you want to remove this #mediatype# picture?')) return;
+	ajxpgn('#primaryfield##mediatype#_'+#primarykey#,document.appsettings.codepage+'?cmd=remove#primaryfield##mediatype#pic&#primarykey#='+#primarykey#);
 }
 

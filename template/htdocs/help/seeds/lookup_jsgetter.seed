@@ -1,11 +1,14 @@
 	
 	var msg='';
+	
+	
 	var #lookupkey#=o#lookupkey#.value2;
 	if (!#lookupkey#){
-		msg="pick a #lookupkey# from the list\n";
+		msg="pick a #c_record# from the list\n";
 		valid=0;
 		offender=offender||o#lookupkey#;
 	}
 	
 	if (msg!='') alert(msg);
 	
+		

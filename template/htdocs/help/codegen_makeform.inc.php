@@ -6,10 +6,46 @@ function codegen_makeform($seed=null){
 	if (!isset($seed)) $seed=GETSTR('seed');
 	global $codegen_seeds;
 	
-	$seedname=$codegen_seeds[$seed]['name'];
-	$desc=$codegen_seeds[$seed]['desc'];
-	$icon=$codegen_seeds[$seed]['icon'];
+	$seedobj=null;
+	
+	foreach ($codegen_seeds as $k=>$v){
+		if ($seed==$k) {
+			$seedobj=$v;
+			break;	
+		}
+		if ($v['package']){
+			foreach ($v['items'] as $ik=>$iv){
+				if ($seed==$ik) $seedobj=$iv;	
+			}	
+		}
+		if ($seedobj) break;
+	}
+	
+	
+	$seedname=$seedobj['name'];
+	$desc=$seedobj['desc'];
+	$icon=$seedobj['icon'];
+	$package=$seedobj['package'];	
+	
+	if ($package){
 		
+		$items=$codegen_seeds[$seed]['items'];
+	?>
+	This code generator supports a few variants:
+	<div style="padding-top:10px;padding-bottom:20px;">
+	<?	
+		foreach ($items as $itemkey=>$item){
+	?>
+	<div class="listitem">
+		<a onclick="codegen_makeform('<?echo $itemkey;?>');"><?echo $item['name'];?><br><em style="color:#666666;"><?echo $item['desc'];?></em></a>
+	</div>
+	<?		
+		}
+	?>
+	</div>
+	<?
+		return;	
+	}
 			
 	$fn='help/seeds/'.$seed.'.json';
 	if (!file_exists($fn)) {echo "This module is not available in the community edition of Gyroscope";return;}
@@ -31,8 +67,7 @@ if ($desc!=''){
 	$c=file_get_contents($fn);
 	$obj=json_decode(file_get_contents($fn),1) or die('error parsing form config file');
 
-	$defindex=2;
-	foreach ($toolbaritems as $mi){if ($defindex<=$mi['viewindex']) $defindex=$mi['viewindex']+1;}
+	$defindex='custom.module'.(count($toolbaritems)-1);
 	
 ?>
 <div style="display:none;"><textarea id="codegen_seedobj"><?echo $c;?></textarea></div>
@@ -42,8 +77,8 @@ if ($desc!=''){
 		$field=$fld['field'];
 		$disp=$fld['disp'];
 		$def=$fld['def'];
-		$numeric=$fld['numeric'];
-		$type=$fld['type'];
+		$numeric=isset($fld['numeric'])?$fld['numeric']:0;
+		$type=isset($fld['type'])?$fld['type']:null;
 		if ($type=='viewindex') $def=$defindex;
 		$tag='input'; $ctag='';
 		if ($type=='fieldlist') {$tag='textarea';$ctag=$def.'</textarea>';}
@@ -58,7 +93,7 @@ if ($desc!=''){
 	}//foreach	
 ?>
 <tr><td></td><td>
-	<button onclick="codegen_makecode('<?echo $seed;?>');">Generate Code!</button>
+	<button onclick="codegen_makecode('<?echo $seed;?>');">Generate Code!</button>	
 </td></tr>
 </table>
 

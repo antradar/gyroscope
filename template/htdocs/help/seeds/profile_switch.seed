@@ -1,5 +1,5 @@
-//#primaryfield# Profile Uploader
+//#primaryfield# #mediatype# Uploader
 
-  case 'show#primaryfield#profile': include 'icl/show#primaryfield#profile.inc.php'; show#primaryfield#profile(); break;
-  case 'remove#primaryfield#profilepic': include 'icl/remove#primaryfield#profilepic.inc.php'; remove#primaryfield#profilepic(); break;
-  case 'embed#primaryfield#profileuploader': include 'icl/embed#primaryfield#profileuploader.inc.php'; embed#primaryfield#profileuploader(); break;
+  case 'show#primaryfield##mediatype#': include 'icl/show#primaryfield##mediatype#.inc.php'; show#primaryfield##mediatype#(); break;
+  case 'remove#primaryfield##mediatype#pic': include 'icl/remove#primaryfield##mediatype#pic.inc.php'; remove#primaryfield##mediatype#pic(); break;
+  case 'embed#primaryfield##mediatype#uploader': include 'icl/embed#primaryfield##mediatype#uploader.inc.php'; embed#primaryfield##mediatype#uploader(); break;

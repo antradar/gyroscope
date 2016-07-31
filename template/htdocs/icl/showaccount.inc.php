@@ -4,7 +4,7 @@ function showaccount(){
 	global $user;
 
 	global $db;
-
+	
 ?>
 <div class="section">
 

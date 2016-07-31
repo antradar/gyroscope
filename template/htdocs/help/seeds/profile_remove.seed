@@ -1,8 +1,8 @@
 <?php
 
-include 'icl/show#primaryfield#profile.inc.php';
+include 'icl/show#primaryfield##mediatype#.inc.php';
 
-function remove#primaryfield#profilepic(){
+function remove#primaryfield##mediatype#pic(){
 	$#primarykey#=GETVAL('#primarykey#');
 	
 	global $db;
@@ -15,9 +15,9 @@ function remove#primaryfield#profilepic(){
 	$fn='#uploaddir#'.$#primarykey#.'#fileext#';
 	if (file_exists($fn)) unlink($fn);
 		
-	logaction("removed profile picture of #primaryfield# #$#primarykey#",array('#primarykey#'=>$#primarykey#));
+	logaction("removed #mediatype# picture of #primaryfield# #$#primarykey#",array('#primarykey#'=>$#primarykey#));
 		
 	
-	show#primaryfield#profile($#primarykey#);
+	show#primaryfield##mediatype#($#primarykey#);
 		
 }

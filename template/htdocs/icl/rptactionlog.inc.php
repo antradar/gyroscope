@@ -12,7 +12,7 @@ function rptactionlog(){
 
 	global $paytypes;
 	global $paymethods;
-
+	
 	//override date stamp
 	$ds=explode('-',GETSTR('date'));
 	if (count($ds)==3){
@@ -21,7 +21,20 @@ function rptactionlog(){
 		$year=$ds[0];
 		$now=mktime(10,10,10,$mon,$day,$year);	
 	}
-
+?>
+<div class="section">
+<?
+	//// Report Header
+	
+	$query="select * from ".TABLENAME_REPORTS." where reportkey='actionlog'";
+	$rs=sql_query($query,$db);
+	$myrow=sql_fetch_assoc($rs);
+?>
+<div class="sectiontitle" style="margin-bottom:0;"><?echo $myrow['reportname'];?></div>
+<div class="infobox"><?echo $myrow['reportdesc'];?></div>
+<?	
+	////
+	
 	$key=GETSTR('key');
 	$opairs=GETSTR('pairs');
 	$pairs=explode(';',$opairs);
@@ -64,20 +77,20 @@ function rptactionlog(){
 	$rs=sql_query($query,$db);
 
 ?>
-<div class="section">
-<form onsubmit="reloadtab('actionlog',null,'rptactionlog&key='+encodeHTML(gid('actionlog_key').value)+'&pairs='+encodeHTML(gid('actionlog_pairs').value),null,null,{persist:true});return false;">
+
+<form onsubmit="reloadtab('rptactionlog',null,'rptactionlog&key='+encodeHTML(gid('actionlog_key').value)+'&pairs='+encodeHTML(gid('actionlog_pairs').value),null,null,{persist:true});return false;">
 Search: <input id="actionlog_key" placeholder="Keyword in Action" value="<?echo stripslashes($key);?>"> 
 	<input id="actionlog_pairs" placeholder="Advanced Pattern" value="<?echo stripslashes($opairs);?>"> <input type="submit" value="Go">
 </form>
 
 <div style="padding:20px 30px;font-size:16px;<?if ($key!=''||$opairs!='') echo 'display:none;';?>">
-<?if ($prevday){?>
-<a onclick="reloadtab('actionlog',null,'rptactionlog&date=<?echo $prevday;?>',null,null,{persist:true});"><img class="img-calel" width="5" height="12" src="imgs/t.gif"></a> 
+<?if (isset($prevday)){?>
+<a onclick="reloadtab('rptactionlog',null,'rptactionlog&date=<?echo $prevday;?>',null,null,{persist:true});"><img class="img-calel" width="5" height="12" src="imgs/t.gif"></a> 
 <?}?>
 &nbsp; &nbsp; <span style="font-size:18px;"><?echo date('M j, Y',$now);?></span>
 &nbsp; &nbsp;
-<?if ($nextday){?>
-<a onclick="reloadtab('actionlog',null,'rptactionlog&date=<?echo $nextday;?>',null,null,{persist:true});"><img class="img-caler" width="5" height="12" src="imgs/t.gif"></a>
+<?if (isset($nextday)){?>
+<a onclick="reloadtab('rptactionlog',null,'rptactionlog&date=<?echo $nextday;?>',null,null,{persist:true});"><img class="img-caler" width="5" height="12" src="imgs/t.gif"></a>
 <?}?>
 </div>
 
@@ -99,6 +112,7 @@ Search: <input id="actionlog_key" placeholder="Keyword in Action" value="<?echo 
 		foreach ($obj as $k=>$v) $extra.="; $k=$v";
 		$extra=trim($extra,'; ');
 ?>
+<tr>
 <td valign="top"><?echo $dlogdate;?></td>
 <td valign="top"><?echo $username;?></td><td><?echo $logmessage;?></td>
 <td valign="top"><?echo $extra;?></td>

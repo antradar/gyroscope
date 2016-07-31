@@ -1,4 +1,34 @@
 
 
-#iterator-dimlist-navinc#
-	#record#_shownav('#multifield#','#multifield#','#multifield#s'); //multi
+<div id="#entity#list">
+<?		
+	}
+	$bfilters=#entity#_makefilters();
+	$basefilters=$bfilters['filters'];
+
+	$visible=$basefilters['visible'];
+	?>
+	<div style="padding:5px 0;">
+	<a onclick="nav#entity#_setfilter('#container#','#cmd#',gid('searchfilter_#entity#').value+'&visible=<?echo $visible?'0':'1';?>');return false;">Filters+</a>
+	</div>
+	<div id="#entity#filters" style="display:none<?if ($visible) echo 'a';?>;">
+	<?
+	#entity#_shownavs('#container#','#cmd#');
+	?>
+	</div><!-- #entity#filters -->
+	<?
+		
+	$sqlfilter=#entity#_sqlfilters();
+
+	//remove previous keyword filtering
+
+	//replace pagination:
+<a href=# onclick="nav#entity#_setfilter('#container#','#cmd#','&page=<?echo $page-1;?>'+gid('searchfilter_#entity#').value);return false;">&laquo; Prev</a>
+&nbsp;
+<?echo $page+1;?> of <?echo $maxpage+1;?>
+&nbsp;
+<a href=# onclick="nav#entity#_setfilter('#container#','#cmd#','&page=<?echo $page+1;?>'+gid('searchfilter_#entity#').value);return false;">Next &raquo;</a>
+
+	//replace _inline_lookup#entity# in #entity#s.js:
+	
+		nav#entity#_setfilter('#entity#list','#cmd#',gid('searchfilter_#entity#').value);	

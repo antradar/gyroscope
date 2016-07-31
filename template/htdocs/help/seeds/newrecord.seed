@@ -6,8 +6,13 @@ function new#record#(){
 <div class="section">
 	<div class="sectiontitle"><?tr('list_#record#_add_tab');?></div>
 	
+<div class="col">
 	
 #iterator-fieldlist-newrecord#		
+
+</div>
+<div class="clear"></div>
+
 		<div class="inputrow">
 			<button onclick="add#record#();"><?tr('button_#record#_add');?></button>
 		</div>

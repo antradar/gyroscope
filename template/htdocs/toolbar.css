@@ -2,6 +2,9 @@
 use toolbar.psp to generate toolbar.gif
 */
 
+.hovlink, .hovlink:visited, .hovlink:hover, .hovlink:link{color:#29ABE2;}
+.hovlink:hover{text-decoration:underline;}
+
 .admin-logout{background:transparent url(imgs/toolbar.gif) no-repeat 0 0;}	
 .admin-settings{background:transparent url(imgs/toolbar.gif) no-repeat 0 -16px;}	
 .admin-user{background:transparent url(imgs/toolbar.gif) no-repeat -16px -16px;}
@@ -16,12 +19,29 @@ use toolbar.psp to generate toolbar.gif
 .img-xls{border:none;background:transparent url(imgs/toolbar.gif) no-repeat -64px -52px;width:12px;height:12px;vertical-align:middle;}
 .img-pdf{border:none;background:transparent url(imgs/toolbar.gif) no-repeat -76px -52px;width:12px;height:12px;vertical-align:middle;}
 
+.img-up{border:none;background:transparent url(imgs/toolbar.gif) no-repeat 0 -32px;width:12px;height:12px;vertical-align:middle;}
+.img-down{border:none;background:transparent url(imgs/toolbar.gif) no-repeat -12px -32px;width:12px;height:12px;vertical-align:middle;}
+
 .daylightsaving{border:none;background:transparent url(imgs/toolbar.gif) no-repeat -32px -20px;width:12px;height:12px;vertical-align:top;}
 
 .img-closeall{background:transparent url(imgs/toolbar.gif) no-repeat -21px -1px;vertical-align:middle;margin-right:4px;}
+
+.img-settings{background:transparent url(imgs/toolbar.gif) no-repeat -384px 0;}
+.img-settings-light{background:transparent url(imgs/toolbar.gif) no-repeat -384px -32px;}
 
 .img-reports{background:transparent url(imgs/toolbar.gif) no-repeat -224px 0;}
 .img-reports-light{background:transparent url(imgs/toolbar.gif) no-repeat -224px -32px;}
 
 .img-speechrecog{background:transparent url(imgs/toolbar.gif) no-repeat -128px 0;}
+
+.img-clock{width:12px;height:12px;background:transparent url(imgs/toolbar.gif) no-repeat 0 -52px;}
+.img-tracker{background:transparent url(imgs/toolbar.gif) no-repeat -288px 0;}
+.img-tracker-light{background:transparent url(imgs/toolbar.gif) no-repeat -288px -32px;}
+
+/* Editor preview styles (also change in tiny_mce/editor.css) */
+
+.pickerstyle_headline{font-size:22px;color:#000044;}
+
+.pickerstyle_narrowquote{padding:20px;color:#000044;}
+.pickerstyle_narrowquote span{display:block;border-top:dashed 1px #31518E;border-bottom:dashed 1px #31518E;padding:10px 0;font-style:italic;}
 

@@ -1,17 +1,18 @@
 <?php
 
-function #record#_countfield($fieldname,$limit=null){
+function #entity#_countfield($fieldname,$limit=null){
 	global $db;
 	
-	$filters=#record#_makefilters();
+	$filters=#entity#_makefilters();
 		
-	$query="select count(#tablename#.#primarykey#) as c, $fieldname from #tablename# ";
-	if ($fieldname=='#multifield#') $query.=" , #multitable# "; //multi
+	$query="select count(#mastertable#.#primarykey#) as c, $fieldname from #mastertable# ";
+#iterator-multifields-multitable#			
 		
-	$query.=" where #tablename#.#primarykey#!=0 ";
-	if ($fieldname=='#multifield#') $query.=" and #multitable#.#primarykey#=#tablename#.#primarykey# "; //multi
+	$query.=" where #mastertable#.#primarykey#!=0 ";
+	
+#iterator-multifields-multibridge#
 
-	$query.=#record#_sqlfilters();
+	$query.=#entity#_sqlfilters();
 	$query.=" group by $fieldname ";
 	
 	if ($limit!=null) $query.=" order by c desc limit $limit ";
@@ -31,111 +32,151 @@ function #record#_countfield($fieldname,$limit=null){
 	
 }
 
-function #record#_sqlfilters(){
+function #entity#_sqlfilters(){
 	$filters='';
 	$key=GETSTR('key');
-	if ($key!='') $filters.=" and (#searchquery#) ";
-	
-	if (is_array($_GET['#multifield#s'])) {
-		foreach ($_GET['#multifield#s'] as $#multifield#=>$flag) 
-			$filters.=' and exists (select * from #multitable# where #multitable#.#primarykey#=#tablename#.#primarykey# and #multifield#='.$#multifield#.')';
-	}
-	
-	
-#iterator-dimlist-dimlist#		
-	
-	return $filters;
-}
-
-function #record#_makefilters(){
-	$filters=array();
-	
-	if (is_array($_GET['#multifield#s'])){
-		$filters['#multifield#s']=array();
-		foreach ($_GET['#multifield#s'] as $#multifield#=>$flag) $filters['#multifield#s'][$#multifield#]=1;
-	 }
-	
-
-#iterator-dimlist-navget#		
+	if ($key!='') $filters.=" and (#dispfield# like '%$key%') ";
 		
+#iterator-dimlist-gdimlist#
+#iterator-multifields-multisqlfilter#				
+#iterator-rangelist-rangesqlfilter#							
+	
 	return $filters;
 }
 
-function #record#_strfilters($filters){
+function #entity#_makefilters(){
+	$filters=array();
+	$nfilters=array();
+	
+	$key=GETSTR('key');
+	if ($key!='') $filters['searchterm']=$key;
+	if (isset($_GET['visible'])) $filters['visible']=$_GET['visible'];
+
+		
+#iterator-dimlist-gdimfilter#	
+#iterator-multifields-multifilter#	
+#iterator-rangelist-rangefilter#	
+			
+		
+	return array('filters'=>$filters,'nfilters'=>$nfilters);
+}
+
+function #entity#_strfilters($filters,$nfilters=null){
 	
 	$filter='';
 	foreach ($filters as $key=>$val){
 		if (is_array($val)) foreach ($val as $k=>$v) $filter.='&'.$key.'['.urlencode($k).']=1';
-		else $filter.="&$key=".urlencode($val);
+		else $filter.="&$key=$val";
 
 	}
 	
+	if (is_array($nfilters)){
+		foreach ($nfilters as $key=>$vals) {
+			foreach ($vals as $val) $filter.="&neg__${key}[]=$val";	
+		}
+	}
 		
 	return $filter;
 }
 
-function #record#_shownav($title,$fieldname,$multi=null){
+function #entity#_shownav($container, $cmd, $title,$fieldname,$multi=null){
 	
-	$basefilters=#record#_makefilters();
+	$bfilters=#entity#_makefilters();
+	$basefilters=$bfilters['filters'];
+	$nbasefilters=$bfilters['nfilters'];
 
 	
 	if (isset($basefilters[$fieldname])&&!$multi){
 		$myfilters=$basefilters;
 		unset($myfilters[$fieldname]);
-		$filter=#record#_strfilters($myfilters);
+		$filter=#entity#_strfilters($myfilters,$nbasefilters);
 ?>
-<h3><?echo $title;?></h3>
-<a href=# onclick="ajxpgn('#record#list',document.appsettings.codepage+'?cmd=slv#viewindex#&mode=embed&key='+encodeHTML(gid('#record#key').value)+'<?echo $filter;?>');return false;">[x]</a> <?echo #record#_dispname($fieldname,$basefilters[$fieldname]);?>
+<div class="navgroup">
+	<div class="navtitle"><?echo $title;?></div>
+<?
+	#entity#_shownegfilters($fieldname,$container,$cmd);
+?>
+	<div class="navfilter">
+		<a href=# onclick="nav#entity#_setfilter('<?echo $container;?>','<?echo $cmd;?>','<?echo $filter;?>');return false;">[x]</a> <?echo #entity#_dispname($fieldname,$basefilters[$fieldname]);?>
+	</div>
+</div><!-- navgroup -->
 <?		
 		return;
 	}
 
 // end inline breadcrumb
 
-	$counts=#record#_countfield($fieldname);
-	if (count($counts)<=0) return;
+	$counts=#entity#_countfield($fieldname);
+	if (count($counts)<=0) {
+		if (count($nbasefilters[$fieldname])>0){
+		?>
+		<div class="navgroup">
+		<div class="navtitle"><?echo $title;?></div>
+		<?	
+			#entity#_shownegfilters($fieldname,$container,$cmd);
+		?>
+		</div><!-- navgroup -->
+		<?
+		}
+		return;
+	}
 ?>
-<h3><?echo $title;?></h3>
+<div class="navgroup">
+<div class="navtitle"><?echo $title;?></div>
 <?	
-	$basefilters=#record#_makefilters();
-	//echo '~';print_r($basefilters);echo '~';
+	$bfilters=#entity#_makefilters();
+	$basefilters=$bfilters['filters'];
+	$nbasefilters=$bfilters['nfilters'];
+	
+	#entity#_shownegfilters($fieldname,$container,$cmd);
 	
 	foreach ($counts as $key=>$count){
-		$dispname=#record#_dispname($fieldname,$key);
+		$dispname=#entity#_dispname($fieldname,$key);
 		$myfilters=$basefilters;
 		if ($multi){
 			if (!is_array($myfilters[$multi])) $myfilters[$multi]=array();
 			$myfilters[$multi][$key]=1;
 			if ($basefilters[$multi][$key]) unset($myfilters[$multi][$key]);
 		} else $myfilters[$fieldname]=$key;
-		$filters=#record#_strfilters($myfilters);
+		$filters=#entity#_strfilters($myfilters,$nbasefilters);
 		//echo '<pre>';print_r($filters);echo '</pre>';
 		/*
 		todo: use your container ids for navigation, breadcrumb and record list
 		*/
 		
 		?>
-<div>
+<div class="navfilter">
 		<?
 		if ($multi){
 	?>		
-		<input <?if ($basefilters[$multi][$key]) echo 'checked';?> type="checkbox" href=# onclick="setfilter('nav','bc','list','ajaxnav.php','<?echo $filters;?>');return false;"> 
+		<input <?if ($basefilters[$multi][$key]) echo 'checked';?> type="checkbox" href=# onclick="nav#entity#_setfilter('<?echo $container;?>','<?echo $cmd;?>','<?echo $filters;?>');return false;"> 
 	<?		
 		}
 
 ?>
-	<a href=# onclick="ajxpgn('#record#list',document.appsettings.codepage+'?cmd=slv#viewindex#&mode=embed&key='+encodeHTML(gid('#record#key').value)+'<?echo $filters;?>');return false;"><?echo $dispname;?></a> 
+	<a href=# onclick="nav#entity#_setfilter('<?echo $container;?>','<?echo $cmd;?>','<?echo $filters;?>');return false;"><?echo $dispname;?></a> 
 	<?
 	if (!$multi||!$basefilters[$multi][$key]||true){ //remove true to hide refinement count for selected multi fields
 	?>
 	<em>(<?echo $count;?>)</em>
 	<?}?>
+	
+	<?if (!$basefilters[$multi][$key]){?>
+	<a class="filterneg" onclick="nav#entity#_setfilter('<?echo $container;?>','<?echo $cmd;?>','<?echo $filters;?>&neg__<?echo $fieldname;?>[]=<?echo $key;?>');return false;">
+	<acronym title="exclude from results">[-]</acronym>
+	</a>
+	<?}?>
+		
 </div>
 <?
 	}
+?>
+</div><!-- navgroup -->
+<?		
 }
 
-function #record#_dispname($fieldname,$key){
+
+function #entity#_dispname($fieldname,$key){
 	global $db;
 	
 	switch ($fieldname){
@@ -146,5 +187,96 @@ function #record#_dispname($fieldname,$key){
 	}	
 }
 
+function #entity#_shownegfilters($fieldname,$container,$cmd){
+	$bfilters=#entity#_makefilters();
+	$filters=$bfilters['filters'];
+	$nfilters=$bfilters['nfilters'];
+			
+	if (!is_array($nfilters)||!is_array($nfilters[$fieldname])||count($nfilters[$fieldname])==0) return;
+?>
+<div class="neglabel">Excluding:</div>
+<div class="neggroup">
+		<?foreach ($nfilters[$fieldname] as $item){
+			$mynfilters=$nfilters;
+			$key=array_search($item,$mynfilters[$fieldname]);
+			if ($key!==false){
+				unset($mynfilters[$fieldname][$key]);	
+			}
+			$strfilters=#entity#_strfilters($filters,$mynfilters);
+		?>
+		<div class="negfilter"><a class="filterclear" onclick="nav#entity#_setfilter('<?echo $container;?>','<?echo $cmd;?>','<?echo $strfilters;?>');return false;">[x]</a> <?echo #entity#_dispname($fieldname,$item);?></div>
+		<?}?>
+</div>
+<?	
+}
+
+function #entity#_showrange($container,$cmd, $title,$fieldname){
+	global $db;
+	
+	$bfilters=#entity#_makefilters();
+	$basefilters=$bfilters['filters'];
+	$nbasefilters=$bfilters['nfilters'];
+	$filters=$basefilters;
+		
+
+// start inline breadcrumb		
+	if (is_numeric($filters[$fieldname.'_a'])||is_numeric($filters[$fieldname.'_b'])){
+		$myfilters=$filters;
+		unset($myfilters[$fieldname.'_a']);
+		unset($myfilters[$fieldname.'_b']);
+		$filter=#entity#_strfilters($myfilters,$nbasefilters);		
+?>
+<div class="navgroup">
+	<div class="navtitle"><?echo $title;?></div>
+	<div class="navfilter">
+<a class="filterclear" onclick="nav#entity#_setfilter('<?echo $container;?>','<?echo $cmd;?>','<?echo $filter;?>');return false;">[x]</a>
+<?echo $filters[$fieldname.'_a'].' - '.$filters[$fieldname.'_b'];?>
+	</div>
+</div> 
+<?	
+		return;	
+	}
+// end inline breadcrumb
+		
+	$query="select min($fieldname) as a, max($fieldname) as b from #mastertable# where #mastertable#.#primarykey#!=0 ".#entity#_sqlfilters();
+	$rs=sql_query($query,$db);
+	$myrow=sql_fetch_array($rs);
+	
+	$min=$myrow['a'];
+	$max=$myrow['b'];
+
+	if ($min==$max) return;
+
+	$filter=#entity#_strfilters($filters,$nbasefilters);		
+			
+?>
+<div class="navgroup">
+	<div class="navtitle"><?echo $title;?></div>
+		<input id="<?echo $fieldname?>_a" name="<?echo $fieldname;?>_a" value="<?echo $min;?>" style="width:60px;"> - 
+		<input id="<?echo $fieldname?>_b" name="<?echo $fieldname;?>_b" value="<?echo $max;?>" style="width:60px;">
+		<button onclick="nav#entity#_setfilter('<?echo $container;?>','<?echo $cmd;?>','<?echo $filter;?>&<?echo $fieldname;?>_a='+gid('<?echo $fieldname;?>_a').value+'&<?echo $fieldname;?>_b='+gid('<?echo $fieldname;?>_b').value);return false;">Set</button>
+</div>
+<?	
+		
+}
+
+	
+function #entity#_shownavs($container, $cmd){
+	$bfilters=#entity#_makefilters();
+	$basefilter=$bfilters['filters'];
+	$nbasefilter=$bfilters['nfilters'];
+	$filters=#entity#_strfilters($basefilter,$nbasefilter);
+
+?>
+	<div style="padding:10px;display:nonea;">
+		<input id="searchfilter_#entity#" type="hiddena" value="<?echo $filters;?>" style="border:dashed 1px #dedede;width:100%;">
+	</div>
+<?	
+			
+#iterator-dimlist-gsshowdim#	
+#iterator-multifields-gsshowmulti#
+#iterator-rangelist-gsrangeshownav#
+	
+}
 
 

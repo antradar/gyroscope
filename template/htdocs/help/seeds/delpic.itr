@@ -1,0 +1,3 @@
+		
+		$fn='#uploaddir#'.$#lookupkey#.'.#fld0##fileext#';
+		if (file_exists($fn)) unlink($fn);

@@ -16,7 +16,8 @@ function lookup#record#(){
 	$query="select * from #lookuptable# ";
 	if ($key!='') $query.=" where (#searchquery#) ";
 	
-	$query.=" order by #sortquery# limit $clip";	
+	$query.=" order by #sortquery# ";
+	$query.=" limit $clip";	//comment out if no clipping wanted
 	
 	$rs=sql_query($query,$db);
 	

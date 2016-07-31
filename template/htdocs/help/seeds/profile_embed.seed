@@ -3,12 +3,14 @@ set_time_limit(0);
 
 include 'libresize.php'; //available with commercial license
 
-function embed#primaryfield#profileuploader(){
+function embed#primaryfield##mediatype#uploader(){
 	
 	$#primarykey#=GETVAL('#primarykey#');
 
 	$dmaxsize=20;
 	$maxsize=1024*1024*$dmaxsize; //20 MB
+	
+	global $tinypngapi; //comment this out to disable TinyPNG resampling
 	
 	global $db;
 	global $codepage;
@@ -48,13 +50,30 @@ function embed#primaryfield#profileuploader(){
 					$msg='Image too large. Upload a smaller one.';
 					imagedestroy($img);
 				} else {
-					$thumb=image_cropfit($img,#thumbwidth#,#thumbheight#);
-					imagepng($thumb,$dst);
-					chmod($dst,0777);
-					imagedestroy($thumb);
-					imagedestroy($img);
+				
+					if ($w==#thumbwidth#&&$h==#thumbheight#){//direct file upload
+						$f=fopen($dst,'wb');
+						fwrite($f,$c);
+						fclose($f);
+						chmod($dst,0777);
+					} else{
+						if ($tinypngapi!=''){
+							$crops=tinypng_crop($c,array('main'=>array('width'=>#thumbwidth#,'height'=>#thumbheight#)),$tinypngapi);
+							
+							$f=fopen($dst,'wb'); fwrite($f,$crops['main']); fclose($f);
+							
+						} else {				
+							//$img=image_setorientation($img,'landscape');
+							$thumb=image_cropfit($img,#thumbwidth#,#thumbheight#);
+							imagepng($thumb,$dst);
+							chmod($dst,0777);
+							imagedestroy($thumb);
+						}
+						
+						imagedestroy($img);
+					}
 			
-					$query="update #tablename# set #picflag#=1 where #primarykey#=$#primarykey#";
+					$query="update #tablename# set #picflag#=1,ampw=$w,amph=$h where #primarykey#=$#primarykey#";
 					sql_query($query,$db);
 			
 						
@@ -67,7 +86,7 @@ function embed#primaryfield#profileuploader(){
 		
 		if (!$_GET['diag']){
 ?>
-<script>parent.show#primaryfield#profile(<?echo $#primarykey#;?>,"<?echo $msg;?>");</script>
+<script>parent.show#primaryfield##mediatype#(<?echo $#primarykey#;?>,"<?echo $msg;?>");</script>
 <?			
 		}
 		
@@ -83,6 +102,10 @@ function embed#primaryfield#profileuploader(){
 <body style="padding:0;margin:0;">
 
 <form id="uploader" style="padding:0;margin:0;" method="POST" enctype="multipart/form-data">
+<div id="dropzone" style="display:none;margin:20px 0;padding:10px;border:dashed 2px #dedede;text-align:center;font-size:20px;color:#dedede;">
+	<span id="dropzonetext">Drag and drop file here</span>
+	<span id="dropzoneprogress"></span>
+</div>
 <input type="hidden" name="#primarykey#" value="<?echo $#primarykey#;?>">
 <input type="hidden" name="MAX_FILE_SIZE" value="<?echo $maxsize;?>">
 <input type="file" name="file" id="file">
@@ -99,7 +122,7 @@ function cancelupload(){
 	btn.rq.abort();	
 }
 
-function upload(d){
+function upload(d,dfiles){
 	var file=gid('file');
 	var form=gid('uploader');
 	var rq=xmlHTTPRequestObject();
@@ -112,23 +135,27 @@ function upload(d){
 
 	var fd=new FormData();
 
+	var binfile=file.files[0];
+	if (dfiles) binfile=dfiles[0];
+	
 	var fsize=0;
-	if (file.files[0]&&file.files[0].size) fsize=file.files[0].size;
+	if (binfile&&binfile.size) fsize=binfile.size;
 	if (fsize><?echo $maxsize;?>){
 		alert('File too large. Upload a smaller file');
 		return;	
 	}
 
-	
-	fd.append('file',file.files[0]);
+	fd.append('file',binfile);
 	
 	fd.append('#primarykey#',<?echo $#primarykey#;?>);
-	rq.open('POST','<?echo $codepage;?>?cmd=embed#primaryfield#profileuploader&#primarykey#=<?echo $#primarykey#;?>&diag=1',true);
+	rq.open('POST','<?echo $codepage;?>?cmd=embed#primaryfield##mediatype#uploader&#primarykey#=<?echo $#primarykey#;?>&diag=1',true);
 
 	rq.upload.onprogress=function(e){
 		gid('cancel').style.display='block';
-		if (e.lengthComputable) gid('debug').innerHTML=Math.round(e.loaded*100/e.total)+'%';
-		else gid('debug').innerHTML='uploading...';
+		if (e.lengthComputable) {
+			gid('debug').innerHTML=Math.round(e.loaded*100/e.total)+'%';
+			gid('dropzoneprogress').innerHTML=gid('debug').innerHTML;
+		} else gid('debug').innerHTML='uploading...';
 	};
 	rq.onload=function(e){
 		gid('debug').innerHTML='uploaded';
@@ -137,18 +164,48 @@ function upload(d){
 			alert(e.target.responseText);
 			return;
 		}
-		parent.show#primaryfield#profile(<?echo $#primarykey#;?>,'');
+		parent.show#primaryfield##mediatype#(<?echo $#primarykey#;?>,'');
 	}
 
 	rq.onabort=function(e){
 		gid('cancel').style.display='none';
-		gid('debug').innerHTML='canceled';	
+		gid('debug').innerHTML='canceled';
+		gid('dropzonetext').innerHTML='Upload canceled';
+		gid('dropzoneprogress').innerHTML='';	
 	}
 	
 	d.rq=rq;
 	
 	rq.send(fd);	
 }
+
+if (self.FormData&&'draggable' in document.createElement('span')){
+		gid('dropzone').style.display='block';
+		gid('dropzone').ondragover=function(){this.style.borderColor='#848cf7';this.style.color='#848cf7';return false;}
+		gid('dropzone').ondragleave=function(){this.style.borderColor='#dedede';this.style.color='#dedede';return false;}
+		gid('dropzone').ondragend=function(){this.style.borderColor='#dedede';this.style.color='#dedede';return false;}
+		gid('dropzone').ondrop=function(e){
+			var files=e.dataTransfer.files;
+			if (!files||files.length==0){
+				gid('dropzonetext').innerHTML='invalid file';
+				gid('dropzoneprogress').innerHTML='';
+				return false;
+			}			
+			if (files.length>1){
+				gid('dropzonetext').innerHTML='multiple upload not supported';
+				gid('dropzoneprogress').innerHTML='';
+				return false;	
+			}
+			var fns=[];
+			for (var i=0;i<files.length;i++) fns.push(files[i].name);
+			gid('dropzonetext').innerHTML=files[0].name;
+			gid('dropzoneprogress').innerHTML='';
+			
+			upload(gid('uploadbutton'),files);
+			return false;	
+		}
+}
+
 </script>
 
 </body>

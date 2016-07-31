@@ -1,6 +1,10 @@
+$#lookupkey#=QETVAL('#lookupkey#');
+if ($#lookupkey#==-1) $#lookupkey#='null';
+//...
+
 
 $query="update ... ";
 
-if ($#lookupkey#) $query.=" ,#lookupkey#=$#lookupkey# ";
+if ($#lookupkey#!=0||$#lookupkey#=='null') $query.=" ,#lookupkey#=$#lookupkey# ";
 
 $query.=" ...";

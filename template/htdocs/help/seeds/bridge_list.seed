@@ -48,14 +48,14 @@ function list#primaryfield##records#($#primarykey#=null){
 	 <tr>
 	 	<td valign="center">
 			 <input class="inpshort" id="#primaryfield##records#_#lookupkey#_<?echo $#primarykey#;?>"  
-				onfocus="lookup#record#(this);" onkeyup="_lookup#record#(this);">
+				onfocus="lookupentity(this,'#record#','#c_records#');" onkeyup="_lookupentity(this,'#record#','#c_records#');">
 				
 			<span id="#primaryfield##records#_#lookupkey#_<?echo $#primarykey#;?>_val2"></span>
 			<?makelookup('#primaryfield##records#_#lookupkey#_'.$#primarykey#);?>
 	 	</td>
 #iterator-fieldlist-tableinsert#	 	
 	 	<td valign="center">
-	 		<button onclick="add#primaryfield##record#(<?echo $#primarykey#;?>);">Add #c_record#</button>
+	 		<button onclick="ajxjs(self.add#primaryfield#,'#records#.js');add#primaryfield##record#(<?echo $#primarykey#;?>);">Add #c_record#</button>
 	 	</td>
 	 </tr>
 	 

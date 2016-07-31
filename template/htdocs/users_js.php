@@ -12,7 +12,7 @@ showuser=function(userid,name){
 _inline_lookupuser=function(d){
 	if (d.timer) clearTimeout(d.timer);
 	d.timer=setTimeout(function(){
-		ajxpgn('userlist',document.appsettings.fastlane+'?cmd=slv1&mode=embed&key='+encodeHTML(d.value));
+		ajxpgn('userlist',document.appsettings.fastlane+'?cmd=slv_core__users&mode=embed&key='+encodeHTML(d.value));
 	},300
 	);	
 }
@@ -22,6 +22,7 @@ adduser=function(){
 
 	var suffix='new';
 	var ologin=gid('login_'+suffix);
+	var odispname=gid('dispname_'+suffix);
 
 	var active=0;
 	var virtual=0;
@@ -39,6 +40,7 @@ adduser=function(){
 	
 	//delete the excessive validate rules
 	if (!valstr(ologin)) valid=0;
+	if (!valstr(odispname)) valid=0;
 	
 	if (!virtual){
 		if (!valstr(opass)) valid=0;
@@ -57,13 +59,14 @@ adduser=function(){
 	var newpass=opass.value;
 
 	var login=encodeHTML(ologin.value);
+	var dispname=encodeHTML(odispname.value);
 	
 	var groupnames=['users'];
 	if (!virtual){
 	<?
 	foreach ($userroles as $role=>$label){
 	?>
-	if (!gid('userrole_<?echo $role;?>_'+suffix)) {alert('Settings outdates; please reload your screen to continue;');return;}
+	if (!gid('userrole_<?echo $role;?>_'+suffix)) {alert('Settings outdated; please reload your screen to continue;');return;}
 	if (gid('userrole_<?echo $role;?>_'+suffix).checked) groupnames.push('<?echo $role;?>');
 	<?	
 	}
@@ -74,16 +77,14 @@ adduser=function(){
 	
 	var params=[];
 	params.push('login='+login);
+	params.push('dispname='+dispname);
 	params.push('active='+active);
 	params.push('virtual='+virtual);
 	params.push('passreset='+passreset);
 	params.push('groupnames='+groupnames);	
 	
-	reloadtab('user_new',ologin.value,'adduser&'+params.join('&'),function(req){
-		var userid=req.getResponseHeader('newrecid');
-		if (!document.smartcard) gid('cardsettings_'+userid).style.display='none';		
-		reloadview(1,'userlist');
-	},newpass);
+	
+	reloadtab('user_new',ologin.value,'adduser&'+params.join('&'),null,newpass);
 	
 }
 
@@ -105,6 +106,7 @@ loadsmartcard=function(userid){
 updateuser=function(userid){
 	var suffix=userid;
 	var ologin=gid('login_'+suffix);
+	var odispname=gid('dispname_'+suffix);
 	
 	var active=0;
 	var virtual=0;
@@ -127,6 +129,7 @@ updateuser=function(userid){
 	
 	//delete the excessive validate rules
 	if (!valstr(ologin)) valid=0;
+	if (!valstr(odispname)) valid=0;
 
 	//add more validation rules
 	if (!virtual){
@@ -140,6 +143,7 @@ updateuser=function(userid){
 	if (!valid) return;
 	
 	var login=encodeHTML(ologin.value);
+	var dispname=encodeHTML(odispname.value);
 	
 	var groupnames=['users'];
 
@@ -152,7 +156,7 @@ updateuser=function(userid){
 	<?
 	foreach ($userroles as $role=>$label){
 	?>
-	if (!gid('userrole_<?echo $role;?>_'+suffix)) {alert('Settings outdates; please reload your screen to continue;');return;}
+	if (!gid('userrole_<?echo $role;?>_'+suffix)) {alert('Settings outdated; please reload your screen to continue;');return;}
 	if (gid('userrole_<?echo $role;?>_'+suffix).checked) groupnames.push('<?echo $role;?>');
 	<?	
 	}
@@ -164,16 +168,19 @@ updateuser=function(userid){
 	
 	var params=[];
 	params.push('login='+login);
+	params.push('dispname='+dispname);
 	params.push('active='+active);
 	params.push('virtual='+virtual);
 	params.push('needcert='+needcert);
 	params.push('passreset='+passreset);
 	params.push('groupnames='+groupnames);
 	
-	reloadtab('user_'+userid,ologin.value,'updateuser&userid='+userid+'&'+params.join('&'),function(){
+	reloadtab('user_'+userid,ologin.value,'updateuser&userid='+userid+'&'+params.join('&'),function(rq){
 		if (!document.smartcard) gid('cardsettings_'+userid).style.display='none';
-		reloadview(1,'userlist');
-		flashstatus('User '+login+' has been updated', 3000);
+		reloadview('core.users','userlist');
+		if (rq.getResponseHeader('newlogin')!=null&&rq.getResponseHeader('newlogin')!='') gid('labellogin').innerHTML=Base64.decode(rq.getResponseHeader('newlogin'));
+		if (rq.getResponseHeader('newdispname')!=null&&rq.getResponseHeader('newdispname')!='') gid('labeldispname').innerHTML=Base64.decode(rq.getResponseHeader('newdispname'));
+		flashstatus('User '+ologin.value+' has been updated', 3000);
 	},"pass="+newpass+"&needcert="+needcert+"&certname="+certname+"&cert="+cert,{fastlane:1});
 	
 }
@@ -184,6 +191,6 @@ deluser=function(userid){
 	
 	reloadtab('user_'+userid,null,'deluser&userid='+userid,function(){
 		closetab('user_'+userid);
-		reloadview(1,'userlist');
+		reloadview('core.users','userlist');
 	},null,{fastlane:1});
 }

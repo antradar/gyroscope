@@ -24,7 +24,7 @@
 	
 	
 	{"field":"dispfield","disp":"Target Display Field Name","def":"productname"},
-	{"field":"fieldlist","disp":"Additional Fields","def":"qty|Quantity\ncolor|Color","type":"fieldlist"}
+	{"field":"fieldlist","disp":"Additional Fields","def":"qty|Quantity\ncolor|Color","type":"fieldlist", "optional":1}
 		
 ],
 

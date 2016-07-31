@@ -1,0 +1,26 @@
+{
+"fields":[
+	{"field":"prefix","disp":"Module Prefix (optional single letter)","def":"g","optional":1},
+	{"field":"script","disp":"Page Name","def":"products.php"},
+	
+	{"field":"mastertable","disp":"Base Record Table","def":"products"},
+	{"field":"primarykey","disp":"Primary Key","def":"productid"},
+	
+	{"field":"sortfields","disp":"Sort Fields","def":"price|Price\nproductname|Name\nrating desc|Rating","type":"fieldlist"},
+	{"field":"defsort","disp":"Default Sort","def":"productname"},
+	{"field":"dispfield","disp":"Display Field","def":"productname"},
+	
+	
+	{"field":"dimlist","disp":"Dimensions","def":"brand|Brand\ncolor|Color", "type":"fieldlist"},	
+	{"field":"multifields","disp":"Multi-Select Fields (optional)","def":"productfeatures|feature|Feature\nproductmarkets|market|Market","type":"fieldlist","optional":1},
+	{"field":"rangelist","disp":"Range Filters","def":"price|Price\nrating|Rating", "type":"fieldlist","optional":1}	
+		
+],
+
+"templates":[
+	{"template":"gnav_main","filename":"#script#"},
+	{"template":"gnav_lib","filename":"#prefix#nav.lib.php"},
+	{"template":"gnav_ajaxnav","filename":"ajax#prefix#nav.php"},
+	{"template":"gnav_js","filename":"navfilters.js"}
+]
+}

@@ -24,6 +24,8 @@ codegen_makecode=function(seed){
 		myfields.push(fields[i].field+'='+encodeHTML(ofield.value));
 	}	
 	
+	if (gid('codegenfield_viewindex')) myfields.push('fviewindex='+encodeHTML(gid('codegenfield_viewindex').value.replace(/\./g,'__')));
+	
 	if (!valid) return;
 	
 	var fields=myfields.join('&');

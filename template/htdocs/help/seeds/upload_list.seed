@@ -23,7 +23,7 @@ function list#primaryfield##records#($#primarykey#=null){
 	}//while	
 	
 	?>
-	<iframe style="width:90%;border:none;height:120px;" frameborder="no" src="<?echo $codepage;?>?cmd=embed#primaryfield##record#uploader&#primarykey#=<?echo $#primarykey#;?>&hb=<?echo time();?>"></iframe>
+	<iframe style="width:90%;border:none;height:200px;" frameborder="no" src="<?echo $codepage;?>?cmd=embed#primaryfield##record#uploader&#primarykey#=<?echo $#primarykey#;?>&hb=<?echo time();?>"></iframe>
 	<?
 	
 }

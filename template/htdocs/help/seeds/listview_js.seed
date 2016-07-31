@@ -3,9 +3,12 @@ show#record#=function(#primarykey#,name){
 }
 
 _inline_lookup#record#=function(d){
+	var soundex='';
+	if (d.soundex) soundex='&soundex=1';
+	
 	if (d.timer) clearTimeout(d.timer);
 	d.timer=setTimeout(function(){
-		ajxpgn('#record#list',document.appsettings.codepage+'?cmd=slv#viewindex#&mode=embed&key='+encodeHTML(d.value));
+		ajxpgn('#record#list',document.appsettings.codepage+'?cmd=slv_#fviewindex#&mode=embed&key='+encodeHTML(d.value)+soundex);
 	},300
 	);	
 }
@@ -34,7 +37,7 @@ add#record#=function(){
 	
 	reloadtab('#record#_new',o#dispfield#.value,'add#record#',function(req){
 		var #primarykey#=req.getResponseHeader('newrecid');		
-		reloadview(#viewindex#,'#record#list');
+		reloadview('#viewindex#','#record#list');
 	},params.join('&'));
 	
 }
@@ -60,7 +63,7 @@ update#record#=function(#primarykey#){
 #iterator-fieldlist-parampush#
 	
 	reloadtab('#record#_'+#primarykey#,o#dispfield#.value,'update#record#&#primarykey#='+#primarykey#,function(){
-		reloadview(#viewindex#,'#record#list');
+		reloadview('#viewindex#','#record#list');
 		flashstatus(document.dict['statusflash_updated']+o#dispfield#.value,5000);
 	},params.join('&'));
 	
@@ -72,6 +75,6 @@ del#record#=function(#primarykey#){
 	
 	reloadtab('#record#_'+#primarykey#,null,'del#record#&#primarykey#='+#primarykey#,function(){
 		closetab('#record#_'+#primarykey#);
-		reloadview(#viewindex#,'#record#list');
+		reloadview('#viewindex#','#record#list');
 	});
 }

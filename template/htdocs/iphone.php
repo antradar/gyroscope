@@ -13,12 +13,16 @@ $user=userinfo();
 ?>
 <html>
 <head>
-	<title>Antradar Gyroscope&trade; Mobile</title>
+	<title><?echo GYROSCOPE_PROJECT;?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 	<link href='iphone/gyrodemo.css' type='text/css' rel='stylesheet'>
 	<link href='toolbar.css' type='text/css' rel='stylesheet'>
 	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+	
+	<?
+	include 'appicon.php';
+	?>
 <style>
 body{font-family:helvetica;}
 .menuitem{padding-left:10px;height:30px;float:left;margin-right:3px;}
@@ -41,7 +45,7 @@ body{font-family:helvetica;}
 		
 	<div class="menuitem"><a id="speechstart" href=# onclick="speech_startstop(1);return false;" style="display:none;"><img style="" class="img-speechrecog" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
 
-	<?foreach ($toolbaritems as $ti){
+	<?foreach ($toolbaritems as $modid=>$ti){
 		if ($ti['type']=='break') continue;
 		if ($ti['noiphone']) continue;	
 		if ($ti['type']=='custom'){
@@ -51,26 +55,40 @@ body{font-family:helvetica;}
 			continue;
 		}
 		
-		$action='';
-		if (is_numeric($ti['viewindex'])) $action='showview('.$ti['viewindex'].',null,1);';
-		if ($ti['action']!='') $action.=$ti['action'];
+		$action="showview('".$modid."',null,1);";
+		if ($ti['action']!='') $action=$ti['action'];
+		if (!isset($ti['icon'])||$ti['icon']=='') continue;
+		
+		if (isset($ti['groups'])){
+			$canview=0;
+			$gs=explode('|',$ti['groups']);
+			foreach ($gs as $g) if (isset($user['groups'][$g])) $canview=1;
+			if (!$canview) continue;	
+		}
+		
 	?>
 	<div class="menuitem"><a href=# onclick="<?echo $action;?>return false;"><img class="<?echo $ti['icon'];?>" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
 	<?}?>
 
 	</div></div>
-		
+	<span id="labellogin" style="display:none;"><?echo $user['login'];?></span><span id="labeldispname" style="display:none;"><?echo $user['dispname'];?></span>	
 	<a href="login.php?from=<?echo $_SERVER['PHP_SELF'];?>" style="position:absolute;top:10px;right:10px;"><img border="0" width="16" height="16" src="imgs/t.gif" class="admin-logout"></a>
 </div><!-- toolicons -->
 <div id="pusher" style="width:100%;height:50px;"></div>
 
-<div style="display:none;"><img src="imgs/t.gif"><img src="imgs/hourglass.gif"></div>
+<div style="display:none;">
+	<img src="imgs/t.gif"><img src="imgs/hourglass.gif">
+	<video loop id="nosleepvideo">
+		<source src="nosleep.webm" type="video/webm">
+		<source src="nosleep.mp4" type="video/mp4">
+	</video>	
+</div>
 <div id="leftview" style="float:left;margin-left:10px;width:210px;margin-right:10px;">
 	<div id="tooltitle" style="width:150px;position:fixed;top:50px;z-index:1000;height:25px;"></div>
 	<div id="tooltitleshadow" style="width:150px;height:25px;"></div>
 	<div id="lvviews">
-	<?for ($i=0;$i<=$viewcount;$i++){?>
-		<div id="lv<?echo $i;?>" style="background-color:#ffffff;display:none;"></div>
+	<?foreach ($toolbaritems as $modid=>$ti){?>
+		<div id="lv<?echo $modid;?>" style="background-color:#ffffff;display:none;"></div>
 	<?}?>	
 	</div>
 	<div id="lkv" style="height:100%;">
@@ -97,10 +115,15 @@ body{font-family:helvetica;}
 	<a id="fsclose" onclick="closefs();"><img width="10" height="10" class="img-closeall" src="imgs/t.gif"></a>
 </div>
 <div id="fsview"></div>
-
+<div style="display:none">
+<video loop id="nosleepvideo">
+	<source src="nosleep.webm" type="video/webm">
+	<source src="nosleep.mp4" type="video/mp4">
+</video>
+</div>
 
 <script>
-document.appsettings={codepage:'<?echo $codepage;?>',fastlane:'<?echo $fastlane;?>', viewcount:<?echo $viewcount;?>};
+document.appsettings={codepage:'<?echo $codepage;?>',fastlane:'<?echo $fastlane;?>', views:<?echo json_encode(array_keys($toolbaritems));?>};
 </script>
 <script src="lang/dict.<?echo $lang;?>.js"></script>
 <script src="nano.js"></script>
@@ -113,6 +136,8 @@ hdpromote('toolbar_hd.css');
 <script src="autocomplete.js"></script>
 
 <script>
+
+gid('nosleepvideo').play();
 
 function showdeck(){
 	switch(document.viewmode){
@@ -147,7 +172,7 @@ function rotate(){
 	$agent=$_SERVER['HTTP_USER_AGENT'];
 
 	if (preg_match('/playbook/i',$agent)||preg_match('/android/i',$agent)) $ori_invert=1;
-	if (preg_match('/mobile/i',$agent)) $ori_invert=0; //do not invert any phones
+	if (preg_match('/mobile/i',$agent)||preg_match('/opera mini/i',$agent)) $ori_invert=0; //do not invert any phones
 	
 	if ($ori_invert){
 		$ori_portrait_backward=-90;
@@ -191,6 +216,7 @@ function rotate(){
 		
 		if (document.lastori==null||document.lastori!=ori) ajxcss(self.cssloader,'iphone/portrait.css');
 		document.viewheight=vw+30;
+		scaleall(document.body);
 		document.iphone_portrait=1;
 		
 		hidelookup();
@@ -247,6 +273,8 @@ function onrotate(){
 	},100);
 }
 
+setInterval(authpump,60000); //check if needs to re-login; comment this out to disable authentication
+
 addtab('welcome','Welcome','wk',null,null,{noclose:true});
 
 if (typeof(window.onorientationchange)!='object') window.onresize=onrotate;
@@ -261,7 +289,10 @@ scaleall(document.body);
 <script>
 <?include 'ws_js.php';?>
 </script>
-
 <script src="speech.js"></script>
+<script src="tiny_mce/mceloader.js"></script>
+<script>
+if (window.Notification) Notification.requestPermission();
+</script>
 </body>
 </html>

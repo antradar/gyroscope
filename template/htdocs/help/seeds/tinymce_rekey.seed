@@ -1,0 +1,2 @@
+
+header('newloadfunc: init#editfield#editor('.$#primarykey#.');reloadview("codegen.#records#","#record#list");');

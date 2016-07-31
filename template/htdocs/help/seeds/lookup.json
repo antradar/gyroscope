@@ -1,27 +1,26 @@
 {
 "fields":[
-	{"field":"primaryfield","disp":"Invoker Entity Name","def":"order"},
-	{"field":"primaryrecords","disp":"Invoker Entity Name (Pl.)","def":"orders"},
+	{"field":"primaryfield","disp":"Invoker Entity Name","def":"product"},
+	{"field":"primaryrecords","disp":"Invoker Entity Name (Pl.)","def":"products"},
 
-	{"field":"primarykey","disp":"Invoker Primary Key","def":"orderid"},
+	{"field":"primarykey","disp":"Invoker Primary Key","def":"productid"},
 
-	{"field":"lookuptable","disp":"Lookup DB Table","def":"products"},
-	{"field":"lookupkey","disp":"Lookup Primary Key","def":"productid"},
+	{"field":"lookuptable","disp":"Lookup DB Table","def":"productcats"},
+	{"field":"lookupkey","disp":"Lookup Primary Key","def":"catid"},
 	
-	{"field":"searchquery","disp":"Search Filters","def":"productname like '%$key%'"},
-	{"field":"sortquery","disp":"Sort Filters","def":"productname"},
+	{"field":"searchquery","disp":"Search Filters","def":"productcats like '%$key%'"},
+	{"field":"sortquery","disp":"Sort Filters","def":"catsort"},
 	
-	{"field":"record","disp":"Lookup Entity Name","def":"product"},
-	{"field":"c_record","disp":"Lookup Entity Label","def":"Product"},
+	{"field":"record","disp":"Lookup Entity Name","def":"productcat"},
+	{"field":"c_record","disp":"Lookup Entity Label","def":"Category"},
 	
-	{"field":"dispfield","disp":"Display Field Name","def":"productname"}
+	{"field":"dispfield","disp":"Display Field Name","def":"catname"}
 		
 ],
 
 "templates":[
 	{"template":"lookup_hooks","filename":"create new input field:"},	
 	{"template":"lookup_containers","filename":"optional entity locking"},	
-	{"template":"lookup_js","filename":"add to autocomplete.js"},
 	{"template":"lookup_jsgetter","filename":"modify #primaryrecords#.js: add#primaryfield#=function(...){"},	
 	{"template":"lookup_update","filename":"modify #primaryrecords#.js: update#primaryfield#=function(...){"}, 	
 	{"template":"lookup_supdate","filename":"modify icl/update#primaryfield#.inc.php"},	

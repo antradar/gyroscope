@@ -1,5 +1,11 @@
+
+ <div class="formlabel">
+ 	<a class="hovlink" onclick="ajxjs(self.show#record#,'#record#s.js');
+ 		showrelrec('#primaryfield#_#lookupkey#_<?echo $#primarykey#;?>', show#record#,<?echo $#lookupkey#+0;?>);">#c_record#:</a>
+ </div>
+
  <input id="#primaryfield#_#lookupkey#_<?echo $#primarykey#;?>"  
 	value="<?echo htmlspecialchars($#dispfield#);?>"
 	<?if ($#lookupkey#) echo 'disabled';?>
-	onfocus="lookup#record#(this);" onkeyup="_lookup#record#(this);">
+	onfocus="lookupentity(this,'#record#','#c_record#');" onkeyup="_lookupentity(this,'#record#','#c_record#');">
  

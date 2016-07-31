@@ -1,0 +1,7 @@
+
+function nav#entity#_setfilter(container,cmd,filter){
+	ajxpgn(container,document.appsettings.codepage+'?cmd='+cmd+'&mode=embed&key='+encodeHTML(gid('#searchkey#').value)+filter);
+	
+#iterator-viewlist-navjs#
+	
+}

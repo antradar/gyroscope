@@ -1,10 +1,118 @@
+9.3
+- timezone forwarding in date picker
+- parallel MySQLi support
+- codegen variants
+
+9.2
+- db-driven reports
+
+9.1
+- built-in template system
+- enhanced tinymce bundled
+- user authentication fix
+
+9.0
+
+- added "showrelrec" link method
+- template icons for mobile home screen
+- misc. Opera Mini improvements
+- codegen: enhanced faceted nav
+- codegen: album uploader, tinypng intergration (with round-robin api)
+- improved sortlist (shift instead of swap)
+- timezone forwarding in time picker and datetime picker
+- calendar picker: view months
+
+8.9
+- init function in loadfs and showfs
+- added dispname field in user descriptors
+- wss notification in mobile view (multiple fixes and features)
+- apperror header is Base64 encoded
+- addtab intercepts apperror
+
+8.8
+- tts tag parser improvements
+- tts reading can be interrupted by clicking on the speech icon
+- voice lookup forwards the soundex flag
+- codegen: soundex filter in list view search
+
+8.7.1
+- codegen fix: sortlist (thanks Liam for pointing out the typos and improvements)
+
+8.7
+- Chrome Mobile: forced continuous speech recognition
+- Chrome: convenient speech synthesis function "say"
+- Chrome: voice prompt in speech interaction
+- new voice commands: go home, options, read (ttstags)
+
+8.6.1
+- auto trim in GETSTR and QETSTR
+- codegen template fixes
+
+8.6
+- title headers transported via base64 encoding for international character set support
+- Codegen: sortlist
+- enhanced wss auto recovery and re-authentication
+- no-sleep in mobile full screen view
+
+8.5
+- codegen compliant with Google AMP support (requires MediaLibrary upgrade)
+- Desktop notification for supported browsers
+
+8.4.1
+- hourglass (wait indicator) styling change for status bar
+
+8.4
+- encstr, decstr in forminput
+- password hash encrypted
+
+8.3
+- Codegen: Drag & drop file uploaders
+
+8.2
+- in-flight reauthentication, web socket-triggered reauthentication
+
+8.1
+- db structure comparison tool
+
+8.0
+- listview index name based instead of numeric sequence based
+- module installer supports named listview indexes
+
+7.9
+- module updater
+
+7.8
+- "closetabs" to match by tab key prefix
+- "closetabtree" to close tab and all its descendants
+- added generic lookup function "lookupentity"
+- reload function assignment via tab rekey header
+- tracker icons
+
+7.7
+- systematic code cleanup
+- "virtual" keyword remapped to "virtualuser" (MySQL 5.7)
+
+7.6
+- tzconvert helper function
+- apperror helper function
+
+7.5
+- added integrated UDF editor, enabled by default in lb.php
+
+7.4.1
+- improved 1-N File uploader
+- improved welcome icon layout
+
+7.4
+- improved image uploader code gen
+- lookup fields' onchange functions are triggered by lookup picker
+
 7.3
 - updated smart card reader (smartcard.js) in response to Chrome 4.8's NPAPI deprecation
   : https://installer.id.ee/?lang=eng
   : https://chrome.google.com/webstore/detail/ckjefchnfjhjfedoccjbhjpbncimppeg
 
 - supports null toolbar items and more concise toolbar access control syntax
-- lookup fields' onchange functions are triggered by lookup picker
 
 
 7.2

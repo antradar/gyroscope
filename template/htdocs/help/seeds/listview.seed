@@ -5,7 +5,7 @@ function list#records#(){
 	$mode=GETSTR('mode');
 	$key=GETSTR('key');
 	
-	$page=$_GET['page']+0;
+	$page=isset($_GET['page'])?$_GET['page']+0:0;
 	
 	if ($mode!='embed'){
 
@@ -29,7 +29,12 @@ function list#records#(){
 	}
 
 	$query="select * from #tablename# ";
-	if ($key!='') $query.=" where (#searchquery#) ";
+	
+	$soundex=GETSTR('soundex')+0;
+	$sxsearch='';
+	if ($soundex&&$key!='') $sxsearch=" or concat(soundex(#dispfield#),'') like concat(soundex('$key'),'%') ";
+	
+	if ($key!='') $query.=" where (#searchquery# $sxsearch) ";
 	$rs=sql_query($query,$db);
 	$count=sql_affected_rows($db,$rs);
 	
@@ -45,9 +50,9 @@ function list#records#(){
 <div style="font-size:12px;padding:10px 0;">
 <?echo $page+1;?> of <?echo $maxpage+1;?>
 &nbsp;
-<a href=# onclick="ajxpgn('#record#list',document.appsettings.codepage+'?cmd=slv#viewindex#&key='+encodeHTML(gid('#record#key').value)+'&page=<?echo $page-1;?>&mode=embed');return false;">&laquo; Prev</a>
+<a href=# onclick="ajxpgn('#record#list',document.appsettings.codepage+'?cmd=slv_#fviewindex#&key='+encodeHTML(gid('#record#key').value)+'&page=<?echo $page-1;?>&mode=embed');return false;">&laquo; Prev</a>
 |
-<a href=# onclick="ajxpgn('#record#list',document.appsettings.codepage+'?cmd=slv#viewindex#&key='+encodeHTML(gid('#record#key').value)+'&page=<?echo $page+1;?>&mode=embed');return false;">Next &raquo;</a>
+<a href=# onclick="ajxpgn('#record#list',document.appsettings.codepage+'?cmd=slv_#fviewindex#&key='+encodeHTML(gid('#record#key').value)+'&page=<?echo $page+1;?>&mode=embed');return false;">Next &raquo;</a>
 </div>
 <?		
 	}

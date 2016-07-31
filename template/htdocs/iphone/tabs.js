@@ -4,7 +4,7 @@ document.tabkeys=[];
 document.tabtitles=[];
 document.tabseq=[];
 
-currenttab=-1;
+document.currenttab=-1;
 gettabid=function(key){
 	var i;
 	for (i=0;i<tabcount;i++) if (document.tabkeys[i]==key) return i;
@@ -26,6 +26,32 @@ navback=function(){
 	
 }
 
+function closetabtree(root,sub){
+	if (!document.tabkeys) return;
+	
+	if (!sub) document.toclose=[];
+
+	for (var i=0; i<document.tabkeys.length; i++){
+		var tab=document.tabtitles[i];
+		var tabkey=document.tabkeys[i];
+		if (tab.parenttab==root) closetabtree(tabkey,1);
+	}
+	
+	document.toclose.push(root);
+	
+	if (!sub) {
+
+		var cf=function(tk){return function(){
+			closetab(tk);	
+		}}
+					
+		for (var i=0; i<document.toclose.length; i++){
+			var tabkey=document.toclose[i];
+			setTimeout(cf(tabkey),i*50);	
+		}
+	}
+}
+
 showtab=function(key,backnav){
   var i;
   //showpanel(2);
@@ -33,7 +59,7 @@ showtab=function(key,backnav){
   var tabid=gettabid(key);
   if (tabid==-1) return;
   if (self.onrotate) onrotate();
-  currenttab=tabid;
+  document.currenttab=tabid;
   //if (!backnav) 
   document.tabseq.push(key);
   document.viewmode=2;
@@ -94,7 +120,7 @@ function reloadtab(key,title,params,loadfunc,data,opts){
 	rq.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
 	
 	var ct=document.tabviews[tabid];
-	ct.slowtimer=setTimeout(function(){ct.innerHTML='<image class="hourglass" src="imgs/hourglass.gif" style="margin:5px;">';},800);
+	ct.slowtimer=setTimeout(function(){ct.innerHTML='<image class="hourglass" src="imgs/hourglass.gif">';},800);
   
 
   
@@ -114,7 +140,7 @@ function reloadtab(key,title,params,loadfunc,data,opts){
       
 	var apperror=rq.getResponseHeader('apperror');
 	if (apperror!=null&&apperror!=''){
-		alert('Error: '+apperror);
+		alert('Error: '+Base64.decode(apperror));
 		
 		return;	
 	}       
@@ -127,6 +153,10 @@ function reloadtab(key,title,params,loadfunc,data,opts){
 			alert('Incomplete key change');
 			return;	
 		}
+		
+		var newloadfunc=rq.getResponseHeader('newloadfunc');
+		if (newloadfunc!=null&&newloadfunc!='') loadfunc=function(){eval(newloadfunc)};
+		
 		document.tabtitles[tabid].reloadinfo={params:newparams,loadfunc:loadfunc,data:null,opts:null};
 
 		document.tabkeys[tabid]=newkey;
@@ -141,10 +171,15 @@ function reloadtab(key,title,params,loadfunc,data,opts){
 		key=newkey;
 		
 	}   
-	
+
+	var parenttab=rq.getResponseHeader('parenttab');
+	if (parenttab!=null&&parenttab!='') {		
+		document.tabviews[tabid].parenttab=parenttab;
+	}
+		
 	var newtitle=rq.getResponseHeader('newtitle');
 	if (newtitle!=null&&newtitle!=''){
-		title=newtitle;	
+		title=Base64.decode(newtitle);	
 	}	       
 		
 	if (opts&&opts.persist) document.tabtitles[tabid].reloadinfo={params:params,loadfunc:loadfunc,data:data,opts:opts};
@@ -154,7 +189,7 @@ function reloadtab(key,title,params,loadfunc,data,opts){
   
     if (title) document.tabtitles[tabid].innerHTML=tabhtml;
 	
-  	  var reloader="<div class=\"reloader\"><a onclick=\"refreshtab('"+key+"');\">"+document.dict['tab_reload']+"</a></div>";
+  	  var reloader="<div class=\"reloader\" id=\"tabreloader_"+key+"\"><a onclick=\"refreshtab('"+key+"');\">"+document.dict['tab_reload']+"</a></div>";
       document.tabviews[tabid].innerHTML=reloader+rq.responseText;
       if (loadfunc!=null) loadfunc(rq);
 	}
@@ -188,7 +223,7 @@ function addtab(key,title,params,loadfunc,data,opts){
   if (title) t.innerHTML=tabhtml;
   gid('tabtitles').appendChild(t);
   gid('tabviews').appendChild(c);
-  c.slowtimer=setTimeout(function(){c.innerHTML='<image class="hourglass" src="imgs/hourglass.gif" style="margin:5px;">';},800);
+  c.slowtimer=setTimeout(function(){c.innerHTML='<image class="hourglass" src="imgs/hourglass.gif">';},800);
 
   t.reloadinfo={params:params,loadfunc:loadfunc,data:data,opts:opts};
 
@@ -217,12 +252,25 @@ function addtab(key,title,params,loadfunc,data,opts){
 		  	window.location.href='login.php';
 		    return;
       }
-	  
-	  var reloader="<div class=\"reloader\"><a onclick=\"refreshtab('"+key+"');\">"+document.dict['tab_reload']+"</a></div>";
+
+	var apperror=rq.getResponseHeader('apperror');
+	if (apperror!=null&&apperror!=''){
+		alert('Error: '+Base64.decode(apperror));
+		document.tablock=null;
+		return;	
+	}  
+	
+	      
+		var parenttab=rq.getResponseHeader('parenttab');
+		if (parenttab!=null&&parenttab!='') {		
+			t.parenttab=parenttab;
+		}
+      	  
+	  var reloader="<div class=\"reloader\" id=\"tabreloader_"+key+"\"><a onclick=\"refreshtab('"+key+"');\">"+document.dict['tab_reload']+"</a></div>";
       c.innerHTML=reloader+rq.responseText;
 
       document.tablock=null;
-      if (loadfunc!=null) loadfunc();
+      if (loadfunc!=null) loadfunc(rq);
     }
   }
   rq.send(data);
@@ -247,8 +295,8 @@ closetab=function(key){
 		for (var i=0;i<document.tabseq.length;i++) if (document.tabseq[i]==key) document.tabseq[i]=null;
 	}
 		
-	if (currenttab==tabid) {
-		currenttab=0;
+	if (document.currenttab==tabid) {
+		document.currenttab=0;
 		var lasttab=null;
 		while (lasttab==null&&document.tabseq.length>0){
 			lasttab=document.tabseq.pop();	
@@ -260,8 +308,8 @@ closetab=function(key){
 		}
 	}
   
-  if (tabcount==0) {currenttab=-1; return;}
-  showtab(document.tabkeys[currenttab]);	
+  if (tabcount==0) {document.currenttab=-1; return;}
+  showtab(document.tabkeys[document.currenttab]);	
 }
 
 function refreshtab(key){
@@ -274,7 +322,22 @@ function refreshtab(key){
  
   var tab=document.tabtitles[tabid];
   if (!tab.reloadinfo) return;
+  tab.style.color='#000000';
   reloadtab(key,null,tab.reloadinfo.params,tab.reloadinfo.loadfunc,tab.reloadinfo.data,tab.reloadinfo.opts);
+}
+
+function closetabs(rectype){
+	if (!document.tabkeys) return;
+	
+	var cf=function(tk){return function(){
+		closetab(tk);	
+	}}
+	
+	for (var i=0; i<document.tabkeys.length; i++){
+		var tabkey=document.tabkeys[i];
+		var id=tabkey.replace(rectype+'_','');
+		if (parseInt(id,10)==id) setTimeout(cf(tabkey),i*50);	
+	}
 }
 
 function showhelp(topic,title){

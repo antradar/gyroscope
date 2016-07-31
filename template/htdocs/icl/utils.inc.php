@@ -1,8 +1,9 @@
 <?
-
+include 'icl/reauth.inc.php';
 
 function authpump(){
-$hb=$_GET['hb'];
-echo $hb;
-die();
+	reauth();
+	$hb=$_GET['hb'];
+	echo $hb;
+	die();
 }

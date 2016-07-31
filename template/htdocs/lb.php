@@ -1,11 +1,14 @@
 <?php
 
-//$usehttps=1; //enforcing HTTPS on production server
+$usehttps=1; //enforcing HTTPS on production server, enable this on production server
+
+$enableudf=0; //allow UDF editing, disable this on production server
 
 date_default_timezone_set('America/Toronto');
 
 define ('TABLENAME_USERS','users');
 define ('TABLENAME_ACTIONLOG','actionlog');
+define ('TABLENAME_REPORTS','reports');
 
 
 if (isset($_SERVER['HTTP_X_REAL_IP'])) $_SERVER['REMOTE_ADDR']=$_SERVER['HTTP_X_REAL_IP'];

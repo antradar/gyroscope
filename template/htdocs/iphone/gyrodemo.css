@@ -46,6 +46,9 @@ height:22px;
 	#lkvx{position:absolute;top:0;right:0;cursor:pointer;background:transparent url(msprite.png) no-repeat -298px -130px;}	
 	#lkvc{border-right:solid 1px #dedede;overflow:auto;background-color:#ffffff;}
 
+.warnbox{padding:10px;margin-bottom:10px;background:#ffdede;}
+.infobox{padding:10px 0;font-size:13px;font-style:italic;color:#666666;}
+	
 #toolicons{height:40px;text-align:right;}
 
 #toollist{height:35px;}
@@ -67,6 +70,8 @@ height:22px;
 
 .img-exit{background:transparent url(msprite.png) no-repeat -198px -7px;} /* 16x16 */
 
+.hourglass{margin:10px;}
+#statusinfo .hourglass{margin:0;}
 
 #backlist{height:43px;background:transparent url(hbg.png) repeat-x top left;}
 #backlistbutton{display:block;padding-left:5px;padding-top:6px;}
@@ -130,6 +135,8 @@ text-decoration:none;
 color:#ff2222;
 }
 
+.welcometile{margin-bottom:15px;}
+
 .litm{border-bottom:solid 1px #A6A8AA;background:transparent url(ra.png) no-repeat center right;}
 .litm a{display:block}
 
@@ -184,7 +191,7 @@ input:disabled{color:#000000;}
 .reloader a{display:block;}
 
 .listsearch_ input{display:block;}
-.listsearch .searchsubmit{opacity:0;visibility:hidden;}
+.listsearch .searchsubmit{opacity:0.1;}
 .listsearch{background:transparent url(../imgs/bmg.gif) no-repeat 100% 5px;background-size:16px 16px;}
 
 @media screen and (max-width:1330px){

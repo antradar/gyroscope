@@ -1,0 +1,428 @@
+<?php
+/* 
+Faceted Navigation Engine
+(c) Schien Dong, Antradar Software Inc., 2016
+*/
+
+//uncomment to enable object cache
+
+/*
+include 'memcache.php';
+cache_init();
+$#prefix#navcacheexp=3600*24*30;
+if (!isset($swapprefix)) $swapprefix=''; //used for swap cache
+*/
+
+function countfield($fieldname,$limit=null){
+	global $db;
+	global $#prefix#navcacheexp;
+	global $swapprefix;
+		
+	$query="select count(#mastertable#.#primarykey#) as c, $fieldname from #mastertable# ";
+	
+#iterator-multifields-multitable#			
+	$query.=" where #mastertable#.#primarykey#!=0 ";
+
+#iterator-multifields-multibridge#
+	$query.=sqlfilters();
+	$query.=" group by $fieldname ";
+	
+	if ($limit!=null) $query.=" order by c desc limit $limit ";
+	else $query.=" order by $fieldname ";
+			
+//	$navkey=md5($query);
+//	$navobj=cache_get($swapprefix.'#prefix#navobj');
+//	if (!$navobj||!$navobj[$navkey]){
+
+		$rs=sql_query($query,$db);
+		$counts=array();
+		
+		while ($myrow=sql_fetch_array($rs)){
+			$c=$myrow['c'];
+			if ($c<=0) continue;
+			$key=$myrow[$fieldname];
+			if (trim($key)=='') continue;
+			$counts[$key]=$c;	
+		}
+		
+//		if (!$navobj) cache_set($swapprefix.'#prefix#navobj',array($navkey=>$counts),$#prefix#navcacheexp);
+//		else {
+//			$navobj[$navkey]=$counts;
+//			cache_set($swapprefix.'#prefix#navobj',$navobj,$#prefix#navcacheexp);	
+//		}
+		
+
+//	} else {
+//		//echo "using cache $navkey<br>";
+//		$counts=$navobj[$navkey];
+//	}
+		
+	return $counts;	
+}
+
+//convert url query parameters to filter array
+function makefilters(){
+	$filters=array();
+	$nfilters=array();
+
+	if ($_REQUEST['searchterm']!='') $filters['searchterm']=$_REQUEST['searchterm'];
+	if (isset($_GET['sort'])) $filters['sort']=$_GET['sort'];
+#iterator-dimlist-gdimfilter#	
+#iterator-multifields-multifilter#	
+#iterator-rangelist-rangefilter#			
+	
+	return array('filters'=>$filters,'nfilters'=>$nfilters);
+}
+
+function sqlfilters(){
+	$filters='';
+	//todo: refine search clause, use Sphinx to build fulltext search filter if applicable
+	if ($_REQUEST['searchterm']!='') $filters.=" and #dispfield# like '%".addslashes($_REQUEST['searchterm'])."%' ";
+#iterator-dimlist-gdimlist#
+#iterator-multifields-multisqlfilter#				
+#iterator-rangelist-rangesqlfilter#	
+	return $filters;
+}
+
+//render filter array to query parameters
+function strfilters($filters,$nfilters=null){
+	
+	$filter='';
+	foreach ($filters as $key=>$val){
+		if (is_array($val)) foreach ($val as $k=>$v) $filter.='&'.$key.'['.urlencode($k).']=1';
+		else $filter.='&'.urlencode($key).'='.urlencode($val);
+
+	}
+	
+	if (is_array($nfilters)){
+		foreach ($nfilters as $key=>$vals) {
+			foreach ($vals as $val) $filter.="&neg__${key}[]=$val";	
+		}
+	}
+		
+	return $filter;
+}
+
+function showrange($title,$fieldname){
+	global $db;
+	
+	$bfilters=makefilters();
+	$basefilters=$bfilters['filters'];
+	$nbasefilters=$bfilters['nfilters'];
+	$filters=$basefilters;
+		
+
+// start inline breadcrumb		
+	if (is_numeric($filters[$fieldname.'_a'])||is_numeric($filters[$fieldname.'_b'])){
+		$myfilters=$filters;
+		unset($myfilters[$fieldname.'_a']);
+		unset($myfilters[$fieldname.'_b']);
+		$filter=strfilters($myfilters,$nbasefilters);		
+?>
+<div class="navgroup">
+	<div class="navtitle"><?echo $title;?></div>
+	<div class="navfilter">
+<a class="filterclear" href="<?echo $_SERVER['PHP_SELF'];?>?<?echo $filter;?>" onclick="setfilter('nav','bc','list','ajax#prefix#nav.php','<?echo $filter;?>');return false;">[x]</a>
+<?echo $filters[$fieldname.'_a'].' - '.$filters[$fieldname.'_b'];?>
+	</div>
+</div> 
+<?	
+		return;	
+	}
+// end inline breadcrumb
+		
+	$query="select min($fieldname) as a, max($fieldname) as b from #mastertable# where #mastertable#.#primarykey#!=0 ".sqlfilters();
+	$rs=sql_query($query,$db);
+	$myrow=sql_fetch_array($rs);
+	
+	$min=$myrow['a'];
+	$max=$myrow['b'];
+
+	if ($min==$max) return;
+
+	$filter=strfilters($filters,$nbasefilters);		
+			
+?>
+<div class="navgroup">
+	<div class="navtitle"><?echo $title;?></div>
+	<form action="<?echo $_SERVER['PHP_SELF'];?>?<?echo $filter;?>" style="padding:0;margin:0;" method="POST" 
+		onsubmit="setfilter('nav','bc','list','ajax#prefix#nav.php','<?echo $filter;?>&<?echo $fieldname;?>_a='+gid('<?echo $fieldname;?>_a').value+'&<?echo $fieldname;?>_b='+gid('<?echo $fieldname;?>_b').value);return false;">
+		<input id="<?echo $fieldname?>_a" name="<?echo $fieldname;?>_a" value="<?echo $min;?>" style="width:60px;"> - 
+		<input id="<?echo $fieldname?>_b" name="<?echo $fieldname;?>_b" value="<?echo $max;?>" style="width:60px;">
+		<input type="submit" value="Set">
+	</form>
+</div>
+<?	
+		
+}
+
+/*
+todo: map field names to field display names
+*/
+
+$keynames=array(
+'numeric_field1'=>'Numeric Field 1',
+'text_field1'=>'Text Field 1',
+'price_a'=>'Min Price',
+'price_b'=>'Max Price'
+);
+
+
+function showbreadcrumb(){} //deprecated
+
+
+function dispname($fieldname,$key){
+	global $db;
+	
+	switch ($fieldname){
+		/*
+		todo: add field value to field name mapping
+		*/
+		default: return $key;
+	}	
+}
+
+function shownegfilters($fieldname){
+	$bfilters=makefilters();
+	$filters=$bfilters['filters'];
+	$nfilters=$bfilters['nfilters'];
+			
+	if (!is_array($nfilters)||!is_array($nfilters[$fieldname])||count($nfilters[$fieldname])==0) return;
+?>
+<div class="neglabel">Excluding:</div>
+<div class="neggroup">
+		<?foreach ($nfilters[$fieldname] as $item){
+			$mynfilters=$nfilters;
+			$key=array_search($item,$mynfilters[$fieldname]);
+			if ($key!==false){
+				unset($mynfilters[$fieldname][$key]);	
+			}
+			$strfilters=strfilters($filters,$mynfilters);
+		?>
+		<div class="negfilter"><a class="filterclear" href="<?echo $_SERVER['PHP_SELF'];?>?<?echo $strfilters;?>" onclick="setfilter('nav','bc','list','ajax#prefix#nav.php','<?echo $strfilters;?>');return false;">[x]</a> <?echo dispname($fieldname,$item);?></div>
+		<?}?>
+</div>
+<?	
+}
+
+function shownav($title,$fieldname,$multi=null){
+// start inline breadcrumb
+	global $keynames;
+	
+	$bfilters=makefilters();
+	$basefilters=$bfilters['filters'];
+	$nbasefilters=$bfilters['nfilters'];
+		
+	if (isset($basefilters[$fieldname])&&!$multi){
+		$myfilters=$basefilters;
+		unset($myfilters[$fieldname]);
+		$filter=strfilters($myfilters,$nbasefilters);
+?>
+<div class="navgroup">
+	<div class="navtitle"><?echo $title;?></div>
+<?
+	shownegfilters($fieldname);
+?>
+	<div class="navfilter">
+		<a class="filterclear" href="<?echo $_SERVER['PHP_SELF'];?>?<?echo $filter;?>" onclick="setfilter('nav','bc','list','ajax#prefix#nav.php','<?echo $filter;?>');return false;">[x]</a> <?echo dispname($fieldname,$basefilters[$fieldname]);?>
+	</div>
+</div><!-- navgroup -->
+<?		
+
+		return;
+	}
+
+// end inline breadcrumb
+
+	$counts=countfield($fieldname);
+	if (count($counts)<=0) {
+		if (count($nbasefilters[$fieldname])>0){
+		?>
+		<div class="navgroup">
+		<div class="navtitle"><?echo $title;?></div>
+		<?	
+			shownegfilters($fieldname);
+		?>
+		</div><!-- navgroup -->
+		<?
+		}
+		return;
+	}
+?>
+<div class="navgroup">
+<div class="navtitle"><?echo $title;?></div>
+<?	
+	$bfilters=makefilters();
+	$basefilters=$bfilters['filters'];
+	$nbasefilters=$bfilters['nfilters'];
+	
+	shownegfilters($fieldname);
+	
+	//echo '~';print_r($basefilters);echo '~';
+?>
+<div class="navfilterlist">
+<?	
+	foreach ($counts as $key=>$count){
+		$dispname=dispname($fieldname,$key);
+		$myfilters=$basefilters;
+		if ($multi){
+			if (!is_array($myfilters[$multi])) $myfilters[$multi]=array();
+			$myfilters[$multi][$key]=1;
+			if ($basefilters[$multi][$key]) unset($myfilters[$multi][$key]);
+		} else $myfilters[$fieldname]=$key;
+		$filters=strfilters($myfilters,$nbasefilters);
+		
+		//echo '<pre>';print_r($filters);echo '</pre>';
+		/*
+		todo: use your container ids for navigation, breadcrumb and record list
+		*/
+		
+		?>
+<div class="navfilter">
+		<?
+		if ($multi){
+	?>		
+		<input <?if ($basefilters[$multi][$key]) echo 'checked';?> type="checkbox" href="<?echo $_SERVER['PHP_SELF'];?>?<?echo $filters;?>" onclick="setfilter('nav','bc','list','ajax#prefix#nav.php','<?echo $filters;?>');return false;"> 
+	<?		
+		}
+
+?>
+	<a href="<?echo $_SERVER['PHP_SELF'];?>?<?echo $filters;?>" onclick="setfilter('nav','bc','list','ajax#prefix#nav.php','<?echo $filters;?>');return false;"><?echo $dispname;?></a> 
+	
+	<?
+	if (!$multi||!$basefilters[$multi][$key]||true){ //remove true to hide refinement count for selected multi fields
+	?>
+	<em>(<?echo $count;?>)</em>
+	<?}?>
+	
+	<?if (!$basefilters[$multi][$key]){?>
+	<a class="filterneg" href="<?echo $_SERVER['PHP_SELF'];?>?<?echo $filters;?>&neg__<?echo $fieldname;?>[]=<?echo $key;?>" onclick="setfilter('nav','bc','list','ajax#prefix#nav.php','<?echo $filters;?>&neg__<?echo $fieldname;?>[]=<?echo $key;?>');return false;">
+	<acronym title="exclude from results">[-]</acronym>
+	</a>
+	<?}?>
+
+</div>
+<?
+	}
+?>
+</div><!-- navfilterlist -->
+</div><!-- navgroup -->
+<?	
+}
+
+function showsearch(){
+	$bfilters=makefilters();
+	$basefilters=$bfilters['filters'];
+	$nbasefilters=$bfilters['nfilters'];
+	$filters=strfilters($basefilters,$nbasefilters);
+?>
+	<form class="navgroup" method="POST" action="<?echo $_SERVER['PHP_SELF'];?>?<?echo $filters;?>"
+		onsubmit="setfilter('nav','bc','list','ajax#prefix#nav.php','<?echo $filters;?>&searchterm='+encodeHTML(gid('searchterm').value));return false;">
+		<div class="navtitle">Search</div>
+		<input id="searchterm" name="searchterm" value="<?if ($_REQUEST['searchterm']) echo $_REQUEST['searchterm'];?>">
+		<input type="submit" value="Go">
+	</form>
+
+<?	
+	
+}
+
+function shownavs(){
+	showsearch();
+#iterator-dimlist-showdim#	
+#iterator-multifields-showmulti#
+#iterator-rangelist-rangeshownav#
+
+}
+
+function showrecords(){
+	global $db;
+	global $#prefix#navcacheexp;
+	global $swapprefix;
+	
+	$filters=sqlfilters();
+	
+	$bfilters=makefilters();
+	$basefilters=$bfilters['filters'];
+	$nbasefilters=$bfilters['nfilters'];
+	
+
+	$query="select count(#mastertable#.#primarykey#) as c from #mastertable# where #mastertable#.#primarykey#!=0 $filters ";
+
+//	$navobj=cache_get($swapprefix.'#prefix#navobj');
+//	//echo '<pre>'; print_r($navobj); echo '</pre>';
+//	$ckey='c-'.md5($query);
+	
+//	if (!$navobj||!$navobj[$ckey]){
+		
+		$rs=sql_query($query,$db);
+		$myrow=sql_fetch_assoc($rs);
+		$count=$myrow['c']+0;
+		
+//		if (!$navobj) cache_set($swapprefix.'#prefix#navobj',array($ckey=>$count),$#prefix#navcacheexp);
+//		else {
+//			$navobj[$ckey]=$count;
+//			cache_set($swapprefix.'#prefix#navobj',$navobj,$#prefix#navcacheexp);	
+//		}
+				
+//	} else $count=$navobj[$ckey]+0;
+
+	$page=$_GET['page']+0;
+	if ($page<0) $page=0;
+	$perpage=15;
+	$maxpage=ceil($count/$perpage)-1;
+	if ($maxpage<0) $maxpage=0;
+	if ($page>$maxpage) $page=$maxpage;
+	$start=$page*$perpage;
+
+
+	$sorts=array(#iterator-sortfields-gnavsorts#);
+	$sort=str_replace("'",'',$_GET['sort']);
+	$sortnames=array(#iterator-sortfields-gnavsort#);
+
+	if (!in_array($sort,$sorts)) $sort='#defsort#'; //default sort field	
+?>
+<div style="padding:10px 0;">
+Sort by: 
+<?
+
+	unset($basefilters['sort']);
+	$sfilter=strfilters($basefilters,$nbasefilters);
+	
+	foreach ($sortnames as $sk=>$sortname){
+		
+?>
+<a <?if ($sk==$sort) echo 'style="font-weight:bold;"';?> onclick="document.recsort='<?echo $sk;?>';ajxpgn('list','ajax#prefix#nav.php?cmd=list&sort=<?echo $sk;?>&<?echo $sfilter;?>');return false;" href="<?echo $_SERVER['PHP_SELF'];?>?<?echo $sfilter;?>&sort=<?echo $sk;?>"><?echo $sortname;?></a> &nbsp;
+<?
+	}
+
+	if ($maxpage>0){
+?>
+<span class="pager">
+Page <?echo $page+1;?> of <?echo $maxpage+1;?>
+&nbsp; &nbsp;
+<a href="<?echo $_SERVER['PHP_SELF'];?>?<?echo $sfilter;?>&sort=<?echo $sort;?>&page=<?echo $page-1;?>" onclick="ajxpgn('list','ajax#prefix#nav.php?cmd=list&sort=<?echo $sort;?>&<?echo $sfilter;?>&page=<?echo $page-1;?>');return false;">&laquo; Prev</a>
+ |
+<a href="<?echo $_SERVER['PHP_SELF'];?>?<?echo $sfilter;?>&sort=<?echo $sort;?>&page=<?echo $page+1;?>" onclick="ajxpgn('list','ajax#prefix#nav.php?cmd=list&sort=<?echo $sort;?>&<?echo $sfilter;?>&page=<?echo $page+1;?>');return false;">Next &raquo;</a>
+</span>
+<?
+	}
+?>
+
+</div>
+
+<div style="padding-top:20px;">Filters: <span style="border:solid 1px;"><?echo $filters;?></span></div>
+<?
+	$query="select * from #mastertable# where #mastertable#.#primarykey#!=0 $filters ";
+	$query.=" order by $sort limit $start,$perpage ";
+	$rs=sql_query($query,$db);
+	
+	while ($myrow=sql_fetch_array($rs)){
+?>
+<div>
+	#<?echo $myrow['#primarykey#'];?> <?echo $myrow['#dispfield#'];?>
+</div>
+<?		
+	}//while
+	
+}

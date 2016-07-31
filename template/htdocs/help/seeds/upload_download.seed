@@ -9,12 +9,26 @@ function download#primaryfield##record#(){
 	$rs=sql_query($query,$db);
 	if (!$myrow=sql_fetch_array($rs)) die('Missing Document #'.$#lookupkey#);
 	
-	$fn='../#primaryfield##records#/'.$#lookupkey#.'#fileext#';
+	$fn='../../#primaryfield##records#/'.$#lookupkey#.'#fileext#';
 	$docfn=$myrow['#dispfield#'];
 	
+	$ofn=str_replace(' ','_',$myrow['ofn']);
+	$mimetype=$myrow['mimetype'];
+
+
+	/*	
+	// Direct View:
 	
+	header('Content-Type: '.$mimetype);
+	
+	*/	
+		
+		
+	// Force Download:
+		
 	header('Content-Type: application/octet-stream');
-	header("Content-disposition: attachment; filename=$docfn");
+	header("Content-disposition: attachment; filename=$ofn");
+	
 
 	clearstatcache();
 	echo file_get_contents($fn);

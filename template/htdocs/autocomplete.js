@@ -100,23 +100,29 @@ listlookup=function(d,title,command,mini){
 		
 }
 
+showrelrec=function(id,showfunc,defid){
+	var d=gid(id);
+	if (d.disabled) showfunc(d.value2?d.value2:defid,d.value);
+}
+
 pickdate=function(d,opts,def){
 	var key='';
 	if (d) key=encodeHTML(d.value);
 	else key=def;
 
 	if (!opts) opts={mini:0}
-	if (!opts.mini) opts.mini=0;	
-
+	if (!opts.mini) opts.mini=0;
+	if (!opts.tz) opts.tz='';
+	
 	if (self.portrait_ignore&&!opts.mini) portrait_ignore();
 		
-	listlookup(d,'Calendar','pkd&key='+key+'&mini='+(opts.mini?'1':'0'),opts.mini);
+	listlookup(d,'Calendar','pkd&key='+key+'&tz='+opts.tz+'&mini='+(opts.mini?'1':'0'),opts.mini);
 }
 
 _pickdate=function(d,opts){
 	if (d.timer) clearTimeout(d.timer);
 	var f=function(d){return function(){
-		pickdate(d,null,opts);
+		pickdate(d,opts,null);
 	}}
 	d.timer=setTimeout(f(d,opts),200);
 }
@@ -128,10 +134,11 @@ pickdatetime=function(d,opts,def){
 	
 	if (!opts) opts={start:8,end:22,mini:null}
 	if (!opts.mini) opts.mini=null;
+	if (!opts.tz) opts.tz='';
 
 	if (self.portrait_ignore&&!opts.mini) portrait_ignore();
 	
-	listlookup(d,'Calendar','pkd&mode=datetime&key='+key+'&hstart='+opts.start+'&hend='+opts.end+'&mini='+(opts.mini?'1':'0'),opts.mini);
+	listlookup(d,'Calendar','pkd&mode=datetime&key='+key+'&hstart='+opts.start+'&hend='+opts.end+'&tz='+opts.tz+'&mini='+(opts.mini?'1':'0'),opts.mini);
 }
 
 _pickdatetime=function(d,opts,def){
@@ -152,7 +159,7 @@ picktime=function(d,opts,def){
 
 	if (self.portrait_ignore) portrait_ignore();
 	
-	listlookup(d,'Calendar','pkd&mode=datetime&nodate=1&key='+key+'&hstart='+opts.start+'&hend='+opts.end+'&y='+opts.y+'&m='+opts.m+'&d='+opts.d+'&mini='+(opts.mini?'1':'0'),opts.mini);
+	listlookup(d,'Calendar','pkd&mode=datetime&nodate=1&key='+key+'&hstart='+opts.start+'&hend='+opts.end+'&tz='+opts.tz+'&y='+opts.y+'&m='+opts.m+'&d='+opts.d+'&mini='+(opts.mini?'1':'0'),opts.mini);
 }
 
 _picktime=function(d,opts,def){
@@ -163,6 +170,17 @@ _picktime=function(d,opts,def){
 	d.timer=setTimeout(f(d,opts),200);
 }
 
+// generic lookup function
+lookupentity=function(d,entity,title){
+	listlookup(d,title,'lookup'+entity+'&key='+encodeHTML(d.value));	
+}
+
+_lookupentity=function(d,entity,title){
+	if (d.timer) clearTimeout(d.timer);
+	d.timer=setTimeout(function(){
+		lookupentity(d,entity,title);
+	},200);
+}
 
 //hook this event on textarea::onfocus
 

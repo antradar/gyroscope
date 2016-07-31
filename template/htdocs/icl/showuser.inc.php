@@ -15,8 +15,9 @@ function showuser($userid=null){
 	if (!$myrow=sql_fetch_array($rs)) die('This user record has been removed');
 	
 	$login=$myrow['login'];
+	$dispname=$myrow['dispname'];
 	$active=$myrow['active'];
-	$virtual=$myrow['virtual'];
+	$virtual=$myrow['virtualuser'];
 	$passreset=$myrow['passreset'];
 	$groupnames=$myrow['groupnames'];
 	$groups=explode('|',$groupnames);
@@ -24,7 +25,7 @@ function showuser($userid=null){
 	$certname=$myrow['certname'];
 	if ($certname=='') $certname='<em>not set</em>';
 	
-	header('newtitle: '.$login);
+	header('newtitle: '.base64_encode($login));
 	
 ?>
 <div class="section">
@@ -35,12 +36,16 @@ function showuser($userid=null){
 
 	<div class="inputrow">
 		<div class="formlabel"><?tr('username');?>:</div>
-		<input class="inpmed" id="login_<?echo $userid;?>" value="<?echo htmlspecialchars($login);?>">
+		<input class="inpmed" id="login_<?echo $userid;?>" value="<?echo htmlspecialchars($login);?>" onblur="if (gid('dispname_<?echo $userid;?>').value=='') gid('dispname_<?echo $userid;?>').value=this.value;">
 	</div>
 	<div class="inputrow">
-		<input type="checkbox" id="active_<?echo $userid;?>" <?if ($active) echo 'checked';?>> <?tr('account_active');?>
+		<div class="formlabel"><?tr('dispname');?>:</div>
+		<input class="inpmed" id="dispname_<?echo $userid;?>" value="<?echo htmlspecialchars($dispname);?>" onfocus="this.select();">
+	</div>
+	<div class="inputrow">
+		<input type="checkbox" id="active_<?echo $userid;?>" <?if ($active) echo 'checked';?>> <label for="active_<?echo $userid;?>"><?tr('account_active');?></label>
 		&nbsp;&nbsp;
-		<input type="checkbox" id="virtual_<?echo $userid;?>" <?if ($virtual) echo 'checked';?> onclick="if (this.checked) gid('userpasses_<?echo $userid;?>').style.display='none'; else gid('userpasses_<?echo $userid;?>').style.display='block';"> <?tr('account_virtual');?>
+		<input type="checkbox" id="virtual_<?echo $userid;?>" <?if ($virtual) echo 'checked';?> onclick="if (this.checked) gid('userpasses_<?echo $userid;?>').style.display='none'; else gid('userpasses_<?echo $userid;?>').style.display='block';"> <label for="virtual_<?echo $userid;?>"><?tr('account_virtual');?></label>
 	</div>
 	<div id="userpasses_<?echo $userid;?>" style="<?if ($virtual) echo 'display:none;';?>">
 	<div class="inputrow">
@@ -53,7 +58,7 @@ function showuser($userid=null){
 	</div>
 	
 	<div class="inputrow">
-		<input type="checkbox" id="passreset_<?echo $userid;?>" <?if ($passreset) echo 'checked';?>> <?tr('account_login_reset');?>
+		<input type="checkbox" id="passreset_<?echo $userid;?>" <?if ($passreset) echo 'checked';?>> <label for="passreset_<?echo $userid;?>"><?tr('account_login_reset');?></label>
 	</div>
 
 	<div class="inputrow" id="cardsettings_<?echo $userid;?>">
@@ -70,10 +75,12 @@ function showuser($userid=null){
 		<?foreach ($userroles as $role=>$label){
 		?>
 		<div style="padding-left:10px;margin-bottom:3px;">
-			<input type="checkbox" id="userrole_<?echo $role;?>_<?echo $userid;?>" <?if (in_array($role,$groups)) echo 'checked';?>> <?echo $label;?>
+			<input type="checkbox" id="userrole_<?echo $role;?>_<?echo $userid;?>" <?if (in_array($role,$groups)) echo 'checked';?>> 
+			<label for="userrole_<?echo $role;?>_<?echo $userid;?>"><?echo $label;?></label>
 		</div>
 		<?	
-		}?>
+		}
+		?>
 	</div>	
 	</div><!-- userpasses -->
 	
