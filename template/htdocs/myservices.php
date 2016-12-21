@@ -63,9 +63,10 @@ switch($cmd){
 	case 'lookuptemplate': include 'icl/lookuptemplate.inc.php'; lookuptemplate(); break;
 	case 'addtemplatevar': include 'icl/addtemplatevar.inc.php'; addtemplatevar(); break;
 	case 'deltemplatevar': include 'icl/deltemplatevar.inc.php'; deltemplatevar(); break;
+	case 'mceeditsource': include 'icl/mceeditsource.inc.php'; mceeditsource(); break;
+	case 'batchsavetemplatevars': include 'icl/batchsavetemplatevars.inc.php'; batchsavetemplatevars(); break;
 	
-
-
+	
 //Templates
 
 	case 'slv_core__templates': include 'icl/listtemplates.inc.php'; listtemplates(); break;

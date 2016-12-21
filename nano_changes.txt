@@ -1,0 +1,12 @@
+v3.0
+----
+- enabled header-specified error handling routing
+
+v2.3
+----
+- runonce mode
+- container content no longer wiped by aborted xhr calls
+
+v2.2
+----
+- concurrent cross domain (xajx) calls with delayed gc

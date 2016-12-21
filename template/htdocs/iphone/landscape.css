@@ -5,7 +5,7 @@
 	#tabviews{overflow:auto;}
 	#content{overflow-x:auto;}
 	
-	.listitem{border-bottom:solid 1px #dedede;padding:5px 0;font-size:13px;color:#000000;background-image:none;}
+	.listitem{line-height:1.5em;border-bottom:solid 1px #dedede;padding:5px 0;font-size:13px;color:#000000;background-image:none;}
 	.listitem a{display:inline;}
 	
 	.listlookup{width:120px;margin-bottom:10px;}

@@ -161,13 +161,13 @@ function reloadtab(key,title,params,loadfunc,data,opts){
   rq.send(data);
 }
 
-function refreshtab(key){
+function refreshtab(key,skipconfirm){
 	
   //if tab doesn't exist, ignore it
   var tabid=gettabid(key);
   if (tabid==-1) return;
   
-  if (!confirm(document.dict['confirm_refresh_tab'])) return;
+  if (!skipconfirm&&!confirm(document.dict['confirm_refresh_tab'])) return;
  
   var tab=document.tabtitles[tabid];
   if (!tab.reloadinfo) return;
@@ -350,7 +350,7 @@ function closetabtree(root,sub){
 	for (var i=0; i<document.tabkeys.length; i++){
 		var tab=document.tabtitles[i];
 		var tabkey=document.tabkeys[i];
-		if (tab.parenttab==root) closetabtree(tabkey,1);
+		if (tab&&tab.parenttab&&tab.parenttab==root) closetabtree(tabkey,1);
 	}
 	
 	document.toclose.push(root);

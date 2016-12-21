@@ -1,0 +1,10 @@
+
+
+<div class="sortlistitem" onselectstart="return false;" onmousedown="#record#_mousedown(<?echo $#masterkey#;?>,this,<?echo $#primarykey#;?>);" onmouseover="#record#_mouseover(this,<?echo $#primarykey#;?>,1);" style="position:relative;cursor:move;user-select:none;-webkit-user-select:none;-moz-user-select:none;border-left:solid 6px #dedede;padding-left:5px;">
+	
+
+	//}//while
+
+?>
+<div id="#record#shadow_<?echo $#masterkey#?>" style="white-space:nowrap;opacity:0.95;cursor:move;user-select:none;-webkit-user-select:none;-moz-user-select:none;display:none;position:absolute;top:20px;left:60px;background:#efefef;padding:5px;"></div>
+<?

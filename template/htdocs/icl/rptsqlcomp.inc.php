@@ -8,10 +8,10 @@ function rptsqlcomp(){
 	<div class="sectiontitle">Dev Tools &raquo; DB Structure Comparison</div>
 	
 	<div class="sectionheader">My Database Snapshot</div>
-	<textarea class="inplong" style="height:80px;"><?echo base64_encode(serialize(mydbobj()));?></textarea>	
+	<textarea class="inplong"><?echo base64_encode(serialize(mydbobj()));?></textarea>	
 
 	<div class="sectionheader">Other Database Snapshot</div>
-	<textarea class="inplong" style="height:80px;" id="sqlcomp_otherobj"></textarea>	
+	<textarea class="inplong" id="sqlcomp_otherobj"></textarea>	
 	
 	<div><button onclick="ajxpgn('sqlcompareview',document.appsettings.codepage+'?cmd=rptsqlcomp&mode=comp',0,0,'other='+gid('sqlcomp_otherobj').value)">Compare</button></div>
 	

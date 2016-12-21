@@ -1,3 +1,4 @@
+	global $soidxes; //smart object indexes
 
 	$#editfield#=QETSTR('#editfield#');
 	$#editfield#=str_replace('>&nbsp;</','></',$#editfield#);
@@ -6,3 +7,18 @@
 	//It is included in the commercial version of Gyroscope
 	
 	//$#editfield#=localizeimages($#editfield#);
+
+	//preg_replace_callback('/<p>\{\{(\S+)\s*([\S\s]*?)\}\}<\/p>/','auto#editfield#index',$blogtext);
+
+
+
+	...
+
+function auto#editfield#index($matches){
+	global $soidxes;
+
+	$func=$matches[1];
+	$strparams=$matches[2];
+	
+	parse_str($strparams,$params);	
+}

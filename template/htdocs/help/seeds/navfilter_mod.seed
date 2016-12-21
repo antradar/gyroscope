@@ -7,16 +7,8 @@
 	$basefilters=$bfilters['filters'];
 
 	$visible=$basefilters['visible'];
-	?>
-	<div style="padding:5px 0;">
-	<a onclick="nav#entity#_setfilter('#container#','#cmd#',gid('searchfilter_#entity#').value+'&visible=<?echo $visible?'0':'1';?>');return false;">Filters+</a>
-	</div>
-	<div id="#entity#filters" style="display:none<?if ($visible) echo 'a';?>;">
-	<?
+	
 	#entity#_shownavs('#container#','#cmd#');
-	?>
-	</div><!-- #entity#filters -->
-	<?
 		
 	$sqlfilter=#entity#_sqlfilters();
 

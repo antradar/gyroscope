@@ -60,7 +60,7 @@ function hidelookup(){
 
 function setnosleep(mode){
 	var ua = {android: /Android/ig.test(navigator.userAgent),ios: /AppleWebKit/.test(navigator.userAgent) && /Mobile\/\w+/.test(navigator.userAgent)};
-	if (ua.android){
+	if (ua.android&&gid('nosleepvideo')){
 		if (mode) gid('nosleepvideo').play(); else gid('nosleepvideo').pause();
 	}
 

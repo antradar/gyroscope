@@ -6,6 +6,7 @@ function addreportsetting(){
 	
 	$reportname=QETSTR('reportname');
 	$reportgroup=QETSTR('reportgroup');
+	$reportfunc=QETSTR('reportfunc');
 	$reportkey=QETSTR('reportkey');
 	$reportdesc=QETSTR('reportdesc');
 	
@@ -16,7 +17,7 @@ function addreportsetting(){
 	if ($myrow=sql_fetch_assoc($rs)) apperror('Report key must be unique');
 	
 	
-	$query="insert into ".TABLENAME_REPORTS." (reportname,reportgroup,reportkey,reportdesc) values ('$reportname','$reportgroup','$reportkey','$reportdesc') ";
+	$query="insert into ".TABLENAME_REPORTS." (reportname,reportgroup,reportfunc,reportkey,reportdesc) values ('$reportname','$reportgroup','$reportfunc','$reportkey','$reportdesc') ";
 	$rs=sql_query($query,$db);
 	$reportid=sql_insert_id($db,$rs)+0;
 

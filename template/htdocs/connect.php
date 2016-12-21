@@ -1,6 +1,6 @@
 <?
 include_once "sql.php";
-$db=sql_get_db('localhost','gyrostart','root','mnstudio');
+$db=sql_get_db('127.0.0.1','gyrostart','root','mnstudio');
 
 
 // use socket instead of TCP if the database is on the same, Linux server

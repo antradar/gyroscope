@@ -319,7 +319,7 @@ function showsearch(){
 	<form class="navgroup" method="POST" action="<?echo $_SERVER['PHP_SELF'];?>?<?echo $filters;?>"
 		onsubmit="setfilter('nav','bc','list','ajax#prefix#nav.php','<?echo $filters;?>&searchterm='+encodeHTML(gid('searchterm').value));return false;">
 		<div class="navtitle">Search</div>
-		<input id="searchterm" name="searchterm" value="<?if ($_REQUEST['searchterm']) echo $_REQUEST['searchterm'];?>">
+		<input id="searchterm" name="searchterm" value="<?if ($_REQUEST['searchterm']) echo htmlspecialchars($_REQUEST['searchterm']);?>">
 		<input type="submit" value="Go">
 	</form>
 

@@ -73,6 +73,7 @@ $dict=array(
 	'list_reportsetting_add'=>'add a report type',	
 	'reportsetting_label_reportname'=>'Report Title',
 	'reportsetting_label_reportgroup'=>'Report Group <em>(optional)</em>',
+	'reportsetting_label_reportfunc'=>'Custom Function <em>(add "return false;" to bypass default)</em>',
 	'reportsetting_label_reportkey'=>'Report Key',
 	'reportsetting_label_reportdesc'=>'Description',	
 				

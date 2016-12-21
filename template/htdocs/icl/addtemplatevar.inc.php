@@ -7,7 +7,7 @@ function addtemplatevar(){
 	$varname=GETSTR('varname');
 	if ($varname[0]=='u') $varname='_'.$varname;
 	$vardesc=GETSTR('vardesc');
-	
+		
 	global $db;
 	
 	$query="select * from templatevars where templatevarname='$varname' and templatetypeid=$templatetypeid";

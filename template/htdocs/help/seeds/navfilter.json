@@ -21,6 +21,7 @@
 	{"template":"navfilter_inc","filename":"container code"},
 	{"template":"navfilter_js","filename":"add to <em>autocomplete.js</em>"},
 	{"template":"navfilter_css","filename":"recommended CSS in <em>toolbar.css</em>"},
+	{"template":"navfilter_kpw","filename":"recommended CSS in <em>iphone/kpw.css</em>"},
 	{"template":"navfilter_switch","filename":"add to <em>myservices.php</em>"},
 	{"template":"navfilter_mod","filename":"optional list integration"}
 

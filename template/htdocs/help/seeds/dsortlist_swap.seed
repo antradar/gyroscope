@@ -1,0 +1,47 @@
+<?php
+
+include 'icl/list#records#.inc.php';
+
+function swap#record#pos(){
+	$#masterkey#=GETVAL('#masterkey#');
+	$src=GETVAL('tmid');
+	$dst=GETVAL('targetid');
+	
+	global $db;
+
+	$query="select #sortkey# from #tablename# where #masterkey#=$#masterkey# and #primarykey#=$src";
+	$rs=sql_query($query,$db);
+	$myrow=sql_fetch_assoc($rs);
+	$ssrc=$myrow['#sortkey#']+0;
+	
+	if (!$ssrc) apperror('Sorting index corrupted; cannot switch positions');
+	
+	$query="select #sortkey# from #tablename# where #primarykey#=$dst";
+	$rs=sql_query($query,$db);
+	$myrow=sql_fetch_assoc($rs);
+	$sdst=$myrow['#sortkey#']+0;
+		
+	if (!$sdst) apperror('Sorting index corrupted; cannot switch positions');
+	
+	//echo "$src $ssrc < > $dst $sdst";
+
+	if ($ssrc==$sdst-1){list#tablename#(); return;}
+
+	if ($ssrc<$sdst) $query="select * from #tablename# where #masterkey#=$#masterkey# and #sortkey#>$ssrc and #sortkey#<$sdst order by #sortkey#";
+	if ($ssrc>$sdst) $query="select * from #tablename# where #masterkey#=$#masterkey# and #sortkey#<$ssrc and #sortkey#>=$sdst order by #sortkey# desc";
+
+	$prev=$ssrc;
+	$rs=sql_query($query,$db);
+	while ($myrow=sql_fetch_assoc($rs)){
+		$itemid=$myrow['#primarykey#']+0;
+		$itemsort=$myrow['#sortkey#'];
+		$query="update #tablename# set #sortkey#=$prev where #primarykey#=$itemid";
+		sql_query($query,$db);
+		$prev=$itemsort;	
+	}//while
+	
+	$query="update #tablename# set #sortkey#=$prev where #primarykey#=$src";
+	sql_query($query,$db);
+	
+	list#records#($#masterkey#);
+}

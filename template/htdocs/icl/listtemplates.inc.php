@@ -42,7 +42,7 @@ function listtemplates(){
 
 	if ($maxpage>0){
 ?>
-<div style="font-size:12px;padding:10px 0;">
+<div class="listpager">
 <?echo $page+1;?> of <?echo $maxpage+1;?>
 &nbsp;
 <a href=# onclick="ajxpgn('templatelist',document.appsettings.codepage+'?cmd=slv_core__templates&key='+encodeHTML(gid('templatekey').value)+'&page=<?echo $page-1;?>&mode=embed');return false;">&laquo; Prev</a>

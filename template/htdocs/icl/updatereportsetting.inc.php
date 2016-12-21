@@ -6,6 +6,7 @@ function updatereportsetting(){
 	$reportid=GETVAL('reportid');	
 	$reportname=QETSTR('reportname');
 	$reportgroup=QETSTR('reportgroup');
+	$reportfunc=QETSTR('reportfunc');
 	$reportkey=QETSTR('reportkey');
 	$reportdesc=QETSTR('reportdesc');
 
@@ -22,7 +23,7 @@ function updatereportsetting(){
 
 		
 
-	$query="update ".TABLENAME_REPORTS." set reportname='$reportname',reportgroup='$reportgroup',reportkey='$reportkey',reportdesc='$reportdesc',reportgroupnames='$reportgroupnames' where reportid=$reportid";
+	$query="update ".TABLENAME_REPORTS." set reportname='$reportname',reportgroup='$reportgroup',reportfunc='$reportfunc',reportkey='$reportkey',reportdesc='$reportdesc',reportgroupnames='$reportgroupnames' where reportid=$reportid";
 	sql_query($query,$db);
 
 	logaction("updated Report Settings #$reportid <u>$reportname</u>",

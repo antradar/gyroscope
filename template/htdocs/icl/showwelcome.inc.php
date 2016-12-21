@@ -69,7 +69,7 @@ function auto_welcome(){
 	
 ?>	
 	<div class="welcometile">
-	<a onclick="<?echo $action;?>"><img style="vertical-align:middle;margin-right:5px;" class="<?echo $ti['icon'];?>-light" src="imgs/t.gif" width="32" height="32"> <span style="vertical-align:middle;"><?echo $ti['title'];?></span></a>
+	<a onclick="<?echo $action;?>"><img style="vertical-align:middle;margin-right:5px;" class="<?echo $ti['icon'];?>-light" src="imgs/t.gif"> <span style="vertical-align:middle;"><?echo $ti['title'];?></span></a>
 	</div>
 	
 <?}//foreach

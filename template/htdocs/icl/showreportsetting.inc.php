@@ -17,6 +17,7 @@ function showreportsetting($reportid=null){
 	$reportname=$myrow['reportname'];
 	$reportgroup=$myrow['reportgroup'];
 	$reportkey=$myrow['reportkey'];
+	$reportfunc=$myrow['reportfunc'];
 	$reportdesc=$myrow['reportdesc'];
 	$reportgroups=explode('|',$myrow['reportgroupnames']);
 	$gyrosys=$myrow['gyrosys'];
@@ -30,9 +31,9 @@ function showreportsetting($reportid=null){
 <div class="section">
 	<div class="sectiontitle"><?echo $reportname;?></div>
 
-	<?if (!file_exists($pfn)){?>
+	<?if (!file_exists($pfn)&&$reportfunc==''){?>
 <div class="warnbox">
-	This report has not been implemented. Make sure "rpt<?echo $reportkey;?>" is handled.
+	This report has not been implemented with a default handler. Make sure "rpt<?echo $reportkey;?>" is handled.
 </div>	
 	<?}?>
 	
@@ -51,6 +52,11 @@ function showreportsetting($reportid=null){
 		<div class="formlabel"><?tr('reportsetting_label_reportkey');?>:</div>
 		<input class="inpmed" id="reportkey_<?echo $reportid;?>" value="<?echo htmlspecialchars($reportkey);?>">
 	</div>
+	<div class="inputrow">
+		<div class="formlabel"><?tr('reportsetting_label_reportfunc');?>:</div>
+		<input class="inpmed" id="reportfunc_<?echo $reportid;?>" value="<?echo htmlspecialchars($reportfunc);?>">
+	</div>
+	
 	<div class="inputrow">
 		<div class="formlabel"><?tr('reportsetting_label_reportdesc');?>:</div>
 		<textarea class="inplong" style="height:60px;" id="reportdesc_<?echo $reportid;?>"><?echo htmlspecialchars($reportdesc);?></textarea>

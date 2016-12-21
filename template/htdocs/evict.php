@@ -1,23 +1,20 @@
 <?php
 
 function evict_check(){
-	//get a list of usernames to evict. memcache recommended
 	
-	$logins=array();
-	
-	//$logins=array('admin'); //test; comment this out on live server
+	$blockedids=evict_getblockedids();
 	
 	$user=userinfo();
-	if (!isset($user)||!isset($user['login'])) return;
 	
-	$login=$user['login'];
-	if (in_array($login,$logins)) evict_user($login);
+	if (!isset($user)||!isset($user['login'])) return;
+	$userid=$user['userid'];
+	
+	if (in_array($userid,$blockedids)) evict_user();
 		
 }
 
-function evict_user($login){
+function evict_user(){
 	global $_COOKIE;
-	if (isset($_COOKIE['login'])) evict_clear($login);
 	
 	unset($_COOKIE['login']);
 	unset($_COOKIE['userid']);
@@ -31,12 +28,20 @@ function evict_user($login){
 	
 }
 
-function evict_set($login){
-	//place an eviction flag
-	
-}
 
-function evict_clear($login){
-	//notify the server that the user has already been kicked out; clear the flag
+function evict_getblockedids(){
+	global $db;
+	
+	//$blockedids=cache_get('gyroscopeblockedids');
+	//if (!$blockedids){
 		
+		$blockedids=array();
+		$query="select * from ".TABLENAME_USERS." where virtualuser=0 and active=0";
+		$rs=sql_query($query,$db);
+		while ($myrow=sql_fetch_assoc($rs)) array_push($blockedids,$myrow['userid']);
+	
+	//	cache_set('gyroscopeblockedids',$blockedids,3600*24*7);	
+	//}
+	
+	return $blockedids;	
 }

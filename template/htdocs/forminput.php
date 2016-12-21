@@ -1,7 +1,7 @@
 <?php
 
-function GETVAL($key){ $val=$_GET[$key]; if (!is_numeric($val)) apperror('apperror:invalid parameter '.$key); return $val;}
-function QETVAL($key){ $val=$_POST[$key]; if (!is_numeric($val)) apperror('apperror:invalid parameter '.$key); return $val;}
+function GETVAL($key){ $val=trim($_GET[$key]); if (!is_numeric($val)) apperror('apperror:invalid parameter '.$key); return $val;}
+function QETVAL($key){ $val=trim($_POST[$key]); if (!is_numeric($val)) apperror('apperror:invalid parameter '.$key); return $val;}
 function noapos($val){if (is_callable('sql_escape')) return sql_escape($val); return addslashes($val);}
 function GETSTR($key,$trim=1){$val=decode_unicode_url(isset($_GET[$key])?$_GET[$key]:null);if ($trim) $val=trim($val);return noapos($val); }
 function QETSTR($key,$trim=1){$val=decode_unicode_url(isset($_POST[$key])?$_POST[$key]:null);if ($trim) $val=trim($val);return noapos($val); }
@@ -55,7 +55,7 @@ function date2stamp($date,$hour=0,$min=0,$sec=0){
 	return mktime($hour,$min,$sec,$parts[1],$parts[2],$parts[0]);	
 }
 
-function apperror($str,$msg=null){if (!isset($msg)) $msg=$str;header('apperror: '.base64_encode($str));die('apperror - '.$msg);}
+function apperror($str,$msg=null,$func=null){if (!isset($msg)) $msg=$str;header('apperror: '.base64_encode($str));if (isset($func)) header('ERRFUNC: '.$func);die('apperror - '.$msg);}
 
 function encstr($str,$key){
 	$iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC);

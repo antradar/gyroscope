@@ -7,7 +7,7 @@ function addtemplate(){
 	$templatename=QETSTR('templatename');
 		
 	global $db;
-	
+		
 	$query="insert into templates (templatetypeid,templatename) values ($templatetypeid,'$templatename') ";
 	$rs=sql_query($query,$db);
 	$templateid=sql_insert_id($db,$rs)+0;

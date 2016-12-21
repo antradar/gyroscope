@@ -1,0 +1,31 @@
+.admin-logout{background:transparent url(imgs/toolbar_kpw.gif) no-repeat 0 0;}	
+.admin-settings{background:transparent url(imgs/toolbar_kpw.gif) no-repeat 0 -32px;}	
+.admin-user{background:transparent url(imgs/toolbar_kpw.gif) no-repeat -32px -32px;}
+.img-addrec{background:transparent url(imgs/toolbar_kpw.gif) no-repeat -64px -64px;}	
+
+.beltprev{border:none;background:transparent url(imgs/toolbar_kpw.gif) no-repeat -64px 0;width:16px;height:32px;vertical-align:middle;}
+.beltnext{border:none;background:transparent url(imgs/toolbar_kpw.gif) no-repeat -80px 0;width:16px;height:32px;vertical-align:middle;}
+
+.img-del{border:none;background:transparent url(imgs/toolbar_kpw.gif) no-repeat -104px -64px;width:24px;height:24px;vertical-align:middle;}
+.img-save{border:none;background:transparent url(imgs/toolbar_kpw.gif) no-repeat -104px -104px;width:24px;height:24px;vertical-align:middle;}
+.img-tick{border:none;background:transparent url(imgs/toolbar_kpw.gif) no-repeat -64px -106px;width:24px;height:24px;vertical-align:middle;}
+.img-xls{border:none;background:transparent url(imgs/toolbar_kpw.gif) no-repeat -64px -104px;width:24px;height:24px;vertical-align:middle;}
+.img-pdf{border:none;background:transparent url(imgs/toolbar_kpw.gif) no-repeat -142px -104px;width:24px;height:24px;vertical-align:middle;}
+
+.img-up{border:none;background:transparent url(imgs/toolbar_kpw.gif) no-repeat 0 -64px;width:24px;height:24px;vertical-align:middle;}
+.img-down{border:none;background:transparent url(imgs/toolbar_kpw.gif) no-repeat -24px -64px;width:24px;height:24px;vertical-align:middle;}
+
+.daylightsaving{border:none;background:transparent url(imgs/toolbar_kpw.gif) no-repeat -64px -40px;width:24px;height:24px;vertical-align:top;}
+
+.img-closeall{background:transparent url(imgs/toolbar_kpw.gif) no-repeat -42px -2px;vertical-align:middle;margin-right:2px;}
+
+.img-settings{background:transparent url(imgs/toolbar_kpw.gif) no-repeat -768px 0;}
+.img-settings-light{background:transparent url(imgs/toolbar_kpw.gif) no-repeat -768px -64px;}
+
+.img-reports{background:transparent url(imgs/toolbar_kpw.gif) no-repeat -448px 0;}
+.img-reports-light{background:transparent url(imgs/toolbar_kpw.gif) no-repeat -448px -64px;}
+
+
+.img-clock{width:24px;height:24px;background:transparent url(imgs/toolbar_kpw.gif) no-repeat 0 -104px;}
+.img-tracker{background:transparent url(imgs/toolbar_kpw.gif) no-repeat -576px 0;}
+.img-tracker-light{background:transparent url(imgs/toolbar_kpw.gif) no-repeat -576px -64px;}

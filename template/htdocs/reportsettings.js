@@ -19,6 +19,7 @@ addreportsetting=function(){
 	var suffix='new';
 	var oreportname=gid('reportname_'+suffix);
 	var oreportgroup=gid('reportgroup_'+suffix);
+	var oreportfunc=gid('reportfunc_'+suffix);
 	var oreportkey=gid('reportkey_'+suffix);
 	var oreportdesc=gid('reportdesc_'+suffix);
 
@@ -39,12 +40,14 @@ addreportsetting=function(){
 
 	var reportname=encodeHTML(oreportname.value);
 	var reportgroup=encodeHTML(oreportgroup.value);
+	var reportfunc=encodeHTML(oreportfunc.value);	
 	var reportkey=encodeHTML(oreportkey.value);
 	var reportdesc=encodeHTML(oreportdesc.value);
 	
 	var params=[];
 	params.push('reportname='+reportname);
 	params.push('reportgroup='+reportgroup);
+	params.push('reportfunc='+reportfunc);
 	params.push('reportkey='+reportkey);
 	params.push('reportdesc='+reportdesc);
 
@@ -60,6 +63,7 @@ updatereportsetting=function(reportid,roles){
 	var suffix=reportid;
 	var oreportname=gid('reportname_'+suffix);
 	var oreportgroup=gid('reportgroup_'+suffix);
+	var oreportfunc=gid('reportfunc_'+suffix);
 	var oreportkey=gid('reportkey_'+suffix);
 	var oreportdesc=gid('reportdesc_'+suffix);
 
@@ -80,6 +84,7 @@ updatereportsetting=function(reportid,roles){
 	
 	var reportname=encodeHTML(oreportname.value);
 	var reportgroup=encodeHTML(oreportgroup.value);
+	var reportfunc=encodeHTML(oreportfunc.value);
 	var reportkey=encodeHTML(oreportkey.value);
 	var reportdesc=encodeHTML(oreportdesc.value);
 	
@@ -94,6 +99,7 @@ updatereportsetting=function(reportid,roles){
 	var params=[];
 	params.push('reportname='+reportname);
 	params.push('reportgroup='+reportgroup);
+	params.push('reportfunc='+reportfunc);
 	params.push('reportkey='+reportkey);
 	params.push('reportdesc='+reportdesc);
 	params.push('reportgroupnames='+reportgroupnames);

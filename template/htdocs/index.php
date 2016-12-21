@@ -5,6 +5,7 @@ if (isset($usehttps)&&$usehttps) include 'https.php';
 include 'mswitch.php'; //auto switch to mobile version
 
 
+include 'connect.php';
 include 'settings.php';
 
 include 'evict.php';

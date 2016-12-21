@@ -2,6 +2,7 @@
 include 'lb.php';
 if ($usehttps) include 'https.php';
 
+include 'connect.php';
 include 'settings.php';
 include 'retina.php';
 
@@ -115,12 +116,6 @@ body{font-family:helvetica;}
 	<a id="fsclose" onclick="closefs();"><img width="10" height="10" class="img-closeall" src="imgs/t.gif"></a>
 </div>
 <div id="fsview"></div>
-<div style="display:none">
-<video loop id="nosleepvideo">
-	<source src="nosleep.webm" type="video/webm">
-	<source src="nosleep.mp4" type="video/mp4">
-</video>
-</div>
 
 <script>
 document.appsettings={codepage:'<?echo $codepage;?>',fastlane:'<?echo $fastlane;?>', views:<?echo json_encode(array_keys($toolbaritems));?>};
@@ -136,8 +131,6 @@ hdpromote('toolbar_hd.css');
 <script src="autocomplete.js"></script>
 
 <script>
-
-gid('nosleepvideo').play();
 
 function showdeck(){
 	switch(document.viewmode){

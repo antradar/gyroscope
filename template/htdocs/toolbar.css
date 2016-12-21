@@ -2,8 +2,26 @@
 use toolbar.psp to generate toolbar.gif
 */
 
-.hovlink, .hovlink:visited, .hovlink:hover, .hovlink:link{color:#29ABE2;}
-.hovlink:hover{text-decoration:underline;}
+
+.listpager{padding:10px 0;font-size:12px;}
+#calepicker{font-size:12px;width:100%;height:200px;margin:0 auto;margin-top:5px;}
+
+.ssrp_title{font-family:arial, sans-serif; font-size:18px; color:#1A0DAB;line-height:21.6px;}
+.ssrp_link{font-family:arial, sans-serif; color:#006621; font-size:14px;line-height:16px;}
+.ssrp_desc{font-family:arial, sans-serif; color:#545454; font-size:13px;line-height:18.2px;}
+
+.hovlink, .hovlink:visited, .hovlink:hover, .hovlink:link,
+.listitem .hovlink, .listitem .hovlink:visited, .listitem .hovlink:hover, .listitem .hovlink:link{color:#29ABE2;text-decoration:none;}
+
+.hovlink:hover, .listitem .hovlink:hover{text-decoration:underline;}
+
+input:disabled{
+	color:#000000;
+	background-color:#F8F8F8;
+}
+
+#gyroscope_updater{font-size:13px;}
+.footerpoweredby{font-size:12px;}
 
 .admin-logout{background:transparent url(imgs/toolbar.gif) no-repeat 0 0;}	
 .admin-settings{background:transparent url(imgs/toolbar.gif) no-repeat 0 -16px;}	

@@ -79,18 +79,18 @@ function rptactionlog(){
 ?>
 
 <form onsubmit="reloadtab('rptactionlog',null,'rptactionlog&key='+encodeHTML(gid('actionlog_key').value)+'&pairs='+encodeHTML(gid('actionlog_pairs').value),null,null,{persist:true});return false;">
-Search: <input id="actionlog_key" placeholder="Keyword in Action" value="<?echo stripslashes($key);?>"> 
-	<input id="actionlog_pairs" placeholder="Advanced Pattern" value="<?echo stripslashes($opairs);?>"> <input type="submit" value="Go">
+Search: <input class="inp" style="width:30%;" id="actionlog_key" placeholder="Keyword in Action" value="<?echo stripslashes($key);?>"> 
+	<input class="inp" style="width:30%;" id="actionlog_pairs" placeholder="Advanced Pattern" value="<?echo stripslashes($opairs);?>"> <input class="button" type="submit" value="Go">
 </form>
 
-<div style="padding:20px 30px;font-size:16px;<?if ($key!=''||$opairs!='') echo 'display:none;';?>">
+<div style="padding:20px 30px;<?if ($key!=''||$opairs!='') echo 'display:none;';?>">
 <?if (isset($prevday)){?>
-<a onclick="reloadtab('rptactionlog',null,'rptactionlog&date=<?echo $prevday;?>',null,null,{persist:true});"><img class="img-calel" width="5" height="12" src="imgs/t.gif"></a> 
+<a onclick="reloadtab('rptactionlog',null,'rptactionlog&date=<?echo $prevday;?>',null,null,{persist:true});">&laquo;</a> 
 <?}?>
-&nbsp; &nbsp; <span style="font-size:18px;"><?echo date('M j, Y',$now);?></span>
+&nbsp; &nbsp; <a class="hovlink" onclick="pickdate(gid('rptactionlogdate'));"><?echo date('M j, Y',$now);?></a><input type="hidden" id="rptactionlogdate" value="<?echo date('Y-n-j',$now);?>" onchange="reloadtab('rptactionlog',null,'rptactionlog&date='+this.value,null,null,{persist:true});">
 &nbsp; &nbsp;
 <?if (isset($nextday)){?>
-<a onclick="reloadtab('rptactionlog',null,'rptactionlog&date=<?echo $nextday;?>',null,null,{persist:true});"><img class="img-caler" width="5" height="12" src="imgs/t.gif"></a>
+<a onclick="reloadtab('rptactionlog',null,'rptactionlog&date=<?echo $nextday;?>',null,null,{persist:true});">&raquo;</a>
 <?}?>
 </div>
 

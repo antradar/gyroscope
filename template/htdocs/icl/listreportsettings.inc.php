@@ -20,7 +20,7 @@ function listreportsettings(){
 	</form>
 
 	<div style="padding-top:10px;">
-	<a class="recadder" onclick="addtab('reportsetting_new','<?tr('list_reportsetting_add_tab');?>','newreportsetting');"> <img src="imgs/t.gif" class="img-addrec" width="18" height="18"><?tr('list_reportsetting_add');?></a>
+	<a class="recadder" onclick="addtab('reportsetting_new','<?tr('list_reportsetting_add_tab');?>','newreportsetting');"> <img src="imgs/t.gif" class="img-addrec"><?tr('list_reportsetting_add');?></a>
 	</div>
 </div>
 
@@ -47,7 +47,7 @@ function listreportsettings(){
 
 	if ($maxpage>0){
 ?>
-<div style="font-size:12px;padding:10px 0;">
+<div class="listpager">
 <?echo $page+1;?> of <?echo $maxpage+1;?>
 &nbsp;
 <a href=# onclick="ajxpgn('reportsettinglist',document.appsettings.codepage+'?cmd=slv_core__reportsettings&key='+encodeHTML(gid('reportsettingkey').value)+'&page=<?echo $page-1;?>&mode=embed');return false;">&laquo; Prev</a>

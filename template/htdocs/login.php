@@ -165,6 +165,17 @@ body{padding:0;margin:0;background:transparent url(imgs/bgtile.png) repeat;font-
 	.powered{text-align:center;}
 	.powered span{display:block;padding-top:3px;}
 }
+
+<?if ($_GET['kpw']||preg_match('/kindle/i',$_SERVER['HTTP_USER_AGENT'])){?>
+body{font-size:28px;}
+#loginbox__{width:640px;background-color:#dedede;margin-top:150px;border-radius:8px;}
+#loginbox_{padding:20px;}
+.powered{font-size:24px;width:640px;padding-top:20px;}
+#login, #password{height:45px;font-size:32px;line-height:32px;}
+#loginbutton{height:auto;padding:6px 0;font-size:28px;width:280px;-webkit-appearance: none;}
+<?}?>
+
+
 </style>
 </head>
 <body>

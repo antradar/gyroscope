@@ -1,0 +1,22 @@
+.navgroup{border:solid 1px #dedede;padding:20px;margin:0;margin-bottom:20px;}
+.navtitle{text-transform:uppercase;margin-bottom:10px;font-size:38px;font-weight:bold;color:#333333;}
+
+.neglabel{font-style:italic;font-size:30px;margin-bottom:10px;}
+.neggroup{padding-left:40px;margin-bottom:20px;font-size:30px;}
+
+.navfilter{margin-bottom:10px;}
+.navfilter a, .navfilter a:hover, .navfilter a:visited, .navfilter a:link{text-decoration:none;color:#333333;}
+.navfilter a:hover{text-decoration:underline;}
+.navfilter em{color:#666666;font-size:30px;}
+
+.navfilter .filterclear, .navfilter .filterclear:hover, .navfilter .filterclear:link, .navfilter .filterclear:visited{text-decoration:none;color:#ab0200;}
+.filterclear, .filterclear:hover, .filterclear:link, .filterclear:visited{text-decoration:none;color:#ab0200;}
+.navfilter .filterneg, .navfilter .filterneg:hover, .navfilter .filterneg:link, .navfilter .filterneg:visited{text-decoration:none;color:#ab0200;}
+
+.filterneg acronym{border:none;text-decoration:none;}
+
+.filterneg{display:none;}
+
+.navopen, .navclose{text-align:center;margin-bottom:10px;background:#222222;padding:4px 0;font-size:22px;}
+.navopen{border-radius:0 0 20px 20px;}
+.navopen a, .navclose a{display:block;color:#ffffff;}

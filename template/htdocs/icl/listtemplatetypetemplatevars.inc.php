@@ -22,14 +22,18 @@ function listtemplatetypetemplatevars($templatetypeid=null){
 	<div style="margin-bottom:10px;">
 		<span class="labelbutton"><?echo $varname;?></span>
 		&nbsp; &nbsp; <a onclick="deltemplatevar(<?echo $templatevarid;?>,<?echo $templatetypeid;?>);"><img src="imgs/t.gif" class="img-del"></a> &nbsp; 
-		<span style="font-size:12px;"><?echo $vardesc;?></span>
+		<span><?echo $vardesc;?></span>
 		
 	</div>
 	<?	
 	}//while
 	
 ?>
-	<div style="padding-top:10px;margin-bottom:10px;"><b>Add a new variable:</b></div>
+	<div style="padding-top:10px;margin-bottom:10px;"><b>Add a new variable:</b> &nbsp; <a class="labelbutton" onclick="showhide('quickvars_<?echo $templatetypeid;?>_');">quick edit</a></div>
+	<div id="quickvars_<?echo $templatetypeid;?>_" style="display:none;margin-bottom:20px;">
+		<textarea class="inplong" id="quickvars_<?echo $templatetypeid;?>"><?foreach ($vars as $var){echo $var['templatevarname'].'|'.$var['templatevardesc']."\r\n";}?></textarea>
+		<button onclick="batchsavetemplatevars(<?echo $templatetypeid;?>);">Update</button>
+	</div>
 	<div class="inputrow">
 		<div class="formlabel">Variable:</div>
 		<input class="inpshort" id="templatevarname_<?echo $templatetypeid;?>">
@@ -47,7 +51,7 @@ function listtemplatetypetemplatevars($templatetypeid=null){
 	</div>
 	
 	<div id="templatevarscode_<?echo $templatetypeid;?>" style="display:none;">
-		<textarea class="inplong" style="height:200px;">
+		<textarea class="inplong">
 	//include 'maketemplate.inc.php';
 	$template=maketemplate('<?echo $templatetypekey;?>',array(
 

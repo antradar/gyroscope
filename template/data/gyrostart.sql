@@ -79,6 +79,7 @@ CREATE TABLE `reports` (
   `reportname` varchar(255) NOT NULL,
   `reportgroup` varchar(255) NOT NULL,
   `reportdesc` longtext,
+  `reportfunc` varchar(255) NULL,
   `reportkey` varchar(255) NOT NULL,
   `reportgroupnames` varchar(255) NOT NULL,
   `gyrosys` tinyint(1) unsigned NOT NULL DEFAULT '0',
@@ -89,5 +90,5 @@ CREATE TABLE `reports` (
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 
-INSERT INTO `reports` VALUES (1, 'Activity Log', 'Security', 'This report is mostly used by system administrators for diagnostic purposes.', 'actionlog', 'admins', 1);
+INSERT INTO `reports` VALUES (1, 'Activity Log', 'Security', 'This report is mostly used by system administrators for diagnostic purposes.',NULL,'actionlog', 'admins', 1);
     

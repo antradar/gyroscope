@@ -25,7 +25,7 @@ function listtemplatetypes(){
 	if ($user['groups']['systemplate']){
 	?>
 	<div style="padding-top:10px;">
-	<a class="recadder" onclick="addtab('templatetype_new','<?tr('list_templatetype_add_tab');?>','newtemplatetype');"> <img src="imgs/t.gif" class="img-addrec" width="18" height="18"><?tr('list_templatetype_add');?></a>
+	<a class="recadder" onclick="addtab('templatetype_new','<?tr('list_templatetype_add_tab');?>','newtemplatetype');"> <img src="imgs/t.gif" class="img-addrec"><?tr('list_templatetype_add');?></a>
 	</div>
 	<?
 	}
@@ -55,7 +55,7 @@ function listtemplatetypes(){
 
 	if ($maxpage>0){
 ?>
-<div style="font-size:12px;padding:10px 0;">
+<div class="listpager">
 <?echo $page+1;?> of <?echo $maxpage+1;?>
 &nbsp;
 <a href=# onclick="ajxpgn('templatetypelist',document.appsettings.codepage+'?cmd=slv_core__templatetypes&key='+encodeHTML(gid('templatetypekey').value)+'&page=<?echo $page-1;?>&mode=embed');return false;">&laquo; Prev</a>

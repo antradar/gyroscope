@@ -66,7 +66,7 @@ function #entity#_strfilters($filters,$nfilters=null){
 	$filter='';
 	foreach ($filters as $key=>$val){
 		if (is_array($val)) foreach ($val as $k=>$v) $filter.='&'.$key.'['.urlencode($k).']=1';
-		else $filter.="&$key=$val";
+		else $filter.='&'.urlencode($key).'='.urlencode($val);
 
 	}
 	
@@ -267,15 +267,29 @@ function #entity#_shownavs($container, $cmd){
 	$nbasefilter=$bfilters['nfilters'];
 	$filters=#entity#_strfilters($basefilter,$nbasefilter);
 
+	$vfilters=$basefilter;
+	unset($vfilters['visible']);
+	$vfilter=#entity#_strfilters($vfilters,$nbasefilter);
+
 ?>
 	<div style="padding:10px;display:nonea;">
 		<input id="searchfilter_#entity#" type="hiddena" value="<?echo $filters;?>" style="border:dashed 1px #dedede;width:100%;">
 	</div>
 <?	
-			
+	if (!$basefilter['visible']){
+		
+?>	
+	<div class="navopen"><a onclick="nav#entity#_setfilter('<?echo $container;?>','<?echo $cmd;?>','<?echo $vfilter;?>&visible=1');">show filters</a></div>
+<?			
+	} else {
+?>
+	<div class="navclose"><a onclick="nav#entity#_setfilter('<?echo $container;?>','<?echo $cmd;?>','<?echo $vfilter;?>&visible=0');">hide filters</a></div>	
+<?			
+		
 #iterator-dimlist-gsshowdim#	
 #iterator-multifields-gsshowmulti#
 #iterator-rangelist-gsrangeshownav#
+	}
 	
 }
 

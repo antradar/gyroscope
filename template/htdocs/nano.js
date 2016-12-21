@@ -6,6 +6,8 @@ License: www.antradar.com/license.php
 Documentation: www.antradar.com/docs-nano-ajax-manual
 
 Warning: this copy of Nano Ajax Library is modified for running in Gyroscope. Use the public version for general purpose applications.
+
+ver g3.0
 */
 
 function gid(d){return document.getElementById(d);}
@@ -40,14 +42,15 @@ function reajxpgn(c,p){
 		if (p) reajxpgn(p); else console.warn('reload params not set');
 		return;
 	}
-	ajxpgn(c,ct.reloadparams.u,ct.reloadparams.d,ct.reloadparams.e,ct.reloadparams.data,ct.reloadparams.callack,ct.reloadparams.slowtimer);		
+	ajxpgn(c,ct.reloadparams.u,ct.reloadparams.d,ct.reloadparams.e,ct.reloadparams.data,ct.reloadparams.callack,ct.reloadparams.slowtimer,ct.reloadparams.runonce);		
 }
 
-function ajxpgn(c,u,d,e,data,callback,slowtimer){
+function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce){
 	var ct=gid(c);
 	if (ct==null) return;
+	if (runonce&&ct.reqobj!=null) return;
 	
-	ct.reloadparams={u:u,d:d,e:e,data:data,callback:callback,slowtimer:slowtimer};
+	ct.reloadparams={u:u,d:d,e:e,data:data,callback:callback,slowtimer:slowtimer,runonce:runonce};
 	
 	if (document.wssid) u=u+'&wssid_='+document.wssid;
 			
@@ -67,13 +70,17 @@ function ajxpgn(c,u,d,e,data,callback,slowtimer){
 
 			if (ct.slowtimer) clearTimeout(ct.slowtimer);
 			
+
 			var apperror=rq.getResponseHeader('apperror');
 			if (apperror!=null&&apperror!=''){
-				alert('Error: '+Base64.decode(apperror));
-				
+				var errfunc=rq.getResponseHeader('errfunc');
+				if (errfunc!=null&&errfunc!=''&&self[errfunc.toLowerCase()]){
+					self[errfunc.toLowerCase()](Base64.decode(apperror));
+				} else alert(Base64.decode(apperror));
 				return;	
 			}
 			
+			if (ct.abortflag) {ct.abortflag=null;return;}
 			
 			ct.innerHTML=rq.responseText;
 			
@@ -93,7 +100,7 @@ function ajxpgn(c,u,d,e,data,callback,slowtimer){
 	
 	var rq=xmlHTTPRequestObject();
 	
-	if (ct.reqobj!=null) ct.reqobj.abort();
+	if (ct.reqobj!=null)  {ct.abortflag=1;ct.reqobj.abort();}
 	ct.reqobj=rq;
 	if (!slowtimer) slowtimer=800;
 	
@@ -126,10 +133,14 @@ function xajx(url){
 	}
 	
 	var xjs=document.xjs_transport;
-	xjs.innerHTML='';
 	var rq=document.createElement('script');
 	rq.setAttribute('src',url);
-	xjs.appendChild(rq);  
+	xjs.appendChild(rq);
+	
+	if (xjs.gc) clearTimeout(xjs.gc);
+	xjs.gc=setTimeout(function(){
+		xjs.innerHTML='';
+	},3000);  
 }
 
 

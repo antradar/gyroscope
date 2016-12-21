@@ -11,7 +11,7 @@ function listusers(){
 	
 	$user=userinfo();
 	$myuserid=$user['userid']+0;
-	
+		
 	if (!isset($user['groups']['accounts'])) die('<div class="section">You cannot manage user accounts</div>');
 	
 	if ($mode!='embed'){
@@ -29,7 +29,7 @@ function listusers(){
 
 
 	<div style="padding-top:10px;">
-	<a class="recadder" onclick="addtab('user_new','<?tr('list_user_add_tab');?>','newuser');"> <img src="imgs/t.gif" class="img-addrec" width="18" height="18"><?tr('list_user_add');?></a>
+	<a class="recadder" onclick="addtab('user_new','<?tr('list_user_add_tab');?>','newuser');"> <img src="imgs/t.gif" class="img-addrec"><?tr('list_user_add');?></a>
 	</div>
 </div>
 
@@ -51,7 +51,7 @@ function listusers(){
 
 	if ($maxpage>0){
 ?>
-<div style="font-size:12px;padding:10px 0;">
+<div class="listpager">
 <?echo $page+1;?> of <?echo $maxpage+1;?>
 &nbsp;
 <a href=# onclick="ajxpgn('userlist',document.appsettings.codepage+'?cmd=slv_core__users&page=<?echo $page-1;?>&mode=embed');return false;">&laquo; Prev</a>

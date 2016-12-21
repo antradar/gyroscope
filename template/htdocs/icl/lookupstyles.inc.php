@@ -30,17 +30,22 @@ function lookupstyles(){
 			
 		break;
 		default: echo 'undefined style handler '.$mode;
-	}	
+	}
+
+	if ($_SERVER['REMOTE_ADDR']=='127.0.0.1'){	
 ?>
-	<div style="padding:20px 0;font-size:12px;color:#444444;line-height:1.5em;"><em>
+	<div class="infobox"><em>
 		Developer notes: Styles are defined in
 		<ul>
 		<li>toolbar.css</li>
-		<li>tine_mce/editor.css</li>
+		<li>tiny_mce/editor.css</li>
 		<li>../style.css</li>
 		</ul>
 	</em>
-	</div>	
+	</div>
+<?
+	}
+?>
 </div>
 <?
 }

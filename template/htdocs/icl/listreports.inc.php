@@ -36,6 +36,7 @@ function listreports(){
 		$reportkey=$myrow['reportkey'];
 		$reportname=$myrow['reportname'];
 		$reportgroup=$myrow['reportgroup'];
+		$reportfunc=$myrow['reportfunc'];
 		$dbreportname=noapos(htmlspecialchars($reportname));
 		$reportgroupnames=explode('|',$myrow['reportgroupnames']);
 		$test=array_intersect($reportgroupnames,array_keys($groupnames));
@@ -50,7 +51,7 @@ function listreports(){
 		}
 ?>
 	<div class="listitem">
-		<a onclick="reloadtab('rpt<?echo $reportkey;?>','<?echo $dbreportname;?>','rpt<?echo $reportkey;?>',(self.rptreload_<?echo $reportkey;?>?rptreload_<?echo $reportkey;?>:null));addtab('rpt<?echo $reportkey;?>','<?echo $dbreportname;?>','rpt<?echo $reportkey;?>',(self.rptinit_<?echo $reportkey;?>?rptinit_<?echo $reportkey;?>:null));"><?echo $reportname;?></a>
+		<a onclick="<?echo $reportfunc;?>reloadtab('rpt<?echo $reportkey;?>','<?echo $dbreportname;?>','rpt<?echo $reportkey;?>',(self.rptreload_<?echo $reportkey;?>?rptreload_<?echo $reportkey;?>:null));addtab('rpt<?echo $reportkey;?>','<?echo $dbreportname;?>','rpt<?echo $reportkey;?>',(self.rptinit_<?echo $reportkey;?>?rptinit_<?echo $reportkey;?>:null));"><?echo $reportname;?></a>
 	</div>
 <?		
 	}//while

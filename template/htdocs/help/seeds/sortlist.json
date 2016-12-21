@@ -2,16 +2,12 @@
 "fields":[
 	{"field":"viewindex","disp":"Module Key","def":"codegen.clients"},
 	{"field":"record","disp":"Record Entity Name","def":"client"},
-	{"field":"c_record","disp":"Record Entity Label","def":"Client"},
 	{"field":"records","disp":"Record Entity Name (Plural)","def":"clients"},
-	{"field":"c_records","disp":"Record Entity Label (Plural)","def":"Clients"},
 
 	{"field":"tablename","disp":"DB Table Name","def":"clients"},
 	{"field":"primarykey","disp":"Primary Key","def":"clientid"},
-	{"field":"sortkey","disp":"Sort Key","def":"clientsort"},
-	
-	{"field":"dispfield","disp":"Display Field Name","def":"fname"}
-		
+	{"field":"sortkey","disp":"Sort Key","def":"clientsort"}
+			
 ],
 
 "templates":[

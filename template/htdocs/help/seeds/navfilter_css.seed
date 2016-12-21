@@ -1,8 +1,8 @@
-.navgroup{border:solid 1px #dedede;padding:10px;margin:0;margin-bottom:20px;}
+.navgroup{border:solid 1px #dedede;padding:10px;margin:0;margin-bottom:10px;}
 .navtitle{text-transform:uppercase;margin-bottom:5px;font-size:14px;font-weight:bold;color:#333333;}
 
 .neglabel{font-style:italic;font-size:14px;margin-bottom:5px;}
-.neggroup{padding-left:20px;margin-bottom:20px;font-size:14px;}
+.neggroup{padding-left:20px;margin-bottom:10px;font-size:14px;}
 
 .navfilter{margin-bottom:5px;}
 .navfilter a, .navfilter a:hover, .navfilter a:visited, .navfilter a:link{text-decoration:none;color:#333333;}
@@ -14,3 +14,9 @@
 .navfilter .filterneg, .navfilter .filterneg:hover, .navfilter .filterneg:link, .navfilter .filterneg:visited{text-decoration:none;color:#ab0200;}
 
 .filterneg acronym{border:none;text-decoration:none;}
+
+.filterneg{display:nonea;}
+
+.navopen, .navclose{text-align:center;margin-bottom:10px;background:#dedede;padding:2px 0;font-size:11px;}
+.navopen{border-radius:0 0 10px 10px;}
+.navopen a, .navclose a{display:block;color:#29ABE2;}

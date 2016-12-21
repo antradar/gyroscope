@@ -87,7 +87,7 @@ pickdatetime(null,{start:'<?echo $hstart;?>',end:'<?echo $hend;?>',mini:<?echo $
 if (!document.hotspot) {pickdate(null,{mini:<?echo $mini;?>,tz:'<?echo $tz;?>'},'<?echo "$ny-$nm"?>');return;} document.hotspot.value='<?echo "$ny-$nm"?>';pickdate(document.hotspot,{mini:<?echo $mini;?>,tz:'<?echo $tz;?>'},null);<?}?>"><img class="img-caler" src="imgs/t.gif" width="5" height="12"></span>
 </div>
 
-<div id="calepicker" style="font-size:12px;width:100%;height:200px;margin:0 auto;margin-top:5px;">
+<div id="calepicker">
 <?for ($i=0;$i<7;$i++){?>
 <div style="width:14%;float:left;">
 <div style="height:20px;border:solid 1px #ffffff;margin-left:1px;"><?echo $wdays[$i];?></div>
@@ -101,7 +101,7 @@ if (!document.hotspot) {pickdate(null,{mini:<?echo $mini;?>,tz:'<?echo $tz;?>'},
 <?
 for ($i=1;$i<=$ld;$i++){
 ?>
-<div onclick="<?if ($mode!='datetime'){?>if (document.hotspot) {document.hotspot.value='<?echo "$y-$m-$i"?>'; if (document.hotspot.lookupview) document.hotspot.lookupview.style.display='none';if (gid(document.hotspot.id+'_lookup')) gid(document.hotspot.id+'_lookup').style.display='none';}else showday('<?echo "$y-$m-$i"?>');<?} else {?>gid('cale_daypicker').style.display='none';ajxpgn('timepicker',document.appsettings.codepage+'?cmd=showtimepicker&y=<?echo $y;?>&m=<?echo $m;?>&d=<?echo $i;?>&start=<?echo $hstart;?>&end=<?echo $hend;?>&res=60&tz=<?echo $tz;?>',1);<?}?>" style="cursor:pointer;width:14%;float:left;">
+<div onclick="<?if ($mode!='datetime'){?>if (document.hotspot) {document.hotspot.value='<?echo "$y-$m-$i"?>';if (document.hotspot.onchange) document.hotspot.onchange();if (document.hotspot.lookupview) document.hotspot.lookupview.style.display='none';if (gid(document.hotspot.id+'_lookup')) gid(document.hotspot.id+'_lookup').style.display='none';}else showday('<?echo "$y-$m-$i"?>');<?} else {?>gid('cale_daypicker').style.display='none';ajxpgn('timepicker',document.appsettings.codepage+'?cmd=showtimepicker&y=<?echo $y;?>&m=<?echo $m;?>&d=<?echo $i;?>&start=<?echo $hstart;?>&end=<?echo $hend;?>&res=60&tz=<?echo $tz;?>',1);<?}?>" style="cursor:pointer;width:14%;float:left;">
 <div style="height:25px;border:solid 1px #444444;margin:1px;<?if ($today=="$y-$m-$i") echo 'font-weight:bold;color:#ab0200';?>"><?echo $i;?>
 </div></div>
 <?

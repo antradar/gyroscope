@@ -61,4 +61,6 @@ function updateuser(){
 	reauth();
 	showuser($userid);
 	
+	//cache_delete('gyroscopeblockedids');
+	
 }

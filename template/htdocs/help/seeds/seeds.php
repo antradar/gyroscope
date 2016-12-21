@@ -13,7 +13,12 @@ $codegen_seeds=array(
 	'uploader'=>array('name'=>'1-N File Uploader','desc'=>'A file uploader uses a data table to assign unique IDs to each upload;<br>The files will be renamed to have a generic extension.','icon'=>'upload'),
 	'break2'=>array('type'=>'break'),
 	'tinymce'=>array('name'=>'Rich Text Editor','desc'=>'','icon'=>''),
-	'sortlist'=>array('name'=>'Drag & Drop Sort List','desc'=>'','icon'=>''),
+	'sortlists'=>array('name'=>'Drag & Drop Sort List','icon'=>'','package'=>1,
+		'items'=>array(
+			'sortlist'=>array('name'=>'List View','desc'=>'','icon'=>''),
+			'dsortlist'=>array('name'=>'Direct List (1-N)','desc'=>'','icon'=>'')
+		)
+	),
 	
 	'fnav'=>array('name'=>'Faceted navigation','icon'=>'','package'=>1,
 		'items'=>array(

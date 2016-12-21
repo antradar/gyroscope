@@ -16,6 +16,8 @@
 .qnaq{background:#ffeeee;padding:10px;margin-bottom:5px;}
 .qnaa{background:#eeffee;padding:10px;margin-bottom:10px;}
 
+.reflink{border:dotted 1px #2AABE2;padding:3px 4px;font-size:14px;background:#E4F5FC;color:#444444;}
+
 img.full{width:100%;height:auto;}
 img.left{width:30%;height:auto;margin-right:2%;float:left;}
 img.right{width:30%;height:auto;margin-left:2%;float:right;}

@@ -20,7 +20,7 @@ function list#records#(){
 	</form>
 
 	<div style="padding-top:10px;">
-	<a class="recadder" onclick="addtab('#record#_new','<?tr('list_#record#_add_tab');?>','new#record#');"> <img src="imgs/t.gif" class="img-addrec" width="18" height="18"><?tr('list_#record#_add');?></a>
+	<a class="recadder" onclick="addtab('#record#_new','<?tr('list_#record#_add_tab');?>','new#record#');"> <img src="imgs/t.gif" class="img-addrec"><?tr('list_#record#_add');?></a>
 	</div>
 </div>
 
@@ -47,7 +47,7 @@ function list#records#(){
 
 	if ($maxpage>0){
 ?>
-<div style="font-size:12px;padding:10px 0;">
+<div class="listpager">
 <?echo $page+1;?> of <?echo $maxpage+1;?>
 &nbsp;
 <a href=# onclick="ajxpgn('#record#list',document.appsettings.codepage+'?cmd=slv_#fviewindex#&key='+encodeHTML(gid('#record#key').value)+'&page=<?echo $page-1;?>&mode=embed');return false;">&laquo; Prev</a>

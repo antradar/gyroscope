@@ -119,7 +119,7 @@ addtemplatevar=function(templatetypeid){
 	var varname=encodeHTML(ovarname.value);
 	var vardesc=encodeHTML(ovardesc.value);
 	
-	ajxpgn('templatetypetemplatevars_'+templatetypeid,document.appsettings.codepage+'?cmd=addtemplatevar&templatetypeid='+templatetypeid+'&varname='+varname+'&vardesc='+vardesc);
+	ajxpgn('templatetypetemplatevars_'+templatetypeid,document.appsettings.codepage+'?cmd=addtemplatevar&templatetypeid='+templatetypeid+'&varname='+varname+'&vardesc='+vardesc,0,0,null,null,1);
 		
 }
 
@@ -129,3 +129,9 @@ deltemplatevar=function(templatevarid,templatetypeid){
 	ajxpgn('templatetypetemplatevars_'+templatetypeid,document.appsettings.codepage+'?cmd=deltemplatevar&templatetypeid='+templatetypeid+'&templatevarid='+templatevarid);
 		
 }
+
+batchsavetemplatevars=function(templatetypeid){
+	var quickvars=encodeHTML(gid('quickvars_'+templatetypeid).value);
+	ajxpgn('templatetypetemplatevars_'+templatetypeid,document.appsettings.codepage+'?cmd=batchsavetemplatevars&templatetypeid='+templatetypeid,0,0,'quickvars='+quickvars);	
+}
+

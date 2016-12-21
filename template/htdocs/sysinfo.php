@@ -28,7 +28,7 @@ $query="select sleep(0.8)";
 $rs=sql_query($query,$db,MYSQLI_ASYNC);
 $xb=microtime(1);
 
-if (is_callable('mysqli_reap_async_query')){
+if ($SQL_ENGINE=="MySQLi"&&is_callable('mysqli_reap_async_query')){
 	$processed = 0;
 	do {
 	    $links = $errors = $reject = array();

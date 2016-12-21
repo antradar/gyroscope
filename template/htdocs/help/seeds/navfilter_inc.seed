@@ -15,7 +15,7 @@ function #cmd#(){
 	<div class="sectiontitle">#entity#</div>
 
 	<div>
-		<input id="serverkey" onkeyup="if (this.timer) clearTimeout(this.timer); this.timer=setTimeout(function(){ajxpgn('#container#',document.appsettings.codepage+'?cmd=#cmd#&mode=embed&key='+encodeHTML(gid('#searchkey#').value)+gid('searchfilter_server').value);},200);">
+		<input id="#searchkey#" style="margin-bottom:0;" class="img-mg" onkeyup="if (this.timer) clearTimeout(this.timer); this.timer=setTimeout(function(){ajxpgn('#container#',document.appsettings.codepage+'?cmd=#cmd#&mode=embed&key='+encodeHTML(gid('#searchkey#').value)+gid('searchfilter_#entity#').value);},200);">
 	</div>
 	
 	<div id="#container#">
@@ -23,13 +23,14 @@ function #cmd#(){
 <?
 } //mode	
 
-		server_shownavs('#container#','#cmd#');
+		#entity#_shownavs('#container#','#cmd#');
 		
 		$sqlfilter=#entity#_sqlfilters();
 		
 		echo "<br><br> Filter: $sqlfilter";
 		
 		//add pagination and rendering code on your own
+		//pagination filter: +gid('searchfilter_#entity#').value
 		
 		$query="select * from #mastertable# where #mastertable#.#primarykey#!=0 $sqlfilter";
 		$rs=sql_query($query,$db);

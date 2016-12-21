@@ -1,21 +1,30 @@
 inittemplatetexteditor=function(templateid){
 	plugins=gid('templateplugins_'+templateid).value;
 	tinyMCE.init({
+		protect: [/[\n\f\r\t\v]/g],
 		mode : "textareas",
 		theme : "advanced",
 		plugins: 'paste, advimage',
 		theme_advanced_buttons1:"bold,italic,underline,strikethrough,|,forecolor,backcolor,|,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink",
 		//theme_advanced_buttons2:"fontselect,fontsizeselect,|,justifyleft,justifycenter,justifyright,justifyfull,|,code",
-		theme_advanced_buttons2:plugins+",systemplatevars,|,code",
+		theme_advanced_buttons2:plugins+",systemplatevars,sourceedit",
 		editor_selector:'templatetexteditor_'+templateid,
 		extended_valid_elements : 'img[class|ampwidth|ampheight|src]',
 		paste_preprocess:function(pl,o){paste_clean_image(o);},		
-		height:300,
-		content_css:'tiny_mce/editor.css?v='+hb(),
+		height:400,
+		content_css:'tiny_mce/templateeditor.css?v='+hb(),
 	    setup: function(ed) {
+			ed.onMouseUp.add(function(ed){var tag=ed.selection.getContent().replace(/^\s\s*/, '').replace(/\s\s*$/, '');var stem=tag.replace(/%%\S+%%/g,'');if (tag!=''&&stem=='') lookupentity(ed,'templatevar&templateid='+templateid+'&varkey='+encodeHTML(tag.replace(/%/g,'')),'Template Variables'); });
+
 		    ed.addButton('medialib',{title:'media library',image:'tiny_mce/icons/image.gif',onclick:function(){ loadfs('Media Library','showmedialibrary');}});
+		    ed.addButton('mediaselector',{title:'image selector',image:'tiny_mce/icons/image.gif',onclick:function(){
+			    loadfs('Image Selector','showmedialibrary&selector=1',
+			    function(){},
+			    function(){gid('fsview').sels=[]});
+			}});
 		    ed.addButton('systemplatevars',{title:'Template Variables',image:'tiny_mce/icons/magic.gif',onclick:function(){lookupentity(ed,'templatevar&templateid='+templateid,'Template Variables');}});
 		    ed.addButton('styles',{title:'Styles',image:'tiny_mce/icons/brush.gif',onclick:function(){lookupentity(ed,'styles&mode=systemplate&id='+templateid,'Styles');}});
+		    ed.addButton('sourceedit',{title:'Source Editor',image:'tiny_mce/icons/code.gif',onclick:function(){loadfs('Source Editor','mceeditsource',null,initsourceeditor);}});
 		}
 	});		
 }

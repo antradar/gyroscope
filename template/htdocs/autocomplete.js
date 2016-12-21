@@ -23,7 +23,7 @@ cancelpickup=function(c){
 	if (gid(c+'_val2')) gid(c+'_val2').innerHTML='';
 	gid(c).value2=null;
 	gid(c).value3=null;
-	if (document.hotspot.onchange) document.hotspot.onchange();
+	if (gid(c).onchange) gid(c).onchange();
 }
 
 picklookup3=function(val,val2,val3){
@@ -172,10 +172,13 @@ _picktime=function(d,opts,def){
 
 // generic lookup function
 lookupentity=function(d,entity,title){
+	if (!d.value) d.value='';
+	if (d.disabled) return;
 	listlookup(d,title,'lookup'+entity+'&key='+encodeHTML(d.value));	
 }
 
 _lookupentity=function(d,entity,title){
+	if (d.disabled) return;
 	if (d.timer) clearTimeout(d.timer);
 	d.timer=setTimeout(function(){
 		lookupentity(d,entity,title);

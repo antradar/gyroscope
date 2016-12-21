@@ -4,5 +4,10 @@
 
 
 
+	//}//while
 
+?>
 <div id="#record#shadow" style="white-space:nowrap;opacity:0.95;cursor:move;user-select:none;-webkit-user-select:none;-moz-user-select:none;display:none;position:absolute;top:20px;left:60px;background:#efefef;padding:5px;"></div>
+<?
+
+	//if ($mode!='embed'){
