@@ -25,7 +25,9 @@ include 'auth.php';
 
 $xa=microtime(1);
 $query="select sleep(0.8)";
-$rs=sql_query($query,$db,MYSQLI_ASYNC);
+$rs=@sql_query($query,$db,MYSQLI_ASYNC);
+if (!isset($rs)) die('Fatal Error: MySQLi Async mode not enabled');
+
 $xb=microtime(1);
 
 if ($SQL_ENGINE=="MySQLi"&&is_callable('mysqli_reap_async_query')){

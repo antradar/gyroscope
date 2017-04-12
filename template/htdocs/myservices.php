@@ -114,5 +114,5 @@ switch($cmd){
 	case 'updategyroscope': include 'icl/updater.inc.php'; updategyroscope(); break;
 	case 'showhelp': include 'icl/showhelp.inc.php'; showhelp(); break;
 	
-	default: echo 'unspecified interface:'.$cmd;
+	default: apperror('unspecified interface:'.$cmd);
 }

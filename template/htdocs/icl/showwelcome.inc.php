@@ -23,9 +23,10 @@ function showwelcome(){
 	<br><br>
 	<input id="test2" onfocus="picktime(this,{start:0,end:24,y:2015,m:11,d:1});" placeholder="Time on 2015-11-1">
 	<?makelookup('test2',1);?>
-*/?>
+*/
+?>
 
-	<?
+<?
 		//lazy way to generate a starter screen, but better than nothing
 		
 		auto_welcome();	

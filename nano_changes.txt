@@ -1,3 +1,7 @@
+v3.2
+----
+- added client-side error handling function, specified through callback functiona as an array
+
 v3.1
 ----
 - removed Base64 functions

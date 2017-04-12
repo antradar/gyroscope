@@ -7,7 +7,7 @@ Documentation: www.antradar.com/docs-nano-ajax-manual
 
 Warning: this copy of Nano Ajax Library is modified for running in Gyroscope. Use the public version for general purpose applications.
 
-ver g3.1
+ver g3.2
 */
 
 function gid(d){return document.getElementById(d);}
@@ -30,7 +30,8 @@ function ajxb(u,data){
 function ajxnb(rq,u,f,data){
 	if (document.wssid) u=u+'&wssid_='+document.wssid;	
 	rq.onreadystatechange=f;
-	rq.open('POST',u+'&hb='+hb(),true);
+	var method='POST'; if (!data) method='GET';
+	rq.open(method,u+'&hb='+hb(),true);
 	rq.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
 	rq.send(data);  	
 }
@@ -74,9 +75,14 @@ function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce){
 			var apperror=rq.getResponseHeader('apperror');
 			if (apperror!=null&&apperror!=''){
 				var errfunc=rq.getResponseHeader('errfunc');
-				if (errfunc!=null&&errfunc!=''&&self[errfunc.toLowerCase()]){
-					self[errfunc.toLowerCase()](decodeURIComponent(apperror));
-				} else alert(decodeURIComponent(apperror));
+				if (callback&&callback.length>0){
+					callback[1](errfunc,decodeURIComponent(apperror),rq);					
+				} else {
+					if (errfunc!=null&&errfunc!=''&&self[errfunc.toLowerCase()]){
+						self[errfunc.toLowerCase()](decodeURIComponent(apperror));
+					} else alert(decodeURIComponent(apperror));
+				}
+				
 				return;	
 			}
 			
@@ -94,7 +100,9 @@ function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce){
 			}
 			
 			
-			if (callback) callback(rq);
+			if (callback){
+				if (callback.length>0) callback[0](rq); else callback(rq);
+			}
 		}	  
 	}}	
 	
