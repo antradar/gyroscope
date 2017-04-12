@@ -20,10 +20,10 @@ $codegen_seeds=array(
 		)
 	),
 	
-	'fnav'=>array('name'=>'Faceted navigation','icon'=>'','package'=>1,
+	'fnav'=>array('name'=>'Faceted Navigation','icon'=>'','package'=>1,
 		'items'=>array(
 			'gnav'=>array('name'=>'Frontend - Standard','desc'=>'Classic front-end faceted navigation','icon'=>''),
-			'gnavi'=>array('name'=>'Frontend - Multicore','desc'=>'High-performance front-end navigation; specific server hardware and setup required','icon'=>''),
+			'gnavi'=>array('name'=>'Frontend - Multi-core','desc'=>'High-performance front-end navigation; specific server hardware and setup required','icon'=>''),
 			'navfilter'=>array('name'=>'Gyroscope Backend','desc'=>'Faceted navigation for list view. Make a standard list view first','icon'=>'')
 		)
 	),

@@ -38,13 +38,13 @@ function updateuser(){
 
 	global $db;
 
-	$query="select * from users where login='$login' and userid!=$userid";
+	$query="select * from ".TABLENAME_USERS." where login='$login' and userid!=$userid";
 	$rs=sql_query($query,$db);
 	if ($myrow=sql_fetch_array($rs)){
 		apperror('User already exists. Use a different login.');
 	}
 
-	$query="update users set login='$login', dispname='$dispname', active=$active, virtualuser=$virtual, needcert=$needcert, passreset='$passreset', groupnames='$groupnames' ";
+	$query="update ".TABLENAME_USERS." set login='$login', dispname='$dispname', active=$active, virtualuser=$virtual, needcert=$needcert, passreset='$passreset', groupnames='$groupnames' ";
 	if (!$virtual&&$newpass!='') $query.=", password='$np' ";
 	if (trim($cert)!='') $query.=", certname='$certname', certhash='$certhash' ";
 

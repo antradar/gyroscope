@@ -7,6 +7,8 @@ a{cursor:pointer;}
 acronym{text-decoration:none;border:none;}
 acronym.help{cursor:help;border-bottom:dotted 1px #4444ee;}
 
+.medialibtile{float:left;width:19%;margin-right:1%;position:relative;overflow:hidden;margin-bottom:10px;}
+
 #iconbelt{height:48px;position:relative;width:400px;overflow:hidden;float:left;}
 #topicons{position:absolute;top:0;left:0;transition:left 500ms;}
 
@@ -104,6 +106,8 @@ acronym.help{cursor:help;border-bottom:dotted 1px #4444ee;}
 .img-calel{background:transparent url(imgs/sprite.png) no-repeat -47px -178px;margin-right:10px;} /* 5x12 */
 .img-caler{background:transparent url(imgs/sprite.png) no-repeat -70px -178px;margin-left:10px;}
 .img-mg{border-color:#cccccc;background:#f2f2f2 url(imgs/sprite.png) no-repeat 100% -330px;padding-left:5px;padding-right:25px;margin-bottom:8px;height:32px;line-height:30px;width:185px;vertical-align:middle;} /* 12x12 +14 */
+.mediaimg-mg{border-color:#cccccc;background:#f2f2f2 url(imgs/sprite.png) no-repeat 100% -330px;padding-left:5px;padding-right:25px;margin-bottom:8px;height:32px;line-height:30px;vertical-align:middle;width:50%;} /* 12x12 +14 */
+
 .searchsubmit{display:none;}
 .img-help{border:none;background:transparent url(imgs/sprite.png) no-repeat -248px -45px;} /* 12x12 */
 .img-print{border:none;background:transparent url(imgs/sprite.png) no-repeat -279px -27px;width:16px;height:16px;} /* 16x16 */
@@ -269,6 +273,10 @@ input:disabled{color:#000000;}
 	.col, .majorcol, .minorcol, .rmajorcol, .rminorcol{width:auto;float:none;margin-bottom:10px;}	
 }
 
+@media screen and (max-width:940px){
+	.medialibtile{width:24%;}
+}
+
 @media screen and (max-width:840px){
 	.welcometile{width:49%;margin-right:1%;}
 }
@@ -276,4 +284,13 @@ input:disabled{color:#000000;}
 @media screen and (max-width:780px){
 	.mceToolbar .mceSeparator, .mceToolbar .mce_link, .mceToolbar .mce_unlink{display:none !important;}
 	.welcometile{float:none;width:auto;margin-right:auto;}
+}
+
+@media screen and (max-width:720px){
+	.medialibtile{width:32%;}
+}
+
+@media screen and (max-width:480px){
+	.medialibtile{width:49%;}
+	.mediaimg-mg{width:80%;}
 }

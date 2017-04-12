@@ -9,8 +9,19 @@ Faceted Navigation Engine
 /*
 include 'memcache.php';
 cache_init();
-$#prefix#navcacheexp=3600*24*30;
+$#prefix#navcacheexp=3600*12;
 if (!isset($swapprefix)) $swapprefix=''; //used for swap cache
+$cachemax=1000;
+
+$swaps=cache_get('#prefix#swaps');
+if (!$swaps){
+	$swaps=array($swapprefix=>1);
+	cache_set('#prefix#swaps',$swaps,$#prefix#navcacheexp);	
+} else {
+	$swaps[$swapprefix]=1;
+	cache_set('#prefix#swaps',$swaps,$#prefix#navcacheexp);	
+}
+
 */
 
 $dbconfigs=array(
@@ -42,7 +53,7 @@ function countfield($fieldname,$limit=null,$opts=null){
 	if ($limit!=null) $query.=" order by c desc limit $limit ";
 	else $query.=" order by $fieldname ";
 			
-//	$navkey=md5($query);
+//	$navkey=md5(preg_replace('/^select \d+ as nav_linkid/i','',$query));
 //	$opts['navkey']=$navkey;
 //	$navobj=cache_get($swapprefix.'#prefix#navobj');
 //	if (!$navobj||!$navobj[$navkey]){
@@ -57,17 +68,31 @@ function countfield($fieldname,$limit=null,$opts=null){
 //	} else {
 //		//echo "using cache $navkey<br>";
 //		$segs=$navobj[$navkey];
-//		shownav($segs,$opts['title'],$opts['fieldname'],$opts['multi']);
+//		//shownav($segs,$opts['title'],$opts['fieldname'],$opts['multi']);//deprecated, use following in-order async code instead:
+
+//		$query="select $qidx as nav_linkid"; 
+//		$dbconfig=$dbconfigs[$qidx%count($dbconfigs)];
+//		$db=sql_get_db($dbconfig['host'],$dbconfig['db'],$dbconfig['user'],$dbconfig['pass']);
+//		array_push($navdbs,$db);
+//		array_push($navopts,array('func'=>'shownav_cachecall','segs'=>$segs,'title'=>$opts['title'],'fieldname'=>$opts['fieldname'],'multi'=>$opts['multi']));		
+//		sql_query($query,$db,MYSQLI_ASYNC);	
+
+
 //	}
 		
 }
 
 //convert url query parameters to filter array
 function makefilters(){
+	global $cachemax;
 	$filters=array();
 	$nfilters=array();
 
-	if ($_REQUEST['searchterm']!='') $filters['searchterm']=$_REQUEST['searchterm'];
+	if ($_REQUEST['searchterm']!='') {
+		$filters['searchterm']=$_REQUEST['searchterm'];
+		$cachemax=0;
+	}
+	
 	if (isset($_GET['sort'])) $filters['sort']=$_GET['sort'];
 #iterator-dimlist-gdimfilter#	
 #iterator-multifields-multifilter#	
@@ -131,8 +156,8 @@ function showrange_($title,$fieldname,$opts){
 	
 	$query="select $qidx as nav_linkid, min($fieldname) as a, max($fieldname) as b from #mastertable# where #mastertable#.#primarykey#!=0 ".sqlfilters();
 	
-	$navkey=md5($query);
-//	$navobj=cache_get($swapprefix.'gnavobj');
+	$navkey=md5(preg_replace('/^select \d+ as nav_linkid/i','',$query));
+//	$navobj=cache_get($swapprefix.'#prefix#navobj');
 //		if (!$navobj||!$navobj[$navkey]){
 	
 		array_push($navdbs,$db);
@@ -142,7 +167,16 @@ function showrange_($title,$fieldname,$opts){
 
 //	} else {
 //		$segs=$navobj[$navkey];
-//		showrange($segs,$title,$fieldname);		
+//		//showrange($segs,$title,$fieldname);
+
+//		$query="select $qidx as nav_linkid"; 
+//		$dbconfig=$dbconfigs[$qidx%count($dbconfigs)];
+//		$db=sql_get_db($dbconfig['host'],$dbconfig['db'],$dbconfig['user'],$dbconfig['pass']);
+//		array_push($navdbs,$db);
+//		array_push($navopts,array('func'=>'showrange_cachecall','segs'=>$segs,'title'=>$title,'fieldname'=>$fieldname));		
+//		sql_query($query,$db,MYSQLI_ASYNC);	
+
+
 //	}
 			
 }
@@ -417,6 +451,7 @@ function shownavs(){
 	
 	global $#prefix#navcacheexp;
 	global $swapprefix;	
+	global $cachemax;
 	
 	showsearch();
 #iterator-dimlist-showdimi#	
@@ -458,7 +493,7 @@ function shownavs(){
 //			if ($navobj) $navobj[$opts['navkey']]=$seg['data'];
 //			else $navobj=array($opts['navkey']=>$seg['data']);
 			
-//			cache_set($swapprefix.'#prefix#navobj',$navobj,$#prefix#navcacheexp);
+//			if (count($navobj)<$cachemax) cache_set($swapprefix.'#prefix#navobj',$navobj,$#prefix#navcacheexp);
 //		}
 		switch ($func){
 			case 'asyncprint': 
@@ -466,11 +501,17 @@ function shownavs(){
 			break;
 			case 'shownav':
 				shownav($seg['data'],$opts['title'],$opts['fieldname'],$opts['multi']);
-				
 			break;
+			case 'shownav_cachecall':
+				shownav($opts['segs'],$opts['title'],$opts['fieldname'],$opts['multi']);
+			break;			
 			case 'showrange':
 				showrange($seg['data'],$opts['title'],$opts['fieldname']);
 			break;
+			case 'showrange_cachecall':
+				showrange($opts['segs'],$opts['title'],$opts['fieldname']);
+			break;			
+			
 		}
 	}//foreach seg
 }
@@ -479,6 +520,7 @@ function showrecords(){
 	global $dbconfigs;
 	global $#prefix#navcacheexp;
 	global $swapprefix;
+	global $cachemax;
 
 	$dbidx=rand(0,count($dbconfigs)-1);
 	$dbconfig=$dbconfigs[$dbidx];
@@ -494,6 +536,7 @@ function showrecords(){
 	$query="select count(#mastertable#.#primarykey#) as c from #mastertable# where #mastertable#.#primarykey#!=0 $filters ";
 
 //	$navobj=cache_get($swapprefix.'#prefix#navobj');
+//  echo 'Cache Leak Test (Number should not increase upon reload): '.count($navobj).'<br>';
 //	//echo '<pre>'; print_r($navobj); echo '</pre>';
 //	$ckey='c-'.md5($query);
 	
@@ -506,7 +549,7 @@ function showrecords(){
 //		if (!$navobj) cache_set($swapprefix.'#prefix#navobj',array($ckey=>$count),$#prefix#navcacheexp);
 //		else {
 //			$navobj[$ckey]=$count;
-//			cache_set($swapprefix.'#prefix#navobj',$navobj,$#prefix#navcacheexp);	
+//			if (count($navobj)<$cachemax) cache_set($swapprefix.'#prefix#navobj',$navobj,$#prefix#navcacheexp);	
 //		}
 				
 //	} else $count=$navobj[$ckey]+0;

@@ -9,7 +9,7 @@ function showuser($userid=null){
 	global $db;
 	global $userroles;
 	
-	$query="select * from users where userid=$userid";
+	$query="select * from ".TABLENAME_USERS." where userid=$userid";
 	$rs=sql_query($query,$db);
 	
 	if (!$myrow=sql_fetch_array($rs)) die('This user record has been removed');

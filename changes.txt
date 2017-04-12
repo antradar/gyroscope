@@ -1,3 +1,7 @@
+10.6
+
+- critical memory leak fix in generated faceted nav code (multi-core)
+
 10.5*
 - improved Unicode support, esp. emojis and extended code pages
 - browser dialog suppression warning in status bar

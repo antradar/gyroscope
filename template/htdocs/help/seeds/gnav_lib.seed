@@ -9,7 +9,7 @@ Faceted Navigation Engine
 /*
 include 'memcache.php';
 cache_init();
-$#prefix#navcacheexp=3600*24*30;
+$#prefix#navcacheexp=3600*12;
 if (!isset($swapprefix)) $swapprefix=''; //used for swap cache
 */
 

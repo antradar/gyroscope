@@ -136,8 +136,8 @@ function hintstatus(t,d){
 
 function flashstatus(t,l){
 	if (l){
-		gid('statusinfo').innerHTML=t;
-		hinttimer=setTimeout(function(){gid('statusinfo').innerHTML='';},l);
+		gid('statusc').innerHTML=t;
+		hinttimer=setTimeout(function(){gid('statusc').innerHTML='';},l);
 	}
 	
 	if (window.Notification){

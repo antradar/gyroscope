@@ -2,7 +2,7 @@
 
 if (!isset($_GET['nom'])){
 	$ua=$_SERVER['HTTP_USER_AGENT'];
-	if (preg_match('/kindle/i',$ua)){
+	if (preg_match('/kindle/i',$ua)||preg_match('/kobo/i',$ua)||preg_match('/nook/i',$ua)){
 		header('Location: kpw.php');
 		die();	
 	}

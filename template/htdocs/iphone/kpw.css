@@ -3,6 +3,8 @@ body, td, textarea{font-size:38px;}
 
 input[type="radio"], input[type="checkbox"]{width:32px;height:32px;}
 
+.medialibtile{float:left;width:19%;margin-right:1%;position:relative;overflow:hidden;margin-bottom:10px;}
+
 .welcometile{margin-bottom:30px;}
 .welcometile img{width:64px;height:64px;}
 .recadder img{width:36px;height:36px;margin-right:10px;}
@@ -62,6 +64,8 @@ button.warn, .button.warn{background:#999999;}
 .listsearch{background:transparent url(../imgs/bmg.gif) no-repeat 100% 10px;background-size:32px 32px;}
 .listsearch_ input{height:50px;font-size:40px;}
 
+.mediaimg-mg{border-color:#cccccc;background:#f2f2f2 url(../imgs/sprite.png) no-repeat 100% -330px;padding-left:10px;padding-right:50px;margin-bottom:16px;height:50px;line-height:50px;vertical-align:middle;width:50%;} /* 12x12 +14 */
+
 .inplong, .inp, .inpmed, .inpshort{padding:6px;width:90%;font-size:38px;}
 .inpshort{width:40%;max-width:160px;}
 
@@ -78,3 +82,15 @@ select.inp, select.inplong, select.inpmed, .select.inpshort{width:auto;}
 #fsclose{width:48px;height:36px;top:12px;right:12px;}
 #fsclose .img-closeall{margin:8px 12px;}
 
+@media screen and (max-width:940px){
+	.medialibtile{width:24%;}
+}
+
+@media screen and (max-width:720px){
+	.medialibtile{width:32%;}
+}
+
+@media screen and (max-width:480px){
+	.medialibtile{width:49%;}
+	.mediaimg-mg{width:80%;}
+}

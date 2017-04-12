@@ -8,13 +8,13 @@ function deluser(){
 	$user=userinfo();
 	if (!$user['groups']['accounts']) die('Access denied');
 		
-	$query="select * from users where userid=$userid";
+	$query="select * from ".TABLENAME_USERS." where userid=$userid";
 	$rs=sql_query($query,$db);
 	if (!$myrow=sql_fetch_array($rs)) die('Invalid user record');
 	
 	$login=$myrow['login'];
 	
-	$query="delete from users where userid=$userid";
+	$query="delete from ".TABLENAME_USERS." where userid=$userid";
 	sql_query($query,$db);
 	
 	logaction("updated User #$userid <u>$login</u>",array('userid'=>$userid,'login'=>"$login"),array('rectype'=>'reauth','recid'=>$userid));

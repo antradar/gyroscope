@@ -37,7 +37,7 @@ function listusers(){
 <?		
 	}
 
-	$query="select * from users ";
+	$query="select * from ".TABLENAME_USERS;
 	if ($key!='') $query.=" where (login like '$key%' or dispname like '%$key%') ";
 	$rs=sql_query($query,$db);
 	$count=sql_affected_rows($db,$rs);

@@ -10,7 +10,7 @@ function reauth(){
 	$user=userinfo();
 	$userid=$user['userid']+0;
 	
-	$query="select * from users where userid=$userid";
+	$query="select * from ".TABLENAME_USERS." where userid=$userid";
 	$rs=sql_query($query,$db);
 	
 	$myrow=sql_fetch_assoc($rs);

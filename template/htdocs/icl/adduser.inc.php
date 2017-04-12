@@ -28,11 +28,11 @@ function adduser(){
 	
 	global $db;
 	
-	$query="select * from users where login like '$login'";
+	$query="select * from ".TABLENAME_USERS." where login like '$login'";
 	$rs=sql_query($query,$db);
 	if ($myrow=sql_fetch_assoc($rs)) apperror('User already exists. Use a different login.');
 	
-	$query="insert into users (login,dispname,active,virtualuser,passreset,groupnames,password) values ('$login','$dispname',$active,$virtual,'$passreset','$groupnames','$np') ";
+	$query="insert into ".TABLENAME_USERS." (login,dispname,active,virtualuser,passreset,groupnames,password) values ('$login','$dispname',$active,$virtual,'$passreset','$groupnames','$np') ";
 	$rs=sql_query($query,$db);
 	$userid=sql_insert_id($db,$rs)+0;
 
