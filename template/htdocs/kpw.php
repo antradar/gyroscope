@@ -42,7 +42,12 @@ body{font-family:helvetica;}
 <div id="toolbg" style="position:fixed;width:100%;z-index:1000;top:0;background:#000000;"></div>
 <div id="toolicons" style="position:fixed;width:100%;z-index:2000;top:0;">
 
-	<div id="toollist" style="overflow:auto;width:100%;"><div style="width:<?echo 50*(count($toolbaritems)+2);?>px;">
+	<?
+	$tcount=0;
+	foreach ($toolbaritems as $ti) if (isset($ti['icon'])&&$ti['icon']!='') $tcount++;
+	?>
+	
+	<div id="toollist" style="overflow:auto;width:100%;"><div style="width:<?echo 102*($tcount);?>px;">
 
 	<?foreach ($toolbaritems as $modid=>$ti){
 		if ($ti['type']=='break') continue;

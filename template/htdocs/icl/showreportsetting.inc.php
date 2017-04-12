@@ -26,7 +26,7 @@ function showreportsetting($reportid=null){
 	$pfn="icl/rpt${reportkey}.inc.php";
 	
 
-	header('newtitle:'.base64_encode($reportname));
+	header('newtitle:'.tabtitle($reportname));
 ?>
 <div class="section">
 	<div class="sectiontitle"><?echo $reportname;?></div>

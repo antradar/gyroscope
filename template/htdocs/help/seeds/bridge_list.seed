@@ -30,13 +30,13 @@ function list#primaryfield##records#($#primarykey#=null){
 	 ?>
 	 <tr>
 	 	<td valign="top">
-	 		<a onclick="ajxjs(self.show#record#,'#records#.js');show#record#(<?echo $#lookupkey#?>,'<?echo $dbtitle;?>');">
+	 		<a href=# onclick="ajxjs(self.show#record#,'#records#.js');show#record#(<?echo $#lookupkey#?>,'<?echo $dbtitle;?>');return false;">
 	 		<u><?echo $title;?></u>
 	 		</a>
 	 	</td>
 #iterator-fieldlist-tablerow#	 	
 	 	<td valign="top">
-	 		<a onclick="del#primaryfield##record#(<?echo $#bridgekey#?>,<?echo $#primarykey#;?>,<?echo $#lookupkey#;?>);">
+	 		<a href=# onclick="del#primaryfield##record#(<?echo $#bridgekey#?>,<?echo $#primarykey#;?>,<?echo $#lookupkey#;?>);return false;">
 	 		<img src="imgs/t.gif" class="img-del">
 	 		</a>
 	 	</td>

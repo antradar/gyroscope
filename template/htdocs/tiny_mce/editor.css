@@ -1,3 +1,6 @@
+body{font-size:16px;}
+p{line-height:1.5em;}
+
 .headline p{font-size:22px;}
 .narrowquote{padding:20px;color:#000044;}
 .narrowquote p{border-top:dashed 1px #31518E;border-bottom:dashed 1px #31518E;padding:10px 0;font-style:italic;}

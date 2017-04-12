@@ -3,32 +3,9 @@
 function GETVAL($key){ $val=trim($_GET[$key]); if (!is_numeric($val)) apperror('apperror:invalid parameter '.$key); return $val;}
 function QETVAL($key){ $val=trim($_POST[$key]); if (!is_numeric($val)) apperror('apperror:invalid parameter '.$key); return $val;}
 function noapos($val){if (is_callable('sql_escape')) return sql_escape($val); return addslashes($val);}
-function GETSTR($key,$trim=1){$val=decode_unicode_url(isset($_GET[$key])?$_GET[$key]:null);if ($trim) $val=trim($val);return noapos($val); }
-function QETSTR($key,$trim=1){$val=decode_unicode_url(isset($_POST[$key])?$_POST[$key]:null);if ($trim) $val=trim($val);return noapos($val); }
+function GETSTR($key,$trim=1){$val=$_GET[$key];if ($trim) $val=trim($val);return noapos($val);}
+function QETSTR($key,$trim=1){$val=$_POST[$key];if ($trim) $val=trim($val);return noapos($val);}
 
-function decode_unicode_url($str){
-	$str=utf8_encode($str);
-	//$str=htmlentities($str); //French accent fix
-	
-	$res = '';
-	
-	$i = 0; $max=strlen($str)-6;
-	
-	while ($i<=$max){
-		$c=$str[$i];
-		if ($c=='%'&&$str[$i + 1]=='u'){
-			$v=hexdec(substr($str,$i+2,4));
-			$i+=6;
-			if ($v<0x0080) $c=chr($v); //1 byte
-			else if ($v<0x0800) $c=chr((($v&0x07c0)>>6)|0xc0).chr(($v&0x3f)|0x80); // 2 bytes: 110xxxxx 10xxxxxx
-			else $c=chr((($v&0xf000)>>12)|0xe0).chr((($v&0x0fc0)>>6)|0x80).chr(($v&0x3f)|0x80); // 3 bytes: 1110xxxx 10xxxxxx 10xxxxxx
-		} else $i++;
-		
-		$res.=$c;
-	}//while
-	
-	return $res . substr($str, $i);
-}
 
 function tzconvert($stamp,$src,$dst){
 	
@@ -55,7 +32,9 @@ function date2stamp($date,$hour=0,$min=0,$sec=0){
 	return mktime($hour,$min,$sec,$parts[1],$parts[2],$parts[0]);	
 }
 
-function apperror($str,$msg=null,$func=null){if (!isset($msg)) $msg=$str;header('apperror: '.base64_encode($str));if (isset($func)) header('ERRFUNC: '.$func);die('apperror - '.$msg);}
+function apperror($str,$msg=null,$func=null){if (!isset($msg)) $msg=$str;header('apperror: '.tabtitle($str));if (isset($func)) header('ERRFUNC: '.$func);die('apperror - '.$msg);}
+
+function tabtitle($str) {return rawurlencode($str);}
 
 function encstr($str,$key){
 	$key=enckey($key);

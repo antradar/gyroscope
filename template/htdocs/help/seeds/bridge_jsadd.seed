@@ -31,7 +31,7 @@ add#primaryfield##record#=function(#primarykey#){
 }
 
 del#primaryfield##record#=function(#bridgekey#,#primarykey#,#lookupkey#){
-	if (!confirm('Are you sure you want to unlink this #record#?')) return;
+	if (!sconfirm('Are you sure you want to unlink this #record#?')) return;
 	
 	ajxpgn('#primaryfield##records#_'+#primarykey#,document.appsettings.codepage+'?cmd=del#primaryfield##record#&#bridgekey#='+#bridgekey#+'&#primarykey#='+#primarykey#	
 		,true,true,'',function(){

@@ -101,7 +101,7 @@ updatetemplatetype=function(templatetypeid){
 
 
 deltemplatetype=function(templatetypeid){
-	if (!confirm(document.dict['confirm_templatetype_delete'])) return;
+	if (!sconfirm(document.dict['confirm_templatetype_delete'])) return;
 	
 	reloadtab('templatetype_'+templatetypeid,null,'deltemplatetype&templatetypeid='+templatetypeid,function(){
 		closetabtree('templatetype_'+templatetypeid);
@@ -124,7 +124,7 @@ addtemplatevar=function(templatetypeid){
 }
 
 deltemplatevar=function(templatevarid,templatetypeid){
-	if (!confirm('Are you sure you want to remove this variable?')) return;
+	if (!sconfirm('Are you sure you want to remove this variable?')) return;
 		
 	ajxpgn('templatetypetemplatevars_'+templatetypeid,document.appsettings.codepage+'?cmd=deltemplatevar&templatetypeid='+templatetypeid+'&templatevarid='+templatevarid);
 		

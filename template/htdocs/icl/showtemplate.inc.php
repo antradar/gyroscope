@@ -19,7 +19,7 @@ function showtemplate($templateid=null){
 	$recordtitle="$templatetypename"; //change this
 	$dbrecordtitle=htmlspecialchars(noapos($recordtitle));
 	
-	header('newtitle:'.base64_encode($templatename));
+	header('newtitle:'.tabtitle($templatename));
 	header('parenttab: templatetype_'.$templatetypeid);
 ?>
 <div class="section">

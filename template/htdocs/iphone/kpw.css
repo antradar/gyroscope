@@ -66,6 +66,7 @@ button.warn, .button.warn{background:#999999;}
 .inpshort{width:40%;max-width:160px;}
 
 textarea.inplong, textarea.inp, textarea.inpmed{height:320px;}
+select.inp, select.inplong, select.inpmed, .select.inpshort{width:auto;}
 
 .stable td{padding:0 5px;font-size:24px;}
 .stable::-webkit-scrollbar {height:24px;}

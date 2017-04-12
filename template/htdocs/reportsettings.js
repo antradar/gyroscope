@@ -114,7 +114,7 @@ updatereportsetting=function(reportid,roles){
 
 
 delreportsetting=function(reportid){
-	if (!confirm(document.dict['confirm_reportsetting_delete'])) return;
+	if (!sconfirm(document.dict['confirm_reportsetting_delete'])) return;
 	
 	reloadtab('reportsetting_'+reportid,null,'delreportsetting&reportid='+reportid,function(){
 		closetab('reportsetting_'+reportid);

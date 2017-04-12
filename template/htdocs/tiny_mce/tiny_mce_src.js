@@ -1155,13 +1155,14 @@ tinymce.util.Quirks = function(editor) {
 
 			// Find all odd apple-style-spans
 			blockElm = dom.getParent(rng.startContainer, dom.isBlock);
+			
 			each(dom.select('span', blockElm), function(span) {
 				var bm = selection.getBookmark();
 
 				if (clonedSpan) {
 					dom.replace(clonedSpan.cloneNode(false), span, true);
 				} else if (!span.getAttribute('data-mce-mark')) {
-					dom.remove(span, true);
+					if (console&&console.log) console.log('span removal bypassed (1165)');//dom.remove(span, true); //patched by Schien, Antradar
 				} else {
 					span.removeAttribute('data-mce-mark');
 				}

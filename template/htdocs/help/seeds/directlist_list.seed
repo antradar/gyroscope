@@ -24,7 +24,7 @@ function list#primaryfield##records#($#primarykey#=null){
 	 <tr>
 #iterator-fieldlist-tablerow#	 	
 	 	<td valign="top">
-	 		<a onclick="del#primaryfield##record#(<?echo $#lookupkey#?>,<?echo $#primarykey#;?>);">
+	 		<a href=# onclick="del#primaryfield##record#(<?echo $#lookupkey#?>,<?echo $#primarykey#;?>);return false;">
 	 		<img src="imgs/t.gif" class="img-del">
 	 		</a>
 	 	</td>

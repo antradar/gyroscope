@@ -54,8 +54,8 @@ function updateuser(){
 	logaction("updated User #$userid <u>$login</u>",array('userid'=>$userid,'login'=>"$login"),array('rectype'=>'reauth','recid'=>$userid));
 	
 	if ($userid==$myuserid){
-		header('newlogin: '.base64_encode(stripslashes($login)));
-		header('newdispname: '.base64_encode(stripslashes($dispname)));
+		header('newlogin: '.tabtitle(stripslashes($login)));
+		header('newdispname: '.tabtitle(stripslashes($dispname)));
 	}
 
 	reauth();

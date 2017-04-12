@@ -25,7 +25,7 @@ function showuser($userid=null){
 	$certname=$myrow['certname'];
 	if ($certname=='') $certname='<em>not set</em>';
 	
-	header('newtitle: '.base64_encode($login));
+	header('newtitle: '.tabtitle($login));
 	
 ?>
 <div class="section">

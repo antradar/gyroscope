@@ -135,11 +135,14 @@ function hintstatus(t,d){
 }
 
 function flashstatus(t,l){
-  gid('statusinfo').innerHTML=t;
-  hinttimer=setTimeout(function(){gid('statusinfo').innerHTML='';},l);
-  if (window.Notification){
-	var n=new Notification('Gyroscope',{body:t});  
-  } 
+	if (l){
+		gid('statusinfo').innerHTML=t;
+		hinttimer=setTimeout(function(){gid('statusinfo').innerHTML='';},l);
+	}
+	
+	if (window.Notification){
+		var n=new Notification('Gyroscope',{body:t});  
+	} 
 
 }
 

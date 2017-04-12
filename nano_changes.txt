@@ -1,3 +1,8 @@
+v3.1
+----
+- removed Base64 functions
+- using encodeURIComponent to handle unicode
+
 v3.0
 ----
 - enabled header-specified error handling routing

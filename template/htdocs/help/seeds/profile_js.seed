@@ -9,7 +9,7 @@ show#primaryfield##mediatype#=function(#primarykey#,msg){
 }
 
 remove#primaryfield##mediatype#pic=function(#primarykey#){
-	if (!confirm('Are you sure you want to remove this #mediatype# picture?')) return;
+	if (!sconfirm('Are you sure you want to remove this #mediatype# picture?')) return;
 	ajxpgn('#primaryfield##mediatype#_'+#primarykey#,document.appsettings.codepage+'?cmd=remove#primaryfield##mediatype#pic&#primarykey#='+#primarykey#);
 }
 

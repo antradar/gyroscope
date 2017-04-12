@@ -178,8 +178,8 @@ updateuser=function(userid){
 	reloadtab('user_'+userid,ologin.value,'updateuser&userid='+userid+'&'+params.join('&'),function(rq){
 		if (!document.smartcard) gid('cardsettings_'+userid).style.display='none';
 		reloadview('core.users','userlist');
-		if (rq.getResponseHeader('newlogin')!=null&&rq.getResponseHeader('newlogin')!='') gid('labellogin').innerHTML=Base64.decode(rq.getResponseHeader('newlogin'));
-		if (rq.getResponseHeader('newdispname')!=null&&rq.getResponseHeader('newdispname')!='') gid('labeldispname').innerHTML=Base64.decode(rq.getResponseHeader('newdispname'));
+		if (rq.getResponseHeader('newlogin')!=null&&rq.getResponseHeader('newlogin')!='') gid('labellogin').innerHTML=decodeURIComponent(rq.getResponseHeader('newlogin'));
+		if (rq.getResponseHeader('newdispname')!=null&&rq.getResponseHeader('newdispname')!='') gid('labeldispname').innerHTML=decodeURIComponent(rq.getResponseHeader('newdispname'));
 		flashstatus('User '+ologin.value+' has been updated', 3000);
 	},"pass="+newpass+"&needcert="+needcert+"&certname="+certname+"&cert="+cert,{fastlane:1});
 	
@@ -187,7 +187,7 @@ updateuser=function(userid){
 
 
 deluser=function(userid){
-	if (!confirm(document.dict['confirm_user_delete'])) return;
+	if (!sconfirm(document.dict['confirm_user_delete'])) return;
 	
 	reloadtab('user_'+userid,null,'deluser&userid='+userid,function(){
 		closetab('user_'+userid);

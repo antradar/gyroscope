@@ -23,7 +23,7 @@ function showtemplatetype($templatetypeid=null){
 	$classes=$myrow['classes'];
 	
 
-	header('newtitle:'.base64_encode($templatetypename));
+	header('newtitle:'.tabtitle($templatetypename));
 ?>
 <div class="section">
 	<div class="sectiontitle"><?echo $templatetypename;?></div>

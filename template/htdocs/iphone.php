@@ -42,7 +42,11 @@ body{font-family:helvetica;}
 <div id="toolbg" style="position:fixed;width:100%;z-index:1000;top:0;background:#333333;opacity:0.9"></div>
 <div id="toolicons" style="position:fixed;width:100%;z-index:2000;top:0;">
 
-	<div id="toollist" style="overflow:auto;width:100%;"><div style="width:<?echo 50*(count($toolbaritems)+2);?>px;">
+	<?
+	$tcount=0;
+	foreach ($toolbaritems as $ti) if (isset($ti['icon'])&&$ti['icon']!='') $tcount++;
+	?>
+	<div id="toollist" style="overflow:auto;width:100%;"><div style="width:<?echo 52*($tcount+1);?>px;">
 		
 	<div class="menuitem"><a id="speechstart" href=# onclick="speech_startstop(1);return false;" style="display:none;"><img style="" class="img-speechrecog" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
 

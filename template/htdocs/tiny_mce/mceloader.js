@@ -52,7 +52,7 @@ reloadmedialibrary=function(selector){
 }
 
 delmedia=function(mediaid,selector){
-	if (!confirm('Are you sure you want to remove this image?')) return;
+	if (!sconfirm('Are you sure you want to remove this image?')) return;
 	if (gid('fsview').sels) delete gid('fsview').sels['mediaid_'+mediaid];
 	ajxpgn('fsview',document.appsettings.codepage+'?cmd=delmedia&selector='+selector+'&mediaid='+mediaid+'&sels='+listmediaids());
 }

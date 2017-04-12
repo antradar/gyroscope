@@ -29,7 +29,7 @@ function embed#primaryfield##record#uploader(){
 		$filesizes=$file['size'];
 		$filetypes=$file['type'];
 		
-		$ofn=noapos($file['name']);
+		$ofn=noapos(str_replace(' ','_',$file['name']));
 		
 			$realfn=$realfns;//[$idx];
 			$filesize=$filesizes;//[$idx];

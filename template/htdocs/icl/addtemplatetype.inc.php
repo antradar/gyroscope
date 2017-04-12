@@ -6,7 +6,7 @@ function addtemplatetype(){
 	
 	$templatetypename=QETSTR('templatetypename');
 	$templatetypekey=QETSTR('templatetypekey');
-		
+	
 	global $db;
 	
 	$query="select * from templatetypes where templatetypekey='$templatetypekey'";

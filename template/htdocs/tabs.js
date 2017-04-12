@@ -105,7 +105,7 @@ function reloadtab(key,title,params,loadfunc,data,opts){
       
 	var apperror=rq.getResponseHeader('apperror');
 	if (apperror!=null&&apperror!=''){
-		alert('Error: '+Base64.decode(apperror));
+		alert('Error: '+decodeURIComponent(apperror));
 		
 		return;	
 	}
@@ -145,7 +145,7 @@ function reloadtab(key,title,params,loadfunc,data,opts){
 	
 	var newtitle=rq.getResponseHeader('newtitle');
 	if (newtitle!=null&&newtitle!=''){
-		title=Base64.decode(newtitle);	
+		title=decodeURIComponent(newtitle);	
 	}	       
 	
 	if (opts&&opts.persist) document.tabtitles[tabid].reloadinfo={params:params,loadfunc:loadfunc,data:data,opts:opts};
@@ -167,7 +167,7 @@ function refreshtab(key,skipconfirm){
   var tabid=gettabid(key);
   if (tabid==-1) return;
   
-  if (!skipconfirm&&!confirm(document.dict['confirm_refresh_tab'])) return;
+  if (!skipconfirm&&!sconfirm(document.dict['confirm_refresh_tab'])) return;
  
   var tab=document.tabtitles[tabid];
   if (!tab.reloadinfo) return;
@@ -242,7 +242,7 @@ function addtab(key,title,params,loadfunc,data,opts){
       
 	var apperror=rq.getResponseHeader('apperror');
 	if (apperror!=null&&apperror!=''){
-		alert('Error: '+Base64.decode(apperror));
+		alert('Error: '+decodeURIComponent(apperror));
 		document.tablock=null;
 		return;	
 	}      
@@ -264,7 +264,7 @@ function addtab(key,title,params,loadfunc,data,opts){
 
 
 function resettabs(key){
-	if (!confirm(document.dict['confirm_close_all_tabs'])) return;
+	if (!sconfirm(document.dict['confirm_close_all_tabs'])) return;
 	if (gid('closeall')) gid('closeall').style.display='none';
 	
 	var tabid=gettabid(key);
@@ -370,6 +370,14 @@ function closetabtree(root,sub){
 
 function showhelp(topic,title){
 	addtab('help_'+topic,'<img src="imgs/t.gif" width="12" height="12" class="img-help"> '+title,'showhelp&topic='+topic+'&title='+encodeHTML(title));	
+}
+
+function sconfirm(msg){
+	var a=hb();
+	var res=confirm(msg);
+	var b=hb();
+	if (b-a<500&&gid('diagwarn')) {gid('diagwarn').style.display='inline';flashstatus('Warning: dialogs suppressed');}
+	return res;
 }
 
 Array.prototype.push = function() {

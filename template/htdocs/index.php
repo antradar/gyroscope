@@ -107,6 +107,7 @@ document.appsettings={codepage:'<?echo $codepage;?>', fastlane:'<?echo $fastlane
 	<a id="speechstart" onclick="speech_startstop();" onmouseover="hintstatus(this,'click to activate speech recognition');"><img src="imgs/t.gif"></a>
 	<img id="wsswarn" src="imgs/t.gif" onmouseover="hintstatus(this,'websocket not supported');">
 	<img onclick="this.style.display='none';" id="barcodewarn" src="imgs/t.gif" onmouseover="hintstatus(this,'barcode scanner not active');">
+	<img id="diagwarn" src="imgs/t.gif" onclick="window.location.reload();" onmouseover="hintstatus(this,'dialogs suppressed. click to reload browser.');">
 	</span>
 	<span id="statusc"></span>
 </div>

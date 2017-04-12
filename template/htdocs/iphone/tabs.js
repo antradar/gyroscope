@@ -140,7 +140,7 @@ function reloadtab(key,title,params,loadfunc,data,opts){
       
 	var apperror=rq.getResponseHeader('apperror');
 	if (apperror!=null&&apperror!=''){
-		alert('Error: '+Base64.decode(apperror));
+		alert('Error: '+decodeURIComponent(apperror));
 		
 		return;	
 	}       
@@ -179,7 +179,7 @@ function reloadtab(key,title,params,loadfunc,data,opts){
 		
 	var newtitle=rq.getResponseHeader('newtitle');
 	if (newtitle!=null&&newtitle!=''){
-		title=Base64.decode(newtitle);	
+		title=decodeURIComponent(newtitle);	
 	}	       
 		
 	if (opts&&opts.persist) document.tabtitles[tabid].reloadinfo={params:params,loadfunc:loadfunc,data:data,opts:opts};
@@ -255,7 +255,7 @@ function addtab(key,title,params,loadfunc,data,opts){
 
 	var apperror=rq.getResponseHeader('apperror');
 	if (apperror!=null&&apperror!=''){
-		alert('Error: '+Base64.decode(apperror));
+		alert('Error: '+decodeURIComponent(apperror));
 		document.tablock=null;
 		return;	
 	}  
@@ -318,7 +318,7 @@ function refreshtab(key,skipconfirm){
   var tabid=gettabid(key);
   if (tabid==-1) return;
   
-  if (!skipconfirm&&!confirm(document.dict['confirm_refresh_tab'])) return;
+  if (!skipconfirm&&!sconfirm(document.dict['confirm_refresh_tab'])) return;
  
   var tab=document.tabtitles[tabid];
   if (!tab.reloadinfo) return;
@@ -338,6 +338,14 @@ function closetabs(rectype){
 		var id=tabkey.replace(rectype+'_','');
 		if (parseInt(id,10)==id) setTimeout(cf(tabkey),i*50);	
 	}
+}
+
+function sconfirm(msg){
+	var a=hb();
+	var res=confirm(msg);
+	var b=hb();
+	if (b-a<500) window.location.reload();
+	return res;
 }
 
 function showhelp(topic,title){

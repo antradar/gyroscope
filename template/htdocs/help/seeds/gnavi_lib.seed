@@ -242,6 +242,23 @@ function shownegfilters($fieldname){
 <?	
 }
 
+function asyncprint_($str){
+	global $navopts;
+	global $navdbs;
+	global $dbconfigs;
+	
+	$qidx=count($navopts);		
+	
+	$query="select $qidx as nav_linkid"; 
+	
+	$dbconfig=$dbconfigs[$qidx%count($dbconfigs)];
+	$db=sql_get_db($dbconfig['host'],$dbconfig['db'],$dbconfig['user'],$dbconfig['pass']);
+	array_push($navdbs,$db);
+	array_push($navopts,array('func'=>'asyncprint','str'=>$str));
+	
+	sql_query($query,$db,MYSQLI_ASYNC);	
+}
+
 function shownav_($title,$fieldname,$multi=null){
 // start inline breadcrumb
 	global $keynames;
@@ -444,6 +461,9 @@ function shownavs(){
 //			cache_set($swapprefix.'#prefix#navobj',$navobj,$#prefix#navcacheexp);
 //		}
 		switch ($func){
+			case 'asyncprint': 
+				echo $opts['str'];
+			break;
 			case 'shownav':
 				shownav($seg['data'],$opts['title'],$opts['fieldname'],$opts['multi']);
 				

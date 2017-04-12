@@ -164,13 +164,17 @@ function hintstatus(d,t){
     gid('statusc').innerHTML='';
   }
 }
+
 function flashstatus(t,l){
-  if (document.hinttimer) clearTimeout(document.hinttimer);
-  gid('statusc').innerHTML=t;
-  document.hinttimer=setTimeout(function(){gid('statusc').innerHTML='';},l);
-  if (window.Notification){
-	var n=new Notification('Gyroscope',{body:t});  
-  }
+	if (l){
+		if (document.hinttimer) clearTimeout(document.hinttimer);
+		gid('statusc').innerHTML=t;
+		document.hinttimer=setTimeout(function(){gid('statusc').innerHTML='';},l);
+	}
+
+	if (window.Notification){
+		var n=new Notification('Gyroscope',{body:t});  
+	}
 }
 
 
@@ -307,3 +311,4 @@ if (document.createEvent){
 		
 	}
 }
+

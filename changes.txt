@@ -1,3 +1,9 @@
+10.5*
+- improved Unicode support, esp. emojis and extended code pages
+- browser dialog suppression warning in status bar
+- auto reload in mobile view when dialog suppressed
+- MCE disabled SPAN removal on backspace
+
 10.4
 - year-month picker and validator
 

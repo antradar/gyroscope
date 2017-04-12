@@ -71,7 +71,7 @@ update#record#=function(#primarykey#){
 
 
 del#record#=function(#primarykey#){
-	if (!confirm(document.dict['confirm_#record#_delete'])) return;
+	if (!sconfirm(document.dict['confirm_#record#_delete'])) return;
 	
 	reloadtab('#record#_'+#primarykey#,null,'del#record#&#primarykey#='+#primarykey#,function(){
 		closetab('#record#_'+#primarykey#);

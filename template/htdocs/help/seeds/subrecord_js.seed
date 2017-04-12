@@ -71,7 +71,7 @@ update#record#=function(#primarykey#,#masterkey#){
 
 
 del#record#=function(#primarykey#,#masterkey#){
-	if (!confirm('Are you sure you want to remove this #record#?')) return;
+	if (!sconfirm('Are you sure you want to remove this #record#?')) return;
 	
 	reloadtab('#record#_'+#primarykey#,null,'del#record#&#primarykey#='+#primarykey#,function(){
 		closetab('#record#_'+#primarykey#);

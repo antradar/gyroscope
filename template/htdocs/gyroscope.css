@@ -61,6 +61,7 @@ acronym.help{cursor:help;border-bottom:dotted 1px #4444ee;}
 
 #wsswarn{width:16px;height:16px;background:transparent url(imgs/toolbar.gif) -32px 0;margin-left:8px;margin-top:2px;display:none;}
 #barcodewarn{width:16px;height:16px;background:transparent url(imgs/toolbar.gif) -48px -16px;margin-left:8px;margin-top:2px;display:none;}
+#diagwarn{width:16px;height:16px;background:transparent url(imgs/toolbar.gif) -64px -32px;margin-left:8px;margin-top:2px;display:none;cursor:pointer;}
 
 
 .break{border-right:solid 1px #cccccc;float:left;height:32px;margin-right:15px;font-size:1px;}
@@ -206,6 +207,7 @@ font-size:10px;
 .inputrow{margin-bottom:10px;}
 
 textarea.inplong, textarea.inp, textarea.inpmed{height:150px;}
+select.inp, select.inplong, select.inpmed, .select.inpshort{width:auto;}
 
 .stable{overflow:auto;}
 .stable td{padding:0 5px;font-size:12px;}

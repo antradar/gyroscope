@@ -115,7 +115,7 @@ updatetemplate=function(templateid,templatetypeid){
 
 
 deltemplate=function(templateid,templatetypeid){
-	if (!confirm('Are you sure you want to remove this template?')) return;
+	if (!sconfirm('Are you sure you want to remove this template?')) return;
 	
 	reloadtab('template_'+templateid,null,'deltemplate&templateid='+templateid,function(){
 		closetab('template_'+templateid);
