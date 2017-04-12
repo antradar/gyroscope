@@ -1,6 +1,6 @@
 <?php
 
-define ('GYROSCOPE_VERSION', '10.2');
+define ('GYROSCOPE_VERSION', '10.3');
 
 //remember to personalize the project name
 define ('GYROSCOPE_PROJECT', 'Gyroscope Project Template');
@@ -22,7 +22,7 @@ define ('MOD_KEY','mod_demo123');
 $saltroot='gyroscope_demo';
 $salt=$saltroot.$_SERVER['REMOTE_ADDR'].date('Y-m-j-h');
 
-$dbsalt='gyroscope_demo__'; //do not change this once it's set; salt length has to be 16, 24 or 32
+$dbsalt='gyroscope_demo__'; //do not change this once it's set
 
 $wssecret='asdf'; //sync this value in wss.php
 

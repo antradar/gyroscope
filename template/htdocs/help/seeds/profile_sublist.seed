@@ -1,4 +1,4 @@
-		<div class="sectionheader">#mediatype# uploader</div>
+		<div class="sectionheader">#mediatype# uploader (#thumbwidth#x#thumbheight#)</div>
 		<div id="#primaryfield##mediatype#_<?echo $#primarykey#;?>">
 			<?show#primaryfield##mediatype#($#primarykey#);?>
 		</div>

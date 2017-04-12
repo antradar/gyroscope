@@ -51,7 +51,7 @@ function embed#primaryfield##mediatype#uploader(){
 					imagedestroy($img);
 				} else {
 				
-					if ($w==#thumbwidth#&&$h==#thumbheight#){//direct file upload
+					if ($w==#thumbwidth#&&$h==#thumbheight#&&$tinypngapi==''){//direct file upload
 						$f=fopen($dst,'wb');
 						fwrite($f,$c);
 						fclose($f);

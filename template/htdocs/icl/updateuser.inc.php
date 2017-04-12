@@ -20,7 +20,7 @@ function updateuser(){
 	$passreset=GETVAL('passreset');
 
 	$newpass=QETSTR('pass',0);
-	$np=encstr(md5($dbsalt.$newpass),$dbsalt);
+	$np=encstr(md5($dbsalt.$newpass),$newpass.$dbsalt);
 
 	$certname=QETSTR('certname');
 	$needcert=GETVAL('needcert');

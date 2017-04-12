@@ -42,7 +42,7 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['login'])&
 		
 		if ($myrow=sql_fetch_array($rs)){
 			$enc=$myrow['password'];
-			$dec=decstr($enc,$dbsalt);
+			$dec=decstr($enc,$_POST['password'].$dbsalt);
 			if ($password==$dec) $passok=1;
 		}
 		

@@ -39,7 +39,7 @@ CREATE TABLE `users` (
   KEY `virtualuser` (`virtualuser`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
-INSERT INTO `users` VALUES (101,'admin','Admin',1,0,'WGmijuXRkchwvuH5IPV8qZ7Bx+ER6KwpIrKSiPfoYod+zEqFq3V+q0X7I+pb7Iv9zosR6zfMg6DGy5D0D1zd2VxjdP0p3DbQk4nVT6ARAINrXM4XZRJAv9CSR1aW072Y',0,'users|admins|reportsettings|systemplateuse|systemplate|accounts|dbadmin|upgrademods',null,0,null);
+INSERT INTO `users` VALUES (101,'admin','Admin',1,0,'HZ4ddm+gYX44SXBQAT6UVNCpknAwMrUPJwHCFz28BPBSy4WRKBqNfW025Pvrd+PaCsWnBl/W/tXxDFU//4TjNGlc+14olF8CjALw1ZaZLet8XPL9ytSpZanzr/C/KvyW',0,'users|admins|reportsettings|systemplateuse|systemplate|accounts|dbadmin|upgrademods',null,0,null);
 
 DROP TABLE IF EXISTS `templates`;
 CREATE TABLE `templates` (

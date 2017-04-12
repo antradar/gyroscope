@@ -58,6 +58,7 @@ function date2stamp($date,$hour=0,$min=0,$sec=0){
 function apperror($str,$msg=null,$func=null){if (!isset($msg)) $msg=$str;header('apperror: '.base64_encode($str));if (isset($func)) header('ERRFUNC: '.$func);die('apperror - '.$msg);}
 
 function encstr($str,$key){
+	$key=enckey($key);
 	$iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC);
 	$blocksize = mcrypt_get_block_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC);
 	$pad = $blocksize - (strlen($str) % $blocksize);
@@ -68,6 +69,7 @@ function encstr($str,$key){
 }
 
 function decstr($str,$key){
+	$key=enckey($key);
 	$iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC);
 	
 	$raw=base64_decode($str);
@@ -82,6 +84,9 @@ function decstr($str,$key){
 	return $dec;
 }
 
+function enckey($str){
+	return substr(hash('SHA256',$str),32);		
+}
 
 
 function makelookup($id,$fullscale=0){

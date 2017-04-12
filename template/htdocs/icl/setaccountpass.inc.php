@@ -8,7 +8,7 @@ function setaccountpass(){
 	
 
 	$oldpass=md5($dbsalt.QETSTR('oldpass'));
-	$pass=encstr(md5($dbsalt.QETSTR('pass')),$dbsalt);
+	$pass=encstr(md5($dbsalt.QETSTR('pass')),QETSTR('pass').$dbsalt);
 			
 
 	$userid=$user['userid']+0;
@@ -16,7 +16,7 @@ function setaccountpass(){
 	$query="select * from users where userid=$userid";
 	$rs=sql_query($query,$db);
 	$myrow=sql_fetch_assoc($rs);
-	$oldpass_=decstr($myrow['password'],$dbsalt);
+	$oldpass_=decstr($myrow['password'],QETSTR('oldpass').$dbsalt);
 	
 
 	if ($oldpass!=$oldpass_) die(_tr('invalid_password'));

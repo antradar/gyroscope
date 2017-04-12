@@ -8,7 +8,7 @@ function rptsqlcomp(){
 	<div class="sectiontitle">Dev Tools &raquo; DB Structure Comparison</div>
 	
 	<div class="sectionheader">My Database Snapshot</div>
-	<textarea class="inplong"><?echo base64_encode(serialize(mydbobj()));?></textarea>	
+	<textarea class="inplong"><?echo base64_encode(json_encode(mydbobj()));?></textarea>	
 
 	<div class="sectionheader">Other Database Snapshot</div>
 	<textarea class="inplong" id="sqlcomp_otherobj"></textarea>	
@@ -20,7 +20,7 @@ function rptsqlcomp(){
 } else {
 	$other=trim(QETSTR('other'));
 
-	sqlobjcomp(mydbobj(), unserialize(base64_decode($other)));	
+	sqlobjcomp(mydbobj(), json_decode(base64_decode($other),1));	
 
 }	
 

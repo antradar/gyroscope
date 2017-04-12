@@ -1,3 +1,7 @@
+*10.3
+- removed use of unserialize in interal sql compare utility
+- improved password storage
+
 10.2
 - quick edit mode for template variable editor
 
