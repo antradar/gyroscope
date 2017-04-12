@@ -10,7 +10,7 @@ add#primaryfield##record#=function(#primarykey#){
 	//add more validation rules
 	var #lookupkey#=gid('#primaryfield##records#_#lookupkey#_'+#primarykey#).value2;
 	if (!#lookupkey#) {
-		alert('Pick a #record# from the list');
+		salert('Pick a #record# from the list');
 		return;
 	}
 	

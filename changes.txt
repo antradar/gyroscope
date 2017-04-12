@@ -1,3 +1,6 @@
+10.8
+- added salert to replace alert
+
 10.7
 - nano.js v3.2
 

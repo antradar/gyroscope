@@ -9,6 +9,6 @@
 		offender=offender||o#lookupkey#;
 	}
 	
-	if (msg!='') alert(msg);
+	if (msg!='') salert(msg);
 	
 		

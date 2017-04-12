@@ -1,7 +1,7 @@
 
 show#primaryfield##mediatype#=function(#primarykey#,msg){
 	if (msg!=null&&msg!=''){
-		alert(msg);
+		salert(msg);
 		return;
 	}
 

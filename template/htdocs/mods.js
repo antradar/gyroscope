@@ -9,7 +9,7 @@ installmods=function(){
 	}
 	
 	if (!modids.length){
-		alert('select at least one module');
+		salert('select at least one module');
 		return;	
 	}
 	

@@ -12,7 +12,7 @@ setaccountpass=function(){
 	var pass2=encodeHTML(opass2.value);
 
 	if (pass1!=pass2){
-		alert(document.dict['mismatching_password']);
+		salert(document.dict['mismatching_password']);
 		return;
 	}
 	var rq=xmlHTTPRequestObject();
@@ -20,7 +20,7 @@ setaccountpass=function(){
 	rq.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 	rq.onreadystatechange=function(){
 		if (rq.readyState==4){
-			alert(rq.responseText);	
+			salert(rq.responseText);	
 		}	
 	}
 	

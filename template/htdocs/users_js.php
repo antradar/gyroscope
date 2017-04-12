@@ -50,7 +50,7 @@ adduser=function(){
 		
 		if (opass.value!=opass2.value){
 			valid=0;
-			alert('Password mismatch');	
+			salert('Password mismatch');	
 		}
 	}
 	
@@ -66,7 +66,7 @@ adduser=function(){
 	<?
 	foreach ($userroles as $role=>$label){
 	?>
-	if (!gid('userrole_<?echo $role;?>_'+suffix)) {alert('Settings outdated; please reload your screen to continue;');return;}
+	if (!gid('userrole_<?echo $role;?>_'+suffix)) {salert('Settings outdated; please reload your screen to continue;');return;}
 	if (gid('userrole_<?echo $role;?>_'+suffix).checked) groupnames.push('<?echo $role;?>');
 	<?	
 	}
@@ -98,7 +98,7 @@ loadsmartcard=function(userid){
 	  }//cert
 	  });
 	} else {//no reader
-		alert('Smartcard reader not supported');
+		salert('Smartcard reader not supported');
 		return false;
 	}	
 }
@@ -135,7 +135,7 @@ updateuser=function(userid){
 	if (!virtual){
 		if (newpass!=newpass2){
 			valid=0;
-			alert('New passwords must match\nOr you may leave them blank');
+			salert('New passwords must match\nOr you may leave them blank');
 			return;	
 		}
 	}
@@ -156,7 +156,7 @@ updateuser=function(userid){
 	<?
 	foreach ($userroles as $role=>$label){
 	?>
-	if (!gid('userrole_<?echo $role;?>_'+suffix)) {alert('Settings outdated; please reload your screen to continue;');return;}
+	if (!gid('userrole_<?echo $role;?>_'+suffix)) {salert('Settings outdated; please reload your screen to continue;');return;}
 	if (gid('userrole_<?echo $role;?>_'+suffix).checked) groupnames.push('<?echo $role;?>');
 	<?	
 	}

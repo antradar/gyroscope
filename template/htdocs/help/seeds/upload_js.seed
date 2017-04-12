@@ -1,7 +1,7 @@
 
 list#primaryfield##records#=function(#primarykey#,msg){
 	if (msg!=null&&msg!=''){
-		alert(msg);
+		salert(msg);
 		return;
 	}
 	ajxpgn('#primaryfield##records#_'+#primarykey#,document.appsettings.codepage+'?cmd=list#primaryfield##records#&#primarykey#='+#primarykey#);

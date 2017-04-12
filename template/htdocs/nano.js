@@ -80,7 +80,7 @@ function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce){
 				} else {
 					if (errfunc!=null&&errfunc!=''&&self[errfunc.toLowerCase()]){
 						self[errfunc.toLowerCase()](decodeURIComponent(apperror));
-					} else alert(decodeURIComponent(apperror));
+					} else salert(decodeURIComponent(apperror));
 				}
 				
 				return;	
@@ -179,7 +179,7 @@ function hdpromote(css){
 }
 
 function encodeHTML(code){
-	if (!self.encodeURIComponent) {alert('Unsupported browser'); return;}
+	if (!self.encodeURIComponent) {salert('Unsupported browser'); return;}
 	return encodeURIComponent(code);
 }
 

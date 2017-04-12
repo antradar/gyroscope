@@ -26,7 +26,7 @@ include 'auth.php';
 $xa=microtime(1);
 $query="select sleep(0.8)";
 $rs=@sql_query($query,$db,MYSQLI_ASYNC);
-if (!isset($rs)) die('Fatal Error: MySQLi Async mode not enabled');
+if (!isset($rs)) die('Error connecting database');
 
 $xb=microtime(1);
 

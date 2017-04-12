@@ -140,7 +140,7 @@ function reloadtab(key,title,params,loadfunc,data,opts){
       
 	var apperror=rq.getResponseHeader('apperror');
 	if (apperror!=null&&apperror!=''){
-		alert('Error: '+decodeURIComponent(apperror));
+		salert('Error: '+decodeURIComponent(apperror));
 		
 		return;	
 	}       
@@ -150,7 +150,7 @@ function reloadtab(key,title,params,loadfunc,data,opts){
 	if (newkey!=null&&newkey!='') {
 		var newparams=rq.getResponseHeader('newparams');
 		if (newparams==null||newparams==''){
-			alert('Incomplete key change');
+			salert('Incomplete key change');
 			return;	
 		}
 		
@@ -255,7 +255,7 @@ function addtab(key,title,params,loadfunc,data,opts){
 
 	var apperror=rq.getResponseHeader('apperror');
 	if (apperror!=null&&apperror!=''){
-		alert('Error: '+decodeURIComponent(apperror));
+		salert('Error: '+decodeURIComponent(apperror));
 		document.tablock=null;
 		return;	
 	}  
@@ -346,6 +346,13 @@ function sconfirm(msg){
 	var b=hb();
 	if (b-a<500) window.location.reload();
 	return res;
+}
+
+function salert(msg){
+	var a=hb();
+	alert(msg);
+	var b=hb();
+	if (b-a<500) window.location.reload();
 }
 
 function showhelp(topic,title){

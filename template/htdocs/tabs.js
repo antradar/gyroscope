@@ -105,7 +105,7 @@ function reloadtab(key,title,params,loadfunc,data,opts){
       
 	var apperror=rq.getResponseHeader('apperror');
 	if (apperror!=null&&apperror!=''){
-		alert('Error: '+decodeURIComponent(apperror));
+		salert('Error: '+decodeURIComponent(apperror));
 		
 		return;	
 	}
@@ -115,7 +115,7 @@ function reloadtab(key,title,params,loadfunc,data,opts){
 	if (newkey!=null&&newkey!='') {		
 		var newparams=rq.getResponseHeader('newparams');
 		if (newparams==null||newparams==''){
-			alert('Incomplete key change');
+			salert('Incomplete key change');
 			return;	
 		}
 		
@@ -242,7 +242,7 @@ function addtab(key,title,params,loadfunc,data,opts){
       
 	var apperror=rq.getResponseHeader('apperror');
 	if (apperror!=null&&apperror!=''){
-		alert('Error: '+decodeURIComponent(apperror));
+		salert('Error: '+decodeURIComponent(apperror));
 		document.tablock=null;
 		return;	
 	}      
@@ -379,6 +379,17 @@ function sconfirm(msg){
 	if (b-a<500&&gid('diagwarn')) {gid('diagwarn').style.display='inline';flashstatus('Warning: dialogs suppressed');}
 	return res;
 }
+
+function salert(msg){
+	var a=hb();
+	alert(msg);
+	var b=hb();
+	if (b-a<500&&gid('diagwarn')) {gid('diagwarn').style.display='inline';
+		flashstatus(msg);
+		setTimeout(function(){flashstatus('Warning: dialogs suppressed');},1000);
+	}
+}
+
 
 Array.prototype.push = function() {
     var n = this.length >>> 0;
