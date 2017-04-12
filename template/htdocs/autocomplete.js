@@ -105,6 +105,11 @@ showrelrec=function(id,showfunc,defid){
 	if (d.disabled) showfunc(d.value2?d.value2:defid,d.value);
 }
 
+pickmonth=function(d,defyear){
+	if (!defyear) defyear=d.value;
+	listlookup(d,'Calendar','pickdatemonths&defyear='+defyear+'&mode=dir');	
+}
+
 pickdate=function(d,opts,def){
 	var key='';
 	if (d) key=encodeHTML(d.value);

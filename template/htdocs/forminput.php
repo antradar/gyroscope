@@ -107,6 +107,7 @@ function logaction($message,$rawobj=null,$syncobj=null){
 	$userid=$user['userid']+0;
 	$logname=$user['login'];
 	$logname=str_replace("'",'',$logname);
+
 	global $db;
 	$wssid=isset($_GET['wssid_'])?($_GET['wssid_']+0):0;
 

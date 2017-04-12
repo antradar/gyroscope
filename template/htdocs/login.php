@@ -137,6 +137,7 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['login'])&
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta http-equiv="refresh" content="1800" />
 	<meta name = "viewport" content = "width=device-width, user-scalable=no" />
+	<meta name="theme-color" content="#9FA3A7" />	
 	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 	
 	<?include 'appicon.php';?>

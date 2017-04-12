@@ -189,7 +189,9 @@ function showtimepicker($y=null,$m=null,$d=null,$start=null,$end=null,$res=null,
 }
 
 function pickdatemonths(){
-	$defyear=GETVAL('defyear');
+	$defyear=$_GET['defyear']+0;
+	if (!$defyear) $defyear=date('Y');
+	
 	global $dict_mons;
 	
 	$mode=GETSTR('mode');
@@ -217,14 +219,25 @@ function pickdatemonths(){
 <div class="section">
 <?
 	for ($i=1;$i<=12;$i++){
-	?>
-	<?if ($mode=='datetime'){?>
+		switch ($mode){
+		case 'datetime':
+?>
 		<a onclick="document.hotspot.value='<?echo $defyear.'-'.$i;?>';pickdatetime(document.hotspot,{start:'<?echo $hstart;?>',end:'<?echo $hend;?>',mini:<?echo $mini;?>,tz:'<?echo $tz;?>'});" style="<?if ($defyear==$myyear&&$i==$mymon) echo 'color:#ab0200;'?>;display:block;float:left;width:23%;margin-right:1%;margin-left:1%;padding:10px 0;text-align:center;"><?echo $dict_mons[$i];?></a>	
-	<?}else{?>
+<?		
+		break;	
+		case 'dir':
+?>
+		<a onclick="picklookup('<?echo $defyear.'-'.$i;?>');" style="<?if ($defyear==$myyear&&$i==$mymon) echo 'color:#ab0200;'?>;display:block;float:left;width:23%;margin-right:1%;margin-left:1%;padding:10px 0;text-align:center;"><?echo $dict_mons[$i];?></a>	
+<?		
+		break;	
+			
+		default:
+	?>
 		<a onclick="document.hotspot.value='<?echo $defyear.'-'.$i;?>';pickdate(document.hotspot,{mini:<?echo $mini;?>,tz:'<?echo $tz;?>'});" style="<?if ($defyear==$myyear&&$i==$mymon) echo 'color:#ab0200;'?>;display:block;float:left;width:23%;margin-right:1%;margin-left:1%;padding:10px 0;text-align:center;"><?echo $dict_mons[$i];?></a>
 	<?	
-	}//mode
-	
+			
+		}
+			
 	}
 ?>
 	<div class="clear"></div>

@@ -26,8 +26,8 @@ function show#record#($#primarykey#=null){
 	<div class="inputrow">
 		<div class="formlabel"><?tr('list_#master_record#_stab');?>:
 		
-			<a onclick="ajxjs(self.show#master_record#,'#master_records#.js');show#master_record#(<?echo $#masterkey#?>,'<?echo $dbrecordtitle;?>');">
-			<u><?echo $recordtitle;?></u>
+			<a class="hovlink" onclick="ajxjs(self.show#master_record#,'#master_records#.js');show#master_record#(<?echo $#masterkey#?>,'<?echo $dbrecordtitle;?>');">
+			<?echo $recordtitle;?>
 			</a>
 		</div>
 	</div>

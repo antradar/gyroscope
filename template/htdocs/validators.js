@@ -8,6 +8,16 @@ function valstr(d){
   return true;
 }
 
+function valmonth(d){
+  if (d.value.replace(/\d\d\d\d\-\d+/g,'')!=''||d.value==''){
+    d.style.borderColor='red';
+    return false;
+  }
+
+  d.style.borderColor='#666666';
+  return true;
+}
+
 function valdate(d){
   if (d.value.replace(/\d\d\d\d\-\d+\-\d+/g,'')!=''||d.value==''){
     d.style.borderColor='red';

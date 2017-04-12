@@ -9,21 +9,21 @@ function showwelcome(){
 <div class="section">
 	<div class="sectiontitle"><?tr('hometab_welcome');?></div>
 
-<?
-		
-/*
-	<input id="dtest" onfocus="pickdate(this);" onkeyup="_pickdate(this);">
+<?/*
+	<input id="mtest" onfocus="pickmonth(this,<?echo date('Y');?>);" placeholder="Month">
+	<?makelookup('mtest',1);?>
+	<br><br>
+	<input id="dtest" onfocus="pickdate(this);" onkeyup="_pickdate(this);" placeholder="Date">
 	<span id="dtest_val2"></span>
 	<?makelookup('dtest',1);?>
 	<br><br>
-	<input id="test" onfocus="pickdatetime(this,{start:0,end:24});" onkeyup="_pickdatetime(this,{start:0,end:24});">
+	<input id="test" onfocus="pickdatetime(this,{start:0,end:24});" onkeyup="_pickdatetime(this,{start:0,end:24});" placeholder="Date/Time">
 	<span id="test_val2"></span>
 	<?makelookup('test',1);?>
 	<br><br>
-	<input id="test2" onfocus="picktime(this,{start:0,end:24,y:2015,m:11,d:1});">
+	<input id="test2" onfocus="picktime(this,{start:0,end:24,y:2015,m:11,d:1});" placeholder="Time on 2015-11-1">
 	<?makelookup('test2',1);?>
-*/
-?>
+*/?>
 
 	<?
 		//lazy way to generate a starter screen, but better than nothing

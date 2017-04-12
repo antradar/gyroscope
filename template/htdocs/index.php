@@ -20,9 +20,10 @@ $user=userinfo();
 <head>
 	<title><?echo GYROSCOPE_PROJECT;?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link href='gyroscope.css' type='text/css' rel='stylesheet'>
-	<link href='toolbar.css' type='text/css' rel='stylesheet'>
-	<meta name="Version" content="Gyroscope <?echo GYROSCOPE_VERSION?>">
+	<meta name="Version" content="Gyroscope <?echo GYROSCOPE_VERSION?>" />
+	<meta name="theme-color" content="#454242" />	
+	<link href="gyroscope.css" type="text/css" rel="stylesheet" />
+	<link href="toolbar.css" type="text/css" rel="stylesheet" />
 	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 	
 </head>

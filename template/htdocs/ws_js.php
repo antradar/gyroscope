@@ -13,7 +13,7 @@ function wss_init(){
 	global $wssecret;
 		
 	$wsskey=md5($wssecret.date('Y-n-j-H'));	
-	$wsuri='ws://localhost:9999/wss.php';
+	$wsuri='ws://localhost:9999/wss.php'; // wss:// in production
 
 ?>
 wss_init('<?echo $userid;?>','<?echo $wsuri;?>','<?echo $wsskey;?>');
