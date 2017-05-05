@@ -17,6 +17,6 @@ function deluser(){
 	$query="delete from ".TABLENAME_USERS." where userid=$userid";
 	sql_query($query,$db);
 	
-	logaction("updated User #$userid <u>$login</u>",array('userid'=>$userid,'login'=>"$login"),array('rectype'=>'reauth','recid'=>$userid));
+	logaction("deleted User #$userid <u>$login</u>",array('userid'=>$userid,'login'=>"$login"),array('rectype'=>'reauth','recid'=>$userid));
 	reauth();
 }

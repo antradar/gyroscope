@@ -31,7 +31,6 @@
 "templates":[
 	{"template":"bridge_header","filename":"modify icl/show#primaryfield#.inc.php header"},	
 	{"template":"bridge_sublist","filename":"add sub section in <em>show#primaryfield#</em>:"},	
-	{"template":"lookup_js","filename":"add to autocomplete.js"},
 	{"template":"bridge_jsadd","filename":"#primaryrecords#.js"}, 	
 	{"template":"lookup","filename":"icl/lookup#record#.inc.php"},
 	{"template":"bridge_add","filename":"icl/add#primaryfield##record#.inc.php"},	

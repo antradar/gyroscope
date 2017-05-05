@@ -27,7 +27,11 @@ function showuser($userid=null){
 	
 	header('newtitle: '.tabtitle($login));
 	
+	makechangebar('user_'.$userid,"updateuser($userid);");
 ?>
+
+
+
 <div class="section">
 	<div class="sectiontitle"><?echo $login;?></div>
 
@@ -36,29 +40,29 @@ function showuser($userid=null){
 
 	<div class="inputrow">
 		<div class="formlabel"><?tr('username');?>:</div>
-		<input class="inpmed" id="login_<?echo $userid;?>" value="<?echo htmlspecialchars($login);?>" onblur="if (gid('dispname_<?echo $userid;?>').value=='') gid('dispname_<?echo $userid;?>').value=this.value;">
+		<input class="inpmed" id="login_<?echo $userid;?>" value="<?echo htmlspecialchars($login);?>" onchange="marktabchanged('user_<?echo $userid;?>');" onblur="if (gid('dispname_<?echo $userid;?>').value=='') gid('dispname_<?echo $userid;?>').value=this.value;">
 	</div>
 	<div class="inputrow">
 		<div class="formlabel"><?tr('dispname');?>:</div>
-		<input class="inpmed" id="dispname_<?echo $userid;?>" value="<?echo htmlspecialchars($dispname);?>" onfocus="this.select();">
+		<input class="inpmed" id="dispname_<?echo $userid;?>" value="<?echo htmlspecialchars($dispname);?>" onchange="marktabchanged('user_<?echo $userid;?>');" onfocus="this.select();">
 	</div>
 	<div class="inputrow">
-		<input type="checkbox" id="active_<?echo $userid;?>" <?if ($active) echo 'checked';?>> <label for="active_<?echo $userid;?>"><?tr('account_active');?></label>
+		<input type="checkbox" id="active_<?echo $userid;?>" <?if ($active) echo 'checked';?>  onchange="marktabchanged('user_<?echo $userid;?>');"> <label for="active_<?echo $userid;?>"><?tr('account_active');?></label>
 		&nbsp;&nbsp;
-		<input type="checkbox" id="virtual_<?echo $userid;?>" <?if ($virtual) echo 'checked';?> onclick="if (this.checked) gid('userpasses_<?echo $userid;?>').style.display='none'; else gid('userpasses_<?echo $userid;?>').style.display='block';"> <label for="virtual_<?echo $userid;?>"><?tr('account_virtual');?></label>
+		<input type="checkbox" id="virtual_<?echo $userid;?>" <?if ($virtual) echo 'checked';?>  onchange="marktabchanged('user_<?echo $userid;?>');" onclick="if (this.checked) gid('userpasses_<?echo $userid;?>').style.display='none'; else gid('userpasses_<?echo $userid;?>').style.display='block';"> <label for="virtual_<?echo $userid;?>"><?tr('account_virtual');?></label>
 	</div>
 	<div id="userpasses_<?echo $userid;?>" style="<?if ($virtual) echo 'display:none;';?>">
 	<div class="inputrow">
 		<div class="formlabel"><?tr('new_password');?>:</div>
-		<input class="inp" id="newpass_<?echo $userid;?>" type="password">
+		<input class="inp" id="newpass_<?echo $userid;?>" type="password" onchange="marktabchanged('user_<?echo $userid;?>');">
 	</div>
 	<div class="inputrow">
 		<div class="formlabel"><?tr('repeat_password');?>:</div>
-		<input class="inp" id="newpass2_<?echo $userid;?>" type="password">
+		<input class="inp" id="newpass2_<?echo $userid;?>" type="password" onchange="marktabchanged('user_<?echo $userid;?>');">
 	</div>
 	
 	<div class="inputrow">
-		<input type="checkbox" id="passreset_<?echo $userid;?>" <?if ($passreset) echo 'checked';?>> <label for="passreset_<?echo $userid;?>"><?tr('account_login_reset');?></label>
+		<input type="checkbox" onchange="marktabchanged('user_<?echo $userid;?>');" id="passreset_<?echo $userid;?>" <?if ($passreset) echo 'checked';?>> <label for="passreset_<?echo $userid;?>"><?tr('account_login_reset');?></label>
 	</div>
 
 	<div class="inputrow" id="cardsettings_<?echo $userid;?>">
@@ -66,7 +70,7 @@ function showuser($userid=null){
 			<span style="font-weight:normal;" id="cardstatus_<?echo $userid;?>"><?echo $certname;?></span> <a class="labelbutton" onclick="loadsmartcard(<?echo $userid;?>);">load card</a>
 			<span style="display:none;"><textarea id="cert_<?echo $userid;?>" value=""></textarea></span>
 		</div>
-		<input type="checkbox" id="needcert_<?echo $userid;?>" <?if ($needcert) echo 'checked';?>> card must be present at sign-in
+		<input onchange="marktabchanged('user_<?echo $userid;?>');" type="checkbox" id="needcert_<?echo $userid;?>" <?if ($needcert) echo 'checked';?>> card must be present at sign-in
 
 	</div>
 	
@@ -75,7 +79,7 @@ function showuser($userid=null){
 		<?foreach ($userroles as $role=>$label){
 		?>
 		<div style="padding-left:10px;margin-bottom:3px;">
-			<input type="checkbox" id="userrole_<?echo $role;?>_<?echo $userid;?>" <?if (in_array($role,$groups)) echo 'checked';?>> 
+			<input onchange="marktabchanged('user_<?echo $userid;?>');" type="checkbox" id="userrole_<?echo $role;?>_<?echo $userid;?>" <?if (in_array($role,$groups)) echo 'checked';?>> 
 			<label for="userrole_<?echo $role;?>_<?echo $userid;?>"><?echo $label;?></label>
 		</div>
 		<?	
@@ -89,7 +93,6 @@ function showuser($userid=null){
 
 		&nbsp; &nbsp;
 		<button class="warn" onclick="deluser(<?echo $userid;?>);"><?tr('button_delete');?></button>
-
 
 	</div>
 

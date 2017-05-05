@@ -1,0 +1,443 @@
+<?php
+
+$navopts=array();
+$navdbs=array();
+
+function #entity#_countfield($fieldname,$limit=null, $opts=null){
+
+	global $navdbs;
+	global $navopts;
+	global $dbconfigs;	
+	
+	$qidx=count($navopts);	
+	
+	$filters=#entity#_makefilters();
+		
+	$query="select $qidx as nav_linkid, count(#mastertable#.#primarykey#) as c, $fieldname from #mastertable# ";
+#iterator-multifields-multitable#			
+		
+	$query.=" where #mastertable#.#primarykey#!=0 ";
+	
+#iterator-multifields-multibridge#
+
+	$query.=#entity#_sqlfilters();
+	$query.=" group by $fieldname ";
+	
+	if ($limit!=null) $query.=" order by c desc limit $limit ";
+	else $query.=" order by $fieldname ";
+			
+	$navkey=md5(preg_replace('/^select \d+ as nav_linkid/i','',$query));	
+	$opts['navkey']=$navkey;	
+	
+	$dbconfig=$dbconfigs[$qidx%count($dbconfigs)];
+	$db=sql_get_db($dbconfig['host'],$dbconfig['db'],$dbconfig['user'],$dbconfig['pass']);
+	array_push($navdbs,$db);
+	array_push($navopts,$opts);
+	
+	sql_query($query,$db,MYSQLI_ASYNC);
+
+	
+}
+
+function #entity#_sqlfilters(){
+	$filters='';
+	$key=GETSTR('key');
+	if ($key!='') $filters.=" and (#dispfield# like '%$key%') ";
+		
+#iterator-dimlist-gdimlist#
+#iterator-multifields-multisqlfilter#				
+#iterator-rangelist-rangesqlfilter#							
+	
+	return $filters;
+}
+
+function #entity#_makefilters(){
+	$filters=array();
+	$nfilters=array();
+	
+	$key=GETSTR('key');
+	if ($key!='') {
+		$filters['searchterm']=$key;
+	}
+	if (isset($_GET['visible'])) $filters['visible']=$_GET['visible'];
+
+		
+#iterator-dimlist-gdimfilter#	
+#iterator-multifields-multifilter#	
+#iterator-rangelist-rangefilter#	
+			
+		
+	return array('filters'=>$filters,'nfilters'=>$nfilters);
+}
+
+function #entity#_strfilters($filters,$nfilters=null){
+	
+	$filter='';
+	foreach ($filters as $key=>$val){
+		if (is_array($val)) foreach ($val as $k=>$v) $filter.='&'.$key.'['.urlencode($k).']=1';
+		else $filter.='&'.urlencode($key).'='.urlencode($val);
+
+	}
+	
+	if (is_array($nfilters)){
+		foreach ($nfilters as $key=>$vals) {
+			foreach ($vals as $val) $filter.="&neg__${key}[]=$val";	
+		}
+	}
+		
+	return $filter;
+}
+
+function #entity#_shownav_($container,$cmd,$title,$fieldname,$multi=null){
+	global $navopts;
+	
+	$bfilters=#entity#_makefilters();
+	$basefilters=$bfilters['filters'];
+	$nbasefilters=$bfilters['nfilters'];
+
+	if (isset($basefilters[$fieldname])&&!$multi){
+		array_push($navopts,array('func'=>'shownav','container'=>$container,'cmd'=>$cmd,'title'=>$title,'fieldname'=>$fieldname,'multi'=>$multi,'skip'=>1));	
+		return;
+	}
+	
+	#entity#_countfield($fieldname,$limit,array('func'=>'shownav','container'=>$container,'cmd'=>$cmd,'title'=>$title,'fieldname'=>$fieldname,'multi'=>$multi));
+	
+			
+}
+
+function #entity#_shownav($seg,$container, $cmd, $title,$fieldname,$multi=null){
+	
+	$bfilters=#entity#_makefilters();
+	$basefilters=$bfilters['filters'];
+	$nbasefilters=$bfilters['nfilters'];
+
+	
+	if (isset($basefilters[$fieldname])&&!$multi){
+		$myfilters=$basefilters;
+		unset($myfilters[$fieldname]);
+		$filter=#entity#_strfilters($myfilters,$nbasefilters);
+?>
+<div class="navgroup">
+	<div class="navtitle"><?echo $title;?></div>
+<?
+	#entity#_shownegfilters($fieldname,$container,$cmd);
+?>
+	<div class="navfilter">
+		<a href=# onclick="nav_setfilter('<?echo $container;?>','#searchkey#','<?echo $cmd;?>','<?echo $filter;?>');return false;">[x]</a> <?echo #entity#_dispname($fieldname,$basefilters[$fieldname]);?>
+	</div>
+</div><!-- navgroup -->
+<?		
+		return;
+	}
+
+// end inline breadcrumb
+
+	$counts=array();
+	
+	
+	foreach ($seg as $myrow){
+		$c=$myrow['c'];
+		if ($c<=0) continue;
+		
+		
+		$key=$myrow[$fieldname];
+		if (trim($key)=='') continue;
+		
+		$counts[$key]=$c;
+	}
+	if (count($counts)<=0) {
+		if (count($nbasefilters[$fieldname])>0){
+		?>
+		<div class="navgroup">
+		<div class="navtitle"><?echo $title;?></div>
+		<?	
+			#entity#_shownegfilters($fieldname,$container,$cmd);
+		?>
+		</div><!-- navgroup -->
+		<?
+		}
+		return;
+	}
+?>
+<div class="navgroup">
+<div class="navtitle"><?echo $title;?></div>
+<?	
+	$bfilters=#entity#_makefilters();
+	$basefilters=$bfilters['filters'];
+	$nbasefilters=$bfilters['nfilters'];
+	
+	#entity#_shownegfilters($fieldname,$container,$cmd);
+	
+	foreach ($counts as $key=>$count){
+		$dispname=#entity#_dispname($fieldname,$key);
+		$myfilters=$basefilters;
+		if ($multi){
+			if (!is_array($myfilters[$multi])) $myfilters[$multi]=array();
+			$myfilters[$multi][$key]=1;
+			if ($basefilters[$multi][$key]) unset($myfilters[$multi][$key]);
+		} else $myfilters[$fieldname]=$key;
+		$filters=#entity#_strfilters($myfilters,$nbasefilters);
+		//echo '<pre>';print_r($filters);echo '</pre>';
+		/*
+		todo: use your container ids for navigation, breadcrumb and record list
+		*/
+		
+		?>
+<div class="navfilter">
+		<?
+		if ($multi){
+	?>		
+		<input <?if ($basefilters[$multi][$key]) echo 'checked';?> type="checkbox" href=# onclick="nav_setfilter('<?echo $container;?>','#searchkey#','<?echo $cmd;?>','<?echo $filters;?>');return false;"> 
+	<?		
+		}
+
+?>
+	<a href=# onclick="nav_setfilter('<?echo $container;?>','#searchkey#','<?echo $cmd;?>','<?echo $filters;?>');return false;"><?echo $dispname;?></a> 
+	<?
+	if (!$multi||!$basefilters[$multi][$key]||true){ //remove true to hide refinement count for selected multi fields
+	?>
+	<em>(<?echo $count;?>)</em>
+	<?}?>
+	
+	<?if (!$basefilters[$multi][$key]){?>
+	<a class="filterneg" onclick="nav_setfilter('<?echo $container;?>','#searchkey#','<?echo $cmd;?>','<?echo $filters;?>&neg__<?echo $fieldname;?>[]=<?echo $key;?>');return false;">
+	<acronym title="exclude from results">[-]</acronym>
+	</a>
+	<?}?>
+		
+</div>
+<?
+	}
+?>
+</div><!-- navgroup -->
+<?		
+}
+
+
+function #entity#_dispname($fieldname,$key){
+	global $db;
+	
+	switch ($fieldname){
+		/*
+		todo: add field value to field name mapping
+		*/
+		default: return $key;
+	}	
+}
+
+function #entity#_shownegfilters($fieldname,$container,$cmd){
+	$bfilters=#entity#_makefilters();
+	$filters=$bfilters['filters'];
+	$nfilters=$bfilters['nfilters'];
+			
+	if (!is_array($nfilters)||!is_array($nfilters[$fieldname])||count($nfilters[$fieldname])==0) return;
+?>
+<div class="neglabel">Excluding:</div>
+<div class="neggroup">
+		<?foreach ($nfilters[$fieldname] as $item){
+			$mynfilters=$nfilters;
+			$key=array_search($item,$mynfilters[$fieldname]);
+			if ($key!==false){
+				unset($mynfilters[$fieldname][$key]);	
+			}
+			$strfilters=#entity#_strfilters($filters,$mynfilters);
+		?>
+		<div class="negfilter"><a class="filterclear" onclick="nav_setfilter('<?echo $container;?>','#searchkey#','<?echo $cmd;?>','<?echo $strfilters;?>');return false;">[x]</a> <?echo #entity#_dispname($fieldname,$item);?></div>
+		<?}?>
+</div>
+<?	
+}
+
+function #entity#_showrange_($container,$cmd,$title,$fieldname,$opts=null){
+	global $navdbs;
+	global $navopts;
+	global $dbconfigs;
+	
+	$bfilters=#entity#_makefilters();
+	$basefilters=$bfilters['filters'];
+	$nbasefilters=$bfilters['nfilters'];
+	$filters=$basefilters;
+			
+
+// start inline breadcrumb		
+	if (isset($filters[$fieldname.'_a'])&&is_numeric($filters[$fieldname.'_a'])||isset($filters[$fieldname.'_b'])&&is_numeric($filters[$fieldname.'_b'])){
+		
+		$qidx=count($navopts);	
+		array_push($navopts,array('func'=>'showrange','cmd'=>$cmd,'container'=>$container,'title'=>$title,'fieldname'=>$fieldname,'skip'=>1));
+		
+		return;	
+	}
+	
+	$qidx=count($navopts);
+	$dbconfig=$dbconfigs[$qidx%count($dbconfigs)];	
+	$db=sql_get_db($dbconfig['host'],$dbconfig['db'],$dbconfig['user'],$dbconfig['pass']);
+	
+	$query="select $qidx as nav_linkid, min($fieldname) as a, max($fieldname) as b from #mastertable# where #mastertable#.#primarykey#!=0 ".#entity#_sqlfilters();
+	
+	$navkey=md5(preg_replace('/^select \d+ as nav_linkid/i','',$query));
+	
+	array_push($navdbs,$db);
+	array_push($navopts,array('func'=>'showrange','container'=>$container,'cmd'=>$cmd,'title'=>$title,'fieldname'=>$fieldname,'multi'=>isset($multi)?$multi:null,'navkey'=>$navkey));
+
+	sql_query($query,$db,MYSQLI_ASYNC);
+
+			
+}
+
+function #entity#_showrange($container,$cmd, $title,$fieldname){
+	global $db;
+	
+	$bfilters=#entity#_makefilters();
+	$basefilters=$bfilters['filters'];
+	$nbasefilters=$bfilters['nfilters'];
+	$filters=$basefilters;
+		
+
+// start inline breadcrumb		
+	if (is_numeric($filters[$fieldname.'_a'])||is_numeric($filters[$fieldname.'_b'])){
+		$myfilters=$filters;
+		unset($myfilters[$fieldname.'_a']);
+		unset($myfilters[$fieldname.'_b']);
+		$filter=#entity#_strfilters($myfilters,$nbasefilters);		
+?>
+<div class="navgroup">
+	<div class="navtitle"><?echo $title;?></div>
+	<div class="navfilter">
+<a class="filterclear" onclick="nav_setfilter('<?echo $container;?>','#searchkey#','<?echo $cmd;?>','<?echo $filter;?>');return false;">[x]</a>
+<?echo $filters[$fieldname.'_a'].' - '.$filters[$fieldname.'_b'];?>
+	</div>
+</div> 
+<?	
+		return;	
+	}
+// end inline breadcrumb
+		
+	$min=$seg[0]['a'];
+	$max=$seg[0]['b'];
+
+	if ($min==$max) return;
+
+	$filter=#entity#_strfilters($filters,$nbasefilters);		
+			
+?>
+<div class="navgroup">
+	<div class="navtitle"><?echo $title;?></div>
+		<input id="<?echo $fieldname?>_a" name="<?echo $fieldname;?>_a" value="<?echo $min;?>" style="width:60px;"> - 
+		<input id="<?echo $fieldname?>_b" name="<?echo $fieldname;?>_b" value="<?echo $max;?>" style="width:60px;">
+		<button onclick="nav_setfilter('<?echo $container;?>','#searchkey#','<?echo $cmd;?>','<?echo $filter;?>&<?echo $fieldname;?>_a='+gid('<?echo $fieldname;?>_a').value+'&<?echo $fieldname;?>_b='+gid('<?echo $fieldname;?>_b').value);return false;">Set</button>
+</div>
+<?	
+		
+}
+
+function #entity#_asyncprint_($str){
+	global $navopts;
+	global $navdbs;
+	global $dbconfigs;
+	
+	$qidx=count($navopts);		
+	
+	$query="select $qidx as nav_linkid"; 
+	
+	$dbconfig=$dbconfigs[$qidx%count($dbconfigs)];
+	$db=sql_get_db($dbconfig['host'],$dbconfig['db'],$dbconfig['user'],$dbconfig['pass']);
+	array_push($navdbs,$db);
+	array_push($navopts,array('func'=>'asyncprint','str'=>$str));
+	
+	sql_query($query,$db,MYSQLI_ASYNC);	
+}
+
+	
+function #entity#_shownavs($container, $cmd){
+
+	global $navopts;
+	global $navdbs;
+
+	$bfilters=#entity#_makefilters();
+	$basefilter=$bfilters['filters'];
+	$nbasefilter=$bfilters['nfilters'];
+	$filters=#entity#_strfilters($basefilter,$nbasefilter);
+
+	$vfilters=$basefilter;
+	unset($vfilters['visible']);
+	$vfilter=#entity#_strfilters($vfilters,$nbasefilter);
+
+?>
+	<div style="padding:10px;display:nonea;">
+		<input id="searchfilter_#entity#" type="hiddena" value="<?echo $filters;?>" style="border:dashed 1px #dedede;width:100%;">
+	</div>
+<?	
+	if (!$basefilter['visible']){
+		
+?>	
+	<div class="navopen"><a onclick="nav_setfilter('<?echo $container;?>','#searchkey#','<?echo $cmd;?>','<?echo $vfilter;?>&visible=1');">show filters</a></div>
+<?			
+	} else {
+?>
+	<div class="navclose"><a onclick="nav_setfilter('<?echo $container;?>','#searchkey#','<?echo $cmd;?>','<?echo $vfilter;?>&visible=0');">hide filters</a></div>	
+<?			
+		
+#iterator-dimlist-gsshowdimi#	
+#iterator-multifields-gsshowmultii#
+#iterator-rangelist-gsrangeshownavi#
+
+	$all_links=array();
+	$segs=array();
+	
+	foreach ($navopts as $idx=>$navopt) array_push($segs,$navopt);
+	foreach ($navdbs as $idx=>$db) array_push($all_links,$db);
+	
+	$processed=0;
+		
+	do{
+		$links=$errors=$reject=array();
+		foreach ($all_links as $link) $links[]=$link;
+				
+		if (!mysqli_poll($links,$errors,$reject,1)) continue;
+		foreach ($links as $link){
+			if ($rs=$link->reap_async_query()){
+				while ($myrow=sql_fetch_assoc($rs)) {
+					$linkid=$myrow['nav_linkid'];
+					if (!isset($segs[$linkid]['data'])) $segs[$linkid]['data']=array();
+					array_push($segs[$linkid]['data'],$myrow);	
+				}
+				if (is_object($rs)) mysqli_free_result($rs);
+			} else die('Error: '.mysqli_error($link));
+			$processed++;
+		}//foreach link		
+		
+	} while ($processed<count($all_links));
+	
+	
+	$navdbs=array();
+	
+	
+		
+	foreach ($segs as $idx=>$seg){
+		$opts=$navopts[$idx];
+		$optskip=isset($opts['skip']);
+		
+		$func=$opts['func'];
+		
+		switch ($func){
+			case 'asyncprint': 
+				echo $opts['str'];
+			break;
+			case 'shownav':
+				#entity#_shownav(isset($seg['data'])?$seg['data']:array(),$opts['container'],$opts['cmd'],$opts['title'],$opts['fieldname'],$opts['multi']);
+				
+			break;
+			case 'showrange':
+				#entity#_showrange(isset($seg['data'])?$seg['data']:array(),$opts['container'],$opts['cmd'],$opts['title'],$opts['fieldname']);
+			break;
+			
+		}
+	}//foreach seg
+	
+	$navopts=array();
+
+	}//if visible
+	
+}
+
+

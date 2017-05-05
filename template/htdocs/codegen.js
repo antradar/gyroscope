@@ -1,9 +1,6 @@
 codegen=function(){}
 
-codegen_makeform=function(seed){
-//	var seed=gid('codegen_seed').value;
-//	if (seed=='') return;
-	
+codegen_makeform=function(seed){	
 	ajxpgn('codegen_view',document.appsettings.codepage+'?cmd=codegen_makeform&seed='+seed);	
 }
 
@@ -41,7 +38,10 @@ codegen_makecode=function(seed){
 	
 	rq.send(fields);
 	
-	
 	if (!valid) return;
 }
 
+codegen_copy=function(idx){
+	gid('codegensnippet_'+idx).select();
+	document.execCommand('copy');
+}

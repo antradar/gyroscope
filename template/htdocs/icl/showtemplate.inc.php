@@ -21,6 +21,8 @@ function showtemplate($templateid=null){
 	
 	header('newtitle:'.tabtitle($templatename));
 	header('parenttab: templatetype_'.$templatetypeid);
+	
+	makechangebar('template_'.$templateid,"updatetemplate($templateid);");
 ?>
 <div class="section">
 	<div class="sectiontitle"><?echo $templatename;?></div>
@@ -43,10 +45,11 @@ function showtemplate($templateid=null){
 		
 	<div class="inputrow">
 		<div class="formlabel"><?tr('template_label_templatename');?>:</div>
-		<input class="inpmed" id="templatename_<?echo $templateid;?>" value="<?echo htmlspecialchars($templatename);?>">
+		<input class="inpmed" id="templatename_<?echo $templateid;?>" value="<?echo htmlspecialchars($templatename);?>" onchange="marktabchanged('template_<?echo $templateid;?>');">
 	</div>
 	<div class="inputrow">
 		<div class="formlabel"><?tr('template_label_templatetext');?>:</div>
+		<?makelookup('templatetext_'.$templateid);?>
 		<textarea class="templatetexteditor_<?echo $templateid;?>" id="templatetext_<?echo $templateid;?>" style="width:100%;height:220px;"><?echo htmlspecialchars($templatetext);?></textarea>
 	</div>
 

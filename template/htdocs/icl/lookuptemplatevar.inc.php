@@ -25,7 +25,7 @@ function lookuptemplatevar(){
 		$vardesc=$myrow['templatevardesc'];	
 		$dbvar=noapos(htmlentities($varname));
 ?>
-<div class="listitem" style="<?if ($varname==$key) echo 'font-weight:bold;background:#ffffcc;';?>"><a onclick="if (document.hotspot&&document.hotspot.selection) {document.hotspot.selection.setContent('%%<?echo $dbvar;?>%%');document.hotspot.focus();}"><?echo $varname;?><br><em style="color:#666666;"><?echo $vardesc;?></em></a></div>
+<div class="listitem" style="<?if ($varname==$key) echo 'font-weight:bold;background:#ffffcc;';?>"><a onclick="if (document.hotspot&&document.hotspot.onChange) document.hotspot.onChange.dispatch();if (document.hotspot&&document.hotspot.selection) {document.hotspot.selection.setContent('%%<?echo $dbvar;?>%%');document.hotspot.focus();}"><?echo $varname;?><br><em style="color:#666666;"><?echo $vardesc;?></em></a></div>
 <?		
 	}//while	
 ?>

@@ -12,7 +12,7 @@
 
 "templates":[
 	{"template":"sortlist_js","filename":"append to <em>#records#.js</em>"},
-	{"template":"sortlist_list","filename":"modify <em>icl/list#records#.inc.php. set #record#list to position:relative;</em>"},
+	{"template":"sortlist_list","filename":"modify <em>icl/list#records#.inc.php. <span style=\"color:#ab0200;\">set #record#list to <input value=\"position:relative;\" onclick=\"select(this);document.execCommand('copy');\"></span></em>","nocopy":1},
 	{"template":"sortlist_swap","filename":"icl/swap#record#pos.inc.php"},
 	{"template":"sortlist_add","filename":"add to <em>icl/add#record#.inc.php</em>"},
 	{"template":"sortlist_switch","filename":"myservices.php <em>switch ($cmd){</em>"}

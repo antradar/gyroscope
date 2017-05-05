@@ -13,17 +13,19 @@ function codegen_makecode(){
 	
 	$templates=$obj['templates'];
 	
-	foreach ($templates as $template){
+	foreach ($templates as $idx=>$template){
 		$fseed=$template['template'];
 		$filename=$template['filename'];
+		$nocopy=$template['nocopy']+0;
 		foreach ($opts as $k=>$v) $filename=str_replace("#$k#",$v,$filename);	
 	
-		codegen_quotecode($fseed,$filename,$opts);
+		codegen_quotecode($fseed,$filename,$opts,$idx,$nocopy);
 			
 	}
 }
 
-function codegen_quotecode($seed,$filename,$opts){
+function codegen_quotecode($seed,$filename,$opts,$midx,$nocopy){
+		
 	$fn='help/seeds/'.$seed.'.seed';
 	if (!file_exists($fn)) {echo "missing seed file $seed.seed";return;}
 	$code=file_get_contents($fn);
@@ -70,9 +72,20 @@ function codegen_quotecode($seed,$filename,$opts){
 	$lc=count($lines);
 	if ($lc<10) $height=$lc*18;
 ?>
-<div><input type="checkbox"> <b><?echo $filename;?></b></div>
+<div><input type="checkbox"> <b><?echo $filename;?></b> 
+&nbsp; 
+<?if (!$nocopy){?>
+<a class="labelbutton" onclick="codegen_copy(<?echo $midx;?>)">copy</a>
+<?} else {
+?>
+<span class="labelbutton" style="cursor:default;background:#eeeeee;">copy</span>
+<?	
+}?>
+
+</div>
+
 <div style="margin:5px 10px;">
-<textarea spellcheck="false" style="width:100%;padding:5px;height:<?echo $height;?>px;font-family:monospace;font-size:12px;">
+<textarea spellcheck="false" id="codegensnippet_<?echo $midx;?>" style="width:100%;padding:5px;height:<?echo $height;?>px;font-family:monospace;font-size:12px;">
 <?echo $code;?>
 
 </textarea>

@@ -3,16 +3,16 @@
 	{"field":"reporttitle","disp":"Report Title","def":"Purchase"},
 	{"field":"reportkey","disp":"Report Entity Name","def":"purchase"},
 
-	{"field":"tablename","disp":"DB Table Name","def":"sales"},
+	{"field":"tablename","disp":"DB Table Name","def":"orders"},
 	{"field":"datefield","disp":"Date Field","def":"orderdate"},
-	{"field":"fields","disp":"Columns","def":"amount|Amount\ncolor|Color","type":"fieldlist"}
+	{"field":"fields","disp":"Columns","def":"orderid|Order ID|numeric\nordersfname|First Name|string\norderslname|Last Name|string\norderdate|Order Date|date\norderstatus|Status|string","type":"fieldlist"}
 	
-		
 ],
 
 "templates":[
-	{"template":"report_list","filename":"icl/listreports.inc.php"},
 	{"template":"report_show","filename":"icl/rpt#reportkey#.inc.php"},
 	{"template":"report_switch","filename":"myservices.php <em>switch ($cmd){</em>"}
 ]
 }
+
+

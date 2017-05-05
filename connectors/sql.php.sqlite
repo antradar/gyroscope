@@ -1,0 +1,60 @@
+<?php
+// Gyroscope SQL Wrapper
+// SQLite implementation
+// (c) Antradar Software
+
+//run sqlite_install.php to generate the initial database file
+
+$SQL_ENGINE="SQLite3";
+
+function sql_escape($str){
+	return addslashes($str);	
+}
+
+function sql_get_db($dbfn){
+	$db=new SQLite3($dbfn);
+	return $db;
+}
+
+function sql_query($query,$db){
+	$rs=$db->query($query);
+	
+	if (!$rs) echo 'SQL Error: '.$db->lastErrorMsg()."\r\n";
+			
+	return $rs;
+}
+
+function sql_fetch_array($rs){
+	return $rs->fetchArray();
+
+}
+
+function sql_fetch_assoc($rs){
+	return sql_fetch_array($rs);
+}
+
+function sql_insert_id($db,$rs=null){
+
+	return $db->lastInsertRowID();
+}
+
+function sql_affected_rows($db,$rs){
+	return $db->changes();
+}
+
+function sql_begin_transaction(){
+	die("not implemented!");
+}
+
+function sql_commit(){
+	die("not implemented!");
+}
+
+function sql_rollback(){
+	die("not implemented!");
+}
+
+/* Sample Connection
+
+$db=sql_get_db("db.sqlite3");
+*/

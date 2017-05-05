@@ -20,6 +20,5 @@ end if;
 
 return stamp_;
 
-
 end ;;
 DELIMITER ;

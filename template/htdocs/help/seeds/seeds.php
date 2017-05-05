@@ -12,7 +12,13 @@ $codegen_seeds=array(
 	'album'=>array('name'=>'1-N Image Uploader','desc'=>'','icon'=>''),
 	'uploader'=>array('name'=>'1-N File Uploader','desc'=>'A file uploader uses a data table to assign unique IDs to each upload;<br>The files will be renamed to have a generic extension.','icon'=>'upload'),
 	'break2'=>array('type'=>'break'),
-	'tinymce'=>array('name'=>'Rich Text Editor','desc'=>'','icon'=>''),
+	'tinymces'=>array('name'=>'Rich Text Editor','icon'=>'','package'=>1,
+		'items'=>array(
+			'tinymce'=>array('name'=>'Rich Text Editor','desc'=>'Main editor','icon'=>''),
+			'smartobjplugin'=>array('name'=>'Smart Object - Plugins','desc'=>'Plugin lists for RTE','icon'=>''),
+			'smartobjmention'=>array('name'=>'Smart Object - Mentions','desc'=>'Reference links for RTE','icon'=>'')
+		)
+	),
 	'sortlists'=>array('name'=>'Drag & Drop Sort List','icon'=>'','package'=>1,
 		'items'=>array(
 			'sortlist'=>array('name'=>'List View','desc'=>'','icon'=>''),
@@ -24,7 +30,8 @@ $codegen_seeds=array(
 		'items'=>array(
 			'gnav'=>array('name'=>'Frontend - Standard','desc'=>'Classic front-end faceted navigation','icon'=>''),
 			'gnavi'=>array('name'=>'Frontend - Multi-core','desc'=>'High-performance front-end navigation; specific server hardware and setup required','icon'=>''),
-			'navfilter'=>array('name'=>'Gyroscope Backend','desc'=>'Faceted navigation for list view. Make a standard list view first','icon'=>'')
+			'navfilter'=>array('name'=>'Gyroscope - Standard','desc'=>'Faceted navigation for list view. Make a standard list view first','icon'=>''),
+			'navfilteri'=>array('name'=>'Gyroscope - Multi-core','desc'=>'Faceted navigation for list view using parallel queries','icon'=>'')
 		)
 	),
 	'asyncd'=>array('name'=>'AsyncD','desc'=>'The Distributed Asynchronous Data Processor forks a long-running process in the background while updating the web frontend its completion process.','icon'=>''),

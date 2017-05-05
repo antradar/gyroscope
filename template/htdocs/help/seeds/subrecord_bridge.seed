@@ -22,7 +22,7 @@ function list#master_record##records#($#masterkey#=null){
 	?>
 	<tr>
 		<td>#<?echo $#primarykey#;?></td>
-		<td><a onclick="ajxjs(self.show#record#,'#records#.js');show#record#(<?echo $#primarykey#;?>,'<?echo $dbrecordtitle;?>','<?echo $#masterkey#;?>');"><?echo $recordtitle?></a></td>
+		<td><a onclick="ajxjs(self.show#record#,'#records#.js');show#record#(<?echo $#primarykey#;?>,'<?echo $dbrecordtitle;?>');"><?echo $recordtitle?></a></td>
 	</tr>
 	<?
 	}//while

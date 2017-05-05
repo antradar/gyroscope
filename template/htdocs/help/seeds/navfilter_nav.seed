@@ -99,7 +99,7 @@ function #entity#_shownav($container, $cmd, $title,$fieldname,$multi=null){
 	#entity#_shownegfilters($fieldname,$container,$cmd);
 ?>
 	<div class="navfilter">
-		<a href=# onclick="nav#entity#_setfilter('<?echo $container;?>','<?echo $cmd;?>','<?echo $filter;?>');return false;">[x]</a> <?echo #entity#_dispname($fieldname,$basefilters[$fieldname]);?>
+		<a href=# onclick="nav_setfilter('<?echo $container;?>','#searchkey#','<?echo $cmd;?>','<?echo $filter;?>');return false;">[x]</a> <?echo #entity#_dispname($fieldname,$basefilters[$fieldname]);?>
 	</div>
 </div><!-- navgroup -->
 <?		
@@ -151,12 +151,12 @@ function #entity#_shownav($container, $cmd, $title,$fieldname,$multi=null){
 		<?
 		if ($multi){
 	?>		
-		<input <?if ($basefilters[$multi][$key]) echo 'checked';?> type="checkbox" href=# onclick="nav#entity#_setfilter('<?echo $container;?>','<?echo $cmd;?>','<?echo $filters;?>');return false;"> 
+		<input <?if ($basefilters[$multi][$key]) echo 'checked';?> type="checkbox" href=# onclick="nav_setfilter('<?echo $container;?>','#searchkey#','<?echo $cmd;?>','<?echo $filters;?>');return false;"> 
 	<?		
 		}
 
 ?>
-	<a href=# onclick="nav#entity#_setfilter('<?echo $container;?>','<?echo $cmd;?>','<?echo $filters;?>');return false;"><?echo $dispname;?></a> 
+	<a href=# onclick="nav_setfilter('<?echo $container;?>','#searchkey#','<?echo $cmd;?>','<?echo $filters;?>');return false;"><?echo $dispname;?></a> 
 	<?
 	if (!$multi||!$basefilters[$multi][$key]||true){ //remove true to hide refinement count for selected multi fields
 	?>
@@ -164,7 +164,7 @@ function #entity#_shownav($container, $cmd, $title,$fieldname,$multi=null){
 	<?}?>
 	
 	<?if (!$basefilters[$multi][$key]){?>
-	<a class="filterneg" onclick="nav#entity#_setfilter('<?echo $container;?>','<?echo $cmd;?>','<?echo $filters;?>&neg__<?echo $fieldname;?>[]=<?echo $key;?>');return false;">
+	<a class="filterneg" onclick="nav_setfilter('<?echo $container;?>','#searchkey#','<?echo $cmd;?>','<?echo $filters;?>&neg__<?echo $fieldname;?>[]=<?echo $key;?>');return false;">
 	<acronym title="exclude from results">[-]</acronym>
 	</a>
 	<?}?>
@@ -206,7 +206,7 @@ function #entity#_shownegfilters($fieldname,$container,$cmd){
 			}
 			$strfilters=#entity#_strfilters($filters,$mynfilters);
 		?>
-		<div class="negfilter"><a class="filterclear" onclick="nav#entity#_setfilter('<?echo $container;?>','<?echo $cmd;?>','<?echo $strfilters;?>');return false;">[x]</a> <?echo #entity#_dispname($fieldname,$item);?></div>
+		<div class="negfilter"><a class="filterclear" onclick="nav_setfilter('<?echo $container;?>','#searchkey#','<?echo $cmd;?>','<?echo $strfilters;?>');return false;">[x]</a> <?echo #entity#_dispname($fieldname,$item);?></div>
 		<?}?>
 </div>
 <?	
@@ -231,7 +231,7 @@ function #entity#_showrange($container,$cmd, $title,$fieldname){
 <div class="navgroup">
 	<div class="navtitle"><?echo $title;?></div>
 	<div class="navfilter">
-<a class="filterclear" onclick="nav#entity#_setfilter('<?echo $container;?>','<?echo $cmd;?>','<?echo $filter;?>');return false;">[x]</a>
+<a class="filterclear" onclick="nav_setfilter('<?echo $container;?>','#searchkey#','<?echo $cmd;?>','<?echo $filter;?>');return false;">[x]</a>
 <?echo $filters[$fieldname.'_a'].' - '.$filters[$fieldname.'_b'];?>
 	</div>
 </div> 
@@ -256,7 +256,7 @@ function #entity#_showrange($container,$cmd, $title,$fieldname){
 	<div class="navtitle"><?echo $title;?></div>
 		<input id="<?echo $fieldname?>_a" name="<?echo $fieldname;?>_a" value="<?echo $min;?>" style="width:60px;"> - 
 		<input id="<?echo $fieldname?>_b" name="<?echo $fieldname;?>_b" value="<?echo $max;?>" style="width:60px;">
-		<button onclick="nav#entity#_setfilter('<?echo $container;?>','<?echo $cmd;?>','<?echo $filter;?>&<?echo $fieldname;?>_a='+gid('<?echo $fieldname;?>_a').value+'&<?echo $fieldname;?>_b='+gid('<?echo $fieldname;?>_b').value);return false;">Set</button>
+		<button onclick="nav_setfilter('<?echo $container;?>','#searchkey#','<?echo $cmd;?>','<?echo $filter;?>&<?echo $fieldname;?>_a='+gid('<?echo $fieldname;?>_a').value+'&<?echo $fieldname;?>_b='+gid('<?echo $fieldname;?>_b').value);return false;">Set</button>
 </div>
 <?	
 		
@@ -281,11 +281,11 @@ function #entity#_shownavs($container, $cmd){
 	if (!$basefilter['visible']){
 		
 ?>	
-	<div class="navopen"><a onclick="nav#entity#_setfilter('<?echo $container;?>','<?echo $cmd;?>','<?echo $vfilter;?>&visible=1');">show filters</a></div>
+	<div class="navopen"><a onclick="nav_setfilter('<?echo $container;?>','#searchkey#','<?echo $cmd;?>','<?echo $vfilter;?>&visible=1');">show filters</a></div>
 <?			
 	} else {
 ?>
-	<div class="navclose"><a onclick="nav#entity#_setfilter('<?echo $container;?>','<?echo $cmd;?>','<?echo $vfilter;?>&visible=0');">hide filters</a></div>	
+	<div class="navclose"><a onclick="nav_setfilter('<?echo $container;?>','#searchkey#','<?echo $cmd;?>','<?echo $vfilter;?>&visible=0');">hide filters</a></div>	
 <?			
 		
 #iterator-dimlist-gsshowdim#	

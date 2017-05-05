@@ -1,4 +1,5 @@
-<?
+<?php
+
 include 'lb.php';
 include 'lang.php';
 include 'forminput.php';
@@ -8,9 +9,9 @@ include 'connect.php';
 include 'auth.php';
 include 'xss.php';
 
-
 $csrfkey=sha1($salt.'csrf'.$_SERVER['REMOTE_ADDR'].date('Y-m-j-g'));
-$csrfkey2=sha1($salt.'csrf'.$_SERVER['REMOTE_ADDR'].date('Y-m-j-g',time()-3600));
+$salt2=$saltroot.$_SERVER['REMOTE_ADDR'].date('Y-m-j-h',time()-3600);
+$csrfkey2=sha1($salt2.'csrf'.$_SERVER['REMOTE_ADDR'].date('Y-m-j-g',time()-3600));
 
 $error_message='';
 
@@ -18,7 +19,7 @@ $passreset=0;
 
 if (isset($_POST['lang'])&&in_array($_POST['lang'],array_keys($langs))) {
 	$lang=$_POST['lang'];include 'lang/dict.'.$lang.'.php';  
-	setcookie('userlang',$_POST['lang'],time()+3600*24*30*6); //keep for 6 months
+	setcookie('userlang',$_POST['lang'],time()+3600*24*30*6); //6 months
 }
 
 if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['login'])&&$_POST['login']) ){	
@@ -27,7 +28,6 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['login'])&
 
 	$cfk=$_POST['cfk'];
 	if ($cfk!=$csrfkey&&$cfk!=$csrfkey2){
-	
 		$error_message=_tr('csrf_expire');
 	} else {
 	

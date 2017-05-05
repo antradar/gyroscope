@@ -1,3 +1,15 @@
+v4.0
+----
+- added xajxjs for conditionally loading script blocks with deferred callback
+
+v3.3
+----
+- wait indicator safely inserted as the first child, only once; 
+  - added cancelgswi (gyroscope_wait_indicator) function for clean-up;
+  - empty target node calls appendChild instead of insertBefore
+  - style of the target container is directly altered, as opposed to previously wrapping in a sub container (watch out for incompatibilities)
+  - margin added to non-statusc containers
+
 v3.2
 ----
 - added client-side error handling function, specified through callback functiona as an array

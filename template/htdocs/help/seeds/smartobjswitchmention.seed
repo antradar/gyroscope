@@ -1,0 +1,2 @@
+
+	case 'lookupmention#record#': include 'icl/lookupmention#record#.inc.php'; lookupmention#record#(); break;

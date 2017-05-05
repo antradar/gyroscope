@@ -1,0 +1,7 @@
+
+	case '#record#':
+		$query="select #dispfield# from #tablename# where #primarykey#=$#primarykey#";
+		$rs=sql_query($query,$db);
+		$myrow=sql_fetch_assoc($rs);
+		$slugtitle=$myrow['#primarykey#'];
+	break;

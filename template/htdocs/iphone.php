@@ -43,12 +43,13 @@ body{font-family:helvetica;}
 <div id="toolicons" style="position:fixed;width:100%;z-index:2000;top:0;">
 
 	<?
-	$tcount=0;
+	$tcount=1;
 	foreach ($toolbaritems as $ti) if (isset($ti['icon'])&&$ti['icon']!='') $tcount++;
 	?>
 	<div id="toollist" style="overflow:auto;width:100%;"><div style="width:<?echo 52*($tcount+1);?>px;">
 		
-	<div class="menuitem"><a id="speechstart" href=# onclick="speech_startstop(1);return false;" style="display:none;"><img style="" class="img-speechrecog" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
+	<div class="menuitem"><a id="speechstart" href=# onclick="ajxjs(self.speech_startstop,'speech.js');speech_startstop(1);return false;" style="display:none;"><img style="" class="img-speechrecog" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
+	<div class="menuitem" id="homeicon"><a href=# onclick="showtab('welcome');return false;"><img class="img-home" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
 
 	<?foreach ($toolbaritems as $modid=>$ti){
 		if ($ti['type']=='break') continue;
@@ -185,8 +186,6 @@ function rotate(){
 	}
 	
 	if (window.operamini) ori=0;	
-
-	setTimeout(scrollTo, 0, 0, 1);
 	
 	if (!document.appsettings.cw) document.appsettings.cw=320;
 	if (document.appsettings.cw<document.body.clientWidth) document.appsettings.cw=document.body.clientWidth;
@@ -282,12 +281,8 @@ onrotate();
 scaleall(document.body);
 
 </script>
-<script src="wss.js"></script>
-<script>
 <?include 'ws_js.php';?>
-</script>
-<script src="speech.js"></script>
-<script src="tiny_mce/mceloader.js"></script>
+<script src="speechloader.js"></script>
 <script>
 if (window.Notification) Notification.requestPermission();
 </script>

@@ -1,4 +1,4 @@
-function speech_startstop(mobile){
+speech_startstop=function(mobile){
 	gid('speechstart').mobile=mobile;
 
 	if (window.speechSynthesis&&window.speechSynthesis.speaking) {
@@ -29,60 +29,20 @@ function speech_startstop(mobile){
 }
 
 
-if (window.webkitSpeechRecognition){
-	gid('speechstart').style.display='inline';
-	
-	var recognition=new webkitSpeechRecognition();
-	recognition.continuous=false;//true;
-	recognition.interimResults=false;
-	recognition.lang='en'; //'de-DE';
 
-	recognition.onstart=function(){
-		document.recog=true;
-		gid('speechstart').style.opacity=0.5;
-	}
 
-	recognition.onend=function(){
-		if (document.rechold) return;		
-		document.recog=false;
-		gid('speechstart').style.opacity=1;
-		if (!document.recstop) document.recognition.start();
-		
-	}
-	
-	recognition.onresult=function(e){
-		for (var i=e.resultIndex; i<e.results.length; i++){
-			var phrase=e.results[i][0].transcript;
-			phrase=phrase.trim();
-			var conf=e.results[i][0].confidence;
-		
-			if (!gid('speechstart').mobile){
-				gid('speechstart').style.marginLeft='10px';
-				setTimeout(function(){gid('speechstart').style.marginLeft=0;},300);
-			}
-
-			speech_process(phrase,conf);
-		}
-	}
-
-	document.recognition=recognition;	
-
-}
-
-function speech_process(phrase,conf){
+speech_process=function(phrase,conf){
 	console.log(phrase,conf);
-	if (conf<0.4) return;
+	if (conf<0.2) return;
 	
 	phrase=phrase.toLowerCase();
 	phrase=phrase.replace('go to','goto');
 	phrase=phrase.replace('look up', 'lookup');
-	phrase=phrase.replace('number one','number 1');
+	phrase=phrase.replace('number one','number 1').replace('number two','number 2').replace('number to','number 2').replace('number too','number 2');
+	phrase=phrase.replace('number three','number 3').replace('number four','number 4').replace('number for','number 4');
 	phrase=phrase.replace('go home','gohome');
-	phrase=phrase.replace('what are my options','options');
-	phrase=phrase.replace('what are the options','options');
-	phrase=phrase.replace('goodbye abby','cancel');
-	phrase=phrase.replace('goodbye eddie','cancel');
-	phrase=phrase.replace('goodbye','cancel');
+	phrase=phrase.replace('what are my options','options').replace('what are the options','options');
+	phrase=phrase.replace('goodbye abby','cancel').replace('goodbye eddie','cancel').replace('goodbye','cancel');
 
 	var parts=phrase.split(' ');
 	var cmd=parts[0];
@@ -100,8 +60,7 @@ function speech_process(phrase,conf){
 	/* enter look up keys here, activated by "Goto" voice command */
 	var lookupkeys={
 		'lvcore.users':'userkey',
-		'lvcore.reports':'reportkey',
-		lv0:'', lv1:'customerkey'
+		'lvcore.reports':'reportkey'
 	};
 	
 	switch (cmd){
@@ -220,35 +179,8 @@ function speech_process(phrase,conf){
 	}
 }
 
-function say(phrase,noresume){
-	if (document.utterlock) return;
-	document.utterlock=true;
-	
-	if (!noresume){
-		if (document.recognition&&document.recog) {
-			document.rechold=true;
-			document.recognition.stop();
-		}
-	}
-	
-	if (window.SpeechSynthesisUtterance){
-		var utterance = new SpeechSynthesisUtterance(phrase);
-		utterance.lang='en-US';
-		utterance.onend=function(){
-			if (!noresume){
-				if (document.recognition&&document.rechold) {
-					document.recognition.start();
-					document.rechold=null;
-				}
-			}
-		}
-		window.speechSynthesis.speak(utterance);
-	}
-	
-	setTimeout(function(){document.utterlock=null;},500);
-}
 
-function strip_tags(str, allow) {
+strip_tags=function(str, allow) {
   // making sure the allow arg is a string containing only tags in lowercase (<a><b><c>)
   allow = (((allow || "") + "").toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join('');
 

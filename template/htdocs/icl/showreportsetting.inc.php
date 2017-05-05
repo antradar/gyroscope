@@ -25,7 +25,6 @@ function showreportsetting($reportid=null){
 	$reportkey=trim(str_replace('/','',$reportkey));
 	$pfn="icl/rpt${reportkey}.inc.php";
 	
-
 	header('newtitle:'.tabtitle($reportname));
 ?>
 <div class="section">
@@ -61,9 +60,6 @@ function showreportsetting($reportid=null){
 		<div class="formlabel"><?tr('reportsetting_label_reportdesc');?>:</div>
 		<textarea class="inplong" style="height:60px;" id="reportdesc_<?echo $reportid;?>"><?echo htmlspecialchars($reportdesc);?></textarea>
 	</div>
-
-	
-
 
 
 	</div>

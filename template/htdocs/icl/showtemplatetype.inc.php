@@ -24,6 +24,8 @@ function showtemplatetype($templatetypeid=null){
 	
 
 	header('newtitle:'.tabtitle($templatetypename));
+	
+	makechangebar('templatetype_'.$templatetypeid,"updatetemplatetype($templatetypeid);");
 ?>
 <div class="section">
 	<div class="sectiontitle"><?echo $templatetypename;?></div>
@@ -33,11 +35,11 @@ function showtemplatetype($templatetypeid=null){
 
 	<div class="inputrow">
 		<div class="formlabel"><?tr('templatetype_label_templatetypename');?>:</div>
-		<input class="inpmed" id="templatetypename_<?echo $templatetypeid;?>" value="<?echo htmlspecialchars($templatetypename);?>">
+		<input class="inpmed" onchange="marktabchanged('templatetype_<?echo $templatetypeid;?>');" id="templatetypename_<?echo $templatetypeid;?>" value="<?echo htmlspecialchars($templatetypename);?>">
 	</div>
 	<div class="inputrow">
 		<div class="formlabel"><?tr('templatetype_label_templatetypekey');?>:</div>
-		<input class="inpmed" id="templatetypekey_<?echo $templatetypeid;?>" value="<?echo htmlspecialchars($templatetypekey);?>" <?if (!$user['groups']['systemplate']) echo 'disabled';?>>
+		<input class="inpmed" id="templatetypekey_<?echo $templatetypeid;?>" onchange="marktabchanged('templatetype_<?echo $templatetypeid;?>');" value="<?echo htmlspecialchars($templatetypekey);?>" <?if (!$user['groups']['systemplate']) echo 'disabled';?>>
 	</div>
 	<div class="inputrow">
 		<div class="formlabel">
@@ -45,16 +47,18 @@ function showtemplatetype($templatetypeid=null){
  		showrelrec('activetemplateid_<?echo $templatetypeid;?>', showtemplate,<?echo $activetemplateid+0;?>);"><?tr('templatetype_label_activetemplateid');?></a>:</div>
 		<input onfocus="lookupentity(this,'template&templatetypeid=<?echo $templatetypeid;?>','Template');"
 			onkeyup="_lookupentity(this,'template&templatetypeid=<?echo $templatetypeid;?>','Template');"
+			 onchange="marktabchanged('templatetype_<?echo $templatetypeid;?>');"
 			 class="inpmed" id="activetemplateid_<?echo $templatetypeid;?>" value="<?echo htmlspecialchars($templatename);?>" <?if ($activetemplateid) echo 'disabled';?>>
 		<span id="activetemplateid_<?echo $templatetypeid;?>_val2"><?if ($activetemplateid) cancelpickup('activetemplateid_'.$templatetypeid);?></span>
+		<?makelookup('activetemplateid_'.$templatetypeid);?>
 	</div>
 	<div class="inputrow">
 		<div class="formlabel">Plugins:</div>
-		<input class="inpmed" id="templatetypeplugins_<?echo $templatetypeid;?>" value="<?echo htmlspecialchars($plugins);?>" <?if (!$user['groups']['systemplate']) echo 'disabled';?>>
+		<input class="inpmed" id="templatetypeplugins_<?echo $templatetypeid;?>" onchange="marktabchanged('templatetype_<?echo $templatetypeid;?>');" value="<?echo htmlspecialchars($plugins);?>" <?if (!$user['groups']['systemplate']) echo 'disabled';?>>
 	</div>
 	<div class="inputrow">
 		<div class="formlabel">Classes: (<em>styles</em> plugin must be enabled)</div>
-		<input class="inpmed" id="templatetypeclasses_<?echo $templatetypeid;?>" value="<?echo htmlspecialchars($classes);?>" <?if (!$user['groups']['systemplate']) echo 'disabled';?>>
+		<input class="inpmed" id="templatetypeclasses_<?echo $templatetypeid;?>" value="<?echo htmlspecialchars($classes);?>" onchange="marktabchanged('templatetype_<?echo $templatetypeid;?>');" <?if (!$user['groups']['systemplate']) echo 'disabled';?>>
 	</div>
 
 	

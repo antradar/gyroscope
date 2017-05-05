@@ -1,4 +1,5 @@
-<?
+<?php
+
 $input=$_POST['input'];
 if ($input!='') header('Content-Type: text/html; charset=iso-8859-1');
 else header('Content-Type: text/html; charset=utf-8');
@@ -31,5 +32,4 @@ else header('Content-Type: text/html; charset=utf-8');
 ?>
 
 </body>
-
 </html>

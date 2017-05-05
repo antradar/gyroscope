@@ -1,3 +1,26 @@
+11.1*
+- change notifications with marktabchanged, makechangebar
+- misc code gen improvements
+- added "home" icon in mobile portrait view
+- added copy button in codegen
+- added sqlite3 connector option
+- added openssl enc-dec as optional mcrypt replacement; openssl is now the default
+- added smart object codegen
+- added strong date validation
+- added mobile input backspace
+- codegen: enabled RCE portrait lookup
+- nano.js: protected, single-instance wait indicator
+- viewport.js (both): aborts in-flight requests
+- on-demand loading of tinymce using xajxjs (nano.js v4.0)
+- login csrf hour boundary fix
+
+11.0
+- added gototabbookmark function
+- added bookmark option in tab functions
+
+10.9
+- added generic client-side function nav_setfilter for backend faceted-search 
+
 10.8
 - added salert to replace alert
 

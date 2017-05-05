@@ -39,7 +39,10 @@ CREATE TABLE `users` (
   KEY `virtualuser` (`virtualuser`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
-INSERT INTO `users` VALUES (101,'admin','Admin',1,0,'HZ4ddm+gYX44SXBQAT6UVNCpknAwMrUPJwHCFz28BPBSy4WRKBqNfW025Pvrd+PaCsWnBl/W/tXxDFU//4TjNGlc+14olF8CjALw1ZaZLet8XPL9ytSpZanzr/C/KvyW',0,'users|admins|reportsettings|systemplateuse|systemplate|accounts|dbadmin|upgrademods',null,0,null);
+-- MCrypt --
+-- INSERT INTO `users` VALUES (101,'admin','Admin',1,0,'FWZvboZOBbEqPhDQ5r04E4jfMgw4Q93kyDkx1xT/4z6jfngMPmGU3qvlfkT/Vp58OoZOvYwYUUDM9bfdvB+KEQ==',0,'users|admins|reportsettings|systemplateuse|systemplate|accounts|dbadmin|upgrademods',null,0,null);
+-- OpenSSL --
+ INSERT INTO `users` VALUES (101,'admin','Admin',1,0,'uSAsxyX3v44q3+/4Md7lzkhaNlIvTHFTMkZsN1lFRWVMRzB2UlloZTJqWHRjSG9mRDgybTI3U0xZUjhzYVhUeDlUZ2dLQ283QkUrVmExaEY=',0,'users|admins|reportsettings|systemplateuse|systemplate|accounts|dbadmin|upgrademods',null,0,null);
 
 DROP TABLE IF EXISTS `templates`;
 CREATE TABLE `templates` (
@@ -74,6 +77,7 @@ CREATE TABLE `templatevars` (
   PRIMARY KEY (`templatevarid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
     
+DROP TABLE IF EXISTS `reports`;
 CREATE TABLE `reports` (
   `reportid` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `reportname` varchar(255) NOT NULL,

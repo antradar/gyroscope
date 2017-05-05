@@ -22,7 +22,8 @@ function listreports(){
 <div class="listbar">
 	<form class="listsearch" onsubmit="_inline_lookupreport(gid('reportkey'));return false;">
 	<div class="listsearch_">
-		<input id="reportkey" class="img-mg" onkeyup="_inline_lookupreport(this);">
+		<input id="reportkey" class="img-mg" onkeyup="_inline_lookupreport(this);" autocomplete="off">
+		<img src="imgs/inpback.gif" class="inpback" onclick="inpbackspace('reportkey');_inline_lookupreport(gid('reportkey'));">
 	</div>
 	<input type="image" src="imgs/mg.gif" class="searchsubmit" value=".">
 	</form>

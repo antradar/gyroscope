@@ -16,7 +16,7 @@ function adduser(){
 	$passreset=GETSTR('passreset');
 	
 	$newpass=noapos(file_get_contents('php://input'));
-	$np=encstr(md5($dbsalt.$newpass),$dbsalt);
+	$np=encstr(md5($dbsalt.$newpass),$newpass.$dbsalt);
 		
 	$groupnames=GETSTR('groupnames');	
 	

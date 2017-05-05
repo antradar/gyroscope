@@ -9,12 +9,11 @@ document.flashcolor='#ffffc0';
 gettabid=function(key){
   var i;
   for (i=0;i<document.tabcount;i++) if (document.tabkeys[i]==key) return i;
-  
   return -1;	
 }
 
 
-showtab=function(key){
+showtab=function(key,opts){
   var i;
   var tabid=gettabid(key);
   if (tabid==-1) return;
@@ -35,6 +34,7 @@ showtab=function(key){
   }	
   document.tabviews[tabid].style.display='block';
   document.tabtitles[tabid].className='activetab';
+  
 //wrapping
   var t=document.tabtitles[document.tabcount-1];
   var topmargin=0; //change this if changing tab style
@@ -50,7 +50,8 @@ showtab=function(key){
       }
       document.lastrowcount=document.rowcount;
       
-  //if (gid('rightview_'+key)) gid('rightview_'+key).focus();
+      if (opts&&opts.bookmark) gototabbookmark(opts.bookmark);
+      
 }
 
 tablock=false;
@@ -67,7 +68,6 @@ function settabtitle(key,title,opts){
 
 function reloadtab(key,title,params,loadfunc,data,opts){
 	
-  //if tab doesn't exist, ignore it
   var tabid=gettabid(key);
   if (tabid==-1) return;
   
@@ -156,6 +156,7 @@ function reloadtab(key,title,params,loadfunc,data,opts){
 	
       document.tabviews[tabid].innerHTML=rq.responseText;
       if (loadfunc!=null) loadfunc(rq);
+      if (opts&&opts.bookmark) gototabbookmark(opts.bookmark);
 	}
   }
   rq.send(data);
@@ -163,7 +164,6 @@ function reloadtab(key,title,params,loadfunc,data,opts){
 
 function refreshtab(key,skipconfirm){
 	
-  //if tab doesn't exist, ignore it
   var tabid=gettabid(key);
   if (tabid==-1) return;
   
@@ -176,7 +176,7 @@ function refreshtab(key,skipconfirm){
 }
 
 function addtab(key,title,params,loadfunc,data,opts){
-  //bounce keys
+	
   var i;
   
   if (document.tablock!=null) return;
@@ -185,16 +185,15 @@ function addtab(key,title,params,loadfunc,data,opts){
   for (i=0;i<document.tabcount;i++) {
 
 	if (document.tabkeys[i]==key) {
-        showtab(key);
+        showtab(key,opts);
         document.tablock=null;
 		return;
 	}
   }
 
 
-
   gid('tabviews').style.background=document.flashcolor;
-  setTimeout(function(){gid('tabviews').style.background='#ffffff';},500);      
+  setTimeout(function(){gid('tabviews').style.background='#ffffff';},250);      
 
   var rq=xmlHTTPRequestObject();
   var scn=document.appsettings.codepage+'?cmd=';
@@ -205,10 +204,7 @@ function addtab(key,title,params,loadfunc,data,opts){
   rq.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
   
   var c=document.createElement('div');
-  c.style.display='none';
-  c.style.width="100%";
-  c.style.height="100%";
-  c.style.overflow="auto";
+  c.style.display='none'; c.style.width="100%"; c.style.height="100%"; c.style.overflow="auto";
   
   c.slowtimer=setTimeout(function(){c.innerHTML='<image class="hourglass" src="imgs/hourglass.gif">';},800);
 
@@ -226,7 +222,7 @@ function addtab(key,title,params,loadfunc,data,opts){
   document.tabtitles[document.tabcount]=t;
   document.tabkeys[document.tabcount]=key;
   document.tabcount++;
-  showtab(key);
+  showtab(key,opts);
   
   if (document.tabcount>2&&gid('closeall')) gid('closeall').style.display='block';  
     
@@ -252,10 +248,11 @@ function addtab(key,title,params,loadfunc,data,opts){
 			t.parenttab=parenttab;
 		}
       
-      c.innerHTML='<input id="rightview_'+key+'" style="position:absolute;top:-60px;left:0;" title='+encodeHTML(title)+'>'+rq.responseText;
+      c.innerHTML=rq.responseText; //'<input id="rightview_'+key+'" style="position:absolute;top:-60px;left:0;" title='+encodeHTML(title)+'>'+
 
       document.tablock=null;
       if (loadfunc!=null) loadfunc(rq);
+      if (opts&&opts.bookmark) gototabbookmark(opts.bookmark);
       
     }
   }
@@ -368,15 +365,12 @@ function closetabtree(root,sub){
 	}
 }
 
-function showhelp(topic,title){
-	addtab('help_'+topic,'<img src="imgs/t.gif" width="12" height="12" class="img-help"> '+title,'showhelp&topic='+topic+'&title='+encodeHTML(title));	
-}
 
 function sconfirm(msg){
 	var a=hb();
 	var res=confirm(msg);
 	var b=hb();
-	if (b-a<500&&gid('diagwarn')) {gid('diagwarn').style.display='inline';flashstatus('Warning: dialogs suppressed');}
+	if (b-a<200&&gid('diagwarn')) {gid('diagwarn').style.display='inline';flashstatus('Warning: dialogs suppressed');}
 	return res;
 }
 
@@ -384,29 +378,35 @@ function salert(msg){
 	var a=hb();
 	alert(msg);
 	var b=hb();
-	if (b-a<500&&gid('diagwarn')) {gid('diagwarn').style.display='inline';
+	if (b-a<400&&gid('diagwarn')) {gid('diagwarn').style.display='inline';
 		flashstatus(msg);
 		setTimeout(function(){flashstatus('Warning: dialogs suppressed');},1000);
 	}
 }
 
+function gototabbookmark(id){
+	if (!gid(id)||document.currenttab==null||!document.tabviews||!document.tabviews[document.currenttab]) return;
+	document.tabviews[document.currenttab].scrollTop=gid(id).offsetTop-30;
+}
+
+function marktabchanged(tabkey,hide){
+	var mode='block';
+	if (hide) mode='none';
+	if (gid('changebar_'+tabkey)) gid('changebar_'+tabkey).style.display=mode;
+}
+
+
 
 Array.prototype.push = function() {
     var n = this.length >>> 0;
-    for (var i = 0; i < arguments.length; i++) {
-	this[n] = arguments[i];
-	n = n + 1 >>> 0;
-    }
+    for (var i = 0; i < arguments.length; i++) {this[n] = arguments[i]; n = n + 1 >>> 0;}
     this.length = n;
     return n;
 };
 
 Array.prototype.pop = function() {
     var n = this.length >>> 0, value;
-    if (n) {
-	value = this[--n];
-	delete this[n];
-    }
+    if (n) {value = this[--n]; delete this[n];}
     this.length = n;
     return value;
 };

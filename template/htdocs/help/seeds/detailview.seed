@@ -13,6 +13,7 @@ function show#record#($#primarykey#=null){
 #iterator-fieldlist-myrowlist#	
 
 	header('newtitle:'.tabtitle($#dispfield#));
+	makechangebar('#record#_'.$#primarykey#,"update#record#($#primarykey#);");
 ?>
 <div class="section">
 	<div class="sectiontitle"><?echo $#dispfield#;?></div>

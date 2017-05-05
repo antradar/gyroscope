@@ -7,7 +7,7 @@ Documentation: www.antradar.com/docs-nano-ajax-manual
 
 Warning: this copy of Nano Ajax Library is modified for running in Gyroscope. Use the public version for general purpose applications.
 
-ver g3.2
+ver g4.0
 */
 
 function gid(d){return document.getElementById(d);}
@@ -46,6 +46,14 @@ function reajxpgn(c,p){
 	ajxpgn(c,ct.reloadparams.u,ct.reloadparams.d,ct.reloadparams.e,ct.reloadparams.data,ct.reloadparams.callack,ct.reloadparams.slowtimer,ct.reloadparams.runonce);		
 }
 
+function cancelgswi(ct){
+	if (ct.gswi){
+		ct.gswi.parentNode.removeChild(ct.gswi);
+		ct.style.opacity=''; ct.style.alpha=''; ct.style.color='';
+		ct.gswi=null;
+	}	
+}
+
 function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce){
 	var ct=gid(c);
 	if (ct==null) return;
@@ -60,7 +68,7 @@ function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce){
 			
     	    var xtatus=rq.getResponseHeader('X-STATUS');
 		    if (rq.status==403||(xtatus|0)==403){
-				if (self.skipconfirm) skipconfirm(); 
+				if (self.skipconfirm) skipconfirm();
 				window.location.href='login.php';
 				return;
 			}
@@ -71,11 +79,13 @@ function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce){
 
 			if (ct.slowtimer) clearTimeout(ct.slowtimer);
 			
+			cancelgswi(ct);			
 
 			var apperror=rq.getResponseHeader('apperror');
 			if (apperror!=null&&apperror!=''){
+				if (ct.slowtimerorg){ct.innerHTML=ct.slowtimerorg;ct.slowtimerorg=null;}
 				var errfunc=rq.getResponseHeader('errfunc');
-				if (callback&&callback.length>0){
+				if (callback&&typeof(callback)=='object'&&callback.length>0){
 					callback[1](errfunc,decodeURIComponent(apperror),rq);					
 				} else {
 					if (errfunc!=null&&errfunc!=''&&self[errfunc.toLowerCase()]){
@@ -85,6 +95,7 @@ function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce){
 				
 				return;	
 			}
+
 			
 			if (ct.abortflag) {ct.abortflag=null;return;}
 			
@@ -97,27 +108,34 @@ function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce){
 				var scripts=gid(c).getElementsByTagName('script');
 				for (i=0;i<scripts.length;i++) eval(scripts[i].innerHTML);
 				scripts=null;
-			}
-			
+			}			
 			
 			if (callback){
-				if (callback.length>0) callback[0](rq); else callback(rq);
+				if (typeof(callback)=='object'&&callback.length>0) callback[0](rq); else callback(rq);
 			}
 		}	  
 	}}	
 	
 	var rq=xmlHTTPRequestObject();
 	
-	if (ct.reqobj!=null)  {ct.abortflag=1;ct.reqobj.abort();}
+	if (ct.reqobj!=null)  {ct.abortflag=1;ct.reqobj.abort();cancelgswi(ct);}
 	ct.reqobj=rq;
 	if (!slowtimer) slowtimer=800;
 	
 	ct.slowtimer=setTimeout(function(){
+
 		if (ct.style.display=='none') ct.style.display='block';
-		ct.innerHTML='<img src="imgs/hourglass.gif" class="hourglass"><span style="opacity:0.5;filter:alpha(opacity=50);color:#999999;">'+ct.innerHTML+'</span>';
+		var first=ct.firstChild;
+		if (ct.gswi) return;
+		var wi=document.createElement('img'); wi.src='imgs/hourglass.gif'; ct.gswi=wi;
+		if (gid('statusc')!=ct) wi.style.margin='10px';
+		if (first==null) ct.appendChild(wi); else ct.insertBefore(wi,first);
+		ct.style.opacity=0.5; ct.style.filter='alpha(50)'; ct.style.color='#999999';
+		//ct.innerHTML='<img src="imgs/hourglass.gif" class="hourglass"><span style="opacity:0.5;filter:alpha(opacity=50);color:#999999;">'+ct.innerHTML+'</span>';
 	},slowtimer);
 
 	ajxnb(rq,u,f(c),data);
+	
 }
 
 
@@ -151,6 +169,16 @@ function xajx(url){
 	},3000);  
 }
 
+function xajxjs(flag,src,callback,defer){
+	if (self[flag]==null&&!defer){
+		var script=document.createElement('script');
+		script.src=src;
+		document.body.appendChild(script);
+	}
+	
+	if (!self[flag]) {setTimeout(function(){xajxjs(flag,src,callback,1);},5);return;}
+	callback();
+}
 
 function xmlHTTPRequestObject() {
 	var obj = false;

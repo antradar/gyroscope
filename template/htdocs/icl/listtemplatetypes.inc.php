@@ -16,7 +16,8 @@ function listtemplatetypes(){
 <div class="listbar">
 	<form class="listsearch" onsubmit="_inline_lookuptemplatetype(gid('templatetypekey'));return false;">
 	<div class="listsearch_">
-		<input id="templatetypekey" class="img-mg" onkeyup="_inline_lookuptemplatetype(this);">
+		<input id="templatetypekey" class="img-mg" onkeyup="_inline_lookuptemplatetype(this);" autocomplete="off">
+		<img src="imgs/inpback.gif" class="inpback" onclick="inpbackspace('templatetypekey');_inline_lookuptemplatetype(gid('templatetypekey'));">
 	</div>
 	<input type="image" src="imgs/mg.gif" class="searchsubmit" value=".">
 	</form>

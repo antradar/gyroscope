@@ -1,7 +1,4 @@
 
-	...
-
 	$query="update #tablename# set #sortkey#=#primarykey# where #primarykey#=$#primarykey#";
 	sql_query($query,$db);
 	
-	...

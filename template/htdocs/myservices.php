@@ -10,7 +10,7 @@ xsscheck();
 include 'evict.php';
 evict_check();
 
-login(true); //silent mode
+login(true);
 
 $cmd=$_GET['cmd'];
 
@@ -80,6 +80,11 @@ switch($cmd){
 	
 	case 'listtemplatetypetemplates': include 'icl/listtemplatetypetemplates.inc.php'; listtemplatetypetemplates(); break;
 
+
+//Blog Skeleton
+
+	case 'lookupplugin': include 'icl/lookupplugin.inc.php'; lookupplugin(); break;
+	case 'lookuppluginmention': include 'icl/lookuppluginmention.inc.php'; lookuppluginmention(); break;
 	
 	
 	
@@ -92,12 +97,6 @@ switch($cmd){
 
 
 // svn merge boundary bed99e5db57749f375e738c1c0258047 - 
-
-
-// svn merge boundary 182eb2eb0c3b7d16cf92c0972fe64bcc - 
-
-
-// svn merge boundary 4d373b247a04253ee05a972964f7a7f3 -
 
 	
   
@@ -112,7 +111,6 @@ switch($cmd){
 	
 	case 'wk': include 'icl/showwelcome.inc.php'; showwelcome(); break;
 	case 'updategyroscope': include 'icl/updater.inc.php'; updategyroscope(); break;
-	case 'showhelp': include 'icl/showhelp.inc.php'; showhelp(); break;
 	
 	default: apperror('unspecified interface:'.$cmd);
 }

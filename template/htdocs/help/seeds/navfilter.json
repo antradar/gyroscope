@@ -18,12 +18,11 @@
 
 "templates":[
 	{"template":"navfilter_nav","filename":"If used in a list, set #entity#list as Container, slv_codegen__#entity#s as Command in codegen<br>icl/#entity#_nav.inc.php"},
-	{"template":"navfilter_inc","filename":"container code"},
-	{"template":"navfilter_js","filename":"add to <em>autocomplete.js</em>"},
+	{"template":"navfilter_inc","nocopy":1, "filename":"container code"},
 	{"template":"navfilter_css","filename":"recommended CSS in <em>toolbar.css</em>"},
 	{"template":"navfilter_kpw","filename":"recommended CSS in <em>iphone/kpw.css</em>"},
 	{"template":"navfilter_switch","filename":"add to <em>myservices.php</em>"},
-	{"template":"navfilter_mod","filename":"optional list integration"}
+	{"template":"navfilter_mod","nocopy":1, "filename":"optional list integration"}
 
 ]
 }

@@ -1,12 +1,12 @@
 <?php
 include 'settings.php';
 ?>
-showuser=function(userid,name){
+showuser=function(userid,name,bookmark){
 	addtab('user_'+userid,name,'showuser&userid='+userid,function(){
 		if (gid('cardsettings_'+userid)){
 			if (!document.smartcard) gid('cardsettings_'+userid).style.display='none';
 		}
-	},null,{fastlane:1});	
+	},null,{fastlane:1,bookmark:bookmark});	
 }
 
 _inline_lookupuser=function(d){

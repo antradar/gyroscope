@@ -17,6 +17,14 @@ use toolbar.psp to generate toolbar.gif
 
 .largertext{font-size:18px;}
 
+.caleheader{height:20px;border:solid 1px #ffffff;margin-left:1px;}
+.calecell{height:25px;border:solid 1px #444444;margin:1px;}
+
+#calepicker{padding-top:10px;}
+
+.caletimeitem{position:relative;height:30px;border-bottom:solid 1px #999999;}
+
+
 input:disabled{
 	color:#000000;
 	background-color:#F8F8F8;
@@ -45,6 +53,8 @@ input:disabled{
 .daylightsaving{border:none;background:transparent url(imgs/toolbar.gif) no-repeat -32px -20px;width:12px;height:12px;vertical-align:top;}
 
 .img-closeall{background:transparent url(imgs/toolbar.gif) no-repeat -21px -1px;vertical-align:middle;margin-right:4px;}
+
+.img-home{background:transparent url(imgs/toolbar.gif) no-repeat -96px 0;}
 
 .img-settings{background:transparent url(imgs/toolbar.gif) no-repeat -384px 0;}
 .img-settings-light{background:transparent url(imgs/toolbar.gif) no-repeat -384px -32px;}

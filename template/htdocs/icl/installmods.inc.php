@@ -26,9 +26,7 @@ function installmods(){
 			'viewcount'=>$viewcount,
 			'toolbaritems'=>$toolbaritems
 		);
-		
-		//echo '<pre>'; print_r($req); echo '</pre>';
-		
+				
 		$url=MOD_SERVER.'?lang='.$lang.'&cmd=installmods&modids='.$modids.'&version='.$version.'&devmode='.$devmode.'&project='.urlencode(GYROSCOPE_PROJECT).'&vendor='.urlencode(VENDOR_NAME).'&vendorversion='.VENDOR_VERSION;
 			
 		$curl=curl_init($url);
@@ -43,9 +41,7 @@ function installmods(){
 		
 		$modinfo=json_decode($res,1);
 		if (!is_array($modinfo)) die('error downloading modules');
-		
-		//echo '<pre>'; print_r($modinfo); echo '</pre>'; die();
-		
+				
 		foreach ($modinfo['sqls'] as $sql) sql_query(base64_decode($sql),$db);
 				
 		foreach ($modinfo['files'] as $file){

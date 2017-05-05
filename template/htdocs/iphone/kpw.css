@@ -3,12 +3,20 @@ body, td, textarea{font-size:38px;}
 
 input[type="radio"], input[type="checkbox"]{width:32px;height:32px;}
 
+.inpback{height:28px;position:absolute;top:11px;right:48px;cursor:pointer;}
+
 .medialibtile{float:left;width:19%;margin-right:1%;position:relative;overflow:hidden;margin-bottom:10px;}
 
 .welcometile{margin-bottom:30px;}
 .welcometile img{width:64px;height:64px;}
 .recadder img{width:36px;height:36px;margin-right:10px;}
 .recadder{margin-top:20px;margin-bottom:20px;display:block;}
+
+.changebar{display:none;z-index:1100;}
+.changebar_anchor{position:relative;}
+.changebar_view{position:fixed;background:#ffcccc;width:100%;}
+.changebar_content{padding:20px;}
+.changebar_shadow{visibility:hidden;}
 
 #gyroscope_updater{font-size:30px;}
 .footerpoweredby{font-size:26px;}

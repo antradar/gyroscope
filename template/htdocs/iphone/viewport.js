@@ -1,9 +1,5 @@
-function ch(){
-
-	//if (document.viewheight) return document.viewheight+105;
-	
+function ch(){	
   var w=cw();
-  //if (w*0.85<=485) return 270/0.85;
   if (window.innerHeight) return window.innerHeight;
   if (document.documentElement.clientHeight) return document.documentElement.clientHeight;
   return document.body.clientHeight;
@@ -142,7 +138,7 @@ function flashstatus(t,l){
 	
 	if (window.Notification){
 		var n=new Notification('Gyroscope',{body:t});  
-	} 
+	}
 
 }
 
@@ -170,12 +166,14 @@ function showview(idx,lazy,force){
     if (i!=idx) {
       gid('lv'+i).style.display='none';
     } else {
-      if (!lazy||document.viewindex==idx||!gid('lv'+i).viewloaded)
-	      ajxpgn('lv'+i,document.appsettings.codepage+'?cmd=slv_'+i.replace(/\./g,'__')+'&hb='+hb(),true,true);
-      else {
-	      gid('lv'+idx).style.display='block';
-	      gid('tooltitle').innerHTML=gid('lv'+idx).tooltitle;
-      }
+		if (!lazy||document.viewindex==idx||!gid('lv'+i).viewloaded){
+			if (document.lvxhr&&document.lvxhr.reqobj) {document.lvxhr.abortflag=1;document.lvxhr.reqobj.abort();document.lvxhr.reqobj=null;cancelgswi(document.lvxhr);}
+			document.lvxhr=gid('lv'+i);			
+			ajxpgn('lv'+i,document.appsettings.codepage+'?cmd=slv_'+i.replace(/\./g,'__'),true,true);
+		} else {
+			gid('lv'+idx).style.display='block';
+			gid('tooltitle').innerHTML=gid('lv'+idx).tooltitle;
+		}
     }
   }
   gid('lv'+idx).viewloaded=1;

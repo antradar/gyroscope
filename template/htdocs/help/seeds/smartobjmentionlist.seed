@@ -1,0 +1,80 @@
+<?php
+
+function lookupmention#record#(){
+	$key=GETSTR('key');
+	$mode=GETSTR('mode');
+	
+	global $db;
+	
+	if ($mode!='embed'){
+?>
+<div class="section">
+	<div class="listbar">
+		<form class="listsearch" onsubmit="return false;">
+		<div class="listsearch_">
+			<input autocomplete="off" id="mention#record#key" class="img-mg" onkeyup="ajxjs(self._inline_lookupmention#record#,'#records#.js');_inline_lookupmention#record#(this);">
+			<img src="imgs/inpback.gif" class="inpback" onclick="inpbackspace('mention#record#key');_inline_lookupmention#record#(gid('mention#record#key'));">
+		</div>
+		<input type="image" src="imgs/mg.gif" class="searchsubmit" value=".">
+		</form>
+	
+	</div>	
+
+	<div id="mention#record#list">
+<?
+}
+
+	$query="select * from #tablename# ";
+	if ($key!='') $query.=" where #dispfield# like '%$key%' ";
+	
+	$rs=sql_query($query,$db);
+	
+	$c=sql_affected_rows($db,$rs);
+	$perpage=10;
+	
+	$page=$_GET['page']+0;
+	$maxpage=ceil($c/$perpage)-1;
+	if ($maxpage<0) $maxpage=0;
+	if ($page<0) $page=0;
+	if ($page>$maxpage) $page=$maxpage;
+	
+	$start=$page*$perpage;
+	
+	$pager='';
+	
+	if ($maxpage>0){
+		ob_start();
+	?>
+	<a class="hovlink" onclick="ajxpgn('mention#record#list',document.appsettings.codepage+'?cmd=lookupmention#record#&mode=embed&page=<?echo $page-1;?>&key='+encodeHTML(gid('mention#record#key').value));">&laquo; Prev</a>
+	&nbsp; <?echo $page+1;?> of <?echo $maxpage+1;?> &nbsp;
+	<a class="hovlink" onclick="ajxpgn('mention#record#list',document.appsettings.codepage+'?cmd=lookupmention#record#&mode=embed&page=<?echo $page+1;?>&key='+encodeHTML(gid('mention#record#key').value));">Next &raquo;</a>
+	<?	
+		$pager=ob_get_clean();	
+	}
+	
+	
+	echo $pager;
+
+	$query.=" order by #dispfield# limit $start,$perpage";
+	
+	$rs=sql_query($query,$db);
+	while ($myrow=sql_fetch_assoc($rs)){
+		$#dispfield#=$myrow['#dispfield#'];
+		$d#dispfield#=noapos(htmlspecialchars($#dispfield#));
+		$#primarykey#=$myrow['#primarykey#'];
+	?>
+	<div class="listitem">
+		<a onclick="if (document.hotspot&&document.hotspot.onChange) document.hotspot.onChange.dispatch();document.hotspot.selection.setContent('<span class=&quot;reflink&quot;>{{reflink type=#record# id=<?echo $#primarykey#;?> title='+(document.hotspot.selection.getContent()||'<?echo $d#dispfield#;?>')+' }}</span>');"><?echo $#dispfield#;?></a>
+	</div>
+	<?	
+	}//while
+	
+	echo $pager;
+	
+	if ($mode!='embed'){
+?>
+	</div>
+</div>
+<?		
+	}//embed
+}

@@ -18,24 +18,8 @@ function scaleall(root){
   var idh=ch();
   var idw=cw();
   
-  var os=root.getElementsByTagName('div'); //AKB#2
+  var os=root.getElementsByTagName('div');
   
-  
-  /*
-  for (i=0;i<os.length;i++){
-    var node=os[i];
-    if(node.attributes){
-      if(node.attributes['scale:nx']) //AKB#3
-        node.style.left=idw-node.attributes['scale:nx'].value+'px';
-      if(node.attributes['scale:ny'])
-        node.style.top=idh-node.attributes['scale:ny'].value+'px';
-      if(node.attributes['scale:cw'])
-        node.style.width=(idw-node.attributes['scale:cw'].value)+'px';
-      if(node.attributes['scale:ch'])
-        node.style.height=(idh-node.attributes['scale:ch'].value)+'px';                        
-    }
-  }
-  */
   gid('lefticons').style.width=idw+'px';
   gid('leftview').style.height=(idh-147)+'px';
   gid('leftview_').style.height=(idh-147)+'px';
@@ -46,7 +30,6 @@ function scaleall(root){
   gid('tabtitles').style.width=(idw-296)+'px';
   gid('tabviews').style.width=(idw-296)+'px';
   gid('tabviews').style.height=(idh-147)+'px';
-  //gid('sptr').style.height=(idh-146)+'px';
   gid('statusinfo').style.top=(idh-25)+'px';
   gid('statusinfo').style.width=idw+'px';
   
@@ -202,20 +185,21 @@ function showview(idx,lazy){
     if (i!=idx) {
       gid('lv'+i).style.display='none';
     } else {
-      if (!lazy||document.viewindex==idx||!gid('lv'+i).viewloaded)      
-	      ajxpgn('lv'+i,document.appsettings.codepage+'?cmd=slv_'+i.replace(/\./g,'__')+'&hb='+hb(),true,true,'',callback(i));
-      else {
+		if (!lazy||document.viewindex==idx||!gid('lv'+i).viewloaded){
+			if (document.lvxhr&&document.lvxhr.reqobj) {document.lvxhr.abortflag=1;document.lvxhr.reqobj.abort();document.lvxhr.reqobj=null;cancelgswi(document.lvxhr);}
+			document.lvxhr=gid('lv'+i);
+			ajxpgn('lv'+i,document.appsettings.codepage+'?cmd=slv_'+i.replace(/\./g,'__'),true,true,'',callback(i));
+		} else {
 	      gid('lv'+idx).style.display='block';
-	      gid('tooltitle').innerHTML=gid('lv'+idx).tooltitle;
-	      
-      }
+	      gid('tooltitle').innerHTML=gid('lv'+idx).tooltitle;      
+		}
     }
   }
   gid('lv'+idx).viewloaded=1;
   document.viewindex=idx;
   
   gid('leftview').style.background=document.flashcolor;
-  setTimeout(function(){gid('leftview').style.background='#ffffff';},500);  
+  setTimeout(function(){gid('leftview').style.background='#ffffff';},200);  
 }
 
 function showlookup(){
@@ -226,7 +210,7 @@ function showlookup(){
 	lkv.style.left='0px';
 
 	gid('lkvc').style.background='#ffffc0';
-	setTimeout(function(){gid('lkvc').style.background='#ffffff';},500);				
+	setTimeout(function(){gid('lkvc').style.background='#ffffff';},200);				
 }
 
 function hidelookup(){
@@ -242,7 +226,6 @@ function stackview(){ //used by auto-completes
 	gid('lv'+document.viewindex).style.display='none';
 	gid('lv'+(document.appsettings.views[document.appsettings.views.length-1])).style.display='block';
 	document.viewindex=document.appsettings.views[document.appsettings.views.length-1];
-
 }
 
 function authpump(){
@@ -311,4 +294,3 @@ if (document.createEvent){
 		
 	}
 }
-

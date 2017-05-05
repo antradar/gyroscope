@@ -104,7 +104,7 @@ document.appsettings={codepage:'<?echo $codepage;?>', fastlane:'<?echo $fastlane
 </div>
 <div id="statusinfo" scale:ny="25" scale:cw="0">
 	<span id="statusicons">
-	<a id="speechstart" onclick="speech_startstop();" onmouseover="hintstatus(this,'click to activate speech recognition');"><img src="imgs/t.gif"></a>
+	<a id="speechstart" onclick="ajxjs(self.speech_startstop,'speech.js');speech_startstop();" onmouseover="hintstatus(this,'click to activate speech recognition');"><img src="imgs/t.gif"></a>
 	<img id="wsswarn" src="imgs/t.gif" onmouseover="hintstatus(this,'websocket not supported');">
 	<img onclick="this.style.display='none';" id="barcodewarn" src="imgs/t.gif" onmouseover="hintstatus(this,'barcode scanner not active');">
 	<img id="diagwarn" src="imgs/t.gif" onclick="window.location.reload();" onmouseover="hintstatus(this,'dialogs suppressed. click to reload browser.');">
@@ -166,12 +166,10 @@ window.onbeforeunload=function(){
 }
 
 </script>
-<script src="wss.js"></script>
-<script>
-<?include 'ws_js.php';?>
-</script>
 
-<script src="speech.js"></script>
+<?include 'ws_js.php';?>
+
+<script src="speechloader.js"></script>
 
 <?/*
 <script src="barcodescanner.js"></script>
@@ -190,7 +188,6 @@ smartcard_init('cardreader',{
 	'nohttps':function(){document.smartcard=null;}
 });
 </script>
-<script src="tiny_mce/mceloader.js"></script>
 <script>
 if (window.Notification) Notification.requestPermission();
 </script>

@@ -72,7 +72,7 @@ function rptactionlog(){
 				
 	}
 
-	$query.=" order by logdate desc";
+	$query.=" order by logdate desc,alogid desc";
 
 	$rs=sql_query($query,$db);
 
@@ -93,6 +93,9 @@ Search: <input class="inp" style="width:30%;" id="actionlog_key" placeholder="Ke
 <a onclick="reloadtab('rptactionlog',null,'rptactionlog&date=<?echo $nextday;?>',null,null,{persist:true});">&raquo;</a>
 <?}?>
 </div>
+<?
+makelookup('rptactionlogdate',1);
+?>
 
 <div class="stable">
 <table cellpadding="4">

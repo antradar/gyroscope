@@ -7,10 +7,10 @@ function embed#primaryfield##mediatype#uploader(){
 	
 	$#primarykey#=GETVAL('#primarykey#');
 
-	$dmaxsize=20;
-	$maxsize=1024*1024*$dmaxsize; //20 MB
+	$dmaxsize=20; //20 MB
+	$maxsize=1024*1024*$dmaxsize;
 	
-	global $tinypngapi; //comment this out to disable TinyPNG resampling
+	global $tinypngapi; //comment this out to disable TinyPNG
 	
 	global $db;
 	global $codepage;
@@ -46,7 +46,7 @@ function embed#primaryfield##mediatype#uploader(){
 			} else {
 				$w=imagesx($img);
 				$h=imagesy($img);
-				if ($w>1500||$y>1000) {//increase this if you have more RAM
+				if ($w>3500||$y>3000) {//increase this if you have more RAM
 					$msg='Image too large. Upload a smaller one.';
 					imagedestroy($img);
 				} else {

@@ -415,14 +415,27 @@ Page <?echo $page+1;?> of <?echo $maxpage+1;?>
 <?
 	$query="select * from #mastertable# where #mastertable#.#primarykey#!=0 $filters ";
 	$query.=" order by $sort limit $start,$perpage ";
-	$rs=sql_query($query,$db);
+	$nkey=md5($query);
+	//$myrows=cache_get($nkey);
+	//if (!$myrows){	
+		$rs=sql_query($query,$db);
 	
-	while ($myrow=sql_fetch_array($rs)){
+		$myrows=array();
+		
+		while ($myrow=sql_fetch_assoc($rs)){
+			array_push($myrows,$myrow);	
+		}
+		
+	//	if (!isset($_REQUEST['searchterm'])||trim($_REQUEST['searchterm'])=='') cache_set($nkey,$myrows,1800); //30 mins
+		
+	//}
+		
+	foreach ($myrows as $myrow){
 ?>
 <div>
 	#<?echo $myrow['#primarykey#'];?> <?echo $myrow['#dispfield#'];?>
 </div>
 <?		
-	}//while
+	}//foreach myrow
 	
 }

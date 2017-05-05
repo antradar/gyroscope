@@ -23,7 +23,7 @@
 	{"template":"lookup_containers","filename":"optional entity locking"},	
 	{"template":"lookup_jsgetter","filename":"modify #primaryrecords#.js: add#primaryfield#=function(...){"},	
 	{"template":"lookup_update","filename":"modify #primaryrecords#.js: update#primaryfield#=function(...){"}, 	
-	{"template":"lookup_supdate","filename":"modify icl/update#primaryfield#.inc.php"},	
+	{"template":"lookup_supdate","filename":"modify icl/update#primaryfield#.inc.php","nocopy":1},	
 	{"template":"lookup","filename":"icl/lookup#record#.inc.php"},	
 	{"template":"lookup_switch","filename":"myservices.php <em>switch ($cmd){</em>"}
 	

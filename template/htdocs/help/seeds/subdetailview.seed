@@ -18,6 +18,7 @@ function show#record#($#primarykey#=null){
 	
 	header('newtitle:'.tabtitle($#dispfield#));
 	header('parenttab: #master_record#_'.$#masterkey#);
+	makechangebar('#record#_'.$#primarykey#,"update#record#($#primarykey#);");
 ?>
 <div class="section">
 	<div class="sectiontitle"><?echo $#dispfield#;?></div>

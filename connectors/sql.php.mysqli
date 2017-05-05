@@ -1,8 +1,7 @@
 <?php
-// Macronetic Hydra
-// Common SQL Interface
+// Gyroscope SQL Wrapper
 // MySQLi implementation
-// (c) Antradar Software 1995-2013
+// (c) Antradar Software
 
 if (!defined('MYSQLI_STORE_RESULT')) define('MYSQLI_STORE_RESULT',0);
 if (!defined('MYSQLI_ASYNC')) define('MYSQLI_ASYNC',8);
@@ -15,7 +14,7 @@ function sql_escape($str){
 }
 
 function sql_get_db($dbhost,$dbsource,$dbuser,$dbpass){
-	$db=mysqli_connect($dbhost,$dbuser,$dbpass,$dbsource);
+	$db=mysqli_connect($dbhost,$dbuser,$dbpass,$dbsource) or die ('failed to connect to database');
 	return $db;
 }
 
@@ -45,34 +44,23 @@ function sql_affected_rows($db,$rs){
 	return mysqli_affected_rows($db);
 }
 
-function sql_begin_transaction(){
-	die("sql.ard: not implemented!");
+function sql_begin_transaction($db){
+	$query="begin";
+	mysqli_query($query,$db);	
+	
 }
 
-function sql_commit(){
-	die("sql.ard: not implemented!");
+function sql_commit($db){
+	$query="commit";
+	mysqli_query($query,$db);	
 }
 
 function sql_rollback(){
-	die("sql.ard: not implemented!");
+	$query="rollback";
+	mysqli_query($query,$db);	
 }
 
-/* Sample Use
+/* Sample Connection
 
 $db=sql_get_db("localhost","mnhydra","root","mnstudio");
-$query="select * from pages";
-$rs=sql_query($query,$db);
-echo sql_affected_rows($db)." rows affected <br>";
-
-
-  while ($myrow=sql_fetch_array($rs)){
-	$pagefilename=$myrow['pagefilename'];
-	$pageid=$myrow['pageid'];
-	$pagetype=$myrow['pagetype'];
-	$idepath="./ide/";
-	if ($pagetype>1) $pagefilename=$idepath.$pagefilename;
-
-	echo $pageid." ".$pagefilename."<br>";
-  }
-
 */

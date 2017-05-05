@@ -1,6 +1,8 @@
 (function(){
-if (document.createComment){
-	document.write('<'+'script src="tiny_mce/tiny_mce_src.js" type="text/javascript"><'+'/script>');
+if (document.createComment&&!self.tinyMCE){
+	var script=document.createElement('script');
+	script.src='tiny_mce/tiny_mce_src.js';
+	document.body.appendChild(script);
 } else {
 	window.tinyMCE={
 		init:function(){},

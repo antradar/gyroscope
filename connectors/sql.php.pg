@@ -1,8 +1,7 @@
-<?
-// Macronetic Hydra
-// Common SQL Interface
+<?php
+// Gyroscope SQL Wrapper
 // PostgreSQL implementation
-// (c) Antradar Software 1995-2006
+// (c) Antradar Software
 
 $SQL_ENGINE="PostgreSQL";
 
@@ -34,34 +33,18 @@ function sql_affected_rows($db,$rs){
 }
 
 function sql_begin_transaction(){
-	die("sql.ard: not implemented!");
+	die("not implemented!");
 }
 
 function sql_commit(){
-	die("sql.ard: not implemented!");
+	die("not implemented!");
 }
 
 function sql_rollback(){
-	die("sql.ard: not implemented!");
+	die("not implemented!");
 }
 
-/* Sample Use
-
+/* Sample Connection
 
 $db=sql_get_db("localhost","mnhydra","dbadmin","");
-$query="select * from languages";
-$rs=sql_query($query,$db);
-
-$rowcount=sql_affected_rows($db,$rs); 
-echo "affected rows: ".$rowcount."<br>";
-
-while ($myrow=sql_fetch_array($rs)){
-  $langself=$myrow['langself'];
-  echo $langself."<br>";
-}
-
-
 */
-
-
-?>

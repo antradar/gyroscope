@@ -1,4 +1,4 @@
 <?php
-header('Location: ../udf.php');
-die();
+
+header('Location: ../udf.php'); die();
 

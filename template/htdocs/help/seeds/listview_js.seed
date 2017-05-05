@@ -1,5 +1,5 @@
-show#record#=function(#primarykey#,name){
-	addtab('#record#_'+#primarykey#,name,'show#record#&#primarykey#='+#primarykey#);	
+show#record#=function(#primarykey#,name,bookmark){
+	addtab('#record#_'+#primarykey#,name,'show#record#&#primarykey#='+#primarykey#,null,null,{bookmark:bookmark});	
 }
 
 _inline_lookup#record#=function(d){

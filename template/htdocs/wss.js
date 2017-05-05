@@ -1,4 +1,4 @@
-function wss_init(userid,wsuri,wsskey){
+wss_init=function(userid,wsuri,wsskey){
 if (window.WebSocket){
 	if (document.wsskey) wsskey=document.wsskey;
 	document.websocket=new WebSocket(wsuri+'?WSS'+wsskey+'=');	
@@ -12,11 +12,11 @@ if (window.WebSocket){
 	}
 	
 	document.websocket.onmessage=function(e){
-		var msg = JSON.parse(e.data); //PHP sends Json data
+		var msg = JSON.parse(e.data); //PHP sends JSON
 		if (msg.type=='getsid'){
 			if (!document.wssid&&msg.userid==userid) {
 				document.wssid=msg.sid;
-				console.log('registered sid '+msg.sid);
+				console.log('sid: '+msg.sid);
 			}
 			return;	
 		}
@@ -24,7 +24,7 @@ if (window.WebSocket){
 		if (!document.wssid) return;
 		
 		if (document.wssid==msg.sid){
-			console.log('ignore self message ');
+			console.log('ignore self');
 			wss_markchanges(msg.rectype,msg.recid,1);
 			return;	
 		}
@@ -34,7 +34,6 @@ if (window.WebSocket){
 			return;	
 		}
 		
-		//console.log(msg);
 	}
 	
 	document.websocket.onerror=function(e){
@@ -62,7 +61,7 @@ if (window.WebSocket){
 }
 }
 
-function wss_markchanges(rectype,recid,corrected){
+wss_markchanges=function(rectype,recid,corrected){
 	
 	var fgcolor='#ab0200';
 	var bgcolor='#ffffcc';
@@ -71,9 +70,7 @@ function wss_markchanges(rectype,recid,corrected){
 		bgcolor='transparent';
 	}
 	
-	/*
-	add custom notifiers here
-	*/
+	// add custom notifiers
 	
 	var hit=0;
 	
@@ -85,17 +82,19 @@ function wss_markchanges(rectype,recid,corrected){
 		break;
 						
 		default:
-
 			
 	}	
 	
 	var tabid=gettabid(rectype+'_'+recid);
 	if (tabid&&document.tabtitles[tabid]){
 		hit=1;
-		if (corrected) document.tabtitles[tabid].style.color=fgcolor;
-		else document.tabtitles[tabid].style.color=fgcolor;
-
-		if (gid('tabreloader_'+rectype+'_'+recid)) gid('tabreloader_'+rectype+'_'+recid).style.background='#ffcccc';
+		if (corrected) {
+			document.tabtitles[tabid].style.color=fgcolor;
+			if (gid('tabreloader_'+rectype+'_'+recid)) gid('tabreloader_'+rectype+'_'+recid).style.background='#dedede';
+		} else {
+			document.tabtitles[tabid].style.color=fgcolor;
+			if (gid('tabreloader_'+rectype+'_'+recid)) gid('tabreloader_'+rectype+'_'+recid).style.background='#ffcccc';
+		}
 	}	
 	
 	if (hit){

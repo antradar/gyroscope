@@ -1,0 +1,9 @@
+
+_inline_lookupplugin#record#=function(d){
+	
+	if (d.timer) clearTimeout(d.timer);
+	d.timer=setTimeout(function(){
+		ajxpgn('plugin#record#list',document.appsettings.codepage+'?cmd=lookupplugin#record#&mode=embed&key='+encodeHTML(d.value));
+	},300
+	);	
+}

@@ -6,15 +6,15 @@ function embed#primaryfield##record#uploader(){
 	
 	$#primarykey#=GETVAL('#primarykey#');
 
-	$dmaxsize=20;
-	$maxsize=1024*1024*$dmaxsize; //20 MB
+	$dmaxsize=20; //20 MB
+	$maxsize=1024*1024*$dmaxsize; 
 	
 	global $db;
 	global $codepage;
 
 	$path='#uploaddir#';
 	
-	global $tinypngapi; //comment this out to disable TinyPNG resampling
+	global $tinypngapi; //comment this out to disable TinyPNG
 		
 	$msg='';
 	
@@ -163,6 +163,7 @@ function upload(d,dfiles){
 		gid('cancel').style.display='block';
 		if (e.lengthComputable) {
 			gid('debug').innerHTML=Math.round(e.loaded*100/e.total)+'%';
+			if (Math.floor(e.loaded*100/e.total)==100) gid('debug').innerHTML='Processing...';
 			gid('dropzoneprogress').innerHTML=gid('debug').innerHTML;
 		} else gid('debug').innerHTML='uploading...';
 	};

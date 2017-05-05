@@ -1,8 +1,7 @@
-<?
-// Gyroscope
-// Common SQL Interface
+<?php
+// Gyroscope SQL Wrapper
 // Microsoft SQL Server (SQLSRV) implementation
-// (c) Antradar Software 1995-2015
+// (c) Antradar Software
 
 $SQL_ENGINE="SQLSRV";
 
@@ -45,24 +44,19 @@ function sql_affected_rows($db,$rs){
 }
 
 function sql_begin_transaction(){
-	die("sql.php: not implemented!");
+	die("not implemented!");
 }
 
 function sql_commit(){
-	die("sql.php: not implemented!");
+	die("not implemented!");
 }
 
 function sql_rollback(){
-	die("sql.php: not implemented!");
+	die("not implemented!");
 }
 
 
-/* Sample Use
+/* Sample Connection
+
 $db=sql_get_db("PT-PC\SQLEXPRESS","SQLLHDB");
-$query="select top 5 * from CUSTOMER";
-$rs=sql_query($query,$db);
-echo sql_affected_rows($db)." rows affected <br>";
-while ($myrow=sql_fetch_assoc($rs)){
-	echo '<pre>'; print_r($myrow); echo '</pre>';
-}
 */

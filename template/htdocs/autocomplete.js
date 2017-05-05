@@ -175,7 +175,6 @@ _picktime=function(d,opts,def){
 	d.timer=setTimeout(f(d,opts),200);
 }
 
-// generic lookup function
 lookupentity=function(d,entity,title){
 	if (!d.value) d.value='';
 	if (d.disabled) return;
@@ -190,8 +189,23 @@ _lookupentity=function(d,entity,title){
 	},200);
 }
 
-//hook this event on textarea::onfocus
+inpbackspace=function(id){
+	var d=gid(id);
+	if (!d) return;
+	if (d.value=='') return;
+	
+	var parts=d.value.trim().split(' ');
+	var nparts=[];
+	for (var i=0;i<parts.length-1;i++){
+		nparts.push(parts[i]);
+			
+	}
+	d.value=nparts.join(' ');
+	d.focus();
+	
+}
 
+//hook this event on textarea::onfocus
 filterkeys=function(d){
 	if (d.onkeydown!=null) return;
 		
@@ -228,14 +242,8 @@ filterkeys=function(d){
 	}	
 }
 
-// svn merge boundary 80dd22a0883aaa1f8cd09b09e81bdd9b - 
+function nav_setfilter(container,keyid,cmd,filter){
+	ajxpgn(container,document.appsettings.codepage+'?cmd='+cmd+'&mode=embed&key='+encodeHTML(gid(keyid).value)+filter);	
+}
 
-
-// svn merge boundary bed99e5db57749f375e738c1c0258047 - 
-
-
-// svn merge boundary 182eb2eb0c3b7d16cf92c0972fe64bcc - 
-
-
-// svn merge boundary 4d373b247a04253ee05a972964f7a7f3 -
 

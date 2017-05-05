@@ -22,7 +22,8 @@ function listusers(){
 
 	<form class="listsearch" onsubmit="_inline_lookupuser(gid('userkey'));return false;">
 	<div class="listsearch_">
-		<input id="userkey" class="img-mg" onkeyup="_inline_lookupuser(this);">
+		<input id="userkey" class="img-mg" onkeyup="_inline_lookupuser(this);" autocomplete="off">
+		<img src="imgs/inpback.gif" class="inpback" onclick="inpbackspace('userkey');_inline_lookupuser(gid('userkey'));">
 	</div>
 	<input type="image" src="imgs/mg.gif" class="searchsubmit" value=".">
 	</form>

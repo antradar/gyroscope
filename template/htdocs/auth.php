@@ -1,6 +1,6 @@
 <?php
 
-define ('GYROSCOPE_VERSION', '10.8');
+define ('GYROSCOPE_VERSION', '11.1');
 
 //remember to personalize the project name
 define ('GYROSCOPE_PROJECT', 'Gyroscope Project Template');
@@ -55,6 +55,7 @@ function login($silent=false){
 	$auth2_=md5($salt2.$userid.$groupnames.$salt2.$login.$salt2.$dispname);
 	
 	if (!isset($login)||(!hash_equals($auth,$auth_)&&!hash_equals($auth,$auth2_))||$auth=='') {
+				
 		$tail='';
 		if (isset($_GET['keynav'])) $tail='?keynav';
 				

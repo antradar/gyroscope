@@ -16,7 +16,9 @@ function wss_init(){
 	$wsuri='ws://localhost:9999/wss.php'; // wss:// in production
 
 ?>
+<script src="wss.js"></script>
+<script>
 wss_init('<?echo $userid;?>','<?echo $wsuri;?>','<?echo $wsskey;?>');
-
+</script>
 <?
 }

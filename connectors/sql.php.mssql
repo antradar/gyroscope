@@ -1,8 +1,7 @@
-<?
-// Macronetic Hydra
-// Common SQL Interface
+<?php
+// Gyroscope SQL Wrapper
 // MSSQL implementation
-// (c) Antradar Software 1995-2006
+// (c) Antradar Software
 
 $SQL_ENGINE="MSSQL";
 
@@ -53,19 +52,7 @@ function sql_rollback(){
 /* Sample Use
 
 $db=sql_get_db("SERVERNAME\\USERNAME","mnhydra",NULL,NULL);
-$query="select * from pages";
-$rs=sql_query($query,$db);
-echo sql_affected_rows($db)." rows affected <br>";
 
-while ($myrow=sql_fetch_array($rs)){
-	$pagefilename=$myrow['pagefilename'];
-	$pageid=$myrow['pageid'];
-	$pagetype=$myrow['pagetype'];
-	$idepath="./ide/";
-	if ($pagetype==2) $pagefilename=$idepath.$pagefilename;
-
-	echo $pageid." ".$pagefilename."<br>";
-}
 
 //paging example
 $query="with ps as (select *,row_number() over (order by firstname,lastname,personid) as rownumber from person)  
@@ -73,6 +60,3 @@ $query="with ps as (select *,row_number() over (order by firstname,lastname,pers
 
 
 */
-
-
-?>

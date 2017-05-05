@@ -22,7 +22,7 @@ function listtemplatetypetemplates($templatetypeid=null){
 	?>
 	<tr>
 		<td>#<?echo $templateid;?></td>
-		<td><a onclick="ajxjs(self.showtemplate,'templates.js');showtemplate(<?echo $templateid;?>,'<?echo $dbrecordtitle;?>','<?echo $templatetypeid;?>');"><?echo $recordtitle?></a></td>
+		<td><a class="hovlink" onclick="ajxjs(self.showtemplate,'templates.js');showtemplate(<?echo $templateid;?>,'<?echo $dbrecordtitle;?>','<?echo $templatetypeid;?>');"><?echo $recordtitle?></a></td>
 	</tr>
 	<?
 	}//while

@@ -1,5 +1,13 @@
 .largertext{font-size:45px;}
 
+.caleheader{height:40px;border:solid 1px #ffffff;margin-left:2px;}
+.calecell{height:50px;border:solid 1px #444444;margin:2px;}
+
+#calepicker{padding-top:20px;}
+
+.caletimeitem{position:relative;height:60px;border-bottom:solid 1px #999999;}
+
+
 .admin-logout{background:transparent url(imgs/toolbar_kpw.gif) no-repeat 0 0;}	
 .admin-settings{background:transparent url(imgs/toolbar_kpw.gif) no-repeat 0 -32px;}	
 .admin-user{background:transparent url(imgs/toolbar_kpw.gif) no-repeat -32px -32px;}
@@ -20,6 +28,8 @@
 .daylightsaving{border:none;background:transparent url(imgs/toolbar_kpw.gif) no-repeat -64px -40px;width:24px;height:24px;vertical-align:top;}
 
 .img-closeall{background:transparent url(imgs/toolbar_kpw.gif) no-repeat -42px -2px;vertical-align:middle;margin-right:2px;}
+
+.img-home{background:transparent url(imgs/toolbar_kpw.gif) no-repeat -192px 0;}
 
 .img-settings{background:transparent url(imgs/toolbar_kpw.gif) no-repeat -768px 0;}
 .img-settings-light{background:transparent url(imgs/toolbar_kpw.gif) no-repeat -768px -64px;}

@@ -14,7 +14,8 @@ function list#records#(){
 <div class="listbar">
 	<form class="listsearch" onsubmit="_inline_lookup#record#(gid('#record#key'));return false;">
 	<div class="listsearch_">
-		<input id="#record#key" class="img-mg" onkeyup="_inline_lookup#record#(this);">
+		<input id="#record#key" class="img-mg" onkeyup="_inline_lookup#record#(this);" autocomplete="off">
+		<img src="imgs/inpback.gif" class="inpback" onclick="inpbackspace('#record#key');_inline_lookup#record#(gid('#record#key'));">
 	</div>
 	<input type="image" src="imgs/mg.gif" class="searchsubmit" value=".">
 	</form>
@@ -40,7 +41,10 @@ function list#records#(){
 	if ($page>$maxpage) $page=$maxpage;
 	$start=$perpage*$page;
 
+	$pager='';
+	
 	if ($maxpage>0){
+	ob_start();
 ?>
 <div class="listpager">
 <?echo $page+1;?> of <?echo $maxpage+1;?>
@@ -50,7 +54,10 @@ function list#records#(){
 <a href=# onclick="ajxpgn('#record#list',document.appsettings.codepage+'?cmd=slv_#fviewindex#&key='+encodeHTML(gid('#record#key').value)+'&page=<?echo $page+1;?>&mode=embed');return false;">Next &raquo;</a>
 </div>
 <?		
+	$pager=ob_get_clean();
 	}
+	
+	echo $pager;
 	
 	$query.=" order by #sortquery# limit $start,$perpage";	
 	
@@ -65,9 +72,11 @@ function list#records#(){
 		
 		$db#record#title=noapos(htmlspecialchars($#record#title));
 ?>
-<div class="listitem"><a onclick="show#record#(<?echo $#primarykey#;?>,'<?echo $db#record#title;?>',<?echo $#masterkey#;?>);"><?echo $#record#title;?></a></div>
+<div class="listitem"><a onclick="show#record#(<?echo $#primarykey#;?>,'<?echo $db#record#title;?>');"><?echo $#record#title;?></a></div>
 <?		
 	}//while
+	
+	echo $pager;
 	
 	if ($mode!='embed'){
 ?>

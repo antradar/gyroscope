@@ -29,44 +29,15 @@ function tzconvert($stamp,$src,$dst){
 function date2stamp($date,$hour=0,$min=0,$sec=0){
 	$parts=explode('-',trim($date));
 	if (count($parts)!=3) return null;
-	return mktime($hour,$min,$sec,$parts[1],$parts[2],$parts[0]);	
+	$stamp=mktime($hour,$min,$sec,$parts[1],$parts[2],$parts[0]);
+	if (date('Y-n-j',$stamp)!=($parts[0]+0).'-'.($parts[1]+0).'-'.($parts[2]+0) ) apperror('Invalid date');
+	
+	return $stamp;	
 }
 
 function apperror($str,$msg=null,$func=null){if (!isset($msg)) $msg=$str;header('apperror: '.tabtitle($str));if (isset($func)) header('ERRFUNC: '.$func);die('apperror - '.$msg);}
 
 function tabtitle($str) {return rawurlencode($str);}
-
-function encstr($str,$key){
-	$key=enckey($key);
-	$iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC);
-	$blocksize = mcrypt_get_block_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC);
-	$pad = $blocksize - (strlen($str) % $blocksize);
-	$str.=str_repeat(chr($pad), $pad);
-	$iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
-	$enc=base64_encode($iv.mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $key, $str, MCRYPT_MODE_CBC, $iv));
-	return $enc;
-}
-
-function decstr($str,$key){
-	$key=enckey($key);
-	$iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC);
-	
-	$raw=base64_decode($str);
-	$iv=substr($raw,0,$iv_size);
-	$encrypted=substr($raw,$iv_size);
-	$dec=mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $key,$encrypted, MCRYPT_MODE_CBC, $iv);
-	
-	$pad=ord($dec[strlen($dec)-1]);
-	
-	$dec=substr($dec,0,-1*$pad);
-	
-	return $dec;
-}
-
-function enckey($str){
-	return substr(hash('SHA256',$str),32);		
-}
-
 
 function makelookup($id,$fullscale=0){
 ?>
@@ -78,6 +49,23 @@ function makelookup($id,$fullscale=0){
 function cancelpickup($id){
 ?>
 <a class="labelbutton" onclick="cancelpickup('<?echo $id;?>');"><?tr('pickup_edit');?></a>
+<?	
+}
+
+function makechangebar($key,$action){
+?>
+<div id="changebar_<?echo $key;?>" class="changebar">
+<div class="changebar_anchor">
+<div class="changebar_view">
+<div class="changebar_content">
+	<button onclick="<?echo $action;?>">Save Changes</button>
+</div>
+</div>
+<div class="changebar_shadow">
+	<button>&nbsp;</button>
+</div>
+</div>
+</div>
 <?	
 }
 
@@ -118,7 +106,7 @@ function logaction($message,$rawobj=null,$syncobj=null){
 }
 
 function timeformat($sec){
-	$sec_num = $sec+0; // don't forget the second param
+	$sec_num = $sec+0;
 	$hours = floor($sec_num / 3600);
 	$minutes = floor(($sec_num - ($hours * 3600)) / 60);
 	$seconds = $sec_num - ($hours * 3600) - ($minutes * 60);

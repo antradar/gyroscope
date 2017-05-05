@@ -79,30 +79,30 @@ function showdatepicker(){
 pickdatetime(null,{start:'<?echo $hstart;?>',end:'<?echo $hend;?>',mini:<?echo $mini;?>,tz:'<?echo $tz;?>'},'<?echo "$py-$pm"?>');
 <?} else {?>
 if (!document.hotspot) {pickdate(null,{mini:<?echo $mini;?>,tz:'<?echo $tz;?>'},'<?echo "$py-$pm"?>');return;} document.hotspot.value='<?echo "$py-$pm"?>';pickdate(document.hotspot,{mini:<?echo $mini;?>,tz:'<?echo $tz;?>'},null);
-<?}?>"><img class="img-calel" src="imgs/t.gif" width="5" height="12"></span>
+<?}?>">&laquo;</span>
 
 <span style="position:absolute;top:2px;right:12px;cursor:pointer;" onclick="<?if ($mode=='datetime'){?>
 pickdatetime(null,{start:'<?echo $hstart;?>',end:'<?echo $hend;?>',mini:<?echo $mini;?>,tz:'<?echo $tz;?>'},'<?echo "$ny-$nm"?>');
 <?} else {?>
-if (!document.hotspot) {pickdate(null,{mini:<?echo $mini;?>,tz:'<?echo $tz;?>'},'<?echo "$ny-$nm"?>');return;} document.hotspot.value='<?echo "$ny-$nm"?>';pickdate(document.hotspot,{mini:<?echo $mini;?>,tz:'<?echo $tz;?>'},null);<?}?>"><img class="img-caler" src="imgs/t.gif" width="5" height="12"></span>
+if (!document.hotspot) {pickdate(null,{mini:<?echo $mini;?>,tz:'<?echo $tz;?>'},'<?echo "$ny-$nm"?>');return;} document.hotspot.value='<?echo "$ny-$nm"?>';pickdate(document.hotspot,{mini:<?echo $mini;?>,tz:'<?echo $tz;?>'},null);<?}?>">&raquo;</span>
 </div>
 
 <div id="calepicker">
 <?for ($i=0;$i<7;$i++){?>
 <div style="width:14%;float:left;">
-<div style="height:20px;border:solid 1px #ffffff;margin-left:1px;"><?echo $wdays[$i];?></div>
+<div class="caleheader"><?echo $wdays[$i];?></div>
 </div>
 <?}?>
 <?for ($i=0;$i<$w;$i++){?>
 <div style="width:14%;float:left;">
-<div style="height:25px;border:solid 1px #444444;margin:1px;"></div>
+<div class="calecell"></div>
 </div>
 <?}?>
 <?
 for ($i=1;$i<=$ld;$i++){
 ?>
 <div onclick="<?if ($mode!='datetime'){?>if (document.hotspot) {document.hotspot.value='<?echo "$y-$m-$i"?>';if (document.hotspot.onchange) document.hotspot.onchange();if (document.hotspot.lookupview) document.hotspot.lookupview.style.display='none';if (gid(document.hotspot.id+'_lookup')) gid(document.hotspot.id+'_lookup').style.display='none';}else showday('<?echo "$y-$m-$i"?>');<?} else {?>gid('cale_daypicker').style.display='none';ajxpgn('timepicker',document.appsettings.codepage+'?cmd=showtimepicker&y=<?echo $y;?>&m=<?echo $m;?>&d=<?echo $i;?>&start=<?echo $hstart;?>&end=<?echo $hend;?>&res=60&tz=<?echo $tz;?>',1);<?}?>" style="cursor:pointer;width:14%;float:left;">
-<div style="height:25px;border:solid 1px #444444;margin:1px;<?if ($today=="$y-$m-$i") echo 'font-weight:bold;color:#ab0200';?>"><?echo $i;?>
+<div class="calecell" style="<?if ($today=="$y-$m-$i") echo 'font-weight:bold;color:#ab0200';?>"><?echo $i;?>
 </div></div>
 <?
 }
@@ -168,7 +168,7 @@ function showtimepicker($y=null,$m=null,$d=null,$start=null,$end=null,$res=null,
 		$mdkey=date('Y-n-j',$val);
 		if ($dkey!=$daykey&&$dkey!=$ldaykey) continue;
 	?>
-		<div style="position:relative;height:30px;border-bottom:solid 1px #999999;">
+		<div class="caletimeitem">
 			<?if ($i>$rstart-$res*60){?>
 			<a style="padding:10px 5px;display:block;margin-right:50px;" onclick="picklookup('<?echo $picked;?>',<?echo $val;?>);"><?echo $t;?>
 				<?if ($ds){?><img src="imgs/t.gif" class="daylightsaving"><?}?>
@@ -213,8 +213,8 @@ function pickdatemonths(){
 ?>		
 <div style="width:100%;position:relative;margin-top:5px;text-align:center;">
 	<span classa="hovlink" onclicka="listlookup(this,'Calendar','pickdateyears&defyear=<?echo $defyear;?>');"><?echo $defyear;?></span>
-	<span style="position:absolute;top:2px;left:12px;cursor:pointer;" onclick="listlookup(document.hotspot,'Calendar','pickdatemonths&defyear=<?echo $defyear-1;?>&mode=<?echo $mode;?>&mini=<?echo $mini;?>&tz=<?echo $tz;?>&hstart=<?echo $hstart;?>&hend=<?echo $hend;?>');"><img class="img-calel" src="imgs/t.gif" width="5" height="12"></span>
-	<span style="position:absolute;top:2px;right:12px;cursor:pointer;" onclick="listlookup(document.hotspot,'Calendar','pickdatemonths&defyear=<?echo $defyear+1;?>&mode=<?echo $mode;?>&mini=<?echo $mini;?>&tz=<?echo $tz;?>&hstart=<?echo $hstart;?>&hend=<?echo $hend;?>');"><img class="img-caler" src="imgs/t.gif" width="5" height="12"></span>
+	<span style="position:absolute;top:2px;left:12px;cursor:pointer;" onclick="listlookup(document.hotspot,'Calendar','pickdatemonths&defyear=<?echo $defyear-1;?>&mode=<?echo $mode;?>&mini=<?echo $mini;?>&tz=<?echo $tz;?>&hstart=<?echo $hstart;?>&hend=<?echo $hend;?>');">&laquo;</span>
+	<span style="position:absolute;top:2px;right:12px;cursor:pointer;" onclick="listlookup(document.hotspot,'Calendar','pickdatemonths&defyear=<?echo $defyear+1;?>&mode=<?echo $mode;?>&mini=<?echo $mini;?>&tz=<?echo $tz;?>&hstart=<?echo $hstart;?>&hend=<?echo $hend;?>');">&raquo;</span>
 </div>
 <div class="section">
 <?

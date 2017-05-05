@@ -10,7 +10,7 @@
 $icons=array(array('name'=>'user','adjust'=>0),
 	array('name'=>'stethoscope','adjust'=>0),
 	array('name'=>'user-md','adjust'=>0),
-	array('name'=>'ambulance','adjust'=>-2),
+	array('name'=>'home','adjust'=>0),
 	array('name'=>'flask','adjust'=>0),
 	array('name'=>'car','adjust'=>-4),
 	array('name'=>'tags','adjust'=>-4),

@@ -1,4 +1,4 @@
-<?
+<?php
 include 'lb.php';
 if ($usehttps) include 'https.php';
 
@@ -33,7 +33,6 @@ body{font-family:helvetica;}
 	color:#000000;
 	text-decoration:none;
 }
-
 </style>
 
 </head>
@@ -43,12 +42,12 @@ body{font-family:helvetica;}
 <div id="toolicons" style="position:fixed;width:100%;z-index:2000;top:0;">
 
 	<?
-	$tcount=0;
+	$tcount=1;
 	foreach ($toolbaritems as $ti) if (isset($ti['icon'])&&$ti['icon']!='') $tcount++;
 	?>
 	
-	<div id="toollist" style="overflow:auto;width:100%;"><div style="width:<?echo 102*($tcount);?>px;">
-
+	<div id="toollist" style="overflow:hidden;width:100%;"><div style="width:<?echo 102*($tcount);?>px;">
+	<div class="menuitem"><a onclick="showtab('welcome');"><img width="64" height="64" src="imgs/t.gif" class="img-home"></a></div>
 	<?foreach ($toolbaritems as $modid=>$ti){
 		if ($ti['type']=='break') continue;
 		if ($ti['noiphone']) continue;	
@@ -152,32 +151,28 @@ function showdeck(){
 
 function rotate(){
 	
-
-	
 	if (!document.appsettings.cw) document.appsettings.cw=320;
 	if (document.appsettings.cw<document.body.clientWidth) document.appsettings.cw=document.body.clientWidth;
 		
 	var cw=document.appsettings.cw;
 	var vw=document.body.clientWidth;
 	
-		
-		showdeck();
-		gid('leftview').style.width=vw+'px';
-		gid('leftview').style.marginLeft=0;
-		gid('backlist').style.display='block';
-		gid('backlistshadow').style.display='block';
-		gid('tooltitle').style.width=vw+'px';
-		gid('toollist').style.width=document.documentElement.clientWidth-50+'px';//'280px';
-		gid('tabtitleshadow').style.display='none';
-		gid('content').style.width=vw+'px';
-		
-		document.viewheight=vw+30;
-		scaleall(document.body);
-		document.iphone_portrait=1;
-		
-		hidelookup();
-		
+	showdeck();
+	gid('leftview').style.width=vw+'px';
+	gid('leftview').style.marginLeft=0;
+	gid('backlist').style.display='block';
+	gid('backlistshadow').style.display='block';
+	gid('tooltitle').style.width=vw+'px';
+	gid('toollist').style.width=document.documentElement.clientWidth-50+'px';//'280px';
+	gid('tabtitleshadow').style.display='none';
+	gid('content').style.width=vw+'px';
 	
+	document.viewheight=vw+30;
+	scaleall(document.body);
+	document.iphone_portrait=1;
+	
+	hidelookup();
+		
 }
 
 addtab('welcome','<?tr('tab_welcome');?>','wk',null,null,{noclose:true});
@@ -190,7 +185,7 @@ function onrotate(){
 	},100);
 }
 
-setInterval(authpump,60000); //check if needs to re-login; comment this out to disable authentication
+setInterval(authpump,60000); //comment out to disable authentication
 
 addtab('welcome','Welcome','wk',null,null,{noclose:true});
 
@@ -223,11 +218,6 @@ function scaleall(root){
 }
 
 scaleall(document.body);
-
 </script>
-<?
-//Speech and WSS features are removed for book readers
-?>
-<script src="tiny_mce/mceloader.js"></script>
 </body>
 </html>

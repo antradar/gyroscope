@@ -1,0 +1,29 @@
+{
+"fields":[
+	{"field":"entity","disp":"Entity","def":"server"},
+	{"field":"container","disp":"Container","def":"serverdash"},
+	{"field":"cmd","disp":"Command","def":"dashservers"},
+	{"field":"searchkey","disp":"Search Key","def":"serverkey"},
+	
+	{"field":"mastertable","disp":"Base Record Table","def":"servers"},
+	{"field":"primarykey","disp":"Primary Key","def":"serverid"},
+	
+	{"field":"dispfield","disp":"Display Field","def":"domains"},
+	
+	{"field":"dimlist","disp":"Dimensions","def":"os|OS\noperator|Operator", "type":"fieldlist"},	
+	{"field":"multifields","disp":"Multi-Select Fields (optional)","def":"serverparts|partname|Parts","type":"fieldlist","optional":1},
+	{"field":"rangelist","disp":"Range Filters","def":"memorybase|RAM", "type":"fieldlist","optional":1},			
+	{"field":"viewlist","disp":"Additional Views","def":"servermap|viewservermap\nserverstats|viewserverstats", "type":"fieldlist","optional":1}			
+],
+
+"templates":[
+	{"template":"navfilteri_connect","filename":"modify connect.php, configure db connection pool"},
+	{"template":"navfilteri_nav","filename":"If used in a list, set #entity#list as Container, slv_codegen__#entity#s as Command in codegen<br>icl/#entity#_nav.inc.php"},
+	{"template":"navfilter_inc","nocopy":1, "filename":"container code"},
+	{"template":"navfilter_css","filename":"recommended CSS in <em>toolbar.css</em>"},
+	{"template":"navfilter_kpw","filename":"recommended CSS in <em>iphone/kpw.css</em>"},
+	{"template":"navfilter_switch","filename":"add to <em>myservices.php</em>"},
+	{"template":"navfilter_mod","nocopy":1, "filename":"optional list integration"}
+
+]
+}

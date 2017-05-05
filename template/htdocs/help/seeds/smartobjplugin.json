@@ -1,0 +1,25 @@
+{
+"fields":[
+	{"field":"record","disp":"Record Entity Name","def":"card"},
+	{"field":"c_record","disp":"Record Entity Label","def":"Card"},
+	{"field":"records","disp":"Record Entity Name (Plural)","def":"cards"},
+	{"field":"c_records","disp":"Record Entity Label (Plural)","def":"Cards"},
+
+	{"field":"tablename","disp":"DB Table Name","def":"cards"},
+	{"field":"primarykey","disp":"Primary Key","def":"cardid"},
+	{"field":"searchquery","disp":"Search Filters","def":"cardname like '%$key%' "},
+	{"field":"sortquery","disp":"Sort Filters","def":"cardname"},
+	
+	{"field":"dispfield","disp":"Display Field Name","def":"cardname"}
+
+		
+],
+
+"templates":[
+	{"template":"smartobjlist","filename":"add to icl/<span style=\"color:#000099;\">lookupplugin.inc.php</span>"},	
+	{"template":"smartobjswitch","filename":"add to <span style=\"color:#000099;\">myservices.php</span>"},	
+	{"template":"smartobjplugin","filename":"icl/lookupplugin#record#.inc.php"},
+	{"template":"smartobjjs","filename":"add to #records#.js"},
+	{"template":"smartobjtmpl","filename":"add to <span style=\"color:#ab0200;\">../</span>tmpl.php"}
+]
+}
