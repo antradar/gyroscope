@@ -1491,7 +1491,7 @@ tinymce.util.Quirks = function(editor) {
 				// Override delete if the start container is a text node and is at the beginning of text or
 				// just before/after the last character to be deleted in collapsed mode
 				if (container.nodeType == 3 && container.nodeValue.length > 0 && ((offset === 0 && !collapsed) || (collapsed && offset === (isDelete ? 0 : 1)))) {
-					nonEmptyElements = editor.schema.getNonEmptyElements();
+					var nonEmptyElements = editor.schema.getNonEmptyElements();
 
 					// Prevent default logic since it's broken
 					e.preventDefault();
@@ -2717,7 +2717,7 @@ tinymce.html.Styles = function(settings, schema) {
 		shortEndedElementsMap = createLookupTable('short_ended_elements', 'area base basefont br col frame hr img input isindex link meta param embed source wbr');
 		boolAttrMap = createLookupTable('boolean_attributes', 'checked compact declare defer disabled ismap multiple nohref noresize noshade nowrap readonly selected autoplay loop controls');
 		nonEmptyElementsMap = createLookupTable('non_empty_elements', 'td th iframe video audio object', shortEndedElementsMap);
-		textBlockElementsMap = createLookupTable('text_block_elements', 'h1 h2 h3 h4 h5 h6 p div address pre form ' + 
+		var textBlockElementsMap = createLookupTable('text_block_elements', 'h1 h2 h3 h4 h5 h6 p div address pre form ' + 
 						'blockquote center dir fieldset header footer article section hgroup aside nav figure');
 		blockElementsMap = createLookupTable('block_elements', 'hr table tbody thead tfoot ' + 
 						'th tr td li ol ul caption dl dt dd noscript menu isindex samp option datalist select optgroup', textBlockElementsMap);
@@ -4290,7 +4290,7 @@ tinymce.html.Styles = function(settings, schema) {
 
 							// Is the parent to be considered empty after we removed the BR
 							if (parent.isEmpty(nonEmptyElements)) {
-								elementRule = schema.getElementRule(parent.name);
+								var elementRule = schema.getElementRule(parent.name);
 
 								// Remove or padd the element depending on schema rule
 								if (elementRule) {
@@ -4315,7 +4315,7 @@ tinymce.html.Styles = function(settings, schema) {
 						}
 
 						if (lastParent === parent) {
-							textNode = new tinymce.html.Node('#text', 3);
+							var textNode = new tinymce.html.Node('#text', 3);
 							textNode.value = '\u00a0';
 							node.replace(textNode);
 						}
@@ -5867,7 +5867,7 @@ tinymce.dom.TreeWalker = function(start_node, root_node) {
 			var doc = this.doc, head;
 
 			// Create style element if needed
-			styleElm = doc.getElementById('mceDefaultStyles');
+			var styleElm = doc.getElementById('mceDefaultStyles');
 			if (!styleElm) {
 				styleElm = doc.createElement('style'),
 				styleElm.id = 'mceDefaultStyles';
@@ -7594,7 +7594,7 @@ tinymce.dom.TreeWalker = function(start_node, root_node) {
 					moveRng = body.createTextRange();
 					moveRng.moveToElementText(resolveIndexes(endPoint.indexes));
 
-					offset = endPoint.offset;
+					var offset = endPoint.offset;
 					if (offset !== undef) {
 						moveRng.collapse(endPoint.inside || moveLeft);
 						moveRng.moveStart('character', moveLeft ? -offset : offset);
@@ -15575,10 +15575,10 @@ tinymce.create('tinymce.ui.Toolbar:tinymce.ui.Container', {
 		};
 
 		// Create event instances
-		onBeforeAdd = new Dispatcher(self);
-		onAdd       = new Dispatcher(self);
-		onUndo      = new Dispatcher(self);
-		onRedo      = new Dispatcher(self);
+		var onBeforeAdd = new Dispatcher(self);
+		var onAdd       = new Dispatcher(self);
+		var onUndo      = new Dispatcher(self);
+		var onRedo      = new Dispatcher(self);
 
 		// Pass though onAdd event from UndoManager to Editor as onChange
 		onAdd.add(function(undoman, level) {
@@ -15811,7 +15811,7 @@ tinymce.ForceBlocks = function(editor) {
 			}
 
 			isInEditorDocument = rng.parentElement().ownerDocument === editor.getDoc();
-			tmpRng = rng.duplicate();
+			var tmpRng = rng.duplicate();
 			tmpRng.collapse(true);
 			startOffset = tmpRng.move('character', offset) * -1;
 

@@ -29,15 +29,15 @@ function insertTable() {
 	rules = getSelectValue(formObj, "rules");
 	width = formObj.elements['width'].value;
 	height = formObj.elements['height'].value;
-	bordercolor = formObj.elements['bordercolor'].value;
-	bgcolor = formObj.elements['bgcolor'].value;
-	className = getSelectValue(formObj, "class");
-	id = formObj.elements['id'].value;
-	summary = formObj.elements['summary'].value;
-	style = formObj.elements['style'].value;
-	dir = formObj.elements['dir'].value;
-	lang = formObj.elements['lang'].value;
-	background = formObj.elements['backgroundimage'].value;
+	var bordercolor = formObj.elements['bordercolor'].value;
+	var bgcolor = formObj.elements['bgcolor'].value;
+	var className = getSelectValue(formObj, "class");
+	var id = formObj.elements['id'].value;
+	var summary = formObj.elements['summary'].value;
+	var style = formObj.elements['style'].value;
+	var dir = formObj.elements['dir'].value;
+	var lang = formObj.elements['lang'].value;
+	var background = formObj.elements['backgroundimage'].value;
 	caption = formObj.elements['caption'].checked;
 
 	cellLimit = tinyMCEPopup.getParam('table_cell_limit', false);
@@ -331,7 +331,7 @@ function init() {
 		cols = cols;
 		rows = rowsAr.length;
 
-		st = dom.parseStyle(dom.getAttrib(elm, "style"));
+		var st = dom.parseStyle(dom.getAttrib(elm, "style"));
 		border = trimSize(getStyle(elm, 'border', 'borderWidth'));
 		cellpadding = dom.getAttrib(elm, 'cellpadding', "");
 		cellspacing = dom.getAttrib(elm, 'cellspacing', "");
