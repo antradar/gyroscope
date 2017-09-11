@@ -24,6 +24,8 @@ use toolbar.psp to generate toolbar.gif
 
 .caletimeitem{position:relative;height:30px;border-bottom:solid 1px #999999;}
 
+.videoframe_16x9{position:relative;width:100%;height:0;padding-bottom:58%;overflow:hidden;}
+.videoframe{position:absolute;top:0;left:0;width:100%;height:100%;display:block;border:none;}
 
 input:disabled{
 	color:#000000;

@@ -1,0 +1,4 @@
+
+	<div class="listitem">
+		<a onclick="reloadtab('report_#reportkey#',null,'rpt#reportkey#');addtab('report_#reportkey#','#reporttitle# Report','rpt#reportkey#');">#reporttitle# Report</a>
+	</div>

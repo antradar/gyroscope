@@ -1,4 +1,7 @@
-<?
+<?php
+
+define ('GSSERVICE',1);
+
 include 'lb.php';
 
 include 'connect.php';
@@ -34,6 +37,8 @@ switch($cmd){
 	case 'deluser': include 'icl/deluser.inc.php'; deluser(); break;
 	case 'updateuser': include 'icl/updateuser.inc.php'; updateuser(); break;
 	case 'reauth': include 'icl/reauth.inc.php'; reauth(); break;
+	
+	case 'downloadgskeyfile': include 'icl/downloadgskeyfile.inc.php'; downloadgskeyfile(); break;
 	
 	case 'slv_core__templatetypes': include 'icl/listtemplatetypes.inc.php'; listtemplatetypes(); break;
 	

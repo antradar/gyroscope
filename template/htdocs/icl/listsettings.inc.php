@@ -9,19 +9,19 @@ function listsettings(){
 	<?	
 	if (isset($user['groups']['accounts'])){
 	?>
-	<div class="listitem"><a onclick="ajxjs(self.showuser,'users_js.php');showview('core.users');">Accounts</a></div>	
+	<div class="listitem"><a onclick="ajxjs(self.showuser,'users_js.php');showview('core.users',1);">Accounts</a></div>	
 	<?
 	}
 
 	if (isset($user['groups']['reportsettings'])){
 	?>
-	<div class="listitem"><a onclick="ajxjs(self.showreport,'reportsettings.js');showview('core.reportsettings');">Report Settings</a></div>	
+	<div class="listitem"><a onclick="ajxjs(self.showreport,'reportsettings.js');showview('core.reportsettings',1);">Report Settings</a></div>	
 	<?
 	}
 	
 	if (isset($user['groups']['systemplate'])||isset($user['groups']['systemplateuse'])){
 	?>
-	<div class="listitem"><a onclick="showview('core.templatetypes');">System Templates</a></div>	
+	<div class="listitem"><a onclick="showview('core.templatetypes',1);">System Templates</a></div>	
 	<?
 	}
 			

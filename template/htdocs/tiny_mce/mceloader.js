@@ -78,7 +78,7 @@ selectmedia=function(d,mediaid,prefix){
 	}
 	
 	var html=[];
-	for (k in gid('fsview').sels) html.push('<img src="'+prefix+gid('fsview').sels[k]+'.img" style="width:80px;margin:5px;">');
+	for (var k in gid('fsview').sels) html.push('<img src="'+prefix+gid('fsview').sels[k]+'.img" style="width:80px;margin:5px;">');
 	if (html.length>0) html.push('<button onclick="closefs();">Apply Selection</button>');
 	gid('medialibsels').innerHTML=html.join(' ');
 	
@@ -87,7 +87,7 @@ selectmedia=function(d,mediaid,prefix){
 listmediaids=function(){
 	if (!gid('fsview').sels) return '';
 	var sels=[];
-	for (k in gid('fsview').sels) sels.push(gid('fsview').sels[k]);
+	for (var k in gid('fsview').sels) sels.push(gid('fsview').sels[k]);
 	return sels.join(',');
 }
 

@@ -1,0 +1,45 @@
+<?php
+
+//this file should be accessible at http://#domain#/#gsproj#/done#record#videoupload.php
+
+include 'lb.php';
+include 'connect.php';
+include 'sproutvideo.php';
+include 'forminput.php';
+
+$#primarykey#=GETVAL('#primarykey#');
+$videokey=GETSTR('video_id');
+
+$auth=$_GET['auth'];
+$auth_=md5($sproutwebhookkey.$#primarykey#);
+
+if ($auth!=$auth_) die('Access denied');
+
+if ($_GET['successful']=='true'){
+	
+	//remove existing video
+	$query="select * from #table# where #primarykey#=$#primarykey# and videokey!=''";
+	$rs=sql_query($query,$db);
+	if ($myrow=sql_fetch_assoc($rs)){
+		$oldkey=$myrow['videokey'];
+		sproutvideo_delete($oldkey);
+	}
+	
+	$query="update #table# set videokey='$videokey',videostatus=0 where #primarykey#=$#primarykey#";
+	sql_query($query,$db);
+	
+} else {
+?>
+<script>
+	alert('Error uploading video');
+</script>
+<?
+}
+
+?>
+<script>
+parent.reload#record#videouploader(<?echo $#primarykey#;?>);
+</script>
+
+
+

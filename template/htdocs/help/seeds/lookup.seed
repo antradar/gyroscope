@@ -5,6 +5,7 @@ function lookup#record#(){
 	$key=GETSTR('key');
 	
 	$page=$_GET['page']+0;
+	$mul=$_GET['mul'];
 	
 
 ?>
@@ -21,6 +22,16 @@ function lookup#record#(){
 	
 	$rs=sql_query($query,$db);
 	
+	$c=sql_affected_rows($db,$rs);
+	if ($c>1&&$mul){
+?>
+<div class="inputrow">
+	<a class="hovlink" onclick="pickupalllookups(this);">select all items</a>
+</div>
+<?		
+	}
+	
+	
 	while ($myrow=sql_fetch_array($rs)){
 		$#lookupkey#=$myrow['#lookupkey#'];
 		$#dispfield#=$myrow['#dispfield#'];
@@ -28,8 +39,13 @@ function lookup#record#(){
 		$#record#title="$#dispfield#"; //change this if needed
 		
 		$db#record#title=noapos(htmlspecialchars($#record#title));
+
 ?>
-<div class="listitem"><a onclick="picklookup('<?echo $db#record#title;?>',<?echo $#lookupkey#;?>);"><?echo $#record#title;?></a></div>
+<div class="listitem" style="position:relative;">
+<?if ($mul){?>
+<input type="checkbox" class="lksel" value="<?echo $#lookupkey#;?>" onclick="selectpickup(this,'<?echo $db#record#title;?>');">
+<?}?>
+<a onclick="picklookup('<?echo $db#record#title;?>',<?echo $#lookupkey#;?>);"><?echo $#record#title;?></a></div>
 <?		
 	}//while
 	

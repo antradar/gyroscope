@@ -13,12 +13,29 @@ function sql_escape($str){
 	return mysqli_real_escape_string($db,$str);	
 }
 
-function sql_get_db($dbhost,$dbsource,$dbuser,$dbpass){
-	$db=mysqli_connect($dbhost,$dbuser,$dbpass,$dbsource) or die ('failed to connect to database');
+function sql_get_db($dbhost,$dbsource,$dbuser,$dbpass,$lazyname=null){
+	if (isset($lazyname)){
+		global $dbdefers;
+		if (!isset($dbdefers)) $dbdefers=array();
+		$dbdefers[$lazyname]=array(
+			'host'=>$dbhost,'source'=>$dbsource,
+			'user'=>$dbuser,'pass'=>$dbpass
+		);
+		return $lazyname;
+	}
+	
+	$db=mysqli_connect($dbhost,$dbuser,$dbpass,$dbsource);
 	return $db;
 }
 
-function sql_query($query,$db,$mode=MYSQLI_STORE_RESULT){
+function sql_query($query,&$db,$mode=MYSQLI_STORE_RESULT){
+	
+	if (is_string($db)){
+		global $dbdefers;
+		$dbinfo=$dbdefers[$db];
+		$db=sql_get_db($dbinfo['host'],$dbinfo['source'],$dbinfo['user'],$dbinfo['pass']);	
+	}	
+	
 	$rs=mysqli_query($db,$query,$mode);
 			
 	if ((!$rs)&&$mode==MYSQLI_STORE_RESULT) echo "sql_error: ".$query.' '.mysqli_error();

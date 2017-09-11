@@ -51,7 +51,7 @@ function embed#primaryfield##record#uploader(){
 				$w=imagesx($img);
 				$h=imagesy($img);
 
-				if ($w>3500||$y>3000) {//increase this if you have more RAM
+				if ($w>3500||$h>3000) {//increase this if you have more RAM
 					$msg='Image too large. Upload a smaller one.';
 					imagedestroy($img);
 				} else {

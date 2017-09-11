@@ -9,8 +9,16 @@ $codegen_seeds=array(
 	'report'=>array('name'=>'Date-Range Report','desc'=>'','icon'=>''),
 	'break1'=>array('type'=>'break'),
 	'profile'=>array('name'=>'1-1 Image Uploader','desc'=>'','icon'=>''),
-	'album'=>array('name'=>'1-N Image Uploader','desc'=>'','icon'=>''),
+	
+	'albums'=>array('name'=>'1-N Image Uploader','desc'=>'','icon'=>'','package'=>1,
+		'items'=>array(
+			'album'=>array('name'=>'Single 1-N Image Uploader','desc'=>'','icon'=>''),
+			'albumm'=>array('name'=>'Multiple 1-N Image Uploader','desc'=>'','icon'=>'')
+		)
+	),
+	
 	'uploader'=>array('name'=>'1-N File Uploader','desc'=>'A file uploader uses a data table to assign unique IDs to each upload;<br>The files will be renamed to have a generic extension.','icon'=>'upload'),
+	'sproutuploader'=>array('name'=>'Sprout Video Uploader','upload to Sprout video with form post fallback and WSS notification'),
 	'break2'=>array('type'=>'break'),
 	'tinymces'=>array('name'=>'Rich Text Editor','icon'=>'','package'=>1,
 		'items'=>array(
@@ -22,7 +30,8 @@ $codegen_seeds=array(
 	'sortlists'=>array('name'=>'Drag & Drop Sort List','icon'=>'','package'=>1,
 		'items'=>array(
 			'sortlist'=>array('name'=>'List View','desc'=>'','icon'=>''),
-			'dsortlist'=>array('name'=>'Direct List (1-N)','desc'=>'','icon'=>'')
+			'dsortlist'=>array('name'=>'Direct List (1-N) List','desc'=>'','icon'=>''),
+			'tsortlist'=>array('name'=>'Direct List (1-N) Tile','desc'=>'','icon'=>'')
 		)
 	),
 	

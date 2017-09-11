@@ -12,7 +12,7 @@ function newuser(){
 	
 	<div class="inputrow">
 		<div class="formlabel"><?tr('username');?>:</div>
-		<input class="inp" id="login_new" onblur="if (gid('dispname_new').value=='') gid('dispname_new').value=this.value;">
+		<input class="inp" id="login_new" onblur="if (gid('dispname_new').value==''&&this.value!='') {var val=this.value.charAt(0).toUpperCase()+this.value.slice(1);gid('dispname_new').value=val;}">
 	</div>
 	<div class="inputrow">
 		<div class="formlabel"><?tr('dispname');?>:</div>

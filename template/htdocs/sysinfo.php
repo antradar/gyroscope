@@ -1,6 +1,9 @@
 <?php
 
 include 'lb.php';
+include 'auth.php'; 
+//login(); //uncomment in production
+
 $ip=$_SERVER['REMOTE_ADDR'];
 if (isset($_SERVER['REMOTE_ADDR6'])) $ip=$_SERVER['REMOTE_ADDR6'];
 ?>
@@ -20,7 +23,6 @@ if (isset($_SERVER['REMOTE_ADDR6'])) $ip=$_SERVER['REMOTE_ADDR6'];
 $a=12147483648;
 $b=$a|0;
 include 'connect.php';
-include 'auth.php';
 
 $user=userinfo();
 

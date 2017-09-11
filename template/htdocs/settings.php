@@ -27,7 +27,6 @@ $user=userinfo();
 
 
 $toolbaritems=array(
-'core.users'=>array('title'=>'Users','icon'=>'','modversion'=>'78','lockdown'=>1),
 'core.settings'=>array('title'=>'Settings','icon'=>'img-settings','modversion'=>'91','lockdown'=>1),
 	'core.users'=>array('title'=>'Users','icon'=>'','modversion'=>'78','lockdown'=>1),
 	'core.reportsettings'=>array('title'=>'Report Settings','icon'=>'','modversion'=>'92','lockdown'=>1),	

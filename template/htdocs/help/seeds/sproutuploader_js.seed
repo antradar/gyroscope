@@ -1,0 +1,19 @@
+///////////////
+
+doneuploading#record#=function(#primarykey#,videokey,videotoken){
+	if (!videokey){
+		alert("Failed to upload video. Uploader will now reload\n");
+			
+	} else {
+		ajxpgn('statusc',document.appsettings.codepage+'?cmd=register#record#video&#primarykey#='+#primarykey#+'&videokey='+videokey+'&videotoken='+videotoken,0,0,null,function(rq){
+			flashstatus(rq.responseText);
+		});
+	}
+	
+	reload#record#videouploader(#primarykey#);
+	
+}
+
+reload#record#videouploader=function(#primarykey#){
+	ajxpgn('#record#video_'+#primarykey#,document.appsettings.codepage+'?cmd=show#record#videouploader&#primarykey#='+#primarykey#);	
+}

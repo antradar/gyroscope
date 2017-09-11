@@ -18,7 +18,7 @@ function revoke#doctype#(){
 
 
 	
-	$query="update loans set #doctype#lock=0 where #key#=$#key#";
+	$query="update #records# set #doctype#lock=0 where #key#=$#key#";
 	sql_query($query,$db);
 	
 	logaction("revoked #doctype# of #record# #$#key#",array('#key#'=>$#key#));	

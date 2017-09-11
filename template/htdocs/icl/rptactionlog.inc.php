@@ -73,7 +73,7 @@ function rptactionlog(){
 	}
 
 	$query.=" order by logdate desc,alogid desc";
-
+	
 	$rs=sql_query($query,$db);
 
 ?>

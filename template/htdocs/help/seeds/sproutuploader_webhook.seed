@@ -1,0 +1,28 @@
+<?php
+
+//this file should be accessible at http://#domain#/#gsproj#/sprouthook.php
+
+include 'lb.php';
+include 'connect.php';
+include 'forminput.php';
+
+$response=file_get_contents('php://input');
+//echo $response;
+
+$res=json_decode($response,1);
+
+$videokey=noapos($res['id']);
+$videotoken=noapos($res['security_token']);
+
+$state=$res['state'];
+if ($state!='deployed') die('Not ready');
+
+$query="update #table# set videotoken='$videotoken',videostatus=1 where videokey='$videokey'";
+sql_query($query,$db);
+
+$query="select * from #table# where videokey='$videokey'";
+$rs=sql_query($query,$db);
+$myrow=sql_fetch_assoc($rs);
+$#primarykey#=$myrow['#primarykey#']+0;
+
+logaction('',null,array('rectype'=>'#record#videoencoded','recid'=>$#primarykey#));

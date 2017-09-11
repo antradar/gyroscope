@@ -10,7 +10,7 @@ function lock#doctype#(){
 
 	pdf#doctype#($#key#,1);
 	
-	$query="update loans set #doctype#lock=1 where #key#=$#key#";
+	$query="update #records# set #doctype#lock=1 where #key#=$#key#";
 	sql_query($query,$db);
 	
 	list#container#($#key#);	

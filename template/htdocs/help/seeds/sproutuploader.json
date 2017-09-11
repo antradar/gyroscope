@@ -1,0 +1,36 @@
+{
+"fields":[
+	{"field":"record","disp":"Entity Name","def":"demo"},
+	{"field":"c_record","disp":"Entity Label","def":"Demo"},
+	{"field":"records","disp":"Entity Name (Pl.)","def":"demos"},
+	{"field":"table","disp":"Database Table","def":"demos"},
+	{"field":"primarykey","disp":"Primary Key","def":"demoid"},
+	{"field":"dispfield","disp":"Display Field Name","def":"demoname"},
+	
+	{"field":"sproutkey","disp":"SproutVideo API Key","def":"your-sproutvideo-api-key"},
+	{"field":"sproutendpoint","disp":"SproutVideo Endpoint","def":"https://api.sproutvideo.com/v1/"},
+	{"field":"sproutwebhookkey","disp":"Internal Callback Key","def":"-some-random-key"},
+	
+	{"field":"domain","disp":"Your Domain","def":"your-domain.com"},
+	{"field":"gsproj","disp":"Gyroscope Project Subfolder","def":"gs-admin"}
+	
+		
+],
+
+"templates":[
+	{"template":"sproutuploader_sql","filename":"Database changes:"},	
+	{"template":"sproutvideolib","filename":"create sproutvideo.php in /#gsproj# "},	
+	{"template":"sproutuploader_showmain","filename":"add to <em>icl/show#record#.inc.php</em>:"},	
+	{"template":"sproutuploader_showuploader","filename":"icl/show#record#videouploader.inc.php"},	
+	{"template":"sproutuploader_embed","filename":"icl/embed#record#videouploader.inc.php"},	
+	{"template":"sproutuploader_register","filename":"icl/register#record#video.inc.php"},	
+	{"template":"sproutuploader_js","filename":"add to <em>#records#.js</em>"}, 	
+	{"template":"sproutuploader_del","filename":"add to <em>icl/del#record#.inc.php</em>"},	
+	{"template":"sproutuploader_lb","filename":"add to <em>lb.php</em>"},
+	{"template":"sproutuploader_callback","filename":"/#gsproj#/done#record#videoupload.php"},	
+	{"template":"sproutuploader_webhook","filename":"/#gsproj#/sprouthook.php"},
+	{"template":"sproutuploader_wss","filename":"add to <em>wss.js</em>"},		
+	{"template":"sproutuploader_switch","filename":"myservices.php <em>switch ($cmd){</em>"}
+	
+]
+}

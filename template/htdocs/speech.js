@@ -46,7 +46,7 @@ speech_process=function(phrase,conf){
 
 	var parts=phrase.split(' ');
 	var cmd=parts[0];
-	target='';
+	var target='';
 	
 	if (parts.length>10) return;
 		

@@ -21,6 +21,9 @@ function pdf#doctype#($#key#=null,$lockpdf=0){
 		logaction("locked #doctype# of #record# #$#key#",array('#key#'=>$#key#));
 
 		//digisig: save the sigpos array into a json file
+		
+		//$params=$pdf->serializeTCPDFtagParameters(array(array('custom_sigtype'=>'party_name','custom_party_id'=>$partyid)));
+		//$pdf->WriteHTML('Sign Here: <tcpdf method="RegSigPos" params="'.$params.'" />______________________');
 
 	} else {
 		$pages=$pdf->GetNumPages();

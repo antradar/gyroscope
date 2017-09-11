@@ -156,7 +156,10 @@ function flashstatus(t,l){
 	}
 
 	if (window.Notification){
-		var n=new Notification('Gyroscope',{body:t});  
+		if (document.lastnotification==t) return;
+		document.lastnotification=t;
+		var n=new Notification('Gyroscope',{body:t}); 
+		setTimeout(function(){document.lastnotification=null;},10000);
 	}
 }
 
@@ -164,21 +167,25 @@ function flashstatus(t,l){
 function reloadview(idx,listid){
 	hidelookup();
 	if (document.viewindex!=idx) return;
-	
+
+	var params='';
+	if (gid('lv'+document.viewindex)) params=gid('lv'+document.viewindex).params;
+		
 	if (listid) reajxpgn(listid,'lv'+idx);
-	else showview(idx);
+	else showview(idx,0,0,params);
 }
 
-function showview(idx,lazy){
+function showview(idx,lazy,force,params,func){
+  if (!params) params='';
+ 	
   hidelookup();
     
   if (document.viewindex!=null) {
 	  gid('lv'+document.viewindex).tooltitle=gid('tooltitle').innerHTML;
   }
   
-  var callback=function(id){return function(){
-	//gid('lvtab_'+id).focus();  
-  }}
+  if (gid('lv'+idx)) gid('lv'+idx).params=params;
+ 
  
   for (var k=0; k<document.appsettings.views.length;k++){
 	var i=document.appsettings.views[k];
@@ -188,10 +195,10 @@ function showview(idx,lazy){
 		if (!lazy||document.viewindex==idx||!gid('lv'+i).viewloaded){
 			if (document.lvxhr&&document.lvxhr.reqobj) {document.lvxhr.abortflag=1;document.lvxhr.reqobj.abort();document.lvxhr.reqobj=null;cancelgswi(document.lvxhr);}
 			document.lvxhr=gid('lv'+i);
-			ajxpgn('lv'+i,document.appsettings.codepage+'?cmd=slv_'+i.replace(/\./g,'__'),true,true,'',callback(i));
+			ajxpgn('lv'+i,document.appsettings.codepage+'?cmd=slv_'+i.replace(/\./g,'__')+'&'+params,true,true,'',func);
 		} else {
 	      gid('lv'+idx).style.display='block';
-	      gid('tooltitle').innerHTML=gid('lv'+idx).tooltitle;      
+	      if (gid('lv'+idx).tooltitle!=null) gid('tooltitle').innerHTML=gid('lv'+idx).tooltitle;      
 		}
     }
   }

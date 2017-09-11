@@ -1,0 +1,62 @@
+<?php
+
+include 'sproutvideo.php';
+
+function show#record#videouploader($#primarykey#=null){
+	if (!isset($#primarykey#)) $#primarykey#=GETVAL('#primarykey#');
+	
+	global $db;
+	global $codepage;	
+	
+	$fresh=$_GET['fresh'];
+
+	$query="select * from #table# where #primarykey#=$#primarykey#";
+	$rs=sql_query($query,$db);
+	$myrow=sql_fetch_assoc($rs);
+	
+	$#dispfield#=$myrow['#dispfield#'];
+	$videokey=$myrow['videokey'];
+	$videotoken=$myrow['videotoken'];
+	$videostatus=$myrow['videostatus'];
+	
+	if ($videokey){
+		
+		if ($videostatus==0||true){
+			$res=sproutvideo_request('videos/'.$videokey);
+			
+			$state=$res['state'];
+			$videotoken=noapos($res['security_token']);
+			
+			if ($state=='deployed'){
+				$query="update #table# set videostatus=1,videotoken='$videotoken' where #primarykey#=$#primarykey#";
+				sql_query($query,$db);
+				$videostatus=1;	
+			}	
+		}
+		
+		
+		if ($videostatus==0){
+?>
+	<div class="infobox">
+		The video is now being encoded.
+		<a class="labelbutton" onclick="reload#record#videouploader(<?echo $#primarykey#;?>);">Refresh</a>
+	</div>
+<?			
+		} else {
+		$expiry=time()+3600*24*30; //30 days
+		
+		$embedlink=sproutvideo_embed($videokey,$videotoken,$expiry,0);
+	?>
+	<div class="videoframe_16x9">
+		<iframe class="videoframe"  src="<?echo $embedlink;?>" frameborder="no" allowfullscreen></iframe>
+	</div>
+	<?	
+		} //fresh
+	}
+	
+
+?>
+	<iframe src="<?echo $codepage;?>?cmd=embed#record#videouploader&#primarykey#=<?echo $#primarykey#;?>" frameborder="no" style="margin-top:20px;border:none;width:100%;height:160px;"></iframe>
+<?		
+		
+}

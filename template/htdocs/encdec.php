@@ -1,7 +1,7 @@
 <?php
 
 //Gyroscope EncDec using OpenSSL
-define (ENC_DEC, 'OpenSSL');
+define ('ENC_DEC', 'OpenSSL');
 
 function encstr($str,$key){
 	$method='AES-256-CBC';

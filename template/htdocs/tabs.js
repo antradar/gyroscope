@@ -51,6 +51,10 @@ showtab=function(key,opts){
       document.lastrowcount=document.rowcount;
       
       if (opts&&opts.bookmark) gototabbookmark(opts.bookmark);
+
+      var keyparts=key.split('_');
+      var ckey=keyparts[0];
+      if (self['tabviewfunc_'+ckey]) self['tabviewfunc_'+ckey](keyparts[1]);
       
 }
 
@@ -85,8 +89,16 @@ function reloadtab(key,title,params,loadfunc,data,opts){
   rq.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
   
 	var ct=document.tabviews[tabid];
-	ct.slowtimer=setTimeout(function(){ct.innerHTML='<image class="hourglass" src="imgs/hourglass.gif">';},800);
-
+	
+	ct.slowtimer=setTimeout(function(){
+		var first=ct.firstChild;
+		if (ct.gswi) return;
+		var wi=document.createElement('img'); wi.src='imgs/hourglass.gif'; ct.gswi=wi;
+		if (gid('statusc')!=ct) wi.style.margin='10px';
+		if (first==null) ct.appendChild(wi); else ct.insertBefore(wi,first);
+		ct.style.opacity=0.5; ct.style.filter='alpha(50)'; ct.style.color='#999999';
+	},800);
+	
 	
     
   rq.onreadystatechange=function(){
@@ -103,10 +115,10 @@ function reloadtab(key,title,params,loadfunc,data,opts){
 	   
     document.tabtitles[tabid].tablock=null;
       
+	cancelgswi(ct);
 	var apperror=rq.getResponseHeader('apperror');
 	if (apperror!=null&&apperror!=''){
 		salert('Error: '+decodeURIComponent(apperror));
-		
 		return;	
 	}
 	
@@ -370,7 +382,7 @@ function sconfirm(msg){
 	var a=hb();
 	var res=confirm(msg);
 	var b=hb();
-	if (b-a<200&&gid('diagwarn')) {gid('diagwarn').style.display='inline';flashstatus('Warning: dialogs suppressed');}
+	if (b-a<50&&gid('diagwarn')) {gid('diagwarn').style.display='inline';flashstatus('Warning: dialogs suppressed');}
 	return res;
 }
 
@@ -378,10 +390,18 @@ function salert(msg){
 	var a=hb();
 	alert(msg);
 	var b=hb();
-	if (b-a<400&&gid('diagwarn')) {gid('diagwarn').style.display='inline';
+	if (b-a<50&&gid('diagwarn')) {gid('diagwarn').style.display='inline';
 		flashstatus(msg);
 		setTimeout(function(){flashstatus('Warning: dialogs suppressed');},1000);
 	}
+}
+
+function sprompt(title,def){
+	var a=hb();
+	var res=prompt(title,def);
+	var b=hb();
+	if (b-a<50&&gid('diagwarn')) {gid('diagwarn').style.display='inline';flashstatus('Warning: dialogs suppressed');}
+	return res;
 }
 
 function gototabbookmark(id){

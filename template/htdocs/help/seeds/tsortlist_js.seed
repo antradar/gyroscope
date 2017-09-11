@@ -1,0 +1,93 @@
+#record#_mousedown=function(#masterkey#,d,tmid){
+	var dragging;
+	var posx=d.offsetLeft;
+	var posy=d.offsetTop;
+	var ox,oy;
+		
+	var c=gid('#records#_'+#masterkey#);
+	var ch=c.offsetHeight;
+	
+	var sd=gid('#record#shadow_'+#masterkey#);
+	var label=d.innerHTML;
+	if (!d.inited){
+		d.onmousemove=function(e){
+			if (!dragging){
+				dragging=true;
+				document.dragtmid=tmid;
+				
+				if (e) {ox=e.clientX;oy=e.clientY;} else {ox=event.clientX;oy=event.clientY;}
+				
+				sd.style.display='block';
+				sd.style.left=posx+'px';
+				sd.style.top=posy+20+'px';
+				sd.innerHTML=label;
+			
+				dragging=true;
+				d.style.opacity=0.5;
+				return;	
+			}
+			
+			var x,y;
+			if (e) {x=e.clientX;y=e.clientY;} else {x=event.clientX;y=event.clientY;}
+			
+			var newx=posx+x-ox;
+			var newy=posy+y+20-oy;
+			if (newy<0) newy=0;
+			if (newy>ch) newy=ch;
+			
+			sd.style.left=newx+'px';
+			sd.style.top=newy+'px';
+				
+		}	
+		
+		d.onmouseup=function(e){
+			d.style.opacity=1;
+			sd.style.display='none';
+			d.onmousemove=null;
+			d.inited=null;
+			d.onmouseup=null;
+			d.onmousemove=null;
+			dragging=null;
+			sd.onmouseup=null;
+			document.onmousemove=null;
+			document.onmouseup=null;
+			
+			
+			if (document.targettm) {//perform swapping
+				var targetid=document.targettm.tmid;
+				document.targettm.style.borderTop='solid 6px #d4edc9';
+				document.targettm=null;
+	
+				ajxpgn('#records#_'+#masterkey#,document.appsettings.codepage+'?cmd=swap#record#pos&#masterkey#='+#masterkey#+'&tmid='+document.dragtmid+'&targetid='+targetid);
+			}
+			
+			document.dragtmid=null;
+			
+		}
+		
+		document.onmouseup=d.onmouseup;
+		document.onmousemove=d.onmousemove;
+		sd.onmouseup=d.onmouseup;
+		
+		d.inited=true;
+	}
+}
+
+#record#_mouseover=function(d,tmid,parent){
+	if (!document.dragtmid) return;
+	d.tmid=tmid;
+	var tg=d.parentNode;
+	if (parent) tg=d;
+	
+	tg.style.borderTop='solid 6px #ffab00';
+	tg.style.borderLeft='solid 2px #ffab00';
+	document.targettm=d;	
+	
+	d.onmouseout=function(){
+		if (!document.dragtmid) return;
+		document.targettm=null;
+		tg.style.borderTop='solid 6px #dedede';
+		tg.style.borderLeft='solid 2px #ffffff';
+	}
+}
+

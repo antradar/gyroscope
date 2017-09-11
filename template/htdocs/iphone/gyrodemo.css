@@ -18,7 +18,7 @@ button.disabled, .button.disabled{background:#dedede;}
 .recadder img{width:18px;height:18px;}
 
 .changebar{display:none;z-index:1100;}
-.changebar_anchor{position:relative;}
+.changebar_anchor{position:relative;z-index:1000;}
 .changebar_view{position:fixed;background:rgba(255,206,193,0.5);width:100%;}
 .changebar_content{padding:10px;text-align:center;}
 .changebar_shadow{visibility:hidden;display:none;}
@@ -55,6 +55,7 @@ height:22px;
 #fsclose .img-closeall{margin:4px 6px;}
 #fsview{z-index:3002;position:fixed;top:40px;left:10px;width:100%;background:#ffffff;display:none;overflow:auto;}
 
+.lksel{position:absolute;top:5px;right:5px;}
 #lkv{position:fixed;width:210px;top:95px;left:-230px;}
 #lkvtitle{background:transparent url(msprite.png) no-repeat 0 -130px;height:24px;position:relative;}
 	#lkvtitle a{font-weight:bold;font-size:14px;color:white;margin-left:30px;margin-right:30px;padding-top:6px;display:block;}
@@ -159,7 +160,11 @@ color:#ff2222;
 .litm a{display:block}
 
 .labelbutton{font-size:11px;background-color:#444444;padding:1px 4px;border-radius:2px;color:#ffffff;}
-.labelbutton:hover{background-color:#000040;}
+.labelbutton:hover{background:#000040;}
+.labelbutton:focus{background:#ab0200;}
+
+.sectionheader .labelbutton{font-weight:normal;}
+.labelbutton, .labelbutton:visited, .labelbutton:hover, .labelbutton:link{text-decoration:none;}
 
 .minilookup{width:200px;font-size:11px;display:none;position:relative;padding-top:16px;}
 .lookupview{height:200px;width:200px;overflow:auto;border:solid 1px #666666;box-shadow:2px 2px 4px #666666;}
@@ -177,18 +182,20 @@ color:#ff2222;
 .rminorcol{width:380px;}
 
 .formlabel{color:#444444;padding-right:5px;}
-.inplong, .inp, .inpmed, .inpshort{padding-left:2px;}
+.inplong, .inp, .inpmed, .inpshort, .inpxshort{padding-left:2px;}
 .inplong{width:200px;}
 .inp{width:180px;}
 .inpmed{width:120px;}
 .inpshort{width:80px;}
-.inplong.num, .inp.num, .inpmed.num, .inpshort.num{padding-left:0;padding-right:2px;text-align:right;}
+.inpxshort{width:40px;}
+
+.inplong.num, .inp.num, .inpmed.num, .inpshort.num, .inpxshort.num{padding-left:0;padding-right:2px;text-align:right;}
 .inputrow{margin-bottom:10px;}
 
 textarea.inplong, textarea.inp, textarea.inpmed{height:150px;}
-select.inp, select.inplong, select.inpmed, .select.inpshort{width:auto;}
+select.inp, select.inplong, select.inpmed, select.inpshort, select.inpxshort{width:auto;}
 
-.subtable .inplong, .subtable .inp, .subtable .inpmed, .subtable .inpshort{margin-top:2px;}
+.subtable .inplong, .subtable .inp, .subtable .inpmed, .subtable .inpshort, .subtable .inpxshort{margin-top:2px;}
 .subtable button{white-space:nowrap;}
 
 .listbar{font-size:12px;padding:5px 0;}

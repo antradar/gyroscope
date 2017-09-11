@@ -18,7 +18,7 @@ init#editfield#editor=function(#primarykey#){
 		    setup: function(ed) {
 				ed.onChange.add(function(){marktabchanged('#record#_'+#primarykey#)});
 				ed.onMouseUp.add(lookupselection(ed));
-				ed.addButton('medialib',{title:'media library',image:'tiny_mce/icons/image.gif',onclick:function(){ loadfs('Media Library','showmedialibrary');}});
+				ed.addButton('medialib',{title:'media library',image:'tiny_mce/icons/image.gif',onclick:function(){tinyMCE.activeEditor=ed;loadfs('Media Library','showmedialibrary');}});
 				ed.addButton('noamp',{title:'AMP exclusion zone',image:'tiny_mce/icons/noamp.gif',onclick:function(){ed.selection.setContent(mcetemplates.noamp(ed));}});
 				ed.addButton('layout_headline',{title:'headline',image:'tiny_mce/icons/headline.gif',onclick:function(){ed.selection.setContent(mcetemplates.headline(ed));}});
 				ed.addButton('objects',{title:'Smart Objects',image:'tiny_mce/icons/object.gif',onclick:function(){lookupentity(ed,'plugin','Smart Objects');}});
@@ -26,7 +26,7 @@ init#editfield#editor=function(#primarykey#){
 				ed.addButton('layout_colside_right',{title:'side column (right)',image:'tiny_mce/icons/col-side-right.gif',onclick:function(){ed.selection.setContent(mcetemplates.colsideright);}});
 				ed.addButton('layout_qna',{title:'QnA',image:'tiny_mce/icons/qna.gif',onclick:function(){ed.selection.setContent(mcetemplates.qna);}});
 				ed.addButton('layout_youtube',{title:'youtube video',image:'tiny_mce/icons/youtube.gif',onclick:function(){var key=prompt('Enter YouTube Video Key');ed.selection.setContent(mcetemplates.youtube(key));}});
-				ed.addButton('sourceedit',{title:'Source Editor',image:'tiny_mce/icons/code.gif',onclick:function(){loadfs('Source Editor','mceeditsource',null,initsourceeditor);}});
+				ed.addButton('sourceedit',{title:'Source Editor',image:'tiny_mce/icons/code.gif',onclick:function(){tinyMCE.activeEditor=ed;loadfs('Source Editor','mceeditsource',null,initsourceeditor);}});
 			},
 			init_instance_callback:function(ed){ //declare null functions, eg:
 				ed.getDoc().showqna=function(){}

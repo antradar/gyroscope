@@ -1,4 +1,4 @@
-<?
+<?php
 include 'lb.php';
 if (isset($usehttps)&&$usehttps) include 'https.php';
 
@@ -30,12 +30,12 @@ $user=userinfo();
 
 <body onload="setTimeout(scrollTo, 0, 0, 1)">
 <script>
-document.appsettings={codepage:'<?echo $codepage;?>', fastlane:'<?echo $fastlane;?>', views:<?echo json_encode(array_keys($toolbaritems));?>};
+document.appsettings={codepage:'<?echo $codepage;?>', fastlane:'<?echo $fastlane;?>', viewmode:'desktop', views:<?echo json_encode(array_keys($toolbaritems));?>};
 </script>
 
 <div style="display:none;"><img src="imgs/t.gif"><img src="imgs/hourglass.gif"></div>
 <!-- left panel -->
-<div id="tooltitle"></div>
+<div id="tooltitle" title="double-click to reload the side view" ondblclick="if (document.viewindex) reloadview(document.viewindex);"></div>
 <div id="leftview" scale:ch="105"><div id="leftview_">
 	<?foreach ($toolbaritems as $modid=>$ti){?>
 	<div id="lv<?echo $modid;?>" style="display:none;width:100%;height:100%;overflow:auto;position:absolute;"></div>
@@ -68,7 +68,7 @@ document.appsettings={codepage:'<?echo $codepage;?>', fastlane:'<?echo $fastlane
 		continue;
 	}
 	
-	$action="showview('".$modid."');";
+	$action="showview('".$modid."',1);";
 	if (isset($ti['action'])&&$ti['action']!='') $action=$ti['action'];
 	if (!isset($ti['icon'])||$ti['icon']=='') continue;
 
@@ -190,6 +190,7 @@ smartcard_init('cardreader',{
 </script>
 <script>
 if (window.Notification) Notification.requestPermission();
+if (window.console&&window.console.log) console.log('%c%s','font-size:10px;font-family:arial,sans-serif;color:#72ADDE;','Powered by Antradar Gyroscope <?echo GYROSCOPE_VERSION;?>');
 </script>
 </body>
 </html>

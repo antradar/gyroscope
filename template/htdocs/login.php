@@ -22,7 +22,9 @@ if (isset($_POST['lang'])&&in_array($_POST['lang'],array_keys($langs))) {
 	setcookie('userlang',$_POST['lang'],time()+3600*24*30*6); //6 months
 }
 
-if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['login'])&&$_POST['login']) ){	
+$dkey=md5(GYROSCOPE_PROJECT);
+
+if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['gyroscope_login_'.$dkey])&&$_POST['gyroscope_login_'.$dkey]) ){	
 	
 	xsscheck();
 
@@ -32,7 +34,7 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['login'])&
 	} else {
 	
 		$password=md5($dbsalt.$_POST['password']);
-		$raw_login=$_POST['login'];
+		$raw_login=$_POST['gyroscope_login_'.$dkey];
 		$login=str_replace("'",'',$raw_login);
 		
 		$query="select * from ".TABLENAME_USERS." where login='$login' and active=1 and virtualuser=0";
@@ -56,9 +58,31 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['login'])&
 			$certhash=md5($dbsalt.$certid);
 			$certhash_=$myrow['certhash'];
 			
+			$needkeyfile=$myrow['needkeyfile'];
+			$keyfileokay=1;
+			
+			if ($needkeyfile){
+				$keyfilename=$_FILES['keyfile']['tmp_name'];
+				if ($keyfilename==''){
+					$keyfileerror='A key file is required to sign in';
+					$keyfileokay=0;
+				} else {
+					$keyfile=file_get_contents($keyfilename);
+					$keyfilehash=sha1($dbsalt.$keyfile);
+					$keyfilehash_=$myrow['keyfilehash'];
+					if ($keyfilehash!=$keyfilehash_){
+						$keyfileerror='Invalid Key File';
+						$keyfileokay=0;
+					}
+				}
+					
+			}//needkeyfile
+			
 			$dispname=$myrow['dispname'];
 			
 			$certokay=1;
+			
+			$certerror='';
 			
 			if ($needcert){
 				if ($certhash!=$certhash_){
@@ -80,8 +104,8 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['login'])&
 					if ($np!=$np2) $error_message=_tr('mismatching_password');
 					if (trim($np)=='') $error_message=_tr('must_provide_new_password');
 				} else {
-					$newpass=encstr(md5($dbsalt.$np),$dbsalt);
-					$query="update users set password='$newpass', passreset=0 where userid=$userid";
+					$newpass=encstr(md5($dbsalt.$np),$np.$dbsalt);
+					$query="update ".TABLENAME_USERS." set password='$newpass', passreset=0 where userid=$userid";
 					sql_query($query,$db);
 					$passreset=0;	
 				}	  
@@ -90,7 +114,7 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['login'])&
 			if ($passreset){
 			
 			} else {
-				if ($certokay){	  
+				if ($keyfileokay&&$certokay){	  
 					$groupnames=$myrow['groupnames'];
 					$auth=md5($salt.$userid.$groupnames.$salt.$raw_login.$salt.$dispname);
 					
@@ -115,8 +139,10 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['login'])&
 					} else header('Location:index.php');
 					die();
 				} else {
-					$error_message=$certerror;
-				}//certokay
+					$error_message=trim(implode('<br>',array($keyfileerror,$certerror)),'<br>');
+				}//keyfileokay, certokay
+				
+				
 			}//passreset
 		} else $error_message=_tr('invalid_password'); //passcheck
 	
@@ -182,22 +208,28 @@ body{font-size:28px;}
 <body>
 <div id="loginbox__"><div id="loginbox_">
 <div id="loginbox">
-	<form method="POST" style="padding:20px;margin:0;padding-top:10px;" onsubmit="return checkform();">
+	<form method="POST" style="padding:20px;margin:0;padding-top:10px;" onsubmit="return checkform();" enctype="multipart/form-data">
 	<img src="imgs/logo.png" style="margin:10px 0;width:100%;">
 	<?if ($error_message!=''){?>
 	<div style="color:#ab0200;font-weight:bold;padding-top:10px;"><?echo $error_message;?></div>
 	<?}?>
 	
-	<div style="padding-top:10px;"><?tr('username');?>: <?if ($passreset){?><b><?echo stripslashes($_POST['login']);?></b> &nbsp; <a href="<?echo $_SERVER['PHP_SELF'];?>"><em><?tr('switch_user');?></em></a><?}?></div>
+	<div style="padding-top:10px;"><?tr('username');?>: <?if ($passreset){?><b><?echo stripslashes($_POST['gyroscope_login_'.$dkey]);?></b> &nbsp; <a href="<?echo $_SERVER['PHP_SELF'];?>"><em><?tr('switch_user');?></em></a><?}?></div>
 	<div style="padding-top:5px;padding-bottom:10px;">
-	<input style="width:100%;<?if ($passreset) echo 'display:none;';?>" id="login" type="text" name="login" autocomplete="off" <?if ($passreset) echo 'readonly';?> value="<?if ($passreset) echo stripslashes($_POST['login']);?>"></div>
+	<input style="width:100%;<?if ($passreset) echo 'display:none;';?>" id="login" type="text" name="gyroscope_login_<?echo $dkey;?>" autocomplete="off" <?if ($passreset) echo 'readonly';?> value="<?if ($passreset) echo stripslashes($_POST['gyroscope_login_'.$dkey]);?>"></div>
 
 	<div id="passview">
 		<div><?tr('password');?>:</div>
 		<div style="padding-top:5px;padding-bottom:15px;">
-		<input style="width:100%;" id="password" type="password" name="password"></div>
+			<input style="width:100%;" id="password" type="password" name="password">
+		</div>
 	
-
+		<div style="<?if ($passreset) echo 'display:none;';?>">Key File:</div>
+		<div style="padding-top:5px;padding-bottom:15px;<?if ($passreset) echo 'display:none;';?>">
+			<input id="keyfile" type="file" name="keyfile">
+			<input type="hidden" name="MAX_FILE_SIZE" value="4096">
+		</div>
+	
 	<?if ($passreset){?>
 	<div><?tr('new_password');?>:</div>
 	<div style="padding-top:5px;padding-bottom:15px;">

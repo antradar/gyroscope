@@ -111,10 +111,12 @@ updateuser=function(userid){
 	var active=0;
 	var virtual=0;
 	var needcert=0;
+	var needkeyfile=0;
 
 	if (gid('active_'+suffix).checked) active=1;
 	if (gid('virtual_'+suffix).checked) virtual=1;
 	if (gid('needcert_'+suffix).checked) needcert=1;
+	if (gid('userneedkeyfile_'+suffix).checked) needkeyfile=1;
 
 
 	var passreset=0;
@@ -172,6 +174,7 @@ updateuser=function(userid){
 	params.push('active='+active);
 	params.push('virtual='+virtual);
 	params.push('needcert='+needcert);
+	params.push('needkeyfile='+needkeyfile);
 	params.push('passreset='+passreset);
 	params.push('groupnames='+groupnames);
 	

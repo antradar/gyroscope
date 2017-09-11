@@ -12,11 +12,20 @@ CREATE TABLE `actionlog` (
   `rectype` varchar(255) NOT NULL,
   `recid` bigint(20) unsigned NOT NULL,
   `wssdone` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`alogid`),
+  PRIMARY KEY (`alogid`,`logdate`),
   KEY `logdate` (`logdate`),
   KEY `userid` (`userid`),
   KEY `wssdone` (`wssdone`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+partition by range(logdate)
+(
+partition p2018a values less than (1514764800),
+partition p2018b values less than (1527811200),
+partition p2019a values less than (1546300800),
+partition p2019b values less than (1559347200),
+partition pmax values less than maxvalue
+)
+;
 
 
 DROP TABLE IF EXISTS `users`;
@@ -30,7 +39,9 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL DEFAULT '',
   `passreset` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `groupnames` longtext,
-  `certhash` varchar(60) DEFAULT NULL,
+  `keyfilehash` varchar(255) DEFAULT NULL,
+  `needkeyfile` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `certhash` varchar(255) DEFAULT NULL,
   `needcert` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `certname` varchar(255) DEFAULT NULL,  
   PRIMARY KEY (`userid`),
@@ -40,9 +51,9 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 -- MCrypt --
--- INSERT INTO `users` VALUES (101,'admin','Admin',1,0,'FWZvboZOBbEqPhDQ5r04E4jfMgw4Q93kyDkx1xT/4z6jfngMPmGU3qvlfkT/Vp58OoZOvYwYUUDM9bfdvB+KEQ==',0,'users|admins|reportsettings|systemplateuse|systemplate|accounts|dbadmin|upgrademods',null,0,null);
+-- INSERT INTO `users` VALUES (101,'admin','Admin',1,0,'FWZvboZOBbEqPhDQ5r04E4jfMgw4Q93kyDkx1xT/4z6jfngMPmGU3qvlfkT/Vp58OoZOvYwYUUDM9bfdvB+KEQ==',0,'users|admins|reportsettings|systemplateuse|systemplate|accounts|dbadmin|upgrademods',null,0,null,0,null);
 -- OpenSSL --
- INSERT INTO `users` VALUES (101,'admin','Admin',1,0,'uSAsxyX3v44q3+/4Md7lzkhaNlIvTHFTMkZsN1lFRWVMRzB2UlloZTJqWHRjSG9mRDgybTI3U0xZUjhzYVhUeDlUZ2dLQ283QkUrVmExaEY=',0,'users|admins|reportsettings|systemplateuse|systemplate|accounts|dbadmin|upgrademods',null,0,null);
+ INSERT INTO `users` VALUES (101,'admin','Admin',1,0,'uSAsxyX3v44q3+/4Md7lzkhaNlIvTHFTMkZsN1lFRWVMRzB2UlloZTJqWHRjSG9mRDgybTI3U0xZUjhzYVhUeDlUZ2dLQ283QkUrVmExaEY=',0,'users|admins|reportsettings|systemplateuse|systemplate|accounts|dbadmin|upgrademods',null,0,null,0,null);
 
 DROP TABLE IF EXISTS `templates`;
 CREATE TABLE `templates` (

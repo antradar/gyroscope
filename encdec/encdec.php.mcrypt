@@ -2,7 +2,7 @@
 
 //Gyroscope EncDec using MCrypt
 
-define (ENC_DEC, 'MCrypt');
+define ('ENC_DEC', 'MCrypt');
 
 function encstr($str,$key){
 	$key=enckey($key);

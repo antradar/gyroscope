@@ -1,0 +1,27 @@
+<?php
+
+include 'sproutvideo.php';
+
+function register#record#video(){
+	global $db;
+	
+	$#primarykey#=GETVAL('#primarykey#');
+	$videokey=GETSTR('videokey');
+	$videotoken=GETSTR('videotoken');
+	
+	//remove existing video
+	$query="select * from #table# where #primarykey#=$#primarykey# and videokey!=''";
+	$rs=sql_query($query,$db);
+	if ($myrow=sql_fetch_assoc($rs)){
+		$oldkey=$myrow['videokey'];
+		sproutvideo_delete($oldkey);
+		logaction("removed a previous version of #c_record# #$#primarykey#",array('#primarykey#'=>$#primarykey#),array('rectype'=>'#record#video','recid'=>$#primarykey#));
+	}
+	
+	
+	$query="update #table# set videokey='$videokey', videotoken='$videotoken', videostatus=0 where #primarykey#=$#primarykey#";
+	sql_query($query,$db);
+	
+	echo "#c_record# #$#primarykey# successfully uploaded as Video $videokey";	
+	logaction("uploaded a video for #c_record# #$#primarykey#",array('#primarykey#'=>$#primarykey#),array('rectype'=>'#record#video','recid'=>$#primarykey#));
+}

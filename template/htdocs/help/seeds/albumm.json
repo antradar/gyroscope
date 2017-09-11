@@ -1,0 +1,36 @@
+{
+"fields":[
+	{"field":"mastertable","disp":"Master DB Table","def":"albums"},
+	{"field":"primarykey","disp":"Master Primary Key","def":"albumid"},
+	{"field":"primaryfield","disp":"Master Entity Name","def":"album"},
+	{"field":"primaryrecords","disp":"Master Entity Name (Pl.)","def":"albums"},
+	{"field":"c_primaryrecords","disp":"Master Entity Label (Pl.)","def":"Album"},
+	{"field":"primarydispfield","disp":"Master Display Field Name","def":"albumname"},
+
+
+	{"field":"record","disp":"Entity Name","def":"pic"},
+	{"field":"records","disp":"Entity Name Plural","def":"pics"},
+	{"field":"lookuptable","disp":"Target DB Table Name","def":"pics"},
+	{"field":"lookupkey","disp":"Target Primary Key","def":"picid"},	
+	{"field":"c_record","disp":"Target Entity","def":"Picture"},
+	{"field":"c_records","disp":"Target Entity Label (Pl.)","def":"Pictures"},
+	{"field":"uploaddir","disp":"Upload Directory","def":"../images/pics/"},
+
+
+	{"field":"sizes","disp":"Thumbnail Dimensions","def":"thumb|300|300\nbanner|800|600","type":"fieldlist"},
+		
+	{"field":"fileext","disp":"Generic File Extension","def":".png"},
+	{"field":"tinypngapi","disp":"TinyPNG API Key","def":"","optional":1}	
+],
+
+"templates":[
+	{"template":"bridge_header","filename":"modify icl/show#primaryfield#.inc.php header"},	
+	{"template":"bridge_sublist","filename":"add sub section in <em>show#primaryfield#</em>:"},	
+	{"template":"album_settings","filename":"add to <em>settings.php</em>"},	
+	{"template":"album_list","filename":"icl/list#primaryfield##records#.inc.php"},	
+	{"template":"albumm_embed","filename":"icl/embed#primaryfield##record#uploader.inc.php"},	
+	{"template":"upload_js","filename":"#primaryrecords#.js"}, 	
+	{"template":"album_del","filename":"icl/del#primaryfield##record#.inc.php"},	
+	{"template":"album_switch","filename":"myservices.php <em>switch ($cmd){</em>"}	
+]
+}

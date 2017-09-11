@@ -1,0 +1,7 @@
+
+//include 'sproutvideo.php';
+
+	$videokey=$myrow['videokey'];
+	if ($videokey!='') sproutvideo_delete($videokey);
+	
+	

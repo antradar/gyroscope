@@ -8,7 +8,7 @@ function updateuser(){
 	global $dbsalt;
 	
 	$user=userinfo();
-	if (!$user['groups']['accounts']) die('Access denied');
+	if (!$user['groups']['accounts']) apperror('Access denied');
 	
 	$myuserid=$user['userid'];
 	
@@ -24,6 +24,7 @@ function updateuser(){
 
 	$certname=QETSTR('certname');
 	$needcert=GETVAL('needcert');
+	$needkeyfile=GETVAL('needkeyfile');
 	$cert=QETSTR('cert');
 
 	$certhash=md5($dbsalt.$cert);
@@ -44,7 +45,7 @@ function updateuser(){
 		apperror('User already exists. Use a different login.');
 	}
 
-	$query="update ".TABLENAME_USERS." set login='$login', dispname='$dispname', active=$active, virtualuser=$virtual, needcert=$needcert, passreset='$passreset', groupnames='$groupnames' ";
+	$query="update ".TABLENAME_USERS." set login='$login', dispname='$dispname', active=$active, virtualuser=$virtual, needcert=$needcert, needkeyfile=$needkeyfile, passreset='$passreset', groupnames='$groupnames' ";
 	if (!$virtual&&$newpass!='') $query.=", password='$np' ";
 	if (trim($cert)!='') $query.=", certname='$certname', certhash='$certhash' ";
 

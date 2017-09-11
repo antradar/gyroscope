@@ -2,7 +2,7 @@
 
 function GETVAL($key){ $val=trim($_GET[$key]); if (!is_numeric($val)) apperror('apperror:invalid parameter '.$key); return $val;}
 function QETVAL($key){ $val=trim($_POST[$key]); if (!is_numeric($val)) apperror('apperror:invalid parameter '.$key); return $val;}
-function noapos($val){if (is_callable('sql_escape')) return sql_escape($val); return addslashes($val);}
+function noapos($val){return addslashes($val);}
 function GETSTR($key,$trim=1){$val=$_GET[$key];if ($trim) $val=trim($val);return noapos($val);}
 function QETSTR($key,$trim=1){$val=$_POST[$key];if ($trim) $val=trim($val);return noapos($val);}
 
@@ -48,7 +48,7 @@ function makelookup($id,$fullscale=0){
 
 function cancelpickup($id){
 ?>
-<a class="labelbutton" onclick="cancelpickup('<?echo $id;?>');"><?tr('pickup_edit');?></a>
+<a class="labelbutton" href=# onclick="cancelpickup('<?echo $id;?>');return false;"><?tr('pickup_edit');?></a>
 <?	
 }
 
@@ -70,10 +70,14 @@ function makechangebar($key,$action){
 }
 
 function logaction($message,$rawobj=null,$syncobj=null){
-	$user=userinfo();
-	$userid=$user['userid']+0;
-	$logname=$user['login'];
-	$logname=str_replace("'",'',$logname);
+	if (is_callable('userinfo')) {
+		$user=userinfo();
+		$userid=$user['userid']+0;
+		$logname=$user['login'];
+		$logname=str_replace("'",'',$logname);
+	} else {
+		$userid=0; $logname='';
+	}
 
 	global $db;
 	$wssid=isset($_GET['wssid_'])?($_GET['wssid_']+0):0;

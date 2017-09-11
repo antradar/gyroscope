@@ -48,7 +48,7 @@ function reajxpgn(c,p){
 
 function cancelgswi(ct){
 	if (ct.gswi){
-		ct.gswi.parentNode.removeChild(ct.gswi);
+		if (ct.gswi.parentNode) ct.gswi.parentNode.removeChild(ct.gswi);
 		ct.style.opacity=''; ct.style.alpha=''; ct.style.color='';
 		ct.gswi=null;
 	}	
@@ -143,7 +143,7 @@ function ajxjs(f,js){if (f==null) eval(ajxb(js+'?'));}
 
 function ajxcss(f,css,cachekey){
 	if (f==null) {
-	  	csl=document.createElement('link');
+	  	var csl=document.createElement('link');
 		csl.setAttribute('rel','stylesheet');
 		csl.setAttribute('type','text/css');
 		csl.setAttribute('href',css);

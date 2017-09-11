@@ -1,0 +1,5 @@
+	case 'show#record#videouploader': include 'icl/show#record#videouploader.inc.php'; show#record#videouploader(); break;
+	case 'embed#record#videouploader': include 'icl/embed#record#videouploader.inc.php'; embed#record#uploader(); break;
+	case 'register#record#video': include 'icl/register#record#video.inc.php'; register#record#video(); break;
+
+	

@@ -1,3 +1,27 @@
+12.3
+- codegen: 1-N image uploader, batch mode
+- codegen: sort list, tile mode
+- templatemaker: added preprocessor parameter
+
+12.2
+- tabs.js - when tab (key: rec_id) is in focus, tabviewfunc_[rec](id) is invoked
+- viewport.js - showview callback func
+- critical cancelgswi bug fix
+- login field uses project-specific hash to avoid incorrectly saved credentials
+- multi-select lookup no longer resets the lookup field when all unchecked
+- enabled check/uncheck all in codegen and autocomplete.js
+- composite icon generator in imgs/font.php
+
+12.1
+- codegen: sproutvideo
+- lazy load and double-click to reload list views
+- tabs: protected, single-instance wait indicator
+- params for showview, useful for sub-listviews
+
+12.0*
+- added keyfile authentication and keyfile generators
+- added appsettings viewmode global for sigpad-gs.js
+
 11.1*
 - change notifications with marktabchanged, makechangebar
 - misc code gen improvements
@@ -13,6 +37,8 @@
 - viewport.js (both): aborts in-flight requests
 - on-demand loading of tinymce using xajxjs (nano.js v4.0)
 - login csrf hour boundary fix
+- added multi-select lookup
+- added lazy sql connect mode for front-end use, persistent connection for backend (sql.php, connect.php)
 
 11.0
 - added gototabbookmark function

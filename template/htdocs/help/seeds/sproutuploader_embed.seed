@@ -1,0 +1,162 @@
+<?php
+
+include 'sproutvideo.php';
+
+function embed#record#videouploader($#primarykey#=null){
+	if (!isset($#primarykey#)) $#primarykey#=GETVAL('#primarykey#');
+	
+	global $db;
+	global $codepage;
+	
+	global $sproutwebhookkey;	
+
+	$query="select * from #table# where #primarykey#=$#primarykey#";
+	$rs=sql_query($query,$db);
+	$myrow=sql_fetch_assoc($rs);
+	
+	$#dispfield#=$myrow['#dispfield#'];
+		
+	$auth=md5($sproutwebhookkey.$#primarykey#);
+	
+	$return_url='http://#domain#/#gsproj#/done#record#videoupload.php?#primarykey#='.$#primarykey#.'&auth='.$auth;
+
+	global $sproutvideo_endpoint;
+	global $sproutvideo_apikey;
+	
+	$url=$sproutvideo_endpoint.'upload_tokens';
+	$curl=curl_init($url);	
+	curl_setopt($curl,CURLOPT_RETURNTRANSFER,1);
+	curl_setopt($curl,CURLOPT_SSL_VERIFYPEER,0);
+	curl_setopt($curl,CURLOPT_SSL_VERIFYHOST,0);
+	curl_setopt($curl,CURLOPT_FOLLOWLOCATION,1);
+	curl_setopt($curl,CURLOPT_POST,1);
+	$callback='{}';
+	if ($return_url!='') $callback='{"return_url":"'.$return_url.'"}';
+	
+	curl_setopt($curl,CURLOPT_POSTFIELDS,$callback);
+	
+	$headers=array('SproutVideo-Api-Key: '.$sproutvideo_apikey);
+		
+	curl_setopt($curl,CURLOPT_HTTPHEADER,$headers);
+		
+	$res=curl_exec($curl);
+		
+	$obj=json_decode($res,1);
+	$token=$obj['token'];
+	
+	//direct upload token
+	
+	$curl=curl_init($url);	
+	curl_setopt($curl,CURLOPT_RETURNTRANSFER,1);
+	curl_setopt($curl,CURLOPT_SSL_VERIFYPEER,0);
+	curl_setopt($curl,CURLOPT_SSL_VERIFYHOST,0);
+	curl_setopt($curl,CURLOPT_FOLLOWLOCATION,1);
+	curl_setopt($curl,CURLOPT_POST,1);
+	$callback='{"seconds_valid":"21600"}'; // 3 hours
+	
+	curl_setopt($curl,CURLOPT_POSTFIELDS,$callback);
+	
+	$headers=array('SproutVideo-Api-Key: '.$sproutvideo_apikey);
+		
+	curl_setopt($curl,CURLOPT_HTTPHEADER,$headers);
+		
+	$res=curl_exec($curl);
+		
+	$obj=json_decode($res,1);
+	$dirtoken=$obj['token'];
+	
+?>
+<html>
+<body style="padding:0;margin:0;">
+<form id="uploader" method="POST" action="<?echo $sproutvideo_endpoint;?>videos" enctype="multipart/form-data">
+	<input id="file" name="source_video" type="file">
+	<input type="hidden" id="title" name="title" value="<?echo $title;?>">
+	<input type="hidden" name="requires_signed_embeds" value="true">
+	<input type="hidden" name="hide_on_site" value="true">
+	<input type="hidden" name="privacy" value="2">
+	<input type="hidden" id="token" name="token" value="<?echo $token;?>">
+	<button onclick="upload(this);return false;" id="uploadbutton">Upload</button>
+</form>
+<div id="cancel" style="display:none;font-size:12px;padding:5px 0;"><a href=# onclick="cancelupload();return false;"><u>cancel</u></a></div>
+<div id="debug" style="font-size:12px;padding:5px;"></div>
+<script src="nano.js"></script>
+<script>
+function cancelupload(){
+	var btn=gid('uploadbutton');
+	if (!btn.rq) return;
+	btn.rq.abort();	
+}
+function upload(d){
+	var file=gid('file');
+	var form=gid('uploader');
+	var rq=xmlHTTPRequestObject();
+
+	var html5=(self.FormData&&rq.upload&&file.files)?1:0;
+	
+	//html5=0; //debug non-html5 uploaders
+	
+	if (!html5){
+		d.parentNode.submit();
+		return;
+	}
+	
+	var fd=new FormData();
+
+	var binfile=file.files[0];
+	if (!binfile){
+		alert("Select a file to upload");
+		return;	
+	}
+
+	fd.append('source_video',binfile);
+	fd.append('title',gid('title').value);
+	fd.append('requires_signed_embeds','true');
+	fd.append('hide_on_site','true');
+	fd.append('privacy','2');
+	fd.append('token','<?echo $dirtoken;?>');
+	
+	rq.open('POST','<?echo $sproutvideo_endpoint;?>videos',true);
+	
+	rq.upload.onprogress=function(e){
+		gid('cancel').style.display='block';
+		if (e.lengthComputable) {
+			var rate=Math.round(e.loaded*100/e.total)+'%';
+			
+			gid('debug').innerHTML='<div style="text-align:center;height:20px;border:solid 1px #29ABE2;color:#ffffff;font-size:12px;width:100%;position:relative;"><div style="background:#72ADDE;height:20px;position:absolute;top:0;left:0;width:'+rate+';">'+rate+'</div>';
+			
+			if (Math.floor(e.loaded*100/e.total)==100) gid('debug').innerHTML='Processing...';
+		} else gid('debug').innerHTML='uploading...';
+	};
+	
+	rq.onload=function(e){
+		gid('debug').innerHTML='uploaded';
+		gid('cancel').style.display='none';
+		var videoid=null;
+		
+		if (e.target.responseText!=null&&e.target.responseText!='') {
+			var obj=eval('('+e.target.responseText+')');
+			var videokey=obj.id;
+			var videotoken=obj.security_token;
+			//console.log(obj);
+		}
+		parent.doneuploading#record#(<?echo $#primarykey#;?>,videokey,videotoken);
+	}
+
+	rq.onabort=function(e){
+		gid('cancel').style.display='none';
+		gid('debug').innerHTML='canceled';
+		parent.reload#record#videouploader(<?echo $#primarykey#;?>);
+	}
+	
+	d.rq=rq;
+	
+	rq.send(fd);	
+		
+	
+}//upload
+
+</script>
+</body>
+</html>
+<?		
+}

@@ -58,6 +58,7 @@ function #entity#_makefilters(){
 	$key=GETSTR('key');
 	if ($key!='') {
 		$filters['searchterm']=$key;
+		$_GET['searchterm']=$key;
 	}
 	if (isset($_GET['visible'])) $filters['visible']=$_GET['visible'];
 

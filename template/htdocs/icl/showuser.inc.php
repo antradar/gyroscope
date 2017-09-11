@@ -1,4 +1,5 @@
 <?php
+include 'icl/showkeyfilepad.inc.php';
 
 function showuser($userid=null){
 	if (!isset($userid)) $userid=GETVAL('userid');
@@ -24,6 +25,7 @@ function showuser($userid=null){
 	$needcert=$myrow['needcert'];
 	$certname=$myrow['certname'];
 	if ($certname=='') $certname='<em>not set</em>';
+	$needkeyfile=$myrow['needkeyfile'];
 	
 	header('newtitle: '.tabtitle($login));
 	
@@ -40,7 +42,7 @@ function showuser($userid=null){
 
 	<div class="inputrow">
 		<div class="formlabel"><?tr('username');?>:</div>
-		<input class="inpmed" id="login_<?echo $userid;?>" value="<?echo htmlspecialchars($login);?>" onchange="marktabchanged('user_<?echo $userid;?>');" onblur="if (gid('dispname_<?echo $userid;?>').value=='') gid('dispname_<?echo $userid;?>').value=this.value;">
+		<input class="inpmed" id="login_<?echo $userid;?>" value="<?echo htmlspecialchars($login);?>" onchange="marktabchanged('user_<?echo $userid;?>');" onblur="if (gid('dispname_<?echo $userid;?>').value==''&&this.value!='') {var val=this.value.charAt(0).toUpperCase()+this.value.slice(1);gid('dispname_<?echo $userid;?>').value=val;}">
 	</div>
 	<div class="inputrow">
 		<div class="formlabel"><?tr('dispname');?>:</div>
@@ -70,8 +72,12 @@ function showuser($userid=null){
 			<span style="font-weight:normal;" id="cardstatus_<?echo $userid;?>"><?echo $certname;?></span> <a class="labelbutton" onclick="loadsmartcard(<?echo $userid;?>);">load card</a>
 			<span style="display:none;"><textarea id="cert_<?echo $userid;?>" value=""></textarea></span>
 		</div>
-		<input onchange="marktabchanged('user_<?echo $userid;?>');" type="checkbox" id="needcert_<?echo $userid;?>" <?if ($needcert) echo 'checked';?>> card must be present at sign-in
+		<input onchange="marktabchanged('user_<?echo $userid;?>');" type="checkbox" id="needcert_<?echo $userid;?>" <?if ($needcert) echo 'checked';?>> <label for="needcert_<?echo $userid;?>">card must be present at sign-in</label>
 
+	</div>
+	
+	<div class="inputrow">
+		<input onchange="marktabchanged('user_<?echo $userid;?>');" type="checkbox" id="userneedkeyfile_<?echo $userid;?>" <?if ($needkeyfile) echo 'checked';?>> <label for="userneedkeyfile_<?echo $userid;?>">enhance login with a key file</label>
 	</div>
 	
 	<div class="inputrow">
@@ -90,17 +96,19 @@ function showuser($userid=null){
 	
 	<div class="inputrow">
 		<button onclick="updateuser(<?echo $userid;?>);"><?tr('button_update');?></button>
-
 		&nbsp; &nbsp;
 		<button class="warn" onclick="deluser(<?echo $userid;?>);"><?tr('button_delete');?></button>
-
 	</div>
 
 
 	</div>
+	
 	<div class="col">
-
+		<div class="sectionheader">Key File</div>
+		<?showkeyfilepad('keyfileeditor_'.$userid,$userid);?>
+		
 	</div>
+
 	<div class="clear"></div>
 </div>
 <?

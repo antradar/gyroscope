@@ -8,7 +8,7 @@ $#doctype#lock=$myrow['#doctype#lock'];
 		<?if (!$#doctype#lock){?>
 			<a href="<?echo $codepage;?>?cmd=pdf#doctype#&#key#=<?echo $#key#;?>" target=_blank>preview</a>
 			&nbsp;
-			<a href=# onclick="lock#doctype#(<?echo $loanid;?>);return false;">confirm</a>
+			<a href=# onclick="lock#doctype#(<?echo $#key#;?>);return false;">confirm</a>
 		<?} else {?>
 			<a href="<?echo $codepage;?>?cmd=spdf#doctype#&#key#=<?echo $#key#;?>" target=_blank>view</a>
 			&nbsp;

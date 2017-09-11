@@ -46,7 +46,7 @@ function embed#primaryfield##mediatype#uploader(){
 			} else {
 				$w=imagesx($img);
 				$h=imagesy($img);
-				if ($w>3500||$y>3000) {//increase this if you have more RAM
+				if ($w>3500||$h>3000) {//increase this if you have more RAM
 					$msg='Image too large. Upload a smaller one.';
 					imagedestroy($img);
 				} else {
@@ -57,7 +57,7 @@ function embed#primaryfield##mediatype#uploader(){
 						fclose($f);
 						chmod($dst,0777);
 					} else{
-						if ($tinypngapi!=''){
+						if ($tinypngapi!=''&&$w>=#thumbwidth#&&$h>=#thumbheight#){
 							$crops=tinypng_crop($c,array('main'=>array('width'=>#thumbwidth#,'height'=>#thumbheight#)),$tinypngapi);
 							
 							$f=fopen($dst,'wb'); fwrite($f,$crops['main']); fclose($f);

@@ -66,7 +66,7 @@ function auto_welcome(){
 		if (!$canview) continue;	
 	}
 	
-	$action="showview('".$modid."',null,1);";
+	$action="showview('".$modid."',1,1);";
 	if (isset($ti['action'])&&$ti['action']!='') $action=$ti['action'];
 	
 ?>	

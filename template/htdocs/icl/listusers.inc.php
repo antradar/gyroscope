@@ -92,6 +92,7 @@ function listusers(){
 <script>
 gid('tooltitle').innerHTML='<a><?tr('list_users');?></a>';
 ajxjs(self.showuser,'users_js.php');
+ajxjs(self.setaccountpass,'accounts.js');
 </script>
 <?	
 	}//embed mode

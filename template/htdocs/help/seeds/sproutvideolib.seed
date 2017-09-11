@@ -1,0 +1,64 @@
+<?php
+/*
+SproutVideo API - GS-Lite
+(c)Schien Dong, Antradar Software
+*/
+
+$sproutvideo_apikey='#sproutkey#';
+$sproutvideo_endpoint='#sproutendpoint#';
+
+
+function sproutvideo_request($cmd,$method=''){
+	global $sproutvideo_apikey;
+	global $sproutvideo_endpoint;
+	
+	$url=$sproutvideo_endpoint.$cmd;
+	$curl=curl_init($url);	
+	curl_setopt($curl,CURLOPT_RETURNTRANSFER,1);
+	curl_setopt($curl,CURLOPT_SSL_VERIFYPEER,0);
+	curl_setopt($curl,CURLOPT_SSL_VERIFYHOST,0);
+	curl_setopt($curl,CURLOPT_FOLLOWLOCATION,1);
+	
+	if ($method!='') curl_setopt($curl,CURLOPT_CUSTOMREQUEST,$method);
+	
+	$headers=array('SproutVideo-Api-Key: '.$sproutvideo_apikey);
+		
+	curl_setopt($curl,CURLOPT_HTTPHEADER,$headers);
+		
+	$res=curl_exec($curl);	
+	$obj=json_decode($res,1);
+		
+	return $obj;
+	
+}
+
+
+function sproutvideo_embed($videoid,$token,$expiry,$autoplay=0){
+	global $sproutvideo_apikey;
+	
+	if ($autoplay) $autoplay='true'; else $autoplay='false';
+	$mode='hd';
+	
+	/* Set Allowed Domains in Account Settings to prevent link sharing */
+		
+	$params=array('autoplay'=>$autoplay,'expires'=>$expiry,'type'=>$mode);
+	ksort($params);
+	
+	$sign="GET\nvideos.sproutvideo.com\n/embed/$videoid/$token\n";
+	foreach ($params as $k=>$v){
+		$v=rawurlencode($v);
+		$sign.="&$k=$v";	
+	}
+	
+	$sig=urlencode(base64_encode(hash_hmac('sha1',$sign,$sproutvideo_apikey,true)));
+	
+	$url="https://videos.sproutvideo.com/embed/$videoid/$token?type=$mode&autoplay=$autoplay&expires=$expiry&signature=$sig";
+	
+	return $url;
+	
+}
+
+function sproutvideo_delete($videoid){
+		$res=sproutvideo_request('videos/'.$videoid,'DELETE');
+		return $res;
+}

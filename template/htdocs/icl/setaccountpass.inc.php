@@ -7,6 +7,8 @@ function setaccountpass(){
 	$user=userinfo();
 	
 
+	$needkeyfile=GETVAL('needkeyfile');
+	
 	$oldpass=md5($dbsalt.QETSTR('oldpass'));
 	$pass=encstr(md5($dbsalt.QETSTR('pass')),QETSTR('pass').$dbsalt);
 			
@@ -21,7 +23,7 @@ function setaccountpass(){
 
 	if ($oldpass!=$oldpass_) die(_tr('invalid_password'));
 
-	$query="update users set password='$pass', passreset=0 where userid=$userid";
+	$query="update users set password='$pass', passreset=0, needkeyfile=$needkeyfile where userid=$userid";
 	sql_query($query,$db);
 
 	tr('password_changed'); 

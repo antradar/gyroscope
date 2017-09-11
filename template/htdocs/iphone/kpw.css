@@ -13,8 +13,8 @@ input[type="radio"], input[type="checkbox"]{width:32px;height:32px;}
 .recadder{margin-top:20px;margin-bottom:20px;display:block;}
 
 .changebar{display:none;z-index:1100;}
-.changebar_anchor{position:relative;}
-.changebar_view{position:fixed;background:#ffcccc;width:100%;}
+.changebar_anchor{position:relative;z-index:1000;}
+.changebar_view{position:fixed;background:rgba(255,206,193,0.5);width:100%;}
 .changebar_content{padding:20px;}
 .changebar_shadow{visibility:hidden;}
 
@@ -36,6 +36,7 @@ input[type="radio"], input[type="checkbox"]{width:32px;height:32px;}
 
 .listpager{padding:20px 0;font-size:30px;}
 
+.lksel{position:absolute;top:10px;right:10px;}
 
 #tooltitle{height:50px;background:#666666;border-bottom:solid 1px #6f6e6e;width:320px;text-shadow:0 1px 0 #000000;}
 #tooltitle a{font-size:34px;}
@@ -53,6 +54,8 @@ button, .button{background:#111111;font-size:35px;padding:10px 20px;}
 button.warn, .button.warn{background:#999999;}
 
 .labelbutton{font-size:24px;padding:2px 8px;border-radius:4px;}
+.sectionheader .labelbutton{font-weight:normal;}
+.labelbutton, .labelbutton:visited, .labelbutton:hover, .labelbutton:link{text-decoration:none;}
 
 .minilookup{width:400px;font-size:28px;}
 .minilookup .listitem a{font-size:28px;}
@@ -74,11 +77,12 @@ button.warn, .button.warn{background:#999999;}
 
 .mediaimg-mg{border-color:#cccccc;background:#f2f2f2 url(../imgs/sprite.png) no-repeat 100% -330px;padding-left:10px;padding-right:50px;margin-bottom:16px;height:50px;line-height:50px;vertical-align:middle;width:50%;} /* 12x12 +14 */
 
-.inplong, .inp, .inpmed, .inpshort{padding:6px;width:90%;font-size:38px;}
+.inplong, .inp, .inpmed, .inpshort, .inpxshort{padding:6px;width:90%;font-size:38px;}
 .inpshort{width:40%;max-width:160px;}
+.inpxshort{width:25%;max-width:80px;}
 
 textarea.inplong, textarea.inp, textarea.inpmed{height:320px;}
-select.inp, select.inplong, select.inpmed, .select.inpshort{width:auto;}
+select.inp, select.inplong, select.inpmed, select.inpshort, select.inpxshort{width:auto;}
 
 .stable td{padding:0 5px;font-size:24px;}
 .stable::-webkit-scrollbar {height:24px;}

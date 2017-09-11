@@ -2,7 +2,7 @@ inittemplatetexteditor=function(templateid){
 	
 	xajxjs('tinyMCE','tiny_mce/mceloader.js',function(){
 	
-		plugins=gid('templateplugins_'+templateid).value;
+		var plugins=gid('templateplugins_'+templateid).value;
 		tinyMCE.init({
 			protect: [/[\n\f\r\t\v]/g],
 			mode : "textareas",
@@ -20,15 +20,16 @@ inittemplatetexteditor=function(templateid){
 			    ed.onChange.add(function(){marktabchanged('template_'+templateid)});
 				ed.onMouseUp.add(function(ed){var tag=ed.selection.getContent().replace(/^\s\s*/, '').replace(/\s\s*$/, '');var stem=tag.replace(/%%\S+%%/g,'');if (tag!=''&&stem=='') lookupentity(ed,'templatevar&templateid='+templateid+'&varkey='+encodeHTML(tag.replace(/%/g,'')),'Template Variables'); });
 	
-			    ed.addButton('medialib',{title:'media library',image:'tiny_mce/icons/image.gif',onclick:function(){ loadfs('Media Library','showmedialibrary');}});
+			    ed.addButton('medialib',{title:'media library',image:'tiny_mce/icons/image.gif',onclick:function(){tinyMCE.activeEditor=ed;loadfs('Media Library','showmedialibrary');}});
 			    ed.addButton('mediaselector',{title:'image selector',image:'tiny_mce/icons/image.gif',onclick:function(){
+				    tinyMCE.activeEditor=ed;
 				    loadfs('Image Selector','showmedialibrary&selector=1',
 				    function(){},
 				    function(){gid('fsview').sels=[]});
 				}});
-			    ed.addButton('systemplatevars',{title:'Template Variables',image:'tiny_mce/icons/magic.gif',onclick:function(){lookupentity(ed,'templatevar&templateid='+templateid,'Template Variables');}});
-			    ed.addButton('styles',{title:'Styles',image:'tiny_mce/icons/brush.gif',onclick:function(){lookupentity(ed,'styles&mode=systemplate&id='+templateid,'Styles');}});
-			    ed.addButton('sourceedit',{title:'Source Editor',image:'tiny_mce/icons/code.gif',onclick:function(){loadfs('Source Editor','mceeditsource',null,initsourceeditor);}});
+			    ed.addButton('systemplatevars',{title:'Template Variables',image:'tiny_mce/icons/magic.gif',onclick:function(){tinyMCE.activeEditor=ed;lookupentity(ed,'templatevar&templateid='+templateid,'Template Variables');}});
+			    ed.addButton('styles',{title:'Styles',image:'tiny_mce/icons/brush.gif',onclick:function(){tinyMCE.activeEditor=ed;lookupentity(ed,'styles&mode=systemplate&id='+templateid,'Styles');}});
+			    ed.addButton('sourceedit',{title:'Source Editor',image:'tiny_mce/icons/code.gif',onclick:function(){tinyMCE.activeEditor=ed;loadfs('Source Editor','mceeditsource',null,initsourceeditor);}});
 			}
 		});		
 	

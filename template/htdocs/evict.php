@@ -33,7 +33,7 @@ function evict_getblockedids(){
 	global $db;
 	
 	//$blockedids=cache_get('gyroscopeblockedids');
-	//if (!$blockedids){
+	//if (!isset($blockedids)){
 		
 		$blockedids=array();
 		$query="select * from ".TABLENAME_USERS." where virtualuser=0 and active=0";

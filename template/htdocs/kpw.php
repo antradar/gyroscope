@@ -47,7 +47,7 @@ body{font-family:helvetica;}
 	?>
 	
 	<div id="toollist" style="overflow:hidden;width:100%;"><div style="width:<?echo 102*($tcount);?>px;">
-	<div class="menuitem"><a onclick="showtab('welcome');"><img width="64" height="64" src="imgs/t.gif" class="img-home"></a></div>
+	<div class="menuitem"><a onclick="showtab('welcome');document.viewindex=null;"><img width="64" height="64" src="imgs/t.gif" class="img-home"></a></div>
 	<?foreach ($toolbaritems as $modid=>$ti){
 		if ($ti['type']=='break') continue;
 		if ($ti['noiphone']) continue;	
@@ -58,7 +58,7 @@ body{font-family:helvetica;}
 			continue;
 		}
 		
-		$action="showview('".$modid."',null,1);";
+		$action="showview('".$modid."',1,1);";
 		if ($ti['action']!='') $action=$ti['action'];
 		if (!isset($ti['icon'])||$ti['icon']=='') continue;
 		
@@ -83,7 +83,7 @@ body{font-family:helvetica;}
 	<img src="imgs/t.gif"><img src="imgs/hourglass.gif">
 </div>
 <div id="leftview" style="float:left;margin-left:10px;width:100%;">
-	<div id="tooltitle" style="width:100%;position:fixed;top:100px;z-index:1000;height:50px;"></div>
+	<div id="tooltitle" onclick="if (document.viewindex) reloadview(document.viewindex,0,1);" style="width:100%;position:fixed;top:100px;z-index:1000;height:50px;"></div>
 	<div id="tooltitleshadow" style="width:100%;height:50px;"></div>
 	<div id="lvviews">
 	<?foreach ($toolbaritems as $modid=>$ti){?>
@@ -116,7 +116,7 @@ body{font-family:helvetica;}
 <div id="fsview"></div>
 
 <script>
-document.appsettings={codepage:'<?echo $codepage;?>',fastlane:'<?echo $fastlane;?>', views:<?echo json_encode(array_keys($toolbaritems));?>};
+document.appsettings={codepage:'<?echo $codepage;?>',fastlane:'<?echo $fastlane;?>', viewmode:'kpw', views:<?echo json_encode(array_keys($toolbaritems));?>};
 </script>
 <script src="lang/dict.<?echo $lang;?>.js"></script>
 <script src="nano.js"></script>

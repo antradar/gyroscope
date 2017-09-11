@@ -1,0 +1,5 @@
+
+alter table #table# add videokey varchar(255);
+alter table #table# add videotoken varchar(255);
+alter table #table# add videostatus tinyint unsigned default 0;
+

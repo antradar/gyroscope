@@ -16,6 +16,12 @@ function valdate(d){
 	return true;
 }
 
+function valint(d){
+	if (parseInt(d.value,10)!=d.value){d.style.borderColor='red';return false;}
+	d.style.borderColor='#666666';
+	return true;
+}
+
 function valfloat(d){
 	if (parseFloat(d.value)!=d.value){d.style.borderColor='red';return false;}
 	d.style.borderColor='#666666';
