@@ -12,6 +12,8 @@ var themeBaseURL = tinyMCEPopup.editor.baseURI.toAbsolute('themes/' + tinyMCEPop
 
 function getColorPickerHTML(id, target_form_element) {
 	var h = "", dom = tinyMCEPopup.dom;
+	
+	var label;
 
 	if (label = dom.select('label[for=' + target_form_element + ']')[0]) {
 		label.id = label.id || dom.uniqueId();
@@ -147,6 +149,8 @@ function isVisible(element_id) {
 function convertRGBToHex(col) {
 	var re = new RegExp("rgb\\s*\\(\\s*([0-9]+).*,\\s*([0-9]+).*,\\s*([0-9]+).*\\)", "gi");
 
+	var r,g,b;
+	
 	var rgb = col.replace(re, "$1,$2,$3").split(',');
 	if (rgb.length == 3) {
 		r = parseInt(rgb[0]).toString(16);
@@ -164,6 +168,8 @@ function convertRGBToHex(col) {
 }
 
 function convertHexToRGB(col) {
+	var r,g,b;
+	
 	if (col.indexOf('#') != -1) {
 		col = col.replace(new RegExp('[^0-9A-F]', 'gi'), '');
 

@@ -43,8 +43,8 @@ var SearchReplaceDialog = {
 		f = document.forms[0];
 		s = f[m + '_panel_searchstring'].value;
 		b = f[m + '_panel_backwardsu'].checked;
-		ca = f[m + '_panel_casesensitivebox'].checked;
-		rs = f['replace_panel_replacestring'].value;
+		var ca = f[m + '_panel_casesensitivebox'].checked;
+		var rs = f['replace_panel_replacestring'].value;
 
 		if (tinymce.isIE) {
 			r = ed.getDoc().selection.createRange();

@@ -72,7 +72,7 @@ function init() {
 	if (inputColor) {
 		changeFinalColor(inputColor);
 
-		col = convertHexToRGB(inputColor);
+		var col = convertHexToRGB(inputColor);
 
 		if (col)
 			updateLight(col.r, col.g, col.b);
@@ -156,6 +156,8 @@ function showColor(color, name) {
 function convertRGBToHex(col) {
 	var re = new RegExp("rgb\\s*\\(\\s*([0-9]+).*,\\s*([0-9]+).*,\\s*([0-9]+).*\\)", "gi");
 
+	var r,g,b;
+	
 	if (!col)
 		return col;
 
@@ -176,6 +178,9 @@ function convertRGBToHex(col) {
 }
 
 function convertHexToRGB(col) {
+	
+	var r,g,b;
+	
 	if (col.indexOf('#') != -1) {
 		col = col.replace(new RegExp('[^0-9A-F]', 'gi'), '');
 

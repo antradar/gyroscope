@@ -87,7 +87,7 @@
 					}
 
 					// Convert font size from em/% to px
-					value = parseFloat(value, 10) / (/%$/.test(value) ? 100 : 1);
+					value = parseFloat(value) / (/%$/.test(value) ? 100 : 1);
 					value = (value * parentFontSize) + 'px';
 				}
 			}
@@ -1313,7 +1313,7 @@
 						p.insertBefore(pi, p.firstChild);
 					} else
 						p.appendChild(pi);
-				}, ed.getBody());
+				});
 
 				if (DOM.select('a', p).length > 0) {
 					t.statusKeyboardNavigation = new tinymce.ui.KeyboardNavigation({

@@ -19,7 +19,7 @@
 			var t = this, last = 0, VK = tinymce.VK;
 
 			t.countre = ed.getParam('wordcount_countregex', /[\w\u2019\'-]+/g); // u2019 == &rsquo;
-			t.cleanre = ed.getParam('wordcount_cleanregex', /[0-9.(),;:!?%#$?\'\"_+=\\\/-]*/g);
+			t.cleanre = ed.getParam('wordcount_cleanregex', /[0-9.(),;:!%#$?\'\"_+=\\\/-]*/g);
 			t.update_rate = ed.getParam('wordcount_update_rate', 2000);
 			t.update_on_delete = ed.getParam('wordcount_update_on_delete', false);
 			t.id = ed.id + '-word-count';

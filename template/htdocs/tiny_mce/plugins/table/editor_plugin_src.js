@@ -214,7 +214,7 @@
 			buildGrid();
 
 			// Restore the selection to the closest table position
-			row = grid[Math.min(grid.length - 1, startPos.y)];
+			var row = grid[Math.min(grid.length - 1, startPos.y)];
 			if (row) {
 				selection.select(row[Math.min(row.length - 1, startPos.x)].elm, true);
 				selection.collapse(true);
@@ -277,7 +277,7 @@
 		};
 
 		function merge(cell, cols, rows) {
-			var startX, startY, endX, endY, x, y, startCell, endCell, cell, children, count;
+			var startX, startY, endX, endY, x, y, startCell, endCell, cell, children, count, pos;
 
 			// Use specified cell and cols/rows
 			if (cell) {
@@ -598,7 +598,7 @@
 				var cellCount = row.cells.length, cell;
 
 				// Remove col/rowspans
-				for (i = 0; i < cellCount; i++) {
+				for (var i = 0; i < cellCount; i++) {
 					cell = row.cells[i];
 					setSpanVal(cell, 'colSpan', 1);
 					setSpanVal(cell, 'rowSpan', 1);
@@ -700,7 +700,7 @@
 				maxY = endY;
 
 				// Expand startX
-				for (y = startY; y <= maxY; y++) {
+				for (var y = startY; y <= maxY; y++) {
 					cell = grid[y][startX];
 
 					if (!cell.real) {
@@ -710,7 +710,7 @@
 				}
 
 				// Expand startY
-				for (x = startX; x <= maxX; x++) {
+				for (var x = startX; x <= maxX; x++) {
 					cell = grid[startY][x];
 
 					if (!cell.real) {
@@ -1024,11 +1024,11 @@
 					var n = ed.selection.getNode();
 					var currentCell = ed.dom.getParent(rng.startContainer, 'TD,TH');
 				
-					if (!tableCellSelected(ed, rng, n, currentCell))
-						return;
-						if (!currentCell) {
-							currentCell=n;
-						}
+					if (!tableCellSelected(ed, rng, n, currentCell)) return;
+					
+					if (!currentCell) {
+						currentCell=n;
+					}
 					
 					// Get the very last node inside the table cell
 					var end = currentCell.lastChild;

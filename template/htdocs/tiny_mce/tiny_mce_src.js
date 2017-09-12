@@ -1014,7 +1014,7 @@ tinymce.create('static tinymce.util.XHR', {
 				return ready();
 
 			// Wait for response, onReadyStateChange can not be used since it leaks memory in IE
-			t = w.setTimeout(ready, 10);
+			w.setTimeout(ready, 10);
 		}
 	}
 });
