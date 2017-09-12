@@ -3819,13 +3819,13 @@ tinymce.html.Styles = function(settings, schema) {
 					// If it's an LI try to find a UL/OL for it or wrap it
 					if (node.name === 'li') {
 						sibling = node.prev;
-						if (sibling && (sibling.name === 'ul' || sibling.name === 'ul')) {
+						if (sibling && (sibling.name === 'ul' || sibling.name === 'ol')) {
 							sibling.append(node);
 							continue;
 						}
 
 						sibling = node.next;
-						if (sibling && (sibling.name === 'ul' || sibling.name === 'ul')) {
+						if (sibling && (sibling.name === 'ul' || sibling.name === 'ol')) {
 							sibling.insert(node, sibling.firstChild, true);
 							continue;
 						}
@@ -6460,10 +6460,8 @@ tinymce.dom.TreeWalker = function(start_node, root_node) {
 				pa.insertBefore(trim(bef), pe);
 
 				// Insert middle chunk
-				if (re)
-				pa.replaceChild(re, e);
-			else
-				pa.insertBefore(e, pe);
+				if (re) pa.replaceChild(re, e);
+				else pa.insertBefore(e, pe);
 
 				// Insert after chunk
 				pa.insertBefore(trim(aft), pe);
@@ -16410,9 +16408,11 @@ tinymce.ForceBlocks = function(editor) {
 			undef,
 			getContentEditable = dom.getContentEditable;
 
+		/*
 		function isTextBlock(name) {
 			return !!ed.schema.getTextBlocks()[name.toLowerCase()];
 		}
+		*/
 
 		function getParents(node, selector) {
 			return dom.getParents(node, selector, dom.getRoot());

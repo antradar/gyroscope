@@ -61,10 +61,8 @@ pickupalllookups=function(sf){
 	
 	if (document.iphone_portrait&&d.id&&gid(d.id+'_lookup')) os=gid(d.id+'_lookup').getElementsByTagName('input');
 	
-	var dtitle='';
-	
 	if (!sf.allchecked){
-		for (var i=0;i<os.length;i++) if (os[i].className=='lksel') {os[i].checked='checked';sels.push(os[i].value);dtitle=os[i].seltitle;}
+		for (var i=0;i<os.length;i++) if (os[i].className=='lksel') {os[i].checked='checked';sels.push(os[i].value);}
 		sf.allchecked=true;
 		sf.innerHTML='unselect all items';
 	} else {
@@ -74,7 +72,6 @@ pickupalllookups=function(sf){
 	}
 	
 	if (sels.length==0) {cancelpickup(d.id,true);return;}
-	
 	
 	d.value='('+sels.length+' items selected)';
 	d.value2=sels.join(',');
