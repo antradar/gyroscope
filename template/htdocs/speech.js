@@ -1,5 +1,6 @@
 speech_startstop=function(mobile){
 	gid('speechstart').mobile=mobile;
+	ajxjs(self.speech_getcommand,'lang/speech.'+document.dict.speechlang+'.js');
 
 	if (window.speechSynthesis&&window.speechSynthesis.speaking) {
 		window.speechSynthesis.cancel();
@@ -14,16 +15,15 @@ speech_startstop=function(mobile){
 		setTimeout(function(){
 			var dispame='';
 			if (gid('labeldispname')) dispname=gid('labeldispname').innerHTML.split(' ')[0];
-			say('Hello '+dispname);
+			say(document.speechdict.hello.replace('%%name%%',dispname));
 		},800);
 				
 		if (self.setnosleep) setnosleep(true);
 		
 	} else {
-		
+		document.recog=null;
 		document.recstop=true;
 		document.recognition.stop();
-		
 		if (self.setnosleep) setnosleep(false);
 	}
 }
@@ -35,28 +35,13 @@ speech_process=function(phrase,conf){
 	console.log(phrase,conf);
 	if (conf<0.2) return;
 	
-	phrase=phrase.toLowerCase();
-	phrase=phrase.replace('go to','goto');
-	phrase=phrase.replace('look up', 'lookup');
-	phrase=phrase.replace('number one','number 1').replace('number two','number 2').replace('number to','number 2').replace('number too','number 2');
-	phrase=phrase.replace('number three','number 3').replace('number four','number 4').replace('number for','number 4');
-	phrase=phrase.replace('go home','gohome');
-	phrase=phrase.replace('what are my options','options').replace('what are the options','options');
-	phrase=phrase.replace('goodbye abby','cancel').replace('goodbye eddie','cancel').replace('goodbye','cancel');
+	phrase=speech_cleanup(phrase);
 
-	var parts=phrase.split(' ');
-	var cmd=parts[0];
-	var target='';
-	
-	if (parts.length>10) return;
+	var res=speech_getcommand(phrase);
+	var cmd=res.cmd;
+	var target=res.target;
+	var parts=res.parts;
 		
-	for (var i=1;i<parts.length;i++){
-		if (parts[i]=='') continue;
-		target+=' '+parts[i];
-	}
-	
-	target=target.trim();
-	
 	/* enter look up keys here, activated by "Goto" voice command */
 	var lookupkeys={
 		'lvcore.users':'userkey',
@@ -65,22 +50,36 @@ speech_process=function(phrase,conf){
 	
 	switch (cmd){
 		case 'cancel': case 'cancer':	
-			if (parts.length==1) {document.recstop=true;document.recognition.stop();say('Talk to you later!',1);}
+			if (parts.length==1||document.dict.speechlang!='en-US') {document.recstop=true;document.recognition.stop();say(document.speechdict.later,1);}
 			else {say("I'm not "+parts[1]+". I am Abby");}		
 		break;
 		case 'goto':
 			switch(target){
-				case 'account': case 'accounts': ajxjs(self.showuser,'users_js.php');showview('core.users',null,1); say('Okay, opening accounts'); break;
-				case 'report': case 'reports': showview('core.reports',null,1); say('Okay, opening reports'); break;
-				case 'setting': case 'settings': showview('core.settings',null,1); say('Okay, opening settings'); break;
-				default: console.log('Unknown target: '+target); say('Sorry what was that?');	
+				case 'account': case 'accounts':
+				case 'die konto': case 'die konten': case 'die karte':
+				case '用户设置':
+					ajxjs(self.showuser,'users_js.php');showview('core.users',null,1); say(document.speechdict.accounts); 
+				break;
+				case 'report': case 'reports': 
+				case 'berichte': case 'die berichte':
+				case 'os relatórios':  case 'o relatório':
+				case '报告':
+					showview('core.reports',null,1); say(document.speechdict.reports); 
+				break;
+				case 'setting': case 'settings': 
+				case 'as configurações': case 'a configuração':
+				case '系统设置':
+				case 'die einstellungen': case 'die einstellung': 
+					showview('core.settings',null,1); say(document.speechdict.settings); 
+				break;
+				default: console.log('Unknown target: '+target); say(document.speechdict.sorry);	
 			}			
 		break;
 		case 'lookup':
 			var lookup=lookupkeys['lv'+document.viewindex];
 			if (lookup==null) return;
 			
-			if (target!='') say('Looking up '+target); else say('Lookup keyword has been cleared');
+			if (target!='') say(document.speechdict.lookup.replace('%%target%%',target)); else say(document.speechdict.lookupclear);
 			
 			//if (target!='') target=target+'?'; //uncomment for soundex search
 			gid(lookup).value=target;
@@ -93,10 +92,8 @@ speech_process=function(phrase,conf){
 		break;
 		
 		case 'open':
-			var stem=target.replace(/number (\d+)/g,'x');
-			if (stem!='x') return;
+			var idx=speech_parsenumber(target);
 			
-			var idx=parseInt(target.replace(/number /,''),10);
 			var oidx=0;
 			
 			if (document.viewindex==null||!gid('lv'+document.viewindex)) break;
@@ -110,19 +107,19 @@ speech_process=function(phrase,conf){
 						var event=document.createEvent('Events');
 						event.initEvent('click',true,false);
 						o.getElementsByTagName('a')[0].dispatchEvent(event);
-						say('Opening record number '+idx);
+						say(document.speechdict.openrecord.replace('%%idx%%',idx));
 						return;
 						
 					}	
 				}
 			}
-			say("Sorry there's no record number "+idx);
+			if (parseInt(idx,10)==idx) say(document.speechdict.nosuchnumber.replace('%%idx%%',idx));
 			console.log(idx);
 		break;
 		case 'options':
 			
 			if (document.viewindex==null||!gid('lv'+document.viewindex)) {
-				say('You are not looking at a list of options');	
+				say(document.speechdict.optnotlooking);	
 				break;
 			}
 			var lv=gid('lv'+document.viewindex);
@@ -144,20 +141,24 @@ speech_process=function(phrase,conf){
 			}
 			
 			switch (osl){
-				case 0: say('You have no options'); break;
-				case 1: say('You have one option, which is '+firstoption); break;
-				default: say('Here are the top '+(osl>5?5:osl)+' options: '+options);
+				case 0: say(document.speechdict.nooption); break;
+				case 1: say(document.speechdict.oneoption.replace('%%option%%',firstoption)); break;
+				default: say(document.speechdict.topoptions.replace('%%count%%',(osl>5?5:osl))+' '+options);
 			}
 			
+			/*
 			for (var i=0;i<os.length;i++){
 				var o=os[i];
 				if (o.className&&o.className=='listitem'||o.attributes.pickable){
 					say(strip_tags(o.getElementsByTagName('a')[0].innerHTML));
 				}
 			}
+			*/
+			
 		break;
 		
-		case 'read': case 'weed': case 'weet': case 'reid': case "reid's": case 'grief': case 'reach': //add "ttstags" attribute to detail view textarea fields, comma separated
+		//add "ttstags" attribute to detail view textarea fields, comma separated
+		case 'read': case 'weed': case 'weet': case 'reid': case "reid's": case 'grief': case 'reach': 
 			if (document.currenttab!=null&&document.tabviews[document.currenttab]!=null){
 				var os=document.tabviews[document.currenttab].getElementsByTagName('textarea');
 				for (var i=0;i<os.length;i++){
@@ -166,7 +167,7 @@ speech_process=function(phrase,conf){
 						var ttstags=o.getAttribute('ttstags').split(',');
 						for (var j=0;j<ttstags.length;j++){
 							if (ttstags[j].toLowerCase().trim()==target.toLowerCase().trim()){
-								say("Reading "+ttstags[0]+": "+strip_tags(o.value));
+								say(document.speechdict.reading.replace('%%subject%%',ttstags[j])+": "+strip_tags(o.value));
 								return;	
 							}	
 						}
@@ -174,7 +175,7 @@ speech_process=function(phrase,conf){
 				}	
 			}
 		break;		
-		case 'gohome': say('Welcome back!'); reloadtab('welcome',null,'wk',null,null,{noclose:1}); showtab('welcome');  break;	
+		case 'gohome': say(document.speechdict.welcomeback); reloadtab('welcome',null,'wk',null,null,{noclose:1}); showtab('welcome');  break;	
 					
 	}
 }

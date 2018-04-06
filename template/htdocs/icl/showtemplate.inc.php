@@ -4,8 +4,13 @@ function showtemplate($templateid=null){
 	if (!isset($templateid)) $templateid=GETVAL('templateid');
 	
 	global $db;
+
+	gsguard($templateid,array('templatetypes','templates'),array('templatetypeid-templatetypeid','templateid'));
 	
-	$query="select * from templates,templatetypes where templates.templatetypeid=templatetypes.templatetypeid and templateid=$templateid";
+	$user=userinfo();
+	$gsid=$user['gsid']+0;
+		
+	$query="select * from templates,templatetypes where templates.templatetypeid=templatetypes.templatetypeid and templateid=$templateid and gsid=$gsid ";
 	$rs=sql_query($query,$db);
 	
 	if (!$myrow=sql_fetch_array($rs)) die(_tr('record_removed'));

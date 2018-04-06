@@ -1,7 +1,7 @@
 	global $soidxes; //smart object indexes
 
 	$#editfield#=QETSTR('#editfield#');
-	$#editfield#=str_replace('>&nbsp;</','></',$#editfield#);
+	$#editfield#=str_replace('<p>&nbsp;</p>','',$#editfield#); // '>&nbsp;</' -> '></'
 	
 	//Image localizer stores images locally and allows direct pasting in Firefox
 	//It is included in the commercial version of Gyroscope

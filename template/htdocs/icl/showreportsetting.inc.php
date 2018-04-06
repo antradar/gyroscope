@@ -5,20 +5,24 @@ function showreportsetting($reportid=null){
 	
 	global $db;
 	global $userroles;
+	global $lang;
+	global $deflang;
 	
 	$user=userinfo();
+	$gsid=$user['gsid']+0;
+	
 	if (!$user['groups']['reportsettings']) apperror('access denied');
 	
-	$query="select * from ".TABLENAME_REPORTS." where reportid=$reportid";
+	$query="select * from ".TABLENAME_REPORTS." where (gsid=$gsid or gsid=0) and reportid=$reportid";
 	$rs=sql_query($query,$db);
 	
 	if (!$myrow=sql_fetch_array($rs)) die(_tr('record_removed'));
 	
-	$reportname=$myrow['reportname'];
-	$reportgroup=$myrow['reportgroup'];
+	$reportname=$myrow['reportname_'.$lang];
+	$reportgroup=$myrow['reportgroup_'.$lang];
 	$reportkey=$myrow['reportkey'];
 	$reportfunc=$myrow['reportfunc'];
-	$reportdesc=$myrow['reportdesc'];
+	$reportdesc=$myrow['reportdesc_'.$lang];
 	$reportgroups=explode('|',$myrow['reportgroupnames']);
 	$gyrosys=$myrow['gyrosys'];
 

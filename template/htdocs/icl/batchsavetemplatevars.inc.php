@@ -9,7 +9,9 @@ function batchsavetemplatevars(){
 	$quickvars=explode("\n",$_POST['quickvars']);
 		
 	global $db;
-	
+
+	gsguard($templatetypeid,'templatetypes','templatetypeid');
+			
 	$query="delete from templatevars where templatetypeid=$templatetypeid";
 	sql_query($query,$db);
 	

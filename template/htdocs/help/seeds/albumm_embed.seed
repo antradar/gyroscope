@@ -15,7 +15,7 @@ function embed#primaryfield##record#uploader(){
 
 	$path='#uploaddir#';
 	
-	global $tinypngapi; //comment this out to disable TinyPNG
+	// global $tinypngapi; //comment this out to disable TinyPNG or use TinyPNGd
 		
 	$msg='';
 	
@@ -70,6 +70,22 @@ function embed#primaryfield##record#uploader(){
 					$org=$path.$#lookupkey#.'.org#fileext#';
 					$sizes=array(#iterator-sizes-albumsizes#
 					);
+					
+					$optobj=array(
+						'path'=>$path,
+						'key'=>'#primarykey#',
+						'id'=>$#primarykey#,
+						'ext'=>'#fileext#',
+						'org'=>'.org',					
+						'sizes'=>$sizes
+					);
+					
+					$optinfo=addslashes(json_encode($optobj));
+								
+					
+					$query="update #lookuptable# set optinfo='$optinfo' where #primarykey#=$#primarykey#";
+					sql_query($query,$db);
+					
 	
 									
 					if ($tinypngapi!=''){
@@ -86,6 +102,10 @@ function embed#primaryfield##record#uploader(){
 						}
 						
 					} else {
+						$f=fopen($org,'wb');
+						fwrite($f,$c);
+						fclose($f);	
+						
 						//$img=image_setorientation($img,'landscape');
 						foreach ($sizes as $skey=>$size){
 							$thumb=image_cropfit($img,$size['width'],$size['height']); imagepng($thumb,$path.$#lookupkey#.'.'.$skey.'#fileext#'); imagedestroy($thumb);

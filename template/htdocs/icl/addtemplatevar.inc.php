@@ -10,6 +10,8 @@ function addtemplatevar(){
 	
 	global $db;
 	
+	gsguard($templatetypeid,'templatetypes','templatetypeid');
+		
 	$query="select * from templatevars where templatevarname='$varname' and templatetypeid=$templatetypeid";
 	$rs=sql_query($query,$db);
 	if ($myrow=sql_fetch_assoc($rs)) apperror('A variable of this name already exists. Use a different name.');

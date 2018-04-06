@@ -5,7 +5,18 @@
 
 $SQL_ENGINE="SQLSRV";
 
-function sql_get_db($dbhost,$dbsource,$dbuser=null,$dbpass=null){
+function sql_get_db($dbhost,$dbsource,$dbuser=null,$dbpass=null,$lazyname=null){
+
+	if (isset($lazyname)){
+		global $dbdefers;
+		if (!isset($dbdefers)) $dbdefers=array();
+		$dbdefers[$lazyname]=array(
+			'host'=>$dbhost,'source'=>$dbsource,
+			'user'=>$dbuser,'pass'=>$dbpass
+		);
+		return $lazyname;
+	}
+
 	$config=array('Database'=>$dbsource);
 	if (isset($dbuser)) $config['UID']=$dbuser;
 	if (isset($dbpass)) $config['PWD']=$dbpass;
@@ -14,13 +25,24 @@ function sql_get_db($dbhost,$dbsource,$dbuser=null,$dbpass=null){
 	return $db;
 }
 
-function sql_query($query,$db){
-	$rs=sqlsrv_query($db,$query);
+function sql_query($query,&$db){
+
+	if (is_string($db)){
+		global $dbdefers;
+		$dbinfo=$dbdefers[$db];
+		$db=sql_get_db($dbinfo['host'],$dbinfo['source'],$dbinfo['user'],$dbinfo['pass']);	
+	}
+
+	$query=str_replace("\'","''",$query);
+	$query=str_replace("\\\\","\\",$query);
+	$params=array();	
+	$rs=sqlsrv_query($db,$query,$params,array( "Scrollable" => SQLSRV_CURSOR_KEYSET ));
 	if (!$rs) {
 		$errors=sqlsrv_errors();
 		$message=$errors[0]['message'];
 		echo "sql_error: <u>".$query.'</u> '.$message;
 	}
+
 	return $rs;
 }
 
@@ -40,7 +62,10 @@ function sql_insert_id($db,$rs=null){
 }
 
 function sql_affected_rows($db,$rs){
-	return sqlsrv_rows_affected($db);
+	$c1=sqlsrv_rows_affected($db);
+	$c2=sqlsrv_num_rows($rs);
+
+	return max($c1,$c2);
 }
 
 function sql_begin_transaction(){
@@ -58,5 +83,5 @@ function sql_rollback(){
 
 /* Sample Connection
 
-$db=sql_get_db("PT-PC\SQLEXPRESS","SQLLHDB");
+$db=sql_get_db("PT-PC\SQLEXPRESS","SQLLHDB",null,null,'db');
 */

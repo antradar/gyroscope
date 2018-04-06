@@ -249,7 +249,7 @@ function #entity#_shownegfilters($fieldname,$container,$cmd){
 <?	
 }
 
-function #entity#_showrange_($container,$cmd,$title,$fieldname,$opts=null){
+function #entity#_showrange_($container,$cmd,$title,$fieldname){
 	global $navdbs;
 	global $navopts;
 	global $dbconfigs;

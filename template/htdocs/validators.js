@@ -17,13 +17,27 @@ function valdate(d){
 }
 
 function valint(d){
-	if (parseInt(d.value,10)!=d.value){d.style.borderColor='red';return false;}
+	var val=d.value;
+	
+	if (parseInt(val,10)!=val){d.style.borderColor='red';return false;}
 	d.style.borderColor='#666666';
 	return true;
 }
 
 function valfloat(d){
-	if (parseFloat(d.value)!=d.value){d.style.borderColor='red';return false;}
+	var val=d.value;	
+	if (parseFloat(val)!=val){d.style.borderColor='red';return false;}
+	d.style.borderColor='#666666';
+	return true;
+}
+
+function valcurrency(d){
+	var val=d.value.split(' ').join('');
+	if (document.dict&&document.dict.currency_separator_thousands!=null&&document.dict.currency_separator_decimal!=null){
+		val=val.split(document.dict.currency_separator_thousands).join('').split(document.dict.currency_separator_decimal).join('.');	
+	}
+	
+	if (parseFloat(val)!=val){d.style.borderColor='red';return false;}
 	d.style.borderColor='#666666';
 	return true;
 }

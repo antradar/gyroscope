@@ -25,7 +25,7 @@ function swap#record#pos(){
 	
 	//echo "$src $ssrc < > $dst $sdst";
 
-	if ($ssrc==$sdst-1){list#tablename#(); return;}
+	if ($ssrc==$sdst-1){list#records#($#masterkey#); return;}
 
 	if ($ssrc<$sdst) $query="select * from #tablename# where #masterkey#=$#masterkey# and #sortkey#>$ssrc and #sortkey#<$sdst order by #sortkey#";
 	if ($ssrc>$sdst) $query="select * from #tablename# where #masterkey#=$#masterkey# and #sortkey#<$ssrc and #sortkey#>=$sdst order by #sortkey# desc";

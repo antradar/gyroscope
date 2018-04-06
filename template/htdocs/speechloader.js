@@ -1,10 +1,10 @@
-if (window.webkitSpeechRecognition){
+if (window.webkitSpeechRecognition&&document.dict.speechlang){
 	gid('speechstart').style.display='inline';
 	
 	var recognition=new webkitSpeechRecognition();
 	recognition.continuous=false;//true;
 	recognition.interimResults=false;
-	recognition.lang='en'; //'de-DE';
+	recognition.lang=document.dict.speechlang;
 
 	recognition.onstart=function(){
 		document.recog=true;
@@ -39,19 +39,23 @@ if (window.webkitSpeechRecognition){
 }
 
 say=function(phrase,noresume){
-	if (document.utterlock) return;
+	if (!document.dict.speechlang) return;
+	//if (document.utterlock) return;
 	document.utterlock=true;
 	
-	if (!noresume){
-		if (document.recognition&&document.recog) {document.rechold=true;document.recognition.stop();}
+	if (noresume){
+		if (document.recognition&&document.recog) {document.rechold=true;document.recognition.stop();gid('speechstart').style.opacity=1;}
 	}
 	
 	if (window.SpeechSynthesisUtterance){
 		var utterance = new SpeechSynthesisUtterance(phrase);
-		utterance.lang='en-US';
+		utterance.lang=document.dict.speechlang;
 		utterance.onend=function(){
 			if (!noresume){
 				if (document.recognition&&document.rechold) {document.recognition.start();document.rechold=null;}
+			} else {
+				gid('speechstart').style.opacity=1;
+				document.rechold=null;			
 			}
 		}
 		window.speechSynthesis.speak(utterance);

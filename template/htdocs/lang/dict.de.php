@@ -5,13 +5,22 @@ $dict_wdays=array('So','Mo','Di','Mi','Do','Fr','Sa');
 $dict_dir='ltr';
 
 $dict=array(
+	'currency_separator_decimal'=>',',
+	'currency_separator_thousands'=>'.',
+
 	'login'=>'Anmelden',
 	'signin'=>'Anmelden',
 	'username'=>'Benutzername',
 	'password'=>'Passwort',
 
 	'dispname'=>'Anzeigename',
-		
+	
+	'powerbanner'=>'Diese Anwendung wird von Gyroscope %%version%% angetriben',
+	'speech_clicktoactivate'=>'Spracherkennung aktivieren',
+	
+	'icon_settings'=>'Einstellungen',
+	'icon_accounts'=>'Konten',
+			
 	'account_settings'=>'Konteneinstellungen',	
 	'signout'=>'Abmelden',
 	
@@ -43,12 +52,43 @@ $dict=array(
 	'account_virtual'=>'virtuelle Benutzer',
 	
 	'rights_accounts'=>'Benutzer bearbeiten',
-
+	'rights_standardadmin'=>'typische Adminrechte',
+	'rights_managereports'=>'Berichte ändern',
+	'rights_configtemplates'=>'Vorlagen konfigurieren',
+	'rights_managetemplates'=>'Vorlagen ändern',
+	'rights_dbadmin'=>'Datenbankverwaltung',
+	'rights_upgrademodules'=>'Modul-Upgrade',
+	
+	'icon_systemplates'=>'Vorlagen',	
+	
 	'icon_reports'=>'Berichte',	
 	'close_all_tabs'=>'Alle Tabs schließen',
+
+	'icon_reportsettings'=>'Berichtseinstellungen',
+	'list_reportsetting_stab'=>'Berichtseinstellungen',
+	'button_reportsetting_add'=>'Bericht hinzufügen',
+	'list_reportsetting_add_tab'=>'Neue Einstellungen',
+	'list_reportsetting_add'=>'add a report type',	
+	'reportsetting_label_reportname'=>'Report Title',
+	'reportsetting_label_reportgroup'=>'Report Group <em>(optional)</em>',
+	'reportsetting_label_reportfunc'=>'Custom Function <em>(add "return false;" to bypass default)</em>',
+	'reportsetting_label_reportkey'=>'Report Key',
+	'reportsetting_label_reportdesc'=>'Description',	
+		
+	'icon_sqlcompare'=>'Datenbank vergleichen',
 	
 	'tab_welcome'=>'Willkommen',
 	'hometab_welcome'=>'Willkommen bei Antradar Gyroscope',	
+	
+	'icon_templatetypes'=>'Template Classes',
+	'list_templatetype_stab'=>'Template Class',
+	'button_templatetype_add'=>'Add Template Class',
+	'list_templatetype_add_tab'=>'New Template Class',
+	'list_templatetype_add'=>'add a template class',	
+	'templatetype_label_templatetypename'=>'Template Class Name',
+	'templatetype_label_templatetypekey'=>'Template Class Key',
+	'templatetype_label_activetemplateid'=>'Active Template',
+	
 
 	'list_users'=>'Benutzer',
 	'list_user_add'=>'Benutzer hizufügen',

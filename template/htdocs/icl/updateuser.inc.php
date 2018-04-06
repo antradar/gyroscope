@@ -8,24 +8,29 @@ function updateuser(){
 	global $dbsalt;
 	
 	$user=userinfo();
+	$gsid=$user['gsid']+0;
+	
 	if (!$user['groups']['accounts']) apperror('Access denied');
 	
 	$myuserid=$user['userid'];
 	
 	$userid=GETVAL('userid');	
 	$login=GETSTR('login');
-	$dispname=GETSTR('dispname');
+	$dispname=strip_tags(GETSTR('dispname'));
 	$active=GETVAL('active');
 	$virtual=GETVAL('virtual');
 	$passreset=GETVAL('passreset');
 
-	$newpass=QETSTR('pass',0);
+	$newpass=$_POST['pass'];
 	$np=encstr(md5($dbsalt.$newpass),$newpass.$dbsalt);
 
 	$certname=QETSTR('certname');
 	$needcert=GETVAL('needcert');
 	$needkeyfile=GETVAL('needkeyfile');
 	$cert=QETSTR('cert');
+	
+	$usesms=GETVAL('usesms');
+	$smscell=GETSTR('smscell');
 
 	$certhash=md5($dbsalt.$cert);
 
@@ -45,14 +50,14 @@ function updateuser(){
 		apperror('User already exists. Use a different login.');
 	}
 
-	$query="update ".TABLENAME_USERS." set login='$login', dispname='$dispname', active=$active, virtualuser=$virtual, needcert=$needcert, needkeyfile=$needkeyfile, passreset='$passreset', groupnames='$groupnames' ";
+	$query="update ".TABLENAME_USERS." set login='$login', dispname='$dispname', active=$active, virtualuser=$virtual, usesms=$usesms,smscell='$smscell', needcert=$needcert, needkeyfile=$needkeyfile, passreset='$passreset', groupnames='$groupnames' ";
 	if (!$virtual&&$newpass!='') $query.=", password='$np' ";
 	if (trim($cert)!='') $query.=", certname='$certname', certhash='$certhash' ";
 
-	$query.=" where userid=$userid";
-	sql_query($query,$db);
+	$query.=" where userid=$userid and gsid=$gsid";
+	$rs=sql_query($query,$db);
 
-	logaction("updated User #$userid <u>$login</u>",array('userid'=>$userid,'login'=>"$login"),array('rectype'=>'reauth','recid'=>$userid));
+	if (sql_affected_rows($db,$rs)) logaction("updated User #$userid <u>$login</u>",array('userid'=>$userid,'login'=>"$login"),array('rectype'=>'reauth','recid'=>$userid));
 	
 	if ($userid==$myuserid){
 		header('newlogin: '.tabtitle(stripslashes($login)));
@@ -62,6 +67,6 @@ function updateuser(){
 	reauth();
 	showuser($userid);
 	
-	//cache_delete('gyroscopeblockedids');
+	//cache_delete('gyroscopeblockedids_'.$gsid);
 	
 }

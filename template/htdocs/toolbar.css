@@ -66,6 +66,9 @@ input:disabled{
 
 .img-speechrecog{background:transparent url(imgs/toolbar.gif) no-repeat -128px 0;}
 
+#chaticon{background:transparent url(imgs/toolbar.gif) no-repeat -448px 0;display:none;}
+#chaticon.offline{background:transparent url(imgs/toolbar.gif) no-repeat -448px -32px;display:none;}
+
 .img-clock{width:12px;height:12px;background:transparent url(imgs/toolbar.gif) no-repeat 0 -52px;}
 .img-tracker{background:transparent url(imgs/toolbar.gif) no-repeat -288px 0;}
 .img-tracker-light{background:transparent url(imgs/toolbar.gif) no-repeat -288px -32px;}

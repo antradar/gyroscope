@@ -1,3 +1,7 @@
+v4.1
+----
+- added callback to ajxb
+
 v4.0
 ----
 - added xajxjs for conditionally loading script blocks with deferred callback

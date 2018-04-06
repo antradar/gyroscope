@@ -1,0 +1,85 @@
+<?php
+// Gyroscope SQL Wrapper
+// NuoDB implementation
+// (c) Antradar Software
+
+
+$SQL_ENGINE="NuoDB";
+
+function sql_escape($str){
+	global $db;
+	return addslashes($str);	
+}
+
+function sql_get_db($dbhost,$dbsource,$dbuser,$dbpass,$lazyname=null){
+	if (isset($lazyname)){
+		global $dbdefers;
+		if (!isset($dbdefers)) $dbdefers=array();
+		$dbdefers[$lazyname]=array(
+			'host'=>$dbhost,'source'=>$dbsource,
+			'user'=>$dbuser,'pass'=>$dbpass
+		);
+		return $lazyname;
+	}
+
+	$db = new PDO("nuodb:database=$dbsource@$dbhost;schema=$dbsource", $dbuser, $dbpass) or die('Cannot connect');
+	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+	$db->setAttribute(PDO::ATTR_CASE, PDO::CASE_LOWER);
+
+	return $db;
+}
+
+function sql_query($query,&$db){
+	
+	if (is_string($db)){
+		global $dbdefers;
+		$dbinfo=$dbdefers[$db];
+		$db=sql_get_db($dbinfo['host'],$dbinfo['source'],$dbinfo['user'],$dbinfo['pass']);	
+	}	
+	
+	$rs=$db->query($query);
+			
+	if (!$rs){
+		$errorinfo=$db->errorInfo();
+		echo "\r\n".$errorinfo[2]."\r\n";
+	}
+	return $rs;
+}
+
+function sql_fetch_array($rs){
+	return mysqli_fetch_array($rs);
+
+}
+
+function sql_fetch_assoc($rs){
+	return $rs->fetch(PDO::FETCH_ASSOC);
+}
+
+function sql_insert_id($db,$rs=null){
+	return $db->lastInsertId();
+}
+
+function sql_affected_rows($db,$rs){
+	$query="select * from SYSTEM.LASTSTATEMENT";
+	$rs=sql_query($query,$db);
+	$myrow=sql_fetch_assoc($rs);
+	
+	return $myrow['recordsfetched'];
+}
+
+function sql_begin_transaction($db){
+	$db->beginTransaction();
+}
+
+function sql_commit($db){
+	$db->commit();
+}
+
+function sql_rollback(){
+	$db->rollback();
+}
+
+/* Sample Connection
+
+$db=sql_get_db('localhost','gyroscope','root','mnstudio','db');
+*/

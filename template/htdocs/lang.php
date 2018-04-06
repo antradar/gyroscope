@@ -1,9 +1,11 @@
-<?
+<?php
 $deflang='en';
 
 $langs=array(
 	'en'=>'English',
 //	'de'=>'Deutsch',
+//	'fr'=>'Français',	
+//	'pt'=>'Português',	
 //	'ru'=>'Русский',
 //	'zh'=>'中文',
 //	'he'=>'עברית'

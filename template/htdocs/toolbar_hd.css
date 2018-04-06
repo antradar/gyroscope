@@ -1,5 +1,6 @@
 .admin-logout, .admin-settings, .admin-user, #speechstart img,
-.beltprev, .beltnext, .daylightsaving, #wsswarn, #barcodewarn, #diagwarn, .img-up, .img-down,
+.beltprev, .beltnext, .daylightsaving, #wsswarn, #barcodewarn, #diagwarn, #chatindicator, #chatindicator.offline, .img-up, .img-down,
+#chaticon, #chaticon.offline,
 .img-addrec, .img-del, .img-save, .img-tick, .img-xls, .img-pdf, .img-speechrecog, .img-home,
 .img-tracker,.img-tracker-light,.img-clock, .img-settings, .img-settings-light,
 .img-closeall, .img-speechrecog, .img-reports, .img-reports-light, .img-xls, .img-pdf
@@ -15,5 +16,7 @@
 
 #statusinfo{background:#BBCDD5 url(imgs/gshd.png) no-repeat top right;background-size:150px 24px;}
 
+/*
 #applogo img{visibility:hidden;}
 #applogo{background:transparent url(imgs/clogo_hd.gif) no-repeat 0 0; background-size:157px 56px;}
+*/

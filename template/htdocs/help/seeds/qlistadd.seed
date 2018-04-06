@@ -1,0 +1,9 @@
+
+	$#refkey#s=explode(',',QETSTR('#refkey#s'));
+	
+	foreach ($#refkey#s as $#refkey#){
+		if (!is_numeric($#refkey#)) continue;
+		gsguard($#refkey#,'#reftable#','#refkey#');
+		$query="insert into #subtable#(#masterkey#,#refkey#) values ($#masterkey#,$#refkey#)";
+		sql_query($query,$db);	
+	}

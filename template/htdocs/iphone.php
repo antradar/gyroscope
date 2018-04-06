@@ -44,6 +44,7 @@ body{font-family:helvetica;}
 
 	<?
 	$tcount=1;
+	if ($enablelivechat) $tcount=2;
 	foreach ($toolbaritems as $ti) if (isset($ti['icon'])&&$ti['icon']!='') $tcount++;
 	?>
 	<div id="toollist" style="overflow:auto;width:100%;"><div style="width:<?echo 52*($tcount+1);?>px;">
@@ -75,7 +76,9 @@ body{font-family:helvetica;}
 	?>
 	<div class="menuitem"><a href=# onclick="<?echo $action;?>return false;"><img class="<?echo $ti['icon'];?>" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
 	<?}?>
-
+	<?if ($enablelivechat){?>
+	<div class="menuitem"><a href=# onclick="livechat_start();return false;"><img id="chaticon" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
+	<?}?>
 	</div></div>
 	<span id="labellogin" style="display:none;"><?echo $user['login'];?></span><span id="labeldispname" style="display:none;"><?echo $user['dispname'];?></span>	
 	<a href="login.php?from=<?echo $_SERVER['PHP_SELF'];?>" style="position:absolute;top:10px;right:10px;"><img border="0" width="16" height="16" src="imgs/t.gif" class="admin-logout"></a>
@@ -285,6 +288,23 @@ scaleall(document.body);
 <script src="speechloader.js"></script>
 <script>
 if (window.Notification) Notification.requestPermission();
+</script>
+<?if ($enablelivechat){?>
+<script type="text/javascript">
+window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
+d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
+_.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute("charset","utf-8");
+$.src="https://v2.zopim.com/?<?echo $chatkey;?>";z.t=+new Date;$.
+type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
+</script>
+<script src="livechat.js"></script>
+<?}?>	
+<script>
+window.onload=function(){
+	<?if ($enablelivechat){?>
+	livechat_init();
+	<?}?>	
+}
 </script>
 </body>
 </html>

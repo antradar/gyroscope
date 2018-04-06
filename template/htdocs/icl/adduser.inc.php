@@ -8,14 +8,15 @@ function adduser(){
 	
 	$user=userinfo();
 	if (!$user['groups']['accounts']) die('Access denied');
+	$gsid=$user['gsid']+0;
 		
 	$login=GETSTR('login');
-	$dispname=GETSTR('dispname');
+	$dispname=strip_tags(GETSTR('dispname'));
 	$active=GETVAL('active');
 	$virtual=GETVAL('virtual');
 	$passreset=GETSTR('passreset');
 	
-	$newpass=noapos(file_get_contents('php://input'));
+	$newpass=file_get_contents('php://input');
 	$np=encstr(md5($dbsalt.$newpass),$newpass.$dbsalt);
 		
 	$groupnames=GETSTR('groupnames');	
@@ -32,7 +33,7 @@ function adduser(){
 	$rs=sql_query($query,$db);
 	if ($myrow=sql_fetch_assoc($rs)) apperror('User already exists. Use a different login.');
 	
-	$query="insert into ".TABLENAME_USERS." (login,dispname,active,virtualuser,passreset,groupnames,password) values ('$login','$dispname',$active,$virtual,'$passreset','$groupnames','$np') ";
+	$query="insert into ".TABLENAME_USERS." (gsid,login,dispname,active,virtualuser,passreset,groupnames,password) values ($gsid,'$login','$dispname',$active,$virtual,'$passreset','$groupnames','$np') ";
 	$rs=sql_query($query,$db);
 	$userid=sql_insert_id($db,$rs)+0;
 

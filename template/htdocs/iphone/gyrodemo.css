@@ -10,6 +10,8 @@ acronym{text-decoration:none;border:none;}
 button, .button{margin-top:5px;color:#ffffff;background:#29abe2;padding:5px 15px;border-radius:3px;border:none;cursor:pointer;box-shadow:0px 1px 2px #c9c9c9;-webkit-appearance: none;}
 button.warn, .button.warn{background:#e55151;}
 button.disabled, .button.disabled{background:#dedede;}
+button.trivial{background:none;color:#666666;box-shadow:none;font-weight:bold;padding-left:0;}
+button.trivial:active{box-shadow:none;}
 .button, .button:hover, .button:visited, .button:link{text-decoration:none;}
 
 #lvviews, #tabviews{background:#ffffff;}
@@ -18,16 +20,16 @@ button.disabled, .button.disabled{background:#dedede;}
 .recadder img{width:18px;height:18px;}
 
 .changebar{display:none;z-index:1100;}
-.changebar_anchor{position:relative;z-index:1000;}
-.changebar_view{position:fixed;background:rgba(255,206,193,0.5);width:100%;}
-.changebar_content{padding:10px;text-align:center;}
+.changebar_anchor{position:relative;z-index:1000;top:-5px;}
+.changebar_view{position:fixed;background:rgba(255,220,193,0.9);width:100%;}
+.changebar_content{padding:0 235px 5px 5px;text-align:center;}
 .changebar_shadow{visibility:hidden;display:none;}
-
+.changebar_content button{font-size:12px;padding:3px 6px;}
 /* Tabs */
 .tabclose, .noclose{display:block;float:left;height:24px;width:30px;cursor:pointer;}
 .noclose{width:8px;}
 .activetab a, .dulltab a{float:left;}
-.tt{padding-top:5px;font-size:12px;margin-left:5px;padding-left:3px;padding-right:3px;white-space:nowrap;max-width:70px;overflow:hidden;}
+.tt{min-width:30px;padding-top:5px;font-size:12px;margin-left:5px;padding-left:3px;padding-right:3px;white-space:nowrap;max-width:70px;overflow:hidden;}
 .activetab .tabclose{background:transparent url(msprite.png) no-repeat -369px -130px;}
 .dulltab .tabclose{background:transparent url(msprite.png) no-repeat -333px -130px;}
 .activetab, .dulltab {font-weight:bold;display:block;float:left;height:24px;margin-right:4px;}
@@ -85,7 +87,7 @@ height:22px;
 .recadder{color:#29ABE2;margin-bottom:5px;font-size:14px;}
 .recadder img{vertical-align:middle;margin-right:4px;}
 .img-help{background:transparent url(msprite.png) no-repeat -265px -8px;}
-.img-print{border:none;background:transparent url(msprite.png) no-repeat -158px -5px;width:16px;height:16px;} /* 16x16 */
+.img-print{border:none;background:transparent url(msprite.png) no-repeat 0 -112px;width:16px;height:16px;vertical-align:middle;} /* 16x16 */
 
 .img-exit{background:transparent url(msprite.png) no-repeat -198px -7px;} /* 16x16 */
 
@@ -240,6 +242,10 @@ input:disabled{color:#000000;}
 
 @media screen and (max-width:720px){
 	.medialibtile{width:32%;}
+}
+
+@media screen and (max-width:600px){
+	.changebar_content{padding:5px;padding-top:0;}
 }
 
 @media screen and (max-width:480px){

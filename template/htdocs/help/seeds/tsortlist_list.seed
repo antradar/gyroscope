@@ -3,9 +3,10 @@
 <div onselectstart="return false;" onmousedown="#record#_mousedown(<?echo $#masterkey#;?>,this,<?echo $#primarykey#;?>);" onmouseover="#record#_mouseover(this,<?echo $#primarykey#;?>,1);" 
 style="float:left;padding-top:10px;border-left:solid 2px #ffffff;border-top:solid 6px #dedede; margin-bottom:15px;width:18%;min-width:140px;margin-right:1%;position:relative;cursor:move;user-select:none;-webkit-user-select:none;-moz-user-select:none;">
 	
-<!-- img ondragstart="return false;" onselectstart="return false;" ... style="cursor:default;" -->
+<!-- img ondragstart="return false;" onselectstart="return false;" ... style="cursor:default;width:100%;" -->
 	//}//while
 
 ?>
+<div class="clear"></div>
 <div id="#record#shadow_<?echo $#masterkey#?>" style="white-space:nowrap;opacity:0.95;cursor:move;user-select:none;-webkit-user-select:none;-moz-user-select:none;display:none;position:absolute;top:20px;left:5px;background:#efefef;padding:5px;width:15%;min-width:120px;"></div>
 <?

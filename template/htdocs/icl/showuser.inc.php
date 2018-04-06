@@ -2,15 +2,18 @@
 include 'icl/showkeyfilepad.inc.php';
 
 function showuser($userid=null){
+	global $smskey;
+	
 	if (!isset($userid)) $userid=GETVAL('userid');
 	
 	$user=userinfo();
 	if (!$user['groups']['accounts']) die('Access denied');
+	$gsid=$user['gsid']+0;
 	
 	global $db;
 	global $userroles;
 	
-	$query="select * from ".TABLENAME_USERS." where userid=$userid";
+	$query="select * from ".TABLENAME_USERS." where userid=$userid and gsid=$gsid";
 	$rs=sql_query($query,$db);
 	
 	if (!$myrow=sql_fetch_array($rs)) die('This user record has been removed');
@@ -27,6 +30,11 @@ function showuser($userid=null){
 	if ($certname=='') $certname='<em>not set</em>';
 	$needkeyfile=$myrow['needkeyfile'];
 	
+	$usesms=$myrow['usesms'];
+	$smscell=$myrow['smscell'];
+	
+	if ($smskey=='') $usesms=0;
+		
 	header('newtitle: '.tabtitle($login));
 	
 	makechangebar('user_'.$userid,"updateuser($userid);");
@@ -64,7 +72,7 @@ function showuser($userid=null){
 	</div>
 	
 	<div class="inputrow">
-		<input type="checkbox" onchange="marktabchanged('user_<?echo $userid;?>');" id="passreset_<?echo $userid;?>" <?if ($passreset) echo 'checked';?>> <label for="passreset_<?echo $userid;?>"><?tr('account_login_reset');?></label>
+		<input type="checkbox" onclick="marktabchanged('user_<?echo $userid;?>');" id="passreset_<?echo $userid;?>" <?if ($passreset) echo 'checked';?>> <label for="passreset_<?echo $userid;?>"><?tr('account_login_reset');?></label>
 	</div>
 
 	<div class="inputrow" id="cardsettings_<?echo $userid;?>">
@@ -74,6 +82,17 @@ function showuser($userid=null){
 		</div>
 		<input onchange="marktabchanged('user_<?echo $userid;?>');" type="checkbox" id="needcert_<?echo $userid;?>" <?if ($needcert) echo 'checked';?>> <label for="needcert_<?echo $userid;?>">card must be present at sign-in</label>
 
+	</div>
+	
+	<div class="inputrow">
+		<input type="checkbox" <?if ($smskey=='') echo 'disabled';?> id="usesms_<?echo $userid;?>" <?if ($usesms) echo 'checked';?> onclick="marktabchanged('user_<?echo $userid;?>');if (this.checked) {gid('smscellview_<?echo $userid;?>').style.display='block';gid('smscell_<?echo $userid;?>').focus();} else gid('smscellview_<?echo $userid;?>').style.display='none';">
+		<label style="<?if ($smskey=='') echo 'color:#666666;';?>" for="usesms_<?echo $userid;?>">use SMS code to enhance login</label>
+	</div>
+	
+	<div id="smscellview_<?echo $userid;?>" style="padding-left:30px;display:none<?if ($usesms) echo 'a';?>;">
+		<div class="inputrow">
+			Cell: <input class="inpmed" id="smscell_<?echo $userid;?>" value="<?echo htmlspecialchars($smscell);?>" onchange="marktabchanged('user_<?echo $userid;?>');">
+		</div>
 	</div>
 	
 	<div class="inputrow">

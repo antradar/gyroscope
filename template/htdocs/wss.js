@@ -1,4 +1,4 @@
-wss_init=function(userid,wsuri,wsskey){
+wss_init=function(userid,wsuri,wsskey,gsid){
 if (window.WebSocket){
 	if (document.wsskey) wsskey=document.wsskey;
 	document.websocket=new WebSocket(wsuri+'?WSS'+wsskey+'=');	
@@ -16,12 +16,15 @@ if (window.WebSocket){
 		if (msg.type=='getsid'){
 			if (!document.wssid&&msg.userid==userid) {
 				document.wssid=msg.sid;
+				document.gsid=msg.gsid;
 				console.log('sid: '+msg.sid);
 			}
 			return;	
 		}
 		
 		if (!document.wssid) return;
+				
+		if (msg.gsid!=gsid&&msg.gsid!=0) return;
 		
 		if (document.wssid==msg.sid){
 			console.log('ignore self');
@@ -53,7 +56,7 @@ if (window.WebSocket){
 		console.log('web socket closed, restarting in 3 secs. reconnect attempt #'+document.nomoresocket);
 		if (self.authpump) authpump();
 		if (document.wsskey) wsskey=document.wsskey;		
-		setTimeout(function(){if (document.wsskey) wsskey=document.wsskey;document.wssid=null;wss_init(userid,wsuri,wsskey);},3000);	
+		setTimeout(function(){if (document.wsskey) wsskey=document.wsskey;document.wssid=null;wss_init(userid,wsuri,wsskey,gsid);},3000);	
 	}
 	
 } else {

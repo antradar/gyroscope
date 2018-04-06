@@ -19,10 +19,33 @@ $cmd=$_GET['cmd'];
 
 include 'forminput.php';
 
+//enforcing gs expiry
+
+$gsbypass=array(
+	'clogo','wk','pump','reauth',
+	'slv_core__settings','slv_core__users','updategyroscope',
+	'newuser','showuser','updateuser','deluser','downloadgskeyfile',
+	'showcreditcards','addcreditcard','delcreditcard','setdefaultcreditcard',
+	'showgssubscription');
+
+$user=userinfo();
+$gsexpiry=$user['gsexpiry']+0;
+$now=time();
+
+if ($gsexpiry!=0&&$gsexpiry<$now){
+	//todo: bypass payment commands
+	if (!in_array($cmd,$gsbypass)){
+		header('HTTP/1.0 401 Forbidden');
+		header('X-STATUS: 401');
+		die();
+	}
+}
+
 
 switch($cmd){
 
 //Settings
+	case 'clogo': include 'icl/clogo.inc.php'; clogo(); break;
 	case 'slv_core__settings': include 'icl/listsettings.inc.php'; listsettings(); break;
 
 	case 'slv_core__reportsettings': include 'icl/listreportsettings.inc.php'; listreportsettings(); break;
@@ -46,7 +69,13 @@ switch($cmd){
 	
 	case 'installmods': include 'icl/installmods.inc.php'; installmods(); break;
 	
-
+	case 'showcreditcards': include 'icl/showcreditcards.inc.php'; showcreditcards(); break;
+	case 'addcreditcard': include 'icl/addcreditcard.inc.php'; addcreditcard(); break;
+	case 'delcreditcard': include 'icl/delcreditcard.inc.php'; delcreditcard(); break;
+	case 'setdefaultcreditcard': include 'icl/setdefaultcreditcard.inc.php'; setdefaultcreditcard(); break;
+	
+	case 'showgssubscription': include 'icl/showgssubscription.inc.php'; showgssubscription(); break;
+	
 //Report Settings
 
 	case 'slv_core__reportsettings': include 'icl/listreportsettings.inc.php'; listreportsettings(); break;
@@ -74,7 +103,6 @@ switch($cmd){
 	
 //Templates
 
-	case 'slv_core__templates': include 'icl/listtemplates.inc.php'; listtemplates(); break;
 	case 'showtemplate': include 'icl/showtemplate.inc.php'; showtemplate(); break;
 	case 'newtemplate': include 'icl/newtemplate.inc.php'; newtemplate(); break;
 	case 'addtemplate': include 'icl/addtemplate.inc.php'; addtemplate(); break;

@@ -4,6 +4,9 @@ $dict_wdays=array('יום א','יום ב','יום ג','יום ד','יום ה','�
 $dict_dir='rtl';
 
 $dict=array(
+	'currency_separator_decimal'=>'.',
+	'currency_separator_thousands'=>',',
+	
 	'login'=>'התחברתי',
 	'signin'=>'הירשם',
 	'username'=>'שם משתמש',

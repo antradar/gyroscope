@@ -51,7 +51,7 @@ document.appsettings={codepage:'<?echo $codepage;?>', fastlane:'<?echo $fastlane
 <span class="iconbuttons">
 <!-- usually there is one entity icon per list view -->
 <input id="anchor_top" title="Top View" style="position:absolute;top:-60px;left:-100px;width:20px;">
-<a class="noblink" id="applogo"><img src="imgs/clogo.gif" border="0"></a>
+<a class="noblink" id="applogo"><img src="<?echo $codepage;?>?cmd=clogo" border="0" width="157"></a>
 
 <a id="beltprev" onclick="beltprev();"><img class="beltprev" src="imgs/t.gif" width="16" height="32"></a>
 
@@ -94,9 +94,9 @@ document.appsettings={codepage:'<?echo $codepage;?>', fastlane:'<?echo $fastlane
 </span><!-- iconbuttons -->
 
 <div id="logoutlink">
-<acronym title="<?echo $user['dispname'];?>"><img src="imgs/t.gif" width="16" height="16" class="admin-user"></acronym><span id="labellogin"><?echo $user['login'];?></span><span id="labeldispname" style="display:none;"><?echo $user['dispname'];?></span>
+<acronym title="<?echo $user['dispname'];?>"><a onclick="ajxjs(self.setaccountpass,'accounts.js');reloadtab('account','<?tr('account_settings');?>','showaccount');addtab('account','<?tr('account_settings');?>','showaccount');return false;"><img src="imgs/t.gif" width="16" height="16" class="admin-user"></acronym><span id="labellogin"><?echo $user['dispname'];?></span><span id="labeldispname" style="display:none;"><?echo $user['dispname'];?></span></a>
 &nbsp; &nbsp;
-<acronym title="<?tr('account_settings');?>"><a title="<?tr('account_settings');?>" onclick="ajxjs(self.setaccountpass,'accounts.js');reloadtab('account','<?tr('account_settings');?>','showaccount');addtab('account','<?tr('account_settings');?>','showaccount');return false;"><img src="imgs/t.gif" width="16" height="16" class="admin-settings"></a></acronym>
+<!-- acronym title="<?tr('account_settings');?>"><a title="<?tr('account_settings');?>" onclick="ajxjs(self.setaccountpass,'accounts.js');reloadtab('account','<?tr('account_settings');?>','showaccount');addtab('account','<?tr('account_settings');?>','showaccount');return false;"><img src="imgs/t.gif" width="16" height="16" class="admin-settings"></a></acronym -->
 &nbsp;
 <acronym title="<?tr('signout');?>"><a title="<?tr('signout');?>" onclick="skipconfirm();" href="login.php?from=<?echo $_SERVER['PHP_SELF'];?>" onmouseover="hintstatus(this,'Logout');"><img src="imgs/t.gif" width="16" height="16" class="admin-logout"></a></acronym>
 </div><!-- logout -->
@@ -104,10 +104,11 @@ document.appsettings={codepage:'<?echo $codepage;?>', fastlane:'<?echo $fastlane
 </div>
 <div id="statusinfo" scale:ny="25" scale:cw="0">
 	<span id="statusicons">
-	<a id="speechstart" onclick="ajxjs(self.speech_startstop,'speech.js');speech_startstop();" onmouseover="hintstatus(this,'click to activate speech recognition');"><img src="imgs/t.gif"></a>
+	<a id="speechstart" onclick="ajxjs(self.speech_startstop,'speech.js');speech_startstop();" onmouseover="hintstatus(this,'<?tr('speech_clicktoactivate');?>');"><img src="imgs/t.gif"></a>
 	<img id="wsswarn" src="imgs/t.gif" onmouseover="hintstatus(this,'websocket not supported');">
 	<img onclick="this.style.display='none';" id="barcodewarn" src="imgs/t.gif" onmouseover="hintstatus(this,'barcode scanner not active');">
 	<img id="diagwarn" src="imgs/t.gif" onclick="window.location.reload();" onmouseover="hintstatus(this,'dialogs suppressed. click to reload browser.');">
+	<img id="chatindicator" src="imgs/t.gif" onclick="livechat_start();" onmouseover="hintstatus(this,document.chatstatus=='online'?'click to start live chat':'live chat unavailable');">
 	</span>
 	<span id="statusc"></span>
 </div>
@@ -168,12 +169,12 @@ window.onbeforeunload=function(){
 </script>
 
 <?include 'ws_js.php';?>
-
 <script src="speechloader.js"></script>
 
 <?/*
 <script src="barcodescanner.js"></script>
 <script>
+	barcodescanner.init();
 	window.onblur=function(){if (gid('barcodewarn')) gid('barcodewarn').style.display='inline';}
 	window.onfocus=function(){if (gid('barcodewarn')) gid('barcodewarn').style.display='none';}
 </script>
@@ -188,9 +189,24 @@ smartcard_init('cardreader',{
 	'nohttps':function(){document.smartcard=null;}
 });
 </script>
+<?if ($enablelivechat){?>
+<script type="text/javascript">
+window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
+d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
+_.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute("charset","utf-8");
+$.src="https://v2.zopim.com/?<?echo $chatkey;?>";z.t=+new Date;$.
+type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
+</script>
+<script src="livechat.js"></script>
+<?}?>	
 <script>
 if (window.Notification) Notification.requestPermission();
 if (window.console&&window.console.log) console.log('%c%s','font-size:10px;font-family:arial,sans-serif;color:#72ADDE;','Powered by Antradar Gyroscope <?echo GYROSCOPE_VERSION;?>');
+window.onload=function(){
+	<?if ($enablelivechat){?>
+	livechat_init();
+	<?}?>	
+}
 </script>
 </body>
 </html>

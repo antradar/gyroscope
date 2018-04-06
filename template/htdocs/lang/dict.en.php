@@ -5,14 +5,23 @@ $dict_wdays=array('Su','Mo','Tu','We','Th','Fr','Sa');
 $dict_dir='ltr';
 
 $dict=array(
+	'currency_separator_decimal'=>'.',
+	'currency_separator_thousands'=>',',
+	
 	'login'=>'Login',
 	'signin'=>'Sign In',
 	'username'=>'Username',
 	'password'=>'Password',
 	
 	'dispname'=>'Display Name',
+	
+	'powerbanner'=>'This application is powered by Gyroscope %%version%%',
+	'speech_clicktoactivate'=>'click to activate speech recognition',
+	
+	'icon_settings'=>'Settings',
+	'icon_accounts'=>'Users',
 		
-	'account_settings'=>'Account Settings',
+	'account_settings'=>'My Account',
 	'signout'=>'Sign Out',
 	'current_password'=>'Current Password',
 	'new_password'=>'New Password',
@@ -42,6 +51,13 @@ $dict=array(
 	'account_virtual'=>'virtual account',
 	
 	'rights_accounts'=>'manage users',
+	'rights_standardadmin'=>'standard admin rights',
+	'rights_managereports'=>'manage report settings',
+	'rights_configtemplates'=>'configure system templates',
+	'rights_managetemplates'=>'create/modify system templates',
+	'rights_dbadmin'=>'db admin',
+	'rights_upgrademodules'=>'upgrade modules',
+	
 	'icon_reports'=>'Reports',
 
 	'close_all_tabs'=>'Close All',
@@ -57,7 +73,8 @@ $dict=array(
 	'templatetype_label_templatetypename'=>'Template Class Name',
 	'templatetype_label_templatetypekey'=>'Template Class Key',
 	'templatetype_label_activetemplateid'=>'Active Template',
-	
+
+	'icon_systemplates'=>'System Templates',	
 	'icon_templates'=>'Templates',
 	'list_template_stab'=>'Template',
 	'button_template_add'=>'Add Template',
@@ -76,6 +93,8 @@ $dict=array(
 	'reportsetting_label_reportfunc'=>'Custom Function <em>(add "return false;" to bypass default)</em>',
 	'reportsetting_label_reportkey'=>'Report Key',
 	'reportsetting_label_reportdesc'=>'Description',	
+	
+	'icon_sqlcompare'=>'SQL Compare',	
 				
 	'tab_welcome'=>'Welcome',
 	'hometab_welcome'=>'Welcome to Antradar Gyroscope',	

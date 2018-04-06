@@ -55,6 +55,7 @@ showtab=function(key,opts){
       var keyparts=key.split('_');
       var ckey=keyparts[0];
       if (self['tabviewfunc_'+ckey]) self['tabviewfunc_'+ckey](keyparts[1]);
+      if (self.livechat_updatesummary&&document.chatstatus=='online') livechat_updatesummary();
       
 }
 
@@ -112,6 +113,8 @@ function reloadtab(key,title,params,loadfunc,data,opts){
 		  	window.location.href='login.php';
 		    return;
       }
+      
+      
 	   
     document.tabtitles[tabid].tablock=null;
       
@@ -166,9 +169,10 @@ function reloadtab(key,title,params,loadfunc,data,opts){
 	if (opts!=null&&opts.noclose) tabhtml="<nobr><a class=\"tt\" ondblclick=\"refreshtab('"+key+"');\" onclick=\"showtab('"+key+"');\">"+title+"</a><span class=\"noclose\"></span></nobr>";
 	if (title) document.tabtitles[tabid].innerHTML=tabhtml;
 	
-      document.tabviews[tabid].innerHTML=rq.responseText;
-      if (loadfunc!=null) loadfunc(rq);
-      if (opts&&opts.bookmark) gototabbookmark(opts.bookmark);
+	document.tabviews[tabid].innerHTML=rq.responseText;
+	if (loadfunc!=null) loadfunc(rq);
+	if (opts&&opts.bookmark) gototabbookmark(opts.bookmark);
+	autosize();
 	}
   }
   rq.send(data);
@@ -247,6 +251,12 @@ function addtab(key,title,params,loadfunc,data,opts){
 		  	window.location.href='login.php';
 		    return;
       }
+      
+	  if (rq.status==401||(xtatus|0)==401){
+		  ajxjs(self.showgssubscription,'gssubscriptions.js');
+		  showgssubscription();
+	      return;
+	  }            
       
 	var apperror=rq.getResponseHeader('apperror');
 	if (apperror!=null&&apperror!=''){
@@ -335,6 +345,8 @@ closetab=function(key){
 	
 	if (document.tabcount==0) {document.currenttab=-1; return;}
 	showtab(document.tabkeys[document.currenttab]);	
+    if (self.livechat_updatesummary&&document.chatstatus=='online') livechat_updatesummary();
+	
 }
 
 function closetabs(rectype){
@@ -349,6 +361,7 @@ function closetabs(rectype){
 		var id=tabkey.replace(rectype+'_','');
 		if (parseInt(id,10)==id) setTimeout(cf(tabkey),i*50);	
 	}
+	
 }
 
 function closetabtree(root,sub){
@@ -375,6 +388,9 @@ function closetabtree(root,sub){
 			setTimeout(cf(tabkey),i*50);	
 		}
 	}
+	
+      if (self.livechat_updatesummary&&document.chatstatus=='online') livechat_updatesummary();
+
 }
 
 

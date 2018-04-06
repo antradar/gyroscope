@@ -7,8 +7,10 @@ function update#record#(){
 #iterator-fieldlist-servervars#
 
 	global $db;
+	$user=userinfo();
+	$gsid=$user['gsid']+0;
 
-	$query="update #tablename# set #iterator-fieldlist-update# where #primarykey#=$#primarykey#";
+	$query="update #tablename# set #iterator-fieldlist-update# where gsid=$gsid and #primarykey#=$#primarykey#";
 	sql_query($query,$db);
 
 	logaction("updated #c_record# #$#primarykey# <u>$#dispfield#</u>",

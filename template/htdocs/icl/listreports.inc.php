@@ -2,15 +2,18 @@
 
 function listreports(){
 	$user=userinfo();
+	$gsid=$user['gsid']+0;
 	$groupnames=$user['groups'];
 	$key=GETSTR('key');
 	$mode=GETSTR('mode');
 	
 	global $db;
+	global $lang;
+	global $deflang;
 	
-	$query="select * from ".TABLENAME_REPORTS;
-	if ($key!='') $query.=" where reportgroup like '%$key%' or reportname like '%$key%' ";
-	$query.=" order by reportgroup,reportname";
+	$query="select * from ".TABLENAME_REPORTS." where (gsid=$gsid or gsid=0) ";
+	if ($key!='') $query.=" and reportgroup_$lang like '%$key%' or reportname_$lang like '%$key%' ";
+	$query.=" order by reportgroup_$lang,reportname_$lang";
 	
 	$rs=sql_query($query,$db);
 	$found=0;
@@ -35,8 +38,9 @@ function listreports(){
 	
 	while ($myrow=sql_fetch_assoc($rs)){
 		$reportkey=$myrow['reportkey'];
-		$reportname=$myrow['reportname'];
-		$reportgroup=$myrow['reportgroup'];
+		$reportname=$myrow['reportname_'.$lang];
+		if ($reportname=='') $reportname=$myrow['reportname_'.$deflang];
+		$reportgroup=$myrow['reportgroup_'.$lang];
 		$reportfunc=$myrow['reportfunc'];
 		$dbreportname=noapos(htmlspecialchars($reportname));
 		$reportgroupnames=explode('|',$myrow['reportgroupnames']);

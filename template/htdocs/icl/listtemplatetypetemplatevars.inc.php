@@ -3,7 +3,9 @@
 function listtemplatetypetemplatevars($templatetypeid=null){
 	if (!isset($templatetypeid)) $templatetypeid=GETVAL('templatetypeid');
 	global $db;
-	
+
+	gsguard($templatetypeid,'templatetypes','templatetypeid');
+			
 	$query="select * from templatetypes where templatetypeid=$templatetypeid";
 	$rs=sql_query($query,$db);
 	$myrow=sql_fetch_assoc($rs);

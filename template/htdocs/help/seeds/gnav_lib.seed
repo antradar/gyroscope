@@ -25,7 +25,7 @@ function countfield($fieldname,$limit=null){
 
 #iterator-multifields-multibridge#
 	$query.=sqlfilters();
-	$query.=" group by $fieldname ";
+	$query.=" group by $fieldname "; //add secondary groupby here if applicable
 	
 	if ($limit!=null) $query.=" order by c desc limit $limit ";
 	else $query.=" order by $fieldname ";
@@ -42,7 +42,14 @@ function countfield($fieldname,$limit=null){
 			if ($c<=0) continue;
 			$key=$myrow[$fieldname];
 			if (trim($key)=='') continue;
-			$counts[$key]=$c;	
+			
+			$counts[$key]=$c; //remove this if using secondary groupby
+			
+			/*
+			//if using secondary groupby:
+			if (!isset($counts[$key])) $counts[$key]=0; $counts[$key]++;
+			*/
+				
 		}
 		
 //		if (!$navobj) cache_set($swapprefix.'#prefix#navobj',array($navkey=>$counts),$#prefix#navcacheexp);
@@ -347,7 +354,7 @@ function showrecords(){
 	$nbasefilters=$bfilters['nfilters'];
 	
 
-	$query="select count(#mastertable#.#primarykey#) as c from #mastertable# where #mastertable#.#primarykey#!=0 $filters ";
+	$query="select count(#mastertable#.#primarykey#) as c from #mastertable# where #mastertable#.#primarykey#!=0 $filters "; //add secondary groupby here
 
 //	$navobj=cache_get($swapprefix.'#prefix#navobj');
 //	//echo '<pre>'; print_r($navobj); echo '</pre>';
@@ -358,6 +365,8 @@ function showrecords(){
 		$rs=sql_query($query,$db);
 		$myrow=sql_fetch_assoc($rs);
 		$count=$myrow['c']+0;
+		
+		//if secondary groupby, use: $count=sql_affected_rows($db,$rs);
 		
 //		if (!$navobj) cache_set($swapprefix.'#prefix#navobj',array($ckey=>$count),$#prefix#navcacheexp);
 //		else {
@@ -413,7 +422,7 @@ Page <?echo $page+1;?> of <?echo $maxpage+1;?>
 
 <div style="padding-top:20px;">Filters: <span style="border:solid 1px;"><?echo $filters;?></span></div>
 <?
-	$query="select * from #mastertable# where #mastertable#.#primarykey#!=0 $filters ";
+	$query="select * from #mastertable# where #mastertable#.#primarykey#!=0 $filters "; //repeat secondary groupby here
 	$query.=" order by $sort limit $start,$perpage ";
 	$nkey=md5($query);
 	//$myrows=cache_get($nkey);

@@ -8,6 +8,8 @@ function deltemplatevar(){
 	
 	
 	global $db;
+	
+	gsguard($templatetypeid,'templatetypes','templatetypeid');
 
 	$query="delete from templatevars where templatevarid=$templatevarid and templatetypeid=$templatetypeid";
 	sql_query($query,$db);	

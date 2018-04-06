@@ -10,7 +10,7 @@ include 'auth.php';
 include 'xss.php';
 
 $csrfkey=sha1($salt.'csrf'.$_SERVER['REMOTE_ADDR'].date('Y-m-j-g'));
-$salt2=$saltroot.$_SERVER['REMOTE_ADDR'].date('Y-m-j-h',time()-3600);
+$salt2=$saltroot.$_SERVER['REMOTE_ADDR'].date('Y-m-j-H',time()-3600);
 $csrfkey2=sha1($salt2.'csrf'.$_SERVER['REMOTE_ADDR'].date('Y-m-j-g',time()-3600));
 
 $error_message='';
@@ -37,7 +37,7 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['gyroscope
 		$raw_login=$_POST['gyroscope_login_'.$dkey];
 		$login=str_replace("'",'',$raw_login);
 		
-		$query="select * from ".TABLENAME_USERS." where login='$login' and active=1 and virtualuser=0";
+		$query="select * from ".TABLENAME_USERS." left join gss on ".TABLENAME_USERS.".gsid=gss.gsid where login='$login' and active=1 and virtualuser=0";
 		$rs=sql_query($query,$db);  
 		
 		$passok=0;
@@ -51,6 +51,9 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['gyroscope
 		if ($passok){
 			
 			$userid=$myrow['userid'];
+			$gsid=$myrow['gsid'];
+			$gsexpiry=$myrow['gsexpiry']+0;
+			$gstier=$myrow['gstier']+0;
 			$passreset=$myrow['passreset'];
 			
 			$needcert=$myrow['needcert'];
@@ -60,6 +63,7 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['gyroscope
 			
 			$needkeyfile=$myrow['needkeyfile'];
 			$keyfileokay=1;
+			$smscode=$myrow['smscode'];
 			
 			if ($needkeyfile){
 				$keyfilename=$_FILES['keyfile']['tmp_name'];
@@ -77,6 +81,18 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['gyroscope
 				}
 					
 			}//needkeyfile
+			
+			$smserror='';
+			$usesms=$myrow['usesms'];
+			$smsokay=1;
+			if ($smskey=='') $usesms=0;
+			
+			if ($usesms){
+				if ($_POST['smscode']==''||md5($salt.$_POST['smscode'])!=$smscode){
+					$smsokay=0;
+					$smserror='Invalid SMS code';
+				}
+			}
 			
 			$dispname=$myrow['dispname'];
 			
@@ -114,19 +130,28 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['gyroscope
 			if ($passreset){
 			
 			} else {
-				if ($keyfileokay&&$certokay){	  
+				if ($keyfileokay&&$certokay&&$smsokay){	  
 					$groupnames=$myrow['groupnames'];
-					$auth=md5($salt.$userid.$groupnames.$salt.$raw_login.$salt.$dispname);
+					$auth=md5($salt.$userid.$groupnames.$salt.$raw_login.$salt.$dispname.$salt.$gsid.$salt.$gsexpiry.$salt.$gstier);
 					
-					setcookie('auth',$auth);
-					setcookie('userid',$userid);
-					setcookie('login',$login);
-					setcookie('dispname',$dispname);
-					setcookie('groupnames',$groupnames);
+					setcookie('auth',$auth,null,null,null,null,true);
+					setcookie('gsid',$gsid,null,null,null,null,true);
+					setcookie('gsexpiry',$gsexpiry,null,null,null,null,true);
+					setcookie('gstier',$gstier,null,null,null,null,true);
+					setcookie('userid',$userid,null,null,null,null,true);
+					setcookie('login',$login,null,null,null,null,true);
+					setcookie('dispname',$dispname,null,null,null,null,true);
+					setcookie('groupnames',$groupnames,null,null,null,null,true);
 					
 					if (isset($_POST['lang'])){
 						if (!in_array($_POST['lang'],array_keys($langs))) $_POST['lang']=$deflang;
 						setcookie('userlang',$_POST['lang'],time()+3600*24*30*6); //keep for 6 months
+					}
+					
+					//reset SMS code
+					if ($usesms){
+						$query="update ".TABLENAME_USERS." set smscode='' where userid=$userid";
+						sql_query($query,$db);	
 					}
 					
 					if (isset($_GET['from'])&&trim($_GET['from'])!='') {
@@ -139,8 +164,8 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['gyroscope
 					} else header('Location:index.php');
 					die();
 				} else {
-					$error_message=trim(implode('<br>',array($keyfileerror,$certerror)),'<br>');
-				}//keyfileokay, certokay
+					$error_message=trim(implode('<br>',array($smserror,$keyfileerror,$certerror)),'<br>');
+				}//keyfileokay, certokay, smsokay
 				
 				
 			}//passreset
@@ -150,6 +175,9 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['gyroscope
 	
 } else {
 	setcookie('userid',NULL,time()-3600);
+	setcookie('gsid',NULL,time()-3600);
+	setcookie('gsexpiry',NULL,time()-3600);	
+	setcookie('gstier',NULL,time()-3600);	
 	setcookie('login',NULL,time()-3600);
 	setcookie('dispname',NULL,time()-3600);
 	setcookie('auth',NULL,time()-3600);
@@ -211,7 +239,7 @@ body{font-size:28px;}
 	<form method="POST" style="padding:20px;margin:0;padding-top:10px;" onsubmit="return checkform();" enctype="multipart/form-data">
 	<img src="imgs/logo.png" style="margin:10px 0;width:100%;">
 	<?if ($error_message!=''){?>
-	<div style="color:#ab0200;font-weight:bold;padding-top:10px;"><?echo $error_message;?></div>
+	<div id="loginerror" style="color:#ab0200;font-weight:bold;padding-top:10px;"><?echo $error_message;?></div>
 	<?}?>
 	
 	<div style="padding-top:10px;"><?tr('username');?>: <?if ($passreset){?><b><?echo stripslashes($_POST['gyroscope_login_'.$dkey]);?></b> &nbsp; <a href="<?echo $_SERVER['PHP_SELF'];?>"><em><?tr('switch_user');?></em></a><?}?></div>
@@ -223,11 +251,20 @@ body{font-size:28px;}
 		<div style="padding-top:5px;padding-bottom:15px;">
 			<input style="width:100%;" id="password" type="password" name="password">
 		</div>
-	
-		<div style="<?if ($passreset) echo 'display:none;';?>">Key File:</div>
-		<div style="padding-top:5px;padding-bottom:15px;<?if ($passreset) echo 'display:none;';?>">
-			<input id="keyfile" type="file" name="keyfile">
-			<input type="hidden" name="MAX_FILE_SIZE" value="4096">
+		
+		<div id="tfa_sms" style="display:none;">
+			<div>SMS Code: (check your phone)</div>
+			<div style="padding-top:5px;padding-bottom:15px;">
+				<input id="smscode" name="smscode" style="width:100%;" autocomplete="off">
+			</div>
+		</div>
+		
+		<div id="tfa_keyfile" style="display:none;">
+			<div style="<?if ($passreset) echo 'display:none;';?>">Key File:</div>
+			<div style="padding-top:5px;padding-bottom:15px;<?if ($passreset) echo 'display:none;';?>">
+				<input id="keyfile" type="file" name="keyfile">
+				<input type="hidden" name="MAX_FILE_SIZE" value="4096">
+			</div>
 		</div>
 	
 	<?if ($passreset){?>
@@ -282,12 +319,39 @@ body{font-size:28px;}
 	<script src="nano.js"></script>
 	<script>
 		function checkform(){
+			if (gid('loginerror')) gid('loginerror').innerHTML='';
 			if (document.skipcheck) return true;
 			if (gid('password').value=='') { //&&gid('certid').value==''
 				gid('password').focus();
 				if (gid('login').value=='') gid('login').focus();
 				return false;
 			}
+			
+			var tfa=false;
+			
+			if (!document.tfabypass){
+			
+				var res=ajxb('ajx_2facheck.php?','login='+encodeHTML(gid('login').value)+'&password='+encodeHTML(gid('password').value),function(rq){
+					document.tfabypass=true;
+					var tfas=rq.getResponseHeader('tfas');
+					if (tfas!=null&&tfas!=''){
+						tfa=true;
+						var tfaparts=tfas.split(',');
+						for (var i=0;i<tfaparts.length;i++){
+							var part=tfaparts[i];
+							if (gid('tfa_'+part)) {
+								gid('tfa_'+part).style.display='block';
+								var focalpoint=rq.getResponseHeader('focalpoint');
+								if (focalpoint!=null&&focalpoint!=''&&gid(focalpoint)) gid(focalpoint).focus();
+							}
+						}	
+					}
+					
+				});
+				
+			}
+			
+			if (tfa) return false;
 			
 			return true;
 		}

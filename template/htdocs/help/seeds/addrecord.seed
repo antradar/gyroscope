@@ -6,8 +6,10 @@ function add#record#(){
 	
 #iterator-fieldlist-servervars#	
 	global $db;
+	$user=userinfo();
+	$gsid=$user['gsid']+0;
 	
-	$query="insert into #tablename# (#iterator-fieldlist-sqlflist#) values (#iterator-fieldlist-sqlvlist#) ";
+	$query="insert into #tablename# (gsid,#iterator-fieldlist-sqlflist#) values ($gsid,#iterator-fieldlist-sqlvlist#) ";
 	$rs=sql_query($query,$db);
 	$#primarykey#=sql_insert_id($db,$rs)+0;
 

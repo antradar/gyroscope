@@ -1,4 +1,8 @@
 document.dict={
+'currency_separator_decimal':'.',
+'currency_separator_thousands':',',
+'speechlang':'en-US',
+
 'edit':'edit',
 'confirm_refresh_tab':'Are you sure you want to refresh this tab?',
 'confirm_close_all_tabs':'Are you sure you want to close all the tabs?',

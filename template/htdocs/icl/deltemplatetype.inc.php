@@ -7,9 +7,12 @@ function deltemplatetype(){
 	$templatetypeid=GETVAL('templatetypeid');
 	global $db;
 	
-	$query="select * from templatetypes where templatetypeid=$templatetypeid";
+	$user=userinfo();
+	$gsid=$user['gsid']+0;
+	
+	$query="select * from templatetypes where templatetypeid=$templatetypeid and gsid=$gsid";
 	$rs=sql_query($query,$db);
-	if (!$myrow=sql_fetch_array($rs)) die('Invalid templatetype record');
+	if (!$myrow=sql_fetch_array($rs)) apperror('Invalid templatetype record');
 	
 	$templatetypename=$myrow['templatetypename'];
 	

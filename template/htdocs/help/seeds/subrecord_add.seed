@@ -6,6 +6,8 @@ function add#record#(){
 	$#masterkey#=GETVAL('#masterkey#');
 #iterator-fieldlist-servervars#		
 	global $db;
+	$user=userinfo();
+	$gsid=$user['gsid']+0;
 	
 	$query="insert into #tablename# (#foreignkey#,#iterator-fieldlist-sqlflist#) values ($#foreignkey#,#iterator-fieldlist-sqlvlist#) ";
 	$rs=sql_query($query,$db);

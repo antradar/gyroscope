@@ -50,7 +50,7 @@ adduser=function(){
 		
 		if (opass.value!=opass2.value){
 			valid=0;
-			salert('Password mismatch');	
+			salert(document.dict.mismatching_password);	
 		}
 	}
 	
@@ -107,16 +107,19 @@ updateuser=function(userid){
 	var suffix=userid;
 	var ologin=gid('login_'+suffix);
 	var odispname=gid('dispname_'+suffix);
+	var osmscell=gid('smscell_'+suffix);
 	
 	var active=0;
 	var virtual=0;
 	var needcert=0;
 	var needkeyfile=0;
+	var usesms=0;
 
 	if (gid('active_'+suffix).checked) active=1;
 	if (gid('virtual_'+suffix).checked) virtual=1;
 	if (gid('needcert_'+suffix).checked) needcert=1;
 	if (gid('userneedkeyfile_'+suffix).checked) needkeyfile=1;
+	if (gid('usesms_'+suffix).checked) usesms=1;
 
 
 	var passreset=0;
@@ -142,6 +145,9 @@ updateuser=function(userid){
 		}
 	}
 	
+	if (usesms&&!valstr(osmscell)) valid=0;
+	
+	
 	if (!valid) return;
 	
 	var login=encodeHTML(ologin.value);
@@ -153,7 +159,9 @@ updateuser=function(userid){
 	var cert=encodeHTML(gid('cert_'+userid).value);
 
 	newpass=encodeHTML(newpass);
-	
+
+	var smscell=encodeHTML(osmscell.value);
+		
 	if (!virtual){
 	<?
 	foreach ($userroles as $role=>$label){
@@ -177,13 +185,15 @@ updateuser=function(userid){
 	params.push('needkeyfile='+needkeyfile);
 	params.push('passreset='+passreset);
 	params.push('groupnames='+groupnames);
+	params.push('usesms='+usesms);
+	params.push('smscell='+smscell);
 	
 	reloadtab('user_'+userid,ologin.value,'updateuser&userid='+userid+'&'+params.join('&'),function(rq){
 		if (!document.smartcard) gid('cardsettings_'+userid).style.display='none';
 		reloadview('core.users','userlist');
-		if (rq.getResponseHeader('newlogin')!=null&&rq.getResponseHeader('newlogin')!='') gid('labellogin').innerHTML=decodeURIComponent(rq.getResponseHeader('newlogin'));
+		if (rq.getResponseHeader('newlogin')!=null&&rq.getResponseHeader('newlogin')!='') gid('labellogin').innerHTML=decodeURIComponent(rq.getResponseHeader('newdispname'));
 		if (rq.getResponseHeader('newdispname')!=null&&rq.getResponseHeader('newdispname')!='') gid('labeldispname').innerHTML=decodeURIComponent(rq.getResponseHeader('newdispname'));
-		flashstatus('User '+ologin.value+' has been updated', 3000);
+		flashstatus('User '+ologin.value+' has been updated', 2000);
 	},"pass="+newpass+"&needcert="+needcert+"&certname="+certname+"&cert="+cert,{fastlane:1});
 	
 }

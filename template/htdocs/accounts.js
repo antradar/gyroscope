@@ -3,6 +3,8 @@ setaccountpass=function(){
 	var opass1=gid('accountpass1');
 	var opass2=gid('accountpass2');
 	
+	var osmscell=gid('myaccount_smscell');
+	
 	if (!valstr(ooldpass)) return;
 	if (!valstr(opass1)) return;
 	if (!valstr(opass2)) return;
@@ -13,13 +15,21 @@ setaccountpass=function(){
 	
 	var needkeyfile=0;
 	if (gid('myaccount_needkeyfile').checked) needkeyfile=1;
-
+	
+	var usesms=0;
+	if (gid('myaccount_usesms').checked) usesms=1;
+	
 	if (pass1!=pass2){
 		salert(document.dict['mismatching_password']);
 		return;
 	}
+	
+	if (usesms&&!valstr(osmscell)) return;
+	
+	var smscell=encodeHTML(osmscell.value);
+	
 	var rq=xmlHTTPRequestObject();
-	rq.open('POST',document.appsettings.fastlane+'?cmd=setaccount&needkeyfile='+needkeyfile,true);
+	rq.open('POST',document.appsettings.fastlane+'?cmd=setaccount&needkeyfile='+needkeyfile+'&usesms='+usesms+'&smscell='+smscell,true);
 	rq.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 	rq.onreadystatechange=function(){
 		if (rq.readyState==4){

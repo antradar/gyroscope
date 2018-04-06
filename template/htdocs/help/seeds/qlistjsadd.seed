@@ -1,0 +1,3 @@
+	var #refkey#s=qget#masterrecord##subrecord##refkey#s();
+
+	params.push('#refkey#s='+#refkey#s);

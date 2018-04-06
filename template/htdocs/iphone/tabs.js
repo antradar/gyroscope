@@ -1,4 +1,4 @@
-tabcount=0;
+document.tabcount=0;
 document.tabviews=[];
 document.tabkeys=[];
 document.tabtitles=[];
@@ -7,7 +7,7 @@ document.tabseq=[];
 document.currenttab=-1;
 gettabid=function(key){
 	var i;
-	for (i=0;i<tabcount;i++) if (document.tabkeys[i]==key) return i;
+	for (i=0;i<document.tabcount;i++) if (document.tabkeys[i]==key) return i;
 	
 	return -1;	
 }
@@ -50,6 +50,9 @@ function closetabtree(root,sub){
 			setTimeout(cf(tabkey),i*50);	
 		}
 	}
+	
+	if (self.livechat_updatesummary&&document.chatstatus=='online') livechat_updatesummary();
+
 }
 
 showtab=function(key,opts){
@@ -63,7 +66,7 @@ showtab=function(key,opts){
   document.tabseq.push(key);
   document.viewmode=2;
   
-  for (i=0;i<tabcount;i++){
+  for (i=0;i<document.tabcount;i++){
 	  if (i==tabid) continue;
 	  document.tabviews[i].style.display='none';
 	  document.tabtitles[i].className='dulltab';
@@ -72,7 +75,7 @@ showtab=function(key,opts){
   document.tabtitles[tabid].className='activetab';
 
 //wrapping
-  var t=document.tabtitles[tabcount-1];
+  var t=document.tabtitles[document.tabcount-1];
   var topmargin=0;
   
       document.rowcount=(t.offsetTop-topmargin)/28+1;
@@ -90,6 +93,7 @@ showtab=function(key,opts){
       var keyparts=key.split('_');
       var ckey=keyparts[0];
       if (self['tabviewfunc_'+ckey]) self['tabviewfunc_'+ckey](keyparts[1]);
+      if (self.livechat_updatesummary&&document.chatstatus=='online') livechat_updatesummary();      
 }
 
 tablock=false;
@@ -144,7 +148,14 @@ function reloadtab(key,title,params,loadfunc,data,opts){
 		    if (self.skipconfirm) skipconfirm(); 
 		  	window.location.href='login.php';
 		    return;
-      }	  
+      }	
+
+	  if (rq.status==401||(xtatus|0)==401){
+		  ajxjs(self.showgssubscription,'gssubscriptions.js');
+		  showgssubscription();
+	      return;
+	  }            
+  
 	    
       document.tabtitles[tabid].tablock=null;
       
@@ -172,7 +183,7 @@ function reloadtab(key,title,params,loadfunc,data,opts){
 		document.tabkeys[tabid]=newkey;
 		
 		if (document.tabseq){
-			for (i=0;i<tabcount;i++) if (document.tabkeys[i]==key) {console.warn('key collision; new key ignored');newkey=key;}
+			for (i=0;i<document.tabcount;i++) if (document.tabkeys[i]==key) {console.warn('key collision; new key ignored');newkey=key;}
 			
 			for (var i=0;i<document.tabseq.length;i++){
 				if (document.tabseq[i]==key) document.tabseq[i]=newkey;
@@ -200,9 +211,10 @@ function reloadtab(key,title,params,loadfunc,data,opts){
     if (title) document.tabtitles[tabid].innerHTML=tabhtml;
 	
   	  var reloader="<div class=\"reloader\" id=\"tabreloader_"+key+"\"><a onclick=\"refreshtab('"+key+"');\">"+document.dict['tab_reload']+"</a></div>";
-      document.tabviews[tabid].innerHTML=reloader+rq.responseText;
-      if (loadfunc!=null) loadfunc(rq);
-      if (opts&&opts.bookmark) gototabbookmark(opts.bookmark);
+	document.tabviews[tabid].innerHTML=reloader+rq.responseText;
+	if (loadfunc!=null) loadfunc(rq);
+	if (opts&&opts.bookmark) gototabbookmark(opts.bookmark);
+	scaleall(document.body);
 	}
   }
   rq.send(data);
@@ -215,7 +227,7 @@ function addtab(key,title,params,loadfunc,data,opts){
   if (document.tablock!=null) return;
   document.tablock=true;
   
-  for (i=0;i<tabcount;i++) {
+  for (i=0;i<document.tabcount;i++) {
 	if (document.tabkeys[i]==key) {
         showtab(key,opts);
         document.tablock=null;
@@ -236,10 +248,10 @@ function addtab(key,title,params,loadfunc,data,opts){
 
   t.reloadinfo={params:params,loadfunc:loadfunc,data:data,opts:opts};
 
-  document.tabviews[tabcount]=c;
-  document.tabtitles[tabcount]=t;
-  document.tabkeys[tabcount]=key;
-  tabcount++;
+  document.tabviews[document.tabcount]=c;
+  document.tabtitles[document.tabcount]=t;
+  document.tabkeys[document.tabcount]=key;
+  document.tabcount++;
   showtab(key,opts);
   
 
@@ -294,12 +306,12 @@ closetab=function(key){
   gid('tabviews').removeChild(document.tabviews[tabid]);
 
   var i;
-  for (i=tabid;i<tabcount-1;i++){
+  for (i=tabid;i<document.tabcount-1;i++){
 	  document.tabtitles[i]=document.tabtitles[i+1];
 	  document.tabviews[i]=document.tabviews[i+1];
 	  document.tabkeys[i]=document.tabkeys[i+1];	  
   }
-  tabcount--;
+  document.tabcount--;
 
 	if (document.tabseq){
 		for (var i=0;i<document.tabseq.length;i++) if (document.tabseq[i]==key) document.tabseq[i]=null;
@@ -318,8 +330,10 @@ closetab=function(key){
 		}
 	}
   
-  if (tabcount==0) {document.currenttab=-1; return;}
-  showtab(document.tabkeys[document.currenttab]);	
+  if (document.tabcount==0) {document.currenttab=-1; return;}
+  showtab(document.tabkeys[document.currenttab]);
+  if (self.livechat_updatesummary&&document.chatstatus=='online') livechat_updatesummary();
+
 }
 
 function refreshtab(key,skipconfirm){
@@ -347,6 +361,7 @@ function closetabs(rectype){
 		var id=tabkey.replace(rectype+'_','');
 		if (parseInt(id,10)==id) setTimeout(cf(tabkey),i*50);	
 	}
+	
 }
 
 function sconfirm(msg){

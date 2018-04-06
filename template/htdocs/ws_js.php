@@ -10,6 +10,7 @@ if (isset($usewss)&&$usewss) wss_init();
 function wss_init(){
 	$user=userinfo();
 	$userid=$user['userid'];
+	$gsid=$user['gsid']+0;
 	global $wssecret;
 		
 	$wsskey=md5($wssecret.date('Y-n-j-H'));	
@@ -18,7 +19,7 @@ function wss_init(){
 ?>
 <script src="wss.js"></script>
 <script>
-wss_init('<?echo $userid;?>','<?echo $wsuri;?>','<?echo $wsskey;?>');
+wss_init('<?echo $userid;?>','<?echo $wsuri;?>','<?echo $wsskey;?>','<?echo $gsid;?>');
 </script>
 <?
 }

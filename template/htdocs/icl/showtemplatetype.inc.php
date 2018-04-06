@@ -9,8 +9,9 @@ function showtemplatetype($templatetypeid=null){
 	global $db;
 	
 	$user=userinfo();
+	$gsid=$user['gsid']+0;
 	
-	$query="select * from templatetypes left join templates on activetemplateid=templateid where templatetypes.templatetypeid=$templatetypeid";
+	$query="select * from templatetypes left join templates on activetemplateid=templateid where templatetypes.templatetypeid=$templatetypeid and gsid=$gsid ";
 	$rs=sql_query($query,$db);
 	
 	if (!$myrow=sql_fetch_array($rs)) die(_tr('record_removed'));

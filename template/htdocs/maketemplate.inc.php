@@ -1,9 +1,10 @@
 <?php
 
-function maketemplate($templatetypekey,$reps,$preprocessor=null){
+function maketemplate($templatetypekey,$reps,$preprocessor=null,$gsid=null){
 	global $db;
 	
-	$query="select * from templatetypes,templates where templatetypekey='$templatetypekey' and activetemplateid=templateid";
+	$query="select * from templatetypes,templates where templatetypekey='$templatetypekey' and activetemplateid=templateid ";
+	if (is_numeric($gsid)) $query.=" and gsid=$gsid ";
 	
 	if (is_numeric($templatetypekey)) $query="select * from templates where templateid=$templatetypekey";
 	
@@ -34,7 +35,7 @@ function maketemplate($templatetypekey,$reps,$preprocessor=null){
 /*
 Sample Preprocessor:
 
-, function(){
+, function($c){
 return str_replace('<li>%%optional_clause%%</li>','%%optional_clause%%',$c);
 }
 

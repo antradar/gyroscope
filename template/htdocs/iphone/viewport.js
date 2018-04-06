@@ -72,7 +72,7 @@ function setnosleep(mode){
 
 
 function showfs(func,initfunc){
-	
+	document.fsshowing=true;
 	gid('fsmask').style.display='block';
 	gid('fstitlebar').style.display='block';
 	gid('fsview').style.display='block';
@@ -81,6 +81,7 @@ function showfs(func,initfunc){
 }
 
 function closefs(){
+	document.fsshowing=null;
 	setnosleep(false);
 	gid('fsview').style.display='none';
 	gid('fstitlebar').style.display='none';
@@ -150,6 +151,8 @@ function reloadview(idx,listid){
 	hidelookup();
 	if (document.viewindex!=idx) return;
 
+	if (self.onrotate) onrotate();
+	
 	var params='';
 	if (gid('lv'+document.viewindex)) params=gid('lv'+document.viewindex).params;
 		
@@ -189,6 +192,8 @@ function showview(idx,lazy,force,params,func){
   gid('lv'+idx).viewloaded=1;
   document.viewindex=idx;
   if (force&&self.onrotate) onrotate();
+  if (self.livechat_updatesummary&&document.chatstatus=='online') livechat_updatesummary();
+  
 }
 
 function stackview(){ //used by auto-completes

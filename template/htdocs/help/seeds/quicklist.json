@@ -1,0 +1,29 @@
+{
+"fields":[
+	
+
+	{"field":"mastertable","disp":"Master DB Table","def":"orders"},
+	{"field":"masterrecord","disp":"Master Entity Name","def":"order"},
+	{"field":"masterkey","disp":"Master Entity Key","def":"orderid"},
+	{"field":"masterrecords","disp":"Master Entity Name (Pl.)","def":"orders"},
+
+	{"field":"subtable","disp":"Sub DB Table","def":"orderitems"},
+	{"field":"subrecord","disp":"Sub Entity Name","def":"item"},
+	{"field":"subrecords","disp":"Sub Entity Name (Pl.)","def":"items"},
+	{"field":"c_subrecords","disp":"Sub Entity Label (Pl.)","def":"Items"},
+	
+	{"field":"reftable","disp":"Reference DB Table","def":"products"},
+	{"field":"refrecord","disp":"Reference Entity Name","def":"product"},
+	{"field":"refkey","disp":"Reference Entity Key","def":"productid"},	
+	{"field":"c_refrecords","disp":"Reference Entity Label (Pl.)","def":"Products"}
+			
+],
+
+"templates":[
+	{"template":"qlistjs","filename":"append to #masterrecords#.js"},	
+	{"template":"qlistjsadd","filename":"modify #masterrecords#.js: add#masterrecord#"},	
+	{"template":"qlistnew","filename":"modify icl/new#masterrecord#.inc.php"},
+	{"template":"qlistadd","filename":"modify icl/add#masterrecord#.inc.php"}
+	
+]
+}

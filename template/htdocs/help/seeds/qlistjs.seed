@@ -1,0 +1,54 @@
+/////
+
+qlist#masterrecord##subrecords#=function(){
+	var c=gid('q#masterrecord##subrecords#');
+	if (!c.qlist) return;
+	
+	gid('q#refkey#').value='';
+	gid('q#refkey#').value2=null;
+	
+	var html=[];
+	
+	for (var k in c.qlist){
+		var item=c.qlist[k];
+		html.push('<div class="listitem">'+item.name+'&nbsp; &nbsp;<a onclick="qdel#masterrecord##subrecord#('+k+');"><img src="imgs/t.gif" class="img-del"></a></div>');	
+	}
+	
+	gid('q#masterrecord##subrecords#').innerHTML=html.join('');
+		
+}
+
+qdel#masterrecord##subrecord#=function(k){
+	var c=gid('q#masterrecord##subrecords#');
+	if (!c.qlist) return;
+	c.qlist[k]=null;
+	delete c.qlist[k];
+	qlist#masterrecord##subrecords#();
+}
+
+qadd#masterrecord##subrecord#=function(){
+	var #refkey#=gid('q#refkey#').value2;
+	if (!#refkey#) {alert('Pick a #refrecord# from the list');return;}
+	
+	var name=gid('q#refkey#').value;
+	
+	var c=gid('q#masterrecord##subrecords#');
+	if (!c.qlist) c.qlist=[];
+	
+	c.qlist[#refkey#]={name:name}
+	
+	qlist#masterrecord##subrecords#();
+	gid('q#refkey#').focus();
+	
+}
+
+qget#masterrecord##subrecord##refkey#s=function(){
+	
+	var c=gid('q#masterrecord##subrecords#');
+	if (!c.qlist) return '';
+	
+	var ids=[];
+	for (var k in c.qlist) ids.push(k);
+	
+	return ids.join(',');
+}

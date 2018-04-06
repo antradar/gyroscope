@@ -7,14 +7,14 @@ Documentation: www.antradar.com/docs-nano-ajax-manual
 
 Warning: this copy of Nano Ajax Library is modified for running in Gyroscope. Use the public version for general purpose applications.
 
-ver g4.0
+ver g4.1
 */
 
 function gid(d){return document.getElementById(d);}
 
 function hb(){var now=new Date(); var hb=now.getTime();return hb;}
 
-function ajxb(u,data){
+function ajxb(u,data,callback){
 	var method='POST';
 	if (data==null) method='GET';
 	
@@ -24,6 +24,7 @@ function ajxb(u,data){
 	rq.open(method, u+'&hb='+hb(),false);
 	rq.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
 	rq.send(data);
+	if (callback) callback(rq);
 	return rq.responseText;	
 }
 
@@ -79,7 +80,14 @@ function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce){
 
 			if (ct.slowtimer) clearTimeout(ct.slowtimer);
 			
-			cancelgswi(ct);			
+			cancelgswi(ct);		
+			
+			if (rq.status==401||(xtatus|0)==401){
+				ajxjs(self.showgssubscription,'gssubscriptions.js');
+				showgssubscription();
+			    return;
+			}
+				
 
 			var apperror=rq.getResponseHeader('apperror');
 			if (apperror!=null&&apperror!=''){

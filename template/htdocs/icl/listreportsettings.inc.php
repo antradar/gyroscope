@@ -2,6 +2,12 @@
 
 function listreportsettings(){
 	global $db; 
+	global $lang;
+	global $deflang;
+	
+	$user=userinfo();
+	$gsid=$user['gsid']+0;
+	
 	$mode=GETSTR('mode');
 	$key=GETSTR('key');
 	
@@ -28,13 +34,13 @@ function listreportsettings(){
 <?		
 	}
 
-	$query="select * from ".TABLENAME_REPORTS;
+	$query="select * from ".TABLENAME_REPORTS." where (gsid=$gsid or gsid=0) ";
 	
 	$soundex=GETSTR('soundex')+0;
 	$sxsearch='';
-	if ($soundex&&$key!='') $sxsearch=" or concat(soundex(reportname),'') like concat(soundex('$key'),'%') ";
+	if ($soundex&&$key!='') $sxsearch=" or concat(soundex(reportname_$lang),'') like concat(soundex('$key'),'%') ";
 	
-	if ($key!='') $query.=" where (reportname like '%$key%' or reportgroup like '%$key%' $sxsearch) ";
+	if ($key!='') $query.=" and (reportname_$lang like '%$key%' or reportgroup_$lang like '%$key%' $sxsearch) ";
 	$rs=sql_query($query,$db);
 	$count=sql_affected_rows($db,$rs);
 	
@@ -57,7 +63,7 @@ function listreportsettings(){
 <?		
 	}
 	
-	$query.=" order by reportgroup, reportname limit $start,$perpage";	
+	$query.=" order by reportgroup_$lang, reportname_$lang limit $start,$perpage";	
 	
 	$rs=sql_query($query,$db);
 
@@ -65,8 +71,9 @@ function listreportsettings(){
 			
 	while ($myrow=sql_fetch_array($rs)){
 		$reportid=$myrow['reportid'];
-		$reportname=$myrow['reportname'];
-		$reportgroup=$myrow['reportgroup'];
+		$reportname=$myrow['reportname_'.$lang];
+		if ($reportname=='') $reportname=$myrow['reportname_'.$deflang];
+		$reportgroup=$myrow['reportgroup_'.$lang];
 		
 		$reportsettingtitle="$reportname"; //change this if needed
 		

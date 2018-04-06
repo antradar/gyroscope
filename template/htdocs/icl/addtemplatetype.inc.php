@@ -9,11 +9,14 @@ function addtemplatetype(){
 	
 	global $db;
 	
-	$query="select * from templatetypes where templatetypekey='$templatetypekey'";
+	$user=userinfo();
+	$gsid=$user['gsid']+0;
+	
+	$query="select * from templatetypes where templatetypekey='$templatetypekey' and gsid=$gsid ";
 	$rs=sql_query($query,$db);
 	if ($myrow=sql_fetch_assoc($rs)) apperror('Duplicate key. Pick a different key.');
 	
-	$query="insert into templatetypes (templatetypename,templatetypekey) values ('$templatetypename','$templatetypekey') ";
+	$query="insert into templatetypes (gsid,templatetypename,templatetypekey) values ($gsid,'$templatetypename','$templatetypekey') ";
 	$rs=sql_query($query,$db);
 	$templatetypeid=sql_insert_id($db,$rs)+0;
 

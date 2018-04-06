@@ -12,13 +12,14 @@ $fastlane='phpx-services.php'; //change this name if HAProxy is set up to route 
 
 
 $userroles=array(
-	'admins'=>'standard admin rights',
-	'reportsettings'=>'manage report settings',
-	'systemplateuse'=>'configure system templates',
-	'systemplate'=>'create/modify system templates',
+	'admins'=>_tr('rights_standardadmin'),
+	'reportsettings'=>_tr('rights_managereports'),
+	'systemplateuse'=>_tr('rights_configtemplates'),
+	'systemplate'=>_tr('rights_managetemplates'),
 	'accounts'=>_tr('rights_accounts'),
-	'dbadmin'=>'db admin',	//uncomment this to reveal the dbadmin option for SQL Comp tool
-	'upgrademods'=>'upgrade modules'
+	'creditcards'=>'manage credit cards and subscription',
+	'dbadmin'=>_tr('rights_dbadmin'),
+	'upgrademods'=>_tr('rights_upgrademodules')
 );
 
 
@@ -27,13 +28,13 @@ $user=userinfo();
 
 
 $toolbaritems=array(
-'core.settings'=>array('title'=>'Settings','icon'=>'img-settings','modversion'=>'91','lockdown'=>1),
+'core.settings'=>array('title'=>_tr('icon_settings'),'icon'=>'img-settings','modversion'=>'91','lockdown'=>1),
 	'core.users'=>array('title'=>'Users','icon'=>'','modversion'=>'78','lockdown'=>1),
 	'core.reportsettings'=>array('title'=>'Report Settings','icon'=>'','modversion'=>'92','lockdown'=>1),	
 	'core.templatetypes'=>array('title'=>'System Templates','icon'=>'','modversion'=>'91','lockdown'=>1),	
 	'core.templates'=>array('title'=>_tr('icon_templates'),'icon'=>'','modversion'=>'91'),
 
-'core.reports'=>array('title'=>'Reports','icon'=>'img-reports','modversion'=>'92','lockdown'=>1),
+'core.reports'=>array('title'=>_tr('icon_reports'),'icon'=>'img-reports','modversion'=>'92','lockdown'=>1),
 );
 
 

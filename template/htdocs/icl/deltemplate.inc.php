@@ -4,6 +4,13 @@ function deltemplate(){
 	$templateid=GETVAL('templateid');
 	global $db;
 	
+	$user=userinfo();
+	$gsid=$user['gsid']+0;
+	
+	$query="select * from templates,templatetypes where templates.templateid=$templateid and templates.templatetypeid=templatetypes.templatetypeid and gsid=$gsid";
+	$rs=sql_query($query,$db);
+	if (!$myrow=sql_fetch_assoc($rs)) apperror('Access denied');
+			
 	$query="select * from templates where templateid=$templateid";
 	$rs=sql_query($query,$db);
 	if (!$myrow=sql_fetch_array($rs)) die('Invalid template record');

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include 'icl/showgyroscopeupdater.inc.php';
 include 'icl/showguide.inc.php';
 
@@ -8,7 +8,6 @@ function showwelcome(){
 ?>
 <div class="section">
 	<div class="sectiontitle"><?tr('hometab_welcome');?></div>
-
 <?
 /*
 	<input class="inp" id="mtest" onfocus="pickmonth(this,<?echo date('Y');?>);" placeholder="Month">
@@ -30,7 +29,7 @@ function showwelcome(){
 <?
 		//lazy way to generate a starter screen, but better than nothing
 		
-		auto_welcome();	
+		auto_welcome();			
 		showgyroscopeupdater();
 		
 		if ($_SERVER['REMOTE_ADDR']=='127.0.0.1') showguide(); else echo '<div style="padding-bottom:100px;"></div>';
@@ -79,6 +78,15 @@ function auto_welcome(){
 
 	
 	<div class="clear"></div>
+	
+	<div style="display:none;">
+	<textarea class="inp" id="test"
+	ttstags="version info,about gyroscope,version information,
+	die versionsinformation, die versionsinformation aus,die versionsinformationen, die versionsinformationen aus,
+	??,????
+	"><?tr('powerbanner',array('version'=>GYROSCOPE_VERSION));?></textarea>
+	</div>
+		
 </div>
 <?
 		

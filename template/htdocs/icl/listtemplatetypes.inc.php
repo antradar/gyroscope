@@ -8,6 +8,7 @@ function listtemplatetypes(){
 	$page=isset($_GET['page'])?$_GET['page']+0:0;
 	
 	$user=userinfo();
+	$gsid=$user['gsid']+0;
 	
 	if ($mode!='embed'){
 
@@ -37,13 +38,13 @@ function listtemplatetypes(){
 <?		
 	}
 
-	$query="select * from templatetypes ";
+	$query="select * from templatetypes where gsid=$gsid ";
 	
 	$soundex=GETSTR('soundex')+0;
 	$sxsearch='';
 	if ($soundex&&$key!='') $sxsearch=" or concat(soundex(templatetypename),'') like concat(soundex('$key'),'%') ";
 	
-	if ($key!='') $query.=" where (templatetypename like '%$key%' or templatetypekey like '$key%' $sxsearch) ";
+	if ($key!='') $query.=" and (templatetypename like '%$key%' or templatetypekey like '$key%' $sxsearch) ";
 	$rs=sql_query($query,$db);
 	$count=sql_affected_rows($db,$rs);
 	

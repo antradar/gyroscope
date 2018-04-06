@@ -222,7 +222,7 @@ function pickdatemonths(){
 		switch ($mode){
 		case 'datetime':
 ?>
-		<a onclick="document.hotspot.value='<?echo $defyear.'-'.$i;?>';pickdatetime(document.hotspot,{start:'<?echo $hstart;?>',end:'<?echo $hend;?>',mini:<?echo $mini;?>,tz:'<?echo $tz;?>'});" style="<?if ($defyear==$myyear&&$i==$mymon) echo 'color:#ab0200;'?>;display:block;float:left;width:23%;margin-right:1%;margin-left:1%;padding:10px 0;text-align:center;"><?echo $dict_mons[$i];?></a>	
+		<a onclick="document.hotspot.value='<?echo $defyear.'-'.$i;?>';if (document.hotspot&&document.hotspot.onchange) document.hotspot.onchange();pickdatetime(document.hotspot,{start:'<?echo $hstart;?>',end:'<?echo $hend;?>',mini:<?echo $mini;?>,tz:'<?echo $tz;?>'});" style="<?if ($defyear==$myyear&&$i==$mymon) echo 'color:#ab0200;'?>;display:block;float:left;width:23%;margin-right:1%;margin-left:1%;padding:10px 0;text-align:center;"><?echo $dict_mons[$i];?></a>	
 <?		
 		break;	
 		case 'dir':
@@ -233,7 +233,7 @@ function pickdatemonths(){
 			
 		default:
 	?>
-		<a onclick="document.hotspot.value='<?echo $defyear.'-'.$i;?>';pickdate(document.hotspot,{mini:<?echo $mini;?>,tz:'<?echo $tz;?>'});" style="<?if ($defyear==$myyear&&$i==$mymon) echo 'color:#ab0200;'?>;display:block;float:left;width:23%;margin-right:1%;margin-left:1%;padding:10px 0;text-align:center;"><?echo $dict_mons[$i];?></a>
+		<a onclick="document.hotspot.value='<?echo $defyear.'-'.$i;?>';if (document.hotspot&&document.hotspot.onchange) document.hotspot.onchange();pickdate(document.hotspot,{mini:<?echo $mini;?>,tz:'<?echo $tz;?>'});" style="<?if ($defyear==$myyear&&$i==$mymon) echo 'color:#ab0200;'?>;display:block;float:left;width:23%;margin-right:1%;margin-left:1%;padding:10px 0;text-align:center;"><?echo $dict_mons[$i];?></a>
 	<?	
 			
 		}

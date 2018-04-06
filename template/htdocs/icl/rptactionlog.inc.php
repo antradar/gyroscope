@@ -3,6 +3,9 @@
 function rptactionlog(){
 	global $db;
 	global $codepage;
+	
+	$user=userinfo();
+	$gsid=$user['gsid']+0;
 
 	$now=time();
 	
@@ -12,6 +15,7 @@ function rptactionlog(){
 
 	global $paytypes;
 	global $paymethods;
+	global $lang;
 	
 	//override date stamp
 	$ds=explode('-',GETSTR('date'));
@@ -26,12 +30,12 @@ function rptactionlog(){
 <?
 	//// Report Header
 	
-	$query="select * from ".TABLENAME_REPORTS." where reportkey='actionlog'";
+	$query="select * from ".TABLENAME_REPORTS." where reportkey='actionlog' and (gsid=$gsid or gsid=0) ";
 	$rs=sql_query($query,$db);
 	$myrow=sql_fetch_assoc($rs);
 ?>
-<div class="sectiontitle" style="margin-bottom:0;"><?echo $myrow['reportname'];?></div>
-<div class="infobox"><?echo $myrow['reportdesc'];?></div>
+<div class="sectiontitle" style="margin-bottom:0;"><?echo $myrow['reportname_'.$lang];?></div>
+<div class="infobox"><?echo $myrow['reportdesc_'.$lang];?></div>
 <?	
 	////
 	
@@ -45,10 +49,10 @@ function rptactionlog(){
 	// $prevday=date('Y-n-j',$start-3600);
 	// $nextday=date('Y-n-j',$end+3600);
 
-	$query="select * from ".TABLENAME_ACTIONLOG." left join ".TABLENAME_USERS." on ".TABLENAME_ACTIONLOG.".userid=".TABLENAME_USERS.".userid ";
+	$query="select * from ".TABLENAME_ACTIONLOG." left join ".TABLENAME_USERS." on ".TABLENAME_ACTIONLOG.".userid=".TABLENAME_USERS.".userid where ".TABLENAME_ACTIONLOG.".gsid=$gsid ";
 
 	if ($key!=''||$opairs!='') {
-		$query.=" where alogid!=0 and logmessage!='' ";
+		$query.=" and alogid!=0 and logmessage!='' ";
 		if ($key!='') $query.=" and (logmessage like '%$key%' or login like '$key%' or rawobj like '%$key%' or logname like '%$key%') ";
 		foreach ($pairs as $pair){
 			$parts=explode('=',$pair);
@@ -60,13 +64,13 @@ function rptactionlog(){
 		}
 
 	}  else {
-		$query.=" where logmessage!='' and logdate>='$start' and logdate<='$end' ";
+		$query.=" and logmessage!='' and logdate>='$start' and logdate<='$end' ";
 		
-		$q="select logdate from ".TABLENAME_ACTIONLOG." where logmessage!='' and logdate<'$start' order by logdate desc limit 1";
+		$q="select logdate from ".TABLENAME_ACTIONLOG." where gsid=$gsid and logmessage!='' and logdate<'$start' order by logdate desc limit 1";
 		$rs=sql_query($q,$db);
 		if ($myrow=sql_fetch_array($rs)) $prevday=date('Y-n-j',$myrow['logdate']);
 
-		$q="select logdate from ".TABLENAME_ACTIONLOG." where logmessage!='' and logdate>'$end' order by logdate limit 1";
+		$q="select logdate from ".TABLENAME_ACTIONLOG." where gsid=$gsid and logmessage!='' and logdate>'$end' order by logdate limit 1";
 		$rs=sql_query($q,$db);
 		if ($myrow=sql_fetch_array($rs)) $nextday=date('Y-n-j',$myrow['logdate']);
 				

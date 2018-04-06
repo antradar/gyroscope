@@ -138,7 +138,7 @@ listlookup=function(d,title,command,mini){
 		if (document.hotspot&&gid(document.hotspot.id)) gid(document.hotspot.id+'_lookup').style.display='none';
 		if (document.hotspot&&document.hotspot.lookupview) {
 			document.hotspot.lookupview.style.display='none';
-			document.hotspot.lookupview.innerHTML='';
+			if (d!=document.hotspot) document.hotspot.lookupview.innerHTML='';
 		}
 		gid(d.id+'_lookup').style.display='block';
 		gid(d.id+'_lookup_view').style.display='block';

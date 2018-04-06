@@ -92,6 +92,7 @@ function beltnext(){
 }
 
 function showfs(func,initfunc){
+	document.fsshowing=true;
 	scaleall(document.body);
 	gid('fsmask').style.display='block';
 	gid('fstitlebar').style.display='block';
@@ -101,6 +102,7 @@ function showfs(func,initfunc){
 }
 
 function closefs(){
+	document.fsshowing=null;
 	gid('fsview').style.display='none';
 	gid('fstitlebar').style.display='none';
 	gid('fsmask').style.display='none';
@@ -158,7 +160,8 @@ function flashstatus(t,l){
 	if (window.Notification){
 		if (document.lastnotification==t) return;
 		document.lastnotification=t;
-		var n=new Notification('Gyroscope',{body:t}); 
+		var n=new Notification('Gyroscope',{body:t});
+		if (l) setTimeout(function(){n.close();document.lastnotification=null;},l); 
 		setTimeout(function(){document.lastnotification=null;},10000);
 	}
 }
@@ -207,6 +210,9 @@ function showview(idx,lazy,force,params,func){
   
   gid('leftview').style.background=document.flashcolor;
   setTimeout(function(){gid('leftview').style.background='#ffffff';},200);  
+  
+  if (self.livechat_updatesummary&&document.chatstatus=='online') livechat_updatesummary();	
+  
 }
 
 function showlookup(){
@@ -249,6 +255,8 @@ function authpump(){
 		     }
 		     if (rq.getResponseHeader('wsskey')) document.wsskey=rq.getResponseHeader('wsskey');
  		}
+ 		
+ 		
     }
   }
   rq.open('GET',document.appsettings.codepage+'?cmd=pump&hb='+stamp,true);

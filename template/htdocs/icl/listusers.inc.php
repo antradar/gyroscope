@@ -11,6 +11,7 @@ function listusers(){
 	
 	$user=userinfo();
 	$myuserid=$user['userid']+0;
+	$gsid=$user['gsid']+0;
 		
 	if (!isset($user['groups']['accounts'])) die('<div class="section">You cannot manage user accounts</div>');
 	
@@ -38,19 +39,20 @@ function listusers(){
 <?		
 	}
 
-	$query="select * from ".TABLENAME_USERS;
-	if ($key!='') $query.=" where (login like '$key%' or dispname like '%$key%') ";
+	$query="select * from ".TABLENAME_USERS." where gsid=$gsid ";
+	if ($key!='') $query.=" and (login like '$key%' or dispname like '%$key%') ";
 	$rs=sql_query($query,$db);
 	$count=sql_affected_rows($db,$rs);
-	
-	$perpage=20;
+	$perpage=10;
 	$maxpage=ceil($count/$perpage)-1;
 	if ($maxpage<0) $maxpage=0;
 	if ($page<0) $page=0;
 	if ($page>$maxpage) $page=$maxpage;
 	$start=$perpage*$page;
 
+	$pager='';
 	if ($maxpage>0){
+		ob_start();
 ?>
 <div class="listpager">
 <?echo $page+1;?> of <?echo $maxpage+1;?>
@@ -60,7 +62,10 @@ function listusers(){
 <a href=# onclick="ajxpgn('userlist',document.appsettings.codepage+'?cmd=slv_core__users&page=<?echo $page+1;?>&mode=embed');return false;">Next &raquo;</a>
 </div>
 <?		
+		$pager=ob_get_clean();
 	}
+	
+	echo $pager;
 	
 	$query.=" order by userid=$myuserid desc, virtualuser, login limit $start,$perpage";	
 	
@@ -69,7 +74,7 @@ function listusers(){
 	while ($myrow=sql_fetch_array($rs)){
 		$userid=$myrow['userid'];
 		$login=$myrow['login'];
-		$dispname=noapos(htmlspecialchars($myrow['dispname']));
+		$dispname=htmlspecialchars($myrow['dispname']);
 		$virtual=$myrow['virtualuser'];
 		
 		$usertitle="$login"; //change this if needed
@@ -83,6 +88,8 @@ function listusers(){
 <div class="listitem" style="border-left:solid 3px #<?echo $hash;?>;padding-left:5px;"><a onclick="showuser(<?echo $userid;?>,'<?echo $dbusertitle;?>');"><?echo $usertitle;?><br><?echo $usertitle!=$dispname?$dispname:'';?></a></div>
 <?		
 	}//while
+	
+	echo $pager;
 	
 	if ($mode!='embed'){
 ?>

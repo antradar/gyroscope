@@ -130,7 +130,7 @@ function strfilters($filters,$nfilters=null){
 	return $filter;
 }
 
-function showrange_($title,$fieldname,$opts){
+function showrange_($title,$fieldname){
 	global $navdbs;
 	global $navopts;
 	global $dbconfigs;

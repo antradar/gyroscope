@@ -94,7 +94,6 @@ listmediaids=function(){
 initsourceeditor=function(){
 	var ed=tinyMCE.activeEditor;
 	if (!ed) return;
-		
 	if (ed.selection.getContent()==''||ed.selection.getNode().outerHTML.indexOf('<body')==0) {
 		gid('mcesourceeditor').value=ed.getContent().replace(/<\!--mce\:protected \%0A-->/g,"\n").replace(/<\!--mce\:protected \%09-->/g,"\t").replace(/\t\n/g,"\t").replace(/\n+/g,"\n");
 		gid('mcesourceeditor').dsel=null;
@@ -113,6 +112,7 @@ updatesourceeditor=function(d){
 	
 	var ed=tinyMCE.activeEditor;
 	if (!ed) return;
+	if (gid('mcesourceeditor').changed&&ed.onChange) ed.onChange.dispatch();		
 	
 	var dsel=gid('mcesourceeditor').dsel;
 

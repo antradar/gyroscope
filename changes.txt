@@ -1,3 +1,51 @@
+13.4
+- added additional "My Account" link in Settings for non-privileged users
+- 24-hour hash root
+
+13.3
+- * IPv6 address normalization for continuous sign-in
+- improved SqlSrv connector (reference only, use SqlSrv version of Gyroscope instead)
+- improved SqlLite3 connector
+- user listing fixes
+- per-gsid eviction cache
+
+13.2
+- gsclone fix
+
+13.1
+- added UK SMS gateway
+
+13.0*
+- added pre-login check for secondary authentication tokens
+- added SMS code authentication
+- NuoDB connector
+- Medialib: async TinyPNG processing
+
+12.8.1
+- added fsshowing flags for preventing unwanted reloads (esp. for barcode scanners)
+
+12.8
+- codegen: quicklist
+- gsguard quick access
+- flashstatus notification: optional time limit
+
+12.7*
+- added gsexpiry and gstier vectors
+- added subscription enforcement form
+
+12.6*
+- live chat integration
+
+12.5*
+- multi-tenant structure, global instance table "gss"
+- creditcard storage
+- gsclone utilities
+
+12.4*
+- speech recognition bug fix
+- improved speech engine, multi-lingual support, extensible plugin
+- added currency validators (valcurrency, Q/GETCUR), formatter (currency_format) and localization
+
 12.3
 - codegen: 1-N image uploader, batch mode
 - codegen: sort list, tile mode

@@ -58,6 +58,19 @@ if ($SQL_ENGINE=="MySQLi"&&is_callable('mysqli_reap_async_query')){
 }
 
 if ($SQL_ENGINE=='MySQL'||$SQL_ENGINE=='MySQLi'){
+	
+	$hasspatial=0;
+	ob_start();
+	$query="select st_contains(polygonfromtext('polygon((-2 1,2 1,0 -3,-2 1))'),point(1, -2)) as res ";
+	$rs=sql_query($query,$db);
+	$myrow=sql_fetch_assoc($rs);
+	$contains=$myrow['res'];
+	echo $contains;
+	$c=ob_get_clean();
+	if (strpos($c,'0')!==false) $hasspatial=1;
+	if (strpos($c,'sql_error')!==false) $hasspatial=0;
+	
+	
 	$query="show variables like '%character%'";
 	$rs=sql_query($query,$db);
 	
@@ -123,6 +136,7 @@ $tests=array(
 'MySQL results charset'=>array('res'=>$csets['character_set_results']=='latin1','message'=>$csets['character_set_results']),
 'MySQL server charset'=>array('res'=>$csets['character_set_server']=='latin1','message'=>$csets['character_set_server']),
 'MySQLi Parallel Queries'=>array('res'=>($xb-$xa<0.5)&&is_callable('mysqli_poll')),
+'MySQL Geospatial Queries'=>array('res'=>($hasspatial==1)),
 'InnoDB trx level'=>array('res'=>$trx==2,'message'=>$trx),
 'InnoDB table space'=>array('res'=>$tablespace=='ON','message'=>$tablespace),
 '64-bit integer'=>array('res'=>$a==$b,'message'=>''),

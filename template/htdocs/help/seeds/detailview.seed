@@ -5,7 +5,10 @@ function show#record#($#primarykey#=null){
 	
 	global $db;
 	
-	$query="select * from #tablename# where #primarykey#=$#primarykey#";
+	$user=userinfo();
+	$gsid=$user['gsid']+0;
+	
+	$query="select * from #tablename# where gsid=$gsid and #primarykey#=$#primarykey#";
 	$rs=sql_query($query,$db);
 	
 	if (!$myrow=sql_fetch_array($rs)) die(_tr('record_removed'));

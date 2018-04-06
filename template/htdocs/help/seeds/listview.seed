@@ -1,7 +1,11 @@
 <?php
 
 function list#records#(){
-	global $db; 
+	global $db;
+	
+	$user=userinfo();
+	$gsid=$user['gsid']+0;
+	
 	$mode=GETSTR('mode');
 	$key=GETSTR('key');
 	
@@ -29,13 +33,13 @@ function list#records#(){
 <?		
 	}
 
-	$query="select * from #tablename# ";
+	$query="select * from #tablename# where gsid=$gsid ";
 	
 	$soundex=GETSTR('soundex')+0;
 	$sxsearch='';
 	if ($soundex&&$key!='') $sxsearch=" or concat(soundex(#dispfield#),'') like concat(soundex('$key'),'%') ";
 	
-	if ($key!='') $query.=" where (#searchquery# $sxsearch) ";
+	if ($key!='') $query.=" and (#searchquery# $sxsearch) ";
 	$rs=sql_query($query,$db);
 	$count=sql_affected_rows($db,$rs);
 	

@@ -12,13 +12,30 @@ function sql_escape($str){
 	return mysql_real_escape_string($str);	
 }
 
-function sql_get_db($dbhost,$dbsource,$dbuser,$dbpass){
+function sql_get_db($dbhost,$dbsource,$dbuser,$dbpass,$lazyname=null){
+	if (isset($lazyname)){
+		global $dbdefers;
+		if (!isset($dbdefers)) $dbdefers=array();
+		$dbdefers[$lazyname]=array(
+			'host'=>$dbhost,'source'=>$dbsource,
+			'user'=>$dbuser,'pass'=>$dbpass
+		);
+		return $lazyname;
+	}
+
 	$db=mysql_connect($dbhost,$dbuser,$dbpass) or die ('failed to connect to database');
 	mysql_select_db($dbsource,$db);
 	return $db;
 }
 
-function sql_query($query,$db){
+function sql_query($query,&$db){
+
+	if (is_string($db)){
+		global $dbdefers;
+		$dbinfo=$dbdefers[$db];
+		$db=sql_get_db($dbinfo['host'],$dbinfo['source'],$dbinfo['user'],$dbinfo['pass']);	
+	}
+
 	$rs=mysql_query($query,$db);
 	if (!$rs) echo "sql_error: ".$query;
 	return $rs;

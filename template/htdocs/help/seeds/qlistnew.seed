@@ -1,0 +1,5 @@
+	<div class="sectionheader">#c_subrecords#</div>
+	<div id="q#masterrecord##subrecords#">
+		
+	</div>
+	<input class="inpmed" placeholder="add a #subrecord#" onchange="qadd#masterrecord##subrecord#();" id="q#refkey#" onfocus="lookupentity(this,'#refrecord#','#c_refrecords#');" onkeyup="_lookupentity(this,'#refrecord#','#c_refrecords#');">

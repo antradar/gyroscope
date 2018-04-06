@@ -6,6 +6,9 @@ function noapos($val){return addslashes($val);}
 function GETSTR($key,$trim=1){$val=$_GET[$key];if ($trim) $val=trim($val);return noapos($val);}
 function QETSTR($key,$trim=1){$val=$_POST[$key];if ($trim) $val=trim($val);return noapos($val);}
 
+function GETCUR($key){$val=trim($_GET[$key]); $val=str_replace(_tr('currency_separator_thousands'),'',$val); $val=str_replace(_tr('currency_separator_decimal'),'.',$val); if (!is_numeric($val)) apperror('apperror:invalid parameter '.$key); return $val; }
+function QETCUR($key){$val=trim($_POST[$key]); $val=str_replace(_tr('currency_separator_thousands'),'',$val); $val=str_replace(_tr('currency_separator_decimal'),'.',$val); if (!is_numeric($val)) apperror('apperror:invalid parameter '.$key); return $val; }
+
 
 function tzconvert($stamp,$src,$dst){
 	
@@ -69,10 +72,11 @@ function makechangebar($key,$action){
 <?	
 }
 
-function logaction($message,$rawobj=null,$syncobj=null){
+function logaction($message,$rawobj=null,$syncobj=null,$gsid=0){
 	if (is_callable('userinfo')) {
 		$user=userinfo();
 		$userid=$user['userid']+0;
+		$gsid=$user['gsid']+0;
 		$logname=$user['login'];
 		$logname=str_replace("'",'',$logname);
 	} else {
@@ -98,13 +102,13 @@ function logaction($message,$rawobj=null,$syncobj=null){
 
 	$now=time();
 
-	$query="insert into ".TABLENAME_ACTIONLOG."(userid,logname,logdate,logmessage,rawobj) values ($userid,'$logname','$now','$message','$obj')";
+	$query="insert into ".TABLENAME_ACTIONLOG."(userid,gsid,logname,logdate,logmessage,rawobj) values ($userid,$gsid,'$logname','$now','$message','$obj')";
 	
 	if ($syncobj!=''){
 		$sid=$wssid;
 		$rectype=$syncobj['rectype'];
 		$recid=$syncobj['recid']+0;
-		$query="insert into ".TABLENAME_ACTIONLOG."(userid,logname,logdate,logmessage,rawobj,sid,rectype,recid) values ($userid,'$logname','$now','$message','$obj',$sid,'$rectype',$recid)";
+		$query="insert into ".TABLENAME_ACTIONLOG."(userid,gsid,logname,logdate,logmessage,rawobj,sid,rectype,recid) values ($userid,$gsid,'$logname','$now','$message','$obj',$sid,'$rectype',$recid)";
 	}
 	sql_query($query,$db);
 }
@@ -121,3 +125,13 @@ function timeformat($sec){
 	$time  = "$hours:$minutes:$seconds";
 	return $time;	
 }
+
+function currency_format($val,$digits=2){
+	
+	$separator_decimal=_tr('currency_separator_decimal');
+	$separator_thousands=_tr('currency_separator_thousands');
+	
+	return number_format($val,$digits,$separator_decimal,$separator_thousands);
+}
+
+
