@@ -1,12 +1,41 @@
-
-
-<div onselectstart="return false;" onmousedown="#record#_mousedown(<?echo $#masterkey#;?>,this,<?echo $#primarykey#;?>);" onmouseover="#record#_mouseover(this,<?echo $#primarykey#;?>,1);" 
-style="float:left;padding-top:10px;border-left:solid 2px #ffffff;border-top:solid 6px #dedede; margin-bottom:15px;width:18%;min-width:140px;margin-right:1%;position:relative;cursor:move;user-select:none;-webkit-user-select:none;-moz-user-select:none;">
+	$pagelead=5;
+	$perpage=15;
+	$dperpage=$perpage;
 	
-<!-- img ondragstart="return false;" onselectstart="return false;" ... style="cursor:default;width:100%;" -->
+	$maxpage=ceil($count/$perpage)-1;
+	if ($maxpage<0) $maxpage=0;
+	if ($page<0) $page=0;
+	if ($page>$maxpage) $page=$maxpage;
+	$start=$perpage*$page;
+	if ($page>0) {$start-=$pagelead;$dperpage+=$pagelead;if ($start<0) $start=0;}	
+	
+	//...
+	
+	$pageleadidx=0;
+	
+	// ... limit $start, $perpage -> limit $start, $dperpage
+	
+	//while ($myrow=sql_fetch_array($rs)){
+	
+		//...
+	
+		if ($pagelead!=0&&$pageleadidx==$pagelead&&$page>0){
+?>
+<div class="clear"></div>
+<div style="font-size:10px;color:#333333;border-bottom:dotted 1px #444444;text-align:center;margin-bottom:10px;">PAGE <?php echo $page+1;?></div>
+<?php			
+		}		
+?>
+
+<div onselectstart="return false;" onmousedown="#record#_mousedown(<?php echo $#masterkey#;?>,this,<?php echo $#primarykey#;?>,<?php echo $page;?>,'<?php emitgskey('swap#record#pos_'.$#masterkey#);?>');" onmouseover="#record#_mouseover(this,<?php echo $#primarykey#;?>,1);" 
+style="overflow:hidden;float:left;padding-top:10px;border-left:solid 2px #ffffff;border-top:solid 6px #dedede; margin-bottom:15px;width:18%;min-width:140px;margin-right:1%;position:relative;cursor:move;user-select:none;-webkit-user-select:none;-moz-user-select:none;-webkit-user-drag:none;">
+	
+<!-- img ondragstart="return false;" onselectstart="return false;" ... style="<?php if ($pagelead!=0&&($pageleadidx<$pagelead)&&$page>0) echo 'opacity:0.5;';?><?php if ($pagelead!=0&&$pageleadidx==$pagelead-1&&$page>0) echo 'margin-left:-10px;padding-right:7px;border-right:dotted 3px #000000;'?>cursor:default;width:100%;" -->
+<?php
+		$pageleadidx++;
 	//}//while
 
 ?>
 <div class="clear"></div>
-<div id="#record#shadow_<?echo $#masterkey#?>" style="white-space:nowrap;opacity:0.95;cursor:move;user-select:none;-webkit-user-select:none;-moz-user-select:none;display:none;position:absolute;top:20px;left:5px;background:#efefef;padding:5px;width:15%;min-width:120px;"></div>
-<?
+<div id="#record#shadow_<?php echo $#masterkey#?>" style="white-space:nowrap;opacity:0.95;cursor:move;user-select:none;-webkit-user-select:none;-moz-user-select:none;-webkit-user-drag:none;display:none;position:absolute;top:20px;left:5px;background:#efefef;padding:5px;width:15%;min-width:120px;"></div>
+<?php

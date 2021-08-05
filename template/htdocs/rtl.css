@@ -1,0 +1,15 @@
+
+body{font-size:16px;}
+
+#leftview{direction:rtl;}
+#tabtitles{direction:rtl;}
+.tt{padding-top:6px;font-size:15px;}
+.col{float:right;}
+
+.section{direction:rtl;}
+
+.img-mg{padding-right:33px;padding-left:2px;}
+.recadder img{margin-right:0;margin-left:4px;font-size:20px;}
+
+.inplong, .inp, .inpmed, .inpshort, .inpxshort{padding-left:0;padding-right:5px;}
+

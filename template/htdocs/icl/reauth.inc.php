@@ -5,21 +5,26 @@ function reauth(){
 	global $db;
 	global $salt;
 	global $wssecret;
-	
+	global $usehttps;
 	
 	$user=userinfo();
-	$userid=$user['userid']+0;
-	$gsid=$user['gsid']+0;
+	$userid=$user['userid'];
+	$gsid=$user['gsid'];
 	
-	$query="select gsexpiry,gstier from gss where gsid=$gsid";
-	$rs=sql_query($query,$db);
+	$gsexpiry=0;
+	$gstier=0;
+	
+	if (TABLENAME_GSS=='gss'){	
+	$query="select gsexpiry,gstier from ".TABLENAME_GSS." where ".COLNAME_GSID."=?";
+	$rs=sql_prep($query,$db,$gsid);
 	$myrow=sql_fetch_assoc($rs);
 	
-	$gsexpiry=$myrow['gsexpiry']+0;
-	$gstier=$myrow['gstier']+0;
+	$gsexpiry=intval($myrow['gsexpiry']);
+	$gstier=intval($myrow['gstier']);
+	}
 	
-	$query="select * from ".TABLENAME_USERS." where userid=$userid and gsid=$gsid ";
-	$rs=sql_query($query,$db);
+	$query="select * from ".TABLENAME_USERS." where userid=? and ".COLNAME_GSID."=? ";
+	$rs=sql_prep($query,$db,array($userid,$gsid));
 	
 	$myrow=sql_fetch_assoc($rs);
 	$login=$myrow['login'];
@@ -32,26 +37,26 @@ function reauth(){
 	$auth=md5($salt.$userid.$groupnames.$salt.$login.$salt.$dispname.$salt.$gsid.$salt.$gsexpiry.$salt.$gstier);
 		
 	
-	$wsskey=md5($wssecret.date('Y-n-j-H'));
+	$wsskey=md5($wssecret.$gsid.date('Y-n-j-H')).'-'.$gsid;
 	
 	if (!$active||$virtual){
-		setcookie('userid',NULL,time()-3600);
-		setcookie('gsid',NULL,time()-3600);
-		setcookie('gsexpiry',NULL,time()-3600);
-		setcookie('gstier',NULL,time()-3600);
-		setcookie('login',NULL,time()-3600);
-		setcookie('dispname',NULL,time()-3600);		
-		setcookie('auth',NULL,time()-3600);
-		setcookie('groupnames',NULL,time()-3600);		
+		setcookie('userid',NULL,time()-3600,null,null,$usehttps,true);
+		setcookie('gsid',NULL,time()-3600,null,null,$usehttps,true);
+		setcookie('gsexpiry',NULL,time()-3600,null,null,$usehttps,true);
+		setcookie('gstier',NULL,time()-3600,null,null,$usehttps,true);
+		setcookie('login',NULL,time()-3600,null,null,$usehttps,true);
+		setcookie('dispname',NULL,time()-3600,null,null,$usehttps,true);		
+		setcookie('auth',NULL,time()-3600,null,null,$usehttps,true);
+		setcookie('groupnames',NULL,time()-3600,null,null,$usehttps,true);		
 	} else {
 		header('wsskey:'.$wsskey);
-		setcookie('auth',$auth,null,null,null,null,true);
-		setcookie('userid',$userid,null,null,null,null,true);
-		setcookie('gsid',$gsid,null,null,null,null,true);
-		setcookie('gsexpiry',$gsexpiry,null,null,null,null,true);
-		setcookie('gstier',$gstier,null,null,null,null,true);
-		setcookie('login',$login,null,null,null,null,true);
-		setcookie('dispname',$dispname,null,null,null,null,true);
-		setcookie('groupnames',$groupnames,null,null,null,null,true);
+		setcookie('auth',$auth,null,null,null,$usehttps,true);
+		setcookie('userid',$userid,null,null,null,$usehttps,true);
+		setcookie('gsid',$gsid,null,null,null,$usehttps,true);
+		setcookie('gsexpiry',$gsexpiry,null,null,null,$usehttps,true);
+		setcookie('gstier',$gstier,null,null,null,$usehttps,true);
+		setcookie('login',$login,null,null,null,$usehttps,true);
+		setcookie('dispname',$dispname,null,null,null,$usehttps,true);
+		setcookie('groupnames',$groupnames,null,null,null,$usehttps,true);
 	}
 }

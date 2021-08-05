@@ -3,13 +3,15 @@
 include 'icl/list#primaryfield##records#.inc.php';
 
 function add#primaryfield##record#(){
-	$#primarykey#=GETVAL('#primarykey#');
+	$#primarykey#=SGET('#primarykey#');
+	
+	checkgskey('add#primaryfield##record#_'.$#primarykey#);
 
 #iterator-fieldlist-servervars#
 	global $db;
 	
-	$query="insert into #lookuptable# (#primarykey#,#iterator-fieldlist-sqlflist#) values ($#primarykey#,#iterator-fieldlist-sqlvlist#)";
-	$rs=sql_query($query,$db);
+	$query="insert into #lookuptable# (#primarykey#,#iterator-fieldlist-sqlflist#) values (?,#iterator-fieldlist-sqlqlist#)";
+	$rs=sql_prep($query,$db,array($#primarykey#,#iterator-fieldlist-sqlplist#));
 	$#lookupkey#=sql_insert_id($db,$rs);
 	
 	logaction("linked #primaryfield# #$#primarykey# with #c_record# #$#lookupkey#",array('#primarykey#'=>$#primarykey#,'#lookupkey#'=>$#lookupkey#));

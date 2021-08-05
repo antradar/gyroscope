@@ -1,0 +1,26 @@
+
+		//if ($passok){
+		
+			//...
+			
+			$#primarykey#=$myrow['#primarykey#'];
+			
+			
+			
+			//...
+					//$auth=md5...
+					// $auth=... 
+					.$salt.$#primarykey#
+			
+					setcookie('#primarykey#',$#primarykey#,null,null,null,$usehttps,true);
+
+					
+			//...
+			
+//} else {
+	//xsscheck(1);
+	
+	//...
+	
+	setcookie('#primarykey#',NULL,time()-3600);
+			

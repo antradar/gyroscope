@@ -1,0 +1,161 @@
+<?php
+// Gyroscope SQL Wrapper
+// Oracle OCI8 implementation
+// (c) Antradar Software
+
+
+$SQL_ENGINE="OCI8";
+
+function sql_get_db($dbhost,$dbsource,$dbuser,$dbpass,$lazyname=null){
+	if (isset($lazyname)){
+		global $dbdefers;
+		if (!isset($dbdefers)) $dbdefers=array();
+		$dbdefers[$lazyname]=array(
+			'host'=>$dbhost,'source'=>$dbsource,
+			'user'=>$dbuser,'pass'=>$dbpass
+		);
+		return $lazyname;
+	}
+	
+	$db=oci_connect($dbuser, $dbpass, '//'.$dbhost.'/'.$dbsource);
+	return $db;
+}
+
+function sql_reescape($inp){
+	$str='';
+
+	$inside=0; $escaping=0;
+	$len=strlen($inp);
+
+	$token='';
+	for ($i=0;$i<$len;$i++){
+		$c=$inp[$i];
+		$nc='';
+		if ($i<$len-1) $nc=$inp[$i+1];
+
+		if (!$inside) $str.=$c;
+		if ($c=="'"&&!$inside) {$inside=1;continue;}
+		if ($inside){
+			if ($c=='\\'&&!$escaping&&($nc=='\\'||$nc=="'")){
+				$c='';
+				$escaping=1;
+				continue;
+			}
+			
+			if ($escaping){
+				$escaping=0;
+				$token.=$c;
+				continue;
+			} else {
+				if ($c=="'"){
+					$c='';
+					$str.=str_replace("'","''",$token)."'";
+					$token='';
+					$inside=0;
+					continue;
+				}
+			}
+
+			$token.=$c;
+
+		}
+	}
+
+	return $str;
+}
+
+function sql_query($query,&$db){
+	
+	if (is_string($db)){
+		global $dbdefers;
+		$dbinfo=$dbdefers[$db];
+		$db=sql_get_db($dbinfo['host'],$dbinfo['source'],$dbinfo['user'],$dbinfo['pass']);
+	}	
+	
+	$query=sql_reescape($query);
+		
+	$st=oci_parse($db,$query);	
+	
+	$inserting=0;
+	
+	if (preg_match('/^insert into/i',$query)&&preg_match('/returning\s*\S+\s* into :(\S+)\s*$/',$query,$matches)){
+		$inserting=1;
+		$id=-1;
+		$var=$matches[1];
+		oci_bind_by_name($st,':'.$var,$id);
+	}
+	$rs=oci_execute($st,OCI_COMMIT_ON_SUCCESS);
+			
+	if ((!$rs)) {
+		$err=oci_error($st);
+		echo "<br>sql_error: ".$query.'<br>'.$err['message'].'<br>';
+		
+		return null;
+	}
+	
+	if ($inserting){
+		return $id;		
+	}
+	
+	return $st;
+}
+
+function sql_fetch_array($st){
+	$row=oci_fetch_array($st);
+	if (!$row) return null;
+	$myrow=array();
+	foreach ($row as $k=>$v){
+		$myrow[strtolower($k)]=$v;
+	}
+	return $myrow;
+}
+
+function sql_fetch_assoc($st){
+	$row=oci_fetch_assoc($st);
+	if (!$row) return null;
+	$myrow=array();
+	foreach ($row as $k=>$v){
+		$myrow[strtolower($k)]=$v;
+	}
+	return $myrow;
+}
+
+function sql_insert_id($db,$rs){
+
+	return $rs;
+}
+
+function sql_affected_rows($db,$rs){
+	return oci_num_rows($rs);
+}
+
+function sql_begin_transaction($db){
+	$query="begin";
+	mysqli_query($query,$db);	
+	
+}
+
+function sql_commit($db){
+	oci_commit($db);	
+}
+
+function sql_rollback(){
+	oci_rollback($db);	
+}
+
+
+/*
+
+//Sample Connection
+
+//Get instance name: SELECT sys_context('USERENV','DB_NAME') AS Instance FROM dual;
+
+
+$db=sql_get_db('127.0.0.1','XE','SYSTEM',"mnstudio");
+
+//echo '<pre>';print_r(oci_error());echo '</pre>';
+
+*/
+
+
+

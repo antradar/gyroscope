@@ -44,7 +44,7 @@ function countfield($fieldname,$limit=null,$opts=null){
 	$query="select $qidx as nav_linkid, count(#mastertable#.#primarykey#) as c, $fieldname from #mastertable# ";
 	
 #iterator-multifields-multitable#			
-	$query.=" where #mastertable#.#primarykey#!=0 ";
+	$query.=" where 1 ";
 
 #iterator-multifields-multibridge#
 	$query.=sqlfilters();
@@ -154,7 +154,7 @@ function showrange_($title,$fieldname){
 	$dbconfig=$dbconfigs[$qidx%count($dbconfigs)];	
 	$db=sql_get_db($dbconfig['host'],$dbconfig['db'],$dbconfig['user'],$dbconfig['pass']);
 	
-	$query="select $qidx as nav_linkid, min($fieldname) as a, max($fieldname) as b from #mastertable# where #mastertable#.#primarykey#!=0 ".sqlfilters();
+	$query="select $qidx as nav_linkid, min($fieldname) as a, max($fieldname) as b from #mastertable# where 1 ".sqlfilters();
 	
 	$navkey=md5(preg_replace('/^select \d+ as nav_linkid/i','',$query));
 //	$navobj=cache_get($swapprefix.'#prefix#navobj');
@@ -196,13 +196,13 @@ function showrange($seg,$title,$fieldname){
 		$filter=strfilters($myfilters,$nbasefilters);		
 ?>
 <div class="navgroup">
-	<div class="navtitle"><?echo $title;?></div>
+	<div class="navtitle"><?php echo $title;?></div>
 	<div class="navfilter">
-<a class="filterclear" href="<?echo $_SERVER['PHP_SELF'];?>?<?echo $filter;?>" onclick="setfilter('nav','bc','list','ajax#prefix#nav.php','<?echo $filter;?>');return false;">[x]</a>
-<?echo $filters[$fieldname.'_a'].' - '.$filters[$fieldname.'_b'];?>
+<a class="filterclear" href="<?php echo $_SERVER['PHP_SELF'];?>?<?php echo $filter;?>" onclick="setfilter('nav','bc','list','ajax#prefix#nav.php','<?php echo $filter;?>');return false;">[x]</a>
+<?php echo $filters[$fieldname.'_a'].' - '.$filters[$fieldname.'_b'];?>
 	</div>
 </div> 
-<?	
+<?php	
 		return;	
 	}	
 		
@@ -215,15 +215,15 @@ function showrange($seg,$title,$fieldname){
 			
 ?>
 <div class="navgroup">
-	<div class="navtitle"><?echo $title;?></div>
-	<form action="<?echo $_SERVER['PHP_SELF'];?>?<?echo $filter;?>" style="padding:0;margin:0;" method="POST" 
-		onsubmit="setfilter('nav','bc','list','ajax#prefix#nav.php','<?echo $filter;?>&<?echo $fieldname;?>_a='+gid('<?echo $fieldname;?>_a').value+'&<?echo $fieldname;?>_b='+gid('<?echo $fieldname;?>_b').value);return false;">
-		<input id="<?echo $fieldname?>_a" name="<?echo $fieldname;?>_a" value="<?echo $min;?>" style="width:60px;"> - 
-		<input id="<?echo $fieldname?>_b" name="<?echo $fieldname;?>_b" value="<?echo $max;?>" style="width:60px;">
+	<div class="navtitle"><?php echo $title;?></div>
+	<form action="<?php echo $_SERVER['PHP_SELF'];?>?<?php echo $filter;?>" style="padding:0;margin:0;" method="POST" 
+		onsubmit="setfilter('nav','bc','list','ajax#prefix#nav.php','<?php echo $filter;?>&<?php echo $fieldname;?>_a='+gid('<?php echo $fieldname;?>_a').value+'&<?php echo $fieldname;?>_b='+gid('<?php echo $fieldname;?>_b').value);return false;">
+		<input id="<?php echo $fieldname?>_a" name="<?php echo $fieldname;?>_a" value="<?php echo $min;?>" style="width:60px;"> - 
+		<input id="<?php echo $fieldname?>_b" name="<?php echo $fieldname;?>_b" value="<?php echo $max;?>" style="width:60px;">
 		<input type="submit" value="Set">
 	</form>
 </div>
-<?	
+<?php	
 		
 }
 
@@ -262,7 +262,7 @@ function shownegfilters($fieldname){
 ?>
 <div class="neglabel">Excluding:</div>
 <div class="neggroup">
-		<?foreach ($nfilters[$fieldname] as $item){
+		<?php foreach ($nfilters[$fieldname] as $item){
 			$mynfilters=$nfilters;
 			$key=array_search($item,$mynfilters[$fieldname]);
 			if ($key!==false){
@@ -270,10 +270,10 @@ function shownegfilters($fieldname){
 			}
 			$strfilters=strfilters($filters,$mynfilters);
 		?>
-		<div class="negfilter"><a class="filterclear" href="<?echo $_SERVER['PHP_SELF'];?>?<?echo $strfilters;?>" onclick="setfilter('nav','bc','list','ajax#prefix#nav.php','<?echo $strfilters;?>');return false;">[x]</a> <?echo dispname($fieldname,$item);?></div>
-		<?}?>
+		<div class="negfilter"><a class="filterclear" href="<?php echo $_SERVER['PHP_SELF'];?>?<?php echo $strfilters;?>" onclick="setfilter('nav','bc','list','ajax#prefix#nav.php','<?php echo $strfilters;?>');return false;">[x]</a> <?php echo dispname($fieldname,$item);?></div>
+		<?php }?>
 </div>
-<?	
+<?php	
 }
 
 function asyncprint_($str){
@@ -328,15 +328,15 @@ function shownav($seg,$title,$fieldname,$multi=null){
 		$filter=strfilters($myfilters,$nbasefilters);
 ?>
 <div class="navgroup">
-	<div class="navtitle"><?echo $title;?></div>
-<?
+	<div class="navtitle"><?php echo $title;?></div>
+<?php
 	shownegfilters($fieldname);
 ?>
 	<div class="navfilter">
-		<a class="filterclear" href="<?echo $_SERVER['PHP_SELF'];?>?<?echo $filter;?>" onclick="setfilter('nav','bc','list','ajax#prefix#nav.php','<?echo $filter;?>');return false;">[x]</a> <?echo dispname($fieldname,$basefilters[$fieldname]);?>
+		<a class="filterclear" href="<?php echo $_SERVER['PHP_SELF'];?>?<?php echo $filter;?>" onclick="setfilter('nav','bc','list','ajax#prefix#nav.php','<?php echo $filter;?>');return false;">[x]</a> <?php echo dispname($fieldname,$basefilters[$fieldname]);?>
 	</div>
 </div><!-- navgroup -->
-<?		
+<?php		
 
 		return;
 	}
@@ -357,19 +357,19 @@ function shownav($seg,$title,$fieldname,$multi=null){
 		if (count($nbasefilters[$fieldname])>0){
 		?>
 		<div class="navgroup">
-		<div class="navtitle"><?echo $title;?></div>
-		<?	
+		<div class="navtitle"><?php echo $title;?></div>
+		<?php	
 			shownegfilters($fieldname);
 		?>
 		</div><!-- navgroup -->
-		<?
+		<?php
 		}
 		return;
 	}
 ?>
 <div class="navgroup">
-<div class="navtitle"><?echo $title;?></div>
-<?	
+<div class="navtitle"><?php echo $title;?></div>
+<?php	
 	$bfilters=makefilters();
 	$basefilters=$bfilters['filters'];
 	$nbasefilters=$bfilters['nfilters'];
@@ -379,7 +379,7 @@ function shownav($seg,$title,$fieldname,$multi=null){
 	//echo '~';print_r($basefilters);echo '~';
 ?>
 <div class="navfilterlist">
-<?	
+<?php	
 	foreach ($counts as $key=>$count){
 		$dispname=dispname($fieldname,$key);
 		$myfilters=$basefilters;
@@ -397,35 +397,35 @@ function shownav($seg,$title,$fieldname,$multi=null){
 		
 		?>
 <div class="navfilter">
-		<?
+		<?php
 		if ($multi){
 	?>		
-		<input <?if ($basefilters[$multi][$key]) echo 'checked';?> type="checkbox" href="<?echo $_SERVER['PHP_SELF'];?>?<?echo $filters;?>" onclick="setfilter('nav','bc','list','ajax#prefix#nav.php','<?echo $filters;?>');return false;"> 
-	<?		
+		<input <?php if ($basefilters[$multi][$key]) echo 'checked';?> type="checkbox" href="<?php echo $_SERVER['PHP_SELF'];?>?<?php echo $filters;?>" onclick="setfilter('nav','bc','list','ajax#prefix#nav.php','<?php echo $filters;?>');return false;"> 
+	<?php		
 		}
 
 ?>
-	<a href="<?echo $_SERVER['PHP_SELF'];?>?<?echo $filters;?>" onclick="setfilter('nav','bc','list','ajax#prefix#nav.php','<?echo $filters;?>');return false;"><?echo $dispname;?></a> 
+	<a href="<?php echo $_SERVER['PHP_SELF'];?>?<?php echo $filters;?>" onclick="setfilter('nav','bc','list','ajax#prefix#nav.php','<?php echo $filters;?>');return false;"><?php echo $dispname;?></a> 
 	
-	<?
+	<?php
 	if (!$multi||!$basefilters[$multi][$key]||true){ //remove true to hide refinement count for selected multi fields
 	?>
-	<em>(<?echo $count;?>)</em>
-	<?}?>
+	<em>(<?php echo $count;?>)</em>
+	<?php }?>
 	
-	<?if (!$basefilters[$multi][$key]){?>
-	<a class="filterneg" href="<?echo $_SERVER['PHP_SELF'];?>?<?echo $filters;?>&neg__<?echo $fieldname;?>[]=<?echo $key;?>" onclick="setfilter('nav','bc','list','ajax#prefix#nav.php','<?echo $filters;?>&neg__<?echo $fieldname;?>[]=<?echo $key;?>');return false;">
+	<?php if (!$basefilters[$multi][$key]){?>
+	<a class="filterneg" href="<?php echo $_SERVER['PHP_SELF'];?>?<?php echo $filters;?>&neg__<?php echo $fieldname;?>[]=<?php echo $key;?>" onclick="setfilter('nav','bc','list','ajax#prefix#nav.php','<?php echo $filters;?>&neg__<?php echo $fieldname;?>[]=<?php echo $key;?>');return false;">
 	<acronym title="exclude from results">[-]</acronym>
 	</a>
-	<?}?>
+	<?php }?>
 
 </div>
-<?
+<?php
 	}
 ?>
 </div><!-- navfilterlist -->
 </div><!-- navgroup -->
-<?	
+<?php	
 }
 
 function showsearch(){
@@ -434,14 +434,14 @@ function showsearch(){
 	$nbasefilters=$bfilters['nfilters'];
 	$filters=strfilters($basefilters,$nbasefilters);
 ?>
-	<form class="navgroup" method="POST" action="<?echo $_SERVER['PHP_SELF'];?>?<?echo $filters;?>"
-		onsubmit="setfilter('nav','bc','list','ajax#prefix#nav.php','<?echo $filters;?>&searchterm='+encodeHTML(gid('searchterm').value));return false;">
+	<form class="navgroup" method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>?<?php echo $filters;?>"
+		onsubmit="setfilter('nav','bc','list','ajax#prefix#nav.php','<?php echo $filters;?>&searchterm='+encodeHTML(gid('searchterm').value));return false;">
 		<div class="navtitle">Search</div>
-		<input id="searchterm" name="searchterm" value="<?if ($_REQUEST['searchterm']) echo htmlspecialchars($_REQUEST['searchterm']);?>">
+		<input id="searchterm" name="searchterm" value="<?php if ($_REQUEST['searchterm']) echo htmlspecialchars($_REQUEST['searchterm']);?>">
 		<input type="submit" value="Go">
 	</form>
 
-<?	
+<?php	
 	
 }
 
@@ -533,7 +533,7 @@ function showrecords(){
 	$nbasefilters=$bfilters['nfilters'];
 	
 
-	$query="select count(#mastertable#.#primarykey#) as c from #mastertable# where #mastertable#.#primarykey#!=0 $filters ";
+	$query="select count(#mastertable#.#primarykey#) as c from #mastertable# where 1 $filters ";
 
 //	$navobj=cache_get($swapprefix.'#prefix#navobj');
 //  echo 'Cache Leak Test (Number should not increase upon reload): '.count($navobj).'<br>';
@@ -544,7 +544,7 @@ function showrecords(){
 		
 		$rs=sql_query($query,$db);
 		$myrow=sql_fetch_assoc($rs);
-		$count=$myrow['c']+0;
+		$count=intval($myrow['c']);
 		
 //		if (!$navobj) cache_set($swapprefix.'#prefix#navobj',array($ckey=>$count),$#prefix#navcacheexp);
 //		else {
@@ -552,9 +552,9 @@ function showrecords(){
 //			if (count($navobj)<$cachemax) cache_set($swapprefix.'#prefix#navobj',$navobj,$#prefix#navcacheexp);	
 //		}
 				
-//	} else $count=$navobj[$ckey]+0;
+//	} else $count=intval($navobj[$ckey]);
 
-	$page=$_GET['page']+0;
+	$page=intval($_GET['page']);
 	if ($page<0) $page=0;
 	$perpage=15;
 	$maxpage=ceil($count/$perpage)-1;
@@ -571,7 +571,7 @@ function showrecords(){
 ?>
 <div style="padding:10px 0;">
 Sort by: 
-<?
+<?php
 
 	unset($basefilters['sort']);
 	$sfilter=strfilters($basefilters,$nbasefilters);
@@ -579,28 +579,28 @@ Sort by:
 	foreach ($sortnames as $sk=>$sortname){
 		
 ?>
-<a <?if ($sk==$sort) echo 'style="font-weight:bold;"';?> onclick="document.recsort='<?echo $sk;?>';ajxpgn('list','ajax#prefix#nav.php?cmd=list&sort=<?echo $sk;?>&<?echo $sfilter;?>');return false;" href="<?echo $_SERVER['PHP_SELF'];?>?<?echo $sfilter;?>&sort=<?echo $sk;?>"><?echo $sortname;?></a> &nbsp;
-<?
+<a <?php if ($sk==$sort) echo 'style="font-weight:bold;"';?> onclick="document.recsort='<?php echo $sk;?>';ajxpgn('list','ajax#prefix#nav.php?cmd=list&sort=<?php echo $sk;?>&<?php echo $sfilter;?>');return false;" href="<?php echo $_SERVER['PHP_SELF'];?>?<?php echo $sfilter;?>&sort=<?php echo $sk;?>"><?php echo $sortname;?></a> &nbsp;
+<?php
 	}
 
 	if ($maxpage>0){
 ?>
 <span class="pager">
-Page <?echo $page+1;?> of <?echo $maxpage+1;?>
+Page <?php echo $page+1;?> of <?php echo $maxpage+1;?>
 &nbsp; &nbsp;
-<a href="<?echo $_SERVER['PHP_SELF'];?>?<?echo $sfilter;?>&sort=<?echo $sort;?>&page=<?echo $page-1;?>" onclick="ajxpgn('list','ajax#prefix#nav.php?cmd=list&sort=<?echo $sort;?>&<?echo $sfilter;?>&page=<?echo $page-1;?>');return false;">&laquo; Prev</a>
+<a href="<?php echo $_SERVER['PHP_SELF'];?>?<?php echo $sfilter;?>&sort=<?php echo $sort;?>&page=<?php echo $page-1;?>" onclick="ajxpgn('list','ajax#prefix#nav.php?cmd=list&sort=<?php echo $sort;?>&<?php echo $sfilter;?>&page=<?php echo $page-1;?>');return false;">&laquo; Prev</a>
  |
-<a href="<?echo $_SERVER['PHP_SELF'];?>?<?echo $sfilter;?>&sort=<?echo $sort;?>&page=<?echo $page+1;?>" onclick="ajxpgn('list','ajax#prefix#nav.php?cmd=list&sort=<?echo $sort;?>&<?echo $sfilter;?>&page=<?echo $page+1;?>');return false;">Next &raquo;</a>
+<a href="<?php echo $_SERVER['PHP_SELF'];?>?<?php echo $sfilter;?>&sort=<?php echo $sort;?>&page=<?php echo $page+1;?>" onclick="ajxpgn('list','ajax#prefix#nav.php?cmd=list&sort=<?php echo $sort;?>&<?php echo $sfilter;?>&page=<?php echo $page+1;?>');return false;">Next &raquo;</a>
 </span>
-<?
+<?php
 	}
 ?>
 
 </div>
 
-<div style="padding-top:20px;">Filters: <span style="border:solid 1px;"><?echo $filters;?></span></div>
-<?
-	$query="select * from #mastertable# where #mastertable#.#primarykey#!=0 $filters ";
+<div style="padding-top:20px;">Filters: <span style="border:solid 1px;"><?php echo $filters;?></span></div>
+<?php
+	$query="select * from #mastertable# where 1 $filters ";
 	$query.=" order by $sort limit $start,$perpage ";
 		
 	$nkey=md5($query);
@@ -621,9 +621,10 @@ Page <?echo $page+1;?> of <?echo $maxpage+1;?>
 	foreach ($myrows as $myrow){
 ?>
 <div>
-	#<?echo $myrow['#primarykey#'];?> <?echo $myrow['#dispfield#'];?>
+	#<?php echo $myrow['#primarykey#'];?> <?php echo $myrow['#dispfield#'];?>
 </div>
-<?		
+<?php
+		
 	}//foreach myrow
 	
 }

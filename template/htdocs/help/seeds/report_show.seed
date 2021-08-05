@@ -4,21 +4,21 @@ require_once 'xls/PHPExcel.php'; //3rd party library + Antradar patches
 include 'xls/makexls.php'; //Gyroscope commercial license
 
 function rpt#reportkey#(){
-	$rstart=GETSTR('start');
-	$rend=GETSTR('end');
+	$rstart=preg_replace('/[^A-Za-z0-9-]/','',SGET('start'));
+	$rend=preg_replace('/[^A-Za-z0-9-]/','',SGET('end'));
 	$start=date2stamp($rstart);
 	$end=date2stamp($rend);
 	
 	global $codepage;
 	
-	$mode=GETSTR('mode');
+	$mode=SGET('mode');
 	
 	global $db;
 
 	// Report Meta
 	
 	$query="select * from ".TABLENAME_REPORTS." where reportkey='#reportkey#'";
-	$rs=sql_query($query,$db);
+	$rs=sql_prep($query,$db);
 	$myrow=sql_fetch_assoc($rs);
 	$reportname=$myrow['reportname'];
 	$reportgroup=$myrow['reportgroup'];
@@ -27,24 +27,24 @@ function rpt#reportkey#(){
 ?>
 <div class="section">
 
-<?
+<?php
 	//// Report Header
 	
 ?>
-<div class="sectiontitle" style="margin-bottom:0;"><?echo $reportname;?></div>
-<div class="infobox"><?echo $myrow['reportdesc'];?></div>
-<?	
+<div class="sectiontitle" style="margin-bottom:0;"><?php echo $reportname;?></div>
+<div class="infobox"><?php echo $myrow['reportdesc'];?></div>
+<?php	
 	////	
 ?>	
 	<div class="inputrow">
 		<div class="formlabel">Start Date:</div>
 		<input class="inpmed" id="rpt#reportkey#start" onfocus="pickdate(this);" onkeyup="_pickdate(this);">
-		<?makelookup('rpt#reportkey#start',1);?>
+		<?php makelookup('rpt#reportkey#start',1);?>
 	</div>
 	<div class="inputrow">
 		<div class="formlabel">End Date:</div>
 		<input class="inpmed" id="rpt#reportkey#end" onfocus="pickdate(this);" onkeyup="_pickdate(this);">
-		<?makelookup('rpt#reportkey#end',1);?>
+		<?php makelookup('rpt#reportkey#end',1);?>
 	</div>
 	<div class="inputrow">
 			<button onclick="
@@ -57,7 +57,7 @@ function rpt#reportkey#(){
 	
 	</div>
 		
-	<?
+	<?php
 	} else {//embed or xls
 		
 		$sheets=array(
@@ -70,12 +70,12 @@ function rpt#reportkey#(){
 			)//sheet	
 		);
 		
-		$query="select * from #tablename# where #datefield#>='$start' and #datefield#<='$end' order by #datefield# ";
+		$query="select * from #tablename# where #datefield#<=? and #datefield#>=? order by #datefield# ";
 		
 		//range interception style:
-		// $query="select * from #tablename# where #datefield#_start<='$end' and #datefield#_end>='$start' order by #datefield#_start";
+		// $query="select * from #tablename# where #datefield#_start<='? and #datefield#_end>=? order by #datefield#_start";
 		
-		$rs=sql_query($query,$db);
+		$rs=sql_prep($query,$db,array($end,$start));
 		while ($myrow=sql_fetch_assoc($rs)){
 			 	
 #iterator-fields-myrow#	
@@ -91,8 +91,7 @@ function rpt#reportkey#(){
 	 	$color='';
 	 	
 	 	//set row colors
-	 	
-	 	
+	 		 	
 	 	if ($color!=''){
 		 	foreach ($row as $k=>$v) if (!is_array($v)) $row[$k]=array('content'=>$v,'color'=>$color);	
 	 	}
@@ -124,36 +123,36 @@ function rpt#reportkey#(){
 			
 		} else {
 	?>
-		<div style="padding:10px 0;font-size:12px;"><a target=_blank href="<?echo $codepage;?>?cmd=rpt#reportkey#&start=<?echo $rstart;?>&end=<?echo $rend;?>&mode=xls">download as Excel</a></div>
-	<?		
+		<div style="padding:10px 0;font-size:12px;"><a target=_blank href="<?php echo $codepage;?>?cmd=rpt#reportkey#&start=<?php echo $rstart;?>&end=<?php echo $rend;?>&mode=xls">download as Excel</a></div>
+	<?php		
 		}	
 	
 	?>
 	<div class="stable">
 	<table class="subtable" style="width:100%;">	
 	<tr>
-	<?foreach ($sheets[0]['cols'] as $col){?>
-	<td><b><?echo $col['title'];?></b></td>
-	<?}?>
+	<?php foreach ($sheets[0]['cols'] as $col){?>
+	<td><b><?php echo $col['title'];?></b></td>
+	<?php }?>
 	</tr>
-	<?
+	<?php
 	foreach ($sheets[0]['data'] as $row){		
 	?>
 	<tr>
-	<?
+	<?php
 		foreach ($row as $col){
 	?>
-		<td<?if (is_array($col)&&$col['color']) echo ' style="color:'.$col['color'].';"';?>><?echo is_array($col)?$col['content']:$col;?></td>
-	<?
+		<td<?php if (is_array($col)&&$col['color']) echo ' style="color:'.$col['color'].';"';?>><?php echo is_array($col)?htmlspecialchars($col['content']):htmlspecialchars($col);?></td>
+	<?php
 		}//col
 	?>
 	</tr>
-	<?	
+	<?php	
 	}//foreach
 	?>
 	</table>
 	</div>
-	<?
+	<?php
 	
 	}
 }

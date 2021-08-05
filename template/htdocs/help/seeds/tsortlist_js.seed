@@ -1,4 +1,4 @@
-#record#_mousedown=function(#masterkey#,d,tmid){
+#record#_mousedown=function(#masterkey#,d,tmid,page,gskey){
 	var dragging;
 	var posx=d.offsetLeft;
 	var posy=d.offsetTop;
@@ -58,7 +58,7 @@
 				document.targettm.style.borderTop='solid 6px #d4edc9';
 				document.targettm=null;
 	
-				ajxpgn('#records#_'+#masterkey#,document.appsettings.codepage+'?cmd=swap#record#pos&#masterkey#='+#masterkey#+'&tmid='+document.dragtmid+'&targetid='+targetid);
+				ajxpgn('#records#_'+#masterkey#,document.appsettings.codepage+'?cmd=swap#record#pos&#masterkey#='+#masterkey#+'&tmid='+document.dragtmid+'&targetid='+targetid+'&page='+page,0,0,null,null,null,null,gskey);
 			}
 			
 			document.dragtmid=null;

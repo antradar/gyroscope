@@ -20,8 +20,8 @@ for ($i=$start;$i<=$end;$i++){
     if ($h24) $val=$i.':'.$pj;
     
 ?>
-<option value="<?echo $val;?>" <?if ($val==$seltime) echo 'selected';?>><?echo $t;?></option>
-<?
+<option value="<?php echo $val;?>" <?php if ($val==$seltime) echo 'selected';?>><?php echo $t;?></option>
+<?php
   }
 }
 	

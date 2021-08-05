@@ -19,6 +19,17 @@ body, td{font-size:16px;line-height:1.5em;}
 .qnaq{background:#ffeeee;padding:10px;margin-bottom:5px;}
 .qnaa{background:#eeffee;padding:10px;margin-bottom:10px;}
 
+.narrow{text-align:center;}
+.narrow p{width:80%;margin:0 auto;background:#f8f8f8;border-left:solid 1px #f0f0f0;border-right:solid 1px #f0f0f0;padding-top:30px;text-align:left;}
+
 img.full{width:100%;height:auto;}
 img.left{width:30%;height:auto;margin-right:2%;float:left;}
 img.right{width:30%;height:auto;margin-left:2%;float:right;}
+
+@media screen and (max-width:370px){
+	body{padding:3px;}	
+}
+
+@media screen and (max-width:320px){
+	body{padding:0;}	
+}

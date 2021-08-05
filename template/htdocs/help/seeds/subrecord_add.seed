@@ -7,18 +7,20 @@ function add#record#(){
 #iterator-fieldlist-servervars#		
 	global $db;
 	$user=userinfo();
-	$gsid=$user['gsid']+0;
+	$gsid=$user['gsid'];
 	
-	$query="insert into #tablename# (#foreignkey#,#iterator-fieldlist-sqlflist#) values ($#foreignkey#,#iterator-fieldlist-sqlvlist#) ";
-	$rs=sql_query($query,$db);
-	$#primarykey#=sql_insert_id($db,$rs)+0;
+	checkgskey('add#record#_'.$#masterkey#);
+	
+	$query="insert into #tablename# (#foreignkey#,#iterator-fieldlist-sqlflist#) values (?,#iterator-fieldlist-sqlqlist#) ";
+	$rs=sql_prep($query,$db,array($#foreignkey#,#iterator-fieldlist-sqlplist#));
+	$#primarykey#=sql_insert_id($db,$rs);
 	
 	if (!$#primarykey#) {
 		apperror(_tr('error_creating_record'));
 	}
 	
 
-	logaction("added #c_record# #$#primarykey# <u>$#dispfield#</u>",
+	logaction("added #c_record# #$#primarykey# $#dispfield#",
 		array('#primarykey#'=>$#primarykey#,'#dispfield#'=>"$#dispfield#"),
 		array('rectype'=>'#master_record##records#','recid'=>$#masterkey#));
 	

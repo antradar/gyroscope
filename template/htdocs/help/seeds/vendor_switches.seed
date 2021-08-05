@@ -1,0 +1,2 @@
+
+	case 'list#primaryfield#accounts': include 'icl/list#primaryfield#accounts.inc.php'; list#primaryfield#accounts(); break;

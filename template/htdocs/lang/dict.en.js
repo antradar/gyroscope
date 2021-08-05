@@ -16,6 +16,7 @@ document.dict={
 'confirm_template_delete':'Are you sure you want to remove this template?',
 'confirm_reportsetting_delete':'Are you sure you want to remove this report setting?',
 	
+'confirm_helptopic_delete':'Are you sure you want to remove this help topic?',
 	
 
 

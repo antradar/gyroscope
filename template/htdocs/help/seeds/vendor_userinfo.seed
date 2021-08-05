@@ -1,0 +1,26 @@
+
+	global $#primaryfield#roles;
+	
+	$#primarykey#=isset($_COOKIE['#primarykey#'])?$_COOKIE['#primarykey#']:null;
+	
+
+	//...
+	
+	// $auth_=... 
+	.$salt.$#primarykey#
+
+	// $auth2_=... 
+	.$salt2.$#primarykey#
+	
+	//...
+	
+	//$info=array(
+	
+		'#primarykey#'=>$_COOKIE['#primarykey#'],
+	
+	//...
+		
+	//foreach ($groups as $group) {
+	
+		if ($#primarykey#&&!in_array($group,array_keys($#primaryfield#roles))) continue; //if a user is a #primaryfield#, switch security realm
+	

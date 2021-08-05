@@ -15,7 +15,7 @@ Here are some stock icons to get you started:
 
 <br><br>
 All the icons are defined in <em>imgs/toolbar.gif</em> as a sprite sheet.
-<?
+<?php
 /*
 $imgs=array(
 'card.gif','customer.gif','shop.gif','shipping2.gif','shipping1.gif','product.gif','order.gif','ico_reports.gif','docs.gif'
@@ -23,8 +23,8 @@ $imgs=array(
 
 foreach ($imgs as $img){
 ?>
-<acronym title="source: imgs/<?echo $img;?>"><img src="imgs/<?echo $img;?>" style="margin-right:5px;"></acronym>
-<?	
+<acronym title="source: imgs/<?php echo $img;?>"><img src="imgs/<?php echo $img;?>" style="margin-right:5px;"></acronym>
+<?php	
 }
 */
 ?>

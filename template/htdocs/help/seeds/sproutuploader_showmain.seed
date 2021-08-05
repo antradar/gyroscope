@@ -1,8 +1,8 @@
 //include 'icl/show#record#videouploader.inc.php';
 
 		<div class="sectionheader">Upload Video Footage</div>
-		<div id="#record#video_<?echo $#primarykey#;?>">
-		<?
+		<div id="#record#video_<?php echo $#primarykey#;?>">
+		<?php
 		show#record#videouploader($#primarykey#);
 		?>
 		</div>

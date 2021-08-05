@@ -1,20 +1,28 @@
 <?php
 
 function showreportsetting($reportid=null){
-	if (!isset($reportid)) $reportid=GETVAL('reportid');
+	if (!isset($reportid)) $reportid=SGET('reportid');
 	
 	global $db;
 	global $userroles;
 	global $lang;
 	global $deflang;
+	global $userrolelocks;
+	
+	//vendor auth 1
 	
 	$user=userinfo();
-	$gsid=$user['gsid']+0;
+	$gsid=$user['gsid'];
+
+	$syslevel=0;
+	if (!is_numeric($gsid)) $syslevel=NULL_UUID;
 	
 	if (!$user['groups']['reportsettings']) apperror('access denied');
 	
-	$query="select * from ".TABLENAME_REPORTS." where (gsid=$gsid or gsid=0) and reportid=$reportid";
-	$rs=sql_query($query,$db);
+	$query="select * from ".TABLENAME_REPORTS." where (gsid=? or gsid=?) and reportid=?";
+	if (TABLENAME_GSS!='gss') $query="select * from ".TABLENAME_REPORTS." where (".COLNAME_GSID."=? or ".COLNAME_GSID."=?) and reportid=?";
+	
+	$rs=sql_prep($query,$db,array($gsid,$syslevel,$reportid));
 	
 	if (!$myrow=sql_fetch_array($rs)) die(_tr('record_removed'));
 	
@@ -25,44 +33,46 @@ function showreportsetting($reportid=null){
 	$reportdesc=$myrow['reportdesc_'.$lang];
 	$reportgroups=explode('|',$myrow['reportgroupnames']);
 	$gyrosys=$myrow['gyrosys'];
+	$rptgsid=$myrow[COLNAME_GSID];
 
 	$reportkey=trim(str_replace('/','',$reportkey));
 	$pfn="icl/rpt${reportkey}.inc.php";
 	
-	header('newtitle:'.tabtitle($reportname));
+	header('newtitle:'.tabtitle('<img src="imgs/t.gif" class="ico-setting">'.htmlspecialchars($reportname)));
 ?>
 <div class="section">
-	<div class="sectiontitle"><?echo $reportname;?></div>
+	<div class="sectiontitle"><?php echo htmlspecialchars($reportname);?></div>
 
-	<?if (!file_exists($pfn)&&$reportfunc==''){?>
+	<?php if (!file_exists($pfn)&&$reportfunc==''){?>
 <div class="warnbox">
-	This report has not been implemented with a default handler. Make sure "rpt<?echo $reportkey;?>" is handled.
+	This report has not been implemented with a default handler. Make sure "rpt<?php echo $reportkey;?>" is handled.
 </div>	
-	<?}?>
+	<?php }?>
 	
 	<div class="col">
 
 
 	<div class="inputrow">
-		<div class="formlabel"><?tr('reportsetting_label_reportname');?>:</div>
-		<input class="inpmed" id="reportname_<?echo $reportid;?>" value="<?echo htmlspecialchars($reportname);?>">
+		<div class="formlabel"><?php tr('reportsetting_label_reportname');?>:</div>
+		<input class="inpmed" onfocus="document.hotspot=this;" id="reportname_<?php echo $reportid;?>" value="<?php echo htmlspecialchars($reportname);?>">
 	</div>
 	<div class="inputrow">
-		<div class="formlabel"><?tr('reportsetting_label_reportgroup');?>:</div>
-		<input class="inpmed" id="reportgroup_<?echo $reportid;?>" value="<?echo htmlspecialchars($reportgroup);?>">
+		<div class="formlabel"><?php tr('reportsetting_label_reportgroup');?>:</div>
+		<input class="inpmed" onfocus="document.hotspot=this;" id="reportgroup_<?php echo $reportid;?>" value="<?php echo htmlspecialchars($reportgroup);?>">
+	</div>
+	<div <?php if (!$user['groups']['devreports']) echo 'style="display:none;"';?>>
+		<div class="inputrow">
+			<div class="formlabel"><?php tr('reportsetting_label_reportkey');?>:</div>
+			<input class="inpmed" id="reportkey_<?php echo $reportid;?>" value="<?php echo htmlspecialchars($reportkey);?>">
+		</div>
+		<div class="inputrow">
+			<div class="formlabel"><?php tr('reportsetting_label_reportfunc');?>:</div>
+			<input class="inpmed" id="reportfunc_<?php echo $reportid;?>" value="<?php echo htmlspecialchars($reportfunc);?>">
+		</div>
 	</div>
 	<div class="inputrow">
-		<div class="formlabel"><?tr('reportsetting_label_reportkey');?>:</div>
-		<input class="inpmed" id="reportkey_<?echo $reportid;?>" value="<?echo htmlspecialchars($reportkey);?>">
-	</div>
-	<div class="inputrow">
-		<div class="formlabel"><?tr('reportsetting_label_reportfunc');?>:</div>
-		<input class="inpmed" id="reportfunc_<?echo $reportid;?>" value="<?echo htmlspecialchars($reportfunc);?>">
-	</div>
-	
-	<div class="inputrow">
-		<div class="formlabel"><?tr('reportsetting_label_reportdesc');?>:</div>
-		<textarea class="inplong" style="height:60px;" id="reportdesc_<?echo $reportid;?>"><?echo htmlspecialchars($reportdesc);?></textarea>
+		<div class="formlabel"><?php tr('reportsetting_label_reportdesc');?>:</div>
+		<textarea onfocus="document.hotspot=this;" class="inplong" style="height:60px;" id="reportdesc_<?php echo $reportid;?>"><?php echo htmlspecialchars($reportdesc);?></textarea>
 	</div>
 
 
@@ -73,17 +83,22 @@ function showreportsetting($reportid=null){
 			Users with Any of the following rights can see this report:
 		</div>
 		
-		<?
+		<?php
+		$allroles=$userroles;
+
+		//vendor auth 2
+		
 		$jsroles='';
 		
-		foreach ($userroles as $role=>$label){
-			$jsroles.=",'$role' ";
+		foreach ($allroles as $role=>$label){
+			//if (in_array($role,$userrolelocks)&&!$user['groups'][$role]) continue; //comment out to show, but grey out flags
+			if (!in_array($role,$userrolelocks)||$user['groups'][$role]) $jsroles.=",'$role' ";
 		?>
 		<div style="padding-left:10px;margin-bottom:3px;">
-			<input type="checkbox" id="reportrole_<?echo $role;?>_<?echo $reportid;?>" <?if (in_array($role,$reportgroups)) echo 'checked';?>> 
-			<label for="reportrole_<?echo $role;?>_<?echo $reportid;?>"><?echo $label;?></label>
+			<input <?php if (in_array($role,$userrolelocks)&&!$user['groups'][$role]) echo 'disabled';?> <?php if ($rptgsid==0) echo 'disabled';?> type="checkbox" id="reportrole_<?php echo $role;?>_<?php echo $reportid;?>" <?php if (in_array($role,$reportgroups)) echo 'checked';?>> 
+			<label for="reportrole_<?php echo $role;?>_<?php echo $reportid;?>"><?php echo $label;?></label>
 		</div>
-		<?
+		<?php
 		}
 		
 		$jsroles='['.trim($jsroles,',').']';
@@ -94,13 +109,13 @@ function showreportsetting($reportid=null){
 	
 
 	<div class="inputrow">
-		<button onclick="updatereportsetting(<?echo $reportid;?>,<?echo $jsroles;?>);"><?tr('button_update');?></button>
-	<?if (!$gyrosys){?>
+		<button <?php if ($rptgsid==0) echo 'class="disabled"';?>onclick<?php if ($rptgsid==0) echo 'a';?>="updatereportsetting('<?php echo $reportid;?>',<?php echo $jsroles;?>,'<?php emitgskey('updatereportsetting_'.$reportid);?>');"><?php tr('button_update');?></button>
+	<?php if (!$gyrosys&&$user['groups']['devreports']){?>
 		&nbsp; &nbsp;
-		<button class="warn" onclick="delreportsetting(<?echo $reportid;?>);"><?tr('button_delete');?></button>
-	<?}?>
+		<button class="warn" onclick="delreportsetting('<?php echo $reportid;?>','<?php emitgskey('delreportsetting_'.$reportid);?>');"><?php tr('button_delete');?></button>
+	<?php }?>
 	</div>	
 	
 </div>
-<?
+<?php
 }

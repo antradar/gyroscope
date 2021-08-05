@@ -4,43 +4,57 @@ function list#records#(){
 	global $db;
 	
 	$user=userinfo();
-	$gsid=$user['gsid']+0;
+	$gsid=$user['gsid'];
 	
-	$mode=GETSTR('mode');
-	$key=GETSTR('key');
+	$mode=SGET('mode');
+	$key=SGET('key');
 	
-	$page=isset($_GET['page'])?$_GET['page']+0:0;
+	$page=intval($_GET['page']);
 	
+	header('listviewtitle:'.tabtitle(_tr('icon_#records#')));
+	header('listviewflag:'._jsflag('show#record#'));
+	header('listviewjs:#records#.js');
+		
 	if ($mode!='embed'){
 
 ?>
 <div class="section">
 <div class="listbar">
-	<form class="listsearch" onsubmit="_inline_lookup#record#(gid('#record#key'));return false;">
-	<div class="listsearch_">
-		<input id="#record#key" class="img-mg" onkeyup="_inline_lookup#record#(this);" autocomplete="off">
-		<img src="imgs/inpback.gif" class="inpback" onclick="inpbackspace('#record#key');_inline_lookup#record#(gid('#record#key'));">
-	</div>
-	<input type="image" src="imgs/mg.gif" class="searchsubmit" value=".">
+	<form class="listsearch" onsubmit="_inline_lookup#record#(gid('#record#key'));return false;" style="position:relative;">
+		<div class="listsearch_">
+			<input id="#record#key" class="img-mg" onfocus="document.hotspot=this;" onkeyup="_inline_lookup#record#(this);" autocomplete="off">
+			<img src="imgs/inpback.gif" class="inpback" onclick="inpbackspace('#record#key');_inline_lookup#record#(gid('#record#key'));">
+		</div>
+		<input type="image" src="imgs/mg.gif" class="searchsubmit" value=".">
+		<?php makehelp('#record#listlookup','listviewlookup',1);?>
 	</form>
 
 	<div style="padding-top:10px;">
-	<a class="recadder" onclick="addtab('#record#_new','<?tr('list_#record#_add_tab');?>','new#record#');"> <img src="imgs/t.gif" class="img-addrec"><?tr('list_#record#_add');?></a>
+	<a class="recadder" onclick="addtab('#record#_new','<?php tr('list_#record#_add_tab');?>','new#record#');"> <img src="imgs/t.gif" class="img-addrec"><?php tr('list_#record#_add');?></a>
 	</div>
 </div>
 
 <div id="#record#list">
-<?		
+<?php		
 	}
 
-	$query="select * from #tablename# where gsid=$gsid ";
+	$params=array($gsid);
+	$query="select * from #tablename# where ".COLNAME_GSID."=? ";
 	
-	$soundex=GETSTR('soundex')+0;
+	$soundex=is_numeric(SGET('soundex'))?SGET('soundex'):0;
 	$sxsearch='';
-	if ($soundex&&$key!='') $sxsearch=" or concat(soundex(#dispfield#),'') like concat(soundex('$key'),'%') ";
+	if ($soundex&&$key!='') {
+		$sxsearch=" or concat(soundex(#dispfield#),'') like concat(soundex(?),'%') ";
+		
+	}
 	
-	if ($key!='') $query.=" and (#searchquery# $sxsearch) ";
-	$rs=sql_query($query,$db);
+	if ($key!='') {
+		$query.=" and (#searchquery# $sxsearch) ";
+		//array_push($params,...);
+		
+		if ($soundex) array_push($params,$key);
+	}
+	$rs=sql_prep($query,$db,$params);
 	$count=sql_affected_rows($db,$rs);
 	
 	$perpage=20;
@@ -56,13 +70,14 @@ function list#records#(){
 	ob_start();
 ?>
 <div class="listpager">
-<?echo $page+1;?> of <?echo $maxpage+1;?>
+<a href=# class="hovlink" onclick="ajxpgn('#record#list',document.appsettings.codepage+'?cmd=slv_#fviewindex#&key='+encodeHTML(gid('#record#key').value)+'&page=<?php echo $page-1;?>&mode=embed');return false;"><img src="imgs/t.gif" class="img-pageleft">Prev</a>
 &nbsp;
-<a href=# onclick="ajxpgn('#record#list',document.appsettings.codepage+'?cmd=slv_#fviewindex#&key='+encodeHTML(gid('#record#key').value)+'&page=<?echo $page-1;?>&mode=embed');return false;">&laquo; Prev</a>
-|
-<a href=# onclick="ajxpgn('#record#list',document.appsettings.codepage+'?cmd=slv_#fviewindex#&key='+encodeHTML(gid('#record#key').value)+'&page=<?echo $page+1;?>&mode=embed');return false;">Next &raquo;</a>
+<a class="pageskipper" onclick="var pagenum=sprompt('Go to page:',<?php echo $page+1;?>);if (pagenum==null||parseInt(pagenum,0)!=pagenum) return false;ajxpgn('#record#list',document.appsettings.codepage+'?cmd=slv_#fviewindex#&key='+encodeHTML(gid('#record#key').value)+'&page='+(pagenum-1)+'&mode=embed');return false;"><?php echo $page+1;?></a>
+ of <?php echo $maxpage+1;?>
+&nbsp;
+<a href=# class="hovlink" onclick="ajxpgn('#record#list',document.appsettings.codepage+'?cmd=slv_#fviewindex#&key='+encodeHTML(gid('#record#key').value)+'&page=<?php echo $page+1;?>&mode=embed');return false;">Next<img src="imgs/t.gif" class="img-pageright"></a>
 </div>
-<?		
+<?php		
 	$pager=ob_get_clean();
 	}
 	
@@ -70,7 +85,7 @@ function list#records#(){
 	
 	$query.=" order by #sortquery# limit $start,$perpage";	
 	
-	$rs=sql_query($query,$db);
+	$rs=sql_prep($query,$db,$params);
 	
 	while ($myrow=sql_fetch_array($rs)){
 		$#primarykey#=$myrow['#primarykey#'];
@@ -78,10 +93,10 @@ function list#records#(){
 		
 		$#record#title="$#dispfield#"; //change this if needed
 		
-		$db#record#title=noapos(htmlspecialchars($#record#title));
+		$db#record#title=noapos(htmlspecialchars(htmlspecialchars($#record#title)));
 ?>
-<div class="listitem"><a onclick="show#record#(<?echo $#primarykey#;?>,'<?echo $db#record#title;?>');"><?echo $#record#title;?></a></div>
-<?		
+<div class="listitem"><a onclick="show#record#(<?php echo $#primarykey#;?>,'<?php echo $db#record#title;?>');"><?php echo htmlspecialchars($#record#title);?></a></div>
+<?php		
 	}//while
 	
 	echo $pager;
@@ -90,12 +105,15 @@ function list#records#(){
 ?>
 </div>
 </div>
-
+<?php
+/*
 <script>
-gid('tooltitle').innerHTML='<a><?tr('icon_#records#');?></a>';
-ajxjs(self.show#record#,'#records#.js');
+gid('tooltitle').innerHTML='<a><?php tr('icon_#records#');?></a>';
+ajxjs(<?php jsflag('show#record#');?>,'#records#.js');
 </script>
-<?	
+<?php	
+*/
+
 	}//embed mode
 
 }

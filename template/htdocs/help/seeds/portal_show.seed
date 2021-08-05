@@ -1,0 +1,11 @@
+include 'icl/list#primaryfield#users.inc.php';
+
+
+// ...
+
+
+		<div class="sectionheader">Portal Users</div>
+		<div id="#primaryfield#users_<?php echo $#primarykey#;?>">
+			<?php list#primaryfield#users($#primarykey#);?>
+		</div>
+

@@ -12,7 +12,8 @@
 	
 	{"field":"dimlist","disp":"Dimensions","def":"os|OS\noperator|Operator", "type":"fieldlist"},	
 	{"field":"multifields","disp":"Multi-Select Fields (optional)","def":"serverparts|partname|Parts","type":"fieldlist","optional":1},
-	{"field":"rangelist","disp":"Range Filters","def":"memorybase|RAM", "type":"fieldlist","optional":1},			
+	{"field":"rangelist","disp":"Numeric Range Filters","def":"memorybase|RAM", "type":"fieldlist","optional":1},			
+	{"field":"daterangelist","disp":"Date Range Filters","def":"adddate|Date", "type":"fieldlist","optional":1},			
 	{"field":"viewlist","disp":"Additional Views","def":"servermap|viewservermap\nserverstats|viewserverstats", "type":"fieldlist","optional":1}			
 ],
 

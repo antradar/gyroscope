@@ -102,13 +102,13 @@ function settabtitle(key,title,opts){
 	var tabid=gettabid(key);
 	if (tabid==-1) return;
 	
-	var tabhtml="<nobr><a class=\"tt\" onclick=\"showtab('"+key+"');\">"+title+"</a><a onclick=\"closetab('"+key+"')\"><span class=\"tabclose\"></span></a></nobr>";
-    if (opts!=null&&opts.noclose) tabhtml="<nobr><a class=\"tt\" onclick=\"showtab('"+key+"');\">"+title+"</a><span class=\"noclose\"></span></nobr>";
+	var tabhtml="<nobr><a class=\"tt\" ondblclick=\"refreshtab('"+key+"');\" onclick=\"showtab('"+key+"');\">"+title+"</a><a onclick=\"closetab('"+key+"')\"><span class=\"tabclose\"></span></a></nobr>";
+    if (opts!=null&&opts.noclose) tabhtml="<nobr><a class=\"tt\" ondblclick=\"refreshtab('"+key+"');\" onclick=\"showtab('"+key+"');\">"+title+"</a><span class=\"noclose\"></span></nobr>";
 	if (title) document.tabtitles[tabid].innerHTML=tabhtml;		
 
 }
 
-function reloadtab(key,title,params,loadfunc,data,opts){
+function reloadtab(key,title,params,loadfunc,data,opts,gskey){
 
 	//if tab doesn't exist, ignore it
 	var tabid=gettabid(key);
@@ -116,6 +116,9 @@ function reloadtab(key,title,params,loadfunc,data,opts){
 	
 	if (document.tabtitles[tabid].tablock) return;
 	document.tabtitles[tabid].tablock=1;
+	document.tabtitles[tabid].conflicted=null;
+	
+	if (document.tabtitles[tabid].autosaver) {clearTimeout(document.tabtitles[tabid].autosaver);document.tabtitles[tabid].autosavertimer=null;}
 	
 	var rq=xmlHTTPRequestObject();
 	
@@ -123,9 +126,18 @@ function reloadtab(key,title,params,loadfunc,data,opts){
 	
   	if (document.wssid) params=params+'&wssid_='+document.wssid;
   	
+  	
+  	
 	rq.open('POST',scn+params+'&hb='+hb(),true);
 	rq.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
 	
+  if (gskey!=null) {
+	  //rq.setRequestHeader('X-GSREQ-KEY',gskey);
+	  if (data==null) data='X-GSREQ-KEY='+gskey;
+	  else data+='&X-GSREQ-KEY='+gskey;
+	  
+  }
+  	
 	var ct=document.tabviews[tabid];
 	ct.slowtimer=setTimeout(function(){
 		var first=ct.firstChild;
@@ -162,7 +174,8 @@ function reloadtab(key,title,params,loadfunc,data,opts){
 	cancelgswi(ct);
 	var apperror=rq.getResponseHeader('apperror');
 	if (apperror!=null&&apperror!=''){
-		salert('Error: '+decodeURIComponent(apperror));
+		if (opts&&opts.errfunc&&opts.errfunc!=null&&opts.errfunc!='') opts.errfunc(rq,decodeURIComponent(apperror));
+		else salert('Error: '+decodeURIComponent(apperror));
 		return;	
 	}       
 
@@ -281,6 +294,10 @@ function addtab(key,title,params,loadfunc,data,opts){
 		return;	
 	}  
 	
+		var newtitle=rq.getResponseHeader('newtitle');
+		if (newtitle!=null&&newtitle!=''){
+			settabtitle(key,decodeURIComponent(newtitle));	
+		}	       
 	      
 		var parenttab=rq.getResponseHeader('parenttab');
 		if (parenttab!=null&&parenttab!='') {		
@@ -301,6 +318,8 @@ function addtab(key,title,params,loadfunc,data,opts){
 closetab=function(key){
   var tabid=gettabid(key);
   if (tabid==-1) return;
+  
+  if (document.tabtitles[tabid].autosaver) {clearTimeout(document.tabtitles[tabid].autosaver);document.tabtitles[tabid].autosavertimer=null;}  
     
   gid('tabtitles').removeChild(document.tabtitles[tabid]);
   gid('tabviews').removeChild(document.tabviews[tabid]);
@@ -342,7 +361,8 @@ function refreshtab(key,skipconfirm){
   if (tabid==-1) return;
   
   if (!skipconfirm&&!sconfirm(document.dict['confirm_refresh_tab'])) return;
- 
+
+  document.tabtitles[tabid].conflicted=null; 
   var tab=document.tabtitles[tabid];
   if (!tab.reloadinfo) return;
   tab.style.color='#000000';
@@ -388,17 +408,115 @@ function sprompt(title,def){
 }
 
 function gototabbookmark(id){
+	var d,delta;
+	
 	if (!document.iphone_portrait){
 		if (!gid(id)||!gid('tabviews')) return;
-		gid('tabviews').scrollTop=gid(id).offsetTop-90;
+		d=gid('tabviews'); delta=90;
 	} else {
 		if (!gid(id)) return;
-		document.body.scrollTop=gid(id).offsetTop-130;
+		d=document.body; delta=130;
 	}
+	
+	//d.scrollTop=gid(id).offsetTop-delta; return; //uncomment this line to disable animation
+	
+	var diff=gid(id).offsetTop-delta-d.scrollTop;
+	var seq=[];
+	while (Math.abs(diff)>20){seq.push(gid(id).offsetTop-diff); diff=Math.round(diff/4);}
+	seq.push(gid(id).offsetTop-delta);
+	if (d.animitv) clearInterval(d.animitv);
+	d.animidx=0;
+	d.animitv=setInterval(function(){
+		var top=seq[d.animidx]; if (top<=0) top=0;
+		d.scrollTop=top;
+		d.animidx++;
+		if (d.animidx>=seq.length){
+			clearInterval(d.animitv);
+			d.animitv=null;
+			return;	
+		}
+		
+	},30);
+	
+	
+}
+
+function pullupeditor(d){
+	
+	if (!document.iphone_portrait){
+		if (!gid('tabviews')) return;
+		gid('tabviews').scrollTop=d.parentNode.parentNode.offsetTop-120;
+	} else {
+		document.body.scrollTop=d.parentNode.parentNode.offsetTop-140;
+	}	
 }
 
 function marktabchanged(tabkey,hide){
 	var mode='block';
 	if (hide) mode='none';
 	if (gid('changebar_'+tabkey)) gid('changebar_'+tabkey).style.display=mode;
+	else return;
+	
+	if (document.appsettings.autosave==null) return;
+		
+	var tabid=gettabid(tabkey);
+	var tab=document.tabtitles[tabid];
+	
+	if (!tab) return;
+	
+	
+	if (tab.autosaver) {clearInterval(tab.autosaver);tab.autosavertimer=null;}
+	
+	if (tab.conflicted){
+		if (gid('autosavercountdown_'+tabkey)) gid('autosavercountdown_'+tabkey).innerHTML='';
+		return;
+	}
+	
+	if (hide){//detach auto saver
+		//nothing to do here
+	} else {//attach/reset auto saver
+		var autosavetimeout=document.appsettings.autosave-1;
+		if (gid('autosavetimeout_'+tabkey)){
+			if (gid('autosavetimeout_'+tabkey).value=='') return;
+			autosavetimeout=parseInt(gid('autosavetimeout_'+tabkey).value,10)-1;
+		}	
+		tab.autosaver=setInterval(function(){
+			if (tab.autosavertimer==null) tab.autosavertimer=autosavetimeout;
+			if (gid('autosavercountdown_'+tabkey)) gid('autosavercountdown_'+tabkey).innerHTML='&nbsp; '+tab.autosavertimer+' <a class="autosavekiller" onclick="cancelautosaver(\''+tabkey+'\');">&times;</a>';
+			if (tab&&(!gid('changebar_'+tabkey)||tab.conflicted)){
+				clearInterval(tab.autosaver);tab.autosavertimer=null;
+				if (gid('autosavercountdown_'+tabkey)) gid('autosavercountdown_'+tabkey).innerHTML='';
+				return;
+			}
+			//console.log(tab.autosavertimer);
+			tab.autosavertimer--;
+			if (tab.autosavertimer<0){
+				clearInterval(tab.autosaver);
+				tab.autosavertimer=null;
+				var event=document.createEvent('Events');
+				event.initEvent('click',true,false);
+				if (gid('changebar_button_'+tabkey)) gid('changebar_button_'+tabkey).dispatchEvent(event);
+			}
+		},1000);		
+	}
+	
+}
+
+function cancelautosaver(tabkey){
+	var tabid=gettabid(tabkey);
+	var tab=document.tabtitles[tabid];
+	if (!tab) return;
+	if (tab.autosaver){clearTimeout(tab.autosaver);tab.autosavertimer=null;}
+	if (gid('autosavercountdown_'+tabkey)) gid('autosavercountdown_'+tabkey).innerHTML='';
+	
+}
+
+function marktabsaved(tabkey){
+	var tab=gid('savebar_'+tabkey);
+	if (!tab) return;
+	if (tab.timer) clearTimeout(tab.timer);
+	tab.style.display='block';
+	tab.timer=setTimeout(function(){
+		tab.style.display='none';
+	},1200);	
 }

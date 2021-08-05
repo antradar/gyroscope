@@ -1,7 +1,8 @@
 	<meta name="apple-mobile-web-app-capable" content="yes">
-	<meta name="apple-mobile-web-app-title" content="<?echo GYROSCOPE_PROJECT;?>">
+	<meta name="apple-mobile-web-app-title" content="<?php echo GYROSCOPE_PROJECT;?>">
 
-	<?/* 
+	<?php
+	/*
 	Use the 192x192 version for Android transparency;
 	Apple doesn't support transparency
 	*/?>

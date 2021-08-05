@@ -1,5 +1,5 @@
 
-<span id="#primaryfield#_#lookupkey#_<?echo $#primarykey#;?>_val2">
-	<?if ($#lookupkey#) cancelpickup('#primaryfield#_#lookupkey#_'.$#primarykey#);?>
+<span id="#primaryfield#_#lookupkey#_<?php echo $#primarykey#;?>_val2">
+	<?php if ($#lookupkey#) cancelpickup('#primaryfield#_#lookupkey#_'.$#primarykey#);?>
 </span>
-<?makelookup('#primaryfield#_#lookupkey#_'.$#primarykey#);?>
+<?php makelookup('#primaryfield#_#lookupkey#_'.$#primarykey#);?>

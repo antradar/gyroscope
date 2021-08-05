@@ -4,14 +4,21 @@ include 'lb.php';
 include 'lang.php';
 include 'forminput.php';
 
+include 'encdec.php';
+include 'bcrypt.php';
+
+
 if (isset($usehttps)&&$usehttps) include 'https.php'; 
 include 'connect.php';
 include 'auth.php';
-include 'xss.php';
+if (!isset($fedbypass)) include 'xss.php';
+include 'passtest.php';
 
-$csrfkey=sha1($salt.'csrf'.$_SERVER['REMOTE_ADDR'].date('Y-m-j-g'));
-$salt2=$saltroot.$_SERVER['REMOTE_ADDR'].date('Y-m-j-H',time()-3600);
-$csrfkey2=sha1($salt2.'csrf'.$_SERVER['REMOTE_ADDR'].date('Y-m-j-g',time()-3600));
+include 'icl/calcgapins.inc.php';
+
+$csrfkey=sha1($salt.'csrf'.$_SERVER['REMOTE_ADDR'].'-'.$_SERVER['O_IP'].date('Y-m-j-g'));
+$salt2=$saltroot.$_SERVER['REMOTE_ADDR'].'-'.$_SERVER['O_IP'].date('Y-m-j-H',time()-3600);
+$csrfkey2=sha1($salt2.'csrf'.$_SERVER['REMOTE_ADDR'].'-'.$_SERVER['O_IP'].date('Y-m-j-g',time()-3600));
 
 $error_message='';
 
@@ -19,51 +26,59 @@ $passreset=0;
 
 if (isset($_POST['lang'])&&in_array($_POST['lang'],array_keys($langs))) {
 	$lang=$_POST['lang'];include 'lang/dict.'.$lang.'.php';  
-	setcookie('userlang',$_POST['lang'],time()+3600*24*30*6); //6 months
+	setcookie('userlang',$_POST['lang'],time()+3600*24*30*6,null,null,$usehttps,true); //6 months
 }
 
 $dkey=md5(GYROSCOPE_PROJECT);
 
 if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['gyroscope_login_'.$dkey])&&$_POST['gyroscope_login_'.$dkey]) ){	
 	
-	xsscheck();
+	if (!isset($fedbypass)) xsscheck();
 
 	$cfk=$_POST['cfk'];
-	if ($cfk!=$csrfkey&&$cfk!=$csrfkey2){
+	if (!isset($fedbypass)&&$cfk!=$csrfkey&&$cfk!=$csrfkey2){
 		$error_message=_tr('csrf_expire');
 	} else {
 	
 		$password=md5($dbsalt.$_POST['password']);
-		$raw_login=$_POST['gyroscope_login_'.$dkey];
-		$login=str_replace("'",'',$raw_login);
+		$login=SQET('gyroscope_login_'.$dkey);
 		
-		$query="select * from ".TABLENAME_USERS." left join gss on ".TABLENAME_USERS.".gsid=gss.gsid where login='$login' and active=1 and virtualuser=0";
-		$rs=sql_query($query,$db);  
+		$query="select * from ".TABLENAME_USERS." left join ".TABLENAME_GSS." on ".TABLENAME_USERS.".".COLNAME_GSID."=".TABLENAME_GSS.".".COLNAME_GSID." where lower(login)=lower(?) and active=1 and virtualuser=0";
+		$rs=sql_prep($query,$db,array($login));  
 		
 		$passok=0;
 		
 		if ($myrow=sql_fetch_array($rs)){
+			/*
+			//legacy code during transition
 			$enc=$myrow['password'];
 			$dec=decstr($enc,$_POST['password'].$dbsalt);
 			if ($password==$dec) $passok=1;
+			*/
+			$passok=password_verify($dbsalt.$_POST['password'],$myrow['password']); //bcrypt uses its internal salt, $dbsalt here is just padding
+		} else {
+			password_hash($dbsalt.time(),PASSWORD_DEFAULT,array('cost'=>PASSWORD_COST));	
 		}
 		
 		if ($passok){
 			
 			$userid=$myrow['userid'];
-			$gsid=$myrow['gsid'];
-			$gsexpiry=$myrow['gsexpiry']+0;
-			$gstier=$myrow['gstier']+0;
+			$gsid=$myrow[COLNAME_GSID];
+			$gsexpiry=intval($myrow['gsexpiry']);
+			$gstier=intval($myrow['gstier']);
 			$passreset=$myrow['passreset'];
 			
 			$needcert=$myrow['needcert'];
-			$certid=$_POST['certid'];
+			$certid=strtoupper(SQET('certid'));
 			$certhash=md5($dbsalt.$certid);
 			$certhash_=$myrow['certhash'];
 			
 			$needkeyfile=$myrow['needkeyfile'];
 			$keyfileokay=1;
 			$smscode=$myrow['smscode'];
+			
+			$usega=$myrow['usega'];
+			$gakey=$myrow['gakey'];
 			
 			if ($needkeyfile){
 				$keyfilename=$_FILES['keyfile']['tmp_name'];
@@ -86,12 +101,27 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['gyroscope
 			$usesms=$myrow['usesms'];
 			$smsokay=1;
 			if ($smskey=='') $usesms=0;
+			if ($gakey=='') $usega=0;
+
+			if ($usega&&$gakey!='') $gakey=decstr($gakey,GYROSCOPE_PROJECT.'gakey-'.COLNAME_GSID.'-'.$gsid.'-'.$userid,1); //remote key
+						
+			$gaokay=1;
 			
 			if ($usesms){
 				if ($_POST['smscode']==''||md5($salt.$_POST['smscode'])!=$smscode){
 					$smsokay=0;
 					$smserror='Invalid SMS code';
 				}
+			}
+			
+			if ($usega){
+				$gapin=str_replace(array(' ','-','.'),'',$_POST['gapin']);
+				if ($gapin=='') $gaokay=0;
+				else {
+					$gapins=calcgapins($gakey);
+					if (!in_array($gapin,$gapins)) $gaokay=0;
+				}
+				$gaerror='Invalid Authenticator PIN';	
 			}
 			
 			$dispname=$myrow['dispname'];
@@ -120,51 +150,79 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['gyroscope
 					if ($np!=$np2) $error_message=_tr('mismatching_password');
 					if (trim($np)=='') $error_message=_tr('must_provide_new_password');
 				} else {
-					$newpass=encstr(md5($dbsalt.$np),$np.$dbsalt);
-					$query="update ".TABLENAME_USERS." set password='$newpass', passreset=0 where userid=$userid";
-					sql_query($query,$db);
-					$passreset=0;	
+					//$newpass=encstr(md5($dbsalt.$np),$np.$dbsalt);
+					$passcheck=passtest($np);
+					if ($passcheck['grade']==0){
+						$error_message='A weak password cannot be used.';
+					} else {
+						$newpass=password_hash($dbsalt.$np,PASSWORD_DEFAULT);
+						$query="update ".TABLENAME_USERS." set password=?, passreset=0 where userid=?";
+						sql_prep($query,$db,array($newpass,$userid));
+						$passreset=0;
+					}	
 				}	  
 			}
 			  	  	  
 			if ($passreset){
 			
 			} else {
-				if ($keyfileokay&&$certokay&&$smsokay){	  
-					$groupnames=$myrow['groupnames'];
-					$auth=md5($salt.$userid.$groupnames.$salt.$raw_login.$salt.$dispname.$salt.$gsid.$salt.$gsexpiry.$salt.$gstier);
+				if ($keyfileokay&&$certokay&&$smsokay&&$gaokay){	 
 					
-					setcookie('auth',$auth,null,null,null,null,true);
-					setcookie('gsid',$gsid,null,null,null,null,true);
-					setcookie('gsexpiry',$gsexpiry,null,null,null,null,true);
-					setcookie('gstier',$gstier,null,null,null,null,true);
-					setcookie('userid',$userid,null,null,null,null,true);
-					setcookie('login',$login,null,null,null,null,true);
-					setcookie('dispname',$dispname,null,null,null,null,true);
-					setcookie('groupnames',$groupnames,null,null,null,null,true);
+					//get a random number
+					$randmode=0;
+					if (is_callable('random_bytes')) $randmode=1;
+					if (is_callable('openssl_random_pseudo_bytes')&&$randmode==0) $randmode=2;
+					switch ($randmode){
+						case 0: $rand=mt_rand(); break;
+						case 1: $rand=random_bytes(32); break;
+						case 2: $rand=openssl_random_pseudo_bytes(32); break;
+					}
+					
+					$rand=substr(base64_encode($rand),0,16);
+										
+					$groupnames=$myrow['groupnames'];
+					$auth=md5($salt.$userid.$groupnames.$salt.$login.$salt.$dispname.$salt.$gsid.$salt.$gsexpiry.$salt.$gstier);
+					
+					setcookie('auth',$auth,null,null,null,$usehttps,true);
+					setcookie('gsid',$gsid,null,null,null,$usehttps,true);
+					setcookie('gsexpiry',$gsexpiry,null,null,null,$usehttps,true);
+					setcookie('gstier',$gstier,null,null,null,$usehttps,true);
+					setcookie('userid',$userid,null,null,null,$usehttps,true);
+					setcookie('login',$login,null,null,null,$usehttps,true);
+					setcookie('dispname',$dispname,null,null,null,$usehttps,true);
+					setcookie('groupnames',$groupnames,null,null,null,$usehttps,true);
+					setcookie('gsfrac',$rand,null,null,null,$usehttps,true);
 					
 					if (isset($_POST['lang'])){
 						if (!in_array($_POST['lang'],array_keys($langs))) $_POST['lang']=$deflang;
-						setcookie('userlang',$_POST['lang'],time()+3600*24*30*6); //keep for 6 months
+						setcookie('userlang',$_POST['lang'],time()+3600*24*30*6,null,null,$usehttps,true); //keep for 6 months
 					}
 					
 					//reset SMS code
 					if ($usesms){
-						$query="update ".TABLENAME_USERS." set smscode='' where userid=$userid";
-						sql_query($query,$db);	
+						$query="update ".TABLENAME_USERS." set smscode='' where userid=?";
+						sql_prep($query,$db,$userid);	
 					}
+					
+					//rehash password
+					if (password_needs_rehash($myrow['password'],PASSWORD_DEFAULT,array('cost'=>PASSWORD_COST))){
+						$np=password_hash($dbsalt.$_POST['password'],PASSWORD_DEFAULT,array('cost'=>PASSWORD_COST));
+						$query="update ".TABLENAME_USERS." set password=? where userid=?";
+						sql_prep($query,$db,array($np,$userid));
+					}
+					
 					
 					if (isset($_GET['from'])&&trim($_GET['from'])!='') {
 					  $from=$_GET['from'];
-					  $from=str_replace('://','',$from);
-					  $from=str_replace("\r",'-',$from);
-					  $from=str_replace("\n",'-',$from);
-					  $from=str_replace(":",'-',$from);
-					  header('Location: '.$from);
+					  $from=str_replace('//','',$from);
+					  $from=str_ireplace(array('%2f%2f','%5c','\\'),'',$from);
+					  $from=str_replace(array("\r","\n",':'),'-',$from);
+					  if ($from===$_GET['from']) header('Location: '.$from);
+					  else header('Location: index.php');
 					} else header('Location:index.php');
 					die();
 				} else {
-					$error_message=trim(implode('<br>',array($smserror,$keyfileerror,$certerror)),'<br>');
+					$error_message=trim(implode('<br>',array($gaerror,$smserror,$keyfileerror,$certerror)),'<br>');
 				}//keyfileokay, certokay, smsokay
 				
 				
@@ -174,38 +232,54 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['gyroscope
 	}//csrf
 	
 } else {
-	setcookie('userid',NULL,time()-3600);
-	setcookie('gsid',NULL,time()-3600);
-	setcookie('gsexpiry',NULL,time()-3600);	
-	setcookie('gstier',NULL,time()-3600);	
-	setcookie('login',NULL,time()-3600);
-	setcookie('dispname',NULL,time()-3600);
-	setcookie('auth',NULL,time()-3600);
-	setcookie('groupnames',NULL,time()-3600);	
+	if (!isset($fedbypass)) xsscheck(1);
+	setcookie('userid',NULL,time()-3600,null,null,$usehttps,true);
+	setcookie('gsid',NULL,time()-3600,null,null,$usehttps,true);
+	setcookie('gsexpiry',NULL,time()-3600,null,null,$usehttps,true);	
+	setcookie('gstier',NULL,time()-3600,null,null,$usehttps,true);	
+	setcookie('login',NULL,time()-3600,null,null,$usehttps,true);
+	setcookie('dispname',NULL,time()-3600,null,null,$usehttps,true);
+	setcookie('auth',NULL,time()-3600,null,null,$usehttps,true);
+	setcookie('groupnames',NULL,time()-3600,null,null,$usehttps,true);
+	setcookie('gsfrac',NULL,time()-3600,null,null,$usehttps,true);	
 }
 
 ?>
+<!doctype html>
 <html>
 <head>
-	<title><?echo GYROSCOPE_PROJECT;?></title>
+	<title><?php echo GYROSCOPE_PROJECT;?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta http-equiv="refresh" content="1800" />
 	<meta name = "viewport" content = "width=device-width, user-scalable=no" />
 	<meta name="theme-color" content="#9FA3A7" />	
 	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 	
-	<?include 'appicon.php';?>
-	
+	<?php include 'appicon.php';?>
+	<link rel="manifest" href="manifest.php?hb=<?php echo time();?>">
 <style>
-body{padding:0;margin:0;background:transparent url(imgs/bgtile.png) repeat;font-size:13px;font-family:arial,sans-serif;text-align:center;}
-#loginbox__{width:320px;margin:0 auto;background-color:rgba(200,200,200,0.4);margin-top:100px;border-radius:4px;}
+<?php
+$framecolor='rgba(200,200,200,0.4)';
+if (isset($SQL_READONLY)&&$SQL_READONLY) $framecolor='rgba(255,200,100,0.4)';
+?>
+body{padding:0;margin:0;background:transparent url(imgs/bgtile.png) repeat;font-size:13px;font-family:arial,sans-serif;text-align:center;<?php if ($dict_dir=='rtl') echo 'direction:rtl;';?>}
+#loginbox__{width:320px;margin:0 auto;background-color:<?php echo $framecolor;?>;margin-top:100px;border-radius:4px;}
 #loginbox_{padding:10px;}
-#loginbox{background-color:#FFFFFF;text-align:left;}
+#loginbox{background-color:#FFFFFF;text-align:<?php if ($dict_dir=='rtl') echo 'right'; else echo 'left';?>;}
 .powered{color:#000000;text-align:right;font-size:12px;width:320px;margin:0 auto;padding-top:10px;}
-#loginbutton{width:140px;-webkit-appearance: none;}
+#loginbutton,.loginbutton{color:#ffffff;background:#187CA6;padding:8px 20px;border-radius:3px;border:none;cursor:pointer;box-shadow:0px 1px 2px #c9c9c9;-webkit-appearance:none;text-decoration:none;}
+#loginbutton:focus, #loginbutton:hover{background:#29ABE1;}
+#loginbutton:active, #loginbuttonbutton:active{box-shadow:1px 1px 3px #999999;}
+
 #cardlink, #passlink{display:none;text-align:center;padding-top:10px;}
 #cardlink{display:none;}
 #cardinfo{padding:5px;font-size:12px;padding-left:26px;background:#fcfcdd url(imgs/smartcard.png) no-repeat 5px 50%;margin-bottom:10px;display:none;}
+
+.lfinp{border:solid 1px #999999;display:block;margin-bottom:5px;font-size:18px;border-radius:3px;-webkit-appearance:none;}
+.lfinp:active, .lfinp:focus{outline:0;border:solid 2px #29ABE1;}
+
+@media screen and (min-width:20px){
+	.lfinp{padding:5px;box-sizing:border-box;height:34px;line-height:32px;font-size:15px;}
+}
 
 @media screen and (max-width:400px){
 	#loginbox__,.powered{width:90%;}
@@ -213,7 +287,7 @@ body{padding:0;margin:0;background:transparent url(imgs/bgtile.png) repeat;font-
 }
 
 @media screen and (max-width:300px){
-	#loginbutton{width:auto;padding-left:5px;padding-right:5px;}
+	#loginbutton{width:auto;padding-left:15px;padding-right:15px;}
 }
 
 @media screen and (max-width:260px){
@@ -221,14 +295,14 @@ body{padding:0;margin:0;background:transparent url(imgs/bgtile.png) repeat;font-
 	.powered span{display:block;padding-top:3px;}
 }
 
-<?if ($_GET['kpw']||preg_match('/kindle/i',$_SERVER['HTTP_USER_AGENT'])){?>
+<?php if (SGET('kpw')||preg_match('/kindle/i',$_SERVER['HTTP_USER_AGENT'])){?>
 body{font-size:28px;}
 #loginbox__{width:640px;background-color:#dedede;margin-top:150px;border-radius:8px;}
 #loginbox_{padding:20px;}
 .powered{font-size:24px;width:640px;padding-top:20px;}
 #login, #password{height:45px;font-size:32px;line-height:32px;}
 #loginbutton{height:auto;padding:6px 0;font-size:28px;width:280px;-webkit-appearance: none;}
-<?}?>
+<?php }?>
 
 
 </style>
@@ -236,54 +310,59 @@ body{font-size:28px;}
 <body>
 <div id="loginbox__"><div id="loginbox_">
 <div id="loginbox">
-	<form method="POST" style="padding:20px;margin:0;padding-top:10px;" onsubmit="return checkform();" enctype="multipart/form-data">
-	<img src="imgs/logo.png" style="margin:10px 0;width:100%;">
-	<?if ($error_message!=''){?>
-	<div id="loginerror" style="color:#ab0200;font-weight:bold;padding-top:10px;"><?echo $error_message;?></div>
-	<?}?>
-	
-	<div style="padding-top:10px;"><?tr('username');?>: <?if ($passreset){?><b><?echo stripslashes($_POST['gyroscope_login_'.$dkey]);?></b> &nbsp; <a href="<?echo $_SERVER['PHP_SELF'];?>"><em><?tr('switch_user');?></em></a><?}?></div>
+	<form id="loginform" method="POST" style="padding:20px;margin:0;padding-top:10px;" onsubmit="return checkform();">
+	<img src="imgs/logo.png" style="margin:10px 0;width:100%;" alt="Gyroscope Logo">
+	<?php if ($error_message!=''){?>
+	<div id="loginerror" style="color:#ab0200;font-weight:bold;padding-top:10px;"><?php echo $error_message;?></div>
+	<?php }?>
+		
+	<div style="padding-top:10px;"><label for="login"><?php tr('username');?>:</label> <?php if ($passreset){?><b><?php echo stripslashes($_POST['gyroscope_login_'.$dkey]);?></b> &nbsp; <a href="<?php echo $_SERVER['PHP_SELF'];?>"><em><?php tr('switch_user');?></em></a><?php }?></div>
 	<div style="padding-top:5px;padding-bottom:10px;">
-	<input style="width:100%;<?if ($passreset) echo 'display:none;';?>" id="login" type="text" name="gyroscope_login_<?echo $dkey;?>" autocomplete="off" <?if ($passreset) echo 'readonly';?> value="<?if ($passreset) echo stripslashes($_POST['gyroscope_login_'.$dkey]);?>"></div>
-
+	<input style="width:100%;<?php if ($passreset) echo 'display:none;';?>" class="lfinp" id="login" type="text" name="gyroscope_login_<?php echo $dkey;?>" autocomplete="off" <?php if ($passreset) echo 'readonly';?> value="<?php if ($passreset) echo stripslashes($_POST['gyroscope_login_'.$dkey]);?>"></div>
+	
 	<div id="passview">
-		<div><?tr('password');?>:</div>
+		<div><label for="password"><?php tr('password');?></label>:</div>
 		<div style="padding-top:5px;padding-bottom:15px;">
-			<input style="width:100%;" id="password" type="password" name="password">
+			<input style="width:100%;" class="lfinp" id="password" type="password" name="password">
 		</div>
 		
 		<div id="tfa_sms" style="display:none;">
-			<div>SMS Code: (check your phone)</div>
+			<div><label for="smscode">SMS Code: (check your phone)</label></div>
 			<div style="padding-top:5px;padding-bottom:15px;">
-				<input id="smscode" name="smscode" style="width:100%;" autocomplete="off">
+				<input class="lfinp" id="smscode" name="smscode" style="width:100%;" autocomplete="off">
 			</div>
 		</div>
+		
+		<div id="tfa_ga" style="display:none;">
+			<div><label for="gapin">Google Authenticator PIN:</label></div>
+			<div style="padding-top:5px;padding-bottom:15px;">
+				<input class="lfinp" id="gapin" name="gapin" style="width:100%;" autocomplete="off">
+			</div>
+		</div>		
 		
 		<div id="tfa_keyfile" style="display:none;">
-			<div style="<?if ($passreset) echo 'display:none;';?>">Key File:</div>
-			<div style="padding-top:5px;padding-bottom:15px;<?if ($passreset) echo 'display:none;';?>">
-				<input id="keyfile" type="file" name="keyfile">
-				<input type="hidden" name="MAX_FILE_SIZE" value="4096">
-			</div>
 		</div>
 	
-	<?if ($passreset){?>
-	<div><?tr('new_password');?>:</div>
+	<?php if ($passreset){?>
+	<div><label for="password"><?php tr('new_password');?>:</label></div>
 	<div style="padding-top:5px;padding-bottom:15px;">
-	<input style="width:100%;" id="password" type="password" name="newpassword"></div>
+		<input class="lfinp" style="width:100%;" id="password" type="password" name="newpassword" onkeyup="_checkpass(this);" onchange="checkpass(this);">
+		<div style="font-weight:normal;color:#ab0200;" id="passwarn"></div>
+	</div>
+	
 		
-	<div><?tr('repeat_password');?>:</div>
+	<div><?php tr('repeat_password');?>:</div>
 	<div style="padding-top:5px;padding-bottom:15px;">
-	<input style="width:100%;" id="password" type="password" name="newpassword2"></div>
+	<input class="lfinp" style="width:100%;" id="password" type="password" name="newpassword2"></div>
 	<input type="hidden" name="passreset" value="1">
-	<?}?>
+	<?php }?>
 
-	<div style="width:100%;margin-bottom:10px;<?if (count($langs)<2) echo 'display:none;';?>"><select style="width:100%;" name="lang" onchange="document.skipcheck=true;">
-	<?
+	<div style="width:100%;margin-bottom:10px;<?php if (count($langs)<2) echo 'display:none;';?>"><select style="width:100%;" name="lang" onchange="document.skipcheck=true;">
+	<?php 
 	foreach ($langs as $langkey=>$label){
 	?>
-	<option value="<?echo $langkey;?>" <?if ($lang==$langkey) echo 'selected';?>><?echo $label;?></option>
-	<?	
+	<option value="<?php echo $langkey;?>" <?php if ($lang==$langkey) echo 'selected';?>><?php echo $label;?></option>
+	<?php	
 	}//foreach
 	?>
 	</select>
@@ -291,48 +370,77 @@ body{font-size:28px;}
 	
 	<div id="cardinfo"></div>
 	
-		<div  style="text-align:center;"><input id="loginbutton" type="submit" value="<?echo $passreset?_tr('change_password'):_tr('signin');?>"></div>
+		<div  style="text-align:center;"><input id="loginbutton" type="submit" value="<?php echo $passreset?_tr('change_password'):_tr('signin');?>"></div>
+		<div id="tfa_cert" style="display:none;">
+		<div style="text-align:center;padding-top:20px;">Smart Card Needed</div>
 		<div id="cardlink">
 			<a href=# onclick="cardauth();return false;">Load ID Card</a>
-		</div>
+		</div></div>
 	</div><!-- passview -->
 	<div id="cardview" style="display:none;">
-		<div style="text-align:center;"><input id="loginbutton" type="submit" value="<?tr('signin');?>" onclick="if (!cardauth()) return false;"></div>
+		<div style="text-align:center;"><input id="loginbutton" type="submit" value="<?php tr('signin');?>" onclick="if (!cardauth()) return false;"></div>
 		<div id="passlink">
 			<a href=# onclick="passview();return false;">Sign in with password</a>
 		</div>
 	</div>
-	<input name="cfk" value="<?echo $csrfkey;?>" type="hidden">
-	<div style="display:none;"><textarea name="certid" id="certid"></textarea></div>
+	<input name="cfk" id="cfk" value="<?php echo $csrfkey;?>" type="hidden">
+	<div style="display:none;"><span id="nullloader"></span><textarea name="certid" id="certid"></textarea></div>
+	
+	
 	</form>
+	
+
+	
+	<div id="offlineform" style="padding:20px;margin:0;padding-top:10px;display:none;line-height:1.4em;">
+		<img src="imgs/logo.png" style="margin:10px 0;width:100%;" alt="Gyroscope Logo">
+		There is currently no network access, but you can take offline notes:
+		<div style="padding-top:30px;text-align:center;">
+			<a class="loginbutton" href="notes.php">Launch Notepad</a>
+		</div>
+	</div>
 	&nbsp;
 </div>
-</div></div>	
-	<?
+</div></div>
+
+<div id="homeadder" onclick="this.style.top='-150px';" style="position:fixed;top:-150px;left:0;background:rgba(0,0,0,0.4);width:100%;padding:20px 0;transition:top 500ms;display:none;">
+	<img src="appicons/60x60.png" width="28" style="vertical-align:middle;margin-right:20px;">
+	<button id="homeapp" style="font-size:12px;padding:4px 10px;border:solid 1px #8f8cf7;border-radius:3px;">Add to Home Screen</button>
+</div>
+	
+	<?php
 	$version=GYROSCOPE_VERSION;
 	if (VENDOR_VERSION!='') $version.=VENDOR_VERSION;
 	if (VENDOR_NAME) $version.=' '.VENDOR_NAME;
 	$power='Antradar Gyroscope&trade; '.$version;
 	?>
-	<div class="powered"><?tr('powered_by_',array('power'=>$power));?></div>
+	<div class="powered"><?php tr('powered_by_',array('power'=>$power));?></div>
 	
 	<script src="nano.js"></script>
 	<script>
 		function checkform(){
+			if (navigator.onLine!=null&&!navigator.onLine){
+				onlinestatuschanged();
+				return false;
+			}
 			if (gid('loginerror')) gid('loginerror').innerHTML='';
 			if (document.skipcheck) return true;
 			if (gid('password').value=='') { //&&gid('certid').value==''
-				gid('password').focus();
-				if (gid('login').value=='') gid('login').focus();
+				if (gid('password')) gid('password').focus();
+				if (gid('login')&&gid('login').value=='') gid('login').focus();
 				return false;
 			}
 			
 			var tfa=false;
 			
-			if (!document.tfabypass){
+			if (!document.tfabypas){
 			
-				var res=ajxb('ajx_2facheck.php?','login='+encodeHTML(gid('login').value)+'&password='+encodeHTML(gid('password').value),function(rq){
-					document.tfabypass=true;
+				ajxb('ajx_2facheck.php?','login='+encodeHTML(gid('login').value)+'&pass'+'word='+encodeHTML(gid('password').value),function(rq){
+					document.tfabypas=true;
+					var fedurl=rq.getResponseHeader('fedurl');
+					if (fedurl!=null&&fedurl!=''){
+						gid('loginform').action=fedurl;
+						gid('login').name=rq.getResponseHeader('fedloginfield');
+					}
 					var tfas=rq.getResponseHeader('tfas');
 					if (tfas!=null&&tfas!=''){
 						tfa=true;
@@ -341,9 +449,14 @@ body{font-size:28px;}
 							var part=tfaparts[i];
 							if (gid('tfa_'+part)) {
 								gid('tfa_'+part).style.display='block';
+								if (part=='keyfile') {
+									gid('tfa_keyfile').innerHTML=rq.responseText;
+									gid('loginform').setAttribute('enctype','multipart/form-data');
+								}
 								var focalpoint=rq.getResponseHeader('focalpoint');
 								if (focalpoint!=null&&focalpoint!=''&&gid(focalpoint)) gid(focalpoint).focus();
 							}
+							
 						}	
 					}
 					
@@ -355,20 +468,22 @@ body{font-size:28px;}
 			
 			return true;
 		}
-		<?if ($passreset){?>
-		gid('password').focus();
-		<?}else{?>	
-		gid('login').focus();
-		<?}?>
+		<?php if ($passreset){?>
+		if (gid('password')) gid('password').focus();
+		<?php }else{?>	
+		if (gid('login')) gid('login').focus();
+		<?php }?>
 	</script>
 
 <script src="smartcard.js"></script>
 <script>
-smartcard_init('reader',{
-	'noplugin':function(){gid('cardlink').style.display='none';},
-	'nohttps':function(){gid('cardlink').style.display='none';},
-	'inited':function(){gid('cardlink').style.display='block';}	
-});
+window.onload=function(){
+	smartcard_init('reader',{
+		'noplugin':function(){if (gid('cardlink')) gid('cardlink').style.display='none';},
+		'nohttps':function(){if (gid('cardlink')) gid('cardlink').style.display='none';},
+		'inited':function(){if (gid('cardlink')) gid('cardlink').style.display='block';}	
+	});
+};
 
 function cardview(){
 	gid('passview').style.display='none';
@@ -401,6 +516,72 @@ function cardauth(){
 		return false;
 	}
 }
+
+document.cfkitr=setInterval(function(){
+	ajxpgn('nullloader','logpump.php?cmd=logpump',0,0,null,function(rq){
+		if (rq.responseText!=''&&rq.responseText!=null) gid('cfk').value=rq.responseText;	
+	});
+},30000);
+
+_checkpass=function(d){
+	if (d.timer) clearTimeout(d.timer);
+	if (d.value==''){
+		d.style.background='#ffffff';
+		gid('passwarn').innerHTML='';
+		return;	
+	}
+	d.timer=setTimeout(function(){
+		checkpass(d);
+	},300);
+}
+
+checkpass=function(d){
+	if (d.value==''){
+		d.style.background='#ffffff';
+		gid('passwarn').innerHTML='';
+		return;				
+	}
+	
+	ajxpgn('passwarn','ajx_checkpass.php?cmd=checkpass',0,0,'pass='+encodeHTML(d.value),function(rq){
+		var color=rq.getResponseHeader('passcolor');
+		d.style.background=color;	
+	});
+}
+
+</script>
+
+<script>
+if (navigator.serviceWorker&&navigator.serviceWorker.register){
+	navigator.serviceWorker.register('service_worker.js');
+}
+
+function onlinestatuschanged(){
+	if (navigator.onLine){
+		gid('loginform').style.display='block';
+		gid('offlineform').style.display='none';
+	} else {
+		gid('loginform').style.display='none';
+		gid('offlineform').style.display='block';
+		gid('password').value='';	
+	}
+}
+
+window.addEventListener('offline',onlinestatuschanged);
+window.addEventListener('online',onlinestatuschanged);
+
+window.addEventListener('beforeinstallprompt',function(e){
+	if (gid('homeadder').locked) return false;
+	gid('homeadder').style.display='block';
+	setTimeout(function(){
+		gid('homeadder').style.top=0;
+		e.preventDefault();
+		gid('homeapp').onclick=function(){
+			gid('homeadder').style.display='none';
+			gid('homeadder').locked=1;
+			e.prompt();
+		}
+	},1500);
+});
 
 </script>
 

@@ -1,0 +1,19 @@
+<?php
+
+include 'icl/list#primaryfield#users.inc.php';
+
+function disable#primaryfield#user(){
+	$userid=GETVAL('userid');
+	$#primarykey#=GETVAL('#primarykey#');
+	
+	global $db;
+	
+	$query="update #primaryfield#users set active=0 where userid=? and #primarykey#=?";
+	sql_prep($query,$db,array($userid,$#primarykey#));
+	
+	cache_delete('#primaryrecords#'.'gyroscopeblockedids_'.$#primarykey#);
+		
+	logaction("disabled #primaryfield# user #$userid",array('#primarykey#'=>$#primarykey#,'#primaryfield#userid'=>$userid));
+	
+	list#primaryfield#users($#primarykey#);	
+}

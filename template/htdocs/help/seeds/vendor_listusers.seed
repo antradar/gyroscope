@@ -1,0 +1,34 @@
+
+	//vendor auth 1
+	
+	$#primarykey#=$user['#primarykey#'];
+
+	
+	//vendor auth 2
+	
+	if ($#primarykey#){
+		$query.=" and #primarykey#=? ";
+		array_push($params,$#primarykey#);
+	}
+	
+	
+	//vendor auth 3
+	
+	order by (#primarykey# is null or #primarykey#=0) desc, #primarykey#, 
+	
+	$lastvendorname='';
+	
+	//vendor auth 4
+	
+		$vendorname='';
+		$#primaryfield#name=$myrow['#primaryfield#name']; //use a left join to resolve #primaryfield#name
+		if ($#primaryfield#name!='') $vendorname=$#primaryfield#name;
+		
+		if ($lastvendorname!=$vendorname){
+		?>
+		<div class="sectionheader"><?php echo htmlspecialchars($vendorname);?></div>
+		<?php
+			$lastvendorname=$vendorname;
+		}
+	
+	

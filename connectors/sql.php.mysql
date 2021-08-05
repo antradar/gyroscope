@@ -12,7 +12,12 @@ function sql_escape($str){
 	return mysql_real_escape_string($str);	
 }
 
+function sql_select_db($db,$name){
+	mysql_select_db($name,$db);	
+}
+
 function sql_get_db($dbhost,$dbsource,$dbuser,$dbpass,$lazyname=null){
+	$dbhost=preg_replace('/^p\:/','',$dbhost); //no persistement syntax for mysql, unlike mysqli
 	if (isset($lazyname)){
 		global $dbdefers;
 		if (!isset($dbdefers)) $dbdefers=array();
@@ -28,8 +33,26 @@ function sql_get_db($dbhost,$dbsource,$dbuser,$dbpass,$lazyname=null){
 	return $db;
 }
 
-function sql_query($query,&$db){
+function sql_prep($query,&$db,$params=null){ //emulated! use mysqli if possible
+	
+	if (!is_array($params)) $params=array($params);
+	
+	$idx=0;
+	
+	$query=preg_replace_callback('/\?/',function() use(&$idx,$params){
+		$param=$params[$idx];
+		if (!is_numeric($param)&&$param!==null) $param="'".addslashes($param)."'";
+		$idx++;
+		return $param;
+	},$query);
+	
+	$rs=sql_query($query,$db);	
+	
+	return $rs;
+		
+}
 
+function sql_query($query,&$db){
 	if (is_string($db)){
 		global $dbdefers;
 		$dbinfo=$dbdefers[$db];

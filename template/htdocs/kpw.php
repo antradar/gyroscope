@@ -13,7 +13,7 @@ $user=userinfo();
 ?>
 <html>
 <head>
-	<title><?echo GYROSCOPE_PROJECT;?></title>
+	<title><?php echo GYROSCOPE_PROJECT;?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 	<link href='iphone/gyrodemo.css' type='text/css' rel='stylesheet'>
@@ -21,7 +21,7 @@ $user=userinfo();
 	<link href='iphone/kpw.css' type='text/css' rel='stylesheet'>
 	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 	
-	<?
+	<?php
 	include 'appicon.php';
 	?>
 <style>
@@ -41,20 +41,20 @@ body{font-family:helvetica;}
 <div id="toolbg" style="position:fixed;width:100%;z-index:1000;top:0;background:#000000;"></div>
 <div id="toolicons" style="position:fixed;width:100%;z-index:2000;top:0;">
 
-	<?
+	<?php
 	$tcount=1;
 	foreach ($toolbaritems as $ti) if (isset($ti['icon'])&&$ti['icon']!='') $tcount++;
 	?>
 	
-	<div id="toollist" style="overflow:hidden;width:100%;"><div style="width:<?echo 102*($tcount);?>px;">
+	<div id="toollist" style="overflow:hidden;width:100%;"><div style="width:<?php echo 102*($tcount);?>px;">
 	<div class="menuitem"><a onclick="showtab('welcome');document.viewindex=null;"><img width="64" height="64" src="imgs/t.gif" class="img-home"></a></div>
-	<?foreach ($toolbaritems as $modid=>$ti){
-		if ($ti['type']=='break') continue;
+	<?php foreach ($toolbaritems as $modid=>$ti){
+		if ($ti['type']==='break') continue;
 		if ($ti['noiphone']) continue;	
-		if ($ti['type']=='custom'){
+		if ($ti['type']==='custom'){
 		?>
-		<?echo $ti['iphone'];?>
-		<?	
+		<?php echo $ti['iphone'];?>
+		<?php	
 			continue;
 		}
 		
@@ -70,12 +70,12 @@ body{font-family:helvetica;}
 		}
 		
 	?>
-	<div class="menuitem"><a href=# onclick="<?echo $action;?>return false;"><img class="<?echo $ti['icon'];?>" src="imgs/t.gif" border="0" width="64" height="64"></a></div>
-	<?}?>
+	<div class="menuitem"><a href=# onclick="<?php echo $action;?>return false;"><img class="<?php echo $ti['icon'];?>" src="imgs/t.gif" border="0" width="64" height="64"></a></div>
+	<?php }?>
 
 	</div></div>
-	<span id="labellogin" style="display:none;"><?echo $user['login'];?></span><span id="labeldispname" style="display:none;"><?echo $user['dispname'];?></span>	
-	<a href="login.php?from=<?echo $_SERVER['PHP_SELF'];?>" style="position:absolute;top:20px;right:30px;"><img border="0" width="32" height="32" src="imgs/t.gif" class="admin-logout"></a>
+	<span id="labellogin" style="display:none;"><?php echo $user['login'];?></span><span id="labeldispname" style="display:none;"><?php echo $user['dispname'];?></span>	
+	<a href="login.php?from=<?php echo $_SERVER['PHP_SELF'];?>" style="position:absolute;top:20px;right:30px;"><img border="0" width="32" height="32" src="imgs/t.gif" class="admin-logout"></a>
 </div><!-- toolicons -->
 <div id="pusher" style="width:100%;height:100px;"></div>
 
@@ -86,9 +86,9 @@ body{font-family:helvetica;}
 	<div id="tooltitle" onclick="if (document.viewindex) reloadview(document.viewindex,0,1);" style="width:100%;position:fixed;top:100px;z-index:1000;height:50px;"></div>
 	<div id="tooltitleshadow" style="width:100%;height:50px;"></div>
 	<div id="lvviews">
-	<?foreach ($toolbaritems as $modid=>$ti){?>
-		<div id="lv<?echo $modid;?>" style="background-color:#ffffff;display:none;"></div>
-	<?}?>	
+	<?php foreach ($toolbaritems as $modid=>$ti){?>
+		<div id="lv<?php echo $modid;?>" style="background-color:#ffffff;display:none;"></div>
+	<?php }?>	
 	</div>
 	<div id="lkv" style="height:100%;">
 		<div id="lkvtitle"><a id="lkvt"></a><img id="lkvx" src="imgs/t.gif" onclick="hidelookup();" width="30" height="24"></div>
@@ -116,9 +116,9 @@ body{font-family:helvetica;}
 <div id="fsview"></div>
 
 <script>
-document.appsettings={codepage:'<?echo $codepage;?>',fastlane:'<?echo $fastlane;?>', viewmode:'kpw', views:<?echo json_encode(array_keys($toolbaritems));?>};
+document.appsettings={codepage:'<?php echo $codepage;?>',fastlane:'<?php echo $fastlane;?>', viewmode:'kpw', views:<?php echo json_encode(array_keys($toolbaritems));?>};
 </script>
-<script src="lang/dict.<?echo $lang;?>.js"></script>
+<script src="lang/dict.<?php echo $lang;?>.js"></script>
 <script src="nano.js"></script>
 <script src="iphone/tabs.js"></script>
 <script src="iphone/viewport.js"></script>
@@ -175,7 +175,7 @@ function rotate(){
 		
 }
 
-addtab('welcome','<?tr('tab_welcome');?>','wk',null,null,{noclose:true});
+addtab('welcome','<?php tr('tab_welcome');?>','wk',null,null,{noclose:true});
 
 function onrotate(){
 	if (document.resizetimer) clearTimeout(document.resizetimer);

@@ -1,8 +1,8 @@
 setfilter=function(navcontainerid,breadcrumbid,listcontainerid,ajaxurl,filters,nostate){
 	if (!document.recsort) document.recsort='';
 	
-	gid(navcontainerid).style.opacity=0.5;
-	gid(listcontainerid).style.opacity=0.5;
+	if (gid(navcontainerid)) gid(navcontainerid).style.opacity=0.5;
+	if (gid(listcontainerid)) gid(listcontainerid).style.opacity=0.5;
 	
 	ajxpgn(navcontainerid,ajaxurl+'?cmd=nav'+filters+'&sort='+document.recsort,0,0,null,function(){
 		gid(navcontainerid).style.opacity=1;
@@ -14,5 +14,5 @@ setfilter=function(navcontainerid,breadcrumbid,listcontainerid,ajaxurl,filters,n
 		gid(listcontainerid).style.opacity=1;
 	});
 
-	if (!nostate&&window.history) history.pushState({},'[PageTitle]',window.location.pathname+'?'+filters+'&sort='+document.recsort);
+	if (!nostate) history.pushState({},'[PageTitle]',window.location.pathname+'?'+filters+'&sort='+document.recsort);
 }

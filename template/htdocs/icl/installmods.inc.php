@@ -1,6 +1,7 @@
 <?php
 set_time_limit(0);
 function installmods(){
+	die('This feature has been deprecated');
 	global $db;
 	global $lang;
 	global $viewcount;
@@ -8,7 +9,7 @@ function installmods(){
 	global $userroles;
 	
 	$user=userinfo();
-	
+		
 	if (!isset($user['groups']['upgrademods'])) apperror('You do not have the privilege to install modules');
 	
 	$modids=GETSTR('modids');
@@ -87,6 +88,6 @@ function installmods(){
 <button onclick="skipconfirm();window.location.reload();">Reload Gyroscope</button>
 <br><br>
 <em>After reload, do a full-refresh to pick up icon changes.</em>
-<?		
+<?php		
 				
 }

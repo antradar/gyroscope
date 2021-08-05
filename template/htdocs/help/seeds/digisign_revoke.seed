@@ -3,7 +3,7 @@
 include 'icl/list#container#.inc.php';
 
 function revoke#doctype#(){
-	$#key#=GETVAL('#key#');
+	$#key#=SGET('#key#');
 	
 	global $db;
 
@@ -18,8 +18,8 @@ function revoke#doctype#(){
 
 
 	
-	$query="update #records# set #doctype#lock=0 where #key#=$#key#";
-	sql_query($query,$db);
+	$query="update #records# set #doctype#lock=0 where #key#=?";
+	sql_prep($query,$db,$#key#);
 	
 	logaction("revoked #doctype# of #record# #$#key#",array('#key#'=>$#key#));	
 	

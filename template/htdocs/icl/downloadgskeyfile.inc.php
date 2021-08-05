@@ -1,5 +1,6 @@
 <?php
 include 'makeslug.php';
+include 'encdec.php';
 
 function downloadgskeyfile(){
 	global $db;
@@ -7,17 +8,20 @@ function downloadgskeyfile(){
 	global $dbsalt;
 
 	$user=userinfo();
-	$gsid=$user['gsid']+0;
+	$gsid=$user['gsid'];
 	$myuserid=$user['userid'];
 	
+	
 	$keyfile=$_POST['keyfileinfo'];
-	$userid=$_POST['keyfileuserid'];
+	$userid=SQET('keyfileuserid');
 	
 	if (!$userid) apperror('Invalid request');
 	if ($myuserid!=$userid&&!$user['groups']['accounts']) apperror('Access denied');
+	
+	checkgskey('downloadgskeyfile_'.$userid);	
 
-	$query="select * from users where userid=$userid and gsid=$gsid";
-	$rs=sql_query($query,$db);
+	$query="select * from users where userid=? and gsid=?";
+	$rs=sql_prep($query,$db,array($userid,$gsid));
 	if (!$myrow=sql_fetch_assoc($rs)) apperror('Access denied');
 		
 	$fn=makeslug($myrow['login']).'.key';
@@ -27,8 +31,8 @@ function downloadgskeyfile(){
 
 	$keyfilehash=sha1($dbsalt.$keyfile);
 	
-	$query="update users set keyfilehash='$keyfilehash' where userid=$userid and gsid=$gsid ";
-	sql_query($query,$db);
+	$query="update users set keyfilehash=? where userid=? and gsid=? ";
+	sql_prep($query,$db,array($keyfilehash,$userid,$gsid));
 
 	header('Content-Type: application/octet-stream');
 	header("Content-disposition: attachment; filename=$fn");

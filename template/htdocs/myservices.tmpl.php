@@ -1,4 +1,4 @@
-<?
+<?php
 include 'lb.php';
 
 include 'connect.php';
@@ -59,7 +59,7 @@ switch($cmd){
 	
 	case 'wk': include 'icl/showwelcome.inc.php'; showwelcome(); break;
 	case 'updategyroscope': include 'icl/updater.inc.php'; updategyroscope(); break;
-	case 'showhelp': include 'icl/showhelp.inc.php'; showhelp(); break;
+	//case 'showhelp': include 'icl/showhelp.inc.php'; showhelp(); break; //deprecated
 	
-	default: echo 'unspecified interface:'.$cmd;
+	default: apperror('unspecified interface:'.preg_replace('/[^A-Za-z0-9-_]/','',$cmd));
 }

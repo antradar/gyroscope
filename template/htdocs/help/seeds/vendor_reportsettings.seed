@@ -1,0 +1,6 @@
+
+	//vendor auth 1
+	global $#primaryfield#roles;
+	
+	//vendor auth 2
+	$allroles=array_merge($allroles,$#primaryfield#roles);	

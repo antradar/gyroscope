@@ -1,0 +1,8 @@
+
+	var #primarykey#=gid('#primarykey#_new').value;
+	
+	//...
+	
+	
+	params.push('pre#primarykey#='+#primarykey#);
+	

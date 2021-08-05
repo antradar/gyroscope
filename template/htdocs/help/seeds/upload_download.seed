@@ -1,12 +1,14 @@
 <?php
 
+include 'streamdownload.inc.php';
+
 function download#primaryfield##record#(){
 	$#lookupkey#=GETVAL('#lookupkey#');
 	
 	global $db;
 	
-	$query="select * from #lookuptable# where #lookupkey#=$#lookupkey#";
-	$rs=sql_query($query,$db);
+	$query="select * from #lookuptable# where #lookupkey#=?";
+	$rs=sql_prep($query,$db,$#lookupkey#);
 	if (!$myrow=sql_fetch_array($rs)) die('Missing Document #'.$#lookupkey#);
 	
 	$fn='../../#primaryfield##records#/'.$#lookupkey#.'#fileext#';
@@ -20,17 +22,12 @@ function download#primaryfield##record#(){
 	// Direct View:
 	
 	header('Content-Type: '.$mimetype);
+	streamdownload($fn,$mimetype);
 	
 	*/	
 		
 		
 	// Force Download:
-		
-	header('Content-Type: application/octet-stream');
-	header("Content-disposition: attachment; filename=$ofn");
-	
 
-	clearstatcache();
-	echo file_get_contents($fn);
-	die();	
+	streamdownload($fn,null,$ofn);
 }

@@ -1,44 +1,93 @@
-﻿<?php
+<?php
+
 include 'icl/showgyroscopeupdater.inc.php';
 include 'icl/showguide.inc.php';
+include 'icl/listhomedashreports.inc.php';
 
+
+//include 'gsx.php'; //uncomment this to see gsx in action
+//include 'gsx_hello.inc.php'; //uncomment this to see gsx in bypass mode, remember to modify gsx.php
 
 function showwelcome(){
 
 ?>
-<div class="section">
-	<div class="sectiontitle"><?tr('hometab_welcome');?></div>
-<?
+<div class="section" style="position:relative;">
+	<?php makehelp('welcometab','tabview',1);?>
+	<div class="sectiontitle"><?php tr('hometab_welcome');?></div>
+<?php
+
+
 /*
-	<input class="inp" id="mtest" onfocus="pickmonth(this,<?echo date('Y');?>);" placeholder="Month">
-	<?makelookup('mtest',1);?>
+
+//auto lookup tests:
+
+	<input class="inp" id="dtest0" onfocus="pickdate(this,{params:'vmode=test&testid=123'});" onkeyup="_pickdate(this,{params:'vmode=test&testid=123'});" placeholder="Date">
+	<?php makelookup('dtest0',1);?>
+	<input class="inp" id="dtest1" onfocus="pickdate(this,{params:'vmode=heat&recid=123'});" onkeyup="_pickdate(this,{params:'vmode=heat&recid=123'});" placeholder="Date">
+	<?php makelookup('dtest1',1);?>
+
+	<input class="inp" onfocus="document.hotspot=this;">
+	<textarea onfocus="document.hotspot=this;" class="inplong"></textarea>
+	
+	<input class="inp" id="mtest" onfocus="pickmonth(this,<?php echo date('Y');?>);" placeholder="Month">
+	<?php makelookup('mtest',1);?>
 	<br><br>
 	<input class="inp" id="dtest" onfocus="pickdate(this);" onkeyup="_pickdate(this);" placeholder="Date">
-	<?makelookup('dtest',1);?>
+	<?php makelookup('dtest',1);?>
 	<br><br>
 	<input class="inp" id="test" onfocus="pickdatetime(this,{start:0,end:24});" onkeyup="_pickdatetime(this,{start:0,end:24});" placeholder="Date/Time">
 	<span id="test_val2"></span>
-	<?makelookup('test',1);?>
+	<?php makelookup('test',1);?>
 	<br><br>
 	<input class="inp" id="test2" onfocus="picktime(this,{start:0,end:24,y:2015,m:11,d:1});" placeholder="Time on 2015-11-1">
 	<span id="test2_val2"></span>
-	<?makelookup('test2',1);?>
+	<?php makelookup('test2',1);?>
+*/
+
+/*
+//gsx demo:
+	
+	$lines=array(
+		'"Parallel Programming',
+		'is the art of deliverying a baby',
+		'in just one month',
+		'with the help of 10 women."',
+	);
+	
+	$ta=microtime(1);
+			
+	gsx_begin();
+	
+	foreach ($lines as $line){	
+		//gsx_hello($line,1);
+		gsx_exec('gsx_hello',array('msg','delay'),$line,1);
+	}//foreach
+		
+	gsx_end();
+	
+	$tb=microtime(1);
+	echo "<br>Total time: ".round($tb-$ta,2)."s";
 */
 ?>
-
-<?
+<div id="homedashreports">
+<?php
+		listhomedashreports();
+?>
+</div>
+<?php
 		//lazy way to generate a starter screen, but better than nothing
 		
 		auto_welcome();			
 		showgyroscopeupdater();
 		
-		if ($_SERVER['REMOTE_ADDR']=='127.0.0.1') showguide(); else echo '<div style="padding-bottom:100px;"></div>';
+		if ($_SERVER['REMOTE_ADDR']==='127.0.0.1'&&($_SERVER['O_IP']==='127.0.0.1'||$_SERVER['O_IP']==='::1')) showguide(); else echo '<div style="padding-bottom:100px;"></div>';
 		
 	?>			
 
+
 	
 </div><!-- section -->
-<?
+<?php
 }
 
 function auto_welcome(){
@@ -47,12 +96,12 @@ function auto_welcome(){
 	?>
 	<div class="section">
 
-	<?
+	<?php
 	foreach ($toolbaritems as $modid=>$ti){
 	if (isset($ti['type'])&&$ti['type']=='custom'){
 	?>
-	<?echo $ti['desktop'];?>
-	<?	
+	<?php echo $ti['desktop'];?>
+	<?php	
 		continue;
 	}
 	
@@ -70,25 +119,24 @@ function auto_welcome(){
 	
 ?>	
 	<div class="welcometile">
-	<a onclick="<?echo $action;?>"><img style="vertical-align:middle;margin-right:5px;" class="<?echo $ti['icon'];?>-light" src="imgs/t.gif"> <span style="vertical-align:middle;"><?echo $ti['title'];?></span></a>
+	<a onclick="<?php echo $action;?>"><img alt="<?php echo $ti['title'];?>" style="vertical-align:middle;margin-right:5px;" class="<?php echo $ti['icon'];?>-light" src="imgs/t.gif"> <span style="vertical-align:middle;"><?php echo $ti['title'];?></span></a>
 	</div>
 	
-<?}//foreach
+<?php }//foreach
 ?>
 
 	
-	<div class="clear"></div>
+	<div class="clear"></div>	
 	
 	<div style="display:none;">
 	<textarea class="inp" id="test"
 	ttstags="version info,about gyroscope,version information,
 	die versionsinformation, die versionsinformation aus,die versionsinformationen, die versionsinformationen aus,
-	??,????
-	"><?tr('powerbanner',array('version'=>GYROSCOPE_VERSION));?></textarea>
+	"><?php tr('powerbanner',array('version'=>GYROSCOPE_VERSION));?></textarea>
 	</div>
 		
 </div>
-<?
+<?php
 		
 }
 

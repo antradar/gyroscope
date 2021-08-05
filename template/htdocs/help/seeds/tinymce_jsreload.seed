@@ -1,4 +1,4 @@
 
 
-		init#editfield#editor(#primarykey#);
+		init#editfield#editor(#primarykey#,st);
 		

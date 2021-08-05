@@ -1,20 +1,26 @@
 <?php
 include 'icl/showkeyfilepad.inc.php';
+include 'icl/showuserhelptopics.inc.php';
 
 function showuser($userid=null){
 	global $smskey;
+	global $userrolelocks;
 	
-	if (!isset($userid)) $userid=GETVAL('userid');
+	if (!isset($userid)) $userid=SGET('userid');
 	
 	$user=userinfo();
 	if (!$user['groups']['accounts']) die('Access denied');
-	$gsid=$user['gsid']+0;
+	$gsid=$user['gsid'];
+	
+	$myuserid=$user['userid'];
 	
 	global $db;
 	global $userroles;
 	
-	$query="select * from ".TABLENAME_USERS." where userid=$userid and gsid=$gsid";
-	$rs=sql_query($query,$db);
+	//vendor auth 1
+	
+	$query="select * from ".TABLENAME_USERS." where userid=? and ".COLNAME_GSID."=? ";
+	$rs=sql_prep($query,$db,array($userid,$gsid));
 	
 	if (!$myrow=sql_fetch_array($rs)) die('This user record has been removed');
 	
@@ -31,104 +37,156 @@ function showuser($userid=null){
 	$needkeyfile=$myrow['needkeyfile'];
 	
 	$usesms=$myrow['usesms'];
+
+	$usega=$myrow['usega'];
+	$usegamepad=$myrow['usegamepad'];
+		
 	$smscell=$myrow['smscell'];
 	
 	if ($smskey=='') $usesms=0;
-		
-	header('newtitle: '.tabtitle($login));
 	
-	makechangebar('user_'.$userid,"updateuser($userid);");
+	//vendor auth 2
+	
+	$jsroles=str_replace('"',"'",json_encode(array_keys($userroles)));
+	
+		
+	header('newtitle: '.tabtitle('<img src="imgs/t.gif" class="ico-user">'.htmlspecialchars($login)));
+	
+	makechangebar('user_'.$userid,"updateuser('$userid',$jsroles,'".makegskey('updateuser_'.$userid)."');");
+	makesavebar('user_'.$userid);
 ?>
 
 
 
-<div class="section">
-	<div class="sectiontitle"><?echo $login;?></div>
+<div class="section hasqnav">
+	<div class="sectiontitle" id="bmusertop_<?php echo $userid;?>"><?php echo htmlspecialchars($login);?></div>
 
 	<div class="col">
 
+	<?php
+	//vendor auth 3
+	?>
 
 	<div class="inputrow">
-		<div class="formlabel"><?tr('username');?>:</div>
-		<input class="inpmed" id="login_<?echo $userid;?>" value="<?echo htmlspecialchars($login);?>" onchange="marktabchanged('user_<?echo $userid;?>');" onblur="if (gid('dispname_<?echo $userid;?>').value==''&&this.value!='') {var val=this.value.charAt(0).toUpperCase()+this.value.slice(1);gid('dispname_<?echo $userid;?>').value=val;}">
+		<div class="formlabel"><?php tr('username');?>:</div>
+		<input class="inpmed" id="login_<?php echo $userid;?>" value="<?php echo htmlspecialchars($login);?>" oninput="this.onchange();" onchange="marktabchanged('user_<?php echo $userid;?>');" onblur="if (gid('dispname_<?php echo $userid;?>').value==''&&this.value!='') {var val=this.value.charAt(0).toUpperCase()+this.value.slice(1);gid('dispname_<?php echo $userid;?>').value=val;}">
 	</div>
 	<div class="inputrow">
-		<div class="formlabel"><?tr('dispname');?>:</div>
-		<input class="inpmed" id="dispname_<?echo $userid;?>" value="<?echo htmlspecialchars($dispname);?>" onchange="marktabchanged('user_<?echo $userid;?>');" onfocus="this.select();">
+		<div class="formlabel"><?php tr('dispname');?>:</div>
+		<input class="inpmed" id="dispname_<?php echo $userid;?>" value="<?php echo htmlspecialchars($dispname);?>" oninput="this.onchange();" onchange="marktabchanged('user_<?php echo $userid;?>');" onfocus="this.select();document.hotspot=this;">
 	</div>
 	<div class="inputrow">
-		<input type="checkbox" id="active_<?echo $userid;?>" <?if ($active) echo 'checked';?>  onchange="marktabchanged('user_<?echo $userid;?>');"> <label for="active_<?echo $userid;?>"><?tr('account_active');?></label>
+		<input type="checkbox" id="active_<?php echo $userid;?>" <?php if ($active) echo 'checked';?>  onclick="marktabchanged('user_<?php echo $userid;?>');"> <label for="active_<?php echo $userid;?>"><?php tr('account_active');?></label>
 		&nbsp;&nbsp;
-		<input type="checkbox" id="virtual_<?echo $userid;?>" <?if ($virtual) echo 'checked';?>  onchange="marktabchanged('user_<?echo $userid;?>');" onclick="if (this.checked) gid('userpasses_<?echo $userid;?>').style.display='none'; else gid('userpasses_<?echo $userid;?>').style.display='block';"> <label for="virtual_<?echo $userid;?>"><?tr('account_virtual');?></label>
+		<input type="checkbox" id="virtual_<?php echo $userid;?>" <?php if ($virtual) echo 'checked';?>  onclick="marktabchanged('user_<?php echo $userid;?>');" onclick="if (this.checked) gid('userpasses_<?php echo $userid;?>').style.display='none'; else gid('userpasses_<?php echo $userid;?>').style.display='block';"> <label for="virtual_<?php echo $userid;?>"><?php tr('account_virtual');?></label>
 	</div>
-	<div id="userpasses_<?echo $userid;?>" style="<?if ($virtual) echo 'display:none;';?>">
+	<div id="userpasses_<?php echo $userid;?>" style="<?php if ($virtual) echo 'display:none;';?>">
 	<div class="inputrow">
-		<div class="formlabel"><?tr('new_password');?>:</div>
-		<input class="inp" id="newpass_<?echo $userid;?>" type="password" onchange="marktabchanged('user_<?echo $userid;?>');">
+		<div class="formlabel"><?php tr('new_password');?>: &nbsp; &nbsp; <span style="font-weight:normal;color:#ab0200;" id="passwarn_<?php echo $userid;?>"></span></div>
+		<input class="inp" autocomplete="new-password" id="newpass_<?php echo $userid;?>" onkeyup="ajxjs(self.checkpass,'accounts.js');_checkpass(this,'passwarn_<?php echo $userid;?>');" type="password" onchange="marktabchanged('user_<?php echo $userid;?>');ajxjs(self.checkpass,'accounts.js');checkpass(this,'passwarn_<?php echo $userid;?>');">
 	</div>
 	<div class="inputrow">
-		<div class="formlabel"><?tr('repeat_password');?>:</div>
-		<input class="inp" id="newpass2_<?echo $userid;?>" type="password" onchange="marktabchanged('user_<?echo $userid;?>');">
+		<div class="formlabel"><?php tr('repeat_password');?>:</div>
+		<input class="inp" id="newpass2_<?php echo $userid;?>" type="password" oninput="this.onchange();" onchange="marktabchanged('user_<?php echo $userid;?>');">
 	</div>
 	
 	<div class="inputrow">
-		<input type="checkbox" onclick="marktabchanged('user_<?echo $userid;?>');" id="passreset_<?echo $userid;?>" <?if ($passreset) echo 'checked';?>> <label for="passreset_<?echo $userid;?>"><?tr('account_login_reset');?></label>
+		<input type="checkbox" onclick="marktabchanged('user_<?php echo $userid;?>');" id="passreset_<?php echo $userid;?>" <?php if ($passreset) echo 'checked';?>> <label for="passreset_<?php echo $userid;?>"><?php tr('account_login_reset');?></label>
 	</div>
 
-	<div class="inputrow" id="cardsettings_<?echo $userid;?>">
+	<div class="inputrow" id="cardsettings_<?php echo $userid;?>">
 		<div class="formlabel">ID Card: &nbsp; 
-			<span style="font-weight:normal;" id="cardstatus_<?echo $userid;?>"><?echo $certname;?></span> <a class="labelbutton" onclick="loadsmartcard(<?echo $userid;?>);">load card</a>
-			<span style="display:none;"><textarea id="cert_<?echo $userid;?>" value=""></textarea></span>
+			<span style="font-weight:normal;" id="cardstatus_<?php echo $userid;?>"><?php echo $certname;?></span> <a class="labelbutton" onclick="loadsmartcard(<?php echo $userid;?>);">load card</a>
+			<span style="display:none;"><textarea id="cert_<?php echo $userid;?>" value=""></textarea></span>
 		</div>
-		<input onchange="marktabchanged('user_<?echo $userid;?>');" type="checkbox" id="needcert_<?echo $userid;?>" <?if ($needcert) echo 'checked';?>> <label for="needcert_<?echo $userid;?>">card must be present at sign-in</label>
+		<input onclick="marktabchanged('user_<?php echo $userid;?>');" type="checkbox" id="needcert_<?php echo $userid;?>" <?php if ($needcert) echo 'checked';?>> <label for="needcert_<?php echo $userid;?>">card must be present at sign-in</label>
 
 	</div>
 	
 	<div class="inputrow">
-		<input type="checkbox" <?if ($smskey=='') echo 'disabled';?> id="usesms_<?echo $userid;?>" <?if ($usesms) echo 'checked';?> onclick="marktabchanged('user_<?echo $userid;?>');if (this.checked) {gid('smscellview_<?echo $userid;?>').style.display='block';gid('smscell_<?echo $userid;?>').focus();} else gid('smscellview_<?echo $userid;?>').style.display='none';">
-		<label style="<?if ($smskey=='') echo 'color:#666666;';?>" for="usesms_<?echo $userid;?>">use SMS code to enhance login</label>
+		<input type="checkbox" <?php if ($smskey=='') echo 'disabled';?> id="usesms_<?php echo $userid;?>" <?php if ($usesms) echo 'checked';?> onclick="marktabchanged('user_<?php echo $userid;?>');if (this.checked) {gid('smscellview_<?php echo $userid;?>').style.display='block';gid('smscell_<?php echo $userid;?>').focus();} else gid('smscellview_<?php echo $userid;?>').style.display='none';">
+		<label style="<?php if ($smskey=='') echo 'color:#666666;';?>" for="usesms_<?php echo $userid;?>">use SMS code to enhance login</label>
 	</div>
 	
-	<div id="smscellview_<?echo $userid;?>" style="padding-left:30px;display:none<?if ($usesms) echo 'a';?>;">
+	<div id="smscellview_<?php echo $userid;?>" style="padding-left:30px;display:none<?php if ($usesms) echo 'a';?>;">
 		<div class="inputrow">
-			Cell: <input class="inpmed" id="smscell_<?echo $userid;?>" value="<?echo htmlspecialchars($smscell);?>" onchange="marktabchanged('user_<?echo $userid;?>');">
+			Cell: <input class="inpmed" id="smscell_<?php echo $userid;?>" value="<?php echo htmlspecialchars($smscell);?>" oninput="this.onchange();" onchange="marktabchanged('user_<?php echo $userid;?>');">
 		</div>
 	</div>
 	
+	<?php if ($usega){?>
 	<div class="inputrow">
-		<input onchange="marktabchanged('user_<?echo $userid;?>');" type="checkbox" id="userneedkeyfile_<?echo $userid;?>" <?if ($needkeyfile) echo 'checked';?>> <label for="userneedkeyfile_<?echo $userid;?>">enhance login with a key file</label>
+		<input type="checkbox" id="unlockga_<?php echo $userid;?>" onclick="marktabchanged('user_<?php echo $userid;?>');"> <label for="unlockga_<?php echo $userid;?>">unlock Google Authenticator</label>
 	</div>
+	<?php }?>
+	
+	
 	
 	<div class="inputrow">
-		<div class="formlabel"><?tr('account_roles');?>:</div>
-		<?foreach ($userroles as $role=>$label){
+		<input onclick="marktabchanged('user_<?php echo $userid;?>');if (this.checked) {gid('keyfileview_<?php echo $userid;?>').style.display='block';gid('bmkeyfile_<?php echo $userid;?>').style.display='block';} else {gid('keyfileview_<?php echo $userid;?>').style.display='none';gid('bmkeyfile_<?php echo $userid;?>').style.display='none';}" type="checkbox" id="userneedkeyfile_<?php echo $userid;?>" <?php if ($needkeyfile) echo 'checked';?>> <label for="userneedkeyfile_<?php echo $userid;?>">enhance login with a key file</label>
+		<?php makehelp('helpuserneedkeyfile_'.$userid,'once set, the generated key file has to be attached each time you sign in.');?>
+	</div>
+		
+	<div class="inputrow">
+		<input type="checkbox" id="usegamepad_<?php echo $userid;?>" <?php if ($usegamepad) echo 'checked';?> onclick="marktabchanged('user_<?php echo $userid;?>');"> <label for="usegamepad_<?php echo $userid;?>">enable gamepad controls</label>
+	</div>
+
+		
+	<div class="inputrow" id="bmuserroles_<?php echo $userid;?>">
+		<div class="formlabel"><?php tr('account_roles');?>:</div>
+		<?php
+		$warning=0;
+		foreach ($userroles as $role=>$label){
 		?>
-		<div style="padding-left:10px;margin-bottom:3px;">
-			<input onchange="marktabchanged('user_<?echo $userid;?>');" type="checkbox" id="userrole_<?echo $role;?>_<?echo $userid;?>" <?if (in_array($role,$groups)) echo 'checked';?>> 
-			<label for="userrole_<?echo $role;?>_<?echo $userid;?>"><?echo $label;?></label>
+		<div style="padding-left:10px;margin-bottom:3px;<?php if (in_array($role,$userrolelocks)&&!in_array($role,$groups)&&!$user['groups'][$role]) echo 'display:none;';?>">
+			<input <?php if (in_array($role,$userrolelocks)&&!$user['groups'][$role]) echo 'disabled';?> onclick="marktabchanged('user_<?php echo $userid;?>');" type="checkbox" id="userrole_<?php echo $role;?>_<?php echo $userid;?>" <?php if (in_array($role,$groups)) echo 'checked';?>> 
+			<label for="userrole_<?php echo $role;?>_<?php echo $userid;?>"><?php echo $label;?><?php if ($myuserid==$userid&&in_array($role,$userrolelocks)&&$user['groups'][$role]) {$warning=1;echo ' <span style="color:#ab0200;">*</span>';}?></label>
 		</div>
-		<?	
+		<?php	
 		}
 		?>
 	</div>	
 	</div><!-- userpasses -->
 	
+	<?php if ($warning){
+	?>
+	<div class="warnbox">
+		* You are editing your own access. Once you uncheck the items that are marked with asterisks, you cannot re-grant yourself.
+	</div>
+	<?php	
+	}?>
+	
 	<div class="inputrow">
-		<button onclick="updateuser(<?echo $userid;?>);"><?tr('button_update');?></button>
+		<button onclick="updateuser('<?php echo $userid;?>',<?php echo $jsroles;?>,'<?php emitgskey('updateuser_'.$userid,'accounts');?>');"><?php tr('button_update');?></button>
 		&nbsp; &nbsp;
-		<button class="warn" onclick="deluser(<?echo $userid;?>);"><?tr('button_delete');?></button>
+		<button class="warn" onclick="deluser('<?php echo $userid;?>','<?php emitgskey('deluser_'.$userid,'accounts');?>');"><?php tr('button_delete');?></button>
 	</div>
 
 
 	</div>
 	
 	<div class="col">
-		<div class="sectionheader">Key File</div>
-		<?showkeyfilepad('keyfileeditor_'.$userid,$userid);?>
-		
+		<div id="keyfileview_<?php echo $userid;?>" style="display:none<?php if ($needkeyfile) echo 'a';?>;">
+			<div class="sectionheader">Key File</div>
+			<?php showkeyfilepad('keyfileeditor_'.$userid,$userid);?>
+		</div>
 	</div>
 
 	<div class="clear"></div>
+
+	<?php if ($userid==$myuserid){?>
+	<div id="muserhelptopics_<?php echo $userid;?>">
+		<?php showuserhelptopics();?>
+	</div>
+	<?php }?>
+		
 </div>
-<?
+<div class="qnav_">
+	<div class="qnav">
+		<a class="qnavitem" onclick="gototabbookmark('bmusertop_<?php echo $userid;?>');">Ba<b>sic Info</b></a>
+		<a class="qnavitem" onclick="gototabbookmark('bmuserroles_<?php echo $userid;?>');">Ro<b>les</b></a>
+		<a id="bmkeyfile_<?php echo $userid;?>" style="display:none<?php if ($needkeyfile) echo 'a';?>;" class="qnavitem" onclick="gototabbookmark('keyfileview_<?php echo $userid;?>');">K<b>ey File</b></a>
+	</div>
+</div>
+<?php
 }

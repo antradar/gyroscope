@@ -1,0 +1,38 @@
+<?php
+
+function list#primaryfield#accounts($#primarykey#=null){
+	if (!isset($#primarykey#)) $#primarykey#=GETVAL('#primarykey#');
+	
+	global $db;
+
+	$user=userinfo();
+	if ($user['#primarykey#']) $#primarykey#=$user['#primarykey#'];
+
+	$query="select * from ".TABLENAME_USERS." where #primarykey#=?";
+	$rs=sql_prep($query,$db,$#primarykey#);
+	
+	?>
+	<div class="sectionheader">Linked Users</div>
+	<?php	
+	
+	while ($myrow=sql_fetch_assoc($rs)){
+		$userid=$myrow['userid'];
+		$login=$myrow['login'];
+		$dispname=$myrow['dispname'];
+		$dname=noapos(htmlspecialchars(htmlspecialchars($dispname)));
+	?>
+	<div class="listitem">
+		<a class="hovlink" onclick="ajxjs(self.showuser,'users.js');showuser(<?php echo $userid;?>,'<?php $dname;?>');"><?php echo htmlspecialchars($dispname);?><br><?php echo htmlspecialchars($login);?></a>
+	</div>
+	<?php	
+	}//while
+	
+?>
+	<div style="padding-top:10px;">
+	<a class="recadder" onclick="closetab('user_new');ajxjs(self.showuser,'userss.js');addtab('user_new','<img src=&quot;imgs/t.gif&quot; class=&quot;ico-user&quot;><?php tr('list_user_add_tab');?>','newuser&pre#primarykey#=<?php echo $#primarykey#;?>');"> <img src="imgs/t.gif" class="img-addrec"><?php tr('list_user_add');?></a>
+	</div>
+
+<?php		
+		
+}
+

@@ -1,0 +1,6 @@
+
+	html.push('<div class="gsnotes_inputrow">');
+	html.push('<div class="gsnotes_formlabel">#fld1#:</div>');
+	html.push('<div><input id="gsnotes_#fld0#"></div>');
+	html.push('</div>');
+	

@@ -1,5 +1,5 @@
 showreportsetting=function(reportid,name){
-	addtab('reportsetting_'+reportid,name,'showreportsetting&reportid='+reportid);	
+	addtab('reportsetting_'+reportid,'<img src="imgs/t.gif" class="ico-setting">'+name,'showreportsetting&reportid='+reportid);	
 }
 
 _inline_lookupreportsetting=function(d){
@@ -14,7 +14,7 @@ _inline_lookupreportsetting=function(d){
 }
 
 
-addreportsetting=function(){
+addreportsetting=function(gskey){
 
 	var suffix='new';
 	var oreportname=gid('reportname_'+suffix);
@@ -52,14 +52,14 @@ addreportsetting=function(){
 	params.push('reportdesc='+reportdesc);
 
 	
-	reloadtab('reportsetting_new',oreportname.value,'addreportsetting',function(req){
+	reloadtab('reportsetting_new','','addreportsetting',function(req){
 		var reportid=req.getResponseHeader('newrecid');		
 		reloadview('core.reportsettings','reportsettinglist');
-	},params.join('&'));
+	},params.join('&'),null,gskey);
 	
 }
 
-updatereportsetting=function(reportid,roles){
+updatereportsetting=function(reportid,roles,gskey){
 	var suffix=reportid;
 	var oreportname=gid('reportname_'+suffix);
 	var oreportgroup=gid('reportgroup_'+suffix);
@@ -105,19 +105,19 @@ updatereportsetting=function(reportid,roles){
 	params.push('reportgroupnames='+reportgroupnames);
 
 	
-	reloadtab('reportsetting_'+reportid,oreportname.value,'updatereportsetting&reportid='+reportid,function(){
+	reloadtab('reportsetting_'+reportid,'','updatereportsetting&reportid='+reportid,function(){
 		reloadview('core.reportsettings','reportsettinglist');
 		flashstatus(document.dict['statusflash_updated']+oreportname.value,5000);
-	},params.join('&'));
+	},params.join('&'),null,gskey);
 	
 }
 
 
-delreportsetting=function(reportid){
+delreportsetting=function(reportid,gskey){
 	if (!sconfirm(document.dict['confirm_reportsetting_delete'])) return;
 	
 	reloadtab('reportsetting_'+reportid,null,'delreportsetting&reportid='+reportid,function(){
 		closetab('reportsetting_'+reportid);
 		reloadview('core.reportsettings','reportsettinglist');
-	});
+	},null,null,gskey);
 }

@@ -1,0 +1,2 @@
+
+alter table users add #primarykey# bigint unsigned default null;

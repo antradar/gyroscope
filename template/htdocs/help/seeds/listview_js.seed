@@ -14,7 +14,7 @@ _inline_lookup#record#=function(d){
 }
 
 
-add#record#=function(){
+add#record#=function(gskey){
 
 	var suffix='new';
 #iterator-fieldlist-getrecordjs#
@@ -35,14 +35,14 @@ add#record#=function(){
 	var params=[];
 #iterator-fieldlist-parampush#
 	
-	reloadtab('#record#_new',o#dispfield#.value,'add#record#',function(req){
+	reloadtab('#record#_new','','add#record#',function(req){
 		var #primarykey#=req.getResponseHeader('newrecid');		
 		reloadview('#viewindex#','#record#list');
-	},params.join('&'));
+	},params.join('&'),null,gskey);
 	
 }
 
-update#record#=function(#primarykey#){
+update#record#=function(#primarykey#,gskey){
 	var suffix=#primarykey#;
 #iterator-fieldlist-getrecordjs#
 	
@@ -62,19 +62,19 @@ update#record#=function(#primarykey#){
 	var params=[];
 #iterator-fieldlist-parampush#
 	
-	reloadtab('#record#_'+#primarykey#,o#dispfield#.value,'update#record#&#primarykey#='+#primarykey#,function(){
+	reloadtab('#record#_'+#primarykey#,'','update#record#&#primarykey#='+#primarykey#,function(){
 		reloadview('#viewindex#','#record#list');
 		flashstatus(document.dict['statusflash_updated']+o#dispfield#.value,5000);
-	},params.join('&'));
+	},params.join('&'),null,gskey);
 	
 }
 
 
-del#record#=function(#primarykey#){
+del#record#=function(#primarykey#,gskey){
 	if (!sconfirm(document.dict['confirm_#record#_delete'])) return;
 	
 	reloadtab('#record#_'+#primarykey#,null,'del#record#&#primarykey#='+#primarykey#,function(){
 		closetab('#record#_'+#primarykey#);
 		reloadview('#viewindex#','#record#list');
-	});
+	},null,null,gskey);
 }

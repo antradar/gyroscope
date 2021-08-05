@@ -7,5 +7,5 @@ function lookuppluginmention(){
 
 			    
 </div>
-<?	
+<?php	
 }

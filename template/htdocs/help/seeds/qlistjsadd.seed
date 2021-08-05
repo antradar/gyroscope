@@ -1,3 +1,6 @@
+	if (gid('q#refkey#').value!='') {salert('Pick a #refrecord# from the list');return;}
+
+
 	var #refkey#s=qget#masterrecord##subrecord##refkey#s();
 
 	params.push('#refkey#s='+#refkey#s);

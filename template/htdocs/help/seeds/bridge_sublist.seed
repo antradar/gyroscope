@@ -1,4 +1,4 @@
 		<div class="sectionheader">#c_records#</div>
-		<div id="#primaryfield##records#_<?echo $#primarykey#;?>">
-			<?list#primaryfield##records#($#primarykey#);?>
+		<div id="#primaryfield##records#_<?php echo $#primarykey#;?>">
+			<?php list#primaryfield##records#($#primarykey#);?>
 		</div>

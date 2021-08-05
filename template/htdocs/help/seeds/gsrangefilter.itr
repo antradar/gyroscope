@@ -1,0 +1,4 @@
+	if ($_GET['#fld0#_a']!='') $filters['#fld0#_a']=$_GET['#fld0#_a'];
+	if ($_GET['#fld0#_b']!='') $filters['#fld0#_b']=$_GET['#fld0#_b'];
+	if ($_GET['#fld0#__dimmode']!='') $filters['#fld0#__dimmode']=$_GET['#fld0#__dimmode']; //used by date range filter
+	if ($_GET['#fld0#__dimkey']!='') $filters['#fld0#__dimkey']=$_GET['#fld0#__dimkey']; //used by date range filter

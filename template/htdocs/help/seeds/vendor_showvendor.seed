@@ -1,0 +1,5 @@
+include 'icl/list#primaryfield#accounts.inc.php';
+
+		<div id="#primaryfield#accounts_<?php echo $#primarykey#;?>">
+		<?php list#primaryfield#accounts($#primarykey#);?>
+		</div>

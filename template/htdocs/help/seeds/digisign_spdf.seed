@@ -1,12 +1,12 @@
 <?php
 
 function spdf#doctype#(){
-	$#key#=GETVAL('#key#');
+	$#key#=SGET('#key#');
 	
 	global $db;
 	
-	$query="select * from #records# where #key#=$#key#";
-	$rs=sql_query($query,$db);
+	$query="select * from #records# where #key#=?";
+	$rs=sql_prep($query,$db,$#key#);
 	$myrow=sql_fetch_array($rs);
 	
 	$#doctype#lock=$myrow['#doctype#lock'];

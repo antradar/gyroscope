@@ -1,0 +1,8 @@
+
+	$#primarykey#=$myrow['#primarykey#'];
+
+
+	//...
+
+
+	if ($#primarykey#) header('#primarykey#: '.$#primarykey#);

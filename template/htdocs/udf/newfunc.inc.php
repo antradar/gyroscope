@@ -23,11 +23,11 @@ function newfunc(){
 	
 	<div style="font-family:console,monospace;line-height:1.8em;font-size:12px;">
 		create function <select id="dbname_new">
-		<?
+		<?php
 			foreach ($dbnames as $dbname){
 		?>
-			<option value="<?echo $dbname;?>" <?if ($defdbname==$dbname) echo 'selected';?> ><?echo $dbname;?></option>
-		<?
+			<option value="<?php echo $dbname;?>" <?php if ($defdbname==$dbname) echo 'selected';?> ><?php echo $dbname;?></option>
+		<?php
 			}
 		?>
 		</select>.<input id="funcname_new"> (<input id="funcargs_new" style="width:300px;" value="param1_ int">)<br>
@@ -48,7 +48,7 @@ end
 	</div>	
 	
 	<div class="buttonbar">
-		<button onclick="addfunc();">Create Function</button>
+		<button onclick="addfunc('<?php emitgskey('updatefunc');?>');">Create Function</button>
 	</div>
-<?	
+<?php	
 }

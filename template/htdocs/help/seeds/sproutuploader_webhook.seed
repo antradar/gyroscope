@@ -11,17 +11,17 @@ $response=file_get_contents('php://input');
 
 $res=json_decode($response,1);
 
-$videokey=noapos($res['id']);
-$videotoken=noapos($res['security_token']);
+$videokey=SGET($res['id']);
+$videotoken=SGET($res['security_token']);
 
 $state=$res['state'];
 if ($state!='deployed') die('Not ready');
 
-$query="update #table# set videotoken='$videotoken',videostatus=1 where videokey='$videokey'";
-sql_query($query,$db);
+$query="update #table# set videotoken=?,videostatus=1 where videokey=?";
+sql_prep($query,$db,array($videotoken,$videokey));
 
-$query="select * from #table# where videokey='$videokey'";
-$rs=sql_query($query,$db);
+$query="select * from #table# where videokey=?";
+$rs=sql_prep($query,$db,$videokey);
 $myrow=sql_fetch_assoc($rs);
 $#primarykey#=$myrow['#primarykey#']+0;
 

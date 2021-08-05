@@ -1,0 +1,29 @@
+
+	//vendor auth 1
+	
+	global $#primaryfield#roles;
+	$#primarykey#=SGET('pre#primarykey#');
+	if ($user['#primarykey#']) $#primarykey#=$user['#primarykey#'];
+	if ($#primarykey#){
+		$userroles=$#primaryfield#roles;
+		if ($user['#primarykey#']) $userrolelocks=array_keys($#primaryfield#roles);
+		else $userrolelocks=array();
+	}
+
+	$db#primarykey#=$#primarykey#;
+	if ($#primarykey#==0) $db#primarykey#=null;
+	
+	//vendor auth 2
+	
+	//$query="insert into ".TABLENAME_USERS." (...
+	
+	// ,#primarykey#
+	// ,?
+	// ,$db#primarykey#
+
+
+	//vendor auth 3
+
+	if ($#primarykey#) $loadfuncs.="ajxpgn('#primaryfield#accounts_$#primarykey#',document.appsettings.codepage+'?cmd=list#primaryfield#accounts&#primarykey#=$#primarykey#');";	
+	
+

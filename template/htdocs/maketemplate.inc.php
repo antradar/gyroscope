@@ -3,21 +3,30 @@
 function maketemplate($templatetypekey,$reps,$preprocessor=null,$gsid=null){
 	global $db;
 	
-	$query="select * from templatetypes,templates where templatetypekey='$templatetypekey' and activetemplateid=templateid ";
-	if (is_numeric($gsid)) $query.=" and gsid=$gsid ";
+	if (is_numeric($templatetypekey)) {
+		$query="select * from templates where templateid=?";
+		$rs=sql_prep($query,$db,$templatetypekey);
+	} else {
+		$params=array($templatetypekey);
+		$query="select * from templatetypes,templates where templatetypekey=? and activetemplateid=templateid ";
+		if (is_numeric($gsid)) {
+			$query.=" and gsid=? ";
+			array_push($params,$gsid);
+		}
+		$rs=sql_prep($query,$db,$params);
+	}
 	
-	if (is_numeric($templatetypekey)) $query="select * from templates where templateid=$templatetypekey";
 	
-	$rs=sql_query($query,$db);
 	if (!$myrow=sql_fetch_assoc($rs)) return null;
 	
 	$templatename=$myrow['templatename'];
 	
+	foreach ($reps as $k=>$v){
+		$templatename=str_replace('%%'.$k.'%%',$v,$templatename);	
+	}	
+	
 	$templatepn=$myrow['templatepn'];
 	$templateinit=$myrow['templateinit'];
-	
-	$rs=sql_query($query,$db);
-	$myrow=sql_fetch_assoc($rs);
 	
 	$c=$myrow['templatetext'];
 	

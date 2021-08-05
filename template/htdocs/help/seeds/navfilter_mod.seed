@@ -1,7 +1,7 @@
 
 
 <div id="#entity#list">
-<?		
+<?php		
 	}
 	$bfilters=#entity#_makefilters();
 	$basefilters=$bfilters['filters'];
@@ -10,16 +10,16 @@
 	
 	#entity#_shownavs('#container#','#cmd#');
 		
-	$sqlfilter=#entity#_sqlfilters();
+	$sqlfilters=#entity#_sqlfilters();
 
 	//remove previous keyword filtering
 
 	//replace pagination:
-<a href=# onclick="nav#entity#_setfilter('#container#','#cmd#','&page=<?echo $page-1;?>'+gid('searchfilter_#entity#').value);return false;">&laquo; Prev</a>
+<a href=# onclick="nav#entity#_setfilter('#container#','#cmd#','&page=<?php echo $page-1;?>'+gid('searchfilter_#entity#').value);return false;">&laquo; Prev</a>
 &nbsp;
-<?echo $page+1;?> of <?echo $maxpage+1;?>
+<?php echo $page+1;?> of <?php echo $maxpage+1;?>
 &nbsp;
-<a href=# onclick="nav#entity#_setfilter('#container#','#cmd#','&page=<?echo $page+1;?>'+gid('searchfilter_#entity#').value);return false;">Next &raquo;</a>
+<a href=# onclick="nav#entity#_setfilter('#container#','#cmd#','&page=<?php echo $page+1;?>'+gid('searchfilter_#entity#').value);return false;">Next &raquo;</a>
 
 	//replace _inline_lookup#entity# in #entity#s.js:
 	

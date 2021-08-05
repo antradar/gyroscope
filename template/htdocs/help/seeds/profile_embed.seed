@@ -21,6 +21,7 @@ function embed#primaryfield##mediatype#uploader(){
 		
 	
 	if ($_FILES['file']&&$_FILES['file']['name']){
+		checkgskey('embed#primaryfield##mediatype#uploader_'.$#primarykey#);
 		//echo '<pre>';print_r($_FILES);echo '</pre>'; return;
 			
 		$file=$_FILES['file'];
@@ -73,8 +74,8 @@ function embed#primaryfield##mediatype#uploader(){
 						imagedestroy($img);
 					}
 			
-					$query="update #tablename# set #picflag#=1,ampw=$w,amph=$h where #primarykey#=$#primarykey#";
-					sql_query($query,$db);
+					$query="update #tablename# set #picflag#=1, imgv=imgv+1 where #primarykey#=?"; //,ampw=?,amph=?
+					sql_prep($query,$db,array($#primarykey#)); //$w,$h
 			
 						
 					logaction("uploaded $ofn to #primaryfield# #$#primarykey#",array('#primarykey#'=>$#primarykey#,'file'=>$ofn));
@@ -86,8 +87,8 @@ function embed#primaryfield##mediatype#uploader(){
 		
 		if (!$_GET['diag']){
 ?>
-<script>parent.show#primaryfield##mediatype#(<?echo $#primarykey#;?>,"<?echo $msg;?>");</script>
-<?			
+<script>parent.show#primaryfield##mediatype#(<?php echo $#primarykey#;?>,"<?php echo $msg;?>");</script>
+<?php			
 		}
 		
 	}
@@ -106,11 +107,12 @@ function embed#primaryfield##mediatype#uploader(){
 	<span id="dropzonetext">Drag and drop file here</span>
 	<span id="dropzoneprogress"></span>
 </div>
-<input type="hidden" name="#primarykey#" value="<?echo $#primarykey#;?>">
-<input type="hidden" name="MAX_FILE_SIZE" value="<?echo $maxsize;?>">
+<input type="hidden" name="#primarykey#" value="<?php echo $#primarykey#;?>">
+<input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $maxsize;?>">
+<input type="hidden" name="X-GSREQ-KEY" value="<?php emitgskey('embed#primaryfield##mediatype#uploader_'.$#primarykey#);?>">
 <input type="file" name="file" id="file">
 <br>
-<button onclick="upload(this);return false;" id="uploadbutton">Upload</button> (max <?echo $dmaxsize;?>MB)
+<button onclick="upload(this);return false;" id="uploadbutton">Upload</button> (max <?php echo $dmaxsize;?>MB)
 </form>
 <div id="cancel" style="display:none;font-size:12px;padding:5px 0;"><a href=# onclick="cancelupload();return false;"><u>cancel</u></a></div>
 <div id="debug" style="font-size:11px;"></div>
@@ -140,16 +142,18 @@ function upload(d,dfiles){
 	
 	var fsize=0;
 	if (binfile&&binfile.size) fsize=binfile.size;
-	if (fsize><?echo $maxsize;?>){
+	if (fsize><?php echo $maxsize;?>){
 		alert('File too large. Upload a smaller file');
 		return;	
 	}
 
 	fd.append('file',binfile);
+	fd.append('X-GSREQ-KEY','<?php emitgskey('embed#primaryfield##mediatype#uploader_'.$#primarykey#);?>');
 	
-	fd.append('#primarykey#',<?echo $#primarykey#;?>);
-	rq.open('POST','<?echo $codepage;?>?cmd=embed#primaryfield##mediatype#uploader&#primarykey#=<?echo $#primarykey#;?>&diag=1',true);
+	fd.append('#primarykey#',<?php echo $#primarykey#;?>);
+	rq.open('POST','<?php echo $codepage;?>?cmd=embed#primaryfield##mediatype#uploader&#primarykey#=<?php echo $#primarykey#;?>&diag=1',true);
 
+	gid('debug').innerHTML='upload started...';
 	rq.upload.onprogress=function(e){
 		gid('cancel').style.display='block';
 		if (e.lengthComputable) {
@@ -165,7 +169,7 @@ function upload(d,dfiles){
 			alert(e.target.responseText);
 			return;
 		}
-		parent.show#primaryfield##mediatype#(<?echo $#primarykey#;?>,'');
+		parent.show#primaryfield##mediatype#(<?php echo $#primarykey#;?>,'');
 	}
 
 	rq.onabort=function(e){
@@ -211,6 +215,6 @@ if (self.FormData&&'draggable' in document.createElement('span')){
 
 </body>
 </html>
-<?
+<?php
 		
 }

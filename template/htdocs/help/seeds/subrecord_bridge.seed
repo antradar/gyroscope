@@ -5,34 +5,34 @@ function list#master_record##records#($#masterkey#=null){
 	
 	global $db;
 	
-	$query="select * from #tablename#,#master_tablename# where #tablename#.#masterkey#=$#masterkey# and #tablename#.#foreignkey#=#master_tablename#.#masterkey# order by #sortquery#";
+	$query="select * from #tablename#,#master_tablename# where #tablename#.#masterkey#=? and #tablename#.#foreignkey#=#master_tablename#.#masterkey# order by #sortquery#";
 	
-	$rs=sql_query($query,$db);
+	$rs=sql_prep($query,$db,$#masterkey#);
 	
 	?>
 	<table>
-	<?
+	<?php
 	
 	while ($myrow=sql_fetch_array($rs)){
 		$#primarykey#=$myrow['#primarykey#'];
 		$#dispfield#=$myrow['#dispfield#'];
 		$recordtitle="$#dispfield#"; //change this
-		$dbrecordtitle=htmlspecialchars(noapos($recordtitle));
+		$dbrecordtitle=htmlspecialchars(noapos(htmlspecialchars($recordtitle)));
 		
 	?>
 	<tr>
-		<td>#<?echo $#primarykey#;?></td>
-		<td><a onclick="ajxjs(self.show#record#,'#records#.js');show#record#(<?echo $#primarykey#;?>,'<?echo $dbrecordtitle;?>');"><?echo $recordtitle?></a></td>
+		<td>#<?php echo $#primarykey#;?></td>
+		<td><a onclick="ajxjs(<?php jsflag('show#record#');?>,'#records#.js');show#record#(<?php echo $#primarykey#;?>,'<?php echo $dbrecordtitle;?>');"><?php echo htmlspecialchars($recordtitle);?></a></td>
 	</tr>
-	<?
+	<?php
 	}//while
 	?>
 	</table>
 	<div class="listbar">
-		<a class="recadder" onclick="ajxjs(self.show#record#,'#records#.js');addtab('#record#_new','<?tr('list_#record#_add_tab');?>','new#record#&#masterkey#=<?echo $#masterkey#;?>');">
-			<img src="imgs/t.gif" class="img-addrec"> <?tr('list_#record#_add');?>
+		<a class="recadder" onclick="ajxjs(<?php jsflag('show#record#');?>,'#records#.js');addtab('#record#_new','<?php tr('list_#record#_add_tab');?>','new#record#&#masterkey#=<?php echo $#masterkey#;?>');">
+			<img src="imgs/t.gif" class="img-addrec"> <?php tr('list_#record#_add');?>
 		</a>	
 	</div>
-	<?
+	<?php
 
 }

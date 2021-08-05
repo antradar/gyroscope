@@ -1,5 +1,5 @@
 
-		<div class="sectionheader"><?tr('icon_#records#');?></div>
-		<div id="#master_record##records#_<?echo $#masterkey#;?>">
-			<?list#master_record##records#($#masterkey#);?>
+		<div class="sectionheader"><?php tr('icon_#records#');?></div>
+		<div id="#master_record##records#_<?php echo $#masterkey#;?>">
+			<?php list#master_record##records#($#masterkey#);?>
 		</div>

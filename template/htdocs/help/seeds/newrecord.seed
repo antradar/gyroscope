@@ -4,7 +4,7 @@ function new#record#(){
 
 ?>
 <div class="section">
-	<div class="sectiontitle"><?tr('list_#record#_add_tab');?></div>
+	<div class="sectiontitle"><?php tr('list_#record#_add_tab');?></div>
 	
 <div class="col">
 	
@@ -14,10 +14,10 @@ function new#record#(){
 <div class="clear"></div>
 
 		<div class="inputrow">
-			<button onclick="add#record#();"><?tr('button_#record#_add');?></button>
+			<button onclick="add#record#('<?php emitgskey('add#record#');?>');"><?php tr('button_#record#_add');?></button>
 		</div>
 
 </div>
-<?
+<?php
 
 }

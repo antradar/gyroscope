@@ -1,4 +1,49 @@
-#record#_mousedown=function(d,tmid){
+#record#_touchstart=function(d,tmid,page,gskey){
+	if (event.touches.length==1){
+		return; //uncomment to debug on emulator
+	}
+
+	event.preventDefault();
+
+	var sd=gid('#record#shadow');
+	
+	d.ontouchend=function(){
+		d.tmid=tmid;
+		
+		if (sd.swapsrc==null||sd.swapsrc.tmid==null) {
+			sd.swapsrc=d;
+			d.className='sortlistitem src';
+		} else {
+			if (d!=sd.swapsrc) {sd.swapdst=d;d.className='sortlistitem dst';}
+		}
+
+
+		if (sd.swapsrc!=null&&sd.swapdst!=null){
+			sd.swapdst.style.borderTop='dashed 2px';
+			var srcid=sd.swapsrc.tmid;
+			var dstid=sd.swapdst.tmid;
+
+			setTimeout(function(){
+				var params=gid('#record#list').reloadparams;
+				var newparams=params;
+				if (params) {
+					newparams=newparams.u.replace(document.appsettings.codepage+'?cmd=slv_codegen__#records#','');
+					newparams=newparams.replace('tmid=','oldtmid=').replace('targetid=','oldtargetid');
+				} else newparams='';
+			
+				ajxpgn('#record#list',document.appsettings.codepage+'?cmd=swap#record#pos&mode=embed&tmid='+srcid+'&page='+page+'&targetid='+dstid+'&'+newparams,0,0,'',function(){
+					gid('#record#list').reloadparams=params;
+				},null,null,gskey);
+			},300);
+			
+			sd.swapsrc=null;
+			sd.swapdst=null;
+		}
+
+	}
+}
+
+#record#_mousedown=function(d,tmid,page,gskey){
 	var dragging;
 	var posy=d.offsetTop;
 	var oy;
@@ -9,6 +54,8 @@
 	var sd=gid('#record#shadow');
 	var label=d.getElementsByTagName('a')[0].innerHTML;
 	if (!d.inited){
+		if (d.timer) clearTimeout(d.timer);
+		d.timer=setTimeout(function(){
 		d.onmousemove=function(e){
 			if (!dragging){
 				dragging=true;
@@ -58,9 +105,9 @@
 					newparams=newparams.u.replace(document.appsettings.codepage+'?cmd=slv_codegen__#records#','');
 					newparams=newparams.replace('tmid=','oldtmid=').replace('targetid=','oldtargetid');
 				} else newparams='';
-				ajxpgn('#record#list',document.appsettings.codepage+'?cmd=swap#record#pos&mode=embed&tmid='+document.dragtmid+'&targetid='+targetid+'&'+newparams,0,0,'',function(){
+				ajxpgn('#record#list',document.appsettings.codepage+'?cmd=swap#record#pos&mode=embed&tmid='+document.dragtmid+'&page='+page+'&targetid='+targetid+'&'+newparams,0,0,'',function(){
 					gid('#record#list').reloadparams=params;
-				});
+				},null,null,gskey);
 			}
 			
 			document.dragtmid=null;
@@ -72,6 +119,7 @@
 		sd.onmouseup=d.onmouseup;
 		
 		d.inited=true;
+		},50);
 	}
 }
 

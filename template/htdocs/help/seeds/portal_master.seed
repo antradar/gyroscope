@@ -1,0 +1,14 @@
+	
+	* create a mock #primaryfield# record as a super admin
+	
+	* add a master user under this #primaryfield# record
+	
+	* in Guest Gyroscope: settings.php, comment out:
+			// $userrolelocks=...
+			
+	* sign in Guest Gyroscope with the super user, check all the privileges in User Settings
+	
+	* re-lock the user roles in settings.php:
+			$userrolelocks=...
+			
+			

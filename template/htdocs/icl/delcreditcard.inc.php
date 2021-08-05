@@ -6,12 +6,14 @@ function delcreditcard(){
 	global $db;
 	
 	$user=userinfo();
-	$gsid=$user['gsid']+0;
+	$gsid=$user['gsid'];
 		
-	$cardid=QETSTR('cardid');	
+	$cardid=SQET('cardid');	
+	
+	checkgskey('delcreditcard_'.$cardid);
 
-	$query="select * from gss where gsid=$gsid";
-	$rs=sql_query($query,$db);
+	$query="select * from gss where gsid=?";
+	$rs=sql_prep($query,$db,$gsid);
 	if (!$myrow=sql_fetch_assoc($rs)) apperror('Invalid GS instance');
 	
 	$customerid=$myrow['stripecustomerid'];

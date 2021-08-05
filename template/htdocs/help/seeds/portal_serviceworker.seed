@@ -1,0 +1,1 @@
+		caches.open('gyroscope_#primaryfield#').then(function(cache) { //vendor portal specific

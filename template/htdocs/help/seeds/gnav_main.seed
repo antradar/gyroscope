@@ -42,11 +42,11 @@ body{font-family:Arial,sans-serif;font-size:16px;}
 <body>
 
 <div id="side">
-	<div id="nav"><?shownavs();?></div>
+	<div id="nav"><?php shownavs();?></div>
 </div>
 <div id="main">
-	<div id="bc"><?showbreadcrumb();?></div>
-	<div id="list"><?showrecords();?></div>
+	<div id="bc"><?php showbreadcrumb();?></div>
+	<div id="list"><?php showrecords();?></div>
 </div>
 <div class="clear"></div>
 

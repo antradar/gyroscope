@@ -4,10 +4,12 @@ setaccountpass=function(){
 	var opass2=gid('accountpass2');
 	
 	var osmscell=gid('myaccount_smscell');
-	
-	if (!valstr(ooldpass)) return;
-	if (!valstr(opass1)) return;
-	if (!valstr(opass2)) return;
+		
+	if (opass1.value!=''||opass2.value!=''){
+		if (!valstr(ooldpass)) return;
+		if (!valstr(opass1)) return;
+		if (!valstr(opass2)) return;		
+	}
 
 	var oldpass=encodeHTML(ooldpass.value);
 	var pass1=encodeHTML(opass1.value);
@@ -19,7 +21,13 @@ setaccountpass=function(){
 	var usesms=0;
 	if (gid('myaccount_usesms').checked) usesms=1;
 	
-	if (pass1!=pass2){
+	var usega=0;
+	if (gid('myaccount_usega').checked) usega=1;
+	
+	var usegamepad=0;
+	if (gid('myaccount_usegamepad').checked) usegamepad=1;
+	
+	if (pass1!=''&&pass1!=pass2){
 		salert(document.dict['mismatching_password']);
 		return;
 	}
@@ -29,15 +37,32 @@ setaccountpass=function(){
 	var smscell=encodeHTML(osmscell.value);
 	
 	var rq=xmlHTTPRequestObject();
-	rq.open('POST',document.appsettings.fastlane+'?cmd=setaccount&needkeyfile='+needkeyfile+'&usesms='+usesms+'&smscell='+smscell,true);
+	rq.open('POST',document.appsettings.fastlane+'?cmd=setaccount&needkeyfile='+needkeyfile+'&usesms='+usesms+'&smscell='+smscell+'&usega='+usega+'&usegamepad='+usegamepad,true);
 	rq.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 	rq.onreadystatechange=function(){
 		if (rq.readyState==4){
-			salert(rq.responseText);	
+			salert(rq.responseText);
+			refreshtab('account',1);
+			
+			if (usegamepad) ajxjs(self.gamepad_register,'gamepad.js');
 		}	
 	}
 	
 	rq.send('oldpass='+oldpass+'&pass='+pass1);
+}
+
+testgapin=function(){
+	var opin=gid('myaccount_gatestpin');
+	opin.value=opin.value.replace(/[^\d]/g,'',opin.value);
+	if (!valint(opin)) return;
+	ajxpgn('statusc',document.appsettings.codepage+'?cmd=testgapin',0,0,'pin='+opin.value,function(rq){
+		salert(decodeURIComponent(rq.getResponseHeader('pinres')));	
+	});	
+}
+
+resetgakey=function(gskey){
+	if (!sconfirm('Are you sure you want to reset the authenticator?\nResetting this code will nullify your existing authenticator accounts.\nMake sure you sync up again.')) return;
+	reloadtab('account','','resetgakey',null,null,null,gskey);	
 }
 
 trackkeyfilepad=function(d,container){
@@ -112,3 +137,44 @@ keyfileboxclick=function(d,container){
 	d.style.top=Math.floor(Math.random()*(h-40))+'px';
 		
 }
+
+resethelpspots=function(userid,gskey){
+	if (!sconfirm('Are you sure you want to reset the help tips?')) return;
+	ajxpgn('userhelptopics_'+userid,document.appsettings.codepage+'?cmd=resethelpspots',0,0,null,null,null,null,gskey);	
+	ajxpgn('muserhelptopics_'+userid,document.appsettings.codepage+'?cmd=resethelpspots',0,0,null,null,null,null,gskey);	
+}
+
+_checkpass=function(d,warnid){
+	if (d.timer) clearTimeout(d.timer);
+	if (d.value==''){
+		d.style.background='#ffffff';
+		gid(warnid).innerHTML='';
+		return;	
+	}
+	d.timer=setTimeout(function(){
+		checkpass(d,warnid);
+	},300);
+}
+
+checkpass=function(d,warnid){
+	if (d.value==''){
+		d.style.background='#ffffff';
+		gid(warnid).innerHTML='';
+		return;				
+	}
+	
+	ajxpgn(warnid,document.appsettings.codepage+'?cmd=checkpass',0,0,'pass='+encodeHTML(d.value),function(rq){
+		var color=rq.getResponseHeader('passcolor');
+		d.style.background=color;	
+	});
+}
+
+msconnected=function(){
+	if (gid('msconnector')) gid('msconnector').innerHTML='<br>Microsoft Account Connected';	
+}
+
+msgraphdisconnect=function(){
+	if (!sconfirm('Are you sure you want to disconnect from your Microsoft account?')) return;
+	reloadtab('account','','msgraphdisconnect');	
+}
+

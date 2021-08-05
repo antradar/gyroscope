@@ -3,22 +3,29 @@
 include 'icl/list#records#.inc.php';
 
 function swap#record#pos(){
-	$src=GETVAL('tmid');
-	$dst=GETVAL('targetid');
+	$src=SGET('tmid');
+	$dst=SGET('targetid');
+
+	$user=userinfo();
+	$gsid=$user['gsid'];
 	
+	checkgskey('swap#record#pos');
+
 	global $db;
 
-	$query="select #sortkey# from #tablename# where #primarykey#=$src";
-	$rs=sql_query($query,$db);
+	$query="select #sortkey# from #tablename# where #primarykey#=? and gsid=? ";
+	$rs=sql_prep($query,$db,array($src,$gsid));
+	
 	$myrow=sql_fetch_assoc($rs);
-	$ssrc=$myrow['#sortkey#']+0;
+	$ssrc=$myrow['#sortkey#'];
 	
 	if (!$ssrc) apperror('Sorting index corrupted; cannot switch positions');
 	
-	$query="select #sortkey# from #tablename# where #primarykey#=$dst";
-	$rs=sql_query($query,$db);
+	$query="select #sortkey# from #tablename# where #primarykey#=? and gsid=? ";
+	$rs=sql_prep($query,$db,array($dst,$gsid));
+	
 	$myrow=sql_fetch_assoc($rs);
-	$sdst=$myrow['#sortkey#']+0;
+	$sdst=$myrow['#sortkey#'];
 		
 	if (!$sdst) apperror('Sorting index corrupted; cannot switch positions');
 	
@@ -26,21 +33,21 @@ function swap#record#pos(){
 
 	if ($ssrc==$sdst-1){list#records#(); return;}
 
-	if ($ssrc<$sdst) $query="select * from #tablename# where #sortkey#>$ssrc and #sortkey#<$sdst order by #sortkey#";
-	if ($ssrc>$sdst) $query="select * from #tablename# where #sortkey#<$ssrc and #sortkey#>=$sdst order by #sortkey# desc";
+	if ($ssrc<$sdst) $query="select * from #tablename# where gsid=? and #sortkey#>? and #sortkey#<? order by #sortkey#";
+	if ($ssrc>=$sdst) $query="select * from #tablename# where gsid=? and #sortkey#<? and #sortkey#>=? order by #sortkey# desc";
 
 	$prev=$ssrc;
-	$rs=sql_query($query,$db);
+	$rs=sql_prep($query,$db,array($gsid,$ssrc,$sdst));
 	while ($myrow=sql_fetch_assoc($rs)){
-		$itemid=$myrow['#primarykey#']+0;
+		$itemid=$myrow['#primarykey#'];
 		$itemsort=$myrow['#sortkey#'];
-		$query="update #tablename# set #sortkey#=$prev where #primarykey#=$itemid";
-		sql_query($query,$db);
+		$query="update #tablename# set #sortkey#=? where gsid=? and #primarykey#=?";
+		sql_prep($query,$db,array($prev,$gsid,$itemid));
 		$prev=$itemsort;	
 	}//while
 	
-	$query="update #tablename# set #sortkey#=$prev where #primarykey#=$src";
-	sql_query($query,$db);
+	$query="update #tablename# set #sortkey#=? where gsid=? and #primarykey#=?";
+	sql_prep($query,$db,array($prev,$gsid,$src));
 	
 	list#records#();
 }

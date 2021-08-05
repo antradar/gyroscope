@@ -1,0 +1,11 @@
+
+	- lock down existing accounts, if no role is present, no access is given
+	- php utils/vendorscan.php [directory] #primarykey#
+	- patch with:
+	
+	$user=userinfo();
+	if ($user['#primarykey#']) apperror('#primaryfield# auth: access denied');
+	  
+	- display a list of #primaryfield# users in the #primaryfield# details view
+	- create #primaryfield#-specific components
+	

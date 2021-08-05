@@ -4,28 +4,30 @@ include 'icl/listtemplatetypetemplatevars.inc.php';
 
 function batchsavetemplatevars(){
 	
-	$templatetypeid=GETVAL('templatetypeid');
+	$templatetypeid=SGET('templatetypeid');
 	
 	$quickvars=explode("\n",$_POST['quickvars']);
 		
 	global $db;
+	
+	checkgskey('batchsavetemplatevars_'.$templatetypeid);
 
-	gsguard($templatetypeid,'templatetypes','templatetypeid');
+	gsguard($templatetypeid,TABLENAME_TEMPLATETYPES,'templatetypeid');
 			
-	$query="delete from templatevars where templatetypeid=$templatetypeid";
-	sql_query($query,$db);
+	$query="delete from ".TABLENAME_TEMPLATEVARS." where templatetypeid=?";
+	sql_prep($query,$db,$templatetypeid);
 	
 	foreach ($quickvars as $vars){
 		$vars=trim($vars);
 		if ($vars=='') continue;
 		$vars=explode('|',$vars);
 		if (count($vars)!=2) continue;
-		$varname=noapos($vars[0]);
+		$varname=strip_tags($vars[0]);
 		if ($varname[0]=='u') $varname='_'.$varname;	
-		$vardesc=noapos($vars[1]);
+		$vardesc=strip_tags($vars[1]);
 		
-		$query="insert into templatevars(templatetypeid,templatevarname,templatevardesc) values($templatetypeid,'$varname','$vardesc')";
-		sql_query($query,$db);
+		$query="insert into ".TABLENAME_TEMPLATEVARS." (templatetypeid,templatevarname,templatevardesc) values(?,?,?)";
+		sql_prep($query,$db,array($templatetypeid,$varname,$vardesc));
 			
 	}
 	

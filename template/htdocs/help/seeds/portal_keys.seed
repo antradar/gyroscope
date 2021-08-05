@@ -1,0 +1,10 @@
+
+	* generate a unique key string
+	
+	* in Host Gyroscope: auth.php
+			$#primaryfield#dbsalt='...';
+			
+	* in Guest Gyroscope: auth.php
+			$dbsalt='...';
+			
+	

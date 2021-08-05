@@ -5,9 +5,9 @@ if (window.WebSocket){
 	
 	document.websocket.onopen=function(e){
 		console.log('web socket connected');	
-		document.websocket.send('{"type":"getsid","userid":'+userid+'}');
+		document.websocket.send('{"type":"getsid","userid":'+userid+',"auth":"'+wsskey+'","gsid":'+gsid+'}');
 		document.wssready=true;
-		document.nomoresocket=0;
+		if (!document.nomoresocket) document.nomoresocket=0;
 		if (gid('wsswarn')) gid('wsswarn').style.display='none';
 	}
 	
@@ -17,6 +17,7 @@ if (window.WebSocket){
 			if (!document.wssid&&msg.userid==userid) {
 				document.wssid=msg.sid;
 				document.gsid=msg.gsid;
+				document.nomoresocket=0;
 				console.log('sid: '+msg.sid);
 			}
 			return;	
@@ -28,12 +29,12 @@ if (window.WebSocket){
 		
 		if (document.wssid==msg.sid){
 			console.log('ignore self');
-			wss_markchanges(msg.rectype,msg.recid,1);
+			wss_markchanges(msg.rectype,msg.recid,1,0,msg);
 			return;	
 		}
 		
 		if (msg.type=='update'){
-			wss_markchanges(msg.rectype,msg.recid);
+			wss_markchanges(msg.rectype,msg.recid,0,msg);
 			return;	
 		}
 		
@@ -46,6 +47,9 @@ if (window.WebSocket){
 	}
 	
 	document.websocket.onclose=function(e){
+		if (!document.nomoresocket) document.nomoresocket=0;
+		document.nomoresocket++;
+		
 		document.wssready=null;
 		if (gid('wsswarn')) gid('wsswarn').style.display='inline';
 		if (document.nomoresocket&&document.nomoresocket>5) {
@@ -53,10 +57,13 @@ if (window.WebSocket){
 			
 			return;
 		}
-		console.log('web socket closed, restarting in 3 secs. reconnect attempt #'+document.nomoresocket);
+		var span=1500; //adjust variability if needed
+		var rest=Math.round(Math.random()*span)+2000; //2-3.5 secs
+
+		console.log('web socket closed, restarting in '+rest+'ms. reconnect attempt #'+document.nomoresocket);
 		if (self.authpump) authpump();
 		if (document.wsskey) wsskey=document.wsskey;		
-		setTimeout(function(){if (document.wsskey) wsskey=document.wsskey;document.wssid=null;wss_init(userid,wsuri,wsskey,gsid);},3000);	
+		setTimeout(function(){if (document.wsskey) wsskey=document.wsskey;document.wssid=null;wss_init(userid,wsuri,wsskey,gsid);},rest);	
 	}
 	
 } else {
@@ -64,7 +71,7 @@ if (window.WebSocket){
 }
 }
 
-wss_markchanges=function(rectype,recid,corrected){
+wss_markchanges=function(rectype,recid,corrected,msg){
 	
 	var fgcolor='#ab0200';
 	var bgcolor='#ffffcc';
@@ -92,9 +99,11 @@ wss_markchanges=function(rectype,recid,corrected){
 	if (tabid&&document.tabtitles[tabid]){
 		hit=1;
 		if (corrected) {
+			document.tabtitles[tabid].conflicted=null;
 			document.tabtitles[tabid].style.color=fgcolor;
 			if (gid('tabreloader_'+rectype+'_'+recid)) gid('tabreloader_'+rectype+'_'+recid).style.background='#dedede';
 		} else {
+			document.tabtitles[tabid].conflicted=1;
 			document.tabtitles[tabid].style.color=fgcolor;
 			if (gid('tabreloader_'+rectype+'_'+recid)) gid('tabreloader_'+rectype+'_'+recid).style.background='#ffcccc';
 		}

@@ -4,15 +4,18 @@ function listusers(){
 	
 	global $db; 
 	
-	$mode=GETSTR('mode');
-	$key=GETSTR('key');
+	$mode=SGET('mode');
+	$key=SGET('key');
 	
-	$page=isset($_GET['page'])?$_GET['page']+0:0;
+	$page=intval($_GET['page']);
+	
 	
 	$user=userinfo();
-	$myuserid=$user['userid']+0;
-	$gsid=$user['gsid']+0;
-		
+	$myuserid=$user['userid'];
+	$gsid=$user['gsid'];
+	
+	//vendor auth 1
+			
 	if (!isset($user['groups']['accounts'])) die('<div class="section">You cannot manage user accounts</div>');
 	
 	if ($mode!='embed'){
@@ -21,55 +24,85 @@ function listusers(){
 <div class="section">
 <div class="listbar">
 
-	<form class="listsearch" onsubmit="_inline_lookupuser(gid('userkey'));return false;">
-	<div class="listsearch_">
-		<input id="userkey" class="img-mg" onkeyup="_inline_lookupuser(this);" autocomplete="off">
-		<img src="imgs/inpback.gif" class="inpback" onclick="inpbackspace('userkey');_inline_lookupuser(gid('userkey'));">
-	</div>
-	<input type="image" src="imgs/mg.gif" class="searchsubmit" value=".">
+	<form class="listsearch" onsubmit="_inline_lookupuser(gid('userkey'));return false;" style="position:relative;">
+		<div class="listsearch_">
+			<input onfocus="document.hotspot=this;" id="userkey" class="img-mg" onkeyup="_inline_lookupuser(this);" autocomplete="off">
+			<img src="imgs/inpback.gif" class="inpback" onclick="inpbackspace('userkey');_inline_lookupuser(gid('userkey'));">
+		</div>
+		<input type="image" src="imgs/mg.gif" class="searchsubmit" value=".">
+		<?php makehelp('userlistlookup','listviewlookup',1);?>
 	</form>
 
-
 	<div style="padding-top:10px;">
-	<a class="recadder" onclick="addtab('user_new','<?tr('list_user_add_tab');?>','newuser');"> <img src="imgs/t.gif" class="img-addrec"><?tr('list_user_add');?></a>
+	<a class="recadder" onclick="closetab('user_new');addtab('user_new','<img src=&quot;imgs/t.gif&quot; class=&quot;ico-user&quot;><?php tr('list_user_add_tab');?>','newuser');"> <img src="imgs/t.gif" class="img-addrec"><?php tr('list_user_add');?></a>
 	</div>
 </div>
 
 <div id="userlist">
-<?		
+<?php		
 	}
+	
+	$params=array($gsid);
 
-	$query="select * from ".TABLENAME_USERS." where gsid=$gsid ";
-	if ($key!='') $query.=" and (login like '$key%' or dispname like '%$key%') ";
-	$rs=sql_query($query,$db);
-	$count=sql_affected_rows($db,$rs);
-	$perpage=10;
+	$query="select * from ".TABLENAME_USERS." where ".COLNAME_GSID."=? ";
+	
+	if ($key!='') {
+		$query.=" and (lower(login) like lower(?) or lower(dispname) like lower(?) ";
+		array_push($params,"$key%","%$key%");
+
+		if (is_numeric($gsid)){
+			$query.="or userid=? ";
+			array_push($params,$key);
+		}
+		
+
+		$query.=") ";
+	}
+	
+	//vendor auth 2
+	
+	$cquery="select count(*) as c from ($query) as query_counter";
+	$rs=sql_prep($cquery,$db,$params);
+	$myrow=sql_fetch_assoc($rs);
+	$count=$myrow['c'];
+	
+	$pagelead=0;
+	$perpage=20;
+	$dperpage=$perpage;
+	
 	$maxpage=ceil($count/$perpage)-1;
 	if ($maxpage<0) $maxpage=0;
 	if ($page<0) $page=0;
 	if ($page>$maxpage) $page=$maxpage;
 	$start=$perpage*$page;
+	if ($page>0) {$start-=$pagelead;$dperpage+=$pagelead;if ($start<0) $start=0;}
 
 	$pager='';
 	if ($maxpage>0){
 		ob_start();
 ?>
 <div class="listpager">
-<?echo $page+1;?> of <?echo $maxpage+1;?>
+<a href=# class="hovlink" onclick="ajxpgn('userlist',document.appsettings.codepage+'?cmd=slv_core__users&page=<?php echo $page-1;?>&mode=embed&key='+encodeHTML(gid('userkey').value));return false;"><img src="imgs/t.gif" class="img-pageleft">Prev</a>
 &nbsp;
-<a href=# onclick="ajxpgn('userlist',document.appsettings.codepage+'?cmd=slv_core__users&page=<?echo $page-1;?>&mode=embed');return false;">&laquo; Prev</a>
-|
-<a href=# onclick="ajxpgn('userlist',document.appsettings.codepage+'?cmd=slv_core__users&page=<?echo $page+1;?>&mode=embed');return false;">Next &raquo;</a>
+<a class="pageskipper" onclick="var pagenum=sprompt('Go to page:',<?php echo $page+1;?>);if (pagenum==null||parseInt(pagenum,0)!=pagenum) return false;ajxpgn('userlist',document.appsettings.codepage+'?cmd=slv_core__users&key='+encodeHTML(gid('userkey').value)+'&page='+(pagenum-1)+'&mode=embed');return false;"><?php echo $page+1;?></a> of <?php echo $maxpage+1;?>
+&nbsp;
+<a href=# class="hovlink" onclick="ajxpgn('userlist',document.appsettings.codepage+'?cmd=slv_core__users&page=<?php echo $page+1;?>&mode=embed&key='+encodeHTML(gid('userkey').value));return false;">Next<img src="imgs/t.gif" class="img-pageright"></a>
 </div>
-<?		
+<?php		
 		$pager=ob_get_clean();
 	}
 	
 	echo $pager;
 	
-	$query.=" order by userid=$myuserid desc, virtualuser, login limit $start,$perpage";	
+	//vendor auth 3
 	
-	$rs=sql_query($query,$db);
+	$query.=" order by userid=? desc, virtualuser, login limit $start,$dperpage ";	
+	array_push($params,$myuserid);
+
+	$rs=sql_prep($query,$db,$params);
+
+	
+	$pageleadidx=0;
 	
 	while ($myrow=sql_fetch_array($rs)){
 		$userid=$myrow['userid'];
@@ -79,14 +112,25 @@ function listusers(){
 		
 		$usertitle="$login"; //change this if needed
 		
-		$dbusertitle=noapos(htmlspecialchars($usertitle));
+		$dbusertitle=noapos(htmlspecialchars(htmlspecialchars($usertitle)));
 		$groupnames=$myrow['groupnames'];
 		$hash=substr(md5($groupnames),0,6);
 		if ($virtual) $hash='ffffff';
 		
+		if ($pagelead!=0&&$pageleadidx==$pagelead&&$page>0){
 ?>
-<div class="listitem" style="border-left:solid 3px #<?echo $hash;?>;padding-left:5px;"><a onclick="showuser(<?echo $userid;?>,'<?echo $dbusertitle;?>');"><?echo $usertitle;?><br><?echo $usertitle!=$dispname?$dispname:'';?></a></div>
-<?		
+
+<div style="font-size:8px;color:#333333;border-bottom:dotted 1px #444444;text-align:center;">PAGE <?php echo $page+1;?></div>
+<?php			
+		}
+		
+		//vendor auth 4
+		
+?>
+<div class="listitem" style="<?php if ($pageleadidx<$pagelead&&$page>0) echo 'opacity:0.6;';?>border-left:solid 3px #<?php echo $hash;?>;padding-left:5px;"><a onclick="showuser('<?php echo $userid;?>','<?php echo $dbusertitle;?>');"><?php echo htmlspecialchars($usertitle);?><br><?php echo htmlspecialchars($usertitle!=$dispname?$dispname:'');?></a></div>
+<?php		
+		$pageleadidx++;
+
 	}//while
 	
 	echo $pager;
@@ -97,11 +141,11 @@ function listusers(){
 </div>
 
 <script>
-gid('tooltitle').innerHTML='<a><?tr('list_users');?></a>';
-ajxjs(self.showuser,'users_js.php');
-ajxjs(self.setaccountpass,'accounts.js');
+gid('tooltitle').innerHTML='<a><?php tr('list_users');?></a>';
+ajxjs(<?php jsflag('showuser');?>,'users.js');
+ajxjs(<?php jsflag('setaccountpass');?>,'accounts.js');
 </script>
-<?	
+<?php	
 	}//embed mode
 
 }

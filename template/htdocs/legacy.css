@@ -1,0 +1,12 @@
+.section.hasqnav{padding-left:15px;}
+.qnav_{display:none;}
+
+.helpdot{
+  display:none;
+}
+
+.helppulse{
+	font-size:1px;
+	width:8px;height:8px;
+	border-width:4px;
+}

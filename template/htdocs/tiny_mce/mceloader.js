@@ -1,7 +1,7 @@
 (function(){
 if (document.createComment&&!self.tinyMCE){
 	var script=document.createElement('script');
-	script.src='tiny_mce/tiny_mce_src.js';
+	script.src='tiny_mce/tiny_mce_src.js?v=2';
 	document.body.appendChild(script);
 } else {
 	window.tinyMCE={
@@ -42,21 +42,65 @@ function paste_clean_image(o){
 mcetemplates={
 	'headline':function(ed){return '<div class="headline"><p>'+(ed.selection.getContent()==''?'Headline':ed.selection.getContent())+'</p></div>';},	
 	'noamp':function(ed){return '<div class="noamp"><!-- noampstart --><p>'+(ed.selection.getContent()==''?'AMP Excluded Content':ed.selection.getContent())+'</p><!-- noampend --></div>';},	
+	'narrow':function(ed){return '<div class="narrow"><p>'+(ed.selection.getContent()==''?'Content':ed.selection.getContent())+'</p></div>';},	
 	'col2':'<div class="cols"><div class="col2"><p>Left Column</p></div><div class="col2"><p>Right Column</p></div><div class="clear"></div></div>',
 	'colsideright':'<div class="cols"><div class="col-left"><p>Main Column</p></div><div class="col-right"><p>Side Column</p></div><div class="clear"></div></div>',
 	'qna':'<div class="qna"><div class="qnaq"><a onclick="showqna(this);">Question</a></div><div class="qnaa"><p>Answer</p></div></div>',	
 	'youtube':function(key){return '<div class="plugincontainer"><p>{{youtube key='+key+'}}</p></div>';},
-	'matterport':function(key){return '<div class="plugincontainer"><p>{{matterport key='+key+'}}</p></div>';}
+	'matterport':function(key){return '<div class="plugincontainer"><p>{{matterport key='+key+'}}</p></div>';},
+	'tableindent': function(ed){
+		var ind=sprompt('Indentation Level:',0);
+		var c=ed.selection.getContent();
+		if (c=='') return '';
+		var lines=c.split("\n");
+		var ncols=0;
+		var rows=[];
+		for (var i=0;i<lines.length;i++) {
+			var line=lines[i];
+			if (line=='') continue;
+			line=line.replace(/^<p>([\S\s]*?)<\/p>/g,'$1').replace(/&nbsp;/g,' ').replace(/\s\s\s\s+/g,'#@SPLITER@#');
+			var parts=line.split('#@SPLITER@#');
+			if (ncols<parts.length) ncols=parts.length;
+			rows.push(parts);
+		}
+		
+		if (ncols<1) return 'INVALID TABLE DATA';
+		var space=5*ind; //5% per level of indentation
+		var percell=100-space;
+		if (ncols>1) percell=Math.floor((100-space)*10/(ncols))/10;
+		var html=[];
+		html.push('<table nobr="true" width="100%">');
+		for (var i=0;i<rows.length;i++){
+			var r=[];
+			r.push('<tr>');
+			if (ind>0){
+				var rhead='';
+				if (i==0) rhead=' width="'+space+'%"';
+				r.push('<td'+rhead+'>&nbsp;</td>');	
+			}
+			for (j=0;j<rows[i].length;j++){
+				var cell=rows[i][j];
+				var chead='';
+				if (i==0) chead=' width="'+percell+'%"';
+				r.push('<td'+chead+'>'+cell+'</td>');
+			}//j
+			r.push('</tr>');
+			html.push(r.join(''));	
+		}//i
+		html.push('</table>');
+				
+		return html.join('');
+	}
 }
 
 reloadmedialibrary=function(selector){
 	ajxpgn('fsview',document.appsettings.codepage+'?cmd=showmedialibrary&selector='+selector+'&sels='+listmediaids());	
 }
 
-delmedia=function(mediaid,selector){
+delmedia=function(mediaid,selector,gskey){
 	if (!sconfirm('Are you sure you want to remove this image?')) return;
 	if (gid('fsview').sels) delete gid('fsview').sels['mediaid_'+mediaid];
-	ajxpgn('fsview',document.appsettings.codepage+'?cmd=delmedia&selector='+selector+'&mediaid='+mediaid+'&sels='+listmediaids());
+	ajxpgn('fsview',document.appsettings.codepage+'?cmd=delmedia&selector='+selector+'&mediaid='+mediaid+'&sels='+listmediaids(),0,0,null,null,null,null,gskey);
 }
 
 lookupmediakey=function(d,selector){
@@ -107,6 +151,25 @@ initsourceeditor=function(){
 		
 }
 
+initimecree=function(){
+	gid('imecreekeyboard').cree=null;
+	creeime(gid('imecreekeyboard'));
+
+}
+
+updateimecree=function(d){
+	var content=gid('imecreekeyboard').value;
+	
+	var ed=tinyMCE.activeEditor;
+	if (!ed) return;
+	if (gid('imecreekeyboard').changed&&ed.onChange) ed.onChange.dispatch();		
+	
+	ed.selection.setContent(content);
+	
+	closefs();
+				
+}
+
 updatesourceeditor=function(d){
 	var content=gid('mcesourceeditor').value.replace(/\n/g,'<!--mce:protected %0A-->').replace(/\t/g,'<!--mce:protected %09-->');
 	
@@ -126,14 +189,14 @@ updatesourceeditor=function(d){
 				
 }
 
-renamemedia=function(mediaid,d){
+renamemedia=function(mediaid,d,gskey){
 	var newname=prompt('Rename to:',d.innerHTML);
 	if (newname==null) return;
 	
 	ajxpgn('statusc',document.appsettings.codepage+'?cmd=renamemedia&mediaid='+mediaid+'&fn='+encodeHTML(newname),0,0,null,function(rq){
 		flashstatus(rq.responseText,3000);
 		d.innerHTML=newname.replace(' ','_');	
-	});
+	},null,null,gskey);
 	
 }
 
@@ -141,7 +204,8 @@ lookupselection=function(ed){
 	return function(){
 		var content=ed.selection.getContent();
 		if (content==null||content=='') return;
-		if (content.replace(/<img class=\"\S+\"\s*ampwidth="\d+"\s*ampheight="\d+" src="\S+"\s*\/?>/,'x')=='x'&&content!='x') lookupentity(ed,'imageoption','Image Options');
+		//if (content.replace(/<img class=\"\S+\"\s*ampwidth="\d+"\s*ampheight="\d+" src="\S+"\s*\/?>/,'x')=='x'&&content!='x') lookupentity(ed,'imageoption','Image Options');
+		if (content.replace(/<img [\S\s]*?\/?>/,'x')=='x'&&content!='x') lookupentity(ed,'imageoption','Image Options');
 	}	
 }
 
@@ -149,7 +213,9 @@ replaceimageclass=function(classname){
 	if (!document.hotspot) return;
 	var content=document.hotspot.selection.getContent();
 	if (content==null||content=='') return;
-	
+
+	if (content.indexOf(' class=')==-1) content=content.replace('<img ','<img class="tempclass" ');
+
 	content=content.replace(/<img class=\"(\S+)\"/g,'<img class="'+classname+'"');
 	document.hotspot.selection.setContent(content);
 	hidelookup();

@@ -25,24 +25,97 @@ function sql_get_db($dbhost,$dbsource,$dbuser=null,$dbpass=null,$lazyname=null){
 	return $db;
 }
 
-function sql_query($query,&$db){
+function sql_prep($query,&$db,$params){
+	global $gsdbprofile;
+	
+	if (is_string($db)){
+		global $dbdefers;
+		$dbinfo=$dbdefers[$db];
+		$db=sql_get_db($dbinfo['host'],$dbinfo['source'],$dbinfo['user'],$dbinfo['pass']);
+	}	
+	
+	if (!is_array($params)&&isset($params)) $params=array($params);
+	
+	$a=microtime(1);
+	
+	$rs=sqlsrv_prepare($db, $query, $params,array( "Scrollable" => SQLSRV_CURSOR_KEYSET ));
+	if (!sqlsrv_execute($rs)){
+		$err=sqlsrv_errors();
+		echo 'SQL Error: '.$query.' '.$err[0]['message']; 	
+	}
+	
+	$b=microtime(1);
+			
+	if (is_array($gsdbprofile)) array_push($gsdbprofile,array('query'=>$query,'time'=>$b-$a));
+	return $rs;
+		
+}
 
+function sql_reescape($inp){
+	$str='';
+
+	$inside=0; $escaping=0;
+	$len=strlen($inp);
+
+	$token='';
+	for ($i=0;$i<$len;$i++){
+		$c=$inp[$i];
+		$nc='';
+		if ($i<$len-1) $nc=$inp[$i+1];
+
+		if (!$inside) $str.=$c;
+		if ($c=="'"&&!$inside) {$inside=1;continue;}
+		if ($inside){
+			if ($c=='\\'&&!$escaping&&($nc=='\\'||$nc=="'"||$nc=='"')){
+				$c='';
+				$escaping=1;
+				continue;
+			}
+			
+			if ($escaping){
+				$escaping=0;
+				$token.=$c;
+				continue;
+			} else {
+				if ($c=="'"){
+					$c='';
+					$str.=str_replace("'","''",$token)."'";
+					$token='';
+					$inside=0;
+					continue;
+				}
+			}
+
+			$token.=$c;
+
+		}
+	}
+
+	return $str;
+}
+
+function sql_query($query,&$db){
+	global $gsdbprofile;
+
+	
 	if (is_string($db)){
 		global $dbdefers;
 		$dbinfo=$dbdefers[$db];
 		$db=sql_get_db($dbinfo['host'],$dbinfo['source'],$dbinfo['user'],$dbinfo['pass']);	
 	}
 
-	$query=str_replace("\'","''",$query);
-	$query=str_replace("\\\\","\\",$query);
-	$params=array();	
+	$query=sql_reescape($query);	
+	
+	$params=array();
+	$a=microtime(1);		
 	$rs=sqlsrv_query($db,$query,$params,array( "Scrollable" => SQLSRV_CURSOR_KEYSET ));
+	$b=microtime(1);	
 	if (!$rs) {
 		$errors=sqlsrv_errors();
 		$message=$errors[0]['message'];
 		echo "sql_error: <u>".$query.'</u> '.$message;
 	}
-
+	if (is_array($gsdbprofile)) array_push($gsdbprofile,array('query'=>$query,'time'=>$b-$a));
 	return $rs;
 }
 
@@ -68,6 +141,23 @@ function sql_affected_rows($db,$rs){
 	return max($c1,$c2);
 }
 
+function sql_copy_from_query($query,$db,$omits,$table){
+	$rs=sql_query($query,$db);
+	$myrow=sql_fetch_assoc($rs);
+	$fields=array();
+	$values=array();
+	foreach ($myrow as $k=>$v){
+		if (in_array(strtolower($k),$omits)) continue;
+		array_push($fields,$k);
+		array_push($values,"'".noapos($v)."'");
+	}
+	
+	$query="insert into $table (".implode(',',$fields).") values (".implode(',',$values).")";
+	$rs=sql_query($query,$db);
+	$id=sql_insert_id($db,$rs);
+	return $id;
+}
+
 function sql_begin_transaction(){
 	die("not implemented!");
 }
@@ -83,5 +173,5 @@ function sql_rollback(){
 
 /* Sample Connection
 
-$db=sql_get_db("PT-PC\SQLEXPRESS","SQLLHDB",null,null,'db');
+$db=sql_get_db("PT-PC\SQLEXPRESS","SQLLHDB");
 */

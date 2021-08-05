@@ -1,4 +1,5 @@
-<?
+<?php
+
 include 'lang.php';
 
 //comment out the following lines to disable authentication
@@ -14,14 +15,23 @@ $fastlane='phpx-services.php'; //change this name if HAProxy is set up to route 
 $userroles=array(
 	'admins'=>_tr('rights_standardadmin'),
 	'reportsettings'=>_tr('rights_managereports'),
-	'systemplateuse'=>_tr('rights_configtemplates'),
+	'devreports'=>_tr('rights_implementreports'),
 	'systemplate'=>_tr('rights_managetemplates'),
+	'systemplateuse'=>_tr('rights_configtemplates'),
 	'accounts'=>_tr('rights_accounts'),
 	'creditcards'=>'manage credit cards and subscription',
 	'dbadmin'=>_tr('rights_dbadmin'),
-	'upgrademods'=>_tr('rights_upgrademodules')
+	//'msdrive'=>'access all Microsoft drives',
+	//'upgrademods'=>_tr('rights_upgrademodules'),
+	'helpedit'=>'edit help topics',
 );
 
+//a user can grant the following rights only if the user also has the right themselves
+$userrolelocks=array('devreports','accounts','dbadmin','creditcards','systemplate','msdrive','helpedit');
+
+//to quickly force every role to be inherited, uncomment the following:
+
+//$userrolelocks=array_keys($userroles);
 
 
 $user=userinfo();
@@ -35,6 +45,8 @@ $toolbaritems=array(
 	'core.templates'=>array('title'=>_tr('icon_templates'),'icon'=>'','modversion'=>'91'),
 
 'core.reports'=>array('title'=>_tr('icon_reports'),'icon'=>'img-reports','modversion'=>'92','lockdown'=>1),
+'core.helptopics'=>array('title'=>_tr('icon_helptopics'),'icon'=>'img-helptopics','modversion'=>1),
+
 );
 
 

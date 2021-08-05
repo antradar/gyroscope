@@ -1,0 +1,31 @@
+
+
+	//vendor auth 1
+	
+	global $#primaryfield#roles;
+	
+	//$query="select users.* ...
+	// left-join with #primaryfield# table, resolve #primaryfield#name
+	
+	if ($user['#primarykey#']) $query.=' and #primarykey#='.($user['#primarykey#']);
+	
+	//vendor auth 2
+	
+	$#primarykey#=$myrow['#primarykey#'];
+	$#primaryfield#name=$myrow['#primaryfield#name'];
+	
+	if ($#primarykey#) {
+		$userroles=$#primaryfield#roles;
+		if ($user['#primarykey#']) $userrolelocks=array_keys($#primaryfield#roles);
+		else $userrolelocks=array();
+		
+	}
+	
+	
+	//vendor auth 3
+		
+	<div class="inputrow" style="display:none<?php if ($#primarykey#) echo 'a';?>;">
+		<div class="formlabel">#primaryfield# Account:</div>
+		<input disabled class="inp" id="#primarykey#_<?php echo $userid;?>" value="<?php echo htmlspecialchars($#primaryfield#name);?>">
+	</div>
+	

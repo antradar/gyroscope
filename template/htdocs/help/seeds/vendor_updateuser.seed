@@ -1,0 +1,16 @@
+
+	//vendor auth 1
+	
+	global $#primaryfield#roles;
+	
+	
+	//vendor auth 2
+	$#primarykey#=$myrow['#primarykey#'];
+
+	if ($#primarykey#){
+		$userroles=$#primaryfield#roles;
+		if ($user['#primarykey#']) $userrolelocks=array_keys($#primaryfield#roles);
+		else $userrolelocks=array();
+	}
+	
+	

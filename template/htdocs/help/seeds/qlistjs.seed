@@ -28,7 +28,7 @@ qdel#masterrecord##subrecord#=function(k){
 
 qadd#masterrecord##subrecord#=function(){
 	var #refkey#=gid('q#refkey#').value2;
-	if (!#refkey#) {alert('Pick a #refrecord# from the list');return;}
+	if (!#refkey#) return;
 	
 	var name=gid('q#refkey#').value;
 	

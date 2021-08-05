@@ -3,18 +3,20 @@
 include 'icl/list#primaryfield##records#.inc.php';
 
 function del#primaryfield##record#(){
-	$#lookupkey#=GETVAL('#lookupkey#');
-	$#primarykey#=GETVAL('#primarykey#');
+	$#lookupkey#=SGET('#lookupkey#');
+	$#primarykey#=SGET('#primarykey#');
 
 	global $db;
 	
-	$query="select * from #lookuptable# where #lookupkey#=$#lookupkey# and #primarykey#=$#primarykey#";
-	$rs=sql_query($query,$db);
+	checkgskey('del#primaryfield##record#_'.$#lookupkey#);
+	
+	$query="select * from #lookuptable# where #lookupkey#=? and #primarykey#=?";
+	$rs=sql_prep($query,$db,array($#lookupkey#,$#primarykey#));
 	if (!$myrow=sql_fetch_array($rs)) die('Failed to delete #record#');
 	
 	
-	$query="delete from #lookuptable# where #lookupkey#=$#lookupkey# and #primarykey#=$#primarykey#";
-	$rs=sql_query($query,$db);
+	$query="delete from #lookuptable# where #lookupkey#=? and #primarykey#=?";
+	$rs=sql_prep($query,$db,array($#lookupkey#,$#primarykey#));
 	
 	logaction("unlinked #c_record# #$#lookupkey# from #primaryfield# #$#primarykey#",array('#primarykey#'=>$#primarykey#,'#lookupkey#'=>$#lookupkey#));
 	

@@ -1,0 +1,6 @@
+
+//$userlocks=...
+
+$#primaryfield#roles=array(
+	'accounts'=>_tr('rights_accounts'), //comment out to remove ability to create sub accounts
+#iterator-rolelist-rolelist#);

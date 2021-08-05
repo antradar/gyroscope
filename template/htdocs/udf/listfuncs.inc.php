@@ -10,7 +10,7 @@ function listfuncs(){
 	
 ?>
 	<a class="func" href=# onclick="newfunc();return false;">add a new UDF</a>
-<?	
+<?php	
 	
 	$query="select db, name, definer, modified from mysql.proc where type='function' order by db='$defdbname' desc, db, name";
 	$rs=sql_query($query,$db);
@@ -24,13 +24,13 @@ function listfuncs(){
 		
 		if ($lastdbname!=$dbname){
 ?>
-<div class="dbname <?if ($main) echo 'main'?>"><?echo $dbname;?></div>
-<?		
+<div class="dbname <?php if ($main) echo 'main'?>"><?php echo $dbname;?></div>
+<?php		
 			$lastdbname=$dbname;
 
 		}//lastdbname
 	?>
-		<a class="func" href=# onclick="showfunc('<?echo $dbname;?>','<?echo $func;?>');return false;"><?echo $func;?></a> 
-	<?
+		<a class="func" href=# onclick="showfunc('<?php echo $dbname;?>','<?php echo $func;?>');return false;"><?php echo $func;?></a> 
+	<?php
 	}//while	
 }

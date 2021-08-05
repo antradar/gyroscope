@@ -1,0 +1,30 @@
+
+	//$gsid=$user['gsid'];
+	
+	$#primarykey#=$user['#primarykey#'];
+
+	//...
+	
+	// $auth=... 
+	.$salt.$#primarykey#
+	
+	
+	//...
+	
+	//if (!$active||$virtual){
+		//...
+		
+		setcookie('#primarykey#',NULL,time()-3600);
+		
+		//...
+	//} else {
+		//...
+		
+		setcookie('#primarykey#',$#primarykey#,null,null,null,$usehttps,true);
+		
+		//...
+		
+	//}
+	
+	
+	

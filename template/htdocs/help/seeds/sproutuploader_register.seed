@@ -6,12 +6,12 @@ function register#record#video(){
 	global $db;
 	
 	$#primarykey#=GETVAL('#primarykey#');
-	$videokey=GETSTR('videokey');
-	$videotoken=GETSTR('videotoken');
+	$videokey=SGET('videokey');
+	$videotoken=SGET('videotoken');
 	
 	//remove existing video
-	$query="select * from #table# where #primarykey#=$#primarykey# and videokey!=''";
-	$rs=sql_query($query,$db);
+	$query="select * from #table# where #primarykey#=? and videokey!=''";
+	$rs=sql_prep($query,$db,$#primarykey#);
 	if ($myrow=sql_fetch_assoc($rs)){
 		$oldkey=$myrow['videokey'];
 		sproutvideo_delete($oldkey);
@@ -19,8 +19,8 @@ function register#record#video(){
 	}
 	
 	
-	$query="update #table# set videokey='$videokey', videotoken='$videotoken', videostatus=0 where #primarykey#=$#primarykey#";
-	sql_query($query,$db);
+	$query="update #table# set videokey=?, videotoken='$videotoken', videostatus=0 where #primarykey#=?";
+	sql_prep($query,$db,array($videokey,$#primarykey#));
 	
 	echo "#c_record# #$#primarykey# successfully uploaded as Video $videokey";	
 	logaction("uploaded a video for #c_record# #$#primarykey#",array('#primarykey#'=>$#primarykey#),array('rectype'=>'#record#video','recid'=>$#primarykey#));

@@ -1,0 +1,46 @@
+// in notes.php, modify the $notetypes array:
+//	'#record#'=>'#c_record#',
+
+gsnoteform_#record#=function(){
+	var html=[];
+	
+#iterator-fieldlist-gsnotesblock#	
+
+	html.push('<div><button onclick="gsnotes_add_#record#();">Add</button></div>');
+	
+	gid('gsnotes_form').innerHTML=html.join('');
+
+}
+
+gsnotes_add_#record#=function(){
+
+#iterator-fieldlist-getgsnotesjs#
+	
+	var valid=1;
+	var offender=null;
+
+	//delete the excessive validate rules
+#iterator-fieldlist-validate#
+	//add more validation rules
+	
+	if (!valid) {
+		if (offender&&offender.focus) offender.focus();
+		return;
+	}
+	
+	gsnotes_addnote('#record#',{#iterator-fieldlist-gsnotesadder#});	
+}
+
+gsnotes_preview_#record#=function(obj){
+	return "#c_record#: "+gsnotes_esc(obj.#dispfield#); //change this
+}
+
+gsnotes_apply_#record#=function(obj, idx){
+	//implement this
+	
+	//reverse lookup in onfocus: gsnotes_listclips('#record#');
+	
+	//for a full resolution, remove the offline from the clipboard:
+	//gsnotes_delnote(idx,1);
+	
+}

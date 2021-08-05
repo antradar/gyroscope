@@ -8,8 +8,11 @@ $langs=array(
 //	'pt'=>'Português',	
 //	'ru'=>'Русский',
 //	'zh'=>'中文',
-//	'he'=>'עברית'
+//	'he'=>'עברית',
+//	'ar'=>'عربى',
 );
+
+// when enabling a new language, copy the files in the langpack (not part of core download) folder to the lang folder
 
 $lang=$deflang;
 if (isset($_COOKIE['userlang'])) $lang=$_COOKIE['userlang'];

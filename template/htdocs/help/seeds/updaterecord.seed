@@ -8,13 +8,26 @@ function update#record#(){
 
 	global $db;
 	$user=userinfo();
-	$gsid=$user['gsid']+0;
+	$gsid=$user['gsid'];
+	
+	checkgskey('update#record#_'.$#primarykey#);
 
-	$query="update #tablename# set #iterator-fieldlist-update# where gsid=$gsid and #primarykey#=$#primarykey#";
-	sql_query($query,$db);
+	$query="select * from #tablename# where #primarykey#=?"; //gsid=? and 
+	$rs=sql_prep($query,$db,array($#primarykey#)); //$gsid,
+	$before=sql_fetch_assoc($rs);
 
-	logaction("updated #c_record# #$#primarykey# <u>$#dispfield#</u>",
-		array('#primarykey#'=>$#primarykey#,'#dispfield#'=>"$#dispfield#"),
+	$query="update #tablename# set #iterator-fieldlist-update# where ".COLNAME_GSID."=? and #primarykey#=?";
+	sql_prep($query,$db,array(#iterator-fieldlist-sqlplist#,$gsid,$#primarykey#));
+
+	$query="select * from #tablename# where #primarykey#=?"; //gsid=? and 
+	$rs=sql_prep($query,$db,array($#primarykey#)); //$gsid,
+	$after=sql_fetch_assoc($rs);
+	
+	$dbchanges=array('#primarykey#'=>$#primarykey#,'#dispfield#'=>"$#dispfield#");
+	$dbchanges=array_merge($dbchanges,diffdbchanges($before,$after)); //arg3-masks, arg4-omits
+	
+	logaction("updated #c_record# #$#primarykey# $#dispfield#",
+		$dbchanges,
 		array('rectype'=>'#record#','recid'=>$#primarykey#));
 
 	show#record#($#primarykey#);

@@ -3,19 +3,23 @@
 include 'icl/list#primaryfield##records#.inc.php';
 
 function del#primaryfield##record#(){
-	$#bridgekey#=GETVAL('#bridgekey#');
-	$#primarykey#=GETVAL('#primarykey#');
+	$#bridgekey#=SGET('#bridgekey#');
+	$#primarykey#=SGET('#primarykey#');
 
+	checkgskey('del#primaryfield##record#_'.$#bridgekey#);
+	
+	//todo: gsguard if applicable
+	
 	global $db;
 	
-	$query="select * from #bridgetable# where #bridgekey#=$#bridgekey# and #primarykey#=$#primarykey#";
-	$rs=sql_query($query,$db);
+	$query="select * from #bridgetable# where #bridgekey#=? and #primarykey#=?";
+	$rs=sql_prep($query,$db,array($#bridgekey#,$#primarykey#));
 	if (!$myrow=sql_fetch_array($rs)) die('Failed to delete #record#');
 	
 	$#lookupkey#=$myrow['#lookupkey#'];
 	
-	$query="delete from #bridgetable# where #bridgekey#=$#bridgekey# and #primarykey#=$#primarykey#";
-	$rs=sql_query($query,$db);
+	$query="delete from #bridgetable# where #bridgekey#=? and #primarykey#=?";
+	$rs=sql_prep($query,$db,array($#bridgekey#,$#primarykey#));
 	
 	logaction("unlinked #c_record# #$#lookupkey# from #primaryfield# #$#primarykey#",array('#primarykey#'=>$#primarykey#,'#lookupkey#'=>$#lookupkey#,'#bridgekey#'=>$#bridgekey#));
 	

@@ -4,27 +4,29 @@ include 'icl/showtemplatetype.inc.php';
 
 function addtemplatetype(){
 	
-	$templatetypename=QETSTR('templatetypename');
-	$templatetypekey=QETSTR('templatetypekey');
+	$templatetypename=SQET('templatetypename');
+	$templatetypekey=SQET('templatetypekey');
 	
 	global $db;
 	
 	$user=userinfo();
-	$gsid=$user['gsid']+0;
+	$gsid=$user['gsid'];
 	
-	$query="select * from templatetypes where templatetypekey='$templatetypekey' and gsid=$gsid ";
-	$rs=sql_query($query,$db);
+	checkgskey('addtemplatetype');
+	
+	$query="select * from ".TABLENAME_TEMPLATETYPES." where templatetypekey=? and ".COLNAME_GSID."=? ";
+	$rs=sql_prep($query,$db,array($templatetypekey,$gsid));
 	if ($myrow=sql_fetch_assoc($rs)) apperror('Duplicate key. Pick a different key.');
 	
-	$query="insert into templatetypes (gsid,templatetypename,templatetypekey) values ($gsid,'$templatetypename','$templatetypekey') ";
-	$rs=sql_query($query,$db);
-	$templatetypeid=sql_insert_id($db,$rs)+0;
-
+	$query="insert into ".TABLENAME_TEMPLATETYPES." (".COLNAME_GSID.",templatetypename,templatetypekey) values (?,?,?) ";
+	$rs=sql_prep($query,$db,array($gsid,$templatetypename,$templatetypekey));
+	$templatetypeid=sql_insert_id($db,$rs);
+	
 	if (!$templatetypeid) {
-		header('apperror:'._tr('error_creating_record'));die();
+		apperror(_tr('error_creating_record'));
 	}
 	
-	logaction("added Template Class #$templatetypeid <u>$templatetypename</u>",array('templatetypeid'=>$templatetypeid,'templatetypename'=>"$templatetypename"));
+	logaction("added Template Class #$templatetypeid $templatetypename",array('templatetypeid'=>$templatetypeid,'templatetypename'=>"$templatetypename"));
 	
 	header('newrecid:'.$templatetypeid);
 	header('newkey:templatetype_'.$templatetypeid);

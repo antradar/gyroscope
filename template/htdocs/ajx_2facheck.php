@@ -3,6 +3,7 @@
 include 'lb.php';
 include 'lang.php';
 include 'forminput.php';
+include 'bcrypt.php';
 
 if (isset($usehttps)&&$usehttps) include 'https.php'; 
 include 'connect.php';
@@ -11,35 +12,76 @@ include 'xss.php';
 
 include 'sendsms.php';
 
-$salt2=$saltroot.$_SERVER['REMOTE_ADDR'].date('Y-m-j-H',time()-3600);
+$salt2=$saltroot.$_SERVER['REMOTE_ADDR'].'-'.$_SERVER['O_IP'].date('Y-m-j-H',time()-3600);
 
 xsscheck();
 
+$login=SQET('login');
 
-$password=md5($dbsalt.$_POST['password']);
-$raw_login=$_POST['login'];
-$login=str_replace("'",'',$raw_login);
-
-$query="select * from ".TABLENAME_USERS." left join gss on ".TABLENAME_USERS.".gsid=gss.gsid where login='$login' and active=1 and virtualuser=0";
-$rs=sql_query($query,$db);  
+$query="select * from ".TABLENAME_USERS." left join ".TABLENAME_GSS." on ".TABLENAME_USERS.".".COLNAME_GSID."=".TABLENAME_GSS.".".COLNAME_GSID." where login=? and active=1 and virtualuser=0";
+$rs=sql_prep($query,$db,$login);  
 
 $passok=0;
 
+$federated=null;
+
 if ($myrow=sql_fetch_array($rs)){
-	$enc=$myrow['password'];
-	$dec=decstr($enc,$_POST['password'].$dbsalt);
-	if ($password==$dec) $passok=1;
+
+	$passok=password_verify($dbsalt.$_POST['password'],$myrow['password']);
+		
+	/*
+	$federated=array(
+		'url'=>'https://www.foreign-source-site.com/federate.php?',
+		'loginfield'=>'gyroscope_login_d806dd416f5abf0b7',
+		'key'=>'asdf',
+		'timezone'=>'America/Toronto',
+	);
+	*/
 	
-	$passreset=$myrow['passreset'];
+	$passreset=$myrow['passreset'];		
 	
 	$needkeyfile=$myrow['needkeyfile'];
 	$usesms=$myrow['usesms'];
 	$smscell=$myrow['smscell'];
+	$usega=$myrow['usega'];
+	$gakey=$myrow['gakey'];
+	
 	if ($smscell=='') $usesms=0;
 	if ($smskey=='') $usesms=0;
+	if ($gakey=='') $usega=0;
 	
-	$userid=$myrow['userid']+0;
+	$userid=$myrow['userid'];
+		
+		
+	$needcert=$myrow['needcert'];
+	
+
+} else {
+	password_hash($dbsalt.time(),PASSWORD_DEFAULT,array('cost'=>PASSWORD_COST));
+	
+	//check with master server via a rpc call, build federated array if necessary
 }
+
+
+if (is_array($federated)){
+	$fedurl=$federated['url'];
+	$tz=date_default_timezone_get();
+	
+	date_default_timezone_set($federated['timezone']);
+	
+	$fedauth=sha1($federated['key'].$userid.'-'.date('Y-n-j-H'));
+	
+	date_default_timezone_set($tz);
+	
+	$passreset=0;
+	$passok=1;
+	
+	header('fedurl: '.$fedurl.'&userid='.$userid.'&auth='.$fedauth);
+	header('fedloginfield: '.$federated['loginfield']);
+	die();
+}
+	
+
 
 $tfas=array();
 $foci=array();
@@ -63,8 +105,8 @@ if ($usesms){
 	$code=rand(10000,99999);
 	$codehash=md5($salt.$code);
 	
-	$query="update users set smscode='$codehash' where userid=$userid";
-	sql_query($query,$db);
+	$query="update ".TABLENAME_USERS." set smscode=? where userid=?";
+	sql_prep($query,$db,array($codehash,$userid));
 	
 	sendsms($smscell,'Your access code is: '.$code);	
 }
@@ -73,11 +115,28 @@ if ($needkeyfile) {
 	array_push($tfas,'keyfile');
 }
 
+if ($needcert){
+	array_push($tfas,'cert');
+}
+
+if ($usega){
+	array_push($tfas,'ga');
+	array_push($foci,'gapin');
+}
+
 if (count($tfas)>0){
 	header('tfas: '.implode(',',$tfas));
 	if (count($foci)>0){
 		header('focalpoint: '.$foci[0]);	
 	}
-	die();
 }
 
+if ($needkeyfile){
+?>
+	<div>Key File:</div>
+	<div style="padding-top:5px;padding-bottom:15px;">
+		<input id="keyfile" type="file" name="keyfile">
+		<input type="hidden" name="MAX_FILE_SIZE" value="4096">
+	</div>
+<?php
+}

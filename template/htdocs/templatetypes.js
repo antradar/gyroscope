@@ -2,6 +2,14 @@ showtemplatetype=function(templatetypeid,name){
 	addtab('templatetype_'+templatetypeid,name,'showtemplatetype&templatetypeid='+templatetypeid);	
 }
 
+_inline_lookuptemplatetypelookup=function(d,templateid){
+	if (d.timer) clearTimeout(d.timer);
+	d.timer=setTimeout(function(){
+		ajxpgn('templatetypelookuplist',document.appsettings.codepage+'?cmd=lookuptemplatevar&mode=embed&varkey='+encodeHTML(d.value)+'&templateid='+templateid);
+	},300
+	);	
+}
+
 _inline_lookuptemplatetype=function(d){
 	var soundex='';
 	if (d.soundex) soundex='&soundex=1';
@@ -14,7 +22,7 @@ _inline_lookuptemplatetype=function(d){
 }
 
 
-addtemplatetype=function(){
+addtemplatetype=function(gskey){
 
 	var suffix='new';
 	var otemplatetypename=gid('templatetypename_'+suffix);
@@ -43,14 +51,14 @@ addtemplatetype=function(){
 	params.push('templatetypekey='+templatetypekey);
 
 	
-	reloadtab('templatetype_new',otemplatetypename.value,'addtemplatetype',function(req){
+	reloadtab('templatetype_new','','addtemplatetype',function(req){
 		var templatetypeid=req.getResponseHeader('newrecid');		
 		reloadview('core.templatetypes','templatetypelist');
-	},params.join('&'));
+	},params.join('&'),null,gskey);
 	
 }
 
-updatetemplatetype=function(templatetypeid){
+updatetemplatetype=function(templatetypeid,gskey){
 	var suffix=templatetypeid;
 	var otemplatetypename=gid('templatetypename_'+suffix);
 	var otemplatetypekey=gid('templatetypekey_'+suffix);
@@ -92,24 +100,24 @@ updatetemplatetype=function(templatetypeid){
 	params.push('templatetypeclasses='+classes);
 
 	
-	reloadtab('templatetype_'+templatetypeid,otemplatetypename.value,'updatetemplatetype&templatetypeid='+templatetypeid,function(){
+	reloadtab('templatetype_'+templatetypeid,'','updatetemplatetype&templatetypeid='+templatetypeid,function(){
 		reloadview('core.templatetypes','templatetypelist');
 		flashstatus(document.dict['statusflash_updated']+otemplatetypename.value,5000);
-	},params.join('&'));
+	},params.join('&'),null,gskey);
 	
 }
 
 
-deltemplatetype=function(templatetypeid){
+deltemplatetype=function(templatetypeid,gskey){
 	if (!sconfirm(document.dict['confirm_templatetype_delete'])) return;
 	
 	reloadtab('templatetype_'+templatetypeid,null,'deltemplatetype&templatetypeid='+templatetypeid,function(){
 		closetabtree('templatetype_'+templatetypeid);
 		reloadview('core.templatetypes','templatetypelist');
-	});
+	},null,null,gskey);
 }
 
-addtemplatevar=function(templatetypeid){
+addtemplatevar=function(templatetypeid,gskey){
 	var ovarname=gid('templatevarname_'+templatetypeid);
 	var ovardesc=gid('templatevardesc_'+templatetypeid);
 	
@@ -119,19 +127,25 @@ addtemplatevar=function(templatetypeid){
 	var varname=encodeHTML(ovarname.value);
 	var vardesc=encodeHTML(ovardesc.value);
 	
-	ajxpgn('templatetypetemplatevars_'+templatetypeid,document.appsettings.codepage+'?cmd=addtemplatevar&templatetypeid='+templatetypeid+'&varname='+varname+'&vardesc='+vardesc,0,0,null,null,1);
+	ajxpgn('templatetypetemplatevars_'+templatetypeid,document.appsettings.codepage+'?cmd=addtemplatevar&templatetypeid='+templatetypeid+'&varname='+varname+'&vardesc='+vardesc,0,0,null,function(){
+		marktabsaved('templatetype_'+templatetypeid);		
+	},null,1,gskey);
 		
 }
 
-deltemplatevar=function(templatevarid,templatetypeid){
+deltemplatevar=function(templatevarid,templatetypeid,gskey){
 	if (!sconfirm('Are you sure you want to remove this variable?')) return;
 		
-	ajxpgn('templatetypetemplatevars_'+templatetypeid,document.appsettings.codepage+'?cmd=deltemplatevar&templatetypeid='+templatetypeid+'&templatevarid='+templatevarid);
+	ajxpgn('templatetypetemplatevars_'+templatetypeid,document.appsettings.codepage+'?cmd=deltemplatevar&templatetypeid='+templatetypeid+'&templatevarid='+templatevarid,0,0,null,function(){
+		marktabsaved('templatetype_'+templatetypeid);
+	},null,null,gskey);
 		
 }
 
-batchsavetemplatevars=function(templatetypeid){
+batchsavetemplatevars=function(templatetypeid,gskey){
 	var quickvars=encodeHTML(gid('quickvars_'+templatetypeid).value);
-	ajxpgn('templatetypetemplatevars_'+templatetypeid,document.appsettings.codepage+'?cmd=batchsavetemplatevars&templatetypeid='+templatetypeid,0,0,'quickvars='+quickvars);	
+	ajxpgn('templatetypetemplatevars_'+templatetypeid,document.appsettings.codepage+'?cmd=batchsavetemplatevars&templatetypeid='+templatetypeid,0,0,'quickvars='+quickvars,function(){
+		marktabsaved('templatetype_'+templatetypeid);		
+	},null,null,gskey);	
 }
 

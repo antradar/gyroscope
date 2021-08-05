@@ -1,0 +1,5 @@
+
+		var rq#primarykey#=rq.getResponseHeader('#primarykey#');
+		if (rq#primarykey#){
+			ajxpgn('#primaryfield#accounts_'+rq#primarykey#,document.appsettings.codepage+'?cmd=list#primaryfield#accounts&#primarykey#='+rq#primarykey#);
+		}

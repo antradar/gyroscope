@@ -1,0 +1,7 @@
+//#primaryfield# users
+
+	case 'add#primaryfield#user': include 'icl/add#primaryfield#user.inc.php'; add#primaryfield#user(); break;
+	case 'reset#primaryfield#user': include 'icl/reset#primaryfield#user.inc.php'; reset#primaryfield#user(); break;
+	case 'disable#primaryfield#user': include 'icl/disable#primaryfield#user.inc.php'; disable#primaryfield#user(); break;
+	case 'enable#primaryfield#user': include 'icl/enable#primaryfield#user.inc.php'; enable#primaryfield#user(); break;
+	case 'del#primaryfield#user': include 'icl/del#primaryfield#user.inc.php'; del#primaryfield#user(); break;

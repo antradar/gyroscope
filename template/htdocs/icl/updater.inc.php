@@ -13,7 +13,8 @@ function updategyroscope(){
 	$version=$vs[0]*1000+$vs[1]*100+$vs[2];	
 ?>
 <div class="section">
-<?		
+<?php		
+
 	if (MOD_SERVER!=''){
 		$req=array(
 			'version'=>$version,
@@ -29,8 +30,8 @@ function updategyroscope(){
 			
 		$curl=curl_init($url);
 		curl_setopt($curl,CURLOPT_RETURNTRANSFER,1);
-		curl_setopt($curl,CURLOPT_SSL_VERIFYPEER,0);
-		curl_setopt($curl,CURLOPT_SSL_VERIFYHOST,0);
+		curl_setopt($curl,CURLOPT_SSL_VERIFYPEER,1);
+		curl_setopt($curl,CURLOPT_SSL_VERIFYHOST,2);
 		curl_setopt($curl,CURLOPT_POST,1);
 		curl_setopt($curl,CURLOPT_POSTFIELDS,json_encode($req));
 		
@@ -39,13 +40,13 @@ function updategyroscope(){
 		
 ?>
 	<div class="sectionheader">Modules</div>
-	<?echo $res;?>
-<?		
+	<?php echo $res;?>
+<?php		
 	}
 		
 
 	
-	$devmode=($_SERVER['REMOTE_ADDR']=='127.0.0.1'||$_SERVER['REMOTE_ADDR']=='::1')?1:0;
+	$devmode=($_SERVER['REMOTE_ADDR']==='127.0.0.1'&&($_SERVER['O_IP']==='127.0.0.1'||$_SERVER['O_IP']==='::1'))?1:0;
 	
 	$gateway='https://www.antradar.com/gyroscope_updater.php';
 	$url=$gateway.'?lang='.$lang.'&version='.$version.'&devmode='.$devmode.'&project='.urlencode(GYROSCOPE_PROJECT).'&vendor='.urlencode(VENDOR_NAME).'&vendorversion='.VENDOR_VERSION;
@@ -53,21 +54,24 @@ function updategyroscope(){
 		
 	$curl=curl_init($url);
 	curl_setopt($curl,CURLOPT_RETURNTRANSFER,1);
-	curl_setopt($curl,CURLOPT_SSL_VERIFYPEER,0);
-	curl_setopt($curl,CURLOPT_SSL_VERIFYHOST,0);
+	curl_setopt($curl,CURLOPT_SSL_VERIFYPEER,1);
+	curl_setopt($curl,CURLOPT_SSL_VERIFYHOST,2);
 	$res=curl_exec($curl);
 	curl_close($curl);
 
 ?>
-	<div class="sectionheader">Gyroscope Core <?echo $GYROSCOPE_VERSION;?></div>
-	<?echo $res;?>
-	<?
+	<div class="sectionheader">Gyroscope Core <?php echo GYROSCOPE_VERSION;?></div>
+	<?php echo $res;?>
+	<?php
 	if (trim($res)==''){
 ?>
-<div class="warnbox">Cannot connect to version check server. This often means you are using an outdated SSL library that does not support TLS v1.2.</div>
-<?		
+<div class="warnbox">Cannot connect to version check server. This often means that either you SSL library does not support TLS v1.2 or there is a client certificate error.</div>
+<?php		
 	}
 	?>
 </div>
-<?	
+<?php	
+
+	makehelp('helpfsview','fsview',1);
+
 }

@@ -1,4 +1,4 @@
-<?
+<?php
 /*
 Antradar Gyroscope(tm)
 No-DB Login Screen
@@ -64,9 +64,9 @@ body{padding:0;margin:0;background-color:#E7E7E2;font-size:13px;font-family:aria
 <div id="loginbox">
 	<form method="POST" style="padding:20px;margin:0;padding-top:10px;">
 	<!-- add your logo here <img src="imgs/logo.gif" -->
-	<?if ($error_message!=''){?>
-	<div style="color:#ab0200;font-weight:bold;padding-top:10px;"><?echo $error_message;?></div>
-	<?}?>
+	<?php if ($error_message!=''){?>
+	<div style="color:#ab0200;font-weight:bold;padding-top:10px;"><?php echo $error_message;?></div>
+	<?php }?>
 	
 	<div style="padding-top:10px;">Username:</div>
 	<div style="padding-top:5px;padding-bottom:10px;">

@@ -10,8 +10,8 @@ function embed#record#videouploader($#primarykey#=null){
 	
 	global $sproutwebhookkey;	
 
-	$query="select * from #table# where #primarykey#=$#primarykey#";
-	$rs=sql_query($query,$db);
+	$query="select * from #table# where #primarykey#=?";
+	$rs=sql_prep($query,$db,$#primarykey#);
 	$myrow=sql_fetch_assoc($rs);
 	
 	$#dispfield#=$myrow['#dispfield#'];
@@ -68,13 +68,13 @@ function embed#record#videouploader($#primarykey#=null){
 ?>
 <html>
 <body style="padding:0;margin:0;">
-<form id="uploader" method="POST" action="<?echo $sproutvideo_endpoint;?>videos" enctype="multipart/form-data">
+<form id="uploader" method="POST" action="<?php echo $sproutvideo_endpoint;?>videos" enctype="multipart/form-data">
 	<input id="file" name="source_video" type="file">
-	<input type="hidden" id="title" name="title" value="<?echo $title;?>">
+	<input type="hidden" id="title" name="title" value="<?php echo $title;?>">
 	<input type="hidden" name="requires_signed_embeds" value="true">
 	<input type="hidden" name="hide_on_site" value="true">
 	<input type="hidden" name="privacy" value="2">
-	<input type="hidden" id="token" name="token" value="<?echo $token;?>">
+	<input type="hidden" id="token" name="token" value="<?php echo $token;?>">
 	<button onclick="upload(this);return false;" id="uploadbutton">Upload</button>
 </form>
 <div id="cancel" style="display:none;font-size:12px;padding:5px 0;"><a href=# onclick="cancelupload();return false;"><u>cancel</u></a></div>
@@ -113,10 +113,11 @@ function upload(d){
 	fd.append('requires_signed_embeds','true');
 	fd.append('hide_on_site','true');
 	fd.append('privacy','2');
-	fd.append('token','<?echo $dirtoken;?>');
+	fd.append('token','<?php echo $dirtoken;?>');
 	
-	rq.open('POST','<?echo $sproutvideo_endpoint;?>videos',true);
+	rq.open('POST','<?php echo $sproutvideo_endpoint;?>videos',true);
 	
+	gid('debug').innerHTML='upload started...';
 	rq.upload.onprogress=function(e){
 		gid('cancel').style.display='block';
 		if (e.lengthComputable) {
@@ -139,13 +140,13 @@ function upload(d){
 			var videotoken=obj.security_token;
 			//console.log(obj);
 		}
-		parent.doneuploading#record#(<?echo $#primarykey#;?>,videokey,videotoken);
+		parent.doneuploading#record#(<?php echo $#primarykey#;?>,videokey,videotoken);
 	}
 
 	rq.onabort=function(e){
 		gid('cancel').style.display='none';
 		gid('debug').innerHTML='canceled';
-		parent.reload#record#videouploader(<?echo $#primarykey#;?>);
+		parent.reload#record#videouploader(<?php echo $#primarykey#;?>);
 	}
 	
 	d.rq=rq;
@@ -158,5 +159,6 @@ function upload(d){
 </script>
 </body>
 </html>
-<?		
+<?php
+		
 }

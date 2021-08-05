@@ -8,8 +8,9 @@ show#primaryfield##mediatype#=function(#primarykey#,msg){
 	ajxpgn('#primaryfield##mediatype#_'+#primarykey#,document.appsettings.codepage+'?cmd=show#primaryfield##mediatype#&#primarykey#='+#primarykey#);
 }
 
-remove#primaryfield##mediatype#pic=function(#primarykey#){
+remove#primaryfield##mediatype#pic=function(#primarykey#,gskey){
 	if (!sconfirm('Are you sure you want to remove this #mediatype# picture?')) return;
-	ajxpgn('#primaryfield##mediatype#_'+#primarykey#,document.appsettings.codepage+'?cmd=remove#primaryfield##mediatype#pic&#primarykey#='+#primarykey#);
+	ajxpgn('#primaryfield##mediatype#_'+#primarykey#,
+	document.appsettings.codepage+'?cmd=remove#primaryfield##mediatype#pic&#primarykey#='+#primarykey#,0,0,null,null,null,null,gskey);
 }
 

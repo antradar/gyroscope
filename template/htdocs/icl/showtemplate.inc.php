@@ -1,17 +1,17 @@
 <?php
 
 function showtemplate($templateid=null){
-	if (!isset($templateid)) $templateid=GETVAL('templateid');
+	if (!isset($templateid)) $templateid=SGET('templateid');
 	
 	global $db;
 
-	gsguard($templateid,array('templatetypes','templates'),array('templatetypeid-templatetypeid','templateid'));
+	gsguard($templateid,array(TABLENAME_TEMPLATETYPES,TABLENAME_TEMPLATES),array('templatetypeid-templatetypeid','templateid'));
 	
 	$user=userinfo();
-	$gsid=$user['gsid']+0;
+	$gsid=$user['gsid'];
 		
-	$query="select * from templates,templatetypes where templates.templatetypeid=templatetypes.templatetypeid and templateid=$templateid and gsid=$gsid ";
-	$rs=sql_query($query,$db);
+	$query="select * from ".TABLENAME_TEMPLATES.",".TABLENAME_TEMPLATETYPES." where ".TABLENAME_TEMPLATES.".templatetypeid=".TABLENAME_TEMPLATETYPES.".templatetypeid and templateid=? and ".COLNAME_GSID."=? ";
+	$rs=sql_prep($query,$db,array($templateid,$gsid));
 	
 	if (!$myrow=sql_fetch_array($rs)) die(_tr('record_removed'));
 	
@@ -22,52 +22,53 @@ function showtemplate($templateid=null){
 	
 	$templatetypeid=$myrow['templatetypeid'];
 	$recordtitle="$templatetypename"; //change this
-	$dbrecordtitle=htmlspecialchars(noapos($recordtitle));
+	$dbrecordtitle=htmlspecialchars(noapos(htmlspecialchars($recordtitle)));
 	
-	header('newtitle:'.tabtitle($templatename));
+	header('newtitle:'.tabtitle(htmlspecialchars($templatename)));
 	header('parenttab: templatetype_'.$templatetypeid);
 	
-	makechangebar('template_'.$templateid,"updatetemplate($templateid);");
+	makechangebar('template_'.$templateid,"updatetemplate('$templateid','$templatetypeid','".makegskey('updatetemplate_'.$templateid)."');");
 ?>
 <div class="section">
-	<div class="sectiontitle"><?echo $templatename;?></div>
+	<div class="sectiontitle"><?php echo htmlspecialchars($templatename);?></div>
 
-	<input type="hidden" id="templateplugins_<?echo $templateid;?>" value="<?echo $plugins;?>">
+	<input type="hidden" id="templateplugins_<?php echo $templateid;?>" value="<?php echo $plugins;?>">
 
 	<div class="inputrow">
-		<div class="formlabel"><?tr('list_templatetype_stab');?>:
+		<div class="formlabel"><?php tr('list_templatetype_stab');?>:
 		
-			<a onclick="ajxjs(self.showtemplatetype,'templatetypes.js');showtemplatetype(<?echo $templatetypeid?>,'<?echo $dbrecordtitle;?>');">
-			<u><?echo $recordtitle;?></u>
+			<a onclick="ajxjs(<?php jsflag('showtemplatetype');?>,'templatetypes.js');showtemplatetype('<?php echo $templatetypeid?>','<?php echo $dbrecordtitle;?>');">
+			<u><?php echo htmlspecialchars($recordtitle);?></u>
 			</a>
 		</div>
 	</div>
 	
 	<div style="padding-bottom:10px;line-height:2em;">
-	Use this template's ID to test, instead of the class key '<u><?echo $recordtitle;?></u>'<br>
-	<div style="border:solid 1px #efefef;padding:3px 10px;">$template = maketemplate(<?echo $templateid;?>, ...</div>
+	Use this template's ID to test, instead of the class key '<u><?php echo htmlspecialchars($recordtitle);?></u>'<br>
+	<div style="border:solid 1px #efefef;padding:3px 10px;">$template = maketemplate('<?php echo $templateid;?>', ...</div>
 	</div>
 		
 	<div class="inputrow">
-		<div class="formlabel"><?tr('template_label_templatename');?>:</div>
-		<input class="inpmed" id="templatename_<?echo $templateid;?>" value="<?echo htmlspecialchars($templatename);?>" onchange="marktabchanged('template_<?echo $templateid;?>');">
+		<div class="formlabel"><?php tr('template_label_templatename');?>:</div>
+		<input onfocus="document.hotspot=this;" class="inpmed" id="templatename_<?php echo $templateid;?>" value="<?php echo htmlspecialchars($templatename);?>" oninput="this.onchange();" onchange="marktabchanged('template_<?php echo $templateid;?>');">
 	</div>
-	<div class="inputrow">
-		<div class="formlabel"><?tr('template_label_templatetext');?>:</div>
-		<?makelookup('templatetext_'.$templateid);?>
-		<textarea class="templatetexteditor_<?echo $templateid;?>" id="templatetext_<?echo $templateid;?>" style="width:100%;height:220px;"><?echo htmlspecialchars($templatetext);?></textarea>
+	<div class="inputrow" style="position:relative;">
+		<div class="formlabel"><a class="hovlink" onclick="pullupeditor(this);"><?php tr('template_label_templatetext');?></a>:</div>
+		<?php makelookup('templatetext_'.$templateid);?>
+		<textarea class="templatetexteditor_<?php echo $templateid;?>" id="templatetext_<?php echo $templateid;?>" style="width:100%;height:220px;"><?php echo htmlspecialchars($templatetext);?></textarea>
+		<?php makehelp('editortip'.$templateid,'richtexteditor',1);?>
 	</div>
 
 	
 	<div class="inputrow">
-		<button onclick="updatetemplate(<?echo $templateid;?>,<?echo $templatetypeid;?>);"><?tr('button_update');?></button>
+		<button onclick="updatetemplate('<?php echo $templateid;?>','<?php echo $templatetypeid;?>','<?php emitgskey('updatetemplate_'.$templateid);?>');"><?php tr('button_update');?></button>
 
 		&nbsp; &nbsp;
-		<button class="warn" onclick="deltemplate(<?echo $templateid;?>,<?echo $templatetypeid;?>);"><?tr('button_delete');?></button>
+		<button class="warn" onclick="deltemplate('<?php echo $templateid;?>','<?php echo $templatetypeid;?>','<?php emitgskey('deltemplate_'.$templateid);?>');"><?php tr('button_delete');?></button>
 
 
 	</div>
 
 </div>
-<?
+<?php
 }

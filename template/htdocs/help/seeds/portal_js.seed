@@ -1,0 +1,66 @@
+add#primaryfield#user=function(#primarykey#){
+	var ologin=gid('n#primaryfield#userlogin_'+#primarykey#);
+	var odispname=gid('n#primaryfield#userdispname_'+#primarykey#);
+	var opass=gid('n#primaryfield#userpass_'+#primarykey#);
+	var opass2=gid('n#primaryfield#userpass2_'+#primarykey#);
+	var passreset=gid('n#primaryfield#userpassreset_'+#primarykey#).checked?1:0;
+	
+	var valid=1;
+	var offender=null;
+	
+	if (!valstr(ologin)) {valid=0;offender=offender||ologin;}
+	if (!valstr(odispname)) {valid=0;offender=offender||odispname;}
+	if (!valstr(opass)) {valid=0;offender=offender||opass;}
+	if (!valstr(opass2)) {valid=0;offender=offender||opass2;}
+	
+	if (opass.value!=opass2.value) {valid=0; salert('Passwords mismatch');}
+	
+	if (!valid){
+		if (offender) offender.focus();
+		return;	
+	}
+	
+	var params=[];
+	
+	params.push('login='+encodeHTML(ologin.value));
+	params.push('dispname='+encodeHTML(odispname.value));
+	params.push('pass='+encodeHTML(opass.value));
+	params.push('passreset='+passreset);
+	
+	ajxpgn('#primaryfield#users_'+#primarykey#,document.appsettings.codepage+'?cmd=add#primaryfield#user&#primarykey#='+#primarykey#,0,0,params.join('&'),function(){
+		marktabsaved('#primaryfield#_'+#primarykey#);	
+	});
+
+}
+
+reset#primaryfield#user=function(userid,#primarykey#){
+	var pass=sprompt('Enter new password','');
+	if (pass==''||pass==null) return;
+	
+	pass=encodeHTML(pass);
+	
+	ajxpgn('#primaryfield#users_'+#primarykey#,document.appsettings.codepage+'?cmd=reset#primaryfield#user&userid='+userid+'&#primarykey#='+#primarykey#,0,0,'pass='+pass,function(){
+		marktabsaved('#primaryfield#_'+#primarykey#);	
+	});	
+}
+
+disable#primaryfield#user=function(userid,#primarykey#){
+	if (!sconfirm('Are you sure you want to suspend this user?')) return;
+	ajxpgn('#primaryfield#users_'+#primarykey#,document.appsettings.codepage+'?cmd=disable#primaryfield#user&userid='+userid+'&#primarykey#='+#primarykey#,0,0,null,function(){
+		marktabsaved('#primaryfield#_'+#primarykey#);	
+	});	
+}
+
+enable#primaryfield#user=function(userid,#primarykey#){
+	if (!sconfirm('Are you sure you want to re-activate this user?')) return;
+	ajxpgn('#primaryfield#users_'+#primarykey#,document.appsettings.codepage+'?cmd=enable#primaryfield#user&userid='+userid+'&#primarykey#='+#primarykey#,0,0,null,function(){
+		marktabsaved('#primaryfield#_'+#primarykey#);	
+	});	
+}
+
+del#primaryfield#user=function(userid,#primarykey#){
+	if (!sconfirm('Are you sure you want to remove this user?')) return;
+	ajxpgn('#primaryfield#users_'+#primarykey#,document.appsettings.codepage+'?cmd=del#primaryfield#user&userid='+userid+'&#primarykey#='+#primarykey#,0,0,null,function(){
+		marktabsaved('#primaryfield#_'+#primarykey#);	
+	});	
+}

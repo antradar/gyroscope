@@ -2,23 +2,25 @@
 include 'icl/reauth.inc.php';
 
 function deluser(){
-	$userid=GETVAL('userid');
+	$userid=SGET('userid');
 	global $db;
 	
 	$user=userinfo();
-	$gsid=$user['gsid']+0;
+	$gsid=$user['gsid'];
 	
 	if (!$user['groups']['accounts']) die('Access denied');
+	
+	checkgskey('deluser_'.$userid);
 		
-	$query="select * from ".TABLENAME_USERS." where userid=$userid and gsid=$gsid";
-	$rs=sql_query($query,$db);
+	$query="select * from ".TABLENAME_USERS." where userid=? and ".COLNAME_GSID."=?";
+	$rs=sql_prep($query,$db,array($userid,$gsid));
 	if (!$myrow=sql_fetch_array($rs)) die('Invalid user record');
 	
 	$login=$myrow['login'];
 	
-	$query="delete from ".TABLENAME_USERS." where userid=$userid and gsid=$gsid";
-	sql_query($query,$db);
+	$query="delete from ".TABLENAME_USERS." where userid=? and ".COLNAME_GSID."=?";
+	sql_prep($query,$db,array($userid,$gsid));
 	
-	logaction("deleted User #$userid <u>$login</u>",array('userid'=>$userid,'login'=>"$login"),array('rectype'=>'reauth','recid'=>$userid));
+	logaction("deleted User #$userid $login",array('userid'=>$userid,'login'=>"$login"),array('rectype'=>'reauth','recid'=>$userid));
 	reauth();
 }

@@ -3,7 +3,7 @@
 include_once 'pdf/tcpdf.php';
 
 function pdf#doctype#($#key#=null,$lockpdf=0){
-	if (!isset($#key#)) $#key#=GETVAL('#key#');
+	if (!isset($#key#)) $#key#=SGET('#key#');
 	global $db;
 	
 		

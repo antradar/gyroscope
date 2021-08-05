@@ -7,18 +7,20 @@ function new#record#($#masterkey#=null){
 	
 	header('parenttab: #master_record#_'.$#masterkey#);
 	
-	$query="select * from #master_tablename# where #masterkey#=$#masterkey#";
-	$rs=sql_query($query,$db);
+	//gsguard if applicable
+	
+	$query="select * from #master_tablename# where #masterkey#=?";
+	$rs=sql_prep($query,$db,$#masterkey#);
 	$myrow=sql_fetch_assoc($rs);
 	$#master_dispfield#=$myrow['#master_dispfield#'];
 		
 ?>
 <div class="section">
-	<div class="sectiontitle"><?tr('list_#record#_add_tab');?></div>
+	<div class="sectiontitle"><?php tr('list_#record#_add_tab');?></div>
 	
 	<div class="inputrow">
-		<div class="formlabel"><?tr('list_#master_record#_stab');?>:</div>
-		<input class="inp" readonly disabled value="<?echo $#master_dispfield#;?>">
+		<div class="formlabel"><?php tr('list_#master_record#_stab');?>:</div>
+		<input class="inp" readonly disabled value="<?php echo htmlspecialchars($#master_dispfield#);?>">
 	</div>
 		
 <div class="col">
@@ -27,9 +29,9 @@ function new#record#($#masterkey#=null){
 <div class="clear"></div>
 
 		<div class="inputrow">
-			<button onclick="add#record#(<?echo $#masterkey#?>);"><?tr('button_#record#_add')?></button>
+			<button onclick="add#record#(<?php echo $#masterkey#?>,'<?php emitgskey('add#record#_'.$#masterkey#);?>');"><?php tr('button_#record#_add')?></button>
 		</div>
 </div>
-<?
+<?php
 
 }

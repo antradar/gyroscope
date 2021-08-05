@@ -4,14 +4,14 @@ include 'icl/pdf#doctype#.inc.php';
 include 'icl/list#container#.inc.php';
 
 function lock#doctype#(){
-	$#key#=GETVAL('#key#');
+	$#key#=SGET('#key#');
 	
 	global $db;
 
 	pdf#doctype#($#key#,1);
 	
-	$query="update #records# set #doctype#lock=1 where #key#=$#key#";
-	sql_query($query,$db);
+	$query="update #records# set #doctype#lock=1 where #key#=?";
+	sql_prep($query,$db,$#key#);
 	
 	list#container#($#key#);	
 		

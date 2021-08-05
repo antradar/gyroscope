@@ -39,12 +39,14 @@ $codegen_seeds=array(
 	'fnav'=>array('name'=>'Faceted Navigation','icon'=>'','package'=>1,
 		'items'=>array(
 			'gnav'=>array('name'=>'Frontend - Standard','desc'=>'Classic front-end faceted navigation','icon'=>''),
-			'gnavi'=>array('name'=>'Frontend - Multi-core','desc'=>'High-performance front-end navigation; specific server hardware and setup required','icon'=>''),
+			//'gnavi'=>array('name'=>'Frontend - Multi-core','desc'=>'High-performance front-end navigation; specific server hardware and setup required','icon'=>''),
 			'navfilter'=>array('name'=>'Gyroscope - Standard','desc'=>'Faceted navigation for list view. Make a standard list view first','icon'=>''),
-			'navfilteri'=>array('name'=>'Gyroscope - Multi-core','desc'=>'Faceted navigation for list view using parallel queries','icon'=>'')
+			//'navfilteri'=>array('name'=>'Gyroscope - Multi-core','desc'=>'Faceted navigation for list view using parallel queries','icon'=>'')
 		)
 	),
 	'asyncd'=>array('name'=>'AsyncD','desc'=>'The Distributed Asynchronous Data Processor forks a long-running process in the background while updating the web frontend its completion process.','icon'=>''),
-	'digisign'=>array('name'=>'Digital Signing','desc'=>'','icon'=>'')
+	'digisign'=>array('name'=>'Digital Signing','desc'=>'','icon'=>''),
+	'portal'=>array('name'=>'Vendor Portal','desc'=>'Multi-tenant Entity-based Portal','icon'=>''),
+	'vendorauth'=>array('name'=>'Vendor Authentication','desc'=>'Entity-specific user groups','icon'=>'')
 
 );

@@ -1,0 +1,8 @@
+	if ($_GET['#fld0#_a']!='') {
+		$filters.=' and #fld0#>=? ';
+		array_push($params,date2stamp($_GET['#fld0#_a'],0,0,0));
+	}
+	if ($_GET['#fld0#_b']!='') {
+		$filters.=' and #fld0#<=? ';
+		array_push($params,date2stamp($_GET['#fld0#_b'],23,59,59));
+	}

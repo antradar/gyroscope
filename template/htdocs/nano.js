@@ -7,21 +7,22 @@ Documentation: www.antradar.com/docs-nano-ajax-manual
 
 Warning: this copy of Nano Ajax Library is modified for running in Gyroscope. Use the public version for general purpose applications.
 
-ver g4.1
+ver g4.7
 */
 
 function gid(d){return document.getElementById(d);}
 
 function hb(){var now=new Date(); var hb=now.getTime();return hb;}
 
-function ajxb(u,data,callback){
+function ajxb(u,data,callback,myhb){
 	var method='POST';
 	if (data==null) method='GET';
 	
 	if (document.wssid) u=u+'&wssid_='+document.wssid;
 	
 	var rq=xmlHTTPRequestObject();
-	rq.open(method, u+'&hb='+hb(),false);
+	if (myhb==null) myhb=hb();
+	rq.open(method, u+'&hb='+myhb,false);
 	rq.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
 	rq.send(data);
 	if (callback) callback(rq);
@@ -55,14 +56,25 @@ function cancelgswi(ct){
 	}	
 }
 
-function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce){
+function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce,gskey,creds,headless){
 	var ct=gid(c);
-	if (ct==null) return;
+	if (ct==null){
+		if (headless) ct=document.body;
+		else return;
+	}
+	
 	if (runonce&&ct.reqobj!=null) return;
 	
 	ct.reloadparams={u:u,d:d,e:e,data:data,callback:callback,slowtimer:slowtimer,runonce:runonce};
 	
 	if (document.wssid) u=u+'&wssid_='+document.wssid;
+	
+  if (gskey!=null) {
+	  //rq.setRequestHeader('X-GSREQ-KEY',gskey);
+	  if (data==null) data='X-GSREQ-KEY='+gskey;
+	  else data+='&X-GSREQ-KEY='+gskey;
+	  
+  }
 			
 	var f=function(c){return function(){
 		if (rq.readyState==4){
@@ -80,7 +92,7 @@ function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce){
 
 			if (ct.slowtimer) clearTimeout(ct.slowtimer);
 			
-			cancelgswi(ct);		
+			if (!headless) cancelgswi(ct);		
 			
 			if (rq.status==401||(xtatus|0)==401){
 				ajxjs(self.showgssubscription,'gssubscriptions.js');
@@ -91,7 +103,7 @@ function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce){
 
 			var apperror=rq.getResponseHeader('apperror');
 			if (apperror!=null&&apperror!=''){
-				if (ct.slowtimerorg){ct.innerHTML=ct.slowtimerorg;ct.slowtimerorg=null;}
+				if (ct.slowtimerorg&&!headless){ct.innerHTML=ct.slowtimerorg;ct.slowtimerorg=null;}
 				var errfunc=rq.getResponseHeader('errfunc');
 				if (callback&&typeof(callback)=='object'&&callback.length>0){
 					callback[1](errfunc,decodeURIComponent(apperror),rq);					
@@ -107,15 +119,18 @@ function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce){
 			
 			if (ct.abortflag) {ct.abortflag=null;return;}
 			
-			ct.innerHTML=rq.responseText;
+			if (!headless) ct.innerHTML=rq.responseText;
 			
 			if (d) ct.style.display='block';
 			
 			if (e){
+				//supposedly deprecated, nothing to eval here
+				
 				var i;
 				var scripts=gid(c).getElementsByTagName('script');
 				for (i=0;i<scripts.length;i++) eval(scripts[i].innerHTML);
-				scripts=null;
+				scripts=null;				
+				
 			}			
 			
 			if (callback){
@@ -125,6 +140,7 @@ function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce){
 	}}	
 	
 	var rq=xmlHTTPRequestObject();
+	if (creds) rq.withCredentials=true;
 	
 	if (ct.reqobj!=null)  {ct.abortflag=1;ct.reqobj.abort();cancelgswi(ct);}
 	ct.reqobj=rq;
@@ -147,14 +163,17 @@ function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce){
 }
 
 
-function ajxjs(f,js){if (f==null) eval(ajxb(js+'?'));}
 
-function ajxcss(f,css,cachekey){
+function ajxcss(f,css,cachekey,killflag){
 	if (f==null) {
 	  	var csl=document.createElement('link');
 		csl.setAttribute('rel','stylesheet');
 		csl.setAttribute('type','text/css');
 		csl.setAttribute('href',css);
+		if (cachekey) csl.setAttribute('id','ajxcss_'+cachekey);
+		if (killflag&&gid('ajxcss_'+killflag)){
+			gid('ajxcss_'+killflag).parentNode.removeChild(gid('ajxcss_'+killflag));	
+		}
 		document.getElementsByTagName("head").item(0).appendChild(csl);
 	}
 }
@@ -177,14 +196,32 @@ function xajx(url){
 	},3000);  
 }
 
-function xajxjs(flag,src,callback,defer){
-	if (self[flag]==null&&!defer){
+function ajxjs(f,js){if (f==null) eval(ajxb(js+'?'));} //unsafe
+
+function sajxjs(flag,js){
+	if (self[flag]!=null) return;
+	var myhb=hb();
+	ajxb(js+'?',null,null,myhb);
+	xajxjs(flag,js+'?&hb='+myhb,function(){});
+}
+
+function xajxjs(strflags,src,callback,defer){
+	var flags=strflags.split('.');
+	var cur=self[flags[0]];
+	var defed=1;
+	if (!cur) defed=0;
+	for (var i=1;i<flags.length;i++){
+		if (cur) cur=cur[flags[i]];
+		if (cur==null){defed=0;break;}
+	}
+	
+	if (!defed&&!defer){
 		var script=document.createElement('script');
 		script.src=src;
 		document.body.appendChild(script);
 	}
 	
-	if (!self[flag]) {setTimeout(function(){xajxjs(flag,src,callback,1);},5);return;}
+	if (!defed) {setTimeout(function(){xajxjs(strflags,src,callback,1);},5);return;}
 	callback();
 }
 
@@ -203,8 +240,64 @@ function xmlHTTPRequestObject() {
 	return obj;
 }
 
+function tagobjs(parentid,tags){
+	var os=[];
+	for (var i=0;i<tags.length;i++){
+		var tag=tags[i];
+		var oos=gid(parentid).getElementsByTagName(tag);
+		for (ii=0;ii<oos.length;ii++) os.push(oos[ii]);
+	}
+	return os;
+	
+}
+
+/*
+Example:
+
+mapobjevents(
+	tagobjs('contactlist',['a','span']),
+	{
+		'anchor~onclick~showrec':['aid','atitle'],
+		'deleter~onclick~delrec':['aid']
+	}
+);
+			
+*/
+mapobjevents=function(os,ems,sel){
+	if (sel==null) sel='atype';
+	for (var i=0;i<os.length;i++){
+		var o=os[i];
+		if (!o.attributes||!o.attributes[sel]) continue;
+		for (var k in ems){
+			var parts=k.split('~');
+			var typ=parts[0];
+			if (typ!=o.attributes[sel].value) continue;
+			var ev=parts[1];
+			var func=parts[2];
+			var attrs=ems[k];
+			var params=[];
+			for (var ii=0;ii<attrs.length;ii++) if (o.attributes[attrs[ii]]) params.push(o.attributes[attrs[ii]].value);
+			
+			self[func+'_']=function(fc,pms){
+				return function(){
+					if (self[fc]==null) console.log('Missing funciton: '+fc);
+					else {
+						if (document.debugevents) console.log(fc,pms); //debug
+						self[fc].apply(null,pms);
+					}
+				}
+			}
+			params.push(o);
+			o[ev]=self[func+'_'](func,params);
+		}
+		
+	}	
+}
+
+document.debugevents=0;
+
 function updategyroscope(){
-	if (self.loadfs) loadfs('Gyroscope Updates','updategyroscope');
+	if (self.loadfs) loadfs('Gyroscope Updates','updategyroscope',function(){document.fleetview=null;},function(){document.fleetview=true;});
 	else ajxpgn('gyroscope_updater',document.appsettings.codepage+'?cmd=updategyroscope',true,true);	
 }
 
@@ -214,21 +307,39 @@ function hdpromote(css){
 	}	
 }
 
+function hddemote(css){
+	if (typeof(document.documentElement.style.borderRadius)!='string') ajxcss(self.bgdowngrade,css);
+}
+
 function encodeHTML(code){
-	if (!self.encodeURIComponent) {salert('Unsupported browser'); return;}
+	ajxjs(self.encodeURIComponent,'uriencode.js');
 	return encodeURIComponent(code);
 }
 
-function showhide(id){
+function decodeHTML(code){
+	ajxjs(self.decodeURIComponent,'uriencode.js');
+	return decodeURIComponent(code);
+}
+
+function showhide(id,preopen,trigger){
 	var d=gid(id);
 	if (!d) return;
+	if (preopen&&d.preopen==null) {d.showing=true;d.preopen=true}
+	var baseclass='';
+	if (trigger&&trigger.className){
+		baseclass=trigger.className.replace(/\s+open$/g,'').replace(/\s+close$/g,'');
+	}
 	if (!d.showing) {
 		d.style.display='block';
-		d.showing=true;	
+		d.showing=true;
+		if (trigger) trigger.className=baseclass+' open';
 	} else {
 		d.style.display='none';
-		d.showing=null;	
+		d.showing=null;
+		if (trigger) trigger.className=baseclass+' close';
 	}
 }
+
+
 
 

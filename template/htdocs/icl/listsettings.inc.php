@@ -3,54 +3,74 @@
 function listsettings(){
 	global $db;
 	$user=userinfo();
-	$gsexpiry=$user['gsexpiry']+0;
+	$gsexpiry=intval($user['gsexpiry']);
 
+	header('listviewtitle:'.tabtitle(_tr('icon_settings')));
 ?>
 <div class="section">
-	<?	
+	<div class="listitem <?php if (isset($user['groups']['accounts'])) echo ' mobileonly';?>"><a onclick="ajxjs(<?php jsflag('setaccountpass');?>,'accounts.js');reloadtab('account','<?php tr('account_settings');?>','showaccount');addtab('account','<?php tr('account_settings');?>','showaccount');return false;"><?php tr('account_settings');?></a></div>
+	
+	<?php	
 	if (isset($user['groups']['accounts'])){
 	?>
-	<div class="listitem"><a onclick="ajxjs(self.showuser,'users_js.php');showview('core.users',1);"><?tr('icon_accounts');?></a></div>	
-	<?
-	} else {
-	?>
-	<div class="listitem"><a onclick="ajxjs(self.setaccountpass,'accounts.js');reloadtab('account','<?tr('account_settings');?>','showaccount');addtab('account','<?tr('account_settings');?>','showaccount');return false;"><?tr('account_settings');?></a></div>
-	<?
+	<div class="listitem"><a onclick="ajxjs(<?php jsflag('showuser');?>,'users.js');showview('core.users',1);"><?php tr('icon_accounts');?></a></div>	
+	<?php
 	}
+	?>
+	
+	
+	<?php
 	
 	if (isset($user['groups']['creditcards'])){
 	?>
-	<div class="listitem"><a onclick="ajxjs(self.addcreditcard,'creditcards.js');addtab('creditcards','Credit Cards','showcreditcards');">Credit Cards</a></div>
+	<div class="listitem"><a onclick="ajxjs(<?php jsflag('addcreditcard');?>,'creditcards.js');addtab('creditcards','Credit Cards','showcreditcards');">Credit Cards</a></div>
 	
-	<?if ($gsexpiry!=0){?>	
-	<div class="listitem"><a onclick="ajxjs(self.showgssubscription,'gssubscriptions.js');showgssubscription();">Subscription</a></div>	
-	<?}?>
+	<?php if ($gsexpiry!=0){?>	
+	<div class="listitem"><a onclick="ajxjs(<?php jsflag('showgssubscription');?>,'gssubscriptions.js');showgssubscription();">Subscription</a></div>	
+	<?php }?>
 	
-	<?
+	<?php
 	}
 	
 
 	if (isset($user['groups']['reportsettings'])){
 	?>
-	<div class="listitem"><a onclick="ajxjs(self.showreport,'reportsettings.js');showview('core.reportsettings',1);"><?tr('icon_reportsettings');?></a></div>	
-	<?
+	<div class="listitem"><a onclick="ajxjs(<?php jsflag('showreport');?>,'reportsettings.js');showview('core.reportsettings',1);"><?php tr('icon_reportsettings');?></a></div>	
+	<?php
 	}
 	
 	if (isset($user['groups']['systemplate'])||isset($user['groups']['systemplateuse'])){
 	?>
-	<div class="listitem"><a onclick="showview('core.templatetypes',1);"><?tr('icon_systemplates');?></a></div>	
-	<?
+	<div class="listitem"><a onclick="showview('core.templatetypes',1);"><?php tr('icon_systemplates');?></a></div>	
+	<?php
 	}
+
+	/*
+	if ($user['groups']['msdrive']){
+	?>
+	<div class="listitem"><a onclick="ajxjs(self.showmsfiles,'msgraph.js');showmsfiles();">MS Drive Explorer</a></div>		
+	<?php
+	}
+	*/
 			
 	if (isset($user['groups']['dbadmin'])){
 	?>
-	<div class="listitem"><a onclick="addtab('rptsqlcomp','SQL Compare','rptsqlcomp');"><?tr('icon_sqlcompare');?></a></div>	
-	<?
+	<div class="listitem" style="position:relative;">
+		<a onclick="addtab('rptsqlcomp','SQL Compare','rptsqlcomp');"><?php tr('icon_sqlcompare');?></a>
+		<span style="position:absolute;top:3px;right:70px;">
+		<?php makehelp('settings_sqlcompare','this tool is used to compare the structures of databases on both local and remote servers');?>
+		</span>
+	</div>	
+	<?php
 	}
+	
+/*	
 	?>		
 </div>
 <script>
-gid('tooltitle').innerHTML='<a><?tr('icon_settings');?></a>';
+gid('tooltitle').innerHTML='<a><?php tr('icon_settings');?></a>';
 </script>
-<?
+<?php
+*/
+
 }

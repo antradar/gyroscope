@@ -1,0 +1,13 @@
+
+	
+	$#primarykey#=isset($_COOKIE['#primarykey#'])?$_COOKIE['#primarykey#']:null;
+
+	//...
+	
+	// $auth_=... 
+	.$salt.$#primarykey#
+
+	// $auth2_=... 
+	.$salt2.$#primarykey#
+
+	

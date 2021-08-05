@@ -19,7 +19,7 @@
 
 	{"field":"tablename","disp":"Sub DB Table Name","def":"clientorders"},
 	{"field":"primarykey","disp":"Sub Primary Key","def":"orderid"},
-	{"field":"searchquery","disp":"Search Filters","def":"orderid like '$key%'"},
+	{"field":"searchquery","disp":"Search Filters","def":"orderid like ? "},
 	{"field":"sortquery","disp":"Sort Filters","def":"orderdate desc"},
 	
 	{"field":"dispfield","disp":"Display Field Name","def":"orderdate"},

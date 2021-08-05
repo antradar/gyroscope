@@ -1,18 +1,18 @@
 <?php
 
 function listtemplatetypetemplatevars($templatetypeid=null){
-	if (!isset($templatetypeid)) $templatetypeid=GETVAL('templatetypeid');
+	if (!isset($templatetypeid)) $templatetypeid=SGET('templatetypeid');
 	global $db;
 
-	gsguard($templatetypeid,'templatetypes','templatetypeid');
+	gsguard($templatetypeid,TABLENAME_TEMPLATETYPES,'templatetypeid');
 			
-	$query="select * from templatetypes where templatetypeid=$templatetypeid";
-	$rs=sql_query($query,$db);
+	$query="select * from ".TABLENAME_TEMPLATETYPES." where templatetypeid=?";
+	$rs=sql_prep($query,$db,$templatetypeid);
 	$myrow=sql_fetch_assoc($rs);
 	$templatetypekey=$myrow['templatetypekey'];
 	
-	$query="select * from templatevars where templatetypeid=$templatetypeid order by templatevarid";
-	$rs=sql_query($query,$db);
+	$query="select * from ".TABLENAME_TEMPLATEVARS." where templatetypeid=? order by templatevarid";
+	$rs=sql_prep($query,$db,$templatetypeid);
 	$vars=array();
 	
 	while ($myrow=sql_fetch_assoc($rs)){
@@ -22,46 +22,46 @@ function listtemplatetypetemplatevars($templatetypeid=null){
 		array_push($vars,$myrow);
 	?>
 	<div style="margin-bottom:10px;">
-		<span class="labelbutton"><?echo $varname;?></span>
-		&nbsp; &nbsp; <a onclick="deltemplatevar(<?echo $templatevarid;?>,<?echo $templatetypeid;?>);"><img src="imgs/t.gif" class="img-del"></a> &nbsp; 
-		<span><?echo $vardesc;?></span>
+		<span class="labelbutton"><?php echo $varname;?></span>
+		&nbsp; &nbsp; <a onclick="deltemplatevar('<?php echo $templatevarid;?>','<?php echo $templatetypeid;?>','<?php emitgskey('deltemplatevar-'.$templatevarid);?>');"><img src="imgs/t.gif" class="img-del"></a> &nbsp; 
+		<span><?php echo $vardesc;?></span>
 		
 	</div>
-	<?	
+	<?php	
 	}//while
 	
 ?>
-	<div style="padding-top:10px;margin-bottom:10px;"><b>Add a new variable:</b> &nbsp; <a class="labelbutton" onclick="showhide('quickvars_<?echo $templatetypeid;?>_');">quick edit</a></div>
-	<div id="quickvars_<?echo $templatetypeid;?>_" style="display:none;margin-bottom:20px;">
-		<textarea class="inplong" id="quickvars_<?echo $templatetypeid;?>"><?foreach ($vars as $var){echo $var['templatevarname'].'|'.$var['templatevardesc']."\r\n";}?></textarea>
-		<button onclick="batchsavetemplatevars(<?echo $templatetypeid;?>);">Update</button>
+	<div style="padding-top:10px;margin-bottom:10px;"><b>Add a new variable:</b> &nbsp; <a class="labelbutton" onclick="showhide('quickvars_<?php echo $templatetypeid;?>_');">quick edit</a></div>
+	<div id="quickvars_<?php echo $templatetypeid;?>_" style="display:none;margin-bottom:20px;">
+		<textarea class="inplong" id="quickvars_<?php echo $templatetypeid;?>"><?php foreach ($vars as $var){echo $var['templatevarname'].'|'.$var['templatevardesc']."\r\n";}?></textarea>
+		<button onclick="batchsavetemplatevars('<?php echo $templatetypeid;?>','<?php emitgskey('batchsavetemplatevars_'.$templatetypeid);?>');">Update</button>
 	</div>
 	<div class="inputrow">
 		<div class="formlabel">Variable:</div>
-		<input class="inpshort" id="templatevarname_<?echo $templatetypeid;?>">
+		<input class="inpshort" id="templatevarname_<?php echo $templatetypeid;?>">
 	</div>
 	<div class="inputrow">
 		<div class="formlabel">Description:</div>
-		<input class="inplong" id="templatevardesc_<?echo $templatetypeid;?>">
+		<input class="inplong" id="templatevardesc_<?php echo $templatetypeid;?>">
 	</div>
 	<div class="inputrow">
-		<button onclick="addtemplatevar(<?echo $templatetypeid;?>);">Add</button>
+		<button onclick="addtemplatevar('<?php echo $templatetypeid;?>','<?php emitgskey('addtemplatevar_'.$templatetypeid);?>');">Add</button>
 	</div>
 	
 	<div style="padding:10px 0;">
-		<a onclick="showhide('templatevarscode_<?echo $templatetypeid;?>');" class="hovlink">show binding instructions</a>
+		<a onclick="showhide('templatevarscode_<?php echo $templatetypeid;?>');" class="hovlink">show binding instructions</a>
 	</div>
 	
-	<div id="templatevarscode_<?echo $templatetypeid;?>" style="display:none;">
+	<div id="templatevarscode_<?php echo $templatetypeid;?>" style="display:none;">
 		<textarea class="inplong">
 	//include 'maketemplate.inc.php';
-	$template=maketemplate('<?echo $templatetypekey;?>',array(
+	$template=maketemplate('<?php echo $templatetypekey;?>',array(
 
-<?
+<?php
 	foreach ($vars as $var){
 	?>
-	'<?echo $var['templatevarname'];?>'=>$<?echo $var['templatevarname'];?>, //<?echo $var['templatevardesc'];?> 
-<?	
+	'<?php echo $var['templatevarname'];?>'=>$<?php echo $var['templatevarname'];?>, //<?php echo $var['templatevardesc'];?> 
+<?php	
 	}
 ?>	
 	));
@@ -69,6 +69,6 @@ function listtemplatetypetemplatevars($templatetypeid=null){
 			
 </textarea>
 	</div>
-<?
+<?php
 		
 }

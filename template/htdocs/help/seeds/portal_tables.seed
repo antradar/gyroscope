@@ -1,0 +1,13 @@
+
+define ('TABLENAME_GSS','#primaryrecords#');
+define ('COLNAME_GSID','#primarykey#');
+define ('TABLENAME_USERS','#primaryfield#users');
+define ('TABLENAME_USERHELPSPOTS','#primaryfield#userhelpspots');
+define ('TABLENAME_ACTIONLOG','#primaryfield#actionlog');
+define ('TABLENAME_REPORTS','#primaryfield#reports');
+define ('TABLENAME_TEMPLATETYPES','#primaryfield#templatetypes');
+define ('TABLENAME_TEMPLATES','#primaryfield#templates');
+define ('TABLENAME_TEMPLATEVARS','#primaryfield#templatevars');
+define ('TABLENAME_HELPTOPICS','#primaryfield#helptopics');
+define ('TABLENAME_HOMEDASHREPORTS','#primaryfield#homedashreports');
+

@@ -1,0 +1,80 @@
+<?php
+
+function list#primaryfield#users($#primarykey#=null){
+	if (!isset($#primarykey#)) $#primarykey#=GETVAL('#primarykey#');
+	
+	global $db;
+		
+	$params=array();
+	$query="select * from #primaryfield#users where #primarykey#=?";
+	array_push($params,$#primarykey#);
+	
+	$rs=sql_prep($query,$db,$params);	
+	
+	while ($myrow=sql_fetch_assoc($rs)){
+		$userid=$myrow['userid'];
+		$login=$myrow['login'];
+		$dispname=$myrow['dispname'];
+		$active=$myrow['active'];
+	?>
+	<div class="listitem" <?php if (!$active) echo 'style="color:#666666;"';?>>
+		<?php echo htmlspecialchars($login);?>
+		&nbsp; &nbsp;
+		<span class="labelbutton" onclick="ajxjs(self.reset#primaryfield#user,'#primaryfield#users.js');reset#primaryfield#user(<?php echo $userid;?>,<?php echo $#primarykey#;?>);" style="cursor:pointer;">reset</span>
+		&nbsp; &nbsp;
+		<?php if ($active){
+		?>
+		<span class="labelbutton" onclick="ajxjs(self.disable#primaryfield#user,'#primaryfield#users.js');disable#primaryfield#user(<?php echo $userid;?>,<?php echo $#primarykey#;?>);" style="cursor:pointer;">disable</span>
+		<?php	
+		} else {
+		?>
+		<span class="labelbutton" onclick="ajxjs(self.enable#primaryfield#user,'#primaryfield#users.js');enable#primaryfield#user(<?php echo $userid;?>,<?php echo $#primarykey#;?>);" style="cursor:pointer;">enable</span>
+		<?php
+			
+		}?>
+		&nbsp; &nbsp;
+		<span class="labelbutton" onclick="ajxjs(self.del#primaryfield#user,'#primaryfield#users.js');del#primaryfield#user(<?php echo $userid;?>,<?php echo $#primarykey#;?>);" style="background:#ab0200;cursor:pointer;">delete</span>		
+		<br>
+		<?php echo htmlspecialchars($dispname);?>
+	</div>
+	<?php	
+	}//while
+
+?>		
+	<div class="listbar">
+		<a class="recadder" onclick="ajxjs(self.add#primaryfield#user,'#primaryfield#users.js');gid('#primaryfield#useradder_<?php echo $#primarykey#;?>').style.display='block';">
+			<img src="imgs/t.gif" class="img-addrec"> add a master user
+		</a>	
+	</div>
+	
+	<div id="#primaryfield#useradder_<?php echo $#primarykey#;?>" style="padding:5px;padding-left:25px;display:none;">
+		<div class="inputrow">
+			<div class="formlabel">Username: <em>(must be unique across all #primaryfield# users)</em></div>
+			<input class="inp" id="n#primaryfield#userlogin_<?php echo $#primarykey#;?>">
+		</div>
+		<div class="inputrow">
+			<div class="formlabel">Display Name:</div>
+			<input class="inp" id="n#primaryfield#userdispname_<?php echo $#primarykey#;?>">
+		</div>
+		<div class="inputrow">
+			<div class="formlabel">Initial Password:</div>
+			<input class="inp" type="password" id="n#primaryfield#userpass_<?php echo $#primarykey#;?>">
+		</div>
+		<div class="inputrow">
+			<div class="formlabel">Confirm Password:</div>
+			<input class="inp" type="password" id="n#primaryfield#userpass2_<?php echo $#primarykey#;?>">
+		</div>
+		<div class="inputrow">
+			<input type="checkbox" id="n#primaryfield#userpassreset_<?php echo $#primarykey#;?>">
+			<label for="n#primaryfield#userpassreset_<?php echo $#primarykey#;?>">force password reset upon login</label>
+		</div>
+		<div class="inputrow">
+			<button onclick="ajxjs(self.add#primaryfield#user,'#primaryfield#users.js');add#primaryfield#user(<?php echo $#primarykey#;?>);">Create Account</button>
+			&nbsp; &nbsp;
+			<button class="trivial" onclick="gid('#primaryfield#useradder_<?php echo $#primarykey#;?>').style.display='none';">Cancel</button>
+		</div>
+	</div>
+	
+<?php
+	
+}

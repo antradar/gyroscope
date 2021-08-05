@@ -4,7 +4,7 @@ include 'libresize.php';
 
 function embed#primaryfield##record#uploader(){
 	
-	$#primarykey#=GETVAL('#primarykey#');
+	$#primarykey#=SGET('#primarykey#');
 
 	$dmaxsize=20; //20 MB
 	$maxsize=1024*1024*$dmaxsize; 
@@ -18,14 +18,15 @@ function embed#primaryfield##record#uploader(){
 		
 	$msg='';
 	
-	$query="select * from #mastertable# where #primarykey#=$#primarykey#";
-	$rs=sql_query($query,$db);
+	$query="select * from #mastertable# where #primarykey#=?";
+	$rs=sql_prep($query,$db,$#primarykey#);
 	$myrow=sql_fetch_array($rs);
 	$#primarydispfield#=$myrow['#primarydispfield#'];
 	
 	
 	if ($_FILES['file']&&$_FILES['file']['name']){
 		//echo '<pre>';print_r($_FILES);echo '</pre>'; return;
+		checkgskey('embed#primaryfield##record#uploader_'.$#primarykey#);
 			
 		$file=$_FILES['file'];
 		$realfns=$file['tmp_name'];
@@ -56,8 +57,8 @@ function embed#primaryfield##record#uploader(){
 					imagedestroy($img);
 				} else {
 								
-					$query="insert into #lookuptable#(#primarykey#,ofn) values ($#primarykey#,'$ofn')";
-					$rs=sql_query($query,$db);
+					$query="insert into #lookuptable#(#primarykey#,ofn) values (?,?)";
+					$rs=sql_prep($query,$db,array($#primarykey#,$ofn));
 					$#lookupkey#=sql_insert_id($db,$rs);
 					
 					$org=$path.$#lookupkey#.'.org#fileext#';
@@ -90,7 +91,7 @@ function embed#primaryfield##record#uploader(){
 					
 					imagedestroy($img);
 					
-					logaction("uploaded $ofn to <u>$#primarydispfield#</u>",array('#primarykey#'=>$#primarykey#,'file'=>$ofn,'#primarydispfield#'=>$#primarydispfield#));
+					logaction("uploaded $ofn to $#primarydispfield#",array('#primarykey#'=>$#primarykey#,'file'=>$ofn,'#primarydispfield#'=>$#primarydispfield#));
 			
 				}
 			}
@@ -98,8 +99,8 @@ function embed#primaryfield##record#uploader(){
 		
 		if (!$_GET['diag']){
 ?>
-<script>parent.list#primaryfield##records#(<?echo $#primarykey#;?>,"<?echo $msg;?>");</script>
-<?			
+<script>parent.list#primaryfield##records#(<?php echo $#primarykey#;?>,"<?php echo $msg;?>");</script>
+<?php			
 		}
 		
 	}
@@ -115,18 +116,17 @@ function embed#primaryfield##record#uploader(){
 	<span id="dropzonetext">Drag and drop file here</span>
 	<span id="dropzoneprogress"></span>
 </div>
-<input type="hidden" name="#primarykey#" value="<?echo $#primarykey#;?>">
-<input type="hidden" name="MAX_FILE_SIZE" value="<?echo $maxsize;?>">
-<input type="file" name="file" id="file">
-<br>
-<button onclick="upload(this);return false;" id="uploadbutton">Upload</button> (max <?echo $dmaxsize;?>MB)
+<input type="hidden" name="#primarykey#" value="<?php echo $#primarykey#;?>">
+<input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $maxsize;?>">
+<input type="hidden" name="X-GSREQ-KEY" value="<?php emitgskey('embed#primaryfield##record#uploader_'.$#primarykey#);?>">
+<input type="file" name="file" id="file" onchange="upload(this);"> (max <?php echo $dmaxsize;?>MB)
 </form>
 <div id="cancel" style="display:none;font-size:12px;padding:5px 0;"><a href=# onclick="cancelupload();return false;"><u>cancel</u></a></div>
 <div id="debug" style="font-size:11px;"></div>
 <script src="nano.js"></script>
 <script>
 function cancelupload(){
-	var btn=gid('uploadbutton');
+	var btn=gid('file');
 	if (!btn.rq) return;
 	btn.rq.abort();	
 }
@@ -149,16 +149,18 @@ function upload(d,dfiles){
 	
 	var fsize=0;
 	if (binfile&&binfile.size) fsize=binfile.size;
-	if (fsize><?echo $maxsize;?>){
+	if (fsize><?php echo $maxsize;?>){
 		alert('File too large. Upload a smaller file');
 		return;	
 	}
 	
 	fd.append('file',binfile);
 	
-	fd.append('#primarykey#',<?echo $#primarykey#;?>);
-	rq.open('POST','<?echo $codepage;?>?cmd=embed#primaryfield##record#uploader&#primarykey#=<?echo $#primarykey#;?>&diag=1',true);
+	fd.append('#primarykey#',<?php echo $#primarykey#;?>);
+	fd.append('X-GSREQ-KEY','<?php emitgskey('embed#primaryfield##record#uploader_'.$#primarykey#);?>');
+	rq.open('POST','<?php echo $codepage;?>?cmd=embed#primaryfield##record#uploader&#primarykey#=<?php echo $#primarykey#;?>&diag=1',true);
 
+	gid('debug').innerHTML='upload started...';
 	rq.upload.onprogress=function(e){
 		gid('cancel').style.display='block';
 		if (e.lengthComputable) {
@@ -174,7 +176,7 @@ function upload(d,dfiles){
 			alert(e.target.responseText);
 			return;
 		}
-		parent.list#primaryfield##records#(<?echo $#primarykey#;?>,'');
+		parent.list#primaryfield##records#(<?php echo $#primarykey#;?>,'');
 	}
 
 	rq.onabort=function(e){
@@ -210,7 +212,7 @@ if (self.FormData&&'draggable' in document.createElement('span')){
 			for (var i=0;i<files.length;i++) fns.push(files[i].name);
 			gid('dropzonetext').innerHTML=files[0].name;
 			gid('dropzoneprogress').innerHTML='';
-			upload(gid('uploadbutton'),files);
+			upload(gid('file'),files);
 			return false;	
 		}
 }
@@ -219,6 +221,6 @@ if (self.FormData&&'draggable' in document.createElement('span')){
 
 </body>
 </html>
-<?
+<?php
 		
 }

@@ -1,7 +1,7 @@
 		case '#record#video':
-			ajxjs(self.reload#record#videouploader,'#records#.js');reload#record#videouploader(recid);
+			ajxjs(<?php jsfloag('reload#record#videouploader');?>,'#records#.js');reload#record#videouploader(recid);
 		break;
 		case '#record#videoencoded':
-			ajxjs(self.reload#record#videouploader,'#records#.js');reload#record#videouploader(recid);
+			ajxjs(<?php jsflag('reload#record#videouploader');?>,'#records#.js');reload#record#videouploader(recid);
 			flashstatus('#c_record# #'+recid+' video has been encoded');
 		break;

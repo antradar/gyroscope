@@ -7,10 +7,10 @@ function remove#primaryfield##mediatype#pic(){
 	
 	global $db;
 	
+	checkgskey('remove#primaryfield##mediatype#pic_'.$#primarykey#);	
 		
-		
-	$query="update #tablename# set #picflag#=0 where #primarykey#=$#primarykey#";
-	sql_query($query,$db);
+	$query="update #tablename# set #picflag#=0 where #primarykey#=?";
+	sql_prep($query,$db,$#primarykey#);
 		
 	$fn='#uploaddir#'.$#primarykey#.'#fileext#';
 	if (file_exists($fn)) unlink($fn);

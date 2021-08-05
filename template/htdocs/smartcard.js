@@ -26,7 +26,7 @@ Certificate Info: {id, certificateAsHex, CN, issuerCN, validFrom, validTo}
 
 */
 
-function smartcard_init(objname,funcs,deferred){
+function smartcard_init(objname,funcs){
 
 	if (!funcs){
 		funcs={
@@ -39,33 +39,14 @@ function smartcard_init(objname,funcs,deferred){
 
 	if (document.location.href.indexOf("https://")==-1){funcs.nohttps(); return;}
 
-	
-	if (navigator.userAgent.indexOf("Chrome")!=-1){
-		if (!deferred){
-			window.onload=function(){smartcard_init(objname,funcs,1);}
-			return;
-		}
+	if (!window.TokenSigning) {
 
-		if (!window.TokenSigning) {
+		funcs.noplugin(); return;	
+	}	
 
-			funcs.noplugin(); return;	
-		}	
-
-		var digidoc=new window.TokenSigning();
+	var digidoc=new window.TokenSigning();
 		
-	} else {
 
-		var div=document.createElement('div');
-		div.style.visibility='hidden';
-		div.innerHTML='<object id="cardreader_'+objname+'" type="application/x-digidoc" style="width: 1px; height: 1px; visibility: hidden;"></object>';
-	
-		document.body.appendChild(div);
-	
-		var digidoc=document.getElementById('cardreader_'+objname);
-	
-		if (!digidoc.version) {funcs.noplugin();return;}
-	
-	}
 
 	digidoc.getcert=function(callback){
 		if (document.getElementById('cardreader_'+objname)){

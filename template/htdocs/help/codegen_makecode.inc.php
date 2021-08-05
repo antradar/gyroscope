@@ -1,7 +1,8 @@
 <?php
 
 function codegen_makecode(){
-	$seed=GETSTR('seed');
+	$seed=SGET('seed');
+	$seed=preg_replace('/[^A-Za-z0-9-_.]/','',$seed);
 	
 	$fn='help/seeds/'.$seed.'.json';
 	if (!file_exists($fn)) {echo "missing form file $seed.json";return;}	
@@ -16,7 +17,7 @@ function codegen_makecode(){
 	foreach ($templates as $idx=>$template){
 		$fseed=$template['template'];
 		$filename=$template['filename'];
-		$nocopy=$template['nocopy']+0;
+		$nocopy=intval($template['nocopy']);
 		foreach ($opts as $k=>$v) $filename=str_replace("#$k#",$v,$filename);	
 	
 		codegen_quotecode($fseed,$filename,$opts,$idx,$nocopy);
@@ -25,14 +26,13 @@ function codegen_makecode(){
 }
 
 function codegen_quotecode($seed,$filename,$opts,$midx,$nocopy){
-		
 	$fn='help/seeds/'.$seed.'.seed';
 	if (!file_exists($fn)) {echo "missing seed file $seed.seed";return;}
 	$code=file_get_contents($fn);
 	$code=htmlentities($code);
 	
 	foreach ($opts as $k=>$v){
-		$code=str_replace("#$k#",$v,$code);	
+		$code=str_replace("#$k#",htmlspecialchars($v),$code);	
 	}
 
 	$code=preg_replace_callback('/#iterator-(\S+?)-(\S+?)#/',function($matches) use ($opts){
@@ -52,10 +52,10 @@ function codegen_quotecode($seed,$filename,$opts,$midx,$nocopy){
 		foreach ($fields as $fidx=>$field){
 			if (trim($field)=='') continue;
 			$c=$bc;
-			foreach ($opts as $k=>$v) $c=str_replace("#$k#",$v,$c);
+			foreach ($opts as $k=>$v) $c=str_replace("#$k#",htmlspecialchars($v),$c);
 			$parts=explode('|',$field);
 			foreach ($parts as $idx=>$part) {
-				$c=str_replace("#fld$idx#",$part,$c);
+				$c=str_replace("#fld$idx#",htmlspecialchars($part),$c);
 			}
 			
 			if ($fidx<$fc-1) $c=preg_replace('/#delim([\S\s]+?)#/','${1}',$c);
@@ -72,24 +72,24 @@ function codegen_quotecode($seed,$filename,$opts,$midx,$nocopy){
 	$lc=count($lines);
 	if ($lc<10) $height=$lc*18;
 ?>
-<div><input type="checkbox"> <b><?echo $filename;?></b> 
+<div><input type="checkbox"> <b><?php echo $filename;?></b> 
 &nbsp; 
-<?if (!$nocopy){?>
-<a class="labelbutton" onclick="codegen_copy(<?echo $midx;?>)">copy</a>
-<?} else {
+<?php if (!$nocopy){?>
+<a class="labelbutton" onclick="codegen_copy(<?php echo $midx;?>)">copy</a>
+<?php } else {
 ?>
 <span class="labelbutton" style="cursor:default;background:#eeeeee;">copy</span>
-<?	
+<?php	
 }?>
 
 </div>
 
 <div style="margin:5px 10px;">
-<textarea spellcheck="false" id="codegensnippet_<?echo $midx;?>" style="width:100%;padding:5px;height:<?echo $height;?>px;font-family:monospace;font-size:12px;">
-<?echo $code;?>
+<textarea spellcheck="false" id="codegensnippet_<?php echo $midx;?>" style="width:100%;padding:5px;height:<?php echo $height;?>px;font-family:monospace;font-size:12px;">
+<?php echo $code;?>
 
 </textarea>
 </div>
 
-<?	
+<?php	
 }

@@ -1,4 +1,4 @@
-addcreditcard=function(){
+addcreditcard=function(gskey){
 	var occname=gid('ccname');
 	var occnum=gid('ccnum');
 	var occv=gid('ccv');
@@ -27,15 +27,15 @@ addcreditcard=function(){
 	
 	params.push('ccname='+ccname); params.push('ccnum='+ccnum); params.push('ccv='+ccv); params.push('expmon='+expmon); params.push('expyear='+expyear);
 	
-	reloadtab('creditcards','','addcreditcard',null,params.join('&'));
+	reloadtab('creditcards','','addcreditcard',null,params.join('&'),null,gskey);
 		
 }
 
-setdefaultcreditcard=function(cardid){
-	reloadtab('creditcards','','setdefaultcreditcard',null,'cardid='+cardid);
+setdefaultcreditcard=function(cardid,gskey){
+	reloadtab('creditcards','','setdefaultcreditcard',null,'cardid='+cardid,null,null,null,gskey);
 }
 
-delcreditcard=function(cardid){
+delcreditcard=function(cardid,gskey){
 	if (!sconfirm('Are you sure you want to remove this card?')) return;
-	reloadtab('creditcards','','delcreditcard',null,'cardid='+cardid);
+	reloadtab('creditcards','','delcreditcard',null,'cardid='+cardid,null,null,null,gskey);
 }

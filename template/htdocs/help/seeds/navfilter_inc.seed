@@ -9,36 +9,50 @@ function #cmd#(){
 
 				
 	if ($mode!='embed'){
+		/*
+		add the following lines to reports.js:
+		rptinit_#mastertable#=function(){
+			nav_loadcharts('#container#','#searchkey#','#cmd#');
+		}
+		rptreload_#mastertable#=function(){
+			nav_loadcharts('#container#','#searchkey#','#cmd#');
+		}
+		*/
+		
 ?>
 <div class="section">
 
 	<div class="sectiontitle">#entity#</div>
 
+	<input id="#entity#_chartrelay" type="hidden" onchange="nav_loadcharts('#container#','#searchkey#','#cmd#');">
 	<div>
-		<input id="#searchkey#" style="margin-bottom:0;" class="img-mg" onkeyup="if (this.timer) clearTimeout(this.timer); this.timer=setTimeout(function(){ajxpgn('#container#',document.appsettings.codepage+'?cmd=#cmd#&mode=embed&key='+encodeHTML(gid('#searchkey#').value)+gid('searchfilter_#entity#').value);},200);">
+		<input id="#searchkey#" autocomplete="off" style="margin-bottom:0;" class="img-mg" onkeyup="if (this.timer) clearTimeout(this.timer); this.timer=setTimeout(function(){ajxpgn('#container#',document.appsettings.codepage+'?cmd=#cmd#&mode=embed&key='+encodeHTML(gid('#searchkey#').value)+gid('searchfilter_#entity#').value);},200);">
 	</div>
 	
 	<div id="#container#">
 	
-<?
+<?php
 } //mode	
 
 		#entity#_shownavs('#container#','#cmd#');
 		
-		$sqlfilter=#entity#_sqlfilters();
+		$sqlfilters=#entity#_sqlfilters();
 		
-		echo "<br><br> Filter: $sqlfilter";
+		echo "<br><br> Filter: ".$sqlfilters['clauses'];
 		
 		//add pagination and rendering code on your own
 		//pagination filter: +gid('searchfilter_#entity#').value
 		
-		$query="select * from #mastertable# where #mastertable#.#primarykey#!=0 $sqlfilter";
-		$rs=sql_query($query,$db);
+		$params=array();
+		$query="select * from #mastertable# where #mastertable#.#primarykey#!=0 ".$sqlfilters['clauses'];
+		$params=array_merge($params,$sqlfilters['params']);
+		
+		$rs=sql_prep($query,$db,$params);
 		while ($myrow=sql_fetch_assoc($rs)){
 		
 		?>
-		<div><?echo $myrow['#dispfield#'];?></div>
-		<?
+		<div><?php echo $myrow['#dispfield#'];?></div>
+		<?php
 		
 		}//while
 		
@@ -47,7 +61,8 @@ if ($mode!='embed'){
 	</div>
 
 </div>
-<?	
+<?php
+
 } //mode
 
 

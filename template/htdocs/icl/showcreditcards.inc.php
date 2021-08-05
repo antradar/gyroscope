@@ -6,10 +6,10 @@ function showcreditcards(){
 	global $db;
 	
 	$user=userinfo();
-	$gsid=$user['gsid']+0;
+	$gsid=$user['gsid'];
 		
-	$query="select * from gss where gsid=$gsid";
-	$rs=sql_query($query,$db);
+	$query="select * from gss where gsid=?";
+	$rs=sql_prep($query,$db,$gsid);
 	if (!$myrow=sql_fetch_assoc($rs)) apperror('Invalid GS instance');
 	
 	$customerid=$myrow['stripecustomerid'];
@@ -21,7 +21,15 @@ function showcreditcards(){
 	Config error: the Stripe Customer ID is missing for this Gyroscope instance.
 	</div>
 	</div>
-	<?
+	<?php
+
+	/*
+		//auto recovery for switching from test to live tokens
+		$res=stripe_addmember($gsid);
+		$customerid=$res['id'];
+		$query="update gss set stripecustomerid=? where gsid=?";
+		sql_prep($query,$db,array($customerid,$gsid));
+	*/
 		return;	
 	}
 	
@@ -32,7 +40,7 @@ function showcreditcards(){
 	Config error: Stripe library (stripe.inc.php) is missing.
 	</div>
 	</div>
-	<?
+	<?php
 		return;	
 		
 	}
@@ -44,10 +52,10 @@ function showcreditcards(){
 <div class="section">
 	<div class="sectiontitle">Stored Cards</div>
 
-	<?if (count($cards)>0){?>
+	<?php if (count($cards)>0){?>
 
 	<div class="listitem">
-	<?
+	<?php
 	$defcardid=$res['default_source'];
 	foreach ($cards as $card){
 		$default=0;
@@ -61,20 +69,20 @@ function showcreditcards(){
 		$last4=$card['last4'];
 	?>
 	<div class="inputrow">
-	<?echo $cardname;?> <?echo $brand;?> <?echo $last4;?>
-	<?echo $expmon.'/'.$expyear;?>
-	<?if ($default){?>
+	<?php echo $cardname;?> <?php echo $brand;?> <?php echo $last4;?>
+	<?php echo $expmon.'/'.$expyear;?>
+	<?php if ($default){?>
 	        <span class="labelbutton">default</span>
-	<?}else{?>
-	        <a class="hovlink" onclick="setdefaultcreditcard('<?echo $cardid;?>');">set as default</a>
-	<?}?>
-		&nbsp; &nbsp; <a href=# onclick="delcreditcard('<?echo $cardid;?>');return false;"><img src="imgs/t.gif" class="img-del"></a>
+	<?php }else{?>
+	        <a class="hovlink" onclick="setdefaultcreditcard('<?php echo $cardid;?>','<?php emitgskey('setdefaultcreditcard_'.$cardid);?>');">set as default</a>
+	<?php }?>
+		&nbsp; &nbsp; <a href=# onclick="delcreditcard('<?php echo $cardid;?>','<?php emitgskey('delcreditcard_'.$cardid);?>');return false;"><img src="imgs/t.gif" class="img-del"></a>
 	</div>
-	<?
+	<?php
 	}//foreach
 	?>
 	</div><!-- subsection -->
-	<?
+	<?php
 	
 	}//has cards
 
@@ -93,21 +101,21 @@ function showcreditcards(){
 	<div class="inputrow">
 		<div class="formlabel">Expiry:</div>
 		<select class="inp" id="expmon">
-		<?for ($i=1;$i<=12;$i++){
+		<?php for ($i=1;$i<=12;$i++){
 			$di=str_pad($i,2,'0',STR_PAD_LEFT);
 		?>
-		<option value="<?echo $di?>"><?echo $di;?></option>
-		<?}?>
+		<option value="<?php echo $di?>"><?php echo $di;?></option>
+		<?php }?>
 		</select>
 		<span class="irtext before">/</span>
 		<select class="inp" id="expyear">
-		<?
+		<?php
 		$baseyear=date('Y');
 		for ($i=0;$i<15;$i++){
 			$y=$baseyear+$i;
 		?>
-		<option value="<?echo $y;?>"><?echo $y;?></option>
-		<?		
+		<option value="<?php echo $y;?>"><?php echo $y;?></option>
+		<?php		
 		}
 		?>
 		</select>
@@ -121,11 +129,11 @@ function showcreditcards(){
 	
 	<div class="inputrow">
 	<div class="formlookup">
-		<button onclick="addcreditcard();">Add Card</button>
+		<button onclick="addcreditcard('<?php emitgskey('addcreditcard');?>');">Add Card</button>
 	</div>
 	</div>
 	
 </div>
-<?	
+<?php	
 		
 }

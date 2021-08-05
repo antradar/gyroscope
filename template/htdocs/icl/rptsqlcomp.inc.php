@@ -8,7 +8,7 @@ function rptsqlcomp(){
 	<div class="sectiontitle">Dev Tools &raquo; DB Structure Comparison</div>
 	
 	<div class="sectionheader">My Database Snapshot</div>
-	<textarea class="inplong"><?echo base64_encode(json_encode(mydbobj()));?></textarea>	
+	<textarea class="inplong"><?php echo base64_encode(json_encode(mydbobj()));?></textarea>	
 
 	<div class="sectionheader">Other Database Snapshot</div>
 	<textarea class="inplong" id="sqlcomp_otherobj"></textarea>	
@@ -16,9 +16,9 @@ function rptsqlcomp(){
 	<div><button onclick="ajxpgn('sqlcompareview',document.appsettings.codepage+'?cmd=rptsqlcomp&mode=comp',0,0,'other='+gid('sqlcomp_otherobj').value)">Compare</button></div>
 	
 	<div id="sqlcompareview">
-<?
+<?php
 } else {
-	$other=trim(QETSTR('other'));
+	$other=trim(SQET('other'));
 
 	sqlobjcomp(mydbobj(), json_decode(base64_decode($other),1));	
 
@@ -28,7 +28,7 @@ if ($mode!='comp'){
 ?>	
 	</div>	
 </div>
-<?		
+<?php		
 }
 	
 }
@@ -79,44 +79,44 @@ function sqlobjcomp($my,$other){
 ?>
 <table style="width:100%;">
 	<tr><td style="width:50%;"><b>Mine</b></td><td style="width:50%;"><b>Other's</b></td></tr>
-<?	
+<?php	
 	foreach ($diffs as $table=>$diff){
 		switch ($diff['status']){
 		case 'dne_mine': 
 	?>
-	<tr><td><em>missing</em></td><td><?echo $table;?></td></tr>
-	<?	
+	<tr><td><em>missing</em></td><td><?php echo $table;?></td></tr>
+	<?php	
 		break;
 		
 		case 'dne_other': 
 	?>
-	<tr><td><?echo $table;?></td><td><em>missing</em></td></tr>
-	<?	
+	<tr><td><?php echo $table;?></td><td><em>missing</em></td></tr>
+	<?php	
 		break;
 		case 'coldiff': 
 	?>
-	<tr><td colspan="2"><div><?echo $table?> not the same</div></td></tr>
+	<tr><td colspan="2"><div><?php echo $table?> not the same</div></td></tr>
 	<tr><td colspan="2" style="text-align:center;">
 		<table style="width:80%;margin:0 auto;text-align:left;">
-		<?
+		<?php
 			foreach ($diff['coldiffs'] as $field=>$coldiff){
 				
 				switch($coldiff['status']){
 					
 				case 'dne_mine':
 		?>
-		<tr><td><em>missing</em></td><td><?echo $field;?></td></tr>
-		<?		
+		<tr><td><em>missing</em></td><td><?php echo $field;?></td></tr>
+		<?php		
 				break;
 				case 'dne_other':
 		?>
-		<tr><td><?echo $field;?></td><td><em>missing</em></td></tr>
-		<?		
+		<tr><td><?php echo $field;?></td><td><em>missing</em></td></tr>
+		<?php		
 				break;	
 				case 'typediff':
 		?>
-		<tr><td><?echo $coldiff['mytype'];?></td><td><?echo $coldiff['othertype'];?></td></tr>
-		<?		
+		<tr><td><?php echo $coldiff['mytype'];?></td><td><?php echo $coldiff['othertype'];?></td></tr>
+		<?php		
 				break;	
 							
 				}//switch coldiffstatus
@@ -124,13 +124,13 @@ function sqlobjcomp($my,$other){
 		?>
 		</table>
 	</td></tr>
-	<?	
+	<?php	
 		break;				
 		}//switch
 	}//foreach
 ?>
 </table>	
-<?
+<?php
 	
 }
 

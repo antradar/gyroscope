@@ -1,5 +1,5 @@
 
-add#primaryfield##record#=function(#primarykey#){
+add#primaryfield##record#=function(#primarykey#,gskey){
 	var suffix=#primarykey#;
 #iterator-fieldlist-getbridgerecordjs#
 	var valid=1;
@@ -26,16 +26,16 @@ add#primaryfield##record#=function(#primarykey#){
 	ajxpgn('#primaryfield##records#_'+#primarykey#,document.appsettings.codepage+'?cmd=add#primaryfield##record#&#primarykey#='+#primarykey#+'&#lookupkey#='+#lookupkey#
 		,true,true,params.join('&'),function(){
 			ajxpgn('#record##primaryrecords#_'+#lookupkey#,document.appsettings.codepage+'?cmd=list#record##primaryrecords#&#lookupkey#='+#lookupkey#);
-		});
+		},null,null,gskey);
 
 }
 
-del#primaryfield##record#=function(#bridgekey#,#primarykey#,#lookupkey#){
+del#primaryfield##record#=function(#bridgekey#,#primarykey#,#lookupkey#,gskey){
 	if (!sconfirm('Are you sure you want to unlink this #record#?')) return;
 	
 	ajxpgn('#primaryfield##records#_'+#primarykey#,document.appsettings.codepage+'?cmd=del#primaryfield##record#&#bridgekey#='+#bridgekey#+'&#primarykey#='+#primarykey#	
 		,true,true,'',function(){
 			ajxpgn('#record##primaryrecords#_'+#lookupkey#,document.appsettings.codepage+'?cmd=list#record##primaryrecords#&#lookupkey#='+#lookupkey#);
-		});
+		},null,null,gskey);
 }
 

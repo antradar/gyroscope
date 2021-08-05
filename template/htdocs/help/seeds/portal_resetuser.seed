@@ -1,0 +1,24 @@
+<?php
+
+include 'icl/list#primaryfield#users.inc.php';
+
+function reset#primaryfield#user(){
+	global $#primaryfield#dbsalt;
+	
+	global $db;
+
+	$userid=GETVAL('userid');	
+	$#primarykey#=GETVAL('#primarykey#');
+	
+	$pass=SQET('pass');
+
+	$np=password_hash($#primaryfield#dbsalt.$pass,PASSWORD_DEFAULT,array('cost'=>PASSWORD_COST));
+	
+	$query="update #primaryfield#users set password=?,passreset=?,usega=0,gakey='' where userid=? and #primarykey#=?";
+	sql_prep($query,$db,array($np,1,$userid,$#primarykey#));
+
+	logaction("updated #primaryfield# user password #$userid",array('#primarykey#'=>$#primarykey#,'#primaryfield#userid'=>$userid));
+		
+	list#primaryfield#users($#primarykey#);
+}		
+	

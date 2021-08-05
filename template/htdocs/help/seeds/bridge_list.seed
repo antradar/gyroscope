@@ -1,15 +1,15 @@
 <?php
 
 function list#primaryfield##records#($#primarykey#=null){
-	if (!isset($#primarykey#)) $#primarykey#=GETVAL('#primarykey#');
+	if (!isset($#primarykey#)) $#primarykey#=SGET('#primarykey#');
 	
 	global $db;
 	
 	$query="select * from #bridgetable#,#lookuptable# 
-		where #bridgetable#.#primarykey#=$#primarykey# and #bridgetable#.#lookupkey#=#lookuptable#.#lookupkey#
+		where #bridgetable#.#primarykey#=? and #bridgetable#.#lookupkey#=#lookuptable#.#lookupkey#
 	 	order by #sortquery#";
 	 	
-	 $rs=sql_query($query,$db);
+	 $rs=sql_prep($query,$db,$#primarykey#);
 	 
 	 ?>
 	 <div class="stable">
@@ -18,7 +18,7 @@ function list#primaryfield##records#($#primarykey#=null){
 	 	<td><b>#c_record#</b></td>
 #iterator-fieldlist-tableheader#
 	 </tr>
-	 <?
+	 <?php
 	 
 	 while ($myrow=sql_fetch_array($rs)){
 	 	$#lookupkey#=$myrow['#lookupkey#'];
@@ -26,41 +26,41 @@ function list#primaryfield##records#($#primarykey#=null){
 #iterator-fieldlist-myrow#	 	
 	 	$#dispfield#=$myrow['#dispfield#'];
 	 	$title="$#dispfield#"; //change if necessary
-	 	$dbtitle=htmlspecialchars(noapos($title));
+	 	$dbtitle=htmlspecialchars(noapos(htmlspecialchars($title)));
 	 ?>
 	 <tr>
 	 	<td valign="top">
-	 		<a href=# onclick="ajxjs(self.show#record#,'#records#.js');show#record#(<?echo $#lookupkey#?>,'<?echo $dbtitle;?>');return false;">
-	 		<u><?echo $title;?></u>
+	 		<a href=# onclick="ajxjs(<?php jsflag('show#record#');?>,'#records#.js');show#record#(<?php echo $#lookupkey#?>,'<?php echo $dbtitle;?>');return false;">
+	 		<u><?php echo htmlspecialchars($title);?></u>
 	 		</a>
 	 	</td>
 #iterator-fieldlist-tablerow#	 	
 	 	<td valign="top">
-	 		<a href=# onclick="del#primaryfield##record#(<?echo $#bridgekey#?>,<?echo $#primarykey#;?>,<?echo $#lookupkey#;?>);return false;">
+	 		<a href=# onclick="del#primaryfield##record#(<?php echo $#bridgekey#?>,<?php echo $#primarykey#;?>,<?php echo $#lookupkey#;?>,'<?php emitgskey('del#primaryfield##record#_'.$#lookupkey#);?>');return false;">
 	 		<img src="imgs/t.gif" class="img-del">
 	 		</a>
 	 	</td>
 	 </tr>
-	 <?	
+	 <?php 	
 	 }//while	
 	 ?>
 	 
 	 <tr>
 	 	<td valign="center">
-			 <input class="inpshort" id="#primaryfield##records#_#lookupkey#_<?echo $#primarykey#;?>"  
+			 <input class="inpshort" id="#primaryfield##records#_#lookupkey#_<?php echo $#primarykey#;?>"  
 				onfocus="lookupentity(this,'#record#','#c_records#');" onkeyup="_lookupentity(this,'#record#','#c_records#');">
 				
-			<span id="#primaryfield##records#_#lookupkey#_<?echo $#primarykey#;?>_val2"></span>
-			<?makelookup('#primaryfield##records#_#lookupkey#_'.$#primarykey#);?>
+			<span id="#primaryfield##records#_#lookupkey#_<?php echo $#primarykey#;?>_val2"></span>
+			<?php makelookup('#primaryfield##records#_#lookupkey#_'.$#primarykey#);?>
 	 	</td>
 #iterator-fieldlist-tableinsert#	 	
 	 	<td valign="center">
-	 		<button onclick="ajxjs(self.add#primaryfield#,'#records#.js');add#primaryfield##record#(<?echo $#primarykey#;?>);">Add #c_record#</button>
+	 		<button onclick="ajxjs(<?php jsflag('add#primaryfield#');?>,'#records#.js');add#primaryfield##record#(<?php echo $#primarykey#;?>,'<?php emitgskey('add#primaryfield##record#_'.$#primarykey#);?>');">Add #c_record#</button>
 	 	</td>
 	 </tr>
 	 
 	 </table>
 	 </div>
-	 <?
+	 <?php
 	
 }

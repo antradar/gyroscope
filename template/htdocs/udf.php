@@ -39,13 +39,15 @@ body{padding:0;margin:0;}
 
 <body>
 
-<div id="funcs"><?listfuncs();?></div>
+<div id="funcs"><?php listfuncs();?></div>
 <div id="funcview">
-	<?newfunc();?>
+	<?php newfunc();?>
 </div><!-- funcview -->
 
 <script src="nano.js"></script>
 <script>
+salert=function(msg){alert(msg);}
+
 filterkeys=function(d){
 	if (d.onkeydown!=null) return;
 	d.onkeydown=function(e){
@@ -85,7 +87,7 @@ function newfunc(){
 	ajxpgn('funcview','funcsrv.php?cmd=newfunc');
 }
 
-function addfunc(){
+function addfunc(gskey){
 	var dbname=encodeHTML(gid('dbname_new').value);
 	var func=encodeHTML(gid('funcname_new').value);
 	
@@ -95,26 +97,26 @@ function addfunc(){
 	
 	ajxpgn('funcview','funcsrv.php?cmd=updatefunc&dbname='+dbname+'&func='+func,0,0,'args='+funcargs+'&pre='+funcpre+'&text='+functext,function(){
 		ajxpgn('funcs','funcsrv.php?cmd=listfuncs');	
-	});
+	},null,null,gskey);
 }
 
-function delfunc(dbname,func){
+function delfunc(dbname,func,gskey){
 	if (!confirm('Are you sure you want to delete this function?')) return;
 	
 	
 	ajxpgn('funcview','funcsrv.php?cmd=delfunc&dbname='+dbname+'&func='+func,0,0,null,function(){
 		ajxpgn('funcs','funcsrv.php?cmd=listfuncs');	
-	});
+	},null,null,gskey);
 }
 
-function updatefunc(dbname,func){
+function updatefunc(dbname,func,gskey){
 	var funcargs=encodeHTML(gid('funcargs_'+dbname+'_'+func).value);
 	var funcpre=encodeHTML(gid('funcpre_'+dbname+'_'+func).value);	
 	var functext=encodeHTML(gid('func_'+dbname+'_'+func).value);
 	
 	ajxpgn('funcview','funcsrv.php?cmd=updatefunc&dbname='+dbname+'&func='+func,0,0,'args='+funcargs+'&pre='+funcpre+'&text='+functext,function(){
 		ajxpgn('funcs','funcsrv.php?cmd=listfuncs');	
-	});
+	},null,null,gskey);
 }
 
 function showfunc(dbname, func){

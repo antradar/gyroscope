@@ -4,6 +4,8 @@ include 'udf/showfunc.inc.php';
 function updatefunc(){
 	global $db;
 	
+	checkgskey('updatefunc');
+	
 	$dbname=GETSTR('dbname');
 	$func=GETSTR('func');
 	

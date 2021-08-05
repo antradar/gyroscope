@@ -5,17 +5,19 @@ include 'icl/showcreditcards.inc.php';
 function setdefaultcreditcard(){
 	
 	$user=userinfo();
-	$gsid=$user['gsid']+0;
+	$gsid=$user['gsid'];
 	
 	global $db;	
 	
-	$query="select * from gss where gsid=$gsid";
-	$rs=sql_query($query,$db);
+	$query="select * from ".TABLENAME_GSS." where ".COLNAME_GSID."=?";
+	$rs=sql_prep($query,$db,$gsid);
 	if (!$myrow=sql_fetch_assoc($rs)) apperror('Invalid GS instance');
 	
 	$customerid=$myrow['stripecustomerid'];
 	
-	$cardid=QETSTR('cardid');	
+	$cardid=SQET('cardid');	
+	
+	checkgskey('setdefaultcreditcard_'.$cardid);
 	
 	$res=stripe_setdefaultmembercard($customerid,$cardid);
 	if ($res['error']) apperror($res['error']['message']);

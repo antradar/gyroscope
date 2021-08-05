@@ -1,6 +1,6 @@
 function ch(){
   var w=cw();
-  if (w*0.85<=485) return 270/0.85;
+  //if (w*0.85<=485) return 270/0.85;
   if (window.innerHeight) return window.innerHeight;
   if (document.documentElement.clientHeight) return document.documentElement.clientHeight;
   return document.body.clientHeight;
@@ -180,6 +180,8 @@ function reloadview(idx,listid){
 
 function showview(idx,lazy,force,params,func){
   if (!params) params='';
+  
+  if (gid('gamepadspot')) gid('gamepadspot').vidx=null;
  	
   hidelookup();
     
@@ -196,12 +198,24 @@ function showview(idx,lazy,force,params,func){
       gid('lv'+i).style.display='none';
     } else {
 		if (!lazy||document.viewindex==idx||!gid('lv'+i).viewloaded){
-			if (document.lvxhr&&document.lvxhr.reqobj) {document.lvxhr.abortflag=1;document.lvxhr.reqobj.abort();document.lvxhr.reqobj=null;cancelgswi(document.lvxhr);}
+			if (document.lvxhr&&document.lvxhr.reqobj) {
+				document.lvxhr.abortflag=1;document.lvxhr.reqobj.abort();document.lvxhr.reqobj=null;cancelgswi(document.lvxhr);
+			}
 			document.lvxhr=gid('lv'+i);
-			ajxpgn('lv'+i,document.appsettings.codepage+'?cmd=slv_'+i.replace(/\./g,'__')+'&'+params,true,true,'',func);
+			ajxpgn('lv'+i,document.appsettings.codepage+'?cmd=slv_'+i.replace(/\./g,'__')+'&'+params,true,true,'',function(rq){
+				var title=rq.getResponseHeader('listviewtitle');
+				if (title!=null&&title!='') gid('tooltitle').innerHTML='<a>'+decodeHTML(title)+'</a>';
+				var flag=rq.getResponseHeader('listviewflag');
+				var js=rq.getResponseHeader('listviewjs');
+				if (flag!=null&&js!=null&&js!=''){
+					ajxjs(self[flag],js);
+					//sajxjs(flag,js);
+				}
+				if (func) func();	
+			});
 		} else {
 	      gid('lv'+idx).style.display='block';
-	      if (gid('lv'+idx).tooltitle!=null) gid('tooltitle').innerHTML=gid('lv'+idx).tooltitle;      
+	      if (gid('lv'+idx).tooltitle!=null&&gid('lv'+idx).tooltitle!='') gid('tooltitle').innerHTML=gid('lv'+idx).tooltitle;      
 		}
     }
   }
@@ -219,6 +233,8 @@ function showlookup(){
 	var lkv=gid('lkv');
 	if (lkv.showing) return;
 	
+	if (gid('gamepadspot')) gid('gamepadspot').lookupview=true;
+	
 	lkv.showing=true;
 	lkv.style.left='0px';
 
@@ -229,6 +245,7 @@ function showlookup(){
 function hidelookup(){
 	var lkv=gid('lkv');
 	if (!lkv.showing) return;
+	if (gid('gamepadspot')) gid('gamepadspot').lookupview=null;
 	
 	lkv.showing=null;
 	lkv.style.left='-280px';	
@@ -271,6 +288,11 @@ function sv(d,v){gid(d).value=v;}
 if (document.createEvent){
 	document.keyboard=[];
 	
+	window.onblur=function(){
+		document.keyboard=[];
+		document.gamepadlock=true;	
+	}	
+	
 	document.onkeyup=function(e){
 		var keycode;
 		if (e) keycode=e.keyCode; else keycode=event.keyCode;	
@@ -283,9 +305,40 @@ if (document.createEvent){
 		if (e) keycode=e.keyCode; else keycode=event.keyCode;	
 		document.keyboard['key_'+keycode]=1;
 		
-		if (document.keyboard['key_13']&&document.keyboard['key_17']){
+		var metakey=0;
+		if (document.keyboard['key_17']||document.keyboard['key_91']||document.keyboard['key_224']) metakey=1;
+		
+		if (document.keyboard['key_13']&&metakey){
 			picktop();	
 		}
+			
+		if (document.keyboard['key_83']&&metakey){
+			savecurrenttab();
+			return false;
+		}
+		
+		if (document.keyboard['key_16']&&document.keyboard['key_70']&&document.keyboard['key_55']&&!document.fleetview){
+			document.fleetview=true;
+			updategyroscope();	
+		}		
+	}
+
+	function savecurrenttab(){
+		if (document.currenttab==null||document.currenttab==-1) return;
+		if (!document.tabviews[document.currenttab]) return;
+		var bts=document.tabviews[document.currenttab].getElementsByTagName('button');
+		var bt=null;
+		for (var i=0;i<bts.length;i++){
+			if (bts[i].className&&bts[i].className=='changebar_button'){
+				bt=bts[i];	
+			}
+		}
+		if (!bt) return;
+		
+		var event=document.createEvent('Events');
+		event.initEvent('click',true,false);
+		bt.dispatchEvent(event);		
+		
 	}
 	
 	function picktop(){
@@ -307,5 +360,34 @@ if (document.createEvent){
 		event.initEvent('click',true,false);
 		target.dispatchEvent(event);
 		
+	}
+}
+
+function toggle_easyread(){
+	if (!document.easyreading){
+		ajxcss(null,'easyon.css','easyon','easyoff');
+		document.easyreading=true;	
+	} else {
+		ajxcss(null,'easyoff.css','easyoff','easyon');
+		document.easyreading=null;	
+	}
+}
+
+function showhelpspot(id,once){
+	showhide('helpspot_'+id);
+	if (gid('helpspot_'+id).showing){
+		gid('phelpspot_'+id).style.width='100%';
+	} else {
+		gid('phelpspot_'+id).style.width='auto';		
+	}
+}
+
+function hidehelpspot(id,topic,once,gskey){
+	gid('helpspot_'+id).style.display='none';
+	if (once){
+		gid('helpanchor_'+id).style.display='none';	
+		ajxpgn('statusc',document.appsettings.codepage+'?cmd=ackhelpspot&topic='+encodeHTML(topic),0,0,null,null,null,null,gskey);
+		var os=document.getElementsByTagName('span');
+		for (var i=0;i<os.length;i++) if (os[i].attributes&&os[i].attributes.helptopic&&os[i].attributes.helptopic.value==topic) os[i].style.display='none';
 	}
 }

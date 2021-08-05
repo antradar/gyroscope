@@ -1,18 +1,18 @@
 <?php
 
 function list#record##primaryrecords#($#lookupkey#=null){
-	if (!isset($#lookupkey#)) $#lookupkey#=GETVAL('#lookupkey#');
+	if (!isset($#lookupkey#)) $#lookupkey#=SGET('#lookupkey#');
 	
 	global $db;
 	
 	$query="select * from #bridgetable#,#mastertable# 
-		where #bridgetable#.#lookupkey#=$#lookupkey# and #bridgetable#.#primarykey#=#mastertable#.#primarykey#";
+		where #bridgetable#.#lookupkey#=? and #bridgetable#.#primarykey#=#mastertable#.#primarykey#";
 	 	
-	 $rs=sql_query($query,$db);
+	 $rs=sql_prep($query,$db,$#lookupkey#);
 	 
 	 ?>
 	 <table>
-	 <?
+	 <?php
 	 
 	 while ($myrow=sql_fetch_array($rs)){
 	 	$#primarykey#=$myrow['#primarykey#'];
@@ -20,22 +20,22 @@ function list#record##primaryrecords#($#lookupkey#=null){
 	 	
 	 	$#primarydispfield#=$myrow['#primarydispfield#'];
 	 	$title="$#primarydispfield#";
-	 	$dbtitle=htmlspecialchars(noapos($title));
+	 	$dbtitle=htmlspecialchars(noapos(htmlspecialchars($title)));
 	 ?>
 	 <tr>
 	 	<td>
-	 		<a onclick="ajxjs(self.show#primaryfield#,'#primaryrecords#.js');show#primaryfield#(<?echo $#primarykey#?>,'<?echo $dbtitle;?>');">
-	 		<u><?echo $title;?></u>
+	 		<a onclick="ajxjs(<?php jsflag('show#primaryfield#');?>,'#primaryrecords#.js');show#primaryfield#(<?php echo $#primarykey#?>,'<?php echo $dbtitle;?>');">
+	 		<u><?php echo htmlspecialchars($title);?></u>
 	 		</a>
 	 	</td>
 	 	
 	 </tr>
-	 <?	
+	 <?php	
 	 }//while	
 	 ?>
 
 	 
 	 </table>
-	 <?
+	 <?php
 	
 }

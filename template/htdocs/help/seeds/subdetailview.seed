@@ -6,10 +6,10 @@ function show#record#($#primarykey#=null){
 	global $db;
 	
 	$user=userinfo();
-	$gsid=$user['gsid']+0;
+	$gsid=$user['gsid'];
 		
-	$query="select * from #tablename#,#master_tablename# where #tablename#.#foreignkey#=#master_tablename#.#masterkey# and #primarykey#=$#primarykey# and gsid=$gsid ";
-	$rs=sql_query($query,$db);
+	$query="select * from #tablename#,#master_tablename# where #tablename#.#foreignkey#=#master_tablename#.#masterkey# and #primarykey#=? and gsid=? ";
+	$rs=sql_prep($query,$db,array($#primarykey#,$gsid));
 	
 	if (!$myrow=sql_fetch_array($rs)) die(_tr('record_removed'));
 	
@@ -17,21 +17,22 @@ function show#record#($#primarykey#=null){
 	$#masterkey#=$myrow['#masterkey#'];
 	$#master_dispfield#=$myrow['#master_dispfield#'];
 	$recordtitle="$#master_dispfield#"; //change this
-	$dbrecordtitle=htmlspecialchars(noapos($recordtitle));
+	$dbrecordtitle=htmlspecialchars(noapos(htmlspecialchars($recordtitle)));
 	
-	header('newtitle:'.tabtitle($#dispfield#));
+	header('newtitle:'.tabtitle(htmlspecialchars($#dispfield#)));
 	header('parenttab: #master_record#_'.$#masterkey#);
-	makechangebar('#record#_'.$#primarykey#,"update#record#($#primarykey#);");
+	makechangebar('#record#_'.$#primarykey#,"update#record#($#primarykey#,'".makegskey('update#record#_'.$#primarykey#)."');");
+	makesavebar('#record#_'.$#primarykey#);	
 ?>
 <div class="section">
-	<div class="sectiontitle"><?echo $#dispfield#;?></div>
+	<div class="sectiontitle"><?php echo htmlspecialchars($#dispfield#);?></div>
 	<div class="col">
 
 	<div class="inputrow">
-		<div class="formlabel"><?tr('list_#master_record#_stab');?>:
+		<div class="formlabel"><?php tr('list_#master_record#_stab');?>:
 		
-			<a class="hovlink" onclick="ajxjs(self.show#master_record#,'#master_records#.js');show#master_record#(<?echo $#masterkey#?>,'<?echo $dbrecordtitle;?>');">
-			<?echo $recordtitle;?>
+			<a class="hovlink" onclick="ajxjs(<?php jsflag('show#master_record#');?>,'#master_records#.js');show#master_record#(<?php echo $#masterkey#?>,'<?php echo $dbrecordtitle;?>');">
+			<?php echo htmlspecialchars($recordtitle);?>
 			</a>
 		</div>
 	</div>
@@ -39,10 +40,10 @@ function show#record#($#primarykey#=null){
 #iterator-fieldlist-detailview#
 	
 	<div class="inputrow">
-		<button onclick="update#record#(<?echo $#primarykey#;?>,<?echo $#foreignkey#;?>);"><?tr('button_update');?></button>
+		<button onclick="update#record#(<?php echo $#primarykey#;?>,<?php echo $#foreignkey#;?>,'<?php emitgskey('update#record#_'.$#primarykey#);?>');"><?php tr('button_update');?></button>
 
 		&nbsp; &nbsp;
-		<button class="warn" onclick="del#record#(<?echo $#primarykey#;?>,<?echo $#foreignkey#;?>);"><?tr('button_delete');?></button>
+		<button class="warn" onclick="del#record#(<?php echo $#primarykey#;?>,<?php echo $#foreignkey#;?>,'<?php emitgskey('del#record#_'.$#primarykey#);?>');"><?php tr('button_delete');?></button>
 
 
 	</div>
@@ -55,5 +56,6 @@ function show#record#($#primarykey#=null){
 	</div>
 	<div class="clear"></div>
 </div>
-<?
+<?php
+
 }

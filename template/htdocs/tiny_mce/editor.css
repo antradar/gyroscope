@@ -25,6 +25,10 @@ img.full{width:100%;height:auto;}
 img.left{width:30%;height:auto;margin-right:2%;float:left;}
 img.right{width:30%;height:auto;margin-left:2%;float:right;}
 
+.narrow{text-align:center;}
+.narrow p{width:80%;margin:0 auto;background:#f8f8f8;border-left:solid 1px #f0f0f0;border-right:solid 1px #f0f0f0;padding-top:30px;text-align:left;}
+
+
 .imageframe{padding:10px 0;}
 .imageframe img{width:100%;display:block;}
 .imageframe .caption{color:#999999;text-align:right;}

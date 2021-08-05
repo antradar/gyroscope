@@ -8,7 +8,7 @@
 
 	{"field":"tablename","disp":"DB Table Name","def":"clients"},
 	{"field":"primarykey","disp":"Primary Key","def":"clientid"},
-	{"field":"searchquery","disp":"Search Filters","def":"fname like '$key%' or lname like '$key%' or concat(fname,' ',lname) like '$key%'"},
+	{"field":"searchquery","disp":"Search Filters","def":"fname like ? or lname like ? or concat(fname,' ',lname) like ? "},
 	{"field":"sortquery","disp":"Sort Filters","def":"fname, lname"},
 	
 	{"field":"dispfield","disp":"Display Field Name","def":"fname"},
@@ -28,6 +28,7 @@
 	{"template":"addrecord","filename":"icl/add#record#.inc.php"},
 	{"template":"delrecord","filename":"icl/del#record#.inc.php"},	
 	{"template":"updaterecord","filename":"icl/update#record#.inc.php"},
-	{"template":"listview_switch","filename":"myservices.php <em>switch ($cmd){</em>"}
+	{"template":"listview_switch","filename":"myservices.php <em>switch ($cmd){</em>"},
+	{"template":"listview_gsnotes","filename":"add to gsnotes.js <em>(optional: offline mode)</em>"}
 ]
 }

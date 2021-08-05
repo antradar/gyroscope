@@ -78,7 +78,7 @@ $dict=array(
 	'icon_sqlcompare'=>'Datenbank vergleichen',
 	
 	'tab_welcome'=>'Willkommen',
-	'hometab_welcome'=>'Willkommen bei Antradar Gyroscope',	
+	'hometab_welcome'=>'Antradar Gyroscope',	
 	
 	'icon_templatetypes'=>'Template Classes',
 	'list_templatetype_stab'=>'Template Class',

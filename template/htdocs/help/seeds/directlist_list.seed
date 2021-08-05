@@ -5,9 +5,9 @@ function list#primaryfield##records#($#primarykey#=null){
 	
 	global $db;
 	
-	$query="select * from #lookuptable# where #primarykey#=$#primarykey# order by #sortquery#";
+	$query="select * from #lookuptable# where #primarykey#=? order by #sortquery#";
 	 	
-	 $rs=sql_query($query,$db);
+	$rs=sql_prep($query,$db,$#primarykey#);
 	 
 	 ?>
 	 <div class="stable">
@@ -15,7 +15,7 @@ function list#primaryfield##records#($#primarykey#=null){
 	 <tr>
 #iterator-fieldlist-tableheader#
 	 </tr>
-	 <?
+	 <?php
 	 
 	 while ($myrow=sql_fetch_array($rs)){
 	 	$#lookupkey#=$myrow['#lookupkey#'];
@@ -24,12 +24,12 @@ function list#primaryfield##records#($#primarykey#=null){
 	 <tr>
 #iterator-fieldlist-tablerow#	 	
 	 	<td valign="top">
-	 		<a href=# onclick="del#primaryfield##record#(<?echo $#lookupkey#?>,<?echo $#primarykey#;?>);return false;">
+	 		<a href=# onclick="del#primaryfield##record#(<?php echo $#lookupkey#?>,<?php echo $#primarykey#;?>,'<?php emitgskey('del#primaryfield##record#_'.$#lookupkey#);?>');return false;">
 	 		<img src="imgs/t.gif" class="img-del">
 	 		</a>
 	 	</td>
 	 </tr>
-	 <?	
+	 <?php	
 	 }//while	
 	 ?>
 	 
@@ -37,12 +37,12 @@ function list#primaryfield##records#($#primarykey#=null){
 
 #iterator-fieldlist-tableinsert#	 	
 	 	<td valign="center">
-	 		<button onclick="add#primaryfield##record#(<?echo $#primarykey#;?>);">Add #c_record#</button>
+	 		<button onclick="add#primaryfield##record#(<?php echo $#primarykey#;?>,'<?php emitgskey('add#primaryfield##record#_'.$#primarykey#);?>');">Add #c_record#</button>
 	 	</td>
 	 </tr>
 	 
 	 </table>
 	 </div>
-	 <?
+	 <?php
 	
 }

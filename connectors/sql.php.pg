@@ -4,27 +4,167 @@
 // (c) Antradar Software
 
 $SQL_ENGINE="PostgreSQL";
+//$SQL_READONLY=1; //uncomment to trigger readonly mode
 
 function sql_escape($str){
 	return pg_escape_string($str);	
 }
 
-function sql_get_db($dbhost,$dbsource,$dbuser,$dbpass){
-	$db=pg_connect("host=$dbhost dbname=$dbsource user=$dbuser password=$dbpass");
+function sql_get_db($dbhost,$dbsource,$dbuser,$dbpass,$lazyname=null){
+	if (isset($lazyname)){
+		global $dbdefers;
+		if (!isset($dbdefers)) $dbdefers=array();
+		$dbdefers[$lazyname]=array(
+			'host'=>$dbhost,'source'=>$dbsource,
+			'user'=>$dbuser,'pass'=>$dbpass
+		);
+		return $lazyname;
+	}	
+	$db=pg_connect("host=$dbhost dbname=$dbsource user=$dbuser password=$dbpass") or die('cannot connect to db');
 	return $db;
 }
 
+function sql_prep($query,&$db,$params=array()){
+	global $gsdbprofile;
+	global $SQL_READONLY;
+	
+	$tokens=explode(' ',trim($query));
+	$verb=strtolower($tokens[0]);
+		
+	if ($SQL_READONLY){
+		if ($verb!='select') return;
+	}
+	
+	if (is_string($db)){
+		global $dbdefers;
+		$dbinfo=$dbdefers[$db];
+		$db=sql_get_db($dbinfo['host'],$dbinfo['source'],$dbinfo['user'],$dbinfo['pass']);
+	}	
+	
+	if (!is_array($params)) $params=array($params);
+	
+	$a=microtime(1);
+	
+	$qidx=1;
+	$query=preg_replace_callback('/\?/',function($matches) use (&$qidx){
+		$r='$'.$qidx;
+		$qidx++;
+		return $r;
+	},$query);
+	
+	
+	$query=preg_replace('/ limit\s*(\d+),(\d+)/i',' offset ${1} limit ${2}', $query);
+	
+	$stmt='';
+				
+	if (!pg_prepare($db,$stmt,$query)){
+		echo 'sql syntax error: '.$query.' '.pg_last_error();	
+	}
+						
+	$rs=pg_execute($stmt,$params);
+		
+	if (!$rs) echo "sql query error: ".$query.' '.pg_last_error();
+	
+	if ($verb=='insert'){
+		$query="select lastval() as id";
+		$rs=sql_query($query,$db);
+		$myrow=sql_fetch_assoc($rs);
+		$rs=array('lastval'=>$myrow['id']);	
+	}
+		
+	$b=microtime(1);
+			
+	if (is_array($gsdbprofile)) array_push($gsdbprofile,array('query'=>$query,'time'=>$b-$a));
+
+	return $rs;
+		
+}
+
+
 function sql_query($query,$db){
-	return pg_query($db,$query);
+	global $gsdbprofile;
+	
+	if (is_string($db)){
+		global $dbdefers;
+		$dbinfo=$dbdefers[$db];
+		$db=sql_get_db($dbinfo['host'],$dbinfo['source'],$dbinfo['user'],$dbinfo['pass']);
+	}	
+	
+	$a=microtime(1);	
+	$rs=pg_query($db,$query);
+	$b=microtime(1);
+		
+	if (!$rs) echo "sql query error: ".$query.' '.pg_last_error();
+	
+	if (is_array($gsdbprofile)) array_push($gsdbprofile,array('query'=>$query,'time'=>$b-$a));
+	return $rs;
+	
+}
+
+function sql_copy_from_query($query,$db,$omits,$table){
+	$rs=sql_query($query,$db);
+	$myrow=sql_fetch_assoc($rs);
+	$fields=array();
+	$values=array();
+	$params=array();
+	foreach ($myrow as $k=>$v){
+		if (in_array(strtolower($k),$omits)) continue;
+		array_push($fields,$k);
+		array_push($values,'?');
+		array_push($params,$v);
+	}
+	
+	$query="insert into $table (".implode(',',$fields).") values (".implode(',',$values).")";
+	$rs=sql_prep($query,$db,$params);
+	$id=sql_insert_id($db,$rs);
+	return $id;
+}
+
+function sql_save_chunks($db,$table,$chunks){
+	
+		/*
+		//example:
+		$chunks=array(
+			array('carname'=>$carname, 'carmake'=>$carmake,... ),
+			...
+		);
+		*/
+	
+		$query="insert into $table (".implode(',',array_keys($chunks[0])).") values ";
+		
+		$qs=array();
+		$vs=array();
+		
+		foreach ($chunks as $chunk){
+			$qqs=array();
+			foreach ($chunk as $v) {
+				array_push($qqs,'?');
+				array_push($vs,$v);
+			}
+			array_push($qs,'('.implode(',',$qqs).')');			
+			
+		}//foreach chunk
+		
+		$query.=implode(',',$qs);
+		
+		sql_prep($query,$db,$vs);
+		
+				
+}
+
+
+
+function sql_fetch_assoc($rs){
+	return pg_fetch_assoc($rs);
+	
 }
 
 function sql_fetch_array($rs){
 	return pg_fetch_array($rs);
-
 }
 
 function sql_insert_id($db,$rs){
-	return pg_last_oid($rs);
+	return $rs['lastval'];
 }
 
 function sql_affected_rows($db,$rs){

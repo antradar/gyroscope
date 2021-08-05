@@ -1,0 +1,29 @@
+{
+"fields":[
+	{"field":"primaryfield","disp":"Entity Name","def":"company"},
+	{"field":"primaryrecords","disp":"Entity Name (Pl.)","def":"companies"},
+
+	{"field":"primarykey","disp":"Primary Key","def":"companyid"}	
+		
+],
+
+"templates":[
+	{"template":"portal_files","filename":"create a new Gyroscope instance:","nocopy":1},	
+	{"template":"portal_sql","filename":"add the following #primaryfield#-specific tables:"},	
+	{"template":"portal_tables","filename":"Guest App: modify <em>lb.php</em>"},	
+	{"template":"portal_keys","filename":"generate a secure $#primaryfield#dbsalt key","nocopy":1},	
+	{"template":"portal_listusers","filename":"Host App: add icl/list#primaryfield#users.inc.php"},	
+	{"template":"portal_show","filename":"Host App: modify icl/show#primaryfield#.inc.php","nocopy":1},	
+	{"template":"portal_js","filename":"Host App: add to #primaryrecords#.js"},	
+	{"template":"portal_adduser","filename":"Host App: add icl/add#primaryfield#user.inc.php"},	
+	{"template":"portal_resetuser","filename":"Host App: add icl/reset#primaryfield#user.inc.php"},	
+	{"template":"portal_disableuser","filename":"Host App: add icl/disable#primaryfield#user.inc.php"},	
+	{"template":"portal_enableuser","filename":"Host App: add icl/enable#primaryfield#user.inc.php"},	
+	{"template":"portal_deluser","filename":"Host App: add icl/del#primaryfield#user.inc.php"},	
+	{"template":"portal_switches","filename":"modify myservices.php"},
+	{"template":"portal_serviceworker","filename":"modify service_worker.js"},
+	{"template":"portal_refresh","filename":"modify refresh.php"},
+	{"template":"portal_master","filename":"create a super #primaryfield# admin account","nocopy":1}
+	
+]
+}

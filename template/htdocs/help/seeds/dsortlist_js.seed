@@ -1,4 +1,40 @@
-#record#_mousedown=function(#masterkey#,d,tmid){
+#record#_touchstart=function(#masterkey#,d,tmid,gskey){
+	if (event.touches.length==1){
+		return; //uncomment to debug on emulator
+	}
+
+	event.preventDefault();
+
+	var sd=gid('#record#shadow_'+#masterkey#);
+	
+	d.ontouchend=function(){
+		d.tmid=tmid;
+		
+		if (sd.swapsrc==null||sd.swapsrc.tmid==null) {
+			sd.swapsrc=d;
+			d.className='sortlistitem src';
+		} else {
+			if (d!=sd.swapsrc) {sd.swapdst=d;d.className='sortlistitem dst';}
+		}
+
+
+		if (sd.swapsrc!=null&&sd.swapdst!=null){
+			sd.swapdst.style.borderTop='dashed 2px';
+			var srcid=sd.swapsrc.tmid;
+			var dstid=sd.swapdst.tmid;
+
+			setTimeout(function(){
+				ajxpgn('#records#_'+#masterkey#,document.appsettings.codepage+'?cmd=swap#record#pos&#masterkey#='+#masterkey#+'&tmid='+srcid+'&targetid='+dstid,0,0,null,null,null,null,gskey);				
+			},300);
+			
+			sd.swapsrc=null;
+			sd.swapdst=null;
+		}
+
+	}
+}
+
+#record#_mousedown=function(#masterkey#,d,tmid,gskey){
 	var dragging;
 	var posy=d.offsetTop;
 	var oy;
@@ -53,7 +89,7 @@
 				document.targettm.style.borderBottom='solid 1px #d4edc9';
 				document.targettm=null;
 	
-				ajxpgn('#records#_'+#masterkey#,document.appsettings.codepage+'?cmd=swap#record#pos&#masterkey#='+#masterkey#+'&tmid='+document.dragtmid+'&targetid='+targetid);
+				ajxpgn('#records#_'+#masterkey#,document.appsettings.codepage+'?cmd=swap#record#pos&#masterkey#='+#masterkey#+'&tmid='+document.dragtmid+'&targetid='+targetid,0,0,null,null,null,null,gskey);
 			}
 			
 			document.dragtmid=null;

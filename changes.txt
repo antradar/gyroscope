@@ -1,3 +1,190 @@
+*18.3
+- non-numeric record IDs
+- ClickHouse support
+
+18.2
+- gamepad controls
+
+18.1
+- auto saver
+- lookupentity using POST for textarea
+- oninput in addition to onchange to instantly trigger tabchanged event
+
+18.0
+- encdec remote mode change
+
+17.9
+- WSS Server (using Redis)
+
+*17.8
+- WSSS server (settings in lb.php, patch forminput.php)
+- refresh.php for clearing cache
+
+*17.7
+- encdec remote mode
+
+*17.6
+- entity-specific table namespace
+- codegen: vendor portal
+
+17.5
+- diff logging
+- home dash reports
+
+
+*17.4
+- MS Graph integration
+
+17.3
+- updated postgre connector (sql.php.pg)
+- added pastetotextarea function to autocomplete.js
+
+17.2
+- codegen: bubble chart
+
+*17.1
+- gsx/multi-core support
+
+17.0
+- sql readonly mode
+- high res sprites and split desktop/mobile HD promote styles
+- codegen: faceted nav charts
+
+
+16.9
+- prominent display of "add to home screen" button if the app can be, but not yet added
+- cert vital monitoring utility
+- gsguard cache
+- codegen: faceted nav 1-N count fix
+
+*16.8
+- offline mode and contextual clipboard
+
+16.7
+- auto dismissal of mini lookup views
+- enforcing secure cookies ($usehttps in lb.php)
+- $usehttps falls back to 0 when in dev/exemption mode
+
+16.6
+- retro browser compatibility
+- pullupeditor for richtext editors
+- collapsable section header style
+- animated tab bookmark scrolling (gutter navigation)
+
+16.5
+- federated signon
+- wss client for v1.2 server
+- "tab saved" notification in addition to "tab changed"
+
+16.4.1
+- noapos: removes line breaks by default
+- nano.js: ajxpgn headless mode
+ 
+*16.4
+- utils: "warn" mode in ascii scanner
+- accessibility: higher contrast
+- vendor authentication
+
+16.3
+- added Google Authenticator option
+- bundled QR code image generator (phpqrcode)
+
+16.2
+- codegen: passing dimension keys to faceted nav dispname function
+- shorttag scanner in utils
+- deprecated shorttags
+
+16.1
+- screen reader friendliness on mobile
+- improved heatmap colors and logarithmic curve
+- password strength indicator
+- auto set active template
+
+16.0
+- multi-touch sort list for mobile
+
+15.9
+- calendar heatmap and blockmap framework (patches: lookup.inc.php, autocomplete.js, rptactionlog.inc.php)
+  e.g. pickdate(this,{params:'...'});
+- misc. graphics improvement
+- chrome pwa link
+- CSRF token swap on login page
+
+15.8
+- Ctrl+S to save current active tab
+- Report access authentication
+
+15.7
+- virtual keyboard support + Cree IME
+
+15.6
+- * added jsflag/_jsflag and forceajxjs to lb.php. use jsflag instead of self.x in ajxjs
+- added link to Today in calendar lookup
+- addtab title response to server-side header
+
+15.5
+- codegen: misc fixes
+- mceloader: deferred scrolling
+- validator: optional range check
+
+15.4
+- search within template variable lookup
+
+15.3
+- codegen: faceted nav template fixes
+- added tab icons
+
+15.2
+- codegen: gs-faceted nav: date range filter
+- xajxjs: sub namespace
+- smart card form moved to 2fa
+- codegen: "Go to page:" in pagination
+
+15.1
+- errfunc callback in reloadtab
+- POST body in lookupentities and listlookup
+- error message in apperror
+
+*15.0
+- sql prepared statements, sget/sqet
+- source-ip spoofing countermeasure
+- protected report settings
+- codegen: gskey in uploaders
+- misc. security fixes
+- ascii scan utility
+- user access inheritance enforcement
+- multiple argument picklookup support; .valuecount; deprecated picklookup3
+- rich text editor: store/resume scroll position
+
+*14.2
+- switched password storage scheme - previously stored users must rest their passwords
+ 
+14.1
+- DOM injection prevention (double tag escaping for JS parameters; hint: do not double escape picklookup calls)
+- MCE: "anysize" virtual plugin to bypass image size filtering
+
+*14.0
+- record-action-level authentication with makegskey,emitgskey,checkgskey
+
+13.9
+- additional XSS prevention headers
+
+13.8
+- *added static and user-specific help system
+- added row cloning function sql_copy_from_query
+
+13.7
+- "lI01" legible font toggling
+
+13.6
+- added profiling utility $gsdbprofile and dumpgsdbprofile()
+- improved RTL support
+- externalized some language packs
+
+13.5
+- codegen: added lead-in in sortlist (use listusers.inc.php for a demo)
+- included lazyloadimgs and flex-images libraries for image tiling
+
 13.4
 - added additional "My Account" link in Settings for non-privileged users
 - 24-hour hash root

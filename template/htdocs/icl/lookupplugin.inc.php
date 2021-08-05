@@ -22,5 +22,5 @@ function lookupplugin(){
 	</div>
 
 </div>
-<?
+<?php
 }

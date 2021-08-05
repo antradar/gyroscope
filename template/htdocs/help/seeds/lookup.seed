@@ -2,25 +2,32 @@
 
 function lookup#record#(){
 	global $db; 
-	$key=GETSTR('key');
+	$key=SGET('key');
 	
-	$page=$_GET['page']+0;
+	$page=intval($_GET['page']);
 	$mul=$_GET['mul'];
 	
+	//gsguard if applicable
 
 ?>
 <div class="section">
 
-<?		
+<?php		
 	$clip=50;
 	
+	$params=array();
+	
 	$query="select * from #lookuptable# ";
-	if ($key!='') $query.=" where (#searchquery#) ";
+	if ($key!='') {
+		$query.=" where (#searchquery#) ";
+		//array_push($params,...);
+	}
 	
 	$query.=" order by #sortquery# ";
+	
 	$query.=" limit $clip";	//comment out if no clipping wanted
 	
-	$rs=sql_query($query,$db);
+	$rs=sql_prep($query,$db,$params);
 	
 	$c=sql_affected_rows($db,$rs);
 	if ($c>1&&$mul){
@@ -28,7 +35,7 @@ function lookup#record#(){
 <div class="inputrow">
 	<a class="hovlink" onclick="pickupalllookups(this);">select all items</a>
 </div>
-<?		
+<?php		
 	}
 	
 	
@@ -42,11 +49,11 @@ function lookup#record#(){
 
 ?>
 <div class="listitem" style="position:relative;">
-<?if ($mul){?>
-<input type="checkbox" class="lksel" value="<?echo $#lookupkey#;?>" onclick="selectpickup(this,'<?echo $db#record#title;?>');">
-<?}?>
-<a onclick="picklookup('<?echo $db#record#title;?>',<?echo $#lookupkey#;?>);"><?echo $#record#title;?></a></div>
-<?		
+<?php if ($mul){?>
+<input type="checkbox" class="lksel" value="<?php echo $#lookupkey#;?>" onclick="selectpickup(this,'<?php echo $db#record#title;?>');">
+<?php }?>
+<a onclick="picklookup('<?php echo $db#record#title;?>','<?php echo $#lookupkey#;?>');"><?php echo htmlspecialchars($#record#title);?></a></div>
+<?php		
 	}//while
 	
 

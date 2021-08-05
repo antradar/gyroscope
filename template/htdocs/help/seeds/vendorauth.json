@@ -1,0 +1,34 @@
+{
+"fields":[
+	{"field":"primaryfield","disp":"Invoker Entity Name","def":"vendor"},
+	{"field":"primaryrecords","disp":"Invoker Entity Name (Pl.)","def":"vendors"},
+
+	{"field":"primarykey","disp":"Invoker Primary Key","def":"vendorid"},
+
+	{"field":"rolelist","disp":"Roles","def":"vendor_view|vendor: view records\nvendor_del|vendor: delete records", "type":"fieldlist"}	
+	
+		
+],
+
+"templates":[
+	{"template":"vendor_sql","filename":"database: extend users table"},	
+	{"template":"vendor_authlogin","filename":"modify <em>function login</em> in auth.php","nocopy":1},	
+	{"template":"vendor_userinfo","filename":"modify <em>function userinfo</em> in auth.php","nocopy":1},	
+	{"template":"vendor_login","filename":"modify login.php","nocopy":1},	
+	{"template":"vendor_reauth","filename":"modify icl/reauth.inc.php","nocopy":1},	
+	{"template":"vendor_settings","filename":"modify settings.php"},	
+	{"template":"vendor_showvendor","filename":"modify icl/show#primaryfield#.inc.php","nocopy":1}, 	
+	{"template":"vendor_accounts","filename":"icl/list#primaryfield#accounts.inc.php"}, 	
+	{"template":"vendor_jsadd","filename":"modify users.js: adduser=function(...){","nocopy":1},	
+	{"template":"vendor_jsdel","filename":"modify users.js: deluser=function(...){","nocopy":1},	
+	{"template":"vendor_newuser","filename":"modify icl/newuser.inc.php","nocopy":1}, 	
+	{"template":"vendor_adduser","filename":"modify icl/adduser.inc.php","nocopy":1}, 	
+	{"template":"vendor_deluser","filename":"modify icl/deluser.inc.php","nocopy":1}, 	
+	{"template":"vendor_showuser","filename":"modify icl/showuser.inc.php","nocopy":1}, 	
+	{"template":"vendor_updateuser","filename":"modify icl/updateuser.inc.php","nocopy":1}, 	
+	{"template":"vendor_listusers","filename":"modify icl/listusers.inc.php","nocopy":1}, 	
+	{"template":"vendor_reportsettings","filename":"modify icl/showreportsettings.inc.php","nocopy":1}, 	
+	{"template":"vendor_switches","filename":"modify myservices.php"}, 	
+	{"template":"vendor_checklist","filename":"security checklist","nocopy":1}
+]
+}

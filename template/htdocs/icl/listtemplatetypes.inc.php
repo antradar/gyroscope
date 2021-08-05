@@ -2,13 +2,17 @@
 
 function listtemplatetypes(){
 	global $db; 
-	$mode=GETSTR('mode');
-	$key=GETSTR('key');
+	$mode=SGET('mode');
+	$key=SGET('key');
 	
-	$page=isset($_GET['page'])?$_GET['page']+0:0;
+	$page=intval($_GET['page']);
 	
 	$user=userinfo();
-	$gsid=$user['gsid']+0;
+	$gsid=$user['gsid'];
+	
+	header('listviewtitle:'.tabtitle(_tr('icon_templatetypes')));
+	header('listviewflag:showtemplatetype');
+	header('listviewjs:templatetypes.js');	
 	
 	if ($mode!='embed'){
 
@@ -17,35 +21,41 @@ function listtemplatetypes(){
 <div class="listbar">
 	<form class="listsearch" onsubmit="_inline_lookuptemplatetype(gid('templatetypekey'));return false;">
 	<div class="listsearch_">
-		<input id="templatetypekey" class="img-mg" onkeyup="_inline_lookuptemplatetype(this);" autocomplete="off">
+		<input onfocus="document.hotspot=this;" id="templatetypekey" class="img-mg" onkeyup="_inline_lookuptemplatetype(this);" autocomplete="off">
 		<img src="imgs/inpback.gif" class="inpback" onclick="inpbackspace('templatetypekey');_inline_lookuptemplatetype(gid('templatetypekey'));">
 	</div>
 	<input type="image" src="imgs/mg.gif" class="searchsubmit" value=".">
 	</form>
 
-	<?
+	<?php
 	if ($user['groups']['systemplate']){
 	?>
 	<div style="padding-top:10px;">
-	<a class="recadder" onclick="addtab('templatetype_new','<?tr('list_templatetype_add_tab');?>','newtemplatetype');"> <img src="imgs/t.gif" class="img-addrec"><?tr('list_templatetype_add');?></a>
+	<a class="recadder" onclick="addtab('templatetype_new','<?php tr('list_templatetype_add_tab');?>','newtemplatetype');"> <img src="imgs/t.gif" class="img-addrec"><?php tr('list_templatetype_add');?></a>
 	</div>
-	<?
+	<?php
 	}
 	?>
 </div>
 
 <div id="templatetypelist">
-<?		
+<?php		
 	}
 
-	$query="select * from templatetypes where gsid=$gsid ";
+	$params=array($gsid);
+	$query="select * from ".TABLENAME_TEMPLATETYPES." where ".COLNAME_GSID."=? ";
 	
-	$soundex=GETSTR('soundex')+0;
+	$soundex=intval(SGET('soundex'));
 	$sxsearch='';
-	if ($soundex&&$key!='') $sxsearch=" or concat(soundex(templatetypename),'') like concat(soundex('$key'),'%') ";
+	if ($soundex&&$key!='') $sxsearch=" or concat(soundex(templatetypename),'') like concat(soundex(?),'%') ";
 	
-	if ($key!='') $query.=" and (templatetypename like '%$key%' or templatetypekey like '$key%' $sxsearch) ";
-	$rs=sql_query($query,$db);
+	if ($key!=''){
+		$query.=" and (templatetypename like ? or templatetypekey like ? $sxsearch) ";
+		array_push($params,"%$key%","%$key%");
+		if ($soundex) array_push($params,$key);
+	}
+		
+	$rs=sql_prep($query,$db,$params);
 	$count=sql_affected_rows($db,$rs);
 	
 	$perpage=20;
@@ -58,18 +68,18 @@ function listtemplatetypes(){
 	if ($maxpage>0){
 ?>
 <div class="listpager">
-<?echo $page+1;?> of <?echo $maxpage+1;?>
+<?php echo $page+1;?> of <?php echo $maxpage+1;?>
 &nbsp;
-<a href=# onclick="ajxpgn('templatetypelist',document.appsettings.codepage+'?cmd=slv_core__templatetypes&key='+encodeHTML(gid('templatetypekey').value)+'&page=<?echo $page-1;?>&mode=embed');return false;">&laquo; Prev</a>
+<a href=# onclick="ajxpgn('templatetypelist',document.appsettings.codepage+'?cmd=slv_core__templatetypes&key='+encodeHTML(gid('templatetypekey').value)+'&page=<?php echo $page-1;?>&mode=embed');return false;">&laquo; Prev</a>
 |
-<a href=# onclick="ajxpgn('templatetypelist',document.appsettings.codepage+'?cmd=slv_core__templatetypes&key='+encodeHTML(gid('templatetypekey').value)+'&page=<?echo $page+1;?>&mode=embed');return false;">Next &raquo;</a>
+<a href=# onclick="ajxpgn('templatetypelist',document.appsettings.codepage+'?cmd=slv_core__templatetypes&key='+encodeHTML(gid('templatetypekey').value)+'&page=<?php echo $page+1;?>&mode=embed');return false;">Next &raquo;</a>
 </div>
-<?		
+<?php		
 	}
 	
-	$query.=" order by templatetypename limit $start,$perpage";	
+	$query.=" order by templatetypename limit $start,$perpage ";	
 	
-	$rs=sql_query($query,$db);
+	$rs=sql_prep($query,$db,$params);
 	
 	while ($myrow=sql_fetch_array($rs)){
 		$templatetypeid=$myrow['templatetypeid'];
@@ -77,10 +87,10 @@ function listtemplatetypes(){
 		
 		$templatetypetitle="$templatetypename"; //change this if needed
 		
-		$dbtemplatetypetitle=noapos(htmlspecialchars($templatetypetitle));
+		$dbtemplatetypetitle=htmlspecialchars(noapos(htmlspecialchars($templatetypetitle)));
 ?>
-<div class="listitem"><a onclick="showtemplatetype(<?echo $templatetypeid;?>,'<?echo $dbtemplatetypetitle;?>');"><?echo $templatetypetitle;?></a></div>
-<?		
+<div class="listitem"><a onclick="showtemplatetype('<?php echo $templatetypeid;?>','<?php echo $dbtemplatetypetitle;?>');"><?php echo htmlspecialchars($templatetypetitle);?></a></div>
+<?php		
 	}//while
 	
 	if ($mode!='embed'){
@@ -89,10 +99,10 @@ function listtemplatetypes(){
 </div>
 
 <script>
-gid('tooltitle').innerHTML='<a><?tr('icon_templatetypes');?></a>';
-ajxjs(self.showtemplatetype,'templatetypes.js');
+gid('tooltitle').innerHTML='<a><?php tr('icon_templatetypes');?></a>';
+ajxjs(<?php jsflag('showtemplatetype');?>,'templatetypes.js');
 </script>
-<?	
+<?php	
 	}//embed mode
 
 }

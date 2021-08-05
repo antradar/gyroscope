@@ -1,0 +1,8 @@
+	if ($_GET['#fld0#_a']!='') {
+		$filters.=' and #fld0#>=? ';
+		array_push($params,$_GET['#fld0#_a']);
+	}
+	if ($_GET['#fld0#_b']!='') {
+		$filters.=' and #fld0#<=? ';
+		array_push($params,$_GET['#fld0#_b']);
+	}

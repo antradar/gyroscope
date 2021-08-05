@@ -1,0 +1,5 @@
+
+	* deplay a new instance of Gyroscope
+	* copy /protected/clogos/#primaryrecords#_default.gif from default.gif
+	* modify #primaryrecords#_default.gif so that it is #primaryfield#-specific
+	

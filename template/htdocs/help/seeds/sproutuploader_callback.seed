@@ -8,7 +8,7 @@ include 'sproutvideo.php';
 include 'forminput.php';
 
 $#primarykey#=GETVAL('#primarykey#');
-$videokey=GETSTR('video_id');
+$videokey=SGET('video_id');
 
 $auth=$_GET['auth'];
 $auth_=md5($sproutwebhookkey.$#primarykey#);
@@ -18,27 +18,28 @@ if ($auth!=$auth_) die('Access denied');
 if ($_GET['successful']=='true'){
 	
 	//remove existing video
-	$query="select * from #table# where #primarykey#=$#primarykey# and videokey!=''";
-	$rs=sql_query($query,$db);
+	$query="select * from #table# where #primarykey#=? and videokey!=''";
+	$rs=sql_prep($query,$db,$#primarykey#);
 	if ($myrow=sql_fetch_assoc($rs)){
 		$oldkey=$myrow['videokey'];
 		sproutvideo_delete($oldkey);
 	}
 	
-	$query="update #table# set videokey='$videokey',videostatus=0 where #primarykey#=$#primarykey#";
-	sql_query($query,$db);
+	$query="update #table# set videokey=?,videostatus=0 where #primarykey#=?";
+	sql_prep($query,$db,array($videokey,$#primarykey#));
 	
 } else {
 ?>
 <script>
 	alert('Error uploading video');
 </script>
-<?
+<?php
+
 }
 
 ?>
 <script>
-parent.reload#record#videouploader(<?echo $#primarykey#;?>);
+parent.reload#record#videouploader(<?php echo $#primarykey#;?>);
 </script>
 
 

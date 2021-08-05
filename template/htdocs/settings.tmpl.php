@@ -1,4 +1,4 @@
-<?
+<?php
 include 'lang.php';
 
 //comment out the following lines to disable authentication

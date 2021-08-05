@@ -6,12 +6,15 @@ function listreportsettings(){
 	global $deflang;
 	
 	$user=userinfo();
-	$gsid=$user['gsid']+0;
+	$gsid=$user['gsid'];
+
+	$syslevel=0;
+	if (!is_numeric($gsid)) $syslevel=NULL_UUID;		
+
+	$mode=SGET('mode');
+	$key=SGET('key');
 	
-	$mode=GETSTR('mode');
-	$key=GETSTR('key');
-	
-	$page=isset($_GET['page'])?$_GET['page']+0:0;
+	$page=intval($_GET['page']);
 	
 	if ($mode!='embed'){
 
@@ -20,28 +23,37 @@ function listreportsettings(){
 <div class="listbar">
 	<form class="listsearch" onsubmit="_inline_lookupreportsetting(gid('reportsettingkey'));return false;">
 	<div class="listsearch_">
-		<input id="reportsettingkey" class="img-mg" onkeyup="_inline_lookupreportsetting(this);">
+		<input onfocus="document.hotspot=this;" id="reportsettingkey" class="img-mg" onkeyup="_inline_lookupreportsetting(this);">
 	</div>
 	<input type="image" src="imgs/mg.gif" class="searchsubmit" value=".">
 	</form>
-
+	<?php if ($user['groups']['devreports']){?>
 	<div style="padding-top:10px;">
-	<a class="recadder" onclick="addtab('reportsetting_new','<?tr('list_reportsetting_add_tab');?>','newreportsetting');"> <img src="imgs/t.gif" class="img-addrec"><?tr('list_reportsetting_add');?></a>
+	<a class="recadder" onclick="addtab('reportsetting_new','<img src=&quot;imgs/t.gif&quot; class=&quot;ico-setting&quot;><?php tr('list_reportsetting_add_tab');?>','newreportsetting');"> <img src="imgs/t.gif" class="img-addrec"><?php tr('list_reportsetting_add');?></a>
 	</div>
+	<?php }?>
 </div>
 
 <div id="reportsettinglist">
-<?		
+<?php		
 	}
 
-	$query="select * from ".TABLENAME_REPORTS." where (gsid=$gsid or gsid=0) ";
+	$params=array($gsid,$syslevel);
+	$query="select * from ".TABLENAME_REPORTS." where (gsid=? or gsid=?) ";
+	if (TABLENAME_GSS!='gss') $query="select * from ".TABLENAME_REPORTS." where (".COLNAME_GSID."=? or ".COLNAME_GSID."=?)";
 	
-	$soundex=GETSTR('soundex')+0;
+	$soundex=intval(SGET('soundex'));
 	$sxsearch='';
-	if ($soundex&&$key!='') $sxsearch=" or concat(soundex(reportname_$lang),'') like concat(soundex('$key'),'%') ";
+	if ($soundex&&$key!='') $sxsearch=" or concat(soundex(reportname_$lang),'') like concat(soundex(?),'%') ";
 	
-	if ($key!='') $query.=" and (reportname_$lang like '%$key%' or reportgroup_$lang like '%$key%' $sxsearch) ";
-	$rs=sql_query($query,$db);
+	if ($key!='') {
+		$query.=" and (lower(reportname_$lang) like lower(?) or lower(reportgroup_$lang) like lower(?) $sxsearch) ";
+		array_push($params,"%$key%","%$key%");
+		if ($sxsearch){
+			array_push($params,$key);	
+		}
+	}
+	$rs=sql_prep($query,$db,$params);
 	$count=sql_affected_rows($db,$rs);
 	
 	$perpage=20;
@@ -54,18 +66,17 @@ function listreportsettings(){
 	if ($maxpage>0){
 ?>
 <div class="listpager">
-<?echo $page+1;?> of <?echo $maxpage+1;?>
+<?php echo $page+1;?> of <?php echo $maxpage+1;?>
 &nbsp;
-<a href=# onclick="ajxpgn('reportsettinglist',document.appsettings.codepage+'?cmd=slv_core__reportsettings&key='+encodeHTML(gid('reportsettingkey').value)+'&page=<?echo $page-1;?>&mode=embed');return false;">&laquo; Prev</a>
+<a href=# onclick="ajxpgn('reportsettinglist',document.appsettings.codepage+'?cmd=slv_core__reportsettings&key='+encodeHTML(gid('reportsettingkey').value)+'&page=<?php echo $page-1;?>&mode=embed');return false;">&laquo; Prev</a>
 |
-<a href=# onclick="ajxpgn('reportsettinglist',document.appsettings.codepage+'?cmd=slv_core__reportsettings&key='+encodeHTML(gid('reportsettingkey').value)+'&page=<?echo $page+1;?>&mode=embed');return false;">Next &raquo;</a>
+<a href=# onclick="ajxpgn('reportsettinglist',document.appsettings.codepage+'?cmd=slv_core__reportsettings&key='+encodeHTML(gid('reportsettingkey').value)+'&page=<?php echo $page+1;?>&mode=embed');return false;">Next &raquo;</a>
 </div>
-<?		
+<?php		
 	}
 	
 	$query.=" order by reportgroup_$lang, reportname_$lang limit $start,$perpage";	
-	
-	$rs=sql_query($query,$db);
+	$rs=sql_prep($query,$db,$params);
 
 	$lastgroup='';
 			
@@ -77,18 +88,18 @@ function listreportsettings(){
 		
 		$reportsettingtitle="$reportname"; //change this if needed
 		
-		$dbreportsettingtitle=noapos(htmlspecialchars($reportsettingtitle));
+		$dbreportsettingtitle=noapos(htmlspecialchars(htmlspecialchars($reportsettingtitle)));
 		
 		if ($lastgroup!=$reportgroup){
 ?>
-<div class="sectionheader"><?echo $reportgroup;?></div>
-<?			
+<div class="sectionheader"><?php echo $reportgroup;?></div>
+<?php			
 			$lastgroup=$reportgroup;
 		}
 		
 ?>
-<div class="listitem"><a onclick="showreportsetting(<?echo $reportid;?>,'<?echo $dbreportsettingtitle;?>');"><?echo $reportsettingtitle;?></a></div>
-<?		
+<div class="listitem"><a onclick="showreportsetting('<?php echo $reportid;?>','<?php echo $dbreportsettingtitle;?>');"><?php echo htmlspecialchars($reportsettingtitle);?></a></div>
+<?php		
 	}//while
 	
 	if ($mode!='embed'){
@@ -97,10 +108,10 @@ function listreportsettings(){
 </div>
 
 <script>
-gid('tooltitle').innerHTML='<a><?tr('icon_reportsettings');?></a>';
-ajxjs(self.showreportsetting,'reportsettings.js');
+gid('tooltitle').innerHTML='<a><?php tr('icon_reportsettings');?></a>';
+ajxjs(<?php jsflag('showreportsetting');?>,'reportsettings.js');
 </script>
-<?	
+<?php	
 	}//embed mode
 
 }

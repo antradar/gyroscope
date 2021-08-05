@@ -1,10 +1,14 @@
-<?
+<?php
 include 'lb.php';
 if ($usehttps) include 'https.php';
 
 include 'connect.php';
 include 'settings.php';
 include 'retina.php';
+include 'forminput.php';
+
+include 'xss.php';
+xsscheck(1);
 
 include 'evict.php';
 evict_check();
@@ -14,16 +18,18 @@ $user=userinfo();
 ?>
 <html>
 <head>
-	<title><?echo GYROSCOPE_PROJECT;?></title>
+	<title><?php echo GYROSCOPE_PROJECT;?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	<meta name="theme-color" content="#454242" />
 	<link href="iphone/gyrodemo.css" type="text/css" rel="stylesheet" />
+	<link href="gsnotes.css" type="text/css" rel="stylesheet" />
 	<link href="toolbar.css" type="text/css" rel="stylesheet" />
 	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-	<?
+	<?php
 	include 'appicon.php';
 	?>
+	<link rel="manifest" href="manifest.php?hb=<?php echo time();?>">
 <style>
 body{font-family:helvetica;}
 .menuitem{padding-left:10px;height:30px;float:left;margin-right:3px;}
@@ -34,6 +40,17 @@ body{font-family:helvetica;}
 	text-decoration:none;
 }
 
+<?php if ($SQL_READONLY){
+?>
+/* readonly mode */
+button.warn, .button.warn{display:none;}
+.recadder{display:none;}
+.changebar_anchor{display:none;}
+.savebar_anchor{display:none;}
+#toolicons{border-top:dashed 2px #8B6827;}
+<?php	
+}?>
+
 </style>
 
 </head>
@@ -42,23 +59,24 @@ body{font-family:helvetica;}
 <div id="toolbg" style="position:fixed;width:100%;z-index:1000;top:0;background:#333333;opacity:0.9"></div>
 <div id="toolicons" style="position:fixed;width:100%;z-index:2000;top:0;">
 
-	<?
+	<?php
 	$tcount=1;
 	if ($enablelivechat) $tcount=2;
 	foreach ($toolbaritems as $ti) if (isset($ti['icon'])&&$ti['icon']!='') $tcount++;
 	?>
-	<div id="toollist" style="overflow:auto;width:100%;"><div style="width:<?echo 52*($tcount+1);?>px;">
+	<div id="toollist" style="overflow:auto;width:100%;"><div style="width:<?php echo 52*($tcount+1);?>px;">
 		
-	<div class="menuitem"><a id="speechstart" href=# onclick="ajxjs(self.speech_startstop,'speech.js');speech_startstop(1);return false;" style="display:none;"><img style="" class="img-speechrecog" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
-	<div class="menuitem" id="homeicon"><a href=# onclick="showtab('welcome');document.viewindex=null;return false;"><img class="img-home" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
+	<div class="menuitem"><a id="speechstart" href=# onclick="ajxjs(<?php jsflag('speech_startstop');?>,'speech.js');speech_startstop(1);return false;" style="display:none;"><img alt="voice commands" style="" class="img-speechrecog" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
+	<div class="menuitem" id="homeicon"><a href=# onclick="reloadtab('welcome','','wk');showtab('welcome');document.viewindex=null;return false;"><img alt="home menu" class="img-home" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
+	<div class="menuitem" id="gsnotesclipicon"><a href=# onclick="if (navigator.onLine) gsnotes_listclips(); else onlinestatuschanged();"><img alt="offline clipboard" class="img-gsclip" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
 
-	<?foreach ($toolbaritems as $modid=>$ti){
-		if ($ti['type']=='break') continue;
+	<?php foreach ($toolbaritems as $modid=>$ti){
+		if ($ti['type']==='break') continue;
 		if ($ti['noiphone']) continue;	
-		if ($ti['type']=='custom'){
+		if ($ti['type']==='custom'){
 		?>
-		<?echo $ti['iphone'];?>
-		<?	
+		<?php echo $ti['iphone'];?>
+		<?php	
 			continue;
 		}
 		
@@ -74,14 +92,14 @@ body{font-family:helvetica;}
 		}
 		
 	?>
-	<div class="menuitem"><a href=# onclick="<?echo $action;?>return false;"><img class="<?echo $ti['icon'];?>" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
-	<?}?>
-	<?if ($enablelivechat){?>
-	<div class="menuitem"><a href=# onclick="livechat_start();return false;"><img id="chaticon" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
-	<?}?>
+	<div class="menuitem"><a onclick="<?php echo $action;?>return false;"><img alt="<?php echo $ti['title'];?>" class="<?php echo $ti['icon'];?>" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
+	<?php }?>
+	<?php if ($enablelivechat){?>
+	<div class="menuitem"><a href=# onclick="livechat_start();return false;"><img alt="live chat" id="chaticon" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
+	<?php }?>
 	</div></div>
-	<span id="labellogin" style="display:none;"><?echo $user['login'];?></span><span id="labeldispname" style="display:none;"><?echo $user['dispname'];?></span>	
-	<a href="login.php?from=<?echo $_SERVER['PHP_SELF'];?>" style="position:absolute;top:10px;right:10px;"><img border="0" width="16" height="16" src="imgs/t.gif" class="admin-logout"></a>
+	<span id="labellogin" style="display:none;"><?php echo $user['login'];?></span><span id="labeldispname" style="display:none;"><?php echo $user['dispname'];?></span>	
+	<a href="login.php?from=<?php echo $_SERVER['PHP_SELF'];?>" style="position:absolute;top:10px;right:10px;"><img alt="sign out" border="0" width="16" height="16" src="imgs/t.gif" class="admin-logout"></a>
 </div><!-- toolicons -->
 <div id="pusher" style="width:100%;height:50px;"></div>
 
@@ -93,12 +111,12 @@ body{font-family:helvetica;}
 	</video>	
 </div>
 <div id="leftview" style="float:left;margin-left:10px;width:210px;margin-right:10px;">
-	<div id="tooltitle" onclick="if (document.viewindex) reloadview(document.viewindex,0,1);" style="width:150px;position:fixed;top:50px;z-index:1000;height:25px;"></div>
+	<div id="tooltitle" ontouchstart="toggle_easyread_start();" ontouchend="toggle_easyread_end();" onclick="if (document.viewindex) reloadview(document.viewindex,0,1);" style="width:150px;position:fixed;top:50px;z-index:1000;height:25px;"></div>
 	<div id="tooltitleshadow" style="width:150px;height:25px;"></div>
 	<div id="lvviews">
-	<?foreach ($toolbaritems as $modid=>$ti){?>
-		<div id="lv<?echo $modid;?>" style="background-color:#ffffff;display:none;"></div>
-	<?}?>	
+	<?php foreach ($toolbaritems as $modid=>$ti){?>
+		<div id="lv<?php echo $modid;?>" style="background-color:#ffffff;display:none;"></div>
+	<?php }?>	
 	</div>
 	<div id="lkv" style="height:100%;">
 		<div id="lkvtitle"><a id="lkvt"></a><img id="lkvx" src="imgs/t.gif" onclick="hidelookup();" width="30" height="24"></div>
@@ -108,7 +126,7 @@ body{font-family:helvetica;}
 </div>
 <div id="content" style="float:left;width:320px;">
 
-	<div id="backlist" style="display:none;position:fixed;width:100%;z-index:1000;"><a id="backlistbutton"><img onclick="navback();" src="iphone/bb_<?echo $lang;?>.png"></a></div>
+	<div id="backlist" ontouchstart="toggle_easyread_start();" ontouchend="toggle_easyread_end();" style="display:none;position:fixed;width:100%;z-index:1000;"><a id="backlistbutton"><img alt="back button" onclick="navback();" src="iphone/bb_<?php echo $lang;?>.png"></a></div>
 	<div id="backlistshadow" style="display:none;width:100%;"></div>
 
 	<div id="tabtitles" style="width:325px;position:fixed;z-index:1000;"></div>
@@ -121,17 +139,19 @@ body{font-family:helvetica;}
 <div id="fsmask"></div>
 <div id="fstitlebar">
 	<div id="fstitle"></div>
-	<a id="fsclose" onclick="closefs();"><img width="10" height="10" class="img-closeall" src="imgs/t.gif"></a>
+	<a id="fsclose" onclick="closefs();"><img alt="close full screen" width="10" height="10" class="img-closeall" src="imgs/t.gif"></a>
 </div>
 <div id="fsview"></div>
 
 <script>
-document.appsettings={codepage:'<?echo $codepage;?>',fastlane:'<?echo $fastlane;?>', viewmode:'iphone', views:<?echo json_encode(array_keys($toolbaritems));?>};
+document.appsettings={codepage:'<?php echo $codepage;?>',fastlane:'<?php echo $fastlane;?>',autosave:10, viewmode:'iphone', views:<?php echo json_encode(array_keys($toolbaritems));?>};
 </script>
-<script src="lang/dict.<?echo $lang;?>.js"></script>
+<script src="lang/dict.<?php echo $lang;?>.js"></script>
 <script src="nano.js"></script>
 <script>
 hdpromote('toolbar_hd.css');
+hdpromote('iphone/gyrodemo_hd.css');
+hddemote('legacy.css');
 </script>
 <script src="iphone/tabs.js"></script>
 <script src="iphone/viewport.js"></script>
@@ -164,7 +184,7 @@ function showdeck(){
 
 function rotate(){
 	
-<?
+<?php 
 	$ori_portrait_backward=180;
 	$ori_portrait_forward=0;
 	$ori_landscape_backward=-90;
@@ -184,11 +204,20 @@ function rotate(){
 ?>	
 	var ori=90;
 	if (window.matchMedia){
-		if (window.matchMedia('(orientation: landscape)').matches) ori=<?echo $ori_landscape_forward;?>;
-		else if (window.matchMedia('(orientation: portrait)').matches) ori=<?echo $ori_portrait_forward;?>;
+		if (window.matchMedia('(orientation: landscape)').matches) ori=<?php echo $ori_landscape_forward;?>;
+		else if (window.matchMedia('(orientation: portrait)').matches) ori=<?php echo $ori_portrait_forward;?>;
 	}
 	
 	if (window.operamini) ori=0;	
+	
+	<?php
+	if (strpos($agent,'Mobile; ALCATEL ')!==false){
+	?>
+		ori=0; //alcatel flip phone
+	<?php	
+	}	
+	?>
+	
 	
 	if (!document.appsettings.cw) document.appsettings.cw=320;
 	if (document.appsettings.cw<document.body.clientWidth) document.appsettings.cw=document.body.clientWidth;
@@ -197,7 +226,7 @@ function rotate(){
 	var vw=document.body.clientWidth;
 	
 	switch(ori){
-	case <?echo $ori_portrait_backward;?>: case <?echo $ori_portrait_forward;?>: 
+	case <?php echo $ori_portrait_backward;?>: case <?php echo $ori_portrait_forward;?>: 
 		
 		//gid('panel2').style.display='block';
 		showdeck();
@@ -222,7 +251,7 @@ function rotate(){
 
 		
 	break;
-	case <?echo $ori_landscape_forward;?>: case <?echo $ori_landscape_backward;?>: 
+	case <?php echo $ori_landscape_forward;?>: case <?php echo $ori_landscape_backward;?>: 
 		//gid('panel2').style.display='none';
 		gid('leftview').style.display='block';
 		gid('leftview').style.width='210px';
@@ -262,7 +291,7 @@ function portrait_ignore(ttl){
 	setTimeout(function(){document.portraitlock=null;},ttl);
 }
 
-addtab('welcome','<?tr('tab_welcome');?>','wk',null,null,{noclose:true});
+addtab('welcome','<?php tr('tab_welcome');?>','wk',null,null,{noclose:true});
 
 function onrotate(){
 	if (document.resizetimer) clearTimeout(document.resizetimer);
@@ -284,27 +313,32 @@ onrotate();
 scaleall(document.body);
 
 </script>
-<?include 'ws_js.php';?>
+<?php include 'ws_js.php';?>
 <script src="speechloader.js"></script>
 <script>
 if (window.Notification) Notification.requestPermission();
 </script>
-<?if ($enablelivechat){?>
-<script type="text/javascript">
-window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
-d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
-_.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute("charset","utf-8");
-$.src="https://v2.zopim.com/?<?echo $chatkey;?>";z.t=+new Date;$.
-type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
-</script>
-<script src="livechat.js"></script>
-<?}?>	
+<?php if ($enablelivechat){
+	include 'livechat.php';
+	livechat();
+}?>
 <script>
 window.onload=function(){
-	<?if ($enablelivechat){?>
+	<?php if ($enablelivechat){?>
 	livechat_init();
-	<?}?>	
+	<?php }?>	
 }
 </script>
+
+<!-- script src="imecree.js"></script -->
+
+<script>
+if (navigator.serviceWorker&&navigator.serviceWorker.register){
+	navigator.serviceWorker.register('service_worker.js');
+}
+</script>
+<?php
+include 'offline.php';
+?>
 </body>
 </html>

@@ -182,10 +182,20 @@ function showview(idx,lazy,force,params,func){
 		if (!lazy||document.viewindex==idx||!gid('lv'+i).viewloaded){
 			if (document.lvxhr&&document.lvxhr.reqobj) {document.lvxhr.abortflag=1;document.lvxhr.reqobj.abort();document.lvxhr.reqobj=null;cancelgswi(document.lvxhr);}
 			document.lvxhr=gid('lv'+i);			
-			ajxpgn('lv'+i,document.appsettings.codepage+'?cmd=slv_'+i.replace(/\./g,'__')+'&'+params,true,true,'',func);
+			ajxpgn('lv'+i,document.appsettings.codepage+'?cmd=slv_'+i.replace(/\./g,'__')+'&'+params,true,true,'',function(rq){
+				var title=rq.getResponseHeader('listviewtitle');
+				if (title!=null&&title!='') gid('tooltitle').innerHTML='<a>'+decodeURIComponent(title)+'</a>';
+				var flag=rq.getResponseHeader('listviewflag');
+				var js=rq.getResponseHeader('listviewjs');
+				if (flag!=null&&js!=null&&js!=''){
+					ajxjs(self[flag],js);
+					//sajxjs(flag,js);	
+				}				
+				if (func!=null) func();
+			});
 		} else {
 			gid('lv'+idx).style.display='block';
-			if (gid('lv'+idx).tooltitle!=null) gid('tooltitle').innerHTML=gid('lv'+idx).tooltitle;
+			if (gid('lv'+idx).tooltitle!=null&&gid('lv'+idx).tooltitle!='') gid('tooltitle').innerHTML=gid('lv'+idx).tooltitle;
 		}
     }
   }
@@ -225,3 +235,42 @@ function authpump(){
 
 function sv(d,v){gid(d).value=v;}
 
+function toggle_easyread(){
+	if (!document.easyreading){
+		ajxcss(null,'easyon.css','easyon','easyoff');
+		document.easyreading=true;	
+	} else {
+		ajxcss(null,'easyoff.css','easyoff','easyon');
+		document.easyreading=null;	
+	}
+}
+
+function toggle_easyread_start(){
+	if (document.easyreadswitcher) clearTimeout(document.easyreadswitcher);
+	document.easyreadswitcher=setTimeout(function(){
+		toggle_easyread();
+	},1200);	
+}
+
+function toggle_easyread_end(){
+	if (document.easyreadswitcher) clearTimeout(document.easyreadswitcher);	
+}
+
+function showhelpspot(id,once){
+	showhide('helpspot_'+id);
+	if (gid('helpspot_'+id).showing){
+		gid('phelpspot_'+id).style.width='100%';
+	} else {
+		gid('phelpspot_'+id).style.width='auto';		
+	}
+}
+
+function hidehelpspot(id,topic,once,gskey){
+	gid('helpspot_'+id).style.display='none';
+	if (once){
+		gid('helpanchor_'+id).style.display='none';	
+		ajxpgn('statusc',document.appsettings.codepage+'?cmd=ackhelpspot&topic='+encodeHTML(topic),0,0,null,null,null,null,gskey);
+		var os=document.getElementsByTagName('span');
+		for (var i=0;i<os.length;i++) if (os[i].attributes&&os[i].attributes.helptopic&&os[i].attributes.helptopic.value==topic) os[i].style.display='none';
+	}
+}

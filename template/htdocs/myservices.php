@@ -4,6 +4,10 @@ define ('GSSERVICE',1);
 
 include 'lb.php';
 
+if (isset($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!='on'&&$_SERVER['HTTPS']!=1){
+	$usehttps=0;	
+}
+
 include 'connect.php';
 include 'settings.php';
 include 'xss.php';
@@ -13,11 +17,13 @@ xsscheck();
 include 'evict.php';
 evict_check();
 
-login(true);
 
 $cmd=$_GET['cmd'];
 
+login(true);
+
 include 'forminput.php';
+
 
 //enforcing gs expiry
 
@@ -29,7 +35,7 @@ $gsbypass=array(
 	'showgssubscription');
 
 $user=userinfo();
-$gsexpiry=$user['gsexpiry']+0;
+$gsexpiry=intval($user['gsexpiry']);
 $now=time();
 
 if ($gsexpiry!=0&&$gsexpiry<$now){
@@ -41,6 +47,8 @@ if ($gsexpiry!=0&&$gsexpiry<$now){
 	}
 }
 
+header('gsid: '.($user['gsid'])); //uncomment for logging in nginx as $upstream_http_gsid
+header('gsuid: '.($user['userid'])); //uncomment for logging in nginx as $upstream_http_gsuid
 
 switch($cmd){
 
@@ -51,7 +59,12 @@ switch($cmd){
 	case 'slv_core__reportsettings': include 'icl/listreportsettings.inc.php'; listreportsettings(); break;
 		
 	case 'showaccount': include 'icl/showaccount.inc.php'; showaccount(); break;
-	case 'setaccount': include 'icl/setaccountpass.inc.php'; setaccountpass(); break;	
+	case 'setaccount': include 'icl/setaccountpass.inc.php'; setaccountpass(); break;
+	
+	case 'imgqrcode': include 'icl/imgqrcode.inc.php'; imgqrcode(); break;
+	case 'showgaqr': include 'icl/showgaqr.inc.php'; showgaqr(); break;
+	case 'testgapin': include 'icl/testgapin.inc.php'; testgapin(); break;
+	case 'resetgakey': include 'icl/resetgakey.inc.php'; resetgakey(); break;
   
 	case 'slv_core__users': include 'icl/listusers.inc.php'; listusers(); break;
 	case 'showuser': include 'icl/showuser.inc.php'; showuser(); break;
@@ -59,7 +72,10 @@ switch($cmd){
 	case 'adduser': include 'icl/adduser.inc.php'; adduser(); break;
 	case 'deluser': include 'icl/deluser.inc.php'; deluser(); break;
 	case 'updateuser': include 'icl/updateuser.inc.php'; updateuser(); break;
+	case 'lookupuser': include 'icl/lookupuser.inc.php'; lookupuser(); break;
 	case 'reauth': include 'icl/reauth.inc.php'; reauth(); break;
+	
+	case 'checkpass': include 'icl/checkpass.inc.php'; checkpass(); break;
 	
 	case 'downloadgskeyfile': include 'icl/downloadgskeyfile.inc.php'; downloadgskeyfile(); break;
 	
@@ -113,6 +129,8 @@ switch($cmd){
 	
 	case 'listtemplatetypetemplates': include 'icl/listtemplatetypetemplates.inc.php'; listtemplatetypetemplates(); break;
 
+	case 'imecree': include 'icl/imecree.inc.php'; imecree(); break;
+
 
 //Blog Skeleton
 
@@ -123,9 +141,28 @@ switch($cmd){
 	
 //Reports & Audit
 	case 'slv_core__reports': include 'icl/listreports.inc.php'; listreports(); break;
-	case 'rptactionlog': include 'icl/rptactionlog.inc.php'; rptactionlog(); break;  	
+	case 'rptactionlog': include 'icl/rptactionlog.inc.php'; rptactionlog(); break;  
+	
+	case 'ackhelpspot': include 'icl/ackhelpspot.inc.php'; ackhelpspot(); break;
+	case 'resethelpspots': include 'icl/resethelpspots.inc.php'; resethelpspots(); break;
 
-			
+/*
+// not available in Community Edition
+
+//MS Graph
+
+	case 'showmsfiles': include 'icl/showmsfiles.inc.php'; showmsfiles(); break;
+	case 'ajxlistmsfiles': include 'icl/ajxlistmsfiles.inc.php'; ajxlistmsfiles(); break;
+	case 'downloadmsfile': include 'icl/downloadmsfile.inc.php'; downloadmsfile(); break;
+	case 'setmsgraphanchor': include 'icl/setmsgraphanchor.inc.php'; setmsgraphanchor(); break;
+	case 'msgraphdisconnect': include 'icl/msgraphdisconnect.inc.php'; msgraphdisconnect(); break;
+*/
+
+	
+//GSX Demo
+
+	//case 'gsx_hello': include 'icl/gsx_hello.inc.php'; gsx_hello(); break; //uncomment this to see gsx in action
+	
 // svn merge boundary 80dd22a0883aaa1f8cd09b09e81bdd9b - 
 
 
@@ -137,13 +174,32 @@ switch($cmd){
 	case 'codegen_makeform': include 'help/codegen_makeform.inc.php'; codegen_makeform(); break;
 	case 'codegen_makecode': include 'help/codegen_makecode.inc.php'; codegen_makecode(); break;  
 	
-	case 'pkd': include 'icl/lookup.inc.php'; showdatepicker(); break; //lookup
+	case 'pkd': case 'showdatepicker': include 'icl/lookup.inc.php'; showdatepicker(); break; //lookup
 	case 'showtimepicker'; include 'icl/lookup.inc.php'; showtimepicker(); break;
 	case 'pickdatemonths': include 'icl/lookup.inc.php'; pickdatemonths(); break;
 	case 'pump': include 'icl/utils.inc.php'; authpump(); break; //comment this out to disable authentication
 	
 	case 'wk': include 'icl/showwelcome.inc.php'; showwelcome(); break;
+	case 'addhomedashreport': include 'icl/addhomedashreport.inc.php'; addhomedashreport(); break;
+	case 'delhomedashreport': include 'icl/delhomedashreport.inc.php'; delhomedashreport(); break;
+	case 'listhomedashreports': include 'icl/listhomedashreports.inc.php'; listhomedashreports(); break;
+		
 	case 'updategyroscope': include 'icl/updater.inc.php'; updategyroscope(); break;
+
+//Help
+
+	case 'slv_core__helptopics': include 'icl/listhelptopics.inc.php'; listhelptopics(); break;
+	case 'edithelptopic': include 'icl/edithelptopic.inc.php'; edithelptopic(); break;
+	case 'showhelptopic': include 'icl/showhelptopic.inc.php'; showhelptopic(); break;
+	case 'safe_showhelptopic': include 'icl/safe_showhelptopic.inc.php'; safe_showhelptopic(); break;
+	case 'newhelptopic': include 'icl/newhelptopic.inc.php'; newhelptopic(); break;
+	case 'addhelptopic': include 'icl/addhelptopic.inc.php'; addhelptopic(); break;
+	case 'delhelptopic': include 'icl/delhelptopic.inc.php'; delhelptopic(); break;
+	case 'updatehelptopic': include 'icl/updatehelptopic.inc.php'; updatehelptopic(); break;
+	case 'inchelptopiclevel': include 'icl/inchelptopiclevel.inc.php'; inchelptopiclevel(); break;
+	case 'dechelptopiclevel': include 'icl/dechelptopiclevel.inc.php'; dechelptopiclevel(); break;
+	case 'swaphelptopicpos': include 'icl/swaphelptopicpos.inc.php'; swaphelptopicpos(); break;
+
 	
-	default: apperror('unspecified interface:'.$cmd);
+	default: apperror('unspecified interface:'.preg_replace('/[^A-Za-z0-9-_]/','',$cmd));
 }

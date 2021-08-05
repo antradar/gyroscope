@@ -1,0 +1,17 @@
+<?php
+
+include 'icl/list#primaryfield#users.inc.php';
+
+function del#primaryfield#user(){
+	$userid=GETVAL('userid');
+	$#primarykey#=GETVAL('#primarykey#');
+	
+	global $db;
+	
+	$query="delete from #primaryfield#users where userid=? and #primarykey#=?";
+	sql_prep($query,$db,array($userid,$#primarykey#));
+			
+	logaction("removed #primaryfield# user #$userid",array('#primarykey#'=>$#primarykey#,'userid'=>$userid));
+	
+	list#primaryfield#users($#primarykey#);	
+}

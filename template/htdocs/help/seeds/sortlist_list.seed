@@ -1,13 +1,44 @@
+	$pagelead=1;
+	$perpage=20;
+	$dperpage=$perpage;
+	
+	$maxpage=ceil($count/$perpage)-1;
+	if ($maxpage<0) $maxpage=0;
+	if ($page<0) $page=0;
+	if ($page>$maxpage) $page=$maxpage;
+	$start=$perpage*$page;
+	if ($page>0) {$start-=$pagelead;$dperpage+=$pagelead;if ($start<0) $start=0;}	
+	
+	//...
+	
+	$pageleadidx=0;
+	
+	// ... limit $start, $perpage -> limit $start, $dperpage
+	
+	//while ($myrow=sql_fetch_array($rs)){
+	
+		//...
+	
+		if ($pagelead!=0&&$pageleadidx==$pagelead&&$page>0){
+?>
+<div style="font-size:8px;color:#333333;border-bottom:dotted 1px #444444;text-align:center;">PAGE <?php echo $page+1;?></div>
+<?php			
+		}
+		
+?>			
+	
+<div class="sortlistitem" onselectstart="return false;" 
+onmousedown="#record#_mousedown(this,<?php echo $#primarykey#;?>,<?php echo $page;?>,'<?php emitgskey('swap#record#pos');?>');" 
+ontouchstart="#record#_touchstart(this,<?php echo $#primarykey#;?>,<?php echo $page;?>,'<?php emitgskey('swap#record#pos');?>');" 
+onmouseover="#record#_mouseover(this,<?php echo $#primarykey#;?>,1);" style="<?php if ($pageleadidx<$pagelead&&$page>0) echo 'opacity:0.6;';?>position:relative;cursor:move;user-select:none;-webkit-user-select:none;-moz-user-select:none;-webkit-user-drag:none;padding-left:5px;">
+	<a onselectstart="return false;" onmouseover="#record#_mouseover(this,<?php echo $#primarykey#;?>);" onclick=" ...
 
-<div class="listitem" onselectstart="return false;" onmousedown="#record#_mousedown(this,<?echo $#primarykey#;?>);" onmouseover="#record#_mouseover(this,<?echo $#primarykey#;?>,1);" style="position:relative;cursor:move;user-select:none;-webkit-user-select:none;-moz-user-select:none;border-left:solid 6px #dedede;padding-left:5px;">
-	<a onselectstart="return false;" onmouseover="#record#_mouseover(this,<?echo $#primarykey#;?>);" onclick=" ...
-
-
-
+<?php
+		$pageleadidx++;
 	//}//while
 
 ?>
-<div id="#record#shadow" style="white-space:nowrap;opacity:0.95;cursor:move;user-select:none;-webkit-user-select:none;-moz-user-select:none;display:none;position:absolute;top:20px;left:60px;background:#efefef;padding:5px;"></div>
-<?
+<div id="#record#shadow" style="white-space:nowrap;opacity:0.95;cursor:move;user-select:none;-webkit-user-select:none;-moz-user-select:none;-webkit-user-drag:none;display:none;position:absolute;top:20px;left:60px;background:#efefef;padding:5px;"></div>
+<?php
 
 	//if ($mode!='embed'){

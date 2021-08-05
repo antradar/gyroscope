@@ -3,16 +3,17 @@
 include 'icl/listtemplatetypetemplatevars.inc.php';
 
 function deltemplatevar(){
-	$templatetypeid=GETVAL('templatetypeid');
-	$templatevarid=GETVAL('templatevarid');
-	
+	$templatetypeid=SGET('templatetypeid');
+	$templatevarid=SGET('templatevarid');
 	
 	global $db;
 	
-	gsguard($templatetypeid,'templatetypes','templatetypeid');
+	checkgskey('deltemplatevar-'.$templatevarid);
+	
+	gsguard($templatetypeid,TABLENAME_TEMPLATETYPES,'templatetypeid');
 
-	$query="delete from templatevars where templatevarid=$templatevarid and templatetypeid=$templatetypeid";
-	sql_query($query,$db);	
+	$query="delete from ".TABLENAME_TEMPLATEVARS." where templatevarid=? and templatetypeid=?";
+	sql_prep($query,$db,array($templatevarid,$templatetypeid));	
 	
 	listtemplatetypetemplatevars($templatetypeid);
 }

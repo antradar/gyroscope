@@ -1,0 +1,39 @@
+<?php
+
+include_once 'bcrypt.php';
+include 'icl/list#primaryfield#users.inc.php';
+
+function add#primaryfield#user(){
+	global $#primaryfield#dbsalt;
+	
+	$#primarykey#=GETVAL('#primarykey#');
+	
+	$login=SQET('login');
+	$dispname=SQET('dispname');
+	$pass=SQET('pass');
+	$passreset=QETVAL('passreset');
+	
+	global $db;
+	
+	if ($login=='') apperror('Username cannot be blank');
+	
+	$query="select * from #primaryfield#users where login=?";
+	$rs=sql_prep($query,$db,$login);
+	if ($myrow=sql_fetch_assoc($rs)){
+		apperror('This user login is already used by #primaryfield# #'.$myrow['#primarykey#']);	
+	}
+	
+	
+	$np=password_hash($#primaryfield#dbsalt.$pass,PASSWORD_DEFAULT,array('cost'=>PASSWORD_COST));
+	
+	$roles='admins|reportsettings|systemplateuse|systemplate|accounts'; //intentionally missing helpedit,devreports,systemplate
+	
+	$query="insert into #primaryfield#users (#primarykey#,login,dispname,active,password,passreset,groupnames) values (?,?,?,?,?,?,?)";
+	$rs=sql_prep($query,$db,array($#primarykey#,$login,$dispname,1,$np,$passreset,$roles));
+	
+	$userid=sql_insert_id($db,$rs);
+	
+	logaction("created #primaryfield# user $login #$userid",array('#primaryfield#userid'=>$userid,'login'=>$login));
+		
+	list#primaryfield#users($#primarykey#);
+}

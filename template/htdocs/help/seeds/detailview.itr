@@ -1,4 +1,4 @@
 	<div class="inputrow">
-		<div class="formlabel"><?tr('#record#_label_#fld0#');?>:</div>
-		<input class="inpmed" id="#fld0#_<?echo $#primarykey#;?>" value="<?echo htmlspecialchars($#fld0#);?>" onchange="marktabchanged('#record#_<?echo $#primarykey#;?>');">
+		<div class="formlabel"><?php tr('#record#_label_#fld0#');?>:</div>
+		<input class="inpmed" id="#fld0#_<?php echo $#primarykey#;?>" value="<?php echo htmlspecialchars($#fld0#);?>" oninput="this.onchange();" onchange="marktabchanged('#record#_<?php echo $#primarykey#;?>');">
 	</div>

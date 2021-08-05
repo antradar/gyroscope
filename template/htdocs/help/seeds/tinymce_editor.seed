@@ -1,4 +1,5 @@
-		<?makelookup('#editfield#_'.$#primarykey#);?>
+		<div class="formlabel"><a class="hovlink" onclick="pullupeditor(this);">form label</a>
+		<?php makelookup('#editfield#_'.$#primarykey#);?>
 		<textarea style="width:100%;height:200px;" 
-			class="#editfield#editor_<?echo $#primarykey#;?>" 
-			id="#editfield#_<?echo $#primarykey#;?>"><?echo htmlspecialchars($#editfield#);?></textarea>
+			class="#editfield#editor_<?php echo $#primarykey#;?>" 
+			id="#editfield#_<?php echo $#primarykey#;?>"><?php echo htmlspecialchars($#editfield#);?></textarea>

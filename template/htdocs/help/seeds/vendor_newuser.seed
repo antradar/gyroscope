@@ -1,0 +1,17 @@
+
+	//global $userrolelocks;
+	
+	global $#primaryfield#roles;
+	$#primarykey#=SGET('pre#primarykey#');
+	if ($user['#primarykey#']) $#primarykey#=$user['#primarykey#'];
+	if ($#primarykey#){
+		$userroles=$#primaryfield#roles;
+		if ($user['#primarykey#']) $userrolelocks=array_keys($#primaryfield#roles);
+		else $userrolelocks=array();
+	}
+
+	
+	//...
+	
+	
+	<input type="hidden" id="#primarykey#_new" value="<?php echo $#primarykey#;?>">
