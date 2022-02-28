@@ -15,7 +15,7 @@ function showgaqr($userid){
 	$query="select usega,gakey,login from ".TABLENAME_USERS." where userid=? and ".COLNAME_GSID."=?";
 	$rs=sql_prep($query,$db,array($userid,$gsid));
 	$myrow=sql_fetch_assoc($rs);
-	
+		
 	$usega=$myrow['usega'];
 	$gakey=$myrow['gakey'];
 	if ($gakey!='') $gakey=decstr($gakey,GYROSCOPE_PROJECT.'gakey-'.COLNAME_GSID.'-'.$gsid.'-'.$userid,1);

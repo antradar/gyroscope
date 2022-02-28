@@ -57,7 +57,7 @@ if ($desc!=''){
 ?>
 <div style="color:#444444;padding-bottom:20px; echo 'background:transparent url() no-repeat 0 0;';?>">
 <?php if ($icon!=''){?>
-	<img src="help/seeds/icons/<?php echo $icon;?>.png" style="float:left;margin-right:15px;">
+	<img class="codegenicon" src="help/seeds/icons/<?php echo $icon;?>.png" style="float:left;margin-right:15px;">
 <?php }?>
 	<div style="float:left;padding-top:5px;"><?php echo $desc;?></div>
 	<div class="clear"></div>

@@ -3,19 +3,20 @@
 include 'icl/showgyroscopeupdater.inc.php';
 include 'icl/showguide.inc.php';
 include 'icl/listhomedashreports.inc.php';
-
+//include 'icl/listsslcerts.inc.php';
 
 //include 'gsx.php'; //uncomment this to see gsx in action
 //include 'gsx_hello.inc.php'; //uncomment this to see gsx in bypass mode, remember to modify gsx.php
 
 function showwelcome(){
-
+	
 ?>
 <div class="section" style="position:relative;">
 	<?php makehelp('welcometab','tabview',1);?>
-	<div class="sectiontitle"><?php tr('hometab_welcome');?></div>
+	<div class="sectiontitle"><a ondblclick="toggletabdock();"><?php tr('hometab_welcome');?></a></div>
 <?php
 
+//listsslcerts();
 
 /*
 
@@ -113,8 +114,11 @@ function auto_welcome(){
 		foreach ($gs as $g) if (isset($user['groups'][$g])) $canview=1;
 		if (!$canview) continue;	
 	}
-	
-	$action="showview('".$modid."',1,1);";
+
+	$binmode='null';
+	if ($ti['bingo']==1) $binmode=1;	
+
+	$action="showview('".$modid."',1,1,null,null,".$binmode.");";
 	if (isset($ti['action'])&&$ti['action']!='') $action=$ti['action'];
 	
 ?>	

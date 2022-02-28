@@ -27,6 +27,11 @@ function updatetemplatetype(){
 	$rs=sql_prep($query,$db,array($templatetypekey,$templatetypeid,$gsid));
 	if ($myrow=sql_fetch_assoc($rs)) apperror('Duplicate key. Pick a different key.');
 	
+	$query="select * from templatetypes where templatetypeid=?";
+	$rs=sql_prep($query,$db,array($templatetypeid));
+	$before=sql_fetch_assoc($rs);
+	
+	
 	$query="update templatetypes set templatetypename=? ";
 	$params=array($templatetypename);
 	if ($user['groups']['systemplate']){
@@ -42,9 +47,25 @@ function updatetemplatetype(){
 	$rs=sql_prep($query,$db,$params);
 
 	if (sql_affected_rows($db,$rs)){
+		
+		$query="select * from templatetypes where templatetypeid=?";
+		$rs=sql_prep($query,$db,array($templatetypeid));
+		$after=sql_fetch_assoc($rs);
+		
+		$dbchanges=array('templatetypeid'=>$templatetypeid,'templatetypename'=>"$templatetypename");
+		$diffs=diffdbchanges($before,$after);
+		$dbchanges=array_merge($dbchanges,$diffs);
+
+		$trace=array(
+			'table'=>'templatetypes',
+			'recid'=>$templatetypeid,
+			'after'=>$after,
+			'diffs'=>$diffs
+		);
+		
 		logaction("updated Template Class #$templatetypeid $templatetypename",
-			array('templatetypeid'=>$templatetypeid,'templatetypename'=>"$templatetypename"),
-			array('rectype'=>'templatetype','recid'=>$templatetypeid));
+			$dbchanges,
+			array('rectype'=>'templatetype','recid'=>$templatetypeid),0,$trace);
 	}
 	
 	showtemplatetype($templatetypeid);

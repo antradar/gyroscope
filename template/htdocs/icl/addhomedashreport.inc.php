@@ -7,6 +7,7 @@ function addhomedashreport(){
 	global $db;
 	
 	$user=userinfo();
+	$gsid=$user['gsid'];
 	$userid=$user['userid'];
 
 	if (!$userid) apperror('Error saving report');
@@ -16,9 +17,10 @@ function addhomedashreport(){
 	$rptkey=SGET('rptkey');
 	$rptlink=SGET('rptlink');
 	$rpttabkey=SGET('rpttabkey');
+	$bingo=GETVAL('bingo');
 	
-	$query="insert into ".TABLENAME_HOMEDASHREPORTS." (userid,rpttabkey,rptkey,rpttitle,rptlink,rptname) values (?,?,?,?,?,?)";
-	sql_prep($query,$db,array($userid,$rpttabkey,$rptkey,$rpttitle,$rptlink,$rptname));
+	$query="insert into ".TABLENAME_HOMEDASHREPORTS." (gsid,userid,rpttabkey,rptkey,rpttitle,rptlink,rptname,bingo) values (?,?,?,?,?,?,?,?)";
+	sql_prep($query,$db,array($gsid,$userid,$rpttabkey,$rptkey,$rpttitle,$rptlink,$rptname,$bingo));
 
 	listhomedashreports();		
 }

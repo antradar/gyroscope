@@ -15,6 +15,7 @@ if (!isset($fedbypass)) include 'xss.php';
 include 'passtest.php';
 
 include 'icl/calcgapins.inc.php';
+include 'libcbor.php';
 
 $csrfkey=sha1($salt.'csrf'.$_SERVER['REMOTE_ADDR'].'-'.$_SERVER['O_IP'].date('Y-m-j-g'));
 $salt2=$saltroot.$_SERVER['REMOTE_ADDR'].'-'.$_SERVER['O_IP'].date('Y-m-j-H',time()-3600);
@@ -30,6 +31,8 @@ if (isset($_POST['lang'])&&in_array($_POST['lang'],array_keys($langs))) {
 }
 
 $dkey=md5(GYROSCOPE_PROJECT);
+
+$deflogin=$_COOKIE['fingername'];
 
 if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['gyroscope_login_'.$dkey])&&$_POST['gyroscope_login_'.$dkey]) ){	
 	
@@ -48,17 +51,89 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['gyroscope
 		
 		$passok=0;
 		
+		$nopass=intval($_POST['loginnopass']);
+		
+			
 		if ($myrow=sql_fetch_array($rs)){
+			
+			$useyubi=intval($myrow['useyubi']);
+			$yubimode=intval($myrow['yubimode']); //0-both password and key required, 1-key required, pass optional, 2-pass required, key optional
+			$passreset=$myrow['passreset'];
+			
+			if ($passreset) $useyubi=0;
 			/*
 			//legacy code during transition
 			$enc=$myrow['password'];
 			$dec=decstr($enc,$_POST['password'].$dbsalt);
 			if ($password==$dec) $passok=1;
 			*/
-			$passok=password_verify($dbsalt.$_POST['password'],$myrow['password']); //bcrypt uses its internal salt, $dbsalt here is just padding
+			if ($useyubi&&($nopass||$yubimode==0||$yubimode==2)){
+				$passok=0;
+				$yubiok=0;
+				$userid=$myrow['userid'];
+				$query="select count(*) as c from ".TABLENAME_YUBIKEYS." where userid=?";
+				$rs2=sql_prep($query,$db,$userid);
+				$myrow2=sql_fetch_assoc($rs2);
+				$c=$myrow2['c'];
+				if ($c==0) $error_message='no security devices were found ';
+				else {
+					$attid=$_POST['attid'];
+					$clientdata=$_POST['clientdata'];
+					$signature=$_POST['signature'];
+					$clientauth=$_POST['clientauth'];
+					
+					$query="select * from ".TABLENAME_YUBIKEYS." where userid=? and attid=?";
+					$rs2=sql_prep($query,$db,array($userid,$attid));
+					if (!$myrow2=sql_fetch_assoc($rs2)){
+						$error_message="Cannot find a key in the registry.";	
+					} else {
+						$keyid=$myrow2['keyid'];
+						if ($myrow2['passless']==1) $yubimode=1;
+						$kty=$myrow2['kty'];
+						$alg=$myrow2['alg'];
+						$crv=$myrow2['crv']; $x=$myrow2['x']; $y=$myrow2['y'];
+						$n=$myrow2['n']; $e=$myrow2['e'];
+						$lastsigncount=$myrow2['lastsigncount'];
+						$newsigncount=0;
+						$res=cbor_validate($kty,$alg,$crv,$x,$y,$n,$e,$clientdata,$clientauth,$signature,1,$lastsigncount,$newsigncount,$err);
+						$yubiok=$res;
+						if ($res==1){
+							$passok=1;
+							setcookie('fingername',$login,time()+3600*24*30*6,null,null,$usehttps,true);
+							$query="update ".TABLENAME_YUBIKEYS." set lastsigncount=? where keyid=?";
+							sql_prep($query,$db,array($newsigncount,$keyid));
+						}
+							
+					}
+					
+					
+				}
+				
+				if ($yubimode==0||$yubimode==2){
+					$passok=password_verify($dbsalt.$_POST['password'],$myrow['password']);
+					if (!$passok) $error_message="Invalid password";
+					else {
+						if (!$yubiok&&$yubimode!=2){
+							$passok=0;
+							$error_message="A security device is required for this account.";	
+						}	
+					}
+				}
+				
+				if (!$nopass){
+					setcookie('fingername',NULL,time()-3600,null,null,$usehttps,true);
+				}
+				
+			} else {
+				$passok=password_verify($dbsalt.$_POST['password'],$myrow['password']); //bcrypt uses its internal salt, $dbsalt here is just padding
+				setcookie('fingername',NULL,time()-3600,null,null,$usehttps,true);
+				if (!$passok) $passreset=0;
+			}
 		} else {
 			password_hash($dbsalt.time(),PASSWORD_DEFAULT,array('cost'=>PASSWORD_COST));	
 		}
+		
+		
 		
 		if ($passok){
 			
@@ -156,7 +231,8 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['gyroscope
 						$error_message='A weak password cannot be used.';
 					} else {
 						$newpass=password_hash($dbsalt.$np,PASSWORD_DEFAULT);
-						$query="update ".TABLENAME_USERS." set password=?, passreset=0 where userid=?";
+						//all 2fa's will be cleared here
+						$query="update ".TABLENAME_USERS." set password=?, passreset=0, usega=0, usesms=0, needcert=0, needkeyfile=0, useyubi=0 where userid=?";
 						sql_prep($query,$db,array($newpass,$userid));
 						$passreset=0;
 					}	
@@ -227,7 +303,9 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['gyroscope
 				
 				
 			}//passreset
-		} else $error_message=_tr('invalid_password'); //passcheck
+		} else {
+			if (!$nopass&&$error_message=='') $error_message=_tr('invalid_password'); //passcheck
+		}
 	
 	}//csrf
 	
@@ -241,7 +319,9 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['gyroscope
 	setcookie('dispname',NULL,time()-3600,null,null,$usehttps,true);
 	setcookie('auth',NULL,time()-3600,null,null,$usehttps,true);
 	setcookie('groupnames',NULL,time()-3600,null,null,$usehttps,true);
-	setcookie('gsfrac',NULL,time()-3600,null,null,$usehttps,true);	
+	setcookie('gsfrac',NULL,time()-3600,null,null,$usehttps,true);
+	setcookie('chatid',NULL,time()-3600,'/',null,$usehttps);	
+	setcookie('chatauth',NULL,time()-3600,'/',null,$usehttps);	
 }
 
 ?>
@@ -262,6 +342,10 @@ $framecolor='rgba(200,200,200,0.4)';
 if (isset($SQL_READONLY)&&$SQL_READONLY) $framecolor='rgba(255,200,100,0.4)';
 ?>
 body{padding:0;margin:0;background:transparent url(imgs/bgtile.png) repeat;font-size:13px;font-family:arial,sans-serif;text-align:center;<?php if ($dict_dir=='rtl') echo 'direction:rtl;';?>}
+#logo_light,#logo_dark{margin:10px 0;width:100%;}
+#logo_light{display:block;}
+#logo_dark{display:none;}
+
 #loginbox__{width:320px;margin:0 auto;background-color:<?php echo $framecolor;?>;margin-top:100px;border-radius:4px;}
 #loginbox_{padding:10px;}
 #loginbox{background-color:#FFFFFF;text-align:<?php if ($dict_dir=='rtl') echo 'right'; else echo 'left';?>;}
@@ -270,12 +354,17 @@ body{padding:0;margin:0;background:transparent url(imgs/bgtile.png) repeat;font-
 #loginbutton:focus, #loginbutton:hover{background:#29ABE1;}
 #loginbutton:active, #loginbuttonbutton:active{box-shadow:1px 1px 3px #999999;}
 
+#fingerprint{cursor:pointer;vertical-align:middle;}
+#fingerprint img{width:22px;border-radius:3px;}
+
 #cardlink, #passlink{display:none;text-align:center;padding-top:10px;}
 #cardlink{display:none;}
 #cardinfo{padding:5px;font-size:12px;padding-left:26px;background:#fcfcdd url(imgs/smartcard.png) no-repeat 5px 50%;margin-bottom:10px;display:none;}
 
 .lfinp{border:solid 1px #999999;display:block;margin-bottom:5px;font-size:18px;border-radius:3px;-webkit-appearance:none;}
 .lfinp:active, .lfinp:focus{outline:0;border:solid 2px #29ABE1;}
+
+#lang{padding:5px 0;}
 
 @media screen and (min-width:20px){
 	.lfinp{padding:5px;box-sizing:border-box;height:34px;line-height:32px;font-size:15px;}
@@ -304,6 +393,17 @@ body{font-size:28px;}
 #loginbutton{height:auto;padding:6px 0;font-size:28px;width:280px;-webkit-appearance: none;}
 <?php }?>
 
+@media (prefers-color-scheme:dark) {
+	body{background-image:url(imgs/dbgtile.png);}
+	#loginbox{background: #21262D;color:#C9D1D9;}
+	input,#lang{background:#0D1117;color:#C2C3C5;}
+	#loginbutton{box-shadow:none;border:solid 1px #388BFD;}
+	#loginbutton:hover{background:#125B7A;}
+	#logo_light{display:none;}
+	#logo_dark{display:block;}
+	.powered{color:#8B949E;}
+	#fingerprint{filter:invert(1);}
+}
 
 </style>
 </head>
@@ -311,14 +411,15 @@ body{font-size:28px;}
 <div id="loginbox__"><div id="loginbox_">
 <div id="loginbox">
 	<form id="loginform" method="POST" style="padding:20px;margin:0;padding-top:10px;" onsubmit="return checkform();">
-	<img src="imgs/logo.png" style="margin:10px 0;width:100%;" alt="Gyroscope Logo">
+	<img id="logo_light" src="imgs/logo.png" alt="Gyroscope Logo">
+	<img id="logo_dark" src="imgs/dlogo.png">
 	<?php if ($error_message!=''){?>
 	<div id="loginerror" style="color:#ab0200;font-weight:bold;padding-top:10px;"><?php echo $error_message;?></div>
 	<?php }?>
 		
 	<div style="padding-top:10px;"><label for="login"><?php tr('username');?>:</label> <?php if ($passreset){?><b><?php echo stripslashes($_POST['gyroscope_login_'.$dkey]);?></b> &nbsp; <a href="<?php echo $_SERVER['PHP_SELF'];?>"><em><?php tr('switch_user');?></em></a><?php }?></div>
 	<div style="padding-top:5px;padding-bottom:10px;">
-	<input style="width:100%;<?php if ($passreset) echo 'display:none;';?>" class="lfinp" id="login" type="text" name="gyroscope_login_<?php echo $dkey;?>" autocomplete="off" <?php if ($passreset) echo 'readonly';?> value="<?php if ($passreset) echo stripslashes($_POST['gyroscope_login_'.$dkey]);?>"></div>
+	<input style="width:100%;<?php if ($passreset) echo 'display:none;';?>" class="lfinp" id="login" type="text" name="gyroscope_login_<?php echo $dkey;?>" autocomplete="off" <?php if ($passreset) echo 'readonly';?> value="<?php if ($passreset) echo stripslashes($_POST['gyroscope_login_'.$dkey]); else echo htmlspecialchars($deflogin);?>"></div>
 	
 	<div id="passview">
 		<div><label for="password"><?php tr('password');?></label>:</div>
@@ -357,7 +458,7 @@ body{font-size:28px;}
 	<input type="hidden" name="passreset" value="1">
 	<?php }?>
 
-	<div style="width:100%;margin-bottom:10px;<?php if (count($langs)<2) echo 'display:none;';?>"><select style="width:100%;" name="lang" onchange="document.skipcheck=true;">
+	<div style="width:100%;margin-bottom:10px;<?php if (count($langs)<2) echo 'display:none;';?>"><select id="lang" style="width:100%;" name="lang" onchange="document.skipcheck=true;">
 	<?php 
 	foreach ($langs as $langkey=>$label){
 	?>
@@ -370,7 +471,19 @@ body{font-size:28px;}
 	
 	<div id="cardinfo"></div>
 	
-		<div  style="text-align:center;"><input id="loginbutton" type="submit" value="<?php echo $passreset?_tr('change_password'):_tr('signin');?>"></div>
+		<div style="display:none;">
+			<input id="loginnopass" name="loginnopass" type="checkbox" value="1">
+			<input id="attid" name="attid" autocomplete="off">
+			<input id="clientdata" name="clientdata" autocomplete="off">
+			<input id="signature" name="signature" autocomplete="off">
+			<input id="clientauth" name="clientauth" autocomplete="off">
+			
+		</div>
+			
+		<div  style="text-align:center;">
+			<input id="loginbutton" type="submit" value="<?php echo $passreset?_tr('change_password'):_tr('signin');?>">
+			<a style="display:none<?php if (!$passreset) echo 'a';?>;" id="fingerprint" onclick="yubilogin();"><img src="imgs/fingerprint.png"></a>
+		</div>
 		<div id="tfa_cert" style="display:none;">
 		<div style="text-align:center;padding-top:20px;">Smart Card Needed</div>
 		<div id="cardlink">
@@ -415,51 +528,31 @@ body{font-size:28px;}
 	?>
 	<div class="powered"><?php tr('powered_by_',array('power'=>$power));?></div>
 	
-	<script src="nano.js"></script>
+	<script src="nano.js?v=4_9"></script>
 	<script>
 		function checkform(){
+						
 			if (navigator.onLine!=null&&!navigator.onLine){
 				onlinestatuschanged();
 				return false;
 			}
 			if (gid('loginerror')) gid('loginerror').innerHTML='';
 			if (document.skipcheck) return true;
+			
+			
 			if (gid('password').value=='') { //&&gid('certid').value==''
 				if (gid('password')) gid('password').focus();
 				if (gid('login')&&gid('login').value=='') gid('login').focus();
 				return false;
 			}
 			
+						
 			var tfa=false;
 			
 			if (!document.tfabypas){
 			
 				ajxb('ajx_2facheck.php?','login='+encodeHTML(gid('login').value)+'&pass'+'word='+encodeHTML(gid('password').value),function(rq){
-					document.tfabypas=true;
-					var fedurl=rq.getResponseHeader('fedurl');
-					if (fedurl!=null&&fedurl!=''){
-						gid('loginform').action=fedurl;
-						gid('login').name=rq.getResponseHeader('fedloginfield');
-					}
-					var tfas=rq.getResponseHeader('tfas');
-					if (tfas!=null&&tfas!=''){
-						tfa=true;
-						var tfaparts=tfas.split(',');
-						for (var i=0;i<tfaparts.length;i++){
-							var part=tfaparts[i];
-							if (gid('tfa_'+part)) {
-								gid('tfa_'+part).style.display='block';
-								if (part=='keyfile') {
-									gid('tfa_keyfile').innerHTML=rq.responseText;
-									gid('loginform').setAttribute('enctype','multipart/form-data');
-								}
-								var focalpoint=rq.getResponseHeader('focalpoint');
-								if (focalpoint!=null&&focalpoint!=''&&gid(focalpoint)) gid(focalpoint).focus();
-							}
-							
-						}	
-					}
-					
+					tfa=tfa_callback(rq);
 				});
 				
 			}
@@ -471,7 +564,8 @@ body{font-size:28px;}
 		<?php if ($passreset){?>
 		if (gid('password')) gid('password').focus();
 		<?php }else{?>	
-		if (gid('login')) gid('login').focus();
+		if (gid('login')&&gid('login').value=='') gid('login').focus();
+		if (gid('login')&&gid('login').value!=''&&gid('password')) gid('password').focus();
 		<?php }?>
 	</script>
 
@@ -493,6 +587,35 @@ function cardview(){
 function passview(){
 	gid('cardview').style.display='none';
 	gid('passview').style.display='block';
+}
+
+function tfa_callback(rq){
+	var tfa=false;
+	document.tfabypas=true;
+	var fedurl=rq.getResponseHeader('fedurl');
+	if (fedurl!=null&&fedurl!=''){
+		gid('loginform').action=fedurl;
+		gid('login').name=rq.getResponseHeader('fedloginfield');
+	}
+	var tfas=rq.getResponseHeader('tfas');
+	if (tfas!=null&&tfas!=''){
+		tfa=true;
+		var tfaparts=tfas.split(',');
+		for (var i=0;i<tfaparts.length;i++){
+			var part=tfaparts[i];
+			if (gid('tfa_'+part)) {
+				gid('tfa_'+part).style.display='block';
+				if (part=='keyfile') {
+					gid('tfa_keyfile').innerHTML=rq.responseText;
+					gid('loginform').setAttribute('enctype','multipart/form-data');
+				}
+				var focalpoint=rq.getResponseHeader('focalpoint');
+				if (focalpoint!=null&&focalpoint!=''&&gid(focalpoint)) gid(focalpoint).focus();
+			}
+			
+		}	
+	}
+	return tfa;
 }
 
 function cardauth(){
@@ -518,7 +641,7 @@ function cardauth(){
 }
 
 document.cfkitr=setInterval(function(){
-	ajxpgn('nullloader','logpump.php?cmd=logpump',0,0,null,function(rq){
+	ajxpgn('nullloader','logpump.php?',0,0,null,function(rq){ //use logpump.gsb when applicable
 		if (rq.responseText!=''&&rq.responseText!=null) gid('cfk').value=rq.responseText;	
 	});
 },30000);
@@ -546,6 +669,66 @@ checkpass=function(d){
 		var color=rq.getResponseHeader('passcolor');
 		d.style.background=color;	
 	});
+}
+
+yubilogin=function(){
+	if (gid('login').value==''){gid('login').focus();return;}
+	var login=encodeHTML(gid('login').value);
+
+	var tfa=false;
+	if (!document.tfabypas){	
+		ajxb('ajx_2facheck.php?','login='+encodeHTML(gid('login').value)+'&nopass=1',function(rq){
+			tfa=tfa_callback(rq);
+		});	
+	}
+	
+	if (tfa) return;
+	
+	ajxpgn('certid','ajx_getyubikeys.php?login='+login,0,0,null,function(rq){
+		var rawattids=rq.responseText;
+		if (rawattids=='') return;
+		var attids=rawattids.split(',');
+		var creds=[];
+				
+		for (var i=0;i<attids.length;i++){
+			creds.push({type:'public-key',id:Uint8Array.from(atob(attids[i]), function(c){return c.charCodeAt(0);}).buffer});
+		}
+		
+	navigator.credentials.get({
+		publicKey:{
+			challenge:stringToArrayBuffer('no-challenge'),
+			pubKeyCredParams:[{'type':'public-key','alg':-7}],
+			timeout: 30000,
+			allowCredentials:creds
+		}
+	}).then(
+		function(raw){
+			var ass={ //assertion
+				id:base64encode(raw.rawId),
+				clientDataJSON:arrayBufferToString(raw.response.clientDataJSON),
+				userHandle:base64encode(raw.response.userHandle),
+				signature:base64encode(raw.response.signature),
+				authenticatorData:base64encode(raw.response.authenticatorData)
+			}
+			
+			//console.log(ass);
+			
+			gid('attid').value=ass.id;
+			gid('clientdata').value=ass.clientDataJSON;
+			gid('signature').value=ass.signature;
+			gid('clientauth').value=ass.authenticatorData;
+			
+			if (ass.id=='') return;
+			gid('loginnopass').checked='checked';
+						
+			gid('loginform').submit();
+		}
+	);
+		
+			
+	});
+	
+	//gid('password').value='nopass';gid('loginform').submit();
 }
 
 </script>

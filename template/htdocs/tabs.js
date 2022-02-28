@@ -58,6 +58,12 @@ showtab=function(key,opts){
       if (self['tabviewfunc_'+ckey]) self['tabviewfunc_'+ckey](keyparts[1]);
       if (self.livechat_updatesummary&&document.chatstatus=='online') livechat_updatesummary();
       
+  if (document.tabafloat){
+	if (!document.tabviews[tabid].afloat) undocktab();	  
+  } else {
+	if (document.tabviews[tabid].afloat) redocktab(); 
+  }    
+      
 }
 
 tablock=false;
@@ -80,7 +86,9 @@ function reloadtab(key,title,params,loadfunc,data,opts,gskey){
   
   if (document.tabtitles[tabid].tablock) return;
   document.tabtitles[tabid].tablock=1;
-  document.tabtitles[tabid].conflicted=null; 
+  document.tabtitles[tabid].conflicted=null;
+  
+  var tabbingo=document.tabtitles[tabid].bingo; 
   
   if (document.tabtitles[tabid].autosaver) {clearTimeout(document.tabtitles[tabid].autosaver);document.tabtitles[tabid].autosavertimer=null;}
   
@@ -88,7 +96,14 @@ function reloadtab(key,title,params,loadfunc,data,opts,gskey){
 
   var scn=document.appsettings.codepage+'?cmd=';
   if (opts&&opts.fastlane) scn=document.appsettings.fastlane+'?cmd=';
-  
+  if (opts&&opts.bingo) {
+	  scn=document.appsettings.binpage+'?cmd=';
+	  document.tabtitles[tabid].bingo=true;
+  }
+  if (tabbingo){
+	  scn=document.appsettings.binpage+'?cmd=';
+  }
+	    
   if (document.wssid) params=params+'&wssid_='+document.wssid;
   
   rq.open('POST',scn+params+'&hb='+hb(),true);
@@ -176,7 +191,7 @@ function reloadtab(key,title,params,loadfunc,data,opts,gskey){
 	}	       
 	
 	if (opts&&opts.persist) document.tabtitles[tabid].reloadinfo={params:params,loadfunc:loadfunc,data:data,opts:opts};
-	
+		
 	var tabhtml="<nobr><a class=\"tt\" ondblclick=\"refreshtab('"+key+"');\" onclick=\"showtab('"+key+"');\">"+title+"</a><a onclick=\"closetab('"+key+"')\"><span class=\"tabclose\"></span></a></nobr>";
 	if (opts!=null&&opts.noclose) tabhtml="<nobr><a class=\"tt\" ondblclick=\"refreshtab('"+key+"');\" onclick=\"showtab('"+key+"');\">"+title+"</a><span class=\"noclose\"></span></nobr>";
 	if (title) document.tabtitles[tabid].innerHTML=tabhtml;
@@ -203,10 +218,9 @@ function refreshtab(key,skipconfirm){
   reloadtab(key,null,tab.reloadinfo.params,tab.reloadinfo.loadfunc,tab.reloadinfo.data,tab.reloadinfo.opts);
 }
 
-function addtab(key,title,params,loadfunc,data,opts){
-	
+function addtab(key,title,params,loadfunc,data,opts){	
   var i;
-  
+
   if (document.tablock!=null) return;
   document.tablock=true;
   
@@ -220,12 +234,16 @@ function addtab(key,title,params,loadfunc,data,opts){
   }
 
 
-  gid('tabviews').style.background=document.flashcolor;
-  setTimeout(function(){gid('tabviews').style.background='#ffffff';},250);      
+  gid('tabviews').className='bgflash';
+  setTimeout(function(){gid('tabviews').className='bgready'},250);      
 
   var rq=xmlHTTPRequestObject();
   var scn=document.appsettings.codepage+'?cmd=';
   if (opts&&opts.fastlane) scn=document.appsettings.fastlane+'?cmd=';
+  if (opts&&opts.bingo) scn=document.appsettings.binpage+'?cmd=';
+  
+  
+
   if (document.wssid) params=params+'&wssid_='+document.wssid;
   
   rq.open('POST',scn+params+'&hb='+hb(),true);
@@ -249,6 +267,9 @@ function addtab(key,title,params,loadfunc,data,opts){
   document.tabviews[document.tabcount]=c;
   document.tabtitles[document.tabcount]=t;
   document.tabkeys[document.tabcount]=key;
+  
+  if (opts&&opts.bingo) document.tabtitles[document.tabcount].bingo=true;
+  
   document.tabcount++;
   showtab(key,opts);
   
@@ -410,6 +431,72 @@ function closetabtree(root,sub){
 	
       if (self.livechat_updatesummary&&document.chatstatus=='online') livechat_updatesummary();
 
+}
+
+function undocktab(){
+	if (document.currenttab==null) return;
+	if (document.currenttab>=document.tabcount) return;
+	var tab=document.tabviews[document.currenttab];
+	
+	tab.oleft=tab.parentNode.offsetLeft;
+	tab.otop=tab.parentNode.offsetTop;
+	tab.owidth=tab.offsetWidth;
+	tab.oheight=tab.offsetHeight;
+	
+	tab.style.transition='left 200ms,top 200ms,width 200ms,height 200ms';
+	tab.style.position='fixed';
+	
+	tab.style.left=tab.oleft+'px';
+	tab.style.top=tab.otop+'px';
+	tab.style.width=Math.floor(tab.owidth*100/cw())+'%';
+	tab.style.height=Math.floor(tab.oheight*100/ch())+'%';
+	tab.style.zIndex=600;
+	
+	
+	setTimeout(function(){
+		tab.style.left=0;
+		tab.style.top=0;
+		tab.style.width='100%';
+		tab.style.height='100%';
+		tab.className='afloat';
+		tab.afloat=true;
+		document.tabafloat=true;
+	},10);
+	
+}
+
+function redocktab(){
+	if (document.currenttab==null) return;
+	if (document.currenttab>=document.tabcount) return;
+	var tab=document.tabviews[document.currenttab];
+	
+	
+	tab.style.left=tab.oleft+'px';
+	tab.style.top=tab.otop+'px';
+	tab.style.width=Math.floor(tab.owidth*100/cw())+'%';
+	tab.style.height=Math.floor(tab.oheight*100/ch())+'%';
+	
+	setTimeout(function(){
+		tab.style.left='auto';
+		tab.style.top='auto';
+		tab.style.position='static';
+		tab.style.width='100%';
+		tab.style.height='100%';
+		tab.style.zIndex='';
+		tab.className='';
+		tab.afloat=null;
+		document.tabafloat=null;
+		
+	},200);	
+		
+}
+
+function toggletabdock(){
+	if (document.currenttab==null) return;
+	if (document.currenttab>=document.tabcount) return;
+	var tab=document.tabviews[document.currenttab];
+	
+	if (!tab.afloat) undocktab(); else redocktab();		
 }
 
 

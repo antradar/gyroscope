@@ -28,13 +28,19 @@ CREATE TABLE #primaryfield#users (
   password varchar(255) NOT NULL DEFAULT '',
   passreset tinyint(1) unsigned NOT NULL DEFAULT '0',
   groupnames longtext,
+  canchat tinyint(1) unsigned DEFAULT '0',
   keyfilehash varchar(255) DEFAULT NULL,
   needkeyfile tinyint(1) unsigned NOT NULL DEFAULT '0',
   usesms tinyint(1) unsigned NOT NULL DEFAULT '0',
   smscell varchar(255) NOT NULL DEFAULT '',  
   smscode varchar(255) NOT NULL DEFAULT '',  
   usega tinyint(1) unsigned NOT NULL DEFAULT '0',
+  usegamepad tinyint(1) unsigned NOT NULL DEFAULT '0',
   gakey varchar(255) DEFAULT NULL,
+  haspic tinyint(1) unsigned default 0,
+  imgv int unsigned default 0,
+  useyubi tinyint(1) unsigned default 0,
+  yubimode tinyint unsigned default 0,
   certhash varchar(255) DEFAULT NULL,
   needcert tinyint(1) unsigned NOT NULL DEFAULT '0',
   certname varchar(255) DEFAULT NULL,
@@ -42,6 +48,7 @@ CREATE TABLE #primaryfield#users (
   PRIMARY KEY (userid),
   UNIQUE KEY login (login),
   KEY active (active),
+  KEY canchat (canchat),
   KEY virtualuser (virtualuser),
   KEY #primarykey# (#primarykey#)
 ) ENGINE=InnoDB;
@@ -97,6 +104,7 @@ CREATE TABLE #primaryfield#reports (
   reportfunc varchar(255) DEFAULT NULL,
   reportkey varchar(255) NOT NULL,
   reportgroupnames varchar(255) NOT NULL,
+  bingo tinyint(1) unsigned default 0,
   gyrosys tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (reportid),
   KEY reportkey (reportkey),
@@ -111,7 +119,7 @@ CREATE TABLE #primaryfield#reports (
   KEY #primarykey# (#primarykey#)
 ) ENGINE=InnoDB;
 
-INSERT INTO #primaryfield#reports VALUES (1, 0, 'Activity Log', 'Security', 'This report is mostly used by system administrators for diagnostic purposes.', '', '', '', '', '', 'admins', '1', 'Activity Log', 'Activity Log', '', 'actionlog', 'admins|reportsettings|systemplateuse|systemplate', 0);
+INSERT INTO #primaryfield#reports VALUES (1, 0, 'Activity Log', 'Security', 'This report is mostly used by system administrators for diagnostic purposes.', '', '', '', '', '', 'admins', '1', 'Activity Log', 'Activity Log', '', 'actionlog', 'admins|reportsettings|systemplateuse|systemplate',0, 0);
 
 CREATE TABLE #primaryfield#userhelpspots (
   uhid bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -129,7 +137,10 @@ rpttabkey varchar(255),
 rptname varchar(255),
 rpttitle varchar(255),
 rptlink varchar(255),
+bingo tinyint(1) unsigned default 0,
+shared tinyint(1) unsigned default 0,
 primary key (homedashreportid),
+key gsid (gsid),
 key userid (userid),
 key rptname (rptname)
 );
@@ -146,3 +157,26 @@ key helptopictitle (helptopictitle),
 key helptopickeywords(helptopickeywords),
 key helptopicsort (helptopicsort)
 );
+
+
+CREATE TABLE #primaryfield#yubikeys (
+keyid bigint(20) unsigned not null auto_increment,
+userid bigint(20) unsigned,
+passless tinyint(1) unsigned default 0,
+keyname varchar(255),
+credid varchar(255),
+kty tinyint(4),
+alg tinyint(4),
+crv tinyint(4),
+x varchar(255),
+y varchar(255),
+n varchar(255),
+e varchar(255),
+attid varchar(255),
+lastsigncount bigint unsigned default 0,
+primary key (keyid),
+key userid (userid),
+key credid (credid),
+key attid (attid)
+);
+

@@ -22,13 +22,36 @@ if ($mode!='embed'){
 	<meta id="viewport" name="viewport" content="width=device-width" />
 	<link href="gsnotes.css" type="text/css" rel="stylesheet" />
 	<style>
-body{padding:0;margin:0;}	
+body{padding:0;margin:0;}
+.logo_light{display:block;}
+.logo_dark{display:none;}
+
+@media (prefers-color-scheme:dark) {
+	body{background:#21262D;color:#C9D1D9;}
+	.logo_light{display:none;}
+	.logo_dark{display:block;}
+	
+	input,textarea{background:#0D1117;color:#C2C3C5;border:solid 1px #6B7247;border-radius:3px;padding:2px 5px;line-height:20px;}
+	
+	.formlabel{color:#6B7247;}
+	
+	#gsnotes_header{border-bottom:solid 1px #21262D;}
+	#gsnotes_online{background:#0E2717;border-bottom:solid 1px #105F1A;color:#18E022;}
+	
+	a, a:hover, a:link, a:visited{text-decoration:none;color:#68A7EA;transition:color 200ms;}
+	a:hover{color:#294B70;}
+	
+	button{margin-top:5px;background:#187CA6;color:#F1DECE;cursor:pointer;border:solid 1px #388BFD;padding:5px 10px;}
+	button:hover{background:#125B7A;}
+}
+	
 	</style>
 </head>
 <body>
 
 <div id="gsnotes_header">
-	<img src="imgs/logo.png" id="gsnotes_headerlogo">
+	<img src="imgs/logo.png" id="gsnotes_headerlogo" class="logo_light">
+	<img src="imgs/dlogo.png" id="gsnotes_headerlogo" class="logo_dark">
 </div>
 
 <?php }//embed
@@ -37,11 +60,11 @@ body{padding:0;margin:0;}
 	Your browser does not support offline storage. Sorry =(
 </div>
 <div id="gsnotes_online" style="display:none;">
-	Good news! The network is working again! 
+	Good news! The network is working again! &nbsp; &nbsp;
 	<?php if ($mode=='embed'){?>
 		<a class="labelbutton" onclick="closefs();">back to work</a>
 	<?php } else {?>
-		<a href="./">continue to app</a>
+		<a class="hovlink" href="./">continue to app</a>
 	<?php }?>
 	
 	<?php if (!$SQL_READONLY&&$readonlypath!=''){?>
@@ -59,7 +82,7 @@ body{padding:0;margin:0;}
 	<div id="gsnotes_adder">
 	Add a:	
 		<?php foreach ($notetypes as $k=>$v){?>
-			&nbsp; <nobr><u><a href=# onclick="gsnotes_setnotetype('<?php echo $k;?>');return false;"><?php echo $v;?></a></u></nobr> &nbsp;
+			&nbsp; <nobr><u><a class="hovlink" href=# onclick="gsnotes_setnotetype('<?php echo $k;?>');return false;"><?php echo $v;?></a></u></nobr> &nbsp;
 		<?php }?>
 	</div>
 	<div id="gsnotes_form">

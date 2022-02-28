@@ -32,7 +32,7 @@ function rptactionlog(){
 	//// Report Header
 	
 	$query="select * from ".TABLENAME_REPORTS." where reportkey='actionlog' and (gsid=? or gsid=?) ";
-	if (TABLENAME_GSS!='gss') $query="select * from ".TABLENAME_REPORTS." where reportkey='actionlog' and (".COLNAME_GSID."=? or ".COLNAME_GSID."=0) ";
+	if (TABLENAME_GSS!='gss') $query="select * from ".TABLENAME_REPORTS." where reportkey='actionlog' and (".COLNAME_GSID."=? or ".COLNAME_GSID."=?) ";
 	
 	$rs=sql_prep($query,$db,array($gsid,$syslevel));
 	$myrow=sql_fetch_assoc($rs);
@@ -42,7 +42,7 @@ function rptactionlog(){
 ?>
 <div class="section">
 
-<div class="sectiontitle" style="margin-bottom:0;"><?php echo htmlspecialchars($myrow['reportname_'.$lang]);?></div>
+<div class="sectiontitle" style="margin-bottom:0;"><a ondblclick="toggletabdock();"><?php echo htmlspecialchars($myrow['reportname_'.$lang]);?></a></div>
 <div class="infobox"><?php echo htmlspecialchars($myrow['reportdesc_'.$lang]);?></div>
 <?php	
 	////

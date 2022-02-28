@@ -19,7 +19,16 @@ function add#record#(){
 		apperror(_tr('error_creating_record'));
 	}
 	
-	logaction("added #c_record# #$#primarykey# $#dispfield#",array('#primarykey#'=>$#primarykey#,'#dispfield#'=>"$#dispfield#"));
+	logaction("added #c_record# #$#primarykey# $#dispfield#",array('#primarykey#'=>$#primarykey#,'#dispfield#'=>"$#dispfield#"),null,0,array(
+		'table'=>'#tablename#',
+		'recid'=>$#primarykey#,
+		'after'=>array(
+			'#dispfield#'=>$#dispfield#
+		),
+		'diffs'=>array(
+			'#dispfield#'=>$#dispfield#
+		)
+	));
 	
 	header('newrecid:'.$#primarykey#);
 	header('newkey:#record#_'.$#primarykey#);

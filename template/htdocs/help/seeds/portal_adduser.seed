@@ -26,7 +26,7 @@ function add#primaryfield#user(){
 	
 	$np=password_hash($#primaryfield#dbsalt.$pass,PASSWORD_DEFAULT,array('cost'=>PASSWORD_COST));
 	
-	$roles='admins|reportsettings|systemplateuse|systemplate|accounts'; //intentionally missing helpedit,devreports,systemplate
+	$roles='admins|reportsettings|systemplateuse|systemplate|accounts|sharedashreports'; //"canchat" omitted, intentionally missing helpedit,devreports,systemplate
 	
 	$query="insert into #primaryfield#users (#primarykey#,login,dispname,active,password,passreset,groupnames) values (?,?,?,?,?,?,?)";
 	$rs=sql_prep($query,$db,array($#primarykey#,$login,$dispname,1,$np,$passreset,$roles));

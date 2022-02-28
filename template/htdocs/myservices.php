@@ -47,10 +47,23 @@ if ($gsexpiry!=0&&$gsexpiry<$now){
 	}
 }
 
-header('gsid: '.($user['gsid'])); //uncomment for logging in nginx as $upstream_http_gsid
+header(COLNAME_GSID.': '.($user['gsid'])); //uncomment for logging in nginx as $upstream_http_gsid
 header('gsuid: '.($user['userid'])); //uncomment for logging in nginx as $upstream_http_gsuid
 
 switch($cmd){
+		
+// Chat - gsb place holder
+
+	case 'slv_codegen__chats': die('<div class="section">Commercial License Required</div>'); break;
+	case 'setcanchat': die('commercial license required'); break;
+	
+//Yubi Key / NFC / Fingerprint
+
+	case 'addyubikey': include 'icl/addyubikey.inc.php'; addyubikey(); break;
+	case 'testyubikey': include 'icl/testyubikey.inc.php'; testyubikey(); break;
+	case 'delyubikey': include 'icl/delyubikey.inc.php'; delyubikey(); break;
+	case 'updateyubikeyname': include 'icl/updateyubikeyname.inc.php'; updateyubikeyname(); break;
+	case 'setyubikeypassless': include 'icl/setyubikeypassless.inc.php'; setyubikeypassless(); break;
 
 //Settings
 	case 'clogo': include 'icl/clogo.inc.php'; clogo(); break;
@@ -60,6 +73,11 @@ switch($cmd){
 		
 	case 'showaccount': include 'icl/showaccount.inc.php'; showaccount(); break;
 	case 'setaccount': include 'icl/setaccountpass.inc.php'; setaccountpass(); break;
+	
+	case 'embeduserprofileuploader': include 'icl/embeduserprofileuploader.inc.php'; embeduserprofileuploader(); break;
+	case 'imguserprofile': include 'icl/imguserprofile.inc.php'; imguserprofile(); break;
+	case 'removeuserprofilepic': include 'icl/removeuserprofilepic.inc.php'; removeuserprofilepic(); break;
+	case 'showuserprofile': include 'icl/showuserprofile.inc.php'; showuserprofile(); break;
 	
 	case 'imgqrcode': include 'icl/imgqrcode.inc.php'; imgqrcode(); break;
 	case 'showgaqr': include 'icl/showgaqr.inc.php'; showgaqr(); break;
@@ -82,6 +100,12 @@ switch($cmd){
 	case 'slv_core__templatetypes': include 'icl/listtemplatetypes.inc.php'; listtemplatetypes(); break;
 	
 	case 'rptsqlcomp': include 'icl/rptsqlcomp.inc.php'; rptsqlcomp(); break;  
+	
+	case 'rpttrace': include 'icl/needbingo.inc.php'; needbingo('Activity Summary'); break;
+	case 'rptserverlog': include 'icl/needbingo.inc.php'; needbingo('Server Access Log'); break;
+	case 'rptmxevents': include 'icl/needbingo.inc.php'; needbingo('Mail Server Log'); break;
+	case 'showchatsettings': include 'icl/needbingo.inc.php'; needbingo('Chat Settings'); break;
+	case 'lookupchatcustomer': include 'icl/stub.inc.php'; stub('lookupchatcustomer'); break;
 	
 	case 'installmods': include 'icl/installmods.inc.php'; installmods(); break;
 	
@@ -183,6 +207,7 @@ switch($cmd){
 	case 'addhomedashreport': include 'icl/addhomedashreport.inc.php'; addhomedashreport(); break;
 	case 'delhomedashreport': include 'icl/delhomedashreport.inc.php'; delhomedashreport(); break;
 	case 'listhomedashreports': include 'icl/listhomedashreports.inc.php'; listhomedashreports(); break;
+	case 'sharehomedashreport': include 'icl/sharehomedashreport.inc.php'; sharehomedashreport(); break;
 		
 	case 'updategyroscope': include 'icl/updater.inc.php'; updategyroscope(); break;
 

@@ -38,12 +38,23 @@ function showreportsetting($reportid=null){
 	$reportkey=trim(str_replace('/','',$reportkey));
 	$pfn="icl/rpt${reportkey}.inc.php";
 	
+	$bingo=$myrow['bingo'];
+	
 	header('newtitle:'.tabtitle('<img src="imgs/t.gif" class="ico-setting">'.htmlspecialchars($reportname)));
 ?>
 <div class="section">
 	<div class="sectiontitle"><?php echo htmlspecialchars($reportname);?></div>
+	
 
-	<?php if (!file_exists($pfn)&&$reportfunc==''){?>
+	<?php if ($bingo){
+	?>
+	<div class="warnbox">
+		This report is run via Bingo Bridge
+	</div>
+	<?php		
+	}?>	
+
+	<?php if (!$bingo&&!file_exists($pfn)&&$reportfunc==''){?>
 <div class="warnbox">
 	This report has not been implemented with a default handler. Make sure "rpt<?php echo $reportkey;?>" is handled.
 </div>	

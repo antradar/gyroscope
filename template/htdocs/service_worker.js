@@ -12,6 +12,7 @@ self.addEventListener('install', function(e) {
 		caches.open('gyroscope').then(function(cache) { //vendor portal specific
 			return cache.addAll([
 				'imgs/logo.png',
+				'imgs/dlogo.png',
 				'nano.js',
 				'notes.php',
 				'notes.php?mode=embed',

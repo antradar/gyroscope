@@ -1,5 +1,6 @@
 <?php
 
+include_once 'turl.php';
 
 function updategyroscope(){
 	global $lang;
@@ -35,7 +36,7 @@ function updategyroscope(){
 		curl_setopt($curl,CURLOPT_POST,1);
 		curl_setopt($curl,CURLOPT_POSTFIELDS,json_encode($req));
 		
-		$res=curl_exec($curl);
+		$res=turl_exec($curl);
 		curl_close($curl);
 		
 ?>
@@ -47,16 +48,15 @@ function updategyroscope(){
 
 	
 	$devmode=($_SERVER['REMOTE_ADDR']==='127.0.0.1'&&($_SERVER['O_IP']==='127.0.0.1'||$_SERVER['O_IP']==='::1'))?1:0;
-	
 	$gateway='https://www.antradar.com/gyroscope_updater.php';
 	$url=$gateway.'?lang='.$lang.'&version='.$version.'&devmode='.$devmode.'&project='.urlencode(GYROSCOPE_PROJECT).'&vendor='.urlencode(VENDOR_NAME).'&vendorversion='.VENDOR_VERSION;
 	
-		
 	$curl=curl_init($url);
 	curl_setopt($curl,CURLOPT_RETURNTRANSFER,1);
 	curl_setopt($curl,CURLOPT_SSL_VERIFYPEER,1);
 	curl_setopt($curl,CURLOPT_SSL_VERIFYHOST,2);
-	$res=curl_exec($curl);
+	curl_setopt($curl, CURLOPT_TIMEOUT, 5);
+	$res=turl_exec($curl);
 	curl_close($curl);
 
 ?>

@@ -1,5 +1,5 @@
 <?php
-define ('GYROSCOPE_VERSION', '18.3');
+define ('GYROSCOPE_VERSION', '18.9');
 
 //remember to personalize the project name
 define ('GYROSCOPE_PROJECT', 'Gyroscope Project Template');
@@ -71,7 +71,7 @@ function login($silent=false){
 	
 	$auth_=md5($salt.$userid.$groupnames.$salt.$login.$salt.$dispname.$salt.$gsid.$salt.$gsexpiry.$salt.$gstier);
 	$auth2_=md5($salt2.$userid.$groupnames.$salt2.$login.$salt2.$dispname.$salt2.$gsid.$salt2.$gsexpiry.$salt2.$gstier);
-		
+			
 	if (!isset($login)||(!hash_equals($auth,$auth_)&&!hash_equals($auth,$auth2_))||$auth===''||$auth===null) {
 				
 		$tail='';

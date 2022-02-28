@@ -14,7 +14,7 @@ function reset#primaryfield#user(){
 
 	$np=password_hash($#primaryfield#dbsalt.$pass,PASSWORD_DEFAULT,array('cost'=>PASSWORD_COST));
 	
-	$query="update #primaryfield#users set password=?,passreset=?,usega=0,gakey='' where userid=? and #primarykey#=?";
+	$query="update #primaryfield#users set password=?,passreset=?,usega=0,gakey='',usesms=0,useyubi=0 where userid=? and #primarykey#=?";
 	sql_prep($query,$db,array($np,1,$userid,$#primarykey#));
 
 	logaction("updated #primaryfield# user password #$userid",array('#primarykey#'=>$#primarykey#,'#primaryfield#userid'=>$userid));

@@ -7,6 +7,7 @@ function setaccountpass(){
 	global $db;
 	
 	$user=userinfo();
+	$userid=$user['userid'];
 	
 
 	$needkeyfile=GETVAL('needkeyfile');
@@ -15,7 +16,15 @@ function setaccountpass(){
 	
 	$usega=GETVAL('usega');
 	$usegamepad=GETVAL('usegamepad');
+	$useyubi=GETVAL('useyubi');
+	$yubimode=GETVAL('yubimode');
 	
+	//set useyubi to 0 if no devices are enrolled
+	$query="select count(*) as kcount from ".TABLENAME_YUBIKEYS." where userid=?";
+	$rs=sql_prep($query,$db,$userid);
+	$myrow=sql_fetch_assoc($rs);
+	$kcount=$myrow['kcount'];
+	if (!$kcount) $useyubi=0;	
 	
 	$rawpass=$_POST['pass'];
 	
@@ -24,7 +33,6 @@ function setaccountpass(){
 		if ($passcheck['grade']==0) apperror('A weak password cannot be used.');	
 	}
 	
-	$userid=$user['userid'];
 
 	$query="select * from ".TABLENAME_USERS." where userid=?";
 	$rs=sql_prep($query,$db,$userid);
@@ -39,8 +47,8 @@ function setaccountpass(){
 		$query.=" password=?, passreset=0, ";
 		array_push($params,$pass);
 	}
-	$query.=" needkeyfile=?,usesms=?,smscell=?, usega=?, usegamepad=? where userid=?";
-	array_push($params,$needkeyfile,$usesms,$smscell,$usega,$usegamepad, $userid);
+	$query.=" needkeyfile=?,usesms=?,smscell=?, usega=?, usegamepad=?, useyubi=?, yubimode=? where userid=?";
+	array_push($params,$needkeyfile,$usesms,$smscell,$usega,$usegamepad,$useyubi,$yubimode, $userid);
 	sql_prep($query,$db,$params);
 
 	if ($_POST['oldpass']=='') echo 'Account settings updated'; else tr('password_changed'); 

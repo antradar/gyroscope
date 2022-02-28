@@ -68,6 +68,13 @@ function scaleall(root){
     if (node.scalech) node.style.height=(idh-node.scalech)+'px';
   }
   
+  if (gid('gschat_chatbox')){
+		var uptake=170; //space taken by other components
+		gid('gschat_chatbox').style.maxHeight=(idh-uptake)+'px';
+  }
+  
+  
+  
 }
 
 function beltprev(){
@@ -110,8 +117,10 @@ function closefs(){
 	if (gid('fsclose').closeaction) gid('fsclose').closeaction();	
 }
 
-function loadfs(title,cmd,func,initfunc){
-	ajxpgn('fsview',document.appsettings.codepage+'?cmd='+cmd,1,0,'',function(){
+function loadfs(title,cmd,func,initfunc,bingo){
+	var codepage=document.appsettings.codepage;
+	if (bingo) codepage=document.appsettings.binpage;
+	ajxpgn('fsview',codepage+'?cmd='+cmd,1,0,'',function(){
 		gid('fstitle').innerHTML=title;	
 		showfs(func,initfunc);	
 	});
@@ -173,12 +182,15 @@ function reloadview(idx,listid){
 
 	var params='';
 	if (gid('lv'+document.viewindex)) params=gid('lv'+document.viewindex).params;
-		
+	var bingo=gid('lv'+document.viewindex).bingo;
+
 	if (listid) reajxpgn(listid,'lv'+idx);
-	else showview(idx,0,0,params);
+	else showview(idx,0,0,params,null,bingo);
 }
 
-function showview(idx,lazy,force,params,func){
+function showview(idx,lazy,force,params,func,bingo){
+  var codepage=document.appsettings.codepage;
+  if (bingo==1) codepage=document.appsettings.binpage;
   if (!params) params='';
   
   if (gid('gamepadspot')) gid('gamepadspot').vidx=null;
@@ -189,7 +201,10 @@ function showview(idx,lazy,force,params,func){
 	  gid('lv'+document.viewindex).tooltitle=gid('tooltitle').innerHTML;
   }
   
-  if (gid('lv'+idx)) gid('lv'+idx).params=params;
+  if (gid('lv'+idx)) {
+	  gid('lv'+idx).params=params;
+	  gid('lv'+idx).bingo=bingo;
+  }
  
  
   for (var k=0; k<document.appsettings.views.length;k++){
@@ -202,7 +217,7 @@ function showview(idx,lazy,force,params,func){
 				document.lvxhr.abortflag=1;document.lvxhr.reqobj.abort();document.lvxhr.reqobj=null;cancelgswi(document.lvxhr);
 			}
 			document.lvxhr=gid('lv'+i);
-			ajxpgn('lv'+i,document.appsettings.codepage+'?cmd=slv_'+i.replace(/\./g,'__')+'&'+params,true,true,'',function(rq){
+			ajxpgn('lv'+i,codepage+'?cmd=slv_'+i.replace(/\./g,'__')+'&'+params,true,true,'',function(rq){
 				var title=rq.getResponseHeader('listviewtitle');
 				if (title!=null&&title!='') gid('tooltitle').innerHTML='<a>'+decodeHTML(title)+'</a>';
 				var flag=rq.getResponseHeader('listviewflag');
@@ -222,8 +237,8 @@ function showview(idx,lazy,force,params,func){
   gid('lv'+idx).viewloaded=1;
   document.viewindex=idx;
   
-  gid('leftview').style.background=document.flashcolor;
-  setTimeout(function(){gid('leftview').style.background='#ffffff';},200);  
+  gid('leftview').className='bgflash';
+  setTimeout(function(){gid('leftview').className='bgready';},250);  
   
   if (self.livechat_updatesummary&&document.chatstatus=='online') livechat_updatesummary();	
   
@@ -238,8 +253,8 @@ function showlookup(){
 	lkv.showing=true;
 	lkv.style.left='0px';
 
-	gid('lkvc').style.background='#ffffc0';
-	setTimeout(function(){gid('lkvc').style.background='#ffffff';},200);				
+	//gid('lkvc').style.background='#ffffc0';
+	//setTimeout(function(){gid('lkvc').style.background='#ffffff';},200);				
 }
 
 function hidelookup(){
@@ -321,6 +336,12 @@ if (document.createEvent){
 			document.fleetview=true;
 			updategyroscope();	
 		}		
+		
+		if (metakey&&document.keyboard['key_190']&&document.keyboard['key_188']) toggletabdock();
+		
+		
+		
+		
 	}
 
 	function savecurrenttab(){

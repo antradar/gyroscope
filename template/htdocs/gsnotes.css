@@ -38,3 +38,13 @@
 @media screen and (max-width:450px){
 	.gsnoteitem{width:100%;}	
 }
+
+@media (prefers-color-scheme:dark) {
+	
+		
+	#gsnotes_header{border-bottom:solid 1px #21262D;}
+	#gsnotes_online{background:#0E2717;border-bottom:solid 1px #105F1A;color:#18E022;}
+		
+	button{margin-top:5px;background:#187CA6;color:#F1DECE;cursor:pointer;border:solid 1px #388BFD;padding:5px 10px;}
+	button:hover{background:#125B7A;}
+}

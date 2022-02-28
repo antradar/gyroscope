@@ -41,11 +41,46 @@ type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
 <?php
 }
 
+function livechat_gschat(){
+	$user=userinfo();
+	$gsid=$user['gsid'];
+	$userid=$user['userid'];
+	$pname=$user['dispname'];
+	
+	global $chatkey; //defined in lb.php
+	global $targetgsid;
+	global $targetgsauth;
+	global $portalchannel;
+	global $chatserver_http;
+	global $chatserver_wss;
+	
+	$pauth=sha1($gsid.'-'.$chatkey.'-'.$userid);
+	
+	include 'gschatbox.php';
+?>
+<script src="pchat.js"></script>
+<script>
+
+document.gschatpath='<?php echo $chatserver_http;?>';
+document.wspath='<?php echo $chatserver_wss;?>';
+
+
+function livechat_init(){
+	gschat_init('gschat','portalid=<?php echo $portalchannel;?>&pgsid=<?php echo $gsid;?>&puserid=<?php echo $userid;?>&portalauth=<?php echo $pauth;?>&pname=<?php echo urlencode($pname);?>','<?php echo $targetgsid;?>','<?php echo $targetgsauth;?>');	
+}
+function livechat_start(){
+	gschat_setviewstate(1);	
+}
+</script>
+<?php	
+}
+
 function livechat(){
 	global $livechatmode;
 	switch ($livechatmode){
 		case 'ze': livechat_ze(); break;
 		case 'zopim': livechat_zopim(); break;
+		case 'gschat': livechat_gschat(); break;
 	}	
 
 }

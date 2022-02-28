@@ -37,7 +37,7 @@ function reauth(){
 	$auth=md5($salt.$userid.$groupnames.$salt.$login.$salt.$dispname.$salt.$gsid.$salt.$gsexpiry.$salt.$gstier);
 		
 	
-	$wsskey=md5($wssecret.$gsid.date('Y-n-j-H')).'-'.$gsid;
+	$wsskey=md5($wssecret.$gsid.date('Y-n-j-H').$userid).'-'.$gsid.'-'.$userid;
 	
 	if (!$active||$virtual){
 		setcookie('userid',NULL,time()-3600,null,null,$usehttps,true);

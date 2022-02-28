@@ -52,14 +52,14 @@ function showuser($userid=null){
 		
 	header('newtitle: '.tabtitle('<img src="imgs/t.gif" class="ico-user">'.htmlspecialchars($login)));
 	
-	makechangebar('user_'.$userid,"updateuser('$userid',$jsroles,'".makegskey('updateuser_'.$userid)."');");
+	makechangebar('user_'.$userid,"updateuser('$userid',$jsroles,'".makegskey('updateuser_'.$userid)."');",'');
 	makesavebar('user_'.$userid);
 ?>
 
 
 
 <div class="section hasqnav">
-	<div class="sectiontitle" id="bmusertop_<?php echo $userid;?>"><?php echo htmlspecialchars($login);?></div>
+	<div class="sectiontitle" id="bmusertop_<?php echo $userid;?>"><a ondblclick="toggletabdock();"><?php echo htmlspecialchars($login);?></a></div>
 
 	<div class="col">
 
@@ -78,7 +78,7 @@ function showuser($userid=null){
 	<div class="inputrow">
 		<input type="checkbox" id="active_<?php echo $userid;?>" <?php if ($active) echo 'checked';?>  onclick="marktabchanged('user_<?php echo $userid;?>');"> <label for="active_<?php echo $userid;?>"><?php tr('account_active');?></label>
 		&nbsp;&nbsp;
-		<input type="checkbox" id="virtual_<?php echo $userid;?>" <?php if ($virtual) echo 'checked';?>  onclick="marktabchanged('user_<?php echo $userid;?>');" onclick="if (this.checked) gid('userpasses_<?php echo $userid;?>').style.display='none'; else gid('userpasses_<?php echo $userid;?>').style.display='block';"> <label for="virtual_<?php echo $userid;?>"><?php tr('account_virtual');?></label>
+		<input type="checkbox" id="virtual_<?php echo $userid;?>" <?php if ($virtual) echo 'checked';?>  onclick="if (this.checked) gid('userpasses_<?php echo $userid;?>').style.display='none'; else gid('userpasses_<?php echo $userid;?>').style.display='block';marktabchanged('user_<?php echo $userid;?>');" onclick="if (this.checked) gid('userpasses_<?php echo $userid;?>').style.display='none'; else gid('userpasses_<?php echo $userid;?>').style.display='block';"> <label for="virtual_<?php echo $userid;?>"><?php tr('account_virtual');?></label>
 	</div>
 	<div id="userpasses_<?php echo $userid;?>" style="<?php if ($virtual) echo 'display:none;';?>">
 	<div class="inputrow">

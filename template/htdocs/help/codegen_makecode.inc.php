@@ -27,7 +27,7 @@ function codegen_makecode(){
 
 function codegen_quotecode($seed,$filename,$opts,$midx,$nocopy){
 	$fn='help/seeds/'.$seed.'.seed';
-	if (!file_exists($fn)) {echo "missing seed file $seed.seed";return;}
+	if (!file_exists($fn)) {echo "missing seed file $seed.seed<br>";return;}
 	$code=file_get_contents($fn);
 	$code=htmlentities($code);
 	

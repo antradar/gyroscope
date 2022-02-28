@@ -76,7 +76,9 @@ function embed#primaryfield##record#uploader(){
 ?>
 <html>
 <body style="padding:0;margin:0;">
-
+<style>
+<?php include 'uploaderstyle.php';?>
+</style>
 <form id="uploader" style="padding:0;margin:0;" method="POST" enctype="multipart/form-data">
 <div id="dropzone" style="display:none;margin:20px 0;padding:10px;border:dashed 2px #dedede;text-align:center;font-size:20px;color:#dedede;">
 	<span id="dropzonetext">Drag and drop file here</span>

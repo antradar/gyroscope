@@ -30,7 +30,7 @@ function showtemplate($templateid=null){
 	makechangebar('template_'.$templateid,"updatetemplate('$templateid','$templatetypeid','".makegskey('updatetemplate_'.$templateid)."');");
 ?>
 <div class="section">
-	<div class="sectiontitle"><?php echo htmlspecialchars($templatename);?></div>
+	<div class="sectiontitle"><a ondblclick="toggletabdock();"><?php echo htmlspecialchars($templatename);?></a></div>
 
 	<input type="hidden" id="templateplugins_<?php echo $templateid;?>" value="<?php echo $plugins;?>">
 

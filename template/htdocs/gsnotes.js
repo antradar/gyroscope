@@ -17,8 +17,19 @@ gsnotes_syncindicator=function(){
 	}
 	
 	if (gid('gsnotesclipicon')){
-		if (document.gsnotes.length>0||(navigator.onLine!=null&&!navigator.onLine)) gid('gsnotesclipicon').style.display='inline';
-		else gid('gsnotesclipicon').style.display='none';
+		if (document.gsnotes.length>0||(navigator.onLine!=null&&!navigator.onLine)) {
+			gid('gsnotesclipicon').style.display='inline';
+			
+		} else {
+			gid('gsnotesclipicon').style.display='none';
+		}
+
+		var iconcount=0;
+		var os=gid('toollist').getElementsByTagName('a');
+		for (var i=0;i<os.length;i++) if (os[i].offsetWidth>10) iconcount++;
+
+		gid('toollistcontent').style.width=(52*(iconcount+1))+'px';
+
 	}	
 }
 
@@ -158,6 +169,13 @@ gsnotes_listclips=function(keyfilter){
 	
 	html.push('</div>');
 	html.push('<textarea id="gsnotes_clipboard" style="display:none;"></textarea>');
+	
+	if (document.iphone_portrait==1&&navigator.onLine){
+		gid('fsview').innerHTML=html.join('');
+		gid('fstitle').innerHTML='Offline Clipboard';
+		showfs();
+		return;	
+	}
 			
 	gid('lkvc').innerHTML=html.join('');
 	showlookup();

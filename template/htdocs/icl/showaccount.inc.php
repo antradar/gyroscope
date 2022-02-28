@@ -5,6 +5,8 @@ include 'icl/showuserhelptopics.inc.php';
 include 'icl/showgaqr.inc.php';
 include 'inbound/libmsgraph.php';
 
+include 'icl/showuserprofile.inc.php';
+include 'icl/listyubikeys.inc.php';
 
 function showaccount(){
 	global $smskey;
@@ -14,6 +16,8 @@ function showaccount(){
 	global $db;
 	
 	$userid=$user['userid'];
+	$gsid=$user['gsid'];
+	
 	$query="select * from ".TABLENAME_USERS." where userid=?";
 	$rs=sql_prep($query,$db,$userid);
 	$myrow=sql_fetch_assoc($rs);
@@ -24,6 +28,8 @@ function showaccount(){
 	$usega=$myrow['usega'];
 	$gakey=$myrow['gakey'];
 	
+	$useyubi=$myrow['useyubi'];
+	
 	$usegamepad=$myrow['usegamepad'];
 	
 	$login=$myrow['login'];
@@ -33,14 +39,27 @@ function showaccount(){
 	if ($gakey=='') $usega=0;
 	
 	if ($smskey=='') $usesms=0;
+	
+	$canchat=$myrow['canchat'];
 
-	makechangebar('account',"setaccountpass();"); //disabled for now
-		
+	makechangebar('account',"setaccountpass();",''); //disabled for now
+	makesavebar('account');	
 ?>
 <div class="section">
 
-<div class="sectiontitle"><?php tr('account_settings');?></div>
-<div class="inputrow"><?php echo htmlspecialchars($login);?></div>
+<div class="sectiontitle">
+	<a ondblclick="toggletabdock();"><?php tr('account_settings');?></a>
+</div>
+<div class="inputrow">Your Login: <?php echo htmlspecialchars($login);?></div>
+<?php
+if ($user['groups']['chats']){
+?>
+<div class="inputrow">
+<input type="checkbox" id="accountcanchat" <?php if ($canchat) echo 'checked';?> onclick="document.appsettings.beepnewchat=this.checked;ajxpgn('statusc',document.appsettings.binpage+'?cmd=setcanchat&canchat='+(this.checked?1:0));"> <label for="accountcanchat">I'm available for a support chat</label>
+</div>
+<?php	
+}
+?>
 
 <div class="col">
 	<div class="sectionheader"><?php tr('password');?></div>
@@ -83,6 +102,16 @@ function showaccount(){
 			Test PIN: <input class="inpshort" id="myaccount_gatestpin"> <button onclick="testgapin();">Test</button>
 		</div>
 	</div>
+	
+	<div class="inputrow">
+		<input type="checkbox" id="myaccount_useyubi" <?php if ($useyubi) echo 'checked';?> onclick="marktabchanged('account'); if (this.checked) {gid('myaccount_yubikeys').style.display='block';} else gid('myaccount_yubikeys').style.display='none';">
+		<label for="myaccount_useyubi">enable hardware security keys and screen lock</label>
+	</div>
+	
+	<div id="myaccount_yubikeys" style="padding-left:30px;padding-bottom:10px;display:none<?php if ($useyubi) echo 'a';?>;">
+		<?php listyubikeys();?>
+	</div>
+
 		
 	<div class="inputrow">
 		<input type="checkbox" onclick="marktabchanged('account');showhide('keyfilecontainer');" id="myaccount_needkeyfile" <?php if ($needkeyfile) echo 'checked';?>>
@@ -99,10 +128,17 @@ function showaccount(){
 	</div>
 	
 </div>
-<div id="keyfilecontainer" class="col" style="display:none<?php if ($needkeyfile) echo 'a';?>;">
+<div class="col">
+	<div class="sectionheader">Profile Photo (270x270)</div>
+	<div id="userprofile_<?php echo $userid;?>">
+		<?php showuserprofile($userid);?>
+	</div>
+	
+	<div id="keyfilecontainer" style="display:none<?php if ($needkeyfile) echo 'a';?>;">
 
-	<div class="sectionheader">Key File</div>
-	<?php showkeyfilepad('mykeyfile',$userid);?>
+		<div class="sectionheader">Key File</div>
+		<?php showkeyfilepad('mykeyfile',$userid);?>
+	</div>
 </div>
 <div class="clear"></div>
 
@@ -148,7 +184,73 @@ function showaccount(){
 	<div id="userhelptopics_<?php echo $userid;?>">
 		<?php showuserhelptopics();?>
 	</div>
+	
+<div style="padding-top:20px;"></div>
 
+<style>
+	.useccol0,.useccol1,.useccol2,.useccol3,.useccol4{float:left;}
+	.useccol0{width:13%;margin-left:1%;margin-right:1%;}
+	.useccol1{width:24%;margin-right:1%;text-align:center;}
+	.useccol2{width:13%;margin-right:1%;}
+	.useccol3{width:21%;margin-right:1%;}
+	.useccol4{width:20%;margin-right:1%;}
+</style>
+<div class="grid">
+<?php
+
+	global $vdb;
+	
+	if (isset($vdb)){
+
+	$query="select ip,city,xprov,xcountry,min(logdate) as mindate,max(logdate) as maxdate from accesslog where ".COLNAME_GSID."=$gsid and userid=$userid group by ip,city,xprov,xcountry order by maxdate desc limit 10";
+	$rs=vsql_query($query,$vdb);
+	$c=vsql_affected_rows($vdb,$rs);
+	
+	if ($c>0){
+?>
+<div class="sectionheader">Recent Account Access</div>
+	<div class="gridrow">
+		<div class="gridheader" style="color:#ffffff;">
+			<div class="useccol0">Latest Access</div>
+			<div class="useccol1">IP Address</div>
+			<div class="useccol2">First Accessed</div>
+			<div class="useccol3">City</div>
+			<div class="useccol4">Country</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+<?php
+	}
+
+	$idx=0;
+
+	while ($myrow=vsql_fetch_assoc($rs)){
+		$mindate=$myrow['mindate'];
+		$maxdate=$myrow['maxdate'];
+
+		$dmindate=date('Y-n-j g:ia',$mindate);
+		$dmaxdate=date('Y-n-j g:ia',$maxdate);
+	?>
+	<div class="gridrow<?php if ($idx%2==0) echo ' even';?>">
+		<div class="useccol0"><?php echo $dmaxdate;?></div>
+		<div class="useccol1"><?php echo htmlspecialchars($myrow['ip']);?></div>
+		<div class="useccol2"><?php echo $dmindate;?></div>
+		<div class="useccol3"><?php echo htmlspecialchars(trim($myrow['city'].' '.$myrow['xprov']));?></div>
+		<div class="useccol4"><?php echo htmlspecialchars($myrow['xcountry']);?></div>
+		<div class="clear"></div>
+	</div>
+	<?php
+		$idx++;
+	}//while
+?>
+
+</div>
+
+<div style="padding-top:40px;"></div>
+
+<?php
+} //vdb
+?>
 
 </div><!-- section -->
 <?php

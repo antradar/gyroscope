@@ -9,7 +9,7 @@ CREATE TABLE actionlog (
   logname String,
   logmessage String,
   rawobj String,
-  logdate int,
+  logdate UInt64,
   sid UInt64,
   rectype String,
   recid String ,

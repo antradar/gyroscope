@@ -1,0 +1,224 @@
+<?php
+include 'icl/#entity#_nav.inc.php';
+
+
+function #cmd#(){
+	global $vdb;
+	
+	$mode=SGET('mode');
+	$submode=SGET('submode');
+
+	$allfields=array(#iterator-groupbylist-navchgfield#);
+				
+	if ($mode!='embed'){
+		/*
+		add the following lines to reports.js:
+		rptinit_#mastertable#=function(){
+			nav_loadcharts('#container#','#searchkey#','#cmd#');
+		}
+		rptreload_#mastertable#=function(){
+			nav_loadcharts('#container#','#searchkey#','#cmd#');
+		}
+		*/
+		
+		foreach ($allfields as $field) $_GET['group_'.$field]=1;
+		
+?>
+<div class="section">
+
+	<div class="sectiontitle">#entity#</div>
+
+	<input id="#entity#_chartrelay" type="hidden" onchange="nav_loadcharts('#container#','#searchkey#','#cmd#');">
+	<div>
+		<input id="#searchkey#" autocomplete="off" style="margin-bottom:0;" class="img-mg" onkeyup="if (this.timer) clearTimeout(this.timer); this.timer=setTimeout(function(){ajxpgn('#container#',document.appsettings.codepage+'?cmd=#cmd#&mode=embed&key='+encodeHTML(gid('#searchkey#').value)+gid('searchfilter_#entity#').value);},200);">
+	</div>
+	
+	<div id="#container#" class="navdash">
+	
+<?php
+} //mode	
+
+		if ($submode!='embed') #entity#_shownavs('#container#','#cmd#');
+		
+		$sqlfilters=#entity#_sqlfilters();
+		
+		
+		
+		//echo "<br><br> Filter: ".$sqlfilters['clauses'];
+		
+		//add pagination and rendering code on your own
+		//pagination filter: +gid('searchfilter_#entity#').value
+		
+		$bfilters=#entity#_makefilters();
+		$basefilters=$bfilters['filters'];
+				
+		$sublabels=array(#iterator-groupbylist-navchgroupby#);
+		$subfields=array();
+		
+		foreach ($allfields as $field) if ($basefilters['group_'.$field]==1) array_push($subfields,$field);
+		
+		$keysort=array();
+		foreach (array_keys($_GET) as $idx=>$key) $keysort[$key]=$idx;
+	
+		usort($subfields,function($a,$b) use ($keysort){
+			$ka=$keysort['group_'.$a];
+			$kb=$keysort['group_'.$b];
+			if (!is_numeric($ka)) $ka=1000;
+			if (!is_numeric($kb)) $kb=1000;			
+			if ($ka==$kb) return 0;
+			if ($ka<$kb) return -1; else return 1;	
+		});
+		
+		usort($allfields,function($a,$b) use ($keysort){
+			$ka=$keysort['group_'.$a];
+			$kb=$keysort['group_'.$b];
+			if (!is_numeric($ka)) $ka=1000;
+			if (!is_numeric($kb)) $kb=1000;				
+			if ($ka==$kb) return 0;
+			if ($ka<$kb) return -1; else return 1;		
+		});		
+				
+		$glist='';
+		$sublist=implode(',',$subfields);
+		if (count($subfields)>0) {
+			$glist=' group by '.$sublist;
+			$olist=' order by '.$sublist;
+		}
+		
+		
+		$params=array();
+		$query="select count(*) as c from (";
+		$query.=" select #iterator-aggregatelist-navchagg# ";
+		foreach ($subfields as $subfield) $query.=", ".$subfield;
+		$query.=" from #mastertable# where 1 ".$sqlfilters['clauses'];
+		$query.=$glist;
+		$query.=") t";
+		
+		$params=array_merge($params,$sqlfilters['params']);
+		
+		if ($submode!='embed'){
+?>
+		<div id="#entity#grid">
+<?php		
+		}
+		
+		
+		$rs=vsql_prep($query,$vdb,$params);
+		$myrow=vsql_fetch_assoc($rs);
+		$c=intval($myrow['c']);
+		
+		$perpage=20;
+		$page=intval(SGET('page'));
+		$maxpage=ceil($c/$perpage)-1;
+		if ($maxpage<0) $maxpage=0;
+		if ($page<0) $page=0;
+		if ($page>$maxpage) $page=$maxpage;
+		
+		$start=$page*$perpage;
+		
+		$query="select #iterator-aggregatelist-navchagg# ";
+		foreach ($subfields as $subfield) $query.=", ".$subfield;
+		$query.=" from #mastertable# where 1 ".$sqlfilters['clauses'];
+		
+		$query.=$glist;
+		$query.=$olist;
+		$query.=" limit $start,$perpage ";
+		
+		$rs=vsql_prep($query,$vdb,$params);
+		
+		$pager='';
+				
+		if ($maxpage>0){
+			ob_start();
+?>
+	<div style="padding:10px 0;">
+	<a class="hovlink" onclick="ajxpgn('#container#grid',document.appsettings.codepage+'?cmd=#cmd#&page=<?php echo $page-1;?>&mode=embed&submode=embed&'+gid('searchfilter_#entity#').value);">&laquo; Prev</a>
+	&nbsp;
+	Page <a class="hovlink" onclick="var pagenum=sprompt('Go to page:',<?php echo $page+1;?>);if (pagenum==null||parseInt(pagenum,0)!=pagenum) return false;ajxpgn('#container#grid',document.appsettings.codepage+'?cmd=#cmd#&page='+(pagenum-1)+'&mode=embed&submode=embed&'+gid('searchfilter_#entity#').value);"><?php echo $page+1;?></a> of <?php echo $maxpage+1;?>
+	&nbsp;
+	<a class="hovlink" onclick="ajxpgn('#container#grid',document.appsettings.codepage+'?cmd=#cmd#&page=<?php echo $page+1;?>&mode=embed&submode=embed&'+gid('searchfilter_#entity#').value);">Next &raquo;</a>
+	</div>
+<?php
+			$pager=ob_get_clean();			
+		}		
+		
+		echo $pager;
+		
+?>
+<div class="stable">
+<table cellspacing="0" cellpadding="3" border="1">
+<?php		
+		if ($c>0){
+?>
+	<tr>
+			<?php
+			foreach ($allfields as $subfield){
+			?>
+			<td><b><?php 
+			if (in_array($subfield,$subfields)){
+				
+			?>
+			<?php echo $sublabels[$subfield];?> <a style="color:#ab0200;" onclick="nav_setfilter('#cmd#','#searchkey#','#cmd#',gid('searchfilter_#entity#').value+'&group_<?php echo $subfield;?>=0');">[x]</a>
+			<?php	
+			} else {
+			?>
+			<?php echo $sublabels[$subfield];?> <a onclick="nav_setfilter('#cmd#','#searchkey#','#cmd#',gid('searchfilter_#entity#').value+'&group_<?php echo $subfield;?>=1');" class="hovlink">[+]</a>
+			<?php	
+			}
+			?></b></td>
+			<?php	
+			}//foreach
+			?>
+#iterator-aggregatelist-navchaggheader#
+			
+	</tr>
+<?php			
+		}
+		
+		$idx=0;
+		
+		while ($myrow=vsql_fetch_assoc($rs)){
+		
+		?>
+		<tr class="gridrow<?php if ($idx%2==1) echo ' even';?>">
+		<?php
+			foreach ($allfields as $subfield){
+				$dsubfield=$myrow[$subfield];
+				//customize display field here
+			?>
+			<td><b><?php echo $dsubfield;?></b></td>
+			<?php	
+			}//foreach
+			?>			
+#iterator-aggregatelist-navchaggrow#
+		</tr>
+		<?php
+		
+			$idx++;
+		
+		}//while
+?>
+</table>
+</div><!-- stable -->
+<?php		
+
+	echo $pager;
+	
+		if ($submode!='embed'){
+		?>
+		</div>
+		<?php	
+		}	
+		
+if ($mode!='embed'){
+		?>
+	</div>
+
+</div>
+<?php
+
+} //mode
+
+
+		
+}

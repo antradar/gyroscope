@@ -15,6 +15,10 @@ evict_check();
 
 login();
 $user=userinfo();
+$query="select * from users where userid=?";
+$rs=sql_prep($query,$db,$userid);
+$usermeta=sql_fetch_assoc($rs);
+
 ?>
 <html>
 <head>
@@ -64,7 +68,7 @@ button.warn, .button.warn{display:none;}
 	if ($enablelivechat) $tcount=2;
 	foreach ($toolbaritems as $ti) if (isset($ti['icon'])&&$ti['icon']!='') $tcount++;
 	?>
-	<div id="toollist" style="overflow:auto;width:100%;"><div style="width:<?php echo 52*($tcount+1);?>px;">
+	<div id="toollist" style="overflow:auto;width:100%;"><div id="toollistcontent" style="width:<?php echo 52*($tcount+1);?>px;">
 		
 	<div class="menuitem"><a id="speechstart" href=# onclick="ajxjs(<?php jsflag('speech_startstop');?>,'speech.js');speech_startstop(1);return false;" style="display:none;"><img alt="voice commands" style="" class="img-speechrecog" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
 	<div class="menuitem" id="homeicon"><a href=# onclick="reloadtab('welcome','','wk');showtab('welcome');document.viewindex=null;return false;"><img alt="home menu" class="img-home" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
@@ -80,7 +84,10 @@ button.warn, .button.warn{display:none;}
 			continue;
 		}
 		
-		$action="showview('".$modid."',1,1);";
+		$binmode='null';
+		if ($ti['bingo']==1) $binmode=1;
+
+		$action="showview('".$modid."',1,1,null,null,".$binmode.");";
 		if ($ti['action']!='') $action=$ti['action'];
 		if (!isset($ti['icon'])||$ti['icon']=='') continue;
 		
@@ -108,14 +115,16 @@ button.warn, .button.warn{display:none;}
 	<video loop id="nosleepvideo">
 		<source src="nosleep.webm" type="video/webm">
 		<source src="nosleep.mp4" type="video/mp4">
-	</video>	
+	</video>
+	<audio id="gschatsound_msgin"><source src="chatsounds/msgin.mp3"></audio>
+	<audio id="gschatsound_newchat"><source src="chatsounds/newchat.mp3"></audio>
 </div>
 <div id="leftview" style="float:left;margin-left:10px;width:210px;margin-right:10px;">
 	<div id="tooltitle" ontouchstart="toggle_easyread_start();" ontouchend="toggle_easyread_end();" onclick="if (document.viewindex) reloadview(document.viewindex,0,1);" style="width:150px;position:fixed;top:50px;z-index:1000;height:25px;"></div>
 	<div id="tooltitleshadow" style="width:150px;height:25px;"></div>
 	<div id="lvviews">
 	<?php foreach ($toolbaritems as $modid=>$ti){?>
-		<div id="lv<?php echo $modid;?>" style="background-color:#ffffff;display:none;"></div>
+		<div id="lv<?php echo $modid;?>" style="display:none;"></div>
 	<?php }?>	
 	</div>
 	<div id="lkv" style="height:100%;">
@@ -126,7 +135,7 @@ button.warn, .button.warn{display:none;}
 </div>
 <div id="content" style="float:left;width:320px;">
 
-	<div id="backlist" ontouchstart="toggle_easyread_start();" ontouchend="toggle_easyread_end();" style="display:none;position:fixed;width:100%;z-index:1000;"><a id="backlistbutton"><img alt="back button" onclick="navback();" src="iphone/bb_<?php echo $lang;?>.png"></a></div>
+	<div id="backlist" ontouchstart="toggle_easyread_start();" ontouchend="toggle_easyread_end();" style="display:none;position:fixed;width:100%;z-index:1000;"><a id="backlistbutton"><img class="mtback_light" alt="back button" onclick="navback();" src="iphone/bb_<?php echo $lang;?>.png"><img class="mtback_dark" alt="back button" onclick="navback();" src="iphone/dbb_<?php echo $lang;?>.png"></a></div>
 	<div id="backlistshadow" style="display:none;width:100%;"></div>
 
 	<div id="tabtitles" style="width:325px;position:fixed;z-index:1000;"></div>
@@ -144,10 +153,10 @@ button.warn, .button.warn{display:none;}
 <div id="fsview"></div>
 
 <script>
-document.appsettings={codepage:'<?php echo $codepage;?>',fastlane:'<?php echo $fastlane;?>',autosave:10, viewmode:'iphone', views:<?php echo json_encode(array_keys($toolbaritems));?>};
+document.appsettings={codepage:'<?php echo $codepage;?>',binpage:'<?php echo $binpage;?>',beepnewchat:<?php echo $usermeta['canchat']?'true':'false';?>,fastlane:'<?php echo $fastlane;?>',autosave:null, viewmode:'iphone', views:<?php echo json_encode(array_keys($toolbaritems));?>};
 </script>
 <script src="lang/dict.<?php echo $lang;?>.js"></script>
-<script src="nano.js"></script>
+<script src="nano.js?v=4_9"></script>
 <script>
 hdpromote('toolbar_hd.css');
 hdpromote('iphone/gyrodemo_hd.css');

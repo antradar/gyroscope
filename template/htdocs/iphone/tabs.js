@@ -26,6 +26,19 @@ navback=function(){
 	
 }
 
+function undocktab(){
+	//for now
+}
+
+function redoctab(){
+	//for now	
+}
+
+function toggletabdock(){
+	//for now
+}
+
+
 function closetabtree(root,sub){
 	if (!document.tabkeys) return;
 	
@@ -118,11 +131,21 @@ function reloadtab(key,title,params,loadfunc,data,opts,gskey){
 	document.tabtitles[tabid].tablock=1;
 	document.tabtitles[tabid].conflicted=null;
 	
+	var tabbingo=document.tabtitles[tabid].bingo; 
+	
 	if (document.tabtitles[tabid].autosaver) {clearTimeout(document.tabtitles[tabid].autosaver);document.tabtitles[tabid].autosavertimer=null;}
 	
 	var rq=xmlHTTPRequestObject();
 	
 	var scn=document.appsettings.codepage+'?cmd=';
+    if (opts&&opts.fastlane) scn=document.appsettings.fastlane+'?cmd=';
+	if (opts&&opts.bingo) {
+		scn=document.appsettings.binpage+'?cmd=';
+		document.tabtitles[tabid].bingo=true;
+	}
+	if (tabbingo){
+		scn=document.appsettings.binpage+'?cmd=';
+	}
 	
   	if (document.wssid) params=params+'&wssid_='+document.wssid;
   	
@@ -264,13 +287,16 @@ function addtab(key,title,params,loadfunc,data,opts){
   document.tabviews[document.tabcount]=c;
   document.tabtitles[document.tabcount]=t;
   document.tabkeys[document.tabcount]=key;
+  if (opts&&opts.bingo) document.tabtitles[document.tabcount].bingo=true;
   document.tabcount++;
   showtab(key,opts);
   
 
   var rq=xmlHTTPRequestObject();
   var scn=document.appsettings.codepage+'?cmd=';
-  
+  if (opts&&opts.fastlane) scn=document.appsettings.fastlane+'?cmd=';
+  if (opts&&opts.bingo) scn=document.appsettings.binpage+'?cmd=';
+    
   if (document.wssid) params=params+'&wssid_='+document.wssid;  
   
   rq.open('POST',scn+params+'&hb='+hb(),true);

@@ -6,3 +6,17 @@
 .img-calel, .img-caler, .img-mg, .mediaimg-mg,
 .img-help,
 .img-print{background-image:url(imgs/sprite_hd.png);background-size:399px 370px;}
+
+
+@media (prefers-color-scheme:dark) {
+	
+	#tooltitle, #lkvtitle, #lkvx, #lefticons, #statusinfo,
+	.activetab, .dulltab,
+	.activetab .tabclose, .activetab .closeall, .activetab .noclose,
+	.dulltab .noclose, .activetab, .dulltab,
+	.dulltab .tabclose, .img-close,
+	.img-calel, .img-caler, .img-mg, .mediaimg-mg,
+	.img-help,
+	.img-print{background-image:url(imgs/dsprite_hd.png);}
+		
+}

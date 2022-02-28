@@ -24,6 +24,11 @@ setaccountpass=function(){
 	var usega=0;
 	if (gid('myaccount_usega').checked) usega=1;
 	
+	var useyubi=0;
+	if (gid('myaccount_useyubi').checked) useyubi=1;
+	var yubimode=0;
+	if (gid('myaccount_yubimode')&&gid('myaccount_yubimode').checked) yubimode=2;
+	
 	var usegamepad=0;
 	if (gid('myaccount_usegamepad').checked) usegamepad=1;
 	
@@ -37,7 +42,7 @@ setaccountpass=function(){
 	var smscell=encodeHTML(osmscell.value);
 	
 	var rq=xmlHTTPRequestObject();
-	rq.open('POST',document.appsettings.fastlane+'?cmd=setaccount&needkeyfile='+needkeyfile+'&usesms='+usesms+'&smscell='+smscell+'&usega='+usega+'&usegamepad='+usegamepad,true);
+	rq.open('POST',document.appsettings.fastlane+'?cmd=setaccount&needkeyfile='+needkeyfile+'&usesms='+usesms+'&smscell='+smscell+'&usega='+usega+'&usegamepad='+usegamepad+'&useyubi='+useyubi+'&yubimode='+yubimode,true);
 	rq.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 	rq.onreadystatechange=function(){
 		if (rq.readyState==4){
@@ -176,5 +181,26 @@ msconnected=function(){
 msgraphdisconnect=function(){
 	if (!sconfirm('Are you sure you want to disconnect from your Microsoft account?')) return;
 	reloadtab('account','','msgraphdisconnect');	
+}
+
+showuserprofile=function(userid,msg){
+	if (msg!=null&&msg!=''){
+		salert(msg);
+		return;
+	}
+
+	ajxpgn('userprofile_'+userid,document.appsettings.codepage+'?cmd=showuserprofile&userid='+userid,0,0,null,function(){
+		//gid('mainprofile').src=document.appsettings.codepage+'?cmd=imguserprofile&thumb=1&hb='+hb();
+		//gid('mainprofile').style.borderRadius='100px';
+	});
+}
+
+removeuserprofilepic=function(userid,gskey){
+	if (!sconfirm('Are you sure you want to remove this profile picture?')) return;
+	ajxpgn('userprofile_'+userid,
+	document.appsettings.codepage+'?cmd=removeuserprofilepic&userid='+userid,0,0,null,function(){
+		//gid('mainprofile').src=document.appsettings.codepage+'?cmd=imguserprofile&thumb=1&hb='+hb();
+		//gid('mainprofile').style.borderRadius=0;
+	},null,null,gskey);
 }
 

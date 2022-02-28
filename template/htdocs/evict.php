@@ -42,10 +42,11 @@ function evict_getblockedids(){
 	$blockedids=cache_get(TABLENAME_GSS.'gyroscopeblockedids_'.$gsid);
 	if (!is_array($blockedids)){
 		
-		$blockedids=array(0);
+		$blockedids=array();
+		array_push($blockedids,'0');
 		$query="select * from  ".TABLENAME_USERS." where ".COLNAME_GSID."=? and virtualuser=0 and active=0";
 		$rs=sql_prep($query,$db,$gsid);
-		while ($myrow=sql_fetch_assoc($rs)) array_push($blockedids,$myrow['userid']);
+		while ($myrow=sql_fetch_assoc($rs)) array_push($blockedids,$myrow['userid'].'');
 	
 		cache_set(TABLENAME_GSS.'gyroscopeblockedids_'.$gsid,$blockedids,3600*24*7);	
 	}

@@ -33,4 +33,10 @@ body{background:#f2f2f2;}
 	.col{float:none;width:auto;margin:0 auto;margin-bottom:10px;}
 	.mceToolbar .mceSeparator, .mceToolbar .mce_link, .mceToolbar .mce_unlink{display:none !important;}
 }
+
+@media (prefers-color-scheme:dark) {
+	body,#tooltitle{background:#353535;}
+	#tabtitles{background:#353535;}
+	.listitem,.sortlistitem{border-bottom:solid 1px #21262D;}
+}
 	

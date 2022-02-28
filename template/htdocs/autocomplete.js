@@ -132,6 +132,7 @@ cancelpickup=function(c,unlockonly){
 
 listlookup=function(d,title,command,mini,data){
 	if (document.iphone_portrait) mini=1;
+	if (document.tabafloat) mini=1;
 	if (document.hotspot&&document.hotspot.id) document.hotspot=gid(document.hotspot.id);
 	if (document.hotspot&&!d) d=document.hotspot;
 	if (mini&&!d) return;
@@ -381,12 +382,11 @@ function pastetotextarea(id,text){
 	
 }
 
-function nav_setfilter(container,keyid,cmd,filter){
-	if (gid(container+'_extrakey')){
-		filter += "&"+gid(container+'_extrakey').value;
-	}
+function nav_setfilter(container,keyid,cmd,filter,bingo){
+	var codepage=document.appsettings.codepage;
+	if (bingo) codepage=document.appsettings.binpage;
 	
-	ajxpgn(container,document.appsettings.codepage+'?cmd='+cmd+'&mode=embed&key='+encodeHTML(gid(keyid).value)+filter,0,0,null,function(){
+	ajxpgn(container,codepage+'?cmd='+cmd+'&mode=embed&key='+encodeHTML(gid(keyid).value)+filter,0,0,null,function(){
 		if (gid(container+'_chartrelay')) {
 			gid(container+'_chartrelay').value=filter;
 			if (gid(container+'_chartrelay').onchange) gid(container+'_chartrelay').onchange();
@@ -496,15 +496,14 @@ function nav_loadcharts(container,keyid,cmd){
 // use the following version for a standalone product, i.e. no dependency on Google
 // additional licencing may be necessary
 
-function nav_loadcharts(container,keyid,cmd){
-
-
-	xajxjs('Highcharts.BubbleLegend','highcharts.js?cv=3',function(){ //use Highcharts.chart for simpler versions
+function nav_loadcharts(container,keyid,cmd,bingo){
+	
+	xajxjs('Highcharts.BubbleLegend','highcharts.js?cv=8',function(){ //use Highcharts.chart for simpler versions
 	
 			var cf=function(d){return function(){
 				var sel=this.index;
 				if (sel!=null){
-					nav_setfilter(container,keyid,cmd,d[sel]['f']);
+					nav_setfilter(container,keyid,cmd,d[sel]['f'],bingo);
 				}
 								
 			}};		
@@ -573,6 +572,9 @@ function nav_loadcharts(container,keyid,cmd){
 							pie: {
 								shadow: false,
 								center: ['50%', '50%']
+							},
+							series:{
+								animation:false	
 							}
 						},											
 						series: series					
@@ -590,9 +592,15 @@ function nav_loadcharts(container,keyid,cmd){
 						continue;
 					}
 													
-	
+					charts[i].counts=charts[i].counts.sort(function(a,b){
+						var suma=0; for (var ia=0;ia<a.length;ia++) suma+=a[ia].count;
+						var sumb=0; for (var ib=0;ib<b.length;ib++) sumb+=b[ib].count;
+						if (suma==sumb) return 0;
+						if (suma<sumb) return 1; else return -1;
+					});	
 							
 					for (var sidx=0;sidx<charts[i].counts.length;sidx++){
+						if (sidx>10) break;
 						var rows=[];
 			        	var xs=[];
 						
@@ -665,7 +673,10 @@ function nav_loadcharts(container,keyid,cmd){
 					                lineWidth: 1,
 					                lineColor: '#666666'
 					            }
-					        }
+					        },
+							series:{
+								animation:false	
+							}
 					    },
 					    legend:{ enabled:false },								
 						series: series					
@@ -683,24 +694,25 @@ function nav_loadcharts(container,keyid,cmd){
 						toolbar.id=container+'_charttoolbar_'+charts[i].fieldname;
 						toolbar.style.position='absolute';
 						toolbar.style.top='32px'; toolbar.style.left='40px'; toolbar.style.width='80%';
-						toolbar.style.border='solid 1px #dedede'; toolbar.style.background='#ffffff'; toolbar.style.boxShadow='0 0 4px #666666';
+						toolbar.className='charttoolbar';
+						
 						toolbar.style.display='none';
 						
 						var thtml=[];					
 						thtml.push('<div style="padding:5px;">');
-							thtml.push('<input type="radio" '+(charts[i].dimmode=='c'?'checked':'')+' onclick="nav_setfilter(\''+container+'\',\''+keyid+'\',\''+cmd+'\',\''+charts[i].dimmodebase+'&'+charts[i].fieldname+'__dimmode=c\');" id="'+container+'_charttoolbar_'+charts[i].fieldname+'_dim2mode_c" name="'+container+'_charttoolbar_'+charts[i].fieldname+'_dim2mode">');
+							thtml.push('<input type="radio" '+(charts[i].dimmode=='c'?'checked':'')+' onclick="nav_setfilter(\''+container+'\',\''+keyid+'\',\''+cmd+'\',\''+charts[i].dimmodebase+'&'+charts[i].fieldname+'__dimmode=c\','+bingo+');" id="'+container+'_charttoolbar_'+charts[i].fieldname+'_dim2mode_c" name="'+container+'_charttoolbar_'+charts[i].fieldname+'_dim2mode">');
 							thtml.push('<label for="'+container+'_charttoolbar_'+charts[i].fieldname+'_dim2mode_c">Count</label>&nbsp;&nbsp;');
 							
-							thtml.push('<input type="radio" '+(charts[i].dimmode=='s'?'checked':'')+' onclick="nav_setfilter(\''+container+'\',\''+keyid+'\',\''+cmd+'\',\''+charts[i].dimmodebase+'&'+charts[i].fieldname+'__dimmode=s\');" id="'+container+'_charttoolbar_'+charts[i].fieldname+'_dim2mode_s" name="'+container+'_charttoolbar_'+charts[i].fieldname+'_dim2mode">');
+							thtml.push('<input type="radio" '+(charts[i].dimmode=='s'?'checked':'')+' onclick="nav_setfilter(\''+container+'\',\''+keyid+'\',\''+cmd+'\',\''+charts[i].dimmodebase+'&'+charts[i].fieldname+'__dimmode=s\','+bingo+');" id="'+container+'_charttoolbar_'+charts[i].fieldname+'_dim2mode_s" name="'+container+'_charttoolbar_'+charts[i].fieldname+'_dim2mode">');
 							thtml.push('<label for="'+container+'_charttoolbar_'+charts[i].fieldname+'_dim2mode_s">Sum</label>&nbsp;&nbsp;');
 
-							thtml.push('<input type="radio" '+(charts[i].dimmode=='a'?'checked':'')+' onclick="nav_setfilter(\''+container+'\',\''+keyid+'\',\''+cmd+'\',\''+charts[i].dimmodebase+'&'+charts[i].fieldname+'__dimmode=a\');" id="'+container+'_charttoolbar_'+charts[i].fieldname+'_dim2mode_a" name="'+container+'_charttoolbar_'+charts[i].fieldname+'_dim2mode">');
+							thtml.push('<input type="radio" '+(charts[i].dimmode=='a'?'checked':'')+' onclick="nav_setfilter(\''+container+'\',\''+keyid+'\',\''+cmd+'\',\''+charts[i].dimmodebase+'&'+charts[i].fieldname+'__dimmode=a\','+bingo+');" id="'+container+'_charttoolbar_'+charts[i].fieldname+'_dim2mode_a" name="'+container+'_charttoolbar_'+charts[i].fieldname+'_dim2mode">');
 							thtml.push('<label for="'+container+'_charttoolbar_'+charts[i].fieldname+'_dim2mode_a">Avg.</label>&nbsp;&nbsp;');
 							
 							if (subdims!=null){
 							thtml.push('<div style="padding-top:5px;">');
 							thtml.push('Trend: ');
-							thtml.push('<select onchange="nav_setfilter(\''+container+'\',\''+keyid+'\',\''+cmd+'\',\''+charts[i].dimkeybase+'&'+charts[i].fieldname+'__dimkey=\'+this.value);">');
+							thtml.push('<select onchange="nav_setfilter(\''+container+'\',\''+keyid+'\',\''+cmd+'\',\''+charts[i].dimkeybase+'&'+charts[i].fieldname+'__dimkey=\'+this.value,'+bingo+');">');
 									thtml.push('<option value=""></option>');
 								for (dimkey in subdims){
 									thtml.push('<option '+(charts[i].dimkey==dimkey?'selected':'')+' value="'+dimkey+'">'+subdims[dimkey]+'</option>');	

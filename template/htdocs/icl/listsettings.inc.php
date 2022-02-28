@@ -13,7 +13,7 @@ function listsettings(){
 	<?php	
 	if (isset($user['groups']['accounts'])){
 	?>
-	<div class="listitem"><a onclick="ajxjs(<?php jsflag('showuser');?>,'users.js');showview('core.users',1);"><?php tr('icon_accounts');?></a></div>	
+	<div class="listitem"><a onclick="ajxjs(<?php jsflag('showuser');?>,'users.js');showview('core.users',1,null,null,null,null);"><?php tr('icon_accounts');?></a></div>	
 	<?php
 	}
 	?>
@@ -52,6 +52,12 @@ function listsettings(){
 	<?php
 	}
 	*/
+	
+	if (isset($user['groups']['chatsettings'])){
+	?>
+	<div class="listitem"><a onclick="ajxjs(<?php jsflag('showchatsettings');?>,'chats.js');addtab('chatsettings','Chat Settings','showchatsettings',null,null,{bingo:1});">Chat Settings</a></div>	
+	<?php
+	}
 			
 	if (isset($user['groups']['dbadmin'])){
 	?>

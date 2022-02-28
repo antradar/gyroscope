@@ -24,8 +24,10 @@ function onlinestatuschanged(){
 	if (self.gsnotes_syncindicator) gsnotes_syncindicator();
 }
 
-window.addEventListener('offline',onlinestatuschanged);
-window.addEventListener('online',onlinestatuschanged);
+if (window.addEventListener) {
+	window.addEventListener('offline',onlinestatuschanged);
+	window.addEventListener('online',onlinestatuschanged);
+}
 
 setTimeout(onlinestatuschanged,300);
 

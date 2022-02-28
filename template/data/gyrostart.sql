@@ -26,6 +26,8 @@ CREATE TABLE gss (
   stripecustomerid varchar(255) NOT NULL,
   gsexpiry bigint(20) unsigned NOT NULL DEFAULT '0',
   gstier tinyint(3) unsigned NOT NULL DEFAULT '0',
+  maxchats int unsigned default 10,
+  chatsperagent int unsigned default 1,
   msgraphanchor longtext,  
   PRIMARY KEY (gsid),
   KEY gsname (gsname),
@@ -36,7 +38,7 @@ CREATE TABLE gss (
 # Dumping data for table `gss`
 #
 
-INSERT INTO `gss` VALUES (1, 'Default Instance', '', 0, 0,null);
+INSERT INTO `gss` VALUES (1, 'Default Instance', '', 0, 0,5,1,null);
 
 DROP TABLE IF EXISTS `users`;
 
@@ -50,6 +52,7 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL DEFAULT '',
   `passreset` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `groupnames` longtext,
+  `canchat` tinyint(1) unsigned DEFAULT '0',
   `keyfilehash` varchar(255) DEFAULT NULL,
   `needkeyfile` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `usesms` tinyint(1) unsigned NOT NULL DEFAULT '0',
@@ -58,6 +61,10 @@ CREATE TABLE `users` (
   `usega` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `gakey` varchar(255) DEFAULT NULL,
   `usegamepad` tinyint(1) unsigned default 0,
+  `haspic` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `imgv` int unsigned default '0',
+  `useyubi` tinyint(1) unsigned default 0,
+  `yubimode` tinyint unsigned default 0,
   `certhash` varchar(255) DEFAULT NULL,
   `needcert` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `certname` varchar(255) DEFAULT NULL,
@@ -65,6 +72,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`userid`),
   UNIQUE KEY `login` (`login`),
   KEY `active` (`active`),
+  KEY `canchat` (`canchat`),
   KEY `virtualuser` (`virtualuser`),
   KEY `gsid` (`gsid`)
 ) ENGINE=InnoDB;
@@ -74,7 +82,7 @@ CREATE TABLE `users` (
 -- OpenSSL --
 -- INSERT INTO `users` VALUES (101,1,'admin','Admin',1,0,'uSAsxyX3v44q3+/4Md7lzkhaNlIvTHFTMkZsN1lFRWVMRzB2UlloZTJqWHRjSG9mRDgybTI3U0xZUjhzYVhUeDlUZ2dLQ283QkUrVmExaEY=',0,'users|admins|reportsettings|systemplateuse|systemplate|accounts|dbadmin|upgrademods',null,0,0,'','',null,0,null);
 -- BCrypt --
-INSERT INTO `users` VALUES (101,1,'admin','Admin',1,0,'$2y$12$MbnxI00l82cSYWgNCGxAUeVtTL3CmlZTT.NFuscnnYUk6cbBs7vH2',0,'devreports|admins|reportsettings|systemplateuse|systemplate|accounts|dbadmin|creditcards|helpedit',null,0,0,'','',0,null,0,null,0,null,null);
+INSERT INTO `users` VALUES (101,1,'admin','Admin',1,0,'$2y$12$MbnxI00l82cSYWgNCGxAUeVtTL3CmlZTT.NFuscnnYUk6cbBs7vH2',0,'devreports|admins|reportsettings|systemplateuse|systemplate|accounts|dbadmin|creditcards|helpedit|chatsettings|chats|sharedashreports',0,null,0,0,'','',0,null,0,0,0,0,0,null,0,null,null);
 
 DROP TABLE IF EXISTS `templates`;
 CREATE TABLE `templates` (
@@ -130,6 +138,7 @@ CREATE TABLE reports (
   reportfunc varchar(255) DEFAULT NULL,
   reportkey varchar(255) NOT NULL,
   reportgroupnames varchar(255) NOT NULL,
+  bingo tinyint(1) unsigned default 0,
   gyrosys tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (reportid),
   KEY reportkey (reportkey),
@@ -144,7 +153,10 @@ CREATE TABLE reports (
   KEY gsid (gsid)
 ) ENGINE=InnoDB;
 
-INSERT INTO `reports` VALUES (1, 1, 'Activity Log', 'Security', 'This report is mostly used by system administrators for diagnostic purposes.', 'Aktivitätsprotokoll', 'Sicherheit', '', 'Registro de Atividade', '', 'admins', '1', '????', '????', '', 'actionlog', 'admins|reportsettings|systemplateuse|systemplate', 0);
+INSERT INTO `reports` VALUES (1, 1, 'Activity Log', 'Security', 'This report is mostly used by system administrators for diagnostic purposes.', 'Aktivitätsprotokoll', 'Sicherheit', '', 'Registro de Atividade', '', 'admins', '1', '????', '????', '', 'actionlog', 'admins|reportsettings|systemplateuse|systemplate',0, 0);
+INSERT INTO `reports` VALUES (2, 1, 'Activity Summary', 'Security', '', '', '', '', '', '', 'admins', '1', '', '', '', 'trace', 'admins|reportsettings|systemplateuse|systemplate',1, 0);
+INSERT INTO `reports` VALUES (3, 1, 'Server Access Log', 'Security', '', '', '', '', '', '', 'admins', '1', '', '', '', 'serverlog', 'admins|reportsettings|systemplateuse|systemplate',1, 0);
+INSERT INTO `reports` VALUES (4, 1, 'Mail Server Log', 'Security', '', '', '', '', '', '', 'admins', '1', '', '', '', 'mxevents', 'admins|reportsettings|systemplateuse|systemplate',1, 0);
 
 DROP TABLE IF EXISTS userhelpspots;
 CREATE TABLE userhelpspots (
@@ -155,19 +167,25 @@ CREATE TABLE userhelpspots (
   KEY userid (userid)
 ) ENGINE=InnoDB;
      
+drop table if exists homedashreports;
 create table homedashreports(
 homedashreportid bigint unsigned not null auto_increment,
+gsid bigint unsigned not null,
 userid bigint unsigned not null,
 rptkey varchar(255),
 rpttabkey varchar(255),
 rptname varchar(255),
 rpttitle varchar(255),
 rptlink varchar(255),
+bingo tinyint(1) unsigned default 0,
+shared tinyint(1) unsigned default 0,
 primary key (homedashreportid),
+key gsid (gsid),
 key userid (userid),
 key rptname (rptname)
 );
 
+drop table if exists helptopics;
 create table helptopics(
 helptopicid bigint unsigned not null auto_increment,
 helptopictitle varchar(255),
@@ -180,3 +198,26 @@ key helptopictitle (helptopictitle),
 key helptopickeywords(helptopickeywords),
 key helptopicsort (helptopicsort)
 );
+
+drop table if exists yubikeys;
+CREATE TABLE `yubikeys` (
+  `keyid` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `userid` bigint(20) unsigned DEFAULT NULL,
+  `passless` tinyint(1) unsigned DEFAULT 0,
+  `keyname` varchar(255) DEFAULT NULL,
+  `credid` varchar(255) DEFAULT NULL,
+  `kty` tinyint(4) DEFAULT NULL,
+  `alg` tinyint(4) DEFAULT NULL,
+  `crv` tinyint(4) DEFAULT NULL,
+  `x` varchar(255) DEFAULT NULL,
+  `y` varchar(255) DEFAULT NULL,
+  `n` varchar(255) DEFAULT NULL,
+  `e` varchar(255) DEFAULT NULL,
+  `attid` varchar(255) DEFAULT NULL,
+  `lastsigncount` bigint unsigned DEFAULT 0,
+  PRIMARY KEY (`keyid`),
+  KEY `userid` (`userid`),
+  KEY `credid` (`credid`),
+  KEY `attid` (`attid`)
+);
+

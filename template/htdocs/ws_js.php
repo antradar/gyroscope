@@ -13,11 +13,11 @@ function wss_init(){
 	$gsid=$user['gsid'];
 	global $wssecret; //defined in auth.php
 		
-	$wsskey=md5($wssecret.$gsid.date('Y-n-j-H')).'-'.$gsid;	
+	$wsskey=md5($wssecret.$gsid.date('Y-n-j-H').$userid).'-'.$gsid.'-'.$userid;	
 	$wsuri='ws://localhost:9999/wss.php'; // wss:// in production
 
 ?>
-<script src="wss.js"></script>
+<script src="wss.js?v=2"></script>
 <script>
 wss_init('<?php echo $userid;?>','<?php echo $wsuri;?>','<?php echo $wsskey;?>','<?php echo $gsid;?>');
 </script>

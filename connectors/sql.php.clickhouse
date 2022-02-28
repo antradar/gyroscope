@@ -209,16 +209,20 @@ function sql_prep($query,&$db,$params=array(),$quickinsert=0){
 	curl_setopt($curl,CURLOPT_HTTPHEADER,$headers);
 	curl_setopt($curl,CURLOPT_POST,1);
 	curl_setopt($curl,CURLOPT_POSTFIELDS,$query);
+	curl_setopt($curl,CURLOPT_SSL_VERIFYHOST,0);
+	curl_setopt($curl,CURLOPT_SSL_VERIFYPEER,0);
 	$res=curl_exec($curl);
+	curl_close($curl);
 
 	//echo $res;
 	//echo "\r\n======================\r\n";
 
 	$rs=json_decode($res,1);
 
-	if (isset($rs)&&is_array($rs)&&isset($rs['error'])) {
+	if (!isset($rs)&&$res!='') {
 		$rs=array('error'=>'json_parse','raw'=>$res);
-		die('SQL error: '.$res);
+		echo 'SQL error: '.$res;
+		return;
 	} else {
 		if (count($lastids)>0) $rs['lastids']=$lastids;
 	}
@@ -231,8 +235,9 @@ function sql_prep($query,&$db,$params=array(),$quickinsert=0){
 	// $query=preg_replace('/ limit\s*(\d+),(\d+)/i',' offset ${1} limit ${2}', $query);
 	
 	$b=microtime(1);
-			
-	if (is_array($gsdbprofile)) array_push($gsdbprofile,array('query'=>$query,'time'=>$b-$a));
+	$querytime=$rs['statistics']['elapsed'];
+		
+	if (is_array($gsdbprofile)) array_push($gsdbprofile,array('query'=>$query,'time'=>$querytime,'nettime'=>$b-$a,'overhead'=>$b-$a-$querytime));
 
 	return $rs;
 		
@@ -293,6 +298,100 @@ function sql_save_chunks($db,$table,$chunks){
 		
 				
 }
+
+/*
+create table products(productid UInt64,productname String,cat String,sign Int8 default 1,ver UInt64 default 0) engine=CollapsingMergeTree(sign) primary key (productid) order by productid;
+
+select productid,productname, ...,  max(ver) as ver from products group by productid,productname, ... having sum(sign)>0;
+
+*/
+
+function sql_patch($db,$table,$pkey,$recs,$wtable=null,$signfield='sign',$verfield='ver'){
+/*
+	$recs=array(
+		123=>array(//primary key value
+			'name'=>'New Name'
+		),
+		222=>null, //delete	
+	
+*/
+
+	$recmap=array();
+	$recids=array();
+	foreach ($recs as $pval=>$rec) $recids[$pval]=$pval;
+
+	//if (count($fcounts)>1) die('all records must have the same number of fields. ');
+
+	$query="describe $table";
+	$rs=sql_prep($query,$db);
+	$fields=array();
+	while ($myrow=sql_fetch_assoc($rs)){
+		if (!in_array($myrow['name'],array($signfield,$verfield))) array_push($fields,$myrow['name']);
+	}//while
+
+	$glist=implode(',',$fields);
+	$qs=array('?','?'); //prepop with sign and ver
+	foreach ($fields as $f) array_push($qs,'?');
+
+	$query="select $glist,max($verfield) as $verfield from $table where $pkey in (".implode(',',$recids).") group by $glist having sum($signfield)>0";
+	
+	$rs=sql_prep($query,$db);
+	while ($myrow=sql_fetch_assoc($rs)){
+		$recinfo=$myrow;
+		//$recinfo['ver']=intval($recinfo['ver'])+1;
+		$recmap[$myrow[$pkey]]=$recinfo;
+	}
+	
+	//echo $query;
+
+	//print_r($recmap);
+
+	$recs=array_intersect_key($recs,$recmap);
+
+	//batch delete the old records
+	$bqs=array();
+	$params=array();
+	$uqs=array();
+	$uparams=array();
+	foreach ($recs as $recid=>$rec) {
+		array_push($bqs,'('.implode(',',$qs).')');
+		if (isset($rec)) array_push($uqs,'('.implode(',',$qs).')');
+
+		foreach ($fields as $f){
+			array_push($params,$recmap[$recid][$f]);
+			if (isset($rec)) {
+				$recval=$recmap[$recid][$f];
+				if (in_array($f,array_keys($rec))) $recval=$rec[$f];
+				array_push($uparams,$recval);
+			}
+		}
+		array_push($params,-1,$recmap[$recid]['ver']+1);
+		if (isset($rec)) array_push($uparams,1,$recmap[$recid]['ver']+2);
+	}
+
+	$usetable=$table;
+	if (isset($wtable)) $usetable=$wtable; //use a buffer to write if applicable	
+
+	$query="insert into $usetable ($glist,$signfield,$verfield) values ".implode(',',$bqs);
+	//echo $query."\r\n"; print_r($params);
+	sql_prep($query,$db,$params,1);
+
+
+	//batch insert updates
+	$query="insert into $usetable ($glist,$signfield,$verfield) values ".implode(',',$uqs);
+	//echo $query."\r\n"; print_r($uparams);
+	sql_prep($query,$db,$uparams,1);
+	
+
+}
+
+/*
+$db=sql_get_db('127.0.0.1:8123','mydb','default','mnstudio','db');
+sql_patch($db,'products','productid',array(
+	123=>null,
+	222=>array('productname'=>'C'.time(),'cat'=>'Toy'),
+));
+*/
 
 
 

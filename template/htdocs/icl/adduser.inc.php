@@ -65,7 +65,16 @@ function adduser(){
 		apperror('Error creating User record');
 	}
 	
-	logaction("added ".($virtual?'Virtual':'')." User #$userid $login",array('userid'=>$userid,'login'=>"$login"));
+	logaction("added ".($virtual?'Virtual':'')." User #$userid $login",array('userid'=>$userid,'login'=>"$login"),null,0,array(
+		'table'=>'users',
+		'recid'=>$userid,
+		'after'=>array(
+			'login'=>$login
+		),
+		'diffs'=>array(
+			'login'=>$login
+		)
+	));
 	
 	header('newrecid:'.$userid);
 	header('newkey:user_'.$userid);

@@ -9,7 +9,8 @@ speech_startstop=function(mobile){
 		
 	if (!document.recog){
 		document.recstop=null;
-				
+		document.voicetyping=null;
+		document.recognition.continuous=false;		
 		document.recognition.start();
 		
 		setTimeout(function(){
@@ -32,12 +33,15 @@ speech_startstop=function(mobile){
 
 
 speech_process=function(phrase,conf){
-	console.log(phrase,conf);
+	//console.log(phrase,conf);
 	if (conf<0.2) return;
-	
+	var ophrase=phrase;
 	phrase=speech_cleanup(phrase);
 
 	var res=speech_getcommand(phrase);
+	if (res==null&&!document.voicetyping) return;
+	if (res==null) res={cmd:'',target:'',parts:''};
+	
 	var cmd=res.cmd;
 	var target=res.target;
 	var parts=res.parts;
@@ -47,6 +51,26 @@ speech_process=function(phrase,conf){
 		'lvcore.users':'userkey',
 		'lvcore.reports':'reportkey'
 	};
+		
+	if (phrase=='start typing'||phrase=='starts typing') {document.recognition.continuous=true;document.voicetyping=true;say("Ready.");return;}
+	if (phrase=='stop typing') {document.recognition.continuous=false;document.voicetyping=null;say("okay, I'm done typing for you.");return;}
+
+	if (document.voicetyping&&ophrase!=''){
+		if (document.hotspot!=null||(self.tinyMCE&&tinyMCE.activeEditor)){
+			//console.log('typing '+ophrase);
+			if (self.tinyMCE&&tinyMCE.activeEditor) tinyMCE.activeEditor.selection.setContent(ophrase+'. ');
+			else {
+				if (document.hotspot) pastetotextarea(document.hotspot.id,ophrase+'. ');
+			}
+
+		} else {
+			say("I don't have a place to type into.");
+			document.voicetyping=null;
+			document.recognition.continuous=false;
+		}
+
+		return;
+	}
 	
 	switch (cmd){
 		case 'cancel': case 'cancer':	
@@ -57,18 +81,18 @@ speech_process=function(phrase,conf){
 			switch(target){
 				case 'account': case 'accounts':
 				case 'die konto': case 'die konten': case 'die karte':
-				case '用户设置':
+				case '????':
 					ajxjs(self.showuser,'users_js.php');showview('core.users',null,1); say(document.speechdict.accounts); 
 				break;
 				case 'report': case 'reports': 
 				case 'berichte': case 'die berichte':
 				case 'os relatórios':  case 'o relatório':
-				case '报告':
+				case '??':
 					showview('core.reports',null,1); say(document.speechdict.reports); 
 				break;
 				case 'setting': case 'settings': 
 				case 'as configurações': case 'a configuração':
-				case '系统设置':
+				case '????':
 				case 'die einstellungen': case 'die einstellung': 
 					showview('core.settings',null,1); say(document.speechdict.settings); 
 				break;

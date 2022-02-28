@@ -33,7 +33,7 @@ function showtemplatetype($templatetypeid=null){
 	makesavebar('templatetype_'.$templatetypeid);
 ?>
 <div class="section">
-	<div class="sectiontitle"><?php echo htmlspecialchars($templatetypename);?></div>
+	<div class="sectiontitle"><a ondblclick="toggletabdock();"><?php echo htmlspecialchars($templatetypename);?></a></div>
 
 	<div class="col">
 

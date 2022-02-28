@@ -54,7 +54,7 @@ $usermeta=sql_fetch_assoc($rs);
 
 <body onload="setTimeout(scrollTo, 0, 0, 1)">
 <script>
-document.appsettings={codepage:'<?php echo $codepage;?>', fastlane:'<?php echo $fastlane;?>', autosave:20, viewmode:'desktop', views:<?php echo json_encode(array_keys($toolbaritems));?>};
+document.appsettings={codepage:'<?php echo $codepage;?>',binpage:'<?php echo $binpage;?>', beepnewchat:<?php echo $usermeta['canchat']?'true':'false';?>,fastlane:'<?php echo $fastlane;?>', autosave:null, viewmode:'desktop', views:<?php echo json_encode(array_keys($toolbaritems));?>};
 </script>
 
 <div style="display:none;"><img src="imgs/t.gif"><img src="imgs/hourglass.gif"></div>
@@ -98,7 +98,10 @@ foreach ($toolbaritems as $modid=>$ti){
 		continue;
 	}
 	
-	$action="showview('".$modid."',1);";
+	$binmode='null';
+	if ($ti['bingo']==1) $binmode=1;
+	
+	$action="showview('".$modid."',1,null,null,null,".$binmode.");";
 	if (isset($ti['action'])&&$ti['action']!='') $action=$ti['action'];
 	if (!isset($ti['icon'])||$ti['icon']=='') continue;
 
@@ -134,7 +137,7 @@ foreach ($toolbaritems as $modid=>$ti){
 <div id="statusinfo" scale:ny="25" scale:cw="0">
 	<span id="statusicons">
 	<a id="speechstart" onclick="ajxjs(<?php jsflag('speech_startstop');?>,'speech.js');speech_startstop();" onmouseover="hintstatus(this,'<?php tr('speech_clicktoactivate');?>');"><img src="imgs/t.gif"></a>
-	<img id="wsswarn" src="imgs/t.gif" onmouseover="hintstatus(this,'websocket not supported');">
+	<a><img onclick="document.nomoresocket=0; if (document.websocket) document.websocket.onclose();" id="wsswarn" src="imgs/t.gif" onmouseover="hintstatus(this,'websocket disrupted');"></a>
 	<img onclick="this.style.display='none';" id="barcodewarn" src="imgs/t.gif" onmouseover="hintstatus(this,'barcode scanner not active');">
 	<img id="diagwarn" src="imgs/t.gif" onclick="window.location.reload();" onmouseover="hintstatus(this,'dialogs suppressed. click to reload browser.');">
 	<!-- img id="imecree" src="imgs/t.gif" onclick="creeime();" onmouseover="hintstatus(this,'enable Cree keyboard for the current input field');" -->
@@ -160,6 +163,12 @@ foreach ($toolbaritems as $modid=>$ti){
 </div>
 <div id="fsview"></div>
 
+<div style="display:none;">
+<audio id="gschatsound_msgin"><source src="chatsounds/msgin.mp3"></audio>
+<audio id="gschatsound_newchat"><source src="chatsounds/newchat.mp3"></audio>
+</div>
+
+
 <div style="position:absolute;top:25px;right:20px;width:160px;">
 	<?php makehelp('myaccountlink','mysettings',1,-120);?>
 </div>
@@ -167,7 +176,7 @@ foreach ($toolbaritems as $modid=>$ti){
 <div id="gamepadspot" style="border:solid 3px #ffab00;position:absolute;width:32px;height:32px;top:0;left:0;transition:all 200ms;z-index:3002;display:none;"></div>
 
 <script src="lang/dict.<?php echo $lang;?>.js"></script>
-<script src="nano.js"></script>
+<script src="nano.js?v=4_9"></script>
 <script>
 hdpromote('toolbar_hd.css');
 hdpromote('gyroscope_hd.css');
@@ -195,9 +204,7 @@ autosize();
 setTimeout(function(){scaleall(document.body);},100);
 
 
-addtab('welcome','<?php tr('tab_welcome');?>','wk',null,null,{noclose:1});
-
-
+addtab('welcome','<?php tr('tab_welcome');?>','wk',null,null,{noclose:1,bingo:false});
 
 
 setInterval(authpump,60000); //check if needs to re-login; comment this out to disable authentication
@@ -216,6 +223,7 @@ skipconfirm=function(){
 window.onbeforeunload=function(){
 	return document.dict['confirm_exit'];
 }
+
 
 </script>
 

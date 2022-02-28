@@ -6,10 +6,10 @@ $langs=array(
 //	'de'=>'Deutsch',
 //	'fr'=>'Français',	
 //	'pt'=>'Português',	
-//	'ru'=>'Русский',
-//	'zh'=>'中文',
-//	'he'=>'עברית',
-//	'ar'=>'عربى',
+//	'ru'=>'???????',
+//	'zh'=>'??',
+//	'he'=>'?????',
+//	'ar'=>'????',
 );
 
 // when enabling a new language, copy the files in the langpack (not part of core download) folder to the lang folder

@@ -1,0 +1,15 @@
+
+	if (is_array($_GET['#fld1#s'])) {
+		foreach ($_GET['#fld1#s'] as $multi_id=>$flag) {
+			if (!in_array($multi_id,$_GET['neg__#fld1#'])){
+				$filters.=' and #mastertable#.#primarykey# in (select #primarykey# from #fld0# where #fld1#=? )';
+				array_push($params,$multi_id);
+			}
+		}
+	}	
+	if ($_GET['neg__#fld1#']!='') {
+		foreach ($_GET['neg__#fld1#'] as $neg) {
+			$filters.=' and #mastertable#.#primarykey# not in (select #primarykey# from #fld0# where #fld1#=? )';
+			array_push($params,$neg);
+		}
+	}

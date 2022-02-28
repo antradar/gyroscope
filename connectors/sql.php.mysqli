@@ -41,7 +41,7 @@ function sql_prep($query,&$db,$params=null){
 	if ($SQL_READONLY){
 		$tokens=explode(' ',trim($query));
 		$verb=strtolower($tokens[0]);
-		if ($verb!='select') return;
+		if ($verb!='select'&&$verb!='show') return;
 	}
 	
 	if (is_string($db)){
@@ -111,7 +111,7 @@ function sql_query($query,&$db,$mode=MYSQLI_STORE_RESULT){
 	if ($SQL_READONLY){
 		$tokens=explode(' ',trim($query));
 		$verb=strtolower($tokens[0]);
-		if ($verb!='select') return;
+		if ($verb!='select'&&$verb!='show') return;
 	}
 		
 	if (is_string($db)){

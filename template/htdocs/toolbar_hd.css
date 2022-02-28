@@ -5,7 +5,7 @@
 .ico-report, .dulltab .ico-report,
 .ico-helptopic, .dulltab .ico-helptopic,
 .img-addrec, .img-del, .img-save, .img-tick, .img-xls, .img-pdf, .img-speechrecog, .img-home, .img-gsclip,
-.img-tracker,.img-tracker-light,.img-clock, .img-settings, .img-settings-light,
+.img-tracker,.img-tracker-light,.img-clock, .img-settings, .img-settings-light, .img-chats, .img-chats-light,
 .img-helptopics, .img-helptopics-light,
 .img-closeall, .img-speechrecog, .img-reports, .img-reports-light, .img-xls, .img-pdf,
 .img-pageleft, .img-pageright
@@ -39,4 +39,11 @@
 */
 
 
-
+@media (prefers-color-scheme:dark) {
+	.daylightsaving, #wsswarn, #barcodewarn, #diagwarn, #imecree, #lI01, 
+	#gamepadicon, #gsnotesclip, #chatindicator, #chatindicator.offline,
+	.img-addrec, .img-speechrecog,
+	.img-speechrecog,
+	.img-pageleft, .img-pageright
+	{background-image:url(imgs/sysicons_hd.gif);background-size:240px 64px;}
+}

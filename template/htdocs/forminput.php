@@ -174,7 +174,7 @@ function diffdbchanges($before,$after,$masks=null,$omits=null){
 
 function streamaction($wssid,$rectype,$recid,$gsid,$userid,$extra=null){
 	global $WSS_INTERNAL_HOST;
-	
+		
 	if (class_exists('Redis')){	
 	
 	    global $redis;
@@ -192,11 +192,11 @@ function streamaction($wssid,$rectype,$recid,$gsid,$userid,$extra=null){
 	    if (!$valid) return;
 
 	    $obj=array(
-	            'wssid'=>$wssid,
-	            'rectype'=>$rectype,
-	            'recid'=>$recid,
-	            'gsid'=>$gsid,
-	            'userid'=>$userid,
+	            'wssid'=>intval($wssid),
+	            'rectype'=>$rectype.'',
+	            'recid'=>$recid.'',
+	            'gsid'=>$gsid.'',
+	            'from_userid'=>$userid.'',
 	            'extra'=>$extra
 	    );
 	    $redis->lpush('actions',json_encode($obj));
@@ -249,8 +249,10 @@ function streamaction($wssid,$rectype,$recid,$gsid,$userid,$extra=null){
 	fclose($sock);		
 }
 
-function logaction($message,$rawobj=null,$syncobj=null,$gsid=0){
+function logaction($message,$rawobj=null,$syncobj=null,$gsid=0,$trace=null){
+	
 	global $WSS_INTERNAL_KEY; //defined in lb.php
+	global $vdb;
 		
 	if (is_callable('userinfo')) {
 		$user=userinfo();
@@ -269,17 +271,35 @@ function logaction($message,$rawobj=null,$syncobj=null,$gsid=0){
 	//$message=noapos($message);
 
 	$cobj=array();
+	
+	$txtvals=array();
+	$numvals=array();
+	
+	if (isset($trace)){
+		foreach ($trace['diffs'] as $k=>$v){
+			//$vparts=explode(' -> ',$v);
+			//if (count($vparts)==1) continue;
+			$endval=$trace['after'][$k];
+			if ($v==' *changed*') $endval='***';
+			if (is_numeric($endval)) $numvals[$k]=$endval;
+			else $txtvals[$k]=$endval;	
+		}	
+	}
+	
 	foreach ($rawobj as $k=>$v){
 		if (is_array($v)) continue;
+		
 		$v=noapos($v);
 		$v=str_replace('"','&quot;',$v);
 		$cobj[$k]=$v;
 	}
-	
+		
 	$obj=json_encode($cobj);
 	//$obj=str_replace("\\'","'",$obj);
 
 	$now=time();
+	
+	$alogid=0;
 	
 	if (isset($syncobj)){
 		$sid=$wssid;
@@ -287,18 +307,54 @@ function logaction($message,$rawobj=null,$syncobj=null,$gsid=0){
 		$recid=$syncobj['recid'];
 		if ($WSS_INTERNAL_KEY==''){ //save the message regardless of whether a main message is present
 			$query="insert into ".TABLENAME_ACTIONLOG." (userid,".COLNAME_GSID.",logname,logdate,logmessage,rawobj,sid,rectype,recid) values (?,?,?,?,?,?,?,?,?)";
-			sql_prep($query,$db,array($userid,$gsid,$logname,$now,$message,$obj,$sid,$rectype,$recid));
+			$rs=sql_prep($query,$db,array($userid,$gsid,$logname,$now,$message,$obj,$sid,$rectype,$recid));
+			$alogid=sql_insert_id($db,$rs);
 		} else {
 			if ($message!=''){//stream directly, but still log the main message
 				$query="insert into ".TABLENAME_ACTIONLOG." (userid,".COLNAME_GSID.",logname,logdate,logmessage,rawobj,wssdone) values (?,?,?,?,?,?,?)";
-				sql_prep($query,$db,array($userid,$gsid,$logname,$now,$message,$obj,1));
+				$rs=sql_prep($query,$db,array($userid,$gsid,$logname,$now,$message,$obj,1));
+				$alogid=sql_insert_id($db,$rs);
 			}	
 			streamaction($sid,$rectype,$recid,$gsid,$userid);
 			
 		}
 	} else {
 		$query="insert into ".TABLENAME_ACTIONLOG." (userid,".COLNAME_GSID.",logname,logdate,logmessage,rawobj) values (?,?,?,?,?,?)";
-		sql_prep($query,$db,array($userid,$gsid,$logname,$now,$message,$obj));
+		$rs=sql_prep($query,$db,array($userid,$gsid,$logname,$now,$message,$obj));
+		$alogid=sql_insert_id($db,$rs);
+	}
+	
+	
+	if (isset($vdb)){
+		
+		if (count($txtvals)>0){
+			$qs=array();
+			$params=array();
+			
+			$query="insert into traces (tracedate,alogid,trace".COLNAME_GSID.",traceuserid,tablename,recid,varname,txtval) values ";
+			foreach ($txtvals as $k=>$v){
+				array_push($qs,"(?,?,?,?,?,?,?,?)");
+				array_push($params,$now,$alogid,$gsid,$userid,$trace['table'],intval($trace['recid']),$k,$v);	
+			}
+			
+			$query.=implode(',',$qs);
+			vsql_prep($query,$vdb,$params,1);
+		}
+		
+		if (count($numvals)>0){
+			$qs=array();
+			$params=array();
+			
+			$query="insert into traces (tracedate,alogid,trace".COLNAME_GSID.",traceuserid,tablename,recid,varname,numval) values ";
+			foreach ($numvals as $k=>$v){
+				array_push($qs,"(?,?,?,?,?,?,?,?)");
+				array_push($params,$now,$alogid,$gsid,$userid,$trace['table'],intval($trace['recid']),$k,$v);	
+			}
+			
+			$query.=implode(',',$qs);
+			vsql_prep($query,$vdb,$params,1);
+		}		
+		
 	}
 	
 }

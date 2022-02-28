@@ -41,6 +41,8 @@ $codegen_seeds=array(
 			'gnav'=>array('name'=>'Frontend - Standard','desc'=>'Classic front-end faceted navigation','icon'=>''),
 			//'gnavi'=>array('name'=>'Frontend - Multi-core','desc'=>'High-performance front-end navigation; specific server hardware and setup required','icon'=>''),
 			'navfilter'=>array('name'=>'Gyroscope - Standard','desc'=>'Faceted navigation for list view. Make a standard list view first','icon'=>''),
+			'navfilterch'=>array('name'=>'Gyroscope - ClickHouse','desc'=>'Faceted navigation for list view, optimized for ClickHouse','icon'=>''),
+			'navfiltergo'=>array('name'=>'Gyroscope Go - Standard','desc'=>'Go version of the standard Faceted Nav','icon'=>''),
 			//'navfilteri'=>array('name'=>'Gyroscope - Multi-core','desc'=>'Faceted navigation for list view using parallel queries','icon'=>'')
 		)
 	),

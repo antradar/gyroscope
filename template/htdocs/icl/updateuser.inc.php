@@ -131,9 +131,18 @@ function updateuser(){
 		$after=sql_fetch_assoc($rs);
 		
 		$dbchanges=array('userid'=>$userid,'login'=>"$login");
-		$dbchanges=array_merge($dbchanges,diffdbchanges($before,$after,array('groupnames','password')));
-				
-		logaction("updated User #$userid $login",$dbchanges,array('rectype'=>'reauth','recid'=>$userid));
+
+		
+		$diffs=diffdbchanges($before,$after,array('groupnames','password'));
+		$dbchanges=array_merge($dbchanges,$diffs);
+		$trace=array(
+			'table'=>'users',
+			'recid'=>$userid,
+			'after'=>$after,
+			'diffs'=>$diffs
+		);
+								
+		logaction("updated User #$userid $login",$dbchanges,array('rectype'=>'reauth','recid'=>$userid),0,$trace);
 		logaction(null,null,array('rectype'=>'user','recid'=>$userid));
 	}
 	
@@ -146,5 +155,6 @@ function updateuser(){
 	showuser($userid);
 	
 	cache_delete(TABLENAME_GSS.'gyroscopeblockedids_'.$gsid);
+	cache_delete(TABLENAME_GSS.'gyroscopebinblockedids_'.$gsid);
 	
 }

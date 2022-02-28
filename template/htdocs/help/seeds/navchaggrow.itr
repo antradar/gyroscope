@@ -1,0 +1,1 @@
+			<td><?php echo htmlspecialchars($myrow['#fld2#']);?></td>

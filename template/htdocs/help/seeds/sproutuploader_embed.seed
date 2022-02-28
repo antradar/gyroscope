@@ -68,6 +68,9 @@ function embed#record#videouploader($#primarykey#=null){
 ?>
 <html>
 <body style="padding:0;margin:0;">
+<style>
+<?php include 'uploaderstyle.php';?>
+</style>
 <form id="uploader" method="POST" action="<?php echo $sproutvideo_endpoint;?>videos" enctype="multipart/form-data">
 	<input id="file" name="source_video" type="file">
 	<input type="hidden" id="title" name="title" value="<?php echo $title;?>">

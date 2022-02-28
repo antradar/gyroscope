@@ -2,7 +2,35 @@
 
 function listusers(){
 	
-	global $db; 
+	global $db;
+	global $WSS_INTERNAL_HOST;
+	
+	$user=userinfo();
+	$myuserid=$user['userid'];
+	$gsid=$user['gsid'];	
+	
+	$activeagents=array();
+	if (class_exists('Redis')){	
+	
+	    global $redis;
+	    $valid=0;
+	    if (!isset($redis)){
+		    try{
+	            $redis=new Redis();
+	            $redis->connect($WSS_INTERNAL_HOST,6379);
+	            $valid=1;
+            } catch (Exception $e){
+	         	//echo "warn: cannot connect to Redis server";
+            }
+	    } else $valid=1;
+	    
+	    if ($valid){
+		    $agentmap=json_decode($redis->get('agentmap'),1);
+		    $activeagents=$agentmap[$gsid];
+	    }
+	    
+    }
+	
 	
 	$mode=SGET('mode');
 	$key=SGET('key');
@@ -10,9 +38,6 @@ function listusers(){
 	$page=intval($_GET['page']);
 	
 	
-	$user=userinfo();
-	$myuserid=$user['userid'];
-	$gsid=$user['gsid'];
 	
 	//vendor auth 1
 			
@@ -43,7 +68,6 @@ function listusers(){
 	}
 	
 	$params=array($gsid);
-
 	$query="select * from ".TABLENAME_USERS." where ".COLNAME_GSID."=? ";
 	
 	if ($key!='') {
@@ -112,6 +136,8 @@ function listusers(){
 		
 		$usertitle="$login"; //change this if needed
 		
+		$online=in_array($userid,$activeagents);
+		
 		$dbusertitle=noapos(htmlspecialchars(htmlspecialchars($usertitle)));
 		$groupnames=$myrow['groupnames'];
 		$hash=substr(md5($groupnames),0,6);
@@ -127,7 +153,16 @@ function listusers(){
 		//vendor auth 4
 		
 ?>
-<div class="listitem" style="<?php if ($pageleadidx<$pagelead&&$page>0) echo 'opacity:0.6;';?>border-left:solid 3px #<?php echo $hash;?>;padding-left:5px;"><a onclick="showuser('<?php echo $userid;?>','<?php echo $dbusertitle;?>');"><?php echo htmlspecialchars($usertitle);?><br><?php echo htmlspecialchars($usertitle!=$dispname?$dispname:'');?></a></div>
+<div class="listitem" style="<?php if ($pageleadidx<$pagelead&&$page>0) echo 'opacity:0.6;';?>border-left:solid 3px #<?php echo $hash;?>;padding-left:5px;">
+<a onclick="showuser('<?php echo $userid;?>','<?php echo $dbusertitle;?>');">
+	<?php echo htmlspecialchars($usertitle);?>
+	<?php if ($online){?>
+	&nbsp; <span class="labelbutton">online</span>
+	<?php }?>
+
+	<br>
+	<?php echo htmlspecialchars($usertitle!=$dispname?$dispname:'');?>
+</a></div>
 <?php		
 		$pageleadidx++;
 

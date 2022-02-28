@@ -10,4 +10,7 @@ define ('TABLENAME_TEMPLATES','#primaryfield#templates');
 define ('TABLENAME_TEMPLATEVARS','#primaryfield#templatevars');
 define ('TABLENAME_HELPTOPICS','#primaryfield#helptopics');
 define ('TABLENAME_HOMEDASHREPORTS','#primaryfield#homedashreports');
+define ('TABLENAME_YUBIKEYS','#primaryfield#yubikeys');
+define ('TABLENAME_CHATS','#primaryfield#chats');
+define ('TABLENAME_CHATMSGS','#primaryfield#chatmsgs');
 

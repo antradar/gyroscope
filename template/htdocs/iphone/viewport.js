@@ -35,6 +35,13 @@ function scaleall(root){
   gid('fsview').style.height=idh-50+'px';
   
   gid('fstitlebar').style.width=idw-20+'px';  
+  
+  if (gid('gschat_chatbox')){
+		var uptake=190; //space taken by other components
+		gid('gschat').style.width=idw-30+'px';
+		gid('gschat_chatbox').style.maxHeight=(idh-uptake)+'px';
+	}
+  
   	   
 }
 
@@ -90,13 +97,16 @@ function closefs(){
 	if (gid('fsclose').closeaction) gid('fsclose').closeaction();	
 }
 
-function loadfs(title,cmd,func,initfunc){
+function loadfs(title,cmd,func,initfunc,bingo){
 	setnosleep(true);
-	ajxpgn('fsview',document.appsettings.codepage+'?cmd='+cmd,1,0,'',function(){
+	var codepage=document.appsettings.codepage;
+	if (bingo) codepage=document.appsettings.binpage;
+	ajxpgn('fsview',codepage+'?cmd='+cmd,1,0,'',function(){
 		gid('fstitle').innerHTML=title;	
 		showfs(func,initfunc);	
 	});
 }
+
 
 hinttimer=-2;
 
@@ -155,12 +165,15 @@ function reloadview(idx,listid){
 	
 	var params='';
 	if (gid('lv'+document.viewindex)) params=gid('lv'+document.viewindex).params;
+	var bingo=gid('lv'+document.viewindex).bingo;
 		
 	if (listid) reajxpgn(listid,'lv'+idx);
-	else showview(idx,0,0,params);
+	else showview(idx,0,0,params,null,bingo);
 }
 
-function showview(idx,lazy,force,params,func){
+function showview(idx,lazy,force,params,func,bingo){
+    var codepage=document.appsettings.codepage;
+    if (bingo==1) codepage=document.appsettings.binpage;
 	if (!params) params='';
 	
 	if (!force&&document.viewmode!=1&&document.iphone_portrait) return;	
@@ -172,7 +185,10 @@ function showview(idx,lazy,force,params,func){
 	  gid('lv'+document.viewindex).tooltitle=gid('tooltitle').innerHTML;
   }
 
-  if (gid('lv'+idx)) gid('lv'+idx).params=params;
+  if (gid('lv'+idx)) {
+	  gid('lv'+idx).params=params;
+	  gid('lv'+idx).bingo=bingo;
+  }
   
   for (var k=0;k<document.appsettings.views.length;k++){
 	var i=document.appsettings.views[k];
@@ -182,7 +198,7 @@ function showview(idx,lazy,force,params,func){
 		if (!lazy||document.viewindex==idx||!gid('lv'+i).viewloaded){
 			if (document.lvxhr&&document.lvxhr.reqobj) {document.lvxhr.abortflag=1;document.lvxhr.reqobj.abort();document.lvxhr.reqobj=null;cancelgswi(document.lvxhr);}
 			document.lvxhr=gid('lv'+i);			
-			ajxpgn('lv'+i,document.appsettings.codepage+'?cmd=slv_'+i.replace(/\./g,'__')+'&'+params,true,true,'',function(rq){
+			ajxpgn('lv'+i,codepage+'?cmd=slv_'+i.replace(/\./g,'__')+'&'+params,true,true,'',function(rq){
 				var title=rq.getResponseHeader('listviewtitle');
 				if (title!=null&&title!='') gid('tooltitle').innerHTML='<a>'+decodeURIComponent(title)+'</a>';
 				var flag=rq.getResponseHeader('listviewflag');

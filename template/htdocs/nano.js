@@ -7,7 +7,7 @@ Documentation: www.antradar.com/docs-nano-ajax-manual
 
 Warning: this copy of Nano Ajax Library is modified for running in Gyroscope. Use the public version for general purpose applications.
 
-ver g4.7
+ver g4.9
 */
 
 function gid(d){return document.getElementById(d);}
@@ -56,6 +56,13 @@ function cancelgswi(ct){
 	}	
 }
 
+/*
+runonce modes:
+0 - previous requests are cancelled at best effort but no guarantee; the response of the last record is displayed
+1 - first request is sent and received; subsequent requests are blocked until the first request finishes
+2 - all the requests are sent; display may not be in order
+*/
+
 function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce,gskey,creds,headless){
 	var ct=gid(c);
 	if (ct==null){
@@ -63,7 +70,7 @@ function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce,gskey,creds,headless){
 		else return;
 	}
 	
-	if (runonce&&ct.reqobj!=null) return;
+	if (runonce==1&&ct.reqobj!=null) return;
 	
 	ct.reloadparams={u:u,d:d,e:e,data:data,callback:callback,slowtimer:slowtimer,runonce:runonce};
 	
@@ -79,7 +86,7 @@ function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce,gskey,creds,headless){
 	var f=function(c){return function(){
 		if (rq.readyState==4){
 			
-    	    var xtatus=rq.getResponseHeader('X-STATUS');
+    	    var xtatus=creds==null?rq.getResponseHeader('X-STATUS'):200;
 		    if (rq.status==403||(xtatus|0)==403){
 				if (self.skipconfirm) skipconfirm();
 				window.location.href='login.php';
@@ -101,10 +108,10 @@ function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce,gskey,creds,headless){
 			}
 				
 
-			var apperror=rq.getResponseHeader('apperror');
+			var apperror=creds==null?rq.getResponseHeader('apperror'):null;
 			if (apperror!=null&&apperror!=''){
 				if (ct.slowtimerorg&&!headless){ct.innerHTML=ct.slowtimerorg;ct.slowtimerorg=null;}
-				var errfunc=rq.getResponseHeader('errfunc');
+				var errfunc=creds==null?rq.getResponseHeader('errfunc'):null;
 				if (callback&&typeof(callback)=='object'&&callback.length>0){
 					callback[1](errfunc,decodeURIComponent(apperror),rq);					
 				} else {
@@ -142,21 +149,27 @@ function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce,gskey,creds,headless){
 	var rq=xmlHTTPRequestObject();
 	if (creds) rq.withCredentials=true;
 	
-	if (ct.reqobj!=null)  {ct.abortflag=1;ct.reqobj.abort();cancelgswi(ct);}
+	if (ct.reqobj!=null&&runonce!=2){
+		ct.abortflag=1;
+		ct.reqobj.abort();
+		cancelgswi(ct);
+	}
 	ct.reqobj=rq;
 	if (!slowtimer) slowtimer=800;
 	
-	ct.slowtimer=setTimeout(function(){
-
-		if (ct.style.display=='none') ct.style.display='block';
-		var first=ct.firstChild;
-		if (ct.gswi) return;
-		var wi=document.createElement('img'); wi.src='imgs/hourglass.gif'; ct.gswi=wi;
-		if (gid('statusc')!=ct) wi.style.margin='10px';
-		if (first==null) ct.appendChild(wi); else ct.insertBefore(wi,first);
-		ct.style.opacity=0.5; ct.style.filter='alpha(50)'; ct.style.color='#999999';
-		//ct.innerHTML='<img src="imgs/hourglass.gif" class="hourglass"><span style="opacity:0.5;filter:alpha(opacity=50);color:#999999;">'+ct.innerHTML+'</span>';
-	},slowtimer);
+	if (runonce!=2){
+		ct.slowtimer=setTimeout(function(){
+	
+			if (ct.style.display=='none') ct.style.display='block';
+			var first=ct.firstChild;
+			if (ct.gswi) return;
+			var wi=document.createElement('img'); wi.src='imgs/hourglass.gif'; ct.gswi=wi;
+			if (gid('statusc')!=ct) wi.style.margin='10px';
+			if (first==null) ct.appendChild(wi); else ct.insertBefore(wi,first);
+			ct.style.opacity=0.5; ct.style.filter='alpha(50)'; ct.style.color='#999999';
+			//ct.innerHTML='<img src="imgs/hourglass.gif" class="hourglass"><span style="opacity:0.5;filter:alpha(opacity=50);color:#999999;">'+ct.innerHTML+'</span>';
+		},slowtimer);
+	}
 
 	ajxnb(rq,u,f(c),data);
 	
@@ -320,6 +333,20 @@ function decodeHTML(code){
 	ajxjs(self.decodeURIComponent,'uriencode.js');
 	return decodeURIComponent(code);
 }
+
+function arrayBufferToString(arrayBuffer) {
+	return String.fromCharCode.apply(null, new Uint8Array(arrayBuffer));
+}
+
+function stringToArrayBuffer(str){
+	return Uint8Array.from(str,function(c){return c.charCodeAt(0);}).buffer;
+}
+
+function base64encode(arrayBuffer){
+	if (!arrayBuffer||arrayBuffer.length==0) return null;
+	return btoa(String.fromCharCode.apply(null, new Uint8Array(arrayBuffer)));
+}
+
 
 function showhide(id,preopen,trigger){
 	var d=gid(id);

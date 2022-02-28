@@ -40,6 +40,13 @@ body{padding:0;margin:0;background:transparent url(imgs/bgtile.png) repeat;font-
 }
 
 
+@media (prefers-color-scheme:dark) {
+	body{background-image:url(imgs/dbgtile.png);}
+	#loginbox{background: #21262D;color:#C9D1D9;}
+	#logo_light{display:none;}
+	#logo_dark{display:block;}
+}
+
 
 
 </style>
@@ -48,7 +55,8 @@ body{padding:0;margin:0;background:transparent url(imgs/bgtile.png) repeat;font-
 <div id="loginbox__"><div id="loginbox_">
 <div id="loginbox">
 	<div style="padding:20px;margin:0;padding-top:10px;">
-	<img src="imgs/logo.png" style="margin:10px 0;width:100%;" alt="Gyroscope Logo">
+	<img src="imgs/logo.png" style="margin:10px 0;width:100%;" alt="Gyroscope Logo" id="logo_light">
+	<img src="imgs/dlogo.png" style="margin:10px 0;width:100%;" id="logo_dark">
 	
 	<div id="cacheres">
 	
@@ -72,6 +80,7 @@ caches.open('gyroscope').then(function(cache) { //vendor portal specific
 			
 		return cache.addAll([
 		'imgs/logo.png',
+		'imgs/dlogo.png',
 		'nano.js',
 		'notes.php',
 		'notes.php?mode=embed',

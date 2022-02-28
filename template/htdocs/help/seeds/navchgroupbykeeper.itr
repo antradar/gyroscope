@@ -1,0 +1,1 @@
+	if ($_GET['group_#fld0#']==1) $filters['group_#fld0#']=1;

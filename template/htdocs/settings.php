@@ -6,6 +6,7 @@ include 'lang.php';
 include 'auth.php';
 
 $codepage='myservices.php';
+$binpage='myservices.gsb'; //set to .gsb on commercial license
 $fastlane='phpx-services.php'; //change this name if HAProxy is set up to route by filename to a dedicated server
 
 //define constants that are shared by both front- and back-end code
@@ -24,10 +25,13 @@ $userroles=array(
 	//'msdrive'=>'access all Microsoft drives',
 	//'upgrademods'=>_tr('rights_upgrademodules'),
 	'helpedit'=>'edit help topics',
+	'chatsettings'=>'manage chat settings',
+	'chats'=>'respond to support chats',
+	'sharedashreports'=>'share custom reports on the home tab'
 );
 
 //a user can grant the following rights only if the user also has the right themselves
-$userrolelocks=array('devreports','accounts','dbadmin','creditcards','systemplate','msdrive','helpedit');
+$userrolelocks=array('devreports','accounts','dbadmin','creditcards','systemplate','msdrive','helpedit','chatsettings','chats','sharedashreports');
 
 //to quickly force every role to be inherited, uncomment the following:
 
@@ -46,6 +50,7 @@ $toolbaritems=array(
 
 'core.reports'=>array('title'=>_tr('icon_reports'),'icon'=>'img-reports','modversion'=>'92','lockdown'=>1),
 'core.helptopics'=>array('title'=>_tr('icon_helptopics'),'icon'=>'img-helptopics','modversion'=>1),
+'codegen.chats'=>array('title'=>'Chats','icon'=>'img-chats','modversion'=>1,'bingo'=>1),
 
 );
 

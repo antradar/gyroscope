@@ -24,11 +24,20 @@ function update#record#(){
 	$after=sql_fetch_assoc($rs);
 	
 	$dbchanges=array('#primarykey#'=>$#primarykey#,'#dispfield#'=>"$#dispfield#");
-	$dbchanges=array_merge($dbchanges,diffdbchanges($before,$after)); //arg3-masks, arg4-omits
+	$diffs=diffdbchanges($before,$after);
+	$dbchanges=array_merge($dbchanges,$diffs); //arg3-masks, arg4-omits
 	
+	$dbchanges=array_merge($dbchanges,$diffs);
+	$trace=array(
+		'table'=>'#tablename#',
+		'recid'=>$#primarykey#,
+		'after'=>$after,
+		'diffs'=>$diffs
+	);
+			
 	logaction("updated #c_record# #$#primarykey# $#dispfield#",
 		$dbchanges,
-		array('rectype'=>'#record#','recid'=>$#primarykey#));
+		array('rectype'=>'#record#','recid'=>$#primarykey#),0,$trace);
 
 	show#record#($#primarykey#);
 }

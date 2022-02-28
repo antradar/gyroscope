@@ -16,7 +16,7 @@ function listreports(){
 	
 	$query="select * from ".TABLENAME_REPORTS." where (gsid=? or gsid=?) ";
 	
-	if (TABLENAME_GSS!='gss') $query="select * from ".TABLENAME_REPORTS." where (".COLNAME_GSID."=? or ".COLNAME_GSID."=0)";
+	if (TABLENAME_GSS!='gss') $query="select * from ".TABLENAME_REPORTS." where (".COLNAME_GSID."=? or ".COLNAME_GSID."=?)";
 	
 	$params=array($gsid,$syslevel);
 	
@@ -65,6 +65,8 @@ function listreports(){
 		if (count($test)<1) continue; //&&count($reportgroupnames)==0
 		$found=1;
 		
+		$bingo=intval($myrow['bingo']);
+				
 		if ($lastgroup!=$reportgroup){
 ?>
 <div class="sectionheader"><?php echo $reportgroup;?></div>
@@ -73,7 +75,7 @@ function listreports(){
 		}
 ?>
 	<div class="listitem">
-		<a onclick="<?php echo $reportfunc;?>reloadtab('rpt<?php echo $reportkey;?>','<img src=&quot;imgs/t.gif&quot; class=&quot;ico-report&quot;><?php echo $dbreportname;?>','rpt<?php echo $reportkey;?>',(self.rptreload_<?php echo $reportkey;?>?rptreload_<?php echo $reportkey;?>:null));addtab('rpt<?php echo $reportkey;?>','<img src=&quot;imgs/t.gif&quot; class=&quot;ico-report&quot;><?php echo $dbreportname;?>','rpt<?php echo $reportkey;?>',(self.rptinit_<?php echo $reportkey;?>?rptinit_<?php echo $reportkey;?>:null));"><?php echo htmlspecialchars($reportname);?></a>
+		<a onclick="<?php echo $reportfunc;?>reloadtab('rpt<?php echo $reportkey;?>','<img src=&quot;imgs/t.gif&quot; class=&quot;ico-report&quot;><?php echo $dbreportname;?>','rpt<?php echo $reportkey;?>',(self.rptreload_<?php echo $reportkey;?>?rptreload_<?php echo $reportkey;?>:null),null,{bingo:<?php echo $bingo;?>});addtab('rpt<?php echo $reportkey;?>','<img src=&quot;imgs/t.gif&quot; class=&quot;ico-report&quot;><?php echo $dbreportname;?>','rpt<?php echo $reportkey;?>',(self.rptinit_<?php echo $reportkey;?>?rptinit_<?php echo $reportkey;?>:null),null,{bingo:<?php echo $bingo;?>});"><?php echo htmlspecialchars($reportname);?></a>
 	</div>
 <?php		
 	}//while

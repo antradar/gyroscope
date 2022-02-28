@@ -244,7 +244,7 @@ color:#ff2222;
 .litm{border-bottom:solid 1px #A6A8AA;background:transparent url(ra.png) no-repeat right center;}
 .litm a{display:block}
 
-.labelbutton{font-size:11px;background-color:#444444;padding:1px 4px;border-radius:2px;color:#ffffff;}
+.labelbutton{font-size:11px;background-color:#444444;padding:1px 4px;border-radius:2px;color:#ffffff;white-space:nowrap;}
 .labelbutton:hover{background:#000040;}
 .labelbutton:focus{background:#ab0200;}
 
@@ -284,6 +284,8 @@ select.inp, select.inplong, select.inpmed, select.inpshort, select.inpxshort{wid
 .subtable button{white-space:nowrap;}
 
 .listbar{font-size:12px;padding:5px 0;}
+
+.mtback_dark{display:none;}
 
 input:disabled{color:#000000;-webkit-appearance: none;}
 
@@ -341,4 +343,25 @@ input:disabled{color:#000000;-webkit-appearance: none;}
 @media screen and (max-width:370px){
 	.mceToolbar .mceOpen, .mceToolbar .mceTitle, .mceToolbar .mce_blockquote, 
 	.mceToolbar .mce_indent, .mceToolbar .mce_outdent, .mceToolbar .mce_forecolor, .mceToolbar .mce_backcolor{display:none !important;}
+}
+
+@media (prefers-color-scheme:dark) {
+	table{color:#C9D1D9;}
+	.reloader{background:#353A2C;color:#EAE661;border-bottom:solid 1px #6B7247;border-top:solid 1px #6B7247;}
+	#backlist{background-image:url(dhbg.png);}
+	.mtback_light{display:none;}
+	.mtback_dark{display:inline;}
+	
+	.activetab .tabclose,
+	.dulltab .tabclose,
+	.activetab, .dulltab,
+	.activetab .noclose, .dulltab .noclose,
+	#lkvtitle, #lkvx
+	{background-image:url(dmsprite.png)}
+	
+	.listsearch{background-image:url(../imgs/dbmg.gif);}
+	
+	#lkvc{border-right:solid 1px #2F5464;}
+
+	
 }

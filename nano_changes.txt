@@ -1,3 +1,11 @@
+v4.9
+----
+- array buffer functions for webauthn
+
+v4.8
+----
+- new runonce mode
+
 v4.7
 ----
 - legacy browser compatibility for encoding and decoding

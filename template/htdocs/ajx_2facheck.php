@@ -17,6 +17,7 @@ $salt2=$saltroot.$_SERVER['REMOTE_ADDR'].'-'.$_SERVER['O_IP'].date('Y-m-j-H',tim
 xsscheck();
 
 $login=SQET('login');
+$nopass=intval(SQET('nopass'));
 
 $query="select * from ".TABLENAME_USERS." left join ".TABLENAME_GSS." on ".TABLENAME_USERS.".".COLNAME_GSID."=".TABLENAME_GSS.".".COLNAME_GSID." where login=? and active=1 and virtualuser=0";
 $rs=sql_prep($query,$db,$login);  
@@ -27,7 +28,8 @@ $federated=null;
 
 if ($myrow=sql_fetch_array($rs)){
 
-	$passok=password_verify($dbsalt.$_POST['password'],$myrow['password']);
+	if ($nopass) $passok=1;
+	else $passok=password_verify($dbsalt.$_POST['password'],$myrow['password']);
 		
 	/*
 	$federated=array(
@@ -50,12 +52,17 @@ if ($myrow=sql_fetch_array($rs)){
 	if ($smskey=='') $usesms=0;
 	if ($gakey=='') $usega=0;
 	
+	if ($passreset){
+		$needkeyfile=0;
+		$usesms=0;
+		$usega=0;
+	}
+	
 	$userid=$myrow['userid'];
 		
 		
 	$needcert=$myrow['needcert'];
 	
-
 } else {
 	password_hash($dbsalt.time(),PASSWORD_DEFAULT,array('cost'=>PASSWORD_COST));
 	

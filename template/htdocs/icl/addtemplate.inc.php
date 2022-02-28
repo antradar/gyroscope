@@ -28,7 +28,16 @@ function addtemplate(){
 
 	logaction("added Template #$templateid $templatename",
 		array('templateid'=>$templateid,'templatename'=>"$templatename"),
-		array('rectype'=>'templatetypetemplates','recid'=>$templatetypeid));
+		array('rectype'=>'templatetypetemplates','recid'=>$templatetypeid),0,array(
+			'table'=>'templates',
+			'recid'=>$templateid,
+			'after'=>array(
+				'templatename'=>$templatename
+			),
+			'diffs'=>array(
+				'templatename'=>$templatename
+			)
+		));
 	
 	header('newrecid:'.$templateid);
 	header('newkey:template_'.$templateid);

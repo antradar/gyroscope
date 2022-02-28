@@ -161,6 +161,7 @@ $tests=array(
 'Segment size'=>array('res'=>2,'message'=>$seg),
 'Number Formatter'=>array('res'=>class_exists('NumberFormatter')),
 'SQL Connector'=>array('res'=>2,'message'=>$SQL_ENGINE),
+'Co-SQL Connector'=>array('res'=>2,'message'=>$SQL_ENGINE2),
 //'MySQLi Reflect Bind'=>array('res'=>!$bindfail),
 'MySQL client charset'=>array('res'=>$csets['character_set_client']=='latin1','message'=>$csets['character_set_client']),
 'MySQL connection charset'=>array('res'=>$csets['character_set_connection']=='latin1','message'=>$csets['character_set_connection']),
@@ -181,6 +182,7 @@ $tests=array(
 'PHP Version'=>array('res'=>2,'message'=>str_replace('+',' + ',phpversion()))
 );
 
+if (!isset($SQL_ENGINE2)) unset($tests['Co-SQL Connector']);
 
 if (!is_callable('password_hash_fallbackmode')) $tests['&nbsp; &nbsp; &nbsp; &nbsp; Emulated']['message']='No';
 
@@ -304,6 +306,7 @@ foreach ($tests as $test=>$result){
 	<?php	
 	}
 	
+	/*
 	if ($user['login']&&($SQL_ENGINE=="MySQLi"||$SQL_ENGINE=="MySQL")){
 		$query="SELECT TABLE_SCHEMA, TABLE_NAME, CREATE_OPTIONS FROM INFORMATION_SCHEMA.TABLES WHERE CREATE_OPTIONS LIKE '%ENCRYPTION=\"Y\"%';";
 		$rs=sql_query($query,$db);
@@ -322,6 +325,7 @@ foreach ($tests as $test=>$result){
 			}//while	
 		}
 	}
+	*/
 ?>	
 	<div class="clear"></div>
 </div>

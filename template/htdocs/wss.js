@@ -5,7 +5,6 @@ if (window.WebSocket){
 	
 	document.websocket.onopen=function(e){
 		console.log('web socket connected');	
-		document.websocket.send('{"type":"getsid","userid":'+userid+',"auth":"'+wsskey+'","gsid":'+gsid+'}');
 		document.wssready=true;
 		if (!document.nomoresocket) document.nomoresocket=0;
 		if (gid('wsswarn')) gid('wsswarn').style.display='none';
@@ -14,9 +13,10 @@ if (window.WebSocket){
 	document.websocket.onmessage=function(e){
 		var msg = JSON.parse(e.data); //PHP sends JSON
 		if (msg.type=='getsid'){
-			if (!document.wssid&&msg.userid==userid) {
+			if (!document.wssid) {
 				document.wssid=msg.sid;
 				document.gsid=msg.gsid;
+				document.userid=msg.userid;
 				document.nomoresocket=0;
 				console.log('sid: '+msg.sid);
 			}
@@ -24,12 +24,40 @@ if (window.WebSocket){
 		}
 		
 		if (!document.wssid) return;
+
+		if (msg.type=='chat'){
+			ajxjs(self.showchat,'chats.js');
+			if (gid('chatlines_'+msg.chatid)){
+				var atabid=gettabid('chat_'+msg.chatid);
+				if (atabid>0&&document.userid!=msg.fromagentid) document.tabtitles[atabid].style.color='#00aa00';
+
+				ajxpgn('chattransport_'+msg.chatid,document.appsettings.binpage+'?cmd=getchatmsgs&chatid='+msg.chatid+'&from='+(gid('chatlines_'+msg.chatid).maxmsgid||0),0,0,null,function(rq){
+					gid('chatlines_'+msg.chatid).innerHTML+=rq.responseText;
+					gid('chatlines_'+msg.chatid).maxmsgid=parseInt(rq.getResponseHeader('maxmsgid'),10);
+					
+				});	
+			} else showchat(msg.chatid,msg.maxmsgid);
+			
+			if (document.userid!=msg.fromagentid&&gid('gschatsound_msgin')) gid('gschatsound_msgin').play();
+			
+			
+			return;				
+		}
+		
+		//instead of bringing the chat to their attention, bring the dashboard to their attention instead
+		//chatschanged
+		if(msg.type=='newchat'){
+			markchatchanged();	
+			if(document.appsettings.beepnewchat&&gid('gschatsound_newchat')) gid('gschatsound_newchat').play();
+		}
+		
+		//another sound for a new chat event
 				
 		if (msg.gsid!=gsid&&msg.gsid!=0) return;
 		
 		if (document.wssid==msg.sid){
 			console.log('ignore self');
-			wss_markchanges(msg.rectype,msg.recid,1,0,msg);
+			wss_markchanges(msg.rectype,msg.recid,1,msg);
 			return;	
 		}
 		
@@ -52,13 +80,13 @@ if (window.WebSocket){
 		
 		document.wssready=null;
 		if (gid('wsswarn')) gid('wsswarn').style.display='inline';
-		if (document.nomoresocket&&document.nomoresocket>5) {
+		if (document.nomoresocket&&document.nomoresocket>20) {
 			console.log('no more reconnection');
 			
 			return;
 		}
-		var span=1500; //adjust variability if needed
-		var rest=Math.round(Math.random()*span)+2000; //2-3.5 secs
+		var span=300; //adjust variability if needed
+		var rest=Math.round(Math.random()*span)+500; //
 
 		console.log('web socket closed, restarting in '+rest+'ms. reconnect attempt #'+document.nomoresocket);
 		if (self.authpump) authpump();
@@ -85,10 +113,12 @@ wss_markchanges=function(rectype,recid,corrected,msg){
 	var hit=0;
 	
 	switch(rectype){
+		
 		case 'reauth': ajxpgn('statusc',document.appsettings.codepage+'?cmd=reauth',0,0,'',function(){flashstatus('User credential updated',1000);authpump();});hit=1; break;
+		case 'chatschanged': markchatchanged(); break;
 
 		case 'templatetypetemplates':
-			if (gid('templatetypetemplates_'+recid)) {gid('templatetypetemplates_'+recid).style.backgroundColor=bgcolor;hit=1;}
+			if (gid('templatetypetemplates_'+recid)) {gid('templatetypetemplates_'+recid).className=corrected?'':'listchanged';hit=1;}
 		break;
 						
 		default:
@@ -101,11 +131,11 @@ wss_markchanges=function(rectype,recid,corrected,msg){
 		if (corrected) {
 			document.tabtitles[tabid].conflicted=null;
 			document.tabtitles[tabid].style.color=fgcolor;
-			if (gid('tabreloader_'+rectype+'_'+recid)) gid('tabreloader_'+rectype+'_'+recid).style.background='#dedede';
+			if (gid('tabreloader_'+rectype+'_'+recid)) gid('tabreloader_'+rectype+'_'+recid).className='reloader';
 		} else {
 			document.tabtitles[tabid].conflicted=1;
 			document.tabtitles[tabid].style.color=fgcolor;
-			if (gid('tabreloader_'+rectype+'_'+recid)) gid('tabreloader_'+rectype+'_'+recid).style.background='#ffcccc';
+			if (gid('tabreloader_'+rectype+'_'+recid)) gid('tabreloader_'+rectype+'_'+recid).className='reloader busy';
 		}
 	}	
 	
@@ -114,4 +144,14 @@ wss_markchanges=function(rectype,recid,corrected,msg){
 		document.title=document.orgtitle+' *';
 		setTimeout(function(){document.title=document.orgtitle;},200);
 	}	
+}
+
+markchatchanged=function(){
+	if (document.dashchatlock){
+		if (gid('dashchatwarning')) gid('dashchatwarning').style.display='block';
+		return;
+	}
+	
+	refreshtab('dashchats',1);
+	if (document.viewindex=='codegen.chats') reloadview('codegen.chats');
 }
