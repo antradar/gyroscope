@@ -4,6 +4,12 @@ body,textarea,td, .img-mg{font-family:verdana, tahoma, arial;font-size:13px;-web
 .img-mg,.sectiontitle,
 .listitem,.inplong, .inp, .inpmed, .inpshort, .inpxshort{font-family:Arial,serif;}
 
+.wideview{}
+.wideviewmenu_{}
+.wideviewmenu{display:none;}
+.wideviewmenu.transpose{display:block;padding:10px;}
+.wideview .qnav_{display:block;}
+
 a{cursor:pointer;}
 acronym{text-decoration:none;border:none;}
 

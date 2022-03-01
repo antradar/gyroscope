@@ -28,7 +28,10 @@ function scaleall(root){
   gid('lkvc').style.height=(idh-220)+'px';
   
   gid('tabtitles').style.width=(idw-296)+'px';
-  gid('tabviews').style.width=(idw-296)+'px';
+  
+  if (!document.widen) gid('tabviews').style.width=(idw-296)+'px';
+  else gid('tabviews').style.width=(idw-1)+'px';
+  
   gid('tabviews').style.height=(idh-147)+'px';
   gid('statusinfo').style.top=(idh-25)+'px';
   gid('statusinfo').style.width=idw+'px';
@@ -241,6 +244,8 @@ function showview(idx,lazy,force,params,func,bingo){
   setTimeout(function(){gid('leftview').className='bgready';},250);  
   
   if (self.livechat_updatesummary&&document.chatstatus=='online') livechat_updatesummary();	
+  
+  if (document.widen) showtab('welcome');
   
 }
 

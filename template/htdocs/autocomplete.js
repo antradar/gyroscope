@@ -133,6 +133,7 @@ cancelpickup=function(c,unlockonly){
 listlookup=function(d,title,command,mini,data){
 	if (document.iphone_portrait) mini=1;
 	if (document.tabafloat) mini=1;
+	if (document.widen) mini=1;
 	if (document.hotspot&&document.hotspot.id) document.hotspot=gid(document.hotspot.id);
 	if (document.hotspot&&!d) d=document.hotspot;
 	if (mini&&!d) return;

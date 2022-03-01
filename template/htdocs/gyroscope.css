@@ -4,6 +4,7 @@ body, td, textarea, .img-mg{font-family:arial,sans-serif;font-size:13px;-webkit-
 .img-mg,.sectiontitle,
 .listitem,.inplong, .inp, .inpmed, .inpshort, .inpxshort{font-family:Arial,serif;}
 
+
 table{line-height:25px;}
 table.subtable{line-height:18px;}
 a{cursor:pointer;}
@@ -157,6 +158,7 @@ acronym.help{cursor:help;border-bottom:dotted 1px #4444ee;}
 .listitem a,.listitem a:link,.listitem a:visited,.listitem a:hover{text-decoration:none;color:#000000;}
 .listitem a:focus{color:#ab0200;}
 
+
 .sortlistitem{border-left:solid 6px #D8D8D8;padding-left:12px;}
 
 .section{padding:24px 15px;}
@@ -165,8 +167,25 @@ acronym.help{cursor:help;border-bottom:dotted 1px #4444ee;}
 .qnav_{position:absolute;top:0px;left:0;height:100%;overflow:hidden;}
 .qnav{padding-top:45px;}
 
+.wideview{margin-left:296px;}
+.wideviewmenu_{position:absolute;top:0;left:0;width:295px;height:100%;overflow:auto;direction:rtl;}
+.wideviewmenu{direction:ltr;padding:10px 0;}
+
+.wideviewmenu .sectiontitle{padding-left:15px;font-size:16px;}
+
+.wideviewmenu .listitem{border-left:solid 6px transparent;padding:8px 0;padding-left:10px;margin-bottom:0;}
+.wideviewmenu .listitem.current{border-left:solid 6px #72ADDD;}
+
+.wideview .qnav_{display:none;}
+
+
 .afloat .qnav_{position:fixed;}
 .afloat{background:#ffffff;}
+
+.afloat .wideviewmenu{display:none;}
+.afloat .wideviewmenu.transpose{display:block;}
+.afloat .wideview .qnav_{display:block;}
+.afloat .wideview{margin-left:0;}
 
 .qnavitem{clear:both;float:left;font-weight:bold;margin-bottom:10px;font-size:13px;background:#848cf7;color:#ffffff;padding:5px 8px;border-radius:0 5px 5px 0;box-shadow:0 2px 4px #999999;display:block;overflow:hidden;white-space:nowrap;}
 .qnavitem:hover{font-weight:normal;}
@@ -335,6 +354,8 @@ input:disabled{color:#000000;}
 	#statusinfo{background-image:url(imgs/dsprite.png);}
 	
 	#lkvc{border-right:solid 1px #2F5464;}
+	
+	.wideviewmenu .listitem.current{border-left:solid 6px #294B70;background:#10233B;color:#68A7EA;}
 	
 	.img-mg{border-color:##21262D;background:#0D1117 url(imgs/dsprite.png) no-repeat 100% -330px;}	
 	

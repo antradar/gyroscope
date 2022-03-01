@@ -9,15 +9,25 @@ include 'icl/listhomedashreports.inc.php';
 //include 'gsx_hello.inc.php'; //uncomment this to see gsx in bypass mode, remember to modify gsx.php
 
 function showwelcome(){
-	
+
+		
 ?>
+<div style="position:relative;margin-left:60px;"><?php makehelp('welcometab2','maxtab',1);?></div>
 <div class="section" style="position:relative;">
 	<?php makehelp('welcometab','tabview',1);?>
 	<div class="sectiontitle"><a ondblclick="toggletabdock();"><?php tr('hometab_welcome');?></a></div>
+	
 <?php
 
 //listsslcerts();
 
+?>
+	Wide View Test: 
+	<a class="hovlink" onclick="ajxjs(self.showwideviewdemo,'wideview.js');addtab('wide_1','Wide View 1','showwidedemo&wideid=1',null,null,{wide:true});">wide view 1</a>
+	&nbsp;
+	<a class="hovlink" onclick="ajxjs(self.showwideviewdemo,'wideview.js');addtab('wide_2','Wide View 2','showwidedemo&wideid=2',null,null,{wide:true});">wide view 2</a>
+<?php
+	
 /*
 
 //auto lookup tests:

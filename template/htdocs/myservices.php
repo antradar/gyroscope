@@ -64,6 +64,8 @@ switch($cmd){
 	case 'delyubikey': include 'icl/delyubikey.inc.php'; delyubikey(); break;
 	case 'updateyubikeyname': include 'icl/updateyubikeyname.inc.php'; updateyubikeyname(); break;
 	case 'setyubikeypassless': include 'icl/setyubikeypassless.inc.php'; setyubikeypassless(); break;
+	
+	case 'showwidedemo': include 'icl/showwidedemo.inc.php'; showwidedemo(); break;
 
 //Settings
 	case 'clogo': include 'icl/clogo.inc.php'; clogo(); break;

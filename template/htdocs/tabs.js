@@ -56,15 +56,76 @@ showtab=function(key,opts){
       var keyparts=key.split('_');
       var ckey=keyparts[0];
       if (self['tabviewfunc_'+ckey]) self['tabviewfunc_'+ckey](keyparts[1]);
+      if (self['tabscrollfunc_'+ckey]) document.tabviews[document.currenttab].onscroll=self['tabscrollfunc_'+ckey](keyparts[1]);
       if (self.livechat_updatesummary&&document.chatstatus=='online') livechat_updatesummary();
       
   if (document.tabafloat){
 	if (!document.tabviews[tabid].afloat) undocktab();	  
   } else {
-	if (document.tabviews[tabid].afloat) redocktab(); 
+	if (document.tabviews[tabid].afloat) redocktab();
+	
+	var idw=cw();
+	
+	if (document.tabtitles[tabid].reloadinfo&&document.tabtitles[tabid].reloadinfo.opts&&document.tabtitles[tabid].reloadinfo.opts.wide){
+		gid('tabviews').style.left=0;
+		gid('tooltitle').style.display='none';
+		gid('tabviews').style.width=(idw-1)+'px';
+		document.widen=true;
+	} else {
+		gid('tabviews').style.width=(idw-296)+'px';
+		gid('tabviews').style.left='295px';
+		gid('tooltitle').style.display='block';
+		document.widen=false;
+	}
+	
+	
   }    
       
 }
+
+function synclbookmarks(rectype,recid,marks){
+		if (document.bookmarklock){
+			document.bookmarklock=null;
+			return;	
+		}
+		
+		var tab=document.tabviews[document.currenttab];
+		var top=tab.scrollTop;
+		
+		var cur=null;
+		var h=ch();
+		var offset=gid('tabviews').offsetTop;
+		
+		
+		for (var i=0;i<marks.length;i++){
+			var k=marks[i];
+			var mark=gid('bookmark_'+rectype+'_'+recid+'_'+k);
+			if (!mark) continue;
+			marks[k]=mark.offsetTop;
+			if (top+h-offset-30>mark.offsetTop && top<mark.offsetTop) {cur=k;break;}
+		}
+				
+		if (cur) setlbookmark(rectype+'_'+recid,rectype+'_'+recid+'_'+cur);		
+			
+}
+
+function setlbookmark(ltoc,lbookmark){ //neuroscope-specific
+	
+	if (!gid('lbookmarks_'+ltoc)) return;
+		
+	var os=gid('lbookmarks_'+ltoc).getElementsByTagName('div');
+	for (var i=0;i<os.length;i++){
+		var o=os[i];
+		if (o.className=='listitem current') o.className='listitem';
+	}
+	
+	if (gid('lbookmark_'+lbookmark)) gid('lbookmark_'+lbookmark).className='listitem current';
+	var tab=document.tabtitles[document.currenttab];
+	if (!tab) return;
+	tab.lbookmark=lbookmark;
+	
+}
+
 
 tablock=false;
 

@@ -123,6 +123,7 @@ $helpspots=array(
 	'listviewlookup'=>'<div class="tiptitle">Instant Lookup</div>start typing, the results will show up as you type',
 	'fsview'=>'<div class="tiptitle">Full-Screen Mode</div>this is the full screen view. on a mobile device, the screen will stay on even if you have a screen lock enabled.',
 	'tabview'=>'<div class="tiptitle">Tab View</div>this is a record detail view that\'s displayed in a tab. double click on the tab to refresh. on mobile devices use the reload link.',
+	'maxtab'=>'<div class="tiptitle">Maximuze the Tab</div>press Ctrl,<,> at the same time to toggle maximized tab view.',
 	'mysettings'=>'<div class="tiptitle">Personal Settings</div>you may change your account settings here, such as changing password or resetting the personalized help tips.',
 	'richtexteditor'=>'<div class="tiptitle">Partial Editing</div>did you know that you can edit the source of selected content instead of the entire document?<br><br>highlight some text and then click the &lt;/&gt; button.',
 	'templatevar'=>'<div class="tiptitle">Variable Lookup</div>template variables are inserted in the %%&mdash;%% format.<br><br>when the %%&mdash;%% text is selected in the editor, a reverse lookup is performed... you are welcome.',
