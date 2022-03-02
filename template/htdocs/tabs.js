@@ -279,6 +279,13 @@ function refreshtab(key,skipconfirm){
   reloadtab(key,null,tab.reloadinfo.params,tab.reloadinfo.loadfunc,tab.reloadinfo.data,tab.reloadinfo.opts);
 }
 
+function resizetabs(){
+	if (document.tabcount==null) return;
+	var count=document.tabcount;
+	if (count>6) gid('tabtitles').className='compact';
+	else gid('tabtitles').className='';
+}
+
 function addtab(key,title,params,loadfunc,data,opts){	
   var i;
 
@@ -294,6 +301,7 @@ function addtab(key,title,params,loadfunc,data,opts){
 	}
   }
 
+  resizetabs();
 
   gid('tabviews').className='bgflash';
   setTimeout(function(){gid('tabviews').className='bgready'},250);      
@@ -401,7 +409,7 @@ function resettabs(key){
 	document.currenttab=tabid;
 	
 	document.tabhistory=[];	
-	
+	resizetabs();
 	showtab(key);
 	
 }
@@ -425,6 +433,8 @@ closetab=function(key){
   }
   document.tabcount--;
   
+  resizetabs();  
+  
   if (document.tabcount<=2&&gid('closeall')) gid('closeall').style.display='none';
   
 	if (document.tabhistory){
@@ -447,6 +457,7 @@ closetab=function(key){
 	if (document.tabcount==0) {document.currenttab=-1; return;}
 	showtab(document.tabkeys[document.currenttab]);	
     if (self.livechat_updatesummary&&document.chatstatus=='online') livechat_updatesummary();
+    
 	
 }
 
