@@ -301,8 +301,6 @@ function addtab(key,title,params,loadfunc,data,opts){
 	}
   }
 
-  resizetabs();
-
   gid('tabviews').className='bgflash';
   setTimeout(function(){gid('tabviews').className='bgready'},250);      
 
@@ -340,6 +338,7 @@ function addtab(key,title,params,loadfunc,data,opts){
   if (opts&&opts.bingo) document.tabtitles[document.tabcount].bingo=true;
   
   document.tabcount++;
+  resizetabs();  
   showtab(key,opts);
   
   if (document.tabcount>2&&gid('closeall')) gid('closeall').style.display='block';  
