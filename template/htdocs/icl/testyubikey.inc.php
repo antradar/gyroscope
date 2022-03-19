@@ -40,7 +40,7 @@ function testyubikey(){
 	$res=cbor_validate($kty,$alg,$crv,$x,$y,$n,$e,$clientdata,$clientauth,$signature,1,$lastsigncount,$newsigncount,$err);
 	
 	if ($res==1) {
-		echo "Validated! =)";
+		echo "Validated! =) &nbsp; #$lastsigncount";
 		$query="update ".TABLENAME_YUBIKEYS." set lastsigncount=? where keyid=?";
 		sql_prep($query,$db,array($newsigncount,$keyid));		
 	} else echo "Authentication failed. =( ".$err;	
