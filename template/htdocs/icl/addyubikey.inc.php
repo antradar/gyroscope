@@ -15,7 +15,6 @@ function addyubikey(){
 	$rawatt=strtr(SQET('att'),' ','+');
 	$att=base64_decode($rawatt);
 	
-	
 	$clientobj=json_decode($clientdata,1);	
 	//echo '<pre>'; print_r($clientobj); echo '</pre>';
 	

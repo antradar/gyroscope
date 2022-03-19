@@ -122,7 +122,7 @@ function cbor_parse_authdata($data){
 		$pkeyoffset=55-$jsoffset+$attlength;
 		$pkeyres=cbor_decode($data,$pkeyoffset);
 		$offset=$pkeyoffset;
-				
+						
 		$credkey=array(
 			'kty'=>$pkeyres[1],
 			'alg'=>$pkeyres[3]
@@ -141,11 +141,12 @@ function cbor_parse_authdata($data){
 		}
 		
 		$attestdata=array(
-			'aaguid'=>substr($data,37,16),
+			'aaguid'=>substr($data,37,max(0,16-$jsoffset)),
 			'length'=>$attlength,
 			'credid'=>base64_encode($credid),
 			'credkey'=>$credkey
 		);
+				
 	}
 	
 	$ds=unpack('Nsigncount',substr($data,33,4)); $signcount=$ds['signcount'];
@@ -156,7 +157,7 @@ function cbor_parse_authdata($data){
 		'signcount'=>$signcount,
 		'attestdata'=>$attestdata
 	);
-	
+		
 	return $authdata;	
 }
 
