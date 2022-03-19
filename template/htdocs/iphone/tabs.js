@@ -107,9 +107,7 @@ showtab=function(key,opts){
       var ckey=keyparts[0];
       if (self['tabviewfunc_'+ckey]) self['tabviewfunc_'+ckey](keyparts[1]);
       if (self.livechat_updatesummary&&document.chatstatus=='online') livechat_updatesummary();
-      
-	var idw=cw();
-	            
+      	            
 }
 
 tablock=false;

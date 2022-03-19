@@ -24,7 +24,7 @@ function cbor_decode($buf,&$offset=0){
 	if ($type==7) return cbor_parse_float($val,$buf,$offset);
 	
 	$val=cbor_parse_extralength($val,$buf,$offset);
-	
+		
 	return cbor_parse_itemdata($type,$val,$buf,$offset);
 	
 }
@@ -96,6 +96,10 @@ function cbor_parse_map($buf,&$offset,$val){
 
 function cbor_parse_authdata($data){
 	
+	$jsoffset=0;
+	if (strlen($data)<196) $jsoffset=196-strlen($data);
+	
+	
 	$rpidhash=substr($data,0,32);
 	$ds=unpack('Cflags',substr($data,32,1)); $rawflags=$ds['flags'];
 	$flags=array(
@@ -110,15 +114,15 @@ function cbor_parse_authdata($data){
 	$attestdata=array();
 	
 	if ($flags['attested']){//parse attest data
-		$ds=unpack('nlength',substr($data,53,2)); $attlength=$ds['length'];
-		$credid=substr($data,55,$attlength);
+		$ds=unpack('nlength',substr($data,53-$jsoffset,2)); $attlength=$ds['length'];
+				
+		$credid=substr($data,55-$jsoffset,$attlength);
 		$offset+=$attlength;
 		//extract public key
-		$pkeyoffset=55+$attlength;
-		//echo strlen($pkeydata); die();
+		$pkeyoffset=55-$jsoffset+$attlength;
 		$pkeyres=cbor_decode($data,$pkeyoffset);
 		$offset=$pkeyoffset;
-		
+				
 		$credkey=array(
 			'kty'=>$pkeyres[1],
 			'alg'=>$pkeyres[3]
@@ -158,7 +162,7 @@ function cbor_parse_authdata($data){
 
 
 function cbor_getval($buf,$offset,$mode='byte'){
-	if ($offset>strlen($buf)) cbor_error('cbor buffer out of bound');
+	if ($offset>strlen($buf)) apperror('cbor buffer out of bound. incompatible browser?'); //cbor_error
 	
 	switch ($mode){
 	case 'byte': return ord(substr($buf,$offset,1)); break;
