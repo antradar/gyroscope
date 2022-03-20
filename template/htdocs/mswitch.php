@@ -6,8 +6,14 @@ if (!isset($_GET['nom'])){
 		header('Location: kpw.php');
 		die();	
 	}
-	if (preg_match('/iphone/i',$ua)||preg_match('/opera mini/i',$ua)||preg_match('/mobile/i',$ua)) {
+	if (preg_match('/iphone/i',$ua)||preg_match('/opera mini/i',$ua)||preg_match('/mobile/i',$ua)){
 		header('Location: iphone.php');
 		die();	
 	}
+	
+	if (preg_match('/^lynx\//i',$ua)) {
+		header('Location: lynx.php');
+		die();	
+	}
+	
 }

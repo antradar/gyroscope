@@ -104,7 +104,7 @@ function makehelp($id,$text,$once=0,$dx=0){
 	global $helpspots; //defined in dict.[lang].php
 	global $userhelpspots;
 	
-	
+
 	$topic='';
 	if ($once){
 		if (!isset($helpspots[$text])) {

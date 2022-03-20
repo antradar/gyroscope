@@ -25,6 +25,10 @@ $error_message='';
 
 $passreset=0;
 
+$textmode=0;
+$ua=$_SERVER['HTTP_USER_AGENT'];
+if (preg_match('/^lynx\//i',$ua)) $textmode=1;
+
 if (isset($_POST['lang'])&&in_array($_POST['lang'],array_keys($langs))) {
 	$lang=$_POST['lang'];include 'lang/dict.'.$lang.'.php';  
 	setcookie('userlang',$_POST['lang'],time()+3600*24*30*6,null,null,$usehttps,true); //6 months
@@ -411,8 +415,16 @@ body{font-size:28px;}
 <div id="loginbox__"><div id="loginbox_">
 <div id="loginbox">
 	<form id="loginform" method="POST" style="padding:20px;margin:0;padding-top:10px;" onsubmit="return checkform();">
-	<img id="logo_light" src="imgs/logo.png" alt="Gyroscope Logo">
-	<img id="logo_dark" src="imgs/dlogo.png">
+	<?php if (!$textmode){?>
+		<img id="logo_light" src="imgs/logo.png" alt="Gyroscope Logo">
+		<img id="logo_dark" src="imgs/dlogo.png">
+	<?php } else { ?>
+		<i><?php echo GYROSCOPE_PROJECT;?></i><br>
+		<i><?php echo str_pad('-',strlen(GYROSCOPE_PROJECT),'-');?></i>
+		<br>&nbsp;
+		<br>
+	<?php }?>
+	
 	<?php if ($error_message!=''){?>
 	<div id="loginerror" style="color:#ab0200;font-weight:bold;padding-top:10px;"><?php echo $error_message;?></div>
 	<?php }?>
@@ -422,18 +434,18 @@ body{font-size:28px;}
 	<input style="width:100%;<?php if ($passreset) echo 'display:none;';?>" class="lfinp" id="login" type="text" name="gyroscope_login_<?php echo $dkey;?>" autocomplete="off" <?php if ($passreset) echo 'readonly';?> value="<?php if ($passreset) echo stripslashes($_POST['gyroscope_login_'.$dkey]); else echo htmlspecialchars($deflogin);?>"></div>
 	
 	<div id="passview">
-		<div><label for="password"><?php tr('password');?></label>:</div>
+		<div><label for="password"><?php tr('password');?>:</label></div>
 		<div style="padding-top:5px;padding-bottom:15px;">
 			<input style="width:100%;" class="lfinp" id="password" type="password" name="password">
 		</div>
-		
+		<?php if (!$textmode){?>
 		<div id="tfa_sms" style="display:none;">
 			<div><label for="smscode">SMS Code: (check your phone)</label></div>
 			<div style="padding-top:5px;padding-bottom:15px;">
 				<input class="lfinp" id="smscode" name="smscode" style="width:100%;" autocomplete="off">
 			</div>
 		</div>
-		
+		<?php }?>
 		<div id="tfa_ga" style="display:none;">
 			<div><label for="gapin">Google Authenticator PIN:</label></div>
 			<div style="padding-top:5px;padding-bottom:15px;">
@@ -458,6 +470,7 @@ body{font-size:28px;}
 	<input type="hidden" name="passreset" value="1">
 	<?php }?>
 
+	<?php if (!$textmode){?>
 	<div style="width:100%;margin-bottom:10px;<?php if (count($langs)<2) echo 'display:none;';?>"><select id="lang" style="width:100%;" name="lang" onchange="document.skipcheck=true;">
 	<?php 
 	foreach ($langs as $langkey=>$label){
@@ -468,8 +481,11 @@ body{font-size:28px;}
 	?>
 	</select>
 	</div>
+	<?php } ?>
 	
 	<div id="cardinfo"></div>
+	
+		<?php if (!$textmode){?>
 	
 		<div style="display:none;">
 			<input id="loginnopass" name="loginnopass" type="checkbox" value="1">
@@ -489,21 +505,32 @@ body{font-size:28px;}
 		<div id="cardlink">
 			<a href=# onclick="cardauth();return false;">Load ID Card</a>
 		</div></div>
+		
+		<?php } ?>
+		
 	</div><!-- passview -->
+	
+	<?php if (!$textmode){?>
 	<div id="cardview" style="display:none;">
 		<div style="text-align:center;"><input id="loginbutton" type="submit" value="<?php tr('signin');?>" onclick="if (!cardauth()) return false;"></div>
 		<div id="passlink">
 			<a href=# onclick="passview();return false;">Sign in with password</a>
 		</div>
 	</div>
+	<?php } else {?>
+		<br>&nbsp;<br>
+		<input id="loginbutton" type="submit" value="[<?php tr('signin');?>]">
+	<?php } ?>
 	<input name="cfk" id="cfk" value="<?php echo $csrfkey;?>" type="hidden">
-	<div style="display:none;"><span id="nullloader"></span><textarea name="certid" id="certid"></textarea></div>
 	
+	<?php if (!$textmode){?>
+	<div style="display:none;"><span id="nullloader"></span><textarea name="certid" id="certid"></textarea></div>
+	<?php } ?>
 	
 	</form>
 	
 
-	
+	<?php if (!$textmode){?>
 	<div id="offlineform" style="padding:20px;margin:0;padding-top:10px;display:none;line-height:1.4em;">
 		<img src="imgs/logo.png" style="margin:10px 0;width:100%;" alt="Gyroscope Logo">
 		There is currently no network access, but you can take offline notes:
@@ -512,13 +539,19 @@ body{font-size:28px;}
 		</div>
 	</div>
 	&nbsp;
+	<?php } ?>
+	
 </div>
 </div></div>
 
+<?php if (!$textmode){?>
 <div id="homeadder" onclick="this.style.top='-150px';" style="position:fixed;top:-150px;left:0;background:rgba(0,0,0,0.4);width:100%;padding:20px 0;transition:top 500ms;display:none;">
 	<img src="appicons/60x60.png" width="28" style="vertical-align:middle;margin-right:20px;">
 	<button id="homeapp" style="font-size:12px;padding:4px 10px;border:solid 1px #8f8cf7;border-radius:3px;">Add to Home Screen</button>
 </div>
+<?php
+}
+?>
 	
 	<?php
 	$version=GYROSCOPE_VERSION;
@@ -527,6 +560,8 @@ body{font-size:28px;}
 	$power='Antradar Gyroscope&trade; '.$version;
 	?>
 	<div class="powered"><?php tr('powered_by_',array('power'=>$power));?></div>
+	
+	<?php if (!$textmode){?>
 	
 	<script src="nano.js?v=4_9"></script>
 	<script>
@@ -767,6 +802,8 @@ window.addEventListener('beforeinstallprompt',function(e){
 });
 
 </script>
-
+<?php
+}
+?>
 </body>
 </html>
