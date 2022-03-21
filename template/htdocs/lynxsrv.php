@@ -59,7 +59,7 @@ switch ($mode){
 		$res=preg_replace('/addtab\(\'\S+?\',\'[\S\s]+?\',\'(\S+?)\'/',"\" href=\"lynxsrv.php?mode=addtab&cmd=$1\" rem=\"",$res);
 		$res=preg_replace('/showview\(\'(\S+)?\'/',"\" href=\"lynxsrv.php?mode=showview&modkey=$1\" ",$res);
 		
-		$res=str_replace('<div class="listitem"','<i>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</i><br><div class="listitem"',$res);
+		$res=str_replace('<div class="listitem"','<label>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</label><br><div class="listitem"',$res);
 
 		$res=str_replace('class="searchsubmit" value="."','value="[Search]"',$res);
 		$res=preg_replace('/onclick="ajxpgn\(\'\S+?\',document\.appsettings\.codepage\+\'\?cmd=(\S+?)&key=\'\+encodeHTML\(gid\(\'\S+\'\)\.value\)\+\'&page=(\d+)/',

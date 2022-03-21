@@ -64,7 +64,7 @@ foreach ($toolbaritems as $modid=>$ti){
 ?>
 <a href="lynxsrv.php?<?php echo $action;?>"><?php echo $ti['title']?></a>
 <br>
-<i>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</i>
+<label>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</label>
 <br>
 <?php
 }//foreach
