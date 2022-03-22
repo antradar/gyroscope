@@ -63,30 +63,32 @@ if (isset($_SERVER['HTTP_GSXIP'])&&$_SERVER['HTTP_GSXIP']!=''){
 	$_SERVER['REMOTE_ADDR']=$_SERVER['HTTP_GSXIP'];	//comment this out to completely disable gsx
 }
 
+$_SERVER['REMOTE_ADDR']=ip_strip_port($_SERVER['REMOTE_ADDR']);
+
 $_SERVER['RAW_IP']=$_SERVER['REMOTE_ADDR'];
 $_SERVER['O_IP']=$_SERVER['REMOTE_ADDR'];
 
 
-if (isset($_SERVER['HTTP_X_REAL_IP'])) $_SERVER['REMOTE_ADDR']=$_SERVER['HTTP_X_REAL_IP'];
-if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) $_SERVER['REMOTE_ADDR']=$_SERVER['HTTP_X_FORWARDED_FOR'];
+if (isset($_SERVER['HTTP_X_REAL_IP'])) $_SERVER['REMOTE_ADDR']=ip_strip_port($_SERVER['HTTP_X_REAL_IP']);
+if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) $_SERVER['REMOTE_ADDR']=ip_strip_port($_SERVER['HTTP_X_FORWARDED_FOR']);
 
 if ($_SERVER['REMOTE_ADDR']==='::1') {
-	$_SERVER['REMOTE_ADDR6']=$_SERVER['REMOTE_ADDR'];
+	$_SERVER['REMOTE_ADDR6']=ip_strip_port($_SERVER['REMOTE_ADDR']);
 	$_SERVER['REMOTE_ADDR']='127.0.0.1';
 }
 
 if (isset($_SERVER['HTTP_X_REAL_IP'])) {
-	$_SERVER['REMOTE_ADDR']=$_SERVER['HTTP_X_REAL_IP'];
-	$_SERVER['RAW_IP']=$_SERVER['HTTP_X_REAL_IP'];
+	$_SERVER['REMOTE_ADDR']=ip_strip_port($_SERVER['HTTP_X_REAL_IP']);
+	$_SERVER['RAW_IP']=ip_strip_port($_SERVER['HTTP_X_REAL_IP']);
 }
 if (isset($_SERVER['HTTP_X_FORWARDED_SSL'])&&$_SERVER['HTTP_X_FORWARDED_SSL']==='on') $_SERVER['HTTPS']='on';
 if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])){
-	$fparts=explode(',',$_SERVER['HTTP_X_FORWARDED_FOR']);
+	$fparts=explode(',',ip_strip_port($_SERVER['HTTP_X_FORWARDED_FOR']));
 	$_SERVER['REMOTE_ADDR']=$fparts[0];	
 }
 
-if (strpos($_SERVER['O_IP'],':')!==false&&$_SERVER['O_IP']!=='::1'){
-	$ipparts=explode(':',$_SERVER['O_IP']);
+if (strpos(ip_strip_port($_SERVER['O_IP']),':')!==false&&ip_strip_port($_SERVER['O_IP'])!=='::1'){
+	$ipparts=explode(':',ip_strip_port($_SERVER['O_IP']));
 	$nipparts=array();
 	$ipmax=4; $ipidx=0;
 	while ($ipidx<$ipmax){
@@ -97,20 +99,20 @@ if (strpos($_SERVER['O_IP'],':')!==false&&$_SERVER['O_IP']!=='::1'){
 }
 
 if (isset($_SERVER['REMOTE_ADDR6'])&&($_SERVER['REMOTE_ADDR6']===$_SERVER['REMOTE_ADDR']||strpos($_SERVER['REMOTE_ADDR'],':')!==false)){
-	$ipparts=explode(':',$_SERVER['REMOTE_ADDR']);
+	$ipparts=explode(':',ip_strip_port($_SERVER['REMOTE_ADDR']));
 	$nipparts=array();
 	$ipmax=4; $ipidx=0;
 	while ($ipidx<$ipmax){
 		array_push($nipparts,$ipparts[$ipidx]);
 		$ipidx++;
 	}
-	$_SERVER['REMOTE_ADDR6']=$_SERVER['REMOTE_ADDR'];
+	$_SERVER['REMOTE_ADDR6']=ip_strip_port($_SERVER['REMOTE_ADDR']);
 	$_SERVER['REMOTE_ADDR']=implode(':',$nipparts);
 }
 
 if (isset($_SERVER['HTTP_GSXIP'])&&$_SERVER['HTTP_GSXIP']!='') $_SERVER['REMOTE_ADDR']=$_SERVER['HTTP_GSXIP'];
 
-if ($stablecf) $_SERVER['O_IP']=$_SERVER['REMOTE_ADDR'];
+if ($stablecf) $_SERVER['O_IP']=ip_strip_port($_SERVER['REMOTE_ADDR']);
 
 
 if (trim($_SERVER['PHP_SELF'])=='') $_SERVER['PHP_SELF']=$_SERVER['SCRIPT_NAME'];
@@ -132,4 +134,11 @@ function jsflag($flag){
 	
 	if ($forceajxjs) echo 'null';
 	else echo 'self.'.$flag;
+}
+
+function ip_strip_port($ip){
+	if (preg_match('/(\d+\.\d+\.\d+\.\d+):\d+/',$ip,$matches)) return $matches[1];
+	if (preg_match('/\[(\S+?)\]\:\d+/',$ip,$matches)) return $matches[1];
+
+	return $ip;		
 }
