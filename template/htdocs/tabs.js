@@ -278,7 +278,11 @@ function refreshtab(key,skipconfirm){
   var tab=document.tabtitles[tabid];
   if (!tab.reloadinfo) return;
   tab.style.color='#000000';
-  if (document.tabviews[tabid].afloat) document.tabviews[tabid].className='afloat'; else document.tabviews[tabid].className='';
+  if (document.tabviews[tabid].afloat) {
+	  document.tabviews[tabid].className='afloat'; 
+  } else {
+	  document.tabviews[tabid].className='';
+  }
   reloadtab(key,null,tab.reloadinfo.params,tab.reloadinfo.loadfunc,tab.reloadinfo.data,tab.reloadinfo.opts);
 }
 
@@ -532,7 +536,8 @@ function undocktab(){
 		tab.style.top=0;
 		tab.style.width='100%';
 		tab.style.height='100%';
-		tab.className='afloat';
+		if (document.tabtitles[document.currenttab].conflicted) tab.className='afloat tabchanged';
+		else tab.className='afloat';
 		tab.afloat=true;
 		document.tabafloat=true;
 	},10);
@@ -557,7 +562,8 @@ function redocktab(){
 		tab.style.width='100%';
 		tab.style.height='100%';
 		tab.style.zIndex='';
-		tab.className='';
+		if (document.tabtitles[document.currenttab].conflicted) tab.className='tabchanged';
+		else tab.className='';
 		tab.afloat=null;
 		document.tabafloat=null;
 		
