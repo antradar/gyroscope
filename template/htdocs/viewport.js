@@ -344,7 +344,7 @@ if (document.createEvent){
 		
 		if (metakey&&document.keyboard['key_190']&&document.keyboard['key_188']) toggletabdock();
 		
-		
+		if (metakey&&document.keyboard['key_16']&&document.keyboard['key_82']) refreshtab(document.tabkeys[document.currenttab]);
 		
 		
 	}
