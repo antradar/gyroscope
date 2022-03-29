@@ -70,11 +70,13 @@ showtab=function(key,opts){
 		gid('tabviews').style.left=0;
 		gid('tooltitle').style.display='none';
 		gid('tabviews').style.width=(idw-1)+'px';
+		gid('leftview').style.visibility='hidden';
 		document.widen=true;
 	} else {
 		gid('tabviews').style.width=(idw-296)+'px';
 		gid('tabviews').style.left='295px';
 		gid('tooltitle').style.display='block';
+		gid('leftview').style.visibility='visible';
 		document.widen=false;
 	}
 	
