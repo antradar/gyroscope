@@ -13,6 +13,7 @@ acronym.help{cursor:help;border-bottom:dotted 1px #4444ee;}
 
 .mobileonly{display:none;}
 
+
 .inpback{display:none;}
 
 .kpwlink{display:none;}
@@ -184,6 +185,7 @@ acronym.help{cursor:help;border-bottom:dotted 1px #4444ee;}
 
 .afloat .qnav_{position:fixed;}
 .afloat{background:#ffffff;}
+.tabchanged{background:#ffdddd;}
 
 .afloat .wideviewmenu{display:none;}
 .afloat .wideviewmenu.transpose{display:block;}

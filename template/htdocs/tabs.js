@@ -278,6 +278,7 @@ function refreshtab(key,skipconfirm){
   var tab=document.tabtitles[tabid];
   if (!tab.reloadinfo) return;
   tab.style.color='#000000';
+  if (document.tabviews[tabid].afloat) document.tabviews[tabid].className='afloat'; else document.tabviews[tabid].className='';
   reloadtab(key,null,tab.reloadinfo.params,tab.reloadinfo.loadfunc,tab.reloadinfo.data,tab.reloadinfo.opts);
 }
 
