@@ -79,7 +79,7 @@ document.appsettings={codepage:'<?php echo $codepage;?>',binpage:'<?php echo $bi
 <span class="iconbuttons">
 <!-- usually there is one entity icon per list view -->
 <input id="anchor_top" title="Top View" style="position:absolute;top:-60px;left:-100px;width:20px;">
-<a class="noblink" id="applogo"><img src="<?php echo $codepage;?>?cmd=clogo" border="0" width="157"></a>
+<a class="noblink" id="applogo" ondblclick="if (!sconfirm('Are you sure you want to open this app in a separate window?')) return; window.open('./','gyroscope_undocked','width=500,height=400,left=300,top=50,popup=yes,titlebar=no,menubar=no,location=no,toolbar=no,status=no');"><img src="<?php echo $codepage;?>?cmd=clogo" border="0" width="157"></a>
 
 <a id="beltprev" onclick="beltprev();"><img class="beltprev" src="imgs/t.gif" width="16" height="32"></a>
 

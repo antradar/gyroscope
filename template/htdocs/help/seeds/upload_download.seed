@@ -29,5 +29,10 @@ function download#primaryfield##record#(){
 		
 	// Force Download:
 
-	streamdownload($fn,null,$ofn);
+	//streamdownload($fn,null,$ofn);
+
+	header('Content-Type: application/octet-stream');
+	header("Content-disposition: attachment; filename=\"$ofn\"");
+	readfile($fn);
+
 }
