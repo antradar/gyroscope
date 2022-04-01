@@ -172,9 +172,12 @@ function diffdbchanges($before,$after,$masks=null,$omits=null){
 }
 
 
-function streamaction($wssid,$rectype,$recid,$gsid,$userid,$extra=null){
+function streamaction($wssid,$rectype,$recid,$gsid,$userid,$extra=null,$rdprefix=null){
 	global $WSS_INTERNAL_HOST;
 		
+	$prefix=REDIS_PREFIX;
+	if (isset($rdprefix)) $prefix=$rdprefix;
+	
 	if (class_exists('Redis')){	
 	
 	    global $redis;
@@ -182,7 +185,7 @@ function streamaction($wssid,$rectype,$recid,$gsid,$userid,$extra=null){
 	    if (!isset($redis)){
 		    try{
 	            $redis=new Redis();
-	            $redis->connect($WSS_INTERNAL_HOST,6379);
+	            $redis->connect($WSS_INTERNAL_HOST,REDIS_PORT);
 	            $valid=1;
             } catch (Exception $e){
 	         	echo "warn: cannot connect to Redis server";
@@ -199,7 +202,7 @@ function streamaction($wssid,$rectype,$recid,$gsid,$userid,$extra=null){
 	            'from_userid'=>$userid.'',
 	            'extra'=>$extra
 	    );
-	    $redis->lpush('actions',json_encode($obj));
+	    $redis->lpush($prefix.'actions',json_encode($obj));
 		
 		return;
 	}

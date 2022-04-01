@@ -25,7 +25,6 @@ $WSS_INTERNAL_KEY='asdf-changeme'; //unset this to use legacy DB-driven WSS
 $WSS_INTERNAL_HOST='127.0.0.1';
 $WSS_INTERNAL_PORT='9999';
 
-
 $wssecret='asdf'; //sync this value in wss.php or wsss.php
 
 $GSX_ENABLED=0;
@@ -55,6 +54,8 @@ define ('TABLENAME_YUBIKEYS','yubikeys');
 define ('TABLENAME_CHATS','chats');
 define ('TABLENAME_CHATMSGS','chatmsgs');
 
+define ('REDIS_PORT', '6379');
+define ('REDIS_PREFIX', ''); //vendor specific
 
 if (isset($_SERVER['HTTP_GSXIP'])&&$_SERVER['HTTP_GSXIP']!=''){
 	$gsxauth=md5($gsxkey.'-'.$_GET['cmd'].'-'.date('Y-n-j-H'));

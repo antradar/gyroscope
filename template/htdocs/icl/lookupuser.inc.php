@@ -25,7 +25,7 @@ function lookupuser(){
 	    if (!isset($redis)){
 		    try{
 	            $redis=new Redis();
-	            $redis->connect($WSS_INTERNAL_HOST,6379);
+	            $redis->connect($WSS_INTERNAL_HOST,REDIS_PORT);
 	            $valid=1;
             } catch (Exception $e){
 	         	//echo "warn: cannot connect to Redis server";
@@ -33,7 +33,7 @@ function lookupuser(){
 	    } else $valid=1;
 	    
 	    if ($valid){
-		    $agentmap=json_decode($redis->get('agentmap'),1);
+		    $agentmap=json_decode($redis->get(REDIS_PREFIX.'agentmap'),1);
 		    $activeagents=$agentmap[$gsid];
 	    }
 	    
