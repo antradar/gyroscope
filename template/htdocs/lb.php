@@ -119,8 +119,11 @@ if ($stablecf) $_SERVER['O_IP']=ip_strip_port($_SERVER['REMOTE_ADDR']);
 if (trim($_SERVER['PHP_SELF'])=='') $_SERVER['PHP_SELF']=$_SERVER['SCRIPT_NAME'];
 
 //replace the following with memcache.php in production
-include 'memcache_stub.php'; //'memcache_stub.php'; 
+include 'memcache.php'; //'memcache_stub.php'; 
 cache_init();
+
+map_ip_aliases();
+
 
 function _jsflag($flag){
 	global $forceajxjs;
@@ -143,3 +146,18 @@ function ip_strip_port($ip){
 
 	return $ip;		
 }
+
+function map_ip_aliases(){
+	global $db;
+	
+	return; //uncomment to enable ip alias mapping
+	
+	$ipmap=array(
+		'127.0.0.1'=>'192.168.0.1'
+	);
+		
+	if (isset($ipmap[$_SERVER['REMOTE_ADDR']])) $_SERVER['REMOTE_ADDR']=$ipmap[$_SERVER['REMOTE_ADDR']];
+	if (isset($ipmap[$_SERVER['O_IP']])) $_SERVER['O_IP']=$ipmap[$_SERVER['O_IP']];	
+		
+}
+
