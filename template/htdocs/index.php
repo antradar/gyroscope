@@ -257,7 +257,7 @@ if (navigator.serviceWorker&&navigator.serviceWorker.register){
 }?>
 <script>
 if (window.Notification) Notification.requestPermission();
-if (window.console&&window.console.log) console.log('Powered by Antradar Gyroscope <?php echo GYROSCOPE_VERSION;?>');
+if (window.console&&window.console.log) console.log('%c Powered by Antradar Gyroscope <?php echo GYROSCOPE_VERSION;?>','color:#72ADDE;');
 window.onload=function(){
 	<?php if ($enablelivechat){?>
 	livechat_init();	

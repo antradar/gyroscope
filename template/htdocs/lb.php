@@ -122,6 +122,7 @@ if (trim($_SERVER['PHP_SELF'])=='') $_SERVER['PHP_SELF']=$_SERVER['SCRIPT_NAME']
 include 'memcache.php'; //'memcache_stub.php'; 
 cache_init();
 
+include 'ipmap.php';
 map_ip_aliases();
 
 
@@ -149,15 +150,11 @@ function ip_strip_port($ip){
 
 function map_ip_aliases(){
 	global $db;
-	
-	return; //uncomment to enable ip alias mapping
-	
-	$ipmap=array(
-		'127.0.0.1'=>'192.168.0.1'
-	);
+	global $gs_ipmap;
 		
-	if (isset($ipmap[$_SERVER['REMOTE_ADDR']])) $_SERVER['REMOTE_ADDR']=$ipmap[$_SERVER['REMOTE_ADDR']];
-	if (isset($ipmap[$_SERVER['O_IP']])) $_SERVER['O_IP']=$ipmap[$_SERVER['O_IP']];	
+		
+	if (isset($gs_ipmap[$_SERVER['REMOTE_ADDR']])) $_SERVER['REMOTE_ADDR']=$gs_ipmap[$_SERVER['REMOTE_ADDR']];
+	if (isset($gs_ipmap[$_SERVER['O_IP']])) $_SERVER['O_IP']=$gs_ipmap[$_SERVER['O_IP']];	
 		
 }
 

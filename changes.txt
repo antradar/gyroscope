@@ -1,3 +1,9 @@
+19.0
+- redis channel split
+- ctrl+shift+r to refresh tab, ctrl+shift+4 to close tab
+- ip alias mapping
+- multi-window popout
+
 18.9
 - tab docking
 
