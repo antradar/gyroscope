@@ -6,6 +6,8 @@
 
 18.9
 - tab docking
+- webauth Firefox fix
+- tab shrinking
 
 18.8
 - report bookmark bingo mode, share mode, gs containment
@@ -14,7 +16,7 @@
 - webauthn support for EC and RSA devices
 
 *18.6
-- wss.js changed to use WSS 1.6. batch ws_js.php and icl/reauth.inc.php
+- wss.js changed to use WSS 1.6. patch ws_js.php and icl/reauth.inc.php
 
 18.5
 - codegen: clickhouse faceted nav w/ pivot table

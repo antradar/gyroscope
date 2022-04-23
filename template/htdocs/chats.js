@@ -9,6 +9,12 @@ showchat=function(chatid,maxmsgid,chatname){
 	},null,{bingo:1});
 }
 
+gschat_setautotrans=function(chatid){
+	var notrans=1;
+	if (gid('chatnotrans_'+chatid).checked) notrans=0;
+	ajxpgn('statusc',document.appsettings.binpage+'?cmd=setchatnotrans&chatid='+chatid+'&notrans='+notrans);
+}
+
 gschat_updatechatsettings=function(){
 	
 	var omaxchats=gid('maxchats');
