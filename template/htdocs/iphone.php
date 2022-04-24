@@ -29,6 +29,11 @@ $usermeta=sql_fetch_assoc($rs);
 	<link href="iphone/gyrodemo.css" type="text/css" rel="stylesheet" />
 	<link href="gsnotes.css" type="text/css" rel="stylesheet" />
 	<link href="toolbar.css" type="text/css" rel="stylesheet" />
+<?php 
+	if ($_GET['watch']==1||preg_match('/sm\-r840/i',$_SERVER['HTTP_USER_AGENT'])){
+		$roundwatchframe=1;
+	}
+?>
 	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 	<?php
 	include 'appicon.php';
@@ -55,11 +60,13 @@ button.warn, .button.warn{display:none;}
 <?php	
 }?>
 
+
+
 </style>
 
 </head>
 <body onload="setTimeout(scrollTo, 0, 0, 1);">
-
+<div id="watchframe_outer">
 <div id="toolbg" style="position:fixed;width:100%;z-index:1000;top:0;background:#333333;opacity:0.9"></div>
 <div id="toolicons" style="position:fixed;width:100%;z-index:2000;top:0;">
 
@@ -124,7 +131,7 @@ button.warn, .button.warn{display:none;}
 	<div id="tooltitleshadow" style="width:150px;height:25px;"></div>
 	<div id="lvviews">
 	<?php foreach ($toolbaritems as $modid=>$ti){?>
-		<div id="lv<?php echo $modid;?>" style="display:none;"></div>
+		<div class="lvview" id="lv<?php echo $modid;?>" style="display:none;"></div>
 	<?php }?>	
 	</div>
 	<div id="lkv" style="height:100%;">
@@ -152,6 +159,8 @@ button.warn, .button.warn{display:none;}
 </div>
 <div id="fsview"></div>
 
+</div><!-- watchframe_outer -->
+
 <script>
 document.appsettings={codepage:'<?php echo $codepage;?>',binpage:'<?php echo $binpage;?>',beepnewchat:<?php echo $usermeta['canchat']?'true':'false';?>,fastlane:'<?php echo $fastlane;?>',autosave:null, viewmode:'iphone', views:<?php echo json_encode(array_keys($toolbaritems));?>};
 </script>
@@ -162,6 +171,10 @@ hdpromote('toolbar_hd.css');
 hdpromote('iphone/gyrodemo_hd.css');
 hddemote('legacy.css');
 </script>
+<?php if ($roundwatchframe){?>
+	<link href="watch.css" type="text/css" rel="stylesheet" />
+<?php }?>	
+
 <script src="iphone/tabs.js"></script>
 <script src="iphone/viewport.js"></script>
 <script src="validators.js"></script>
