@@ -442,7 +442,8 @@ svg > g > g.google-visualization-tooltip { pointer-events: none }
 	.img-addrec{background:transparent url(imgs/sysicons.gif) no-repeat -32px -32px;}	
 	#wsswarn{background:transparent url(imgs/sysicons.gif) 0 0;}
 	#barcodewarn{background:transparent url(imgs/sysicons.gif) -48px 0;}
-	#diagwarn{background:transparent url(imgs/sysicons.gif) -32px -0px;}
+	#diagwarn{background:transparent url(imgs/sysicons.gif) -32px 0;}
+	#sysreswarn{background:transparent url(imgs/sysicons.gif) -128px 0;}
 	#lI01{background:transparent url(imgs/sysicons.gif) -80px -32px;}
 	#imecree{background:transparent url(imgs/sysicons.gif) -96px -48px;}
 	#gsnotesclip{background:transparent url(imgs/sysicons.gif) -112px 0;}

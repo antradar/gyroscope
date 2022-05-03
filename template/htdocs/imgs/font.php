@@ -11,15 +11,16 @@
 <?php
 
 $facecolor='#72ADDE';
-$darkback='#666666';//'#EAF170';//'#666666';//'#72ADDE';//'#EDF3F3';//'#18E022';//'#FF5940';//'#EDF3F3'; //'#666666'; //small face
+$darkback='#FF5940';'#666666';//'#EAF170';//'#666666';//'#72ADDE';//'#EDF3F3';//'#18E022';//'#FF5940';//'#EDF3F3'; //'#666666'; //small face
 $lightback='#ffffff';
-$backbg='#CCCCCC';//'#2D3239';//'#0D1117';//'#CCCCCC';//'#0D1117';//'#2D3239';//'#CCCCCC';
+$backbg='#0D1117';'#CCCCCC';//'#2D3239';//'#0D1117';//'#CCCCCC';//'#0D1117';//'#2D3239';//'#CCCCCC';
 
 $icons=array(
 	array('name'=>'user','adjust'=>-6),
 	array('name'=>'cog','adjust'=>-6),
 	array('name'=>'angle-down','adjust'=>0),
 	array('name'=>'chart-bar','adjust'=>-4),
+	array('name'=>'temperature-full','adjust'=>-18),
 	array('name'=>'clipboard-list','adjust'=>-4),
 	array('name'=>'file-contract','adjust'=>0),
 	array('name'=>'folder-open','adjust'=>-6,'style'=>'r','subs'=>array(

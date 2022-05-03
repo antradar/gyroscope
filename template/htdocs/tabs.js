@@ -182,7 +182,7 @@ function reloadtab(key,title,params,loadfunc,data,opts,gskey){
   }
   
 	var ct=document.tabviews[tabid];
-	
+		
 	ct.slowtimer=setTimeout(function(){
 		var first=ct.firstChild;
 		if (ct.gswi) return;
@@ -266,7 +266,21 @@ function reloadtab(key,title,params,loadfunc,data,opts,gskey){
 	
 	if (title) document.tabtitles[tabid].innerHTML=tabhtml;
 	
+	var ta=0;
+	if (document.nanoperf) ta=hb();
+	
+	
 	document.tabviews[tabid].innerHTML=rq.responseText;
+	
+	if (document.nanoperf){
+		var delta=hb()-ta;
+		if (document.nanoavg==null) document.nanoavg=0;
+		document.nanoavg=document.nanoavg*0.8+delta*0.2;
+		if (self.warnsyslow){
+			if (document.nanoavg>document.nanoperf) warnsyslow(true); else warnsyslow(false);
+		}	
+	}
+	
 	if (loadfunc!=null) loadfunc(rq);
 	if (opts&&opts.bookmark) gototabbookmark(opts.bookmark);
 	autosize();
@@ -393,8 +407,20 @@ function addtab(key,title,params,loadfunc,data,opts){
 		if (parenttab!=null&&parenttab!='') {		
 			t.parenttab=parenttab;
 		}
+		
+	var ta=0;
+	if (document.nanoperf) ta=hb();
       
       c.innerHTML=rq.responseText; //'<input id="rightview_'+key+'" style="position:absolute;top:-60px;left:0;" title='+encodeHTML(title)+'>'+
+      
+	if (document.nanoperf){
+		var delta=hb()-ta;
+		if (document.nanoavg==null) document.nanoavg=0;
+		document.nanoavg=document.nanoavg*0.8+delta*0.2;
+		if (self.warnsyslow){
+			if (document.nanoavg>document.nanoperf) warnsyslow(true); else warnsyslow(false);
+		}	
+	}
 
       document.tablock=null;
       if (loadfunc!=null) loadfunc(rq);

@@ -136,13 +136,14 @@ foreach ($toolbaritems as $modid=>$ti){
 </div>
 <div id="statusinfo" scale:ny="25" scale:cw="0">
 	<span id="statusicons">
+	<img id="lI01" style="display:inline;" src="imgs/t.gif" onmousedown="toggle_easyread();" onmouseup="toggle_easyread();" onmouseover="hintstatus(this,'hold to use a more legible font');">
 	<a id="speechstart" onclick="ajxjs(<?php jsflag('speech_startstop');?>,'speech.js');speech_startstop();" onmouseover="hintstatus(this,'<?php tr('speech_clicktoactivate');?>');"><img src="imgs/t.gif"></a>
 	<a><img onclick="document.nomoresocket=0; if (document.websocket) document.websocket.onclose();" id="wsswarn" src="imgs/t.gif" onmouseover="hintstatus(this,'websocket disrupted');"></a>
 	<img onclick="this.style.display='none';" id="barcodewarn" src="imgs/t.gif" onmouseover="hintstatus(this,'barcode scanner not active');">
 	<img id="diagwarn" src="imgs/t.gif" onclick="window.location.reload();" onmouseover="hintstatus(this,'dialogs suppressed. click to reload browser.');">
+	<img id="sysreswarn" src="imgs/t.gif" onclick="document.nanoavg=0;this.style.display='none';" onmouseover="hintstatus(this,'system resource critically low. click to reset indicator.');">
 	<!-- img id="imecree" src="imgs/t.gif" onclick="creeime();" onmouseover="hintstatus(this,'enable Cree keyboard for the current input field');" -->
 	<img id="chatindicator" src="imgs/t.gif" onclick="livechat_start();" onmouseover="hintstatus(this,document.chatstatus=='online'?'click to start live chat':'live chat unavailable');">
-	<img id="lI01" style="display:inline;" src="imgs/t.gif" onmousedown="toggle_easyread();" onmouseup="toggle_easyread();" onmouseover="hintstatus(this,'hold to use a more legible font');">
 	<img id="gamepadicon" src="imgs/t.gif" onmouseover="hintstatus(this,'gamepad controls');">
 	<img id="gsnotesclip" src="imgs/t.gif" onclick="if (navigator.onLine) gsnotes_listclips(); else onlinestatuschanged();" onmouseover="hintstatus(this,'you have outstanding offline clipboard items');">
 	</span>
@@ -181,6 +182,7 @@ foreach ($toolbaritems as $modid=>$ti){
 hdpromote('toolbar_hd.css');
 hdpromote('gyroscope_hd.css');
 hddemote('legacy.css');
+document.nanoperf=500; //in microseconds, set to null or comment out to disable
 </script>
 <script src="tabs.js"></script>
 <script src="viewport.js"></script>

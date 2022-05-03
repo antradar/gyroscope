@@ -80,6 +80,13 @@ function scaleall(root){
   
 }
 
+function warnsyslow(syslow){
+	if (!gid('sysreswarn')) return;
+	if (syslow) gid('sysreswarn').style.display='inline'; else gid('sysreswarn').style.display='none';
+	
+	//console.log("System resource critical low: "+document.nanoavg);	
+}
+
 function beltprev(){
 	var topicons=gid('topicons');
 	if (!topicons.beltidx) topicons.beltidx=0;

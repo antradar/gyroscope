@@ -126,6 +126,10 @@ function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce,gskey,creds,headless){
 			
 			if (ct.abortflag) {ct.abortflag=null;return;}
 			
+			var ta=0;
+			if (document.nanoperf) ta=hb();
+
+			
 			if (!headless) ct.innerHTML=rq.responseText;
 			
 			if (d) ct.style.display='block';
@@ -138,6 +142,16 @@ function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce,gskey,creds,headless){
 				for (i=0;i<scripts.length;i++) eval(scripts[i].innerHTML);
 				scripts=null;				
 				
+			}
+			
+			
+			if (document.nanoperf){
+				var delta=hb()-ta;
+				if (document.nanoavg==null) document.nanoavg=0;
+				document.nanoavg=document.nanoavg*0.8+delta*0.2;
+				if (self.warnsyslow){
+					if (document.nanoavg>document.nanoperf) warnsyslow(true); else warnsyslow(false);
+				}	
 			}			
 			
 			if (callback){
@@ -145,6 +159,7 @@ function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce,gskey,creds,headless){
 			}
 		}	  
 	}}	
+	
 	
 	var rq=xmlHTTPRequestObject();
 	if (creds) rq.withCredentials=true;
