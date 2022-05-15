@@ -14,7 +14,7 @@ function showaccount(){
 	$user=userinfo();
 
 	global $db;
-	
+		
 	$userid=$user['userid'];
 	$gsid=$user['gsid'];
 	

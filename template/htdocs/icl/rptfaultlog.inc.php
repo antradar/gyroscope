@@ -93,11 +93,11 @@ function rptfaultlog(){
 .faultlogcol1,.faultlogcol2,.faultlogcol3,.faultlogcol4,.faultlogcol5,.faultlogcol6,.faultlogcol7{float:left;overflow:hidden;}
 .faultlogcol1{width:11%;margin-right:1%;}
 .faultlogcol2{width:14%;margin-right:1%;}
-.faultlogcol3{width:19%;margin-right:1%;}
+.faultlogcol3{width:17%;margin-right:1%;}
 .faultlogcol4{width:14%;margin-right:1%;}
 .faultlogcol5{width:14%;margin-right:1%;}
 .faultlogcol6{width:14%;margin-right:1%;}
-.faultlogcol7{width:14%;}
+.faultlogcol7{width:10%;}
 
 </style>
 
@@ -119,6 +119,8 @@ function rptfaultlog(){
 		<div class="faultlogcol3">Fault</div>
 		<div class="faultlogcol4">File</div>
 		<div class="faultlogcol5">Func</div>
+		<div class="faultlogcol6">Caller</div>
+		<div class="faultlogcol7"></div>
 		<div class="clear"></div>
 	</div></div>
 
@@ -138,6 +140,8 @@ function rptfaultlog(){
 		$faultline=$myrow['faultline'];
 		$callfunc=$myrow['callfunc'];
 		$callargs=$myrow['callargs'];
+		$callfile=$myrow['callfile'];
+		$callline=$myrow['callline'];
 		$diagdata=$myrow['faultdiagdata'];
 ?>
 	<div class="gridrow<?php if ($idx%2==1) echo ' even';?>">
@@ -145,9 +149,13 @@ function rptfaultlog(){
 		<div class="faultlogcol2"><?php echo $username;?>&nbsp;</div>
 		<div class="faultlogcol3"><?php echo htmlspecialchars($logmessage);?>&nbsp;</div>
 		<div class="faultlogcol4">
-		<?php echo htmlspecialchars($faultfile);?><?php if ($faultline!='') echo '<br>Line '.$faultline;?>&nbsp;</div>
-		<div class="faultlogcol5"><?php echo $callfunc;?><?php if ($callargs!='') echo '<br><em>('.$callargs;?>)</em>&nbsp;</div>
+		<?php echo htmlspecialchars($faultfile);?><?php if ($faultline!='') echo '<br>Line '.$faultline;?>&nbsp;
+		</div>
+		<div class="faultlogcol5"><?php echo $callfunc;?><?php if ($callargs!='') echo '<br><em>('.$callargs.')</em>';?>&nbsp;</div>
 		<div class="faultlogcol6">
+		<?php echo htmlspecialchars($callfile);?><?php if ($callline!='') echo '<br>Line '.$callline;?>&nbsp;
+		</div>
+		<div class="faultlogcol7">
 			<?php if ($diagdata!=''){?>
 			<a class="hovlink" onclick="showhide('faultdiagdata_<?php echo $faultid;?>');">view data</a>
 			<?php }?>
