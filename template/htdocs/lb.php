@@ -53,6 +53,7 @@ define ('TABLENAME_HOMEDASHREPORTS','homedashreports');
 define ('TABLENAME_YUBIKEYS','yubikeys');
 define ('TABLENAME_CHATS','chats');
 define ('TABLENAME_CHATMSGS','chatmsgs');
+define ('TABLENAME_FAULTS','faults');
 
 define ('REDIS_PORT', '6379');
 define ('REDIS_PREFIX', ''); //vendor specific

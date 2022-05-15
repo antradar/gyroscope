@@ -221,3 +221,25 @@ CREATE TABLE `yubikeys` (
   KEY `attid` (`attid`)
 );
 
+create table faults(
+faultid bigint unsigned not null auto_increment,
+faultdate bigint,
+gsid bigint unsigned,
+userid bigint unsigned,
+faultfile varchar(255),
+faultline bigint unsigned,
+faulttype tinyint unsigned default 0,
+faultcode int unsigned,
+faultmessage varchar(255),
+faultdiagdata longtext,
+callfile varchar(255),
+callline bigint unsigned,
+callfunc varchar(255),
+callargs varchar(255),
+primary key (faultid),
+key gsid(gsid),
+key userid(userid),
+key faultdate(faultdate),
+key faultcode(faultcode),
+key faulttype(faulttype)
+);

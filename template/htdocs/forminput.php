@@ -252,6 +252,77 @@ function streamaction($wssid,$rectype,$recid,$gsid,$userid,$extra=null,$rdprefix
 	fclose($sock);		
 }
 
+class FaultException extends Exception{
+	protected $_diagdata;
+	public function __construct($message='',$diagdata='',$code=0,Exception $previous=NULL){
+		$this->_diagdata=$diagdata;
+		parent::__construct($message,$code,$previous);	
+	}
+	public function getDiagData(){
+		return $this->_diagdata;
+	}
+}
+
+function logfault($e,$gsfault=false){
+	global $db;
+
+	$msg=$e->getMessage();
+	$code=$e->getCode();
+	$line=$e->getLine();
+	$file=basename($e->getFile());
+	
+	$trace=$e->getTrace();
+	$callfile='';
+	$callline=0;
+	$callfunc='';
+	$callargs='';
+	
+	if (count($trace)>0){
+		$callfile=basename($trace[0]['file']);
+		$callline=$trace[0]['line'];
+		$callfunc=$trace[0]['function'];
+		$callargs=implode(', ',$trace[0]['args']);
+	}
+	
+	$faulttype=0;
+	
+	$diagdata='';
+	if ($gsfault) {
+		$diagdata=$e->getDiagData();
+		$faulttype=1;
+	}
+
+	$gsid=0;
+	$userid=0;
+	
+	if (is_callable('userinfo')) {
+		$user=userinfo();
+		$userid=$user['userid'];
+		$gsid=$user['gsid'];
+	}
+	
+	$now=time();
+	
+	$query="insert into ".TABLENAME_FAULTS."(
+	faultdate,gsid,userid,
+	faultfile,faultline,faulttype,faultcode,faultmessage,
+	faultdiagdata,callfile,callline,callfunc,callargs)
+	values (
+	?,?,?,
+	?,?,?,?,?,
+	?,?,?,?,?
+	)";
+	
+	sql_prep($query,$db,array(
+	$now,$gsid,$userid,
+	$file,$line,$faulttype,$code,$msg,
+	$diagdata,$callfile,$callline,$callfunc,$callargs
+	));
+		
+	apperror($msg);
+	
+}
+
 function logaction($message,$rawobj=null,$syncobj=null,$gsid=0,$trace=null){
 	
 	global $WSS_INTERNAL_KEY; //defined in lb.php

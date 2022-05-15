@@ -11,7 +11,7 @@ function showuser($userid=null){
 	$user=userinfo();
 	if (!$user['groups']['accounts']) die('Access denied');
 	$gsid=$user['gsid'];
-	
+		
 	$myuserid=$user['userid'];
 	
 	global $db;

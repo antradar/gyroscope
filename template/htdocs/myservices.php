@@ -50,6 +50,8 @@ if ($gsexpiry!=0&&$gsexpiry<$now){
 header(COLNAME_GSID.': '.($user['gsid'])); //uncomment for logging in nginx as $upstream_http_gsid
 header('gsuid: '.($user['userid'])); //uncomment for logging in nginx as $upstream_http_gsuid
 
+try {  //comment out in older PHP versions
+	
 switch($cmd){
 		
 // Chat - gsb place holder
@@ -229,4 +231,10 @@ switch($cmd){
 
 	
 	default: apperror('unspecified interface:'.preg_replace('/[^A-Za-z0-9-_]/','',$cmd));
+}
+
+} catch (FaultException $e){ //comment out in older PHP versions
+	logfault($e,true);		
+} catch (Exception $e){
+	logfault($e);
 }

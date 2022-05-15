@@ -11,9 +11,9 @@
 <?php
 
 $facecolor='#72ADDE';
-$darkback='#FF5940';'#666666';//'#EAF170';//'#666666';//'#72ADDE';//'#EDF3F3';//'#18E022';//'#FF5940';//'#EDF3F3'; //'#666666'; //small face
+$darkback='#666666';//'#EAF170';//'#666666';//'#72ADDE';//'#EDF3F3';//'#18E022';//'#FF5940';//'#EDF3F3'; //'#666666'; //small face
 $lightback='#ffffff';
-$backbg='#0D1117';'#CCCCCC';//'#2D3239';//'#0D1117';//'#CCCCCC';//'#0D1117';//'#2D3239';//'#CCCCCC';
+$backbg='#CCCCCC';//'#2D3239';//'#0D1117';//'#CCCCCC';//'#0D1117';//'#2D3239';//'#CCCCCC';
 
 $icons=array(
 	array('name'=>'user','adjust'=>-6),
