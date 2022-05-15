@@ -120,6 +120,7 @@ CREATE TABLE #primaryfield#reports (
 ) ENGINE=InnoDB;
 
 INSERT INTO #primaryfield#reports VALUES (1, 0, 'Activity Log', 'Security', 'This report is mostly used by system administrators for diagnostic purposes.', '', '', '', '', '', 'admins', '1', 'Activity Log', 'Activity Log', '', 'actionlog', 'admins|reportsettings|systemplateuse|systemplate',0, 0);
+INSERT INTO #primaryfield#reports VALUES (2, 0, 'Faults', 'Security', '', '', '', '', '', '', 'faultlog', '1', 'Fault Log', 'Fault Log', '', 'faultlog', 'faultlog',0, 0);
 
 CREATE TABLE #primaryfield#userhelpspots (
   uhid bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -131,6 +132,7 @@ CREATE TABLE #primaryfield#userhelpspots (
      
 create table #primaryfield#homedashreports(
 homedashreportid bigint unsigned not null auto_increment,
+#primarykey# bigint unsigned not null,
 userid bigint unsigned not null,
 rptkey varchar(255),
 rpttabkey varchar(255),
@@ -140,7 +142,7 @@ rptlink varchar(255),
 bingo tinyint(1) unsigned default 0,
 shared tinyint(1) unsigned default 0,
 primary key (homedashreportid),
-key gsid (gsid),
+key #primarykey# (#primarykey#),
 key userid (userid),
 key rptname (rptname)
 );
@@ -178,5 +180,28 @@ primary key (keyid),
 key userid (userid),
 key credid (credid),
 key attid (attid)
+);
+
+create table #primaryfield#faults(
+faultid bigint unsigned not null auto_increment,
+faultdate bigint,
+#primarykey# bigint unsigned,
+userid bigint unsigned,
+faultfile varchar(255),
+faultline bigint unsigned,
+faulttype tinyint unsigned default 0,
+faultcode int unsigned,
+faultmessage varchar(255),
+faultdiagdata longtext,
+callfile varchar(255),
+callline bigint unsigned,
+callfunc varchar(255),
+callargs varchar(255),
+primary key (faultid),
+key #primarykey#(#primarykey#),
+key userid(userid),
+key faultdate(faultdate),
+key faultcode(faultcode),
+key faulttype(faulttype)
 );
 

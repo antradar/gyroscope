@@ -7,7 +7,7 @@ function listhomedashreports(){
 	$gsid=$user['gsid'];
 	$userid=$user['userid'];
 	
-	$query="select * from ".TABLENAME_HOMEDASHREPORTS." where gsid=? and (userid=? or shared=1) order by rptname";
+	$query="select * from ".TABLENAME_HOMEDASHREPORTS." where ".COLNAME_GSID."=? and (userid=? or shared=1) order by rptname";
 	$rs=sql_prep($query,$db,array($gsid,$userid));
 	$c=sql_affected_rows($db,$rs);
 	if (!$c) return;

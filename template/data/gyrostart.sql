@@ -157,6 +157,7 @@ INSERT INTO `reports` VALUES (1, 1, 'Activity Log', 'Security', 'This report is 
 INSERT INTO `reports` VALUES (2, 1, 'Activity Summary', 'Security', '', '', '', '', '', '', 'admins', '1', '', '', '', 'trace', 'admins|reportsettings|systemplateuse|systemplate',1, 0);
 INSERT INTO `reports` VALUES (3, 1, 'Server Access Log', 'Security', '', '', '', '', '', '', 'admins', '1', '', '', '', 'serverlog', 'admins|reportsettings|systemplateuse|systemplate',1, 0);
 INSERT INTO `reports` VALUES (4, 1, 'Mail Server Log', 'Security', '', '', '', '', '', '', 'admins', '1', '', '', '', 'mxevents', 'admins|reportsettings|systemplateuse|systemplate',1, 0);
+INSERT INTO `reports` VALUES (5, 1, 'Fault Log', 'Security', '', '', '', '', '', '', 'admins', '1', '', '', '', 'faultlog', 'faultlog',0, 0);
 
 DROP TABLE IF EXISTS userhelpspots;
 CREATE TABLE userhelpspots (

@@ -170,6 +170,7 @@ switch($cmd){
 //Reports & Audit
 	case 'slv_core__reports': include 'icl/listreports.inc.php'; listreports(); break;
 	case 'rptactionlog': include 'icl/rptactionlog.inc.php'; rptactionlog(); break;  
+	case 'rptfaultlog': include 'icl/rptfaultlog.inc.php'; rptfaultlog(); break;  
 	
 	case 'ackhelpspot': include 'icl/ackhelpspot.inc.php'; ackhelpspot(); break;
 	case 'resethelpspots': include 'icl/resethelpspots.inc.php'; resethelpspots(); break;

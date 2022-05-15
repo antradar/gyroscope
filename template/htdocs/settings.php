@@ -16,6 +16,7 @@ $fastlane='phpx-services.php'; //change this name if HAProxy is set up to route 
 $userroles=array(
 	'admins'=>_tr('rights_standardadmin'),
 	'reportsettings'=>_tr('rights_managereports'),
+	'faultlog'=>'view fault log',	
 	'devreports'=>_tr('rights_implementreports'),
 	'systemplate'=>_tr('rights_managetemplates'),
 	'systemplateuse'=>_tr('rights_configtemplates'),
@@ -31,7 +32,7 @@ $userroles=array(
 );
 
 //a user can grant the following rights only if the user also has the right themselves
-$userrolelocks=array('devreports','accounts','dbadmin','creditcards','systemplate','msdrive','helpedit','chatsettings','chats','sharedashreports');
+$userrolelocks=array('devreports','accounts','dbadmin','creditcards','systemplate','msdrive','helpedit','chatsettings','chats','sharedashreports','faultlog');
 
 //to quickly force every role to be inherited, uncomment the following:
 

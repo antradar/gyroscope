@@ -13,4 +13,5 @@ define ('TABLENAME_HOMEDASHREPORTS','#primaryfield#homedashreports');
 define ('TABLENAME_YUBIKEYS','#primaryfield#yubikeys');
 define ('TABLENAME_CHATS','#primaryfield#chats');
 define ('TABLENAME_CHATMSGS','#primaryfield#chatmsgs');
+define ('TABLENAME_FAULTS','#primaryfield#faults');
 
