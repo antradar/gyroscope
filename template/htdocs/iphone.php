@@ -159,6 +159,8 @@ button.warn, .button.warn{display:none;}
 </div>
 <div id="fsview"></div>
 
+<div id="callout" style="z-index:2000;opacity:0;transition:top 200ms,left 200ms,opacity 250ms;position:fixed;top:100px;left:250px;"><img src="imgs/callout.png" style="width:56px;"></div>
+
 </div><!-- watchframe_outer -->
 
 <script>

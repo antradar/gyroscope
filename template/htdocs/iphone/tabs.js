@@ -465,7 +465,9 @@ function gototabbookmark(id){
 		
 	},30);
 	
-	
+    setTimeout(function(){
+	    callout_section(gid(id));
+    },500);	
 }
 
 function pullupeditor(d){

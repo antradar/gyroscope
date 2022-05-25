@@ -45,6 +45,34 @@ function scaleall(root){
   	   
 }
 
+function callout_section(d){
+	if (d==null||!d) return;
+	var callout=gid('callout');
+	if (!callout) return;
+	var rect=d.getBoundingClientRect();
+
+	var h=ch()-100;
+	
+	var y=rect.y+10;
+	if (y>h) y=h;
+		
+	callout.style.opacity=1;
+	callout.style.top=y+'px';
+	callout.style.left=(rect.x-56)+'px';
+		
+	var cls=d.className;
+	
+	d.className='calledout';
+	setTimeout(function(){
+		d.className=cls;	
+		callout.style.opacity=0;
+		callout.style.left=0;
+		callout.style.top=h+'px';
+	},1000);
+	
+	
+}
+
 function showlookup(){
 	var lkv=gid('lkv');
 	if (lkv.showing) return;

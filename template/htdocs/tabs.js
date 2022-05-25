@@ -425,7 +425,7 @@ function addtab(key,title,params,loadfunc,data,opts){
       document.tablock=null;
       if (loadfunc!=null) loadfunc(rq);
       if (opts&&opts.bookmark) gototabbookmark(opts.bookmark);
-      
+
     }
   }
   rq.send(data);
@@ -646,6 +646,7 @@ function sprompt(title,def){
 }
 
 function gototabbookmark(id){
+	
 	if (!gid(id)||document.currenttab==null||!document.tabviews||!document.tabviews[document.currenttab]) return;
 	var d=document.tabviews[document.currenttab];
 	//d.scrollTop=gid(id).offsetTop-30; return; //uncomment this line to disable animation
@@ -665,6 +666,11 @@ function gototabbookmark(id){
 			return;	
 		}
 	},30);
+	
+    setTimeout(function(){
+	    callout_section(gid(id));
+    },500);
+      	
 }
 
 function pullupeditor(d){

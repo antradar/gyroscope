@@ -46,6 +46,8 @@ use toolbar.psp to generate toolbar.gif
 
 #calepicker{padding-top:10px;}
 
+.calledout{background:#ffffcc;}
+
 .caletimeitem{position:relative;height:30px;border-bottom:solid 1px #999999;}
 
 .videoframe_16x9{position:relative;width:100%;height:0;padding-bottom:58%;overflow:hidden;}
@@ -341,6 +343,8 @@ svg > g > g.google-visualization-tooltip { pointer-events: none }
 
 
 @media (prefers-color-scheme:dark) {
+	
+	.calledout{background:#35292E;}
 	
 	.charttoolbar{
 		border:solid 1px #6B7247;

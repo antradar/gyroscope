@@ -154,6 +154,7 @@ function listusers(){
 		
 ?>
 <div class="listitem" style="<?php if ($pageleadidx<$pagelead&&$page>0) echo 'opacity:0.6;';?>border-left:solid 3px #<?php echo $hash;?>;padding-left:5px;">
+<!-- a onclick="showuser('<?php echo $userid;?>','<?php echo $dbusertitle;?>','bmuserroles_<?php echo $userid;?>');" -->
 <a onclick="showuser('<?php echo $userid;?>','<?php echo $dbusertitle;?>');">
 	<?php echo htmlspecialchars($usertitle);?>
 	<?php if ($online){?>
