@@ -468,7 +468,7 @@ function gototabbookmark(id,nocallout){
 	if (nocallout==null||!nocallout){
 	    setTimeout(function(){
 		    callout_section(gid(id));
-	    },500);	
+	    },300);	
 	}
 }
 
