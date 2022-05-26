@@ -32,11 +32,10 @@ function showtemplatetype($templatetypeid=null){
 	makechangebar('templatetype_'.$templatetypeid,"updatetemplatetype('$templatetypeid','".makegskey('updatetemplatetype_'.$templatetypeid)."');");
 	makesavebar('templatetype_'.$templatetypeid);
 ?>
-<div class="section">
+<div class="section hasqnav">
 	<div class="sectiontitle"><a ondblclick="toggletabdock();"><?php echo htmlspecialchars($templatetypename);?></a></div>
 
-	<div class="col">
-
+	<div class="col" id="templatetypemain_<?php echo $templatetypeid;?>">
 
 	<div class="inputrow">
 		<div class="formlabel"><?php tr('templatetype_label_templatetypename');?>:</div>
@@ -95,6 +94,13 @@ function showtemplatetype($templatetypeid=null){
 
 	</div>
 	<div class="clear"></div>
+</div>
+<div class="qnav_">
+	<div class="qnav">
+		<a class="qnavitem" onclick="gototabbookmark('templatetypemain_<?php echo $templatetypeid;?>');">Ba<b>sic Info</b></a>
+		<a class="qnavitem" onclick="gototabbookmark('templatetypetemplates_<?php echo $templatetypeid;?>');">Te<b>mplates</b></a>
+		<a class="qnavitem" onclick="gototabbookmark('templatetypetemplatevars_<?php echo $templatetypeid;?>');">Va<b>riables</b></a>
+	</div>
 </div>
 <?php
 }

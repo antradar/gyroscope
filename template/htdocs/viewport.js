@@ -208,7 +208,7 @@ function callout_section(d){
 		callout.style.opacity=0;
 		callout.style.left=0;
 		callout.style.top=h+'px';
-	},1000);
+	},500);
 	
 	
 }

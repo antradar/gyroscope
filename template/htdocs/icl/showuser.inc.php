@@ -66,6 +66,8 @@ function showuser($userid=null){
 	<?php
 	//vendor auth 3
 	?>
+	
+	<div id="bmusermain_<?php echo $userid;?>">
 
 	<div class="inputrow">
 		<div class="formlabel"><?php tr('username');?>:</div>
@@ -75,11 +77,14 @@ function showuser($userid=null){
 		<div class="formlabel"><?php tr('dispname');?>:</div>
 		<input class="inpmed" id="dispname_<?php echo $userid;?>" value="<?php echo htmlspecialchars($dispname);?>" oninput="this.onchange();" onchange="marktabchanged('user_<?php echo $userid;?>');" onfocus="this.select();document.hotspot=this;">
 	</div>
+	
 	<div class="inputrow">
 		<input type="checkbox" id="active_<?php echo $userid;?>" <?php if ($active) echo 'checked';?>  onclick="marktabchanged('user_<?php echo $userid;?>');"> <label for="active_<?php echo $userid;?>"><?php tr('account_active');?></label>
 		&nbsp;&nbsp;
-		<input type="checkbox" id="virtual_<?php echo $userid;?>" <?php if ($virtual) echo 'checked';?>  onclick="if (this.checked) gid('userpasses_<?php echo $userid;?>').style.display='none'; else gid('userpasses_<?php echo $userid;?>').style.display='block';marktabchanged('user_<?php echo $userid;?>');" onclick="if (this.checked) gid('userpasses_<?php echo $userid;?>').style.display='none'; else gid('userpasses_<?php echo $userid;?>').style.display='block';"> <label for="virtual_<?php echo $userid;?>"><?php tr('account_virtual');?></label>
+		<input type="checkbox" id="virtual_<?php echo $userid;?>" <?php if ($virtual) echo 'checked';?>  onclick="if (this.checked) {gid('userpasses_<?php echo $userid;?>').style.display='none';gid('bmroles_<?php echo $userid;?>').style.display='none';} else {gid('userpasses_<?php echo $userid;?>').style.display='block';gid('bmroles_<?php echo $userid;?>').style.display='block';marktabchanged('user_<?php echo $userid;?>');}" onclick="if (this.checked) gid('userpasses_<?php echo $userid;?>').style.display='none'; else gid('userpasses_<?php echo $userid;?>').style.display='block';"> <label for="virtual_<?php echo $userid;?>"><?php tr('account_virtual');?></label>
 	</div>
+	</div><!-- bmusermain -->
+		
 	<div id="userpasses_<?php echo $userid;?>" style="<?php if ($virtual) echo 'display:none;';?>">
 	<div class="inputrow">
 		<div class="formlabel"><?php tr('new_password');?>: &nbsp; &nbsp; <span style="font-weight:normal;color:#ab0200;" id="passwarn_<?php echo $userid;?>"></span></div>
@@ -131,6 +136,7 @@ function showuser($userid=null){
 		<input type="checkbox" id="usegamepad_<?php echo $userid;?>" <?php if ($usegamepad) echo 'checked';?> onclick="marktabchanged('user_<?php echo $userid;?>');"> <label for="usegamepad_<?php echo $userid;?>">enable gamepad controls</label>
 	</div>
 
+
 		
 	<div class="inputrow" id="bmuserroles_<?php echo $userid;?>">
 		<div class="formlabel"><?php tr('account_roles');?>:</div>
@@ -147,6 +153,7 @@ function showuser($userid=null){
 		?>
 	</div>	
 	</div><!-- userpasses -->
+
 	
 	<?php if ($warning){
 	?>
@@ -183,9 +190,9 @@ function showuser($userid=null){
 </div>
 <div class="qnav_">
 	<div class="qnav">
-		<a class="qnavitem" onclick="gototabbookmark('bmusertop_<?php echo $userid;?>');">Ba<b>sic Info</b></a>
-		<a class="qnavitem" onclick="gototabbookmark('bmuserroles_<?php echo $userid;?>');">Ro<b>les</b></a>
-		<a id="bmkeyfile_<?php echo $userid;?>" style="display:none<?php if ($needkeyfile) echo 'a';?>;" class="qnavitem" onclick="gototabbookmark('keyfileview_<?php echo $userid;?>');">K<b>ey File</b></a>
+		<a class="qnavitem" onclick="gototabbookmark('bmusermain_<?php echo $userid;?>');">Ba<b>sic Info</b></a>
+		<a id="bmroles_<?php echo $userid;?>" style="display:none<?php if (!$virtual) echo 'a';?>;" class="qnavitem" onclick="gototabbookmark('bmuserroles_<?php echo $userid;?>');">Ro<b>les</b></a>
+		<a id="bmkeyfile_<?php echo $userid;?>" style="display:none<?php if ($needkeyfile) echo 'a';?>;" class="qnavitem" onclick="gototabbookmark('keyfileview_<?php echo $userid;?>');">Ke<b>y File</b></a>
 	</div>
 </div>
 <?php

@@ -645,7 +645,7 @@ function sprompt(title,def){
 	return res;
 }
 
-function gototabbookmark(id){
+function gototabbookmark(id,nocallout){
 	
 	if (!gid(id)||document.currenttab==null||!document.tabviews||!document.tabviews[document.currenttab]) return;
 	var d=document.tabviews[document.currenttab];
@@ -667,9 +667,11 @@ function gototabbookmark(id){
 		}
 	},30);
 	
-    setTimeout(function(){
-	    callout_section(gid(id));
-    },500);
+	if (nocallout==null||!nocallout){
+	    setTimeout(function(){
+		    callout_section(gid(id));
+	    },500);
+	}
       	
 }
 

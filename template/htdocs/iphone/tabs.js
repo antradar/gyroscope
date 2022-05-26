@@ -434,7 +434,7 @@ function sprompt(title,def){
 	return res;
 }
 
-function gototabbookmark(id){
+function gototabbookmark(id,nocallout){
 	var d,delta;
 	
 	if (!document.iphone_portrait){
@@ -465,9 +465,11 @@ function gototabbookmark(id){
 		
 	},30);
 	
-    setTimeout(function(){
-	    callout_section(gid(id));
-    },500);	
+	if (nocallout==null||!nocallout){
+	    setTimeout(function(){
+		    callout_section(gid(id));
+	    },500);	
+	}
 }
 
 function pullupeditor(d){
