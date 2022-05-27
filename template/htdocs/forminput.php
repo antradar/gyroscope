@@ -33,6 +33,26 @@ function tzconvert($stamp,$src,$dst){
 	return $nstamp;	
 }
 
+function utf8_fix($str){
+		
+	$tstr=utf8_encode($str);
+	$oqc=0; for ($i=0;$i<strlen($str);$i++) if ($str[$i]=='?') $qc++;
+	$itr=0;
+	while (preg_match('//u',$tstr)){
+		$str=$tstr;
+				
+		$tstr=utf8_decode($str);
+		if ($str==$tstr) break;
+		
+		for ($i=0;$i<strlen($tstr);$i++) if ($tstr[$i]=='?') $qc++;
+		if ($qc>$oqc) break;
+		$itr++;				
+	}
+		
+	return $str;
+}
+
+
 function date2stamp($date,$hour=0,$min=0,$sec=0){
 	$parts=explode('-',trim($date));
 	if (count($parts)!=3) return null;
