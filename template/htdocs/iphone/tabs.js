@@ -30,7 +30,7 @@ function undocktab(){
 	//for now
 }
 
-function redoctab(){
+function redocktab(){
 	//for now	
 }
 
@@ -105,6 +105,10 @@ showtab=function(key,opts){
       if (opts&&opts.bookmark) gototabbookmark(opts.bookmark);
       var keyparts=key.split('_');
       var ckey=keyparts[0];
+      if (self['tabresizefunc_'+ckey]) {
+	  	if (!document.resizefuncs) document.resizefuncs={};
+	  	document.resizefuncs[ckey]=keyparts[1]||0;   
+      }      
       if (self['tabviewfunc_'+ckey]) self['tabviewfunc_'+ckey](keyparts[1]);
       if (self.livechat_updatesummary&&document.chatstatus=='online') livechat_updatesummary();
       	            
@@ -358,6 +362,13 @@ closetab=function(key){
 	  document.tabkeys[i]=document.tabkeys[i+1];	  
   }
   document.tabcount--;
+  
+  if (document.resizefuncs){
+	  var keyparts=key.split('_');
+      var ckey=keyparts[0];
+
+	if (document.resizefuncs[ckey]!=null) delete document.resizefuncs[ckey];	  
+  }   
 
 	if (document.tabseq){
 		for (var i=0;i<document.tabseq.length;i++) if (document.tabseq[i]==key) document.tabseq[i]=null;

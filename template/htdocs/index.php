@@ -207,8 +207,7 @@ window.onresize=autosize;
 autosize();
 setTimeout(function(){scaleall(document.body);},100);
 
-
-addtab('welcome','<?php tr('tab_welcome');?>','wk',null,null,{noclose:1,bingo:false});
+addtab('welcome','<?php tr('tab_welcome');?>','wk',null,null,{x_noclose:1,bingo:false});
 
 
 setInterval(authpump,60000); //check if needs to re-login; comment this out to disable authentication
@@ -273,6 +272,9 @@ window.onload=function(){
 		'nohttps':function(){document.smartcard=null;}
 	});	
 }
+
+
+
 </script>
 <?php
 include 'offline.php';

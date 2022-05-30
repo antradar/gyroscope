@@ -35,8 +35,8 @@ function showtemplatetype($templatetypeid=null){
 <div class="section hasqnav">
 	<div class="sectiontitle"><a ondblclick="toggletabdock();"><?php echo htmlspecialchars($templatetypename);?></a></div>
 
-	<div class="col" id="templatetypemain_<?php echo $templatetypeid;?>">
-
+	<div class="col">
+	<div id="templatetypemain_<?php echo $templatetypeid;?>">
 	<div class="inputrow">
 		<div class="formlabel"><?php tr('templatetype_label_templatetypename');?>:</div>
 		<input class="inpmed" onfocus="document.hotspot=this;" oninput="this.onchange();" onchange="marktabchanged('templatetype_<?php echo $templatetypeid;?>');" id="templatetypename_<?php echo $templatetypeid;?>" value="<?php echo htmlspecialchars($templatetypename);?>">
@@ -75,6 +75,7 @@ function showtemplatetype($templatetypeid=null){
 
 	</div>
 
+	</div>
 
 	</div>
 	<div class="col">

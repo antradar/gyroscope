@@ -55,6 +55,11 @@ showtab=function(key,opts){
 
       var keyparts=key.split('_');
       var ckey=keyparts[0];
+
+      if (self['tabresizefunc_'+ckey]) {
+	  	if (!document.resizefuncs) document.resizefuncs={};
+	  	document.resizefuncs[ckey]=keyparts[1]||0;   
+      }
       if (self['tabviewfunc_'+ckey]) self['tabviewfunc_'+ckey](keyparts[1]);
       if (self['tabscrollfunc_'+ckey]) document.tabviews[document.currenttab].onscroll=self['tabscrollfunc_'+ckey](keyparts[1]);
       if (self.livechat_updatesummary&&document.chatstatus=='online') livechat_updatesummary();
@@ -476,7 +481,16 @@ closetab=function(key){
   }
   document.tabcount--;
   
-  resizetabs();  
+  resizetabs(); 
+  
+  if (document.resizefuncs){
+	  var keyparts=key.split('_');
+      var ckey=keyparts[0];
+
+	if (document.resizefuncs[ckey]!=null) {
+		delete document.resizefuncs[ckey];
+	}	  
+  } 
   
   if (document.tabcount<=2&&gid('closeall')) gid('closeall').style.display='none';
   
@@ -577,6 +591,8 @@ function undocktab(){
 		else tab.className='afloat';
 		tab.afloat=true;
 		document.tabafloat=true;
+		
+		rescaletabs();
 	},10);
 	
 }
@@ -603,6 +619,8 @@ function redocktab(){
 		else tab.className='';
 		tab.afloat=null;
 		document.tabafloat=null;
+		
+		rescaletabs();
 		
 	},200);	
 		

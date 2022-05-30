@@ -34,6 +34,11 @@ function tzconvert($stamp,$src,$dst){
 }
 
 function utf8_fix($str){
+	list($res,$_)=_utf8_fix($str);
+	return $res;	
+}
+
+function _utf8_fix($str){
 		
 	$tstr=utf8_encode($str);
 	$oqc=0; for ($i=0;$i<strlen($str);$i++) if ($str[$i]=='?') $qc++;
@@ -49,7 +54,7 @@ function utf8_fix($str){
 		$itr++;				
 	}
 		
-	return $str;
+	return array($str,$itr);
 }
 
 

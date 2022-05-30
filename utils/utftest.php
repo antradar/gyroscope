@@ -1,6 +1,7 @@
 <?php
 
 include '../template/htdocs/forminput.php';
+
 /*
 $f=fopen('seed.txt','rt');
 $fw=fopen('unicode_tests.txt','wt');
@@ -22,8 +23,8 @@ while ($line=fgets($f)){
 	$line=trim($line);
 	if ($line=='') continue;
 
-	$newline=utf8_fix($line);	
-	echo "$line [".mb_strlen($line)."] => $newline [".mb_strlen($newline)."]\r\n";	
+	list($newline,$itr)=_utf8_fix($line);	
+	echo "$line [".mb_strlen($line)."] => $newline [".mb_strlen($newline)."] $itr\r\n";	
 }
 
 echo "\r\n";

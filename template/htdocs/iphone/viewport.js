@@ -1,3 +1,4 @@
+
 function ch(){	
   var w=cw();
   if (window.innerHeight) return window.innerHeight;
@@ -9,6 +10,19 @@ function cw(){
   if (window.innerWidth) return window.innerWidth;
   if (document.documentElement.clientWidth) return document.documentElement.clientWidth;
   return document.body.clientWidth;
+}
+
+function tabw(){
+	var idw=cw();
+	if (!document.tabafloat&&!document.widen) return idw-gid('tabviews').offsetLeft-40;
+	return idw-40;	
+}
+
+function tabh(){
+	var idh=ch();
+	if (!document.tabafloat) return idh-gid('tabtitles').offsetTop;
+	return idh;	
+		
 }
 
 function scaleall(root){
@@ -42,7 +56,15 @@ function scaleall(root){
 		gid('gschat_chatbox').style.maxHeight=(idh-uptake)+'px';
 	}
   
-  	   
+  	rescaletabs();   
+}
+
+function rescaletabs(){
+  if (!document.resizefuncs) return;
+  for (func in document.resizefuncs){
+	var f='tabresizefunc_'+func;
+	if (self[f]) self[f](document.resizefuncs[func]);	  
+  }	
 }
 
 function callout_section(d){

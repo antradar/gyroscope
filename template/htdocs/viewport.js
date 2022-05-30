@@ -12,6 +12,19 @@ function cw(){
   return document.body.clientWidth;
 }
 
+function tabw(){
+	var idw=cw();
+	if (!document.tabafloat&&!document.widen) return idw-gid('tabviews').offsetLeft-40;
+	return idw-40;	
+}
+
+function tabh(){
+	var idh=ch();
+	if (!document.tabafloat) return idh-gid('tabtitles').offsetTop;
+	return idh;	
+		
+}
+
 function scaleall(root){
     
   var i,j;
@@ -76,8 +89,16 @@ function scaleall(root){
 		gid('gschat_chatbox').style.maxHeight=(idh-uptake)+'px';
   }
   
+  rescaletabs();
   
-  
+}
+
+function rescaletabs(){
+  if (!document.resizefuncs) return;
+  for (func in document.resizefuncs){
+	var f='tabresizefunc_'+func;
+	if (self[f]) self[f](document.resizefuncs[func]);	  
+  }	
 }
 
 function warnsyslow(syslow){
