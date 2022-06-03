@@ -108,6 +108,10 @@ function warnsyslow(syslow){
 	//console.log("System resource critical low: "+document.nanoavg);	
 }
 
+function scrollcoldash(container,colkey){
+	gid(container+'_view').scrollLeft=gid(container+'_'+colkey).offsetLeft;	
+}
+
 function beltprev(){
 	var topicons=gid('topicons');
 	if (!topicons.beltidx) topicons.beltidx=0;

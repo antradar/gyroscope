@@ -70,6 +70,7 @@ function closetabtree(root,sub){
 
 showtab=function(key,opts){
   var i;
+  var pasttab=document.currenttab;
   rotate();
   var tabid=gettabid(key);
   if (tabid==-1) return;
@@ -102,7 +103,7 @@ showtab=function(key,opts){
         scaleall(document.body);
       }
       document.lastrowcount=document.rowcount;
-      if (opts&&opts.bookmark) gototabbookmark(opts.bookmark);
+      if (opts&&opts.bookmark) gototabbookmark(opts.bookmark,pasttab!=document.currenttab);
       var keyparts=key.split('_');
       var ckey=keyparts[0];
       if (self['tabresizefunc_'+ckey]) {
@@ -340,7 +341,7 @@ function addtab(key,title,params,loadfunc,data,opts){
 
       document.tablock=null;
       if (loadfunc!=null) loadfunc(rq);
-      if (opts&&opts.bookmark) gototabbookmark(opts.bookmark);
+      if (opts&&opts.bookmark) gototabbookmark(opts.bookmark,true);
     }
   }
   rq.send(data);
@@ -445,7 +446,41 @@ function sprompt(title,def){
 	return res;
 }
 
-function gototabbookmark(id,nocallout){
+function scrollcoldash(container,colkey){
+	//gid(container+'_view').scrollLeft=gid(container+'_'+colkey).offsetLeft;
+	var d=gid(container+'_view');
+	var ref=gid(container+'_'+colkey);
+	var diff=ref.offsetLeft-d.scrollLeft;
+	var seq=[];
+	while (Math.abs(diff)>20){seq.push(ref.offsetLeft-diff); diff=Math.round(diff/4);}
+	seq.push(ref.offsetLeft);
+	if (d.animitv) clearInterval(d.animitv);
+	d.animidx=0;
+	d.animitv=setInterval(function(){
+		var left=seq[d.animidx]; if (left<=0) left=0;
+		d.scrollLeft=left;
+		d.animidx++;
+		if (d.animidx>=seq.length){
+			clearInterval(d.animitv);
+			d.animitv=null;
+			
+			setTimeout(function(){
+				ref.style.opacity=0.6;
+				ref.style.filter='sepia(1)';
+			},100);
+			
+			setTimeout(function(){
+				ref.style.opacity=1;
+				ref.style.filter='sepia(0)';
+			},500);
+			
+			return;	
+		}
+	},40);
+	
+}
+
+function gototabbookmark(id,callout){
 	var d,delta;
 	
 	if (!document.iphone_portrait){
@@ -476,7 +511,7 @@ function gototabbookmark(id,nocallout){
 		
 	},30);
 	
-	if (nocallout==null||!nocallout){
+	if (callout){
 	    setTimeout(function(){
 		    callout_section(gid(id));
 	    },300);	

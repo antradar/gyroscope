@@ -354,7 +354,11 @@ svg > g > g.google-visualization-tooltip { pointer-events: none }
 	}
 	
 	.tslogo{display:none;}
-	.tsdark{display:inline;}		
+	.tsdark{display:inline;}
+	
+	.dashcoltitle, .dashcolsubtitle{color:#000000;}
+	.dashcolbutton{}
+			
 	
 	body,#lvviews{background:#0D1117;}
 	input, textarea, select{background:#0D1117;color:#C2C3C5;border-color:#8B949E;}
