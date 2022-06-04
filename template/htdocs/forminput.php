@@ -41,7 +41,7 @@ function utf8_fix($str){
 function _utf8_fix($str){
 		
 	$tstr=utf8_encode($str);
-	$oqc=0; for ($i=0;$i<strlen($str);$i++) if ($str[$i]=='?') $qc++;
+	$oqc=0; for ($i=0;$i<strlen($str);$i++) if ($str[$i]=='?') $oqc++;
 	$itr=0;
 	while (preg_match('//u',$tstr)){
 		$str=$tstr;
@@ -49,7 +49,7 @@ function _utf8_fix($str){
 		$tstr=utf8_decode($str);
 		if ($str==$tstr) break;
 		
-		for ($i=0;$i<strlen($tstr);$i++) if ($tstr[$i]=='?') $qc++;
+		$qc=0; for ($i=0;$i<strlen($tstr);$i++) if ($tstr[$i]=='?') $qc++;
 		if ($qc>$oqc) break;
 		$itr++;				
 	}
