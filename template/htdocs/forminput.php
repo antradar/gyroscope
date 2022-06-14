@@ -352,6 +352,9 @@ function logaction($message,$rawobj=null,$syncobj=null,$gsid=0,$trace=null){
 	
 	global $WSS_INTERNAL_KEY; //defined in lb.php
 	global $vdb;
+	
+	$bulldozed=0;
+	if (is_numeric($_GET['__tabconflicted'])&&$_GET['__tabconflicted']) $bulldozed=1;
 		
 	if (is_callable('userinfo')) {
 		$user=userinfo();
@@ -405,21 +408,21 @@ function logaction($message,$rawobj=null,$syncobj=null,$gsid=0,$trace=null){
 		$rectype=$syncobj['rectype'];
 		$recid=$syncobj['recid'];
 		if ($WSS_INTERNAL_KEY==''){ //save the message regardless of whether a main message is present
-			$query="insert into ".TABLENAME_ACTIONLOG." (userid,".COLNAME_GSID.",logname,logdate,logmessage,rawobj,sid,rectype,recid) values (?,?,?,?,?,?,?,?,?)";
-			$rs=sql_prep($query,$db,array($userid,$gsid,$logname,$now,$message,$obj,$sid,$rectype,$recid));
+			$query="insert into ".TABLENAME_ACTIONLOG." (userid,".COLNAME_GSID.",logname,logdate,logmessage,rawobj,sid,rectype,recid,bulldozed) values (?,?,?,?,?,?,?,?,?,?)";
+			$rs=sql_prep($query,$db,array($userid,$gsid,$logname,$now,$message,$obj,$sid,$rectype,$recid,$bulldozed));
 			$alogid=sql_insert_id($db,$rs);
 		} else {
 			if ($message!=''){//stream directly, but still log the main message
-				$query="insert into ".TABLENAME_ACTIONLOG." (userid,".COLNAME_GSID.",logname,logdate,logmessage,rawobj,wssdone) values (?,?,?,?,?,?,?)";
-				$rs=sql_prep($query,$db,array($userid,$gsid,$logname,$now,$message,$obj,1));
+				$query="insert into ".TABLENAME_ACTIONLOG." (userid,".COLNAME_GSID.",logname,logdate,logmessage,rawobj,wssdone,bulldozed) values (?,?,?,?,?,?,?,?)";
+				$rs=sql_prep($query,$db,array($userid,$gsid,$logname,$now,$message,$obj,1,$bulldozed));
 				$alogid=sql_insert_id($db,$rs);
 			}	
 			streamaction($sid,$rectype,$recid,$gsid,$userid);
 			
 		}
 	} else {
-		$query="insert into ".TABLENAME_ACTIONLOG." (userid,".COLNAME_GSID.",logname,logdate,logmessage,rawobj) values (?,?,?,?,?,?)";
-		$rs=sql_prep($query,$db,array($userid,$gsid,$logname,$now,$message,$obj));
+		$query="insert into ".TABLENAME_ACTIONLOG." (userid,".COLNAME_GSID.",logname,logdate,logmessage,rawobj,bulldozed) values (?,?,?,?,?,?,?)";
+		$rs=sql_prep($query,$db,array($userid,$gsid,$logname,$now,$message,$obj,$bulldozed));
 		$alogid=sql_insert_id($db,$rs);
 	}
 	

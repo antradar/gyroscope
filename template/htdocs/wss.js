@@ -141,8 +141,13 @@ wss_markchanges=function(rectype,recid,corrected,msg){
 	
 	if (hit){
 		if (tabid&&document.tabviews[tabid]) {
-			if (document.tabviews[tabid].afloat) document.tabviews[tabid].className='afloat tabchanged';
-			else document.tabviews[tabid].className='tabchanged';
+			if (!corrected){
+				if (document.tabviews[tabid].afloat) document.tabviews[tabid].className='afloat tabchanged';
+				else document.tabviews[tabid].className='tabchanged';
+			} else {
+				if (document.tabviews[tabid].afloat) document.tabviews[tabid].className='afloat';
+				else document.tabviews[tabid].className='';				
+			}
 		}
 	if (!document.orgtitle) document.orgtitle=document.title;
 		document.title=document.orgtitle+' *';

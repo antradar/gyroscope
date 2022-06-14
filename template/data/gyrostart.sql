@@ -12,10 +12,12 @@ CREATE TABLE `actionlog` (
   `rectype` varchar(255) NOT NULL,
   `recid` bigint(20) unsigned NOT NULL,
   `wssdone` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `bulldozed` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`alogid`),
   KEY `logdate` (`logdate`),
   KEY `userid` (`userid`),
   KEY `wssdone` (`wssdone`),
+  KEY `bulldozed` (`bulldozed`),
   KEY `gsid` (`gsid`)
 ) ENGINE=InnoDB;
 

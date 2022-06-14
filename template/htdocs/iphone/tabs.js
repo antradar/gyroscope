@@ -133,8 +133,26 @@ function reloadtab(key,title,params,loadfunc,data,opts,gskey){
 	var tabid=gettabid(key);
 	if (tabid==-1) return;
 	
+	if (!document.tabconflictbypass&&document.tabtitles[tabid].conflicted){	
+	  if (!sconfirm("Are you sure you want to override the edit conflict\n and save your version regardless?")){
+		  return;
+	  }
+	}
+	
+	document.tabconflictbypass=true;
+	setTimeout(function(){
+	  document.tabconflictbypass=null;
+	},300);
+	
+	
 	if (document.tabtitles[tabid].tablock) return;
 	document.tabtitles[tabid].tablock=1;
+	
+  if (document.tabtitles[tabid].conflicted){
+	  params=params+'&__tabconflicted=1';		  
+  }
+	
+	
 	document.tabtitles[tabid].conflicted=null;
 	
 	var tabbingo=document.tabtitles[tabid].bingo; 

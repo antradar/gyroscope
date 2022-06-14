@@ -187,6 +187,8 @@ Search: <input autocomplete="off" class="inp" style="width:30%;" id="actionlog_k
 <?php
 	$idx=0;
 	
+	$hasbulldozed=0;
+	
 	while ($myrow=sql_fetch_array($rs)){
 		$alogid=$myrow['alogid'];
 		$username=htmlspecialchars($myrow['login']);
@@ -200,11 +202,13 @@ Search: <input autocomplete="off" class="inp" style="width:30%;" id="actionlog_k
 		foreach ($obj as $k=>$v) $extra.="; $k=".htmlspecialchars($v);
 		$extra=str_replace(' -&gt; ',' <b class="lcarr">&rArr;</b> ',$extra);
 		$extra=trim($extra,'; ');
+		$bulldozed=$myrow['bulldozed'];
+		if ($bulldozed) $hasbulldozed=1;
 ?>
-	<div class="gridrow<?php if ($idx%2==1) echo ' even';?>">
+	<div class="gridrow<?php if ($idx%2==1) echo ' even';?><?php if ($bulldozed) echo ' warn';?>">
 		<div class="alogcol1"><?php echo $dlogdate;?>&nbsp;</div>
 		<div class="alogcol2"><?php echo $username;?>&nbsp;</div>
-		<div class="alogcol3"><?php echo htmlspecialchars($logmessage);?>&nbsp;</div>
+		<div class="alogcol3"><?php if ($bulldozed){?><span style="color:#cc0000;">*</span> <?php }?><?php echo htmlspecialchars($logmessage);?>&nbsp;</div>
 		<div class="alogcol4"><?php echo $extra;?>&nbsp;</div>
 		<div class="clear"></div>
 	</div>
@@ -217,6 +221,15 @@ Search: <input autocomplete="off" class="inp" style="width:30%;" id="actionlog_k
 
 <?php
 	if ($count>=5||$key!=''||$opairs!='') echo $pager;
+	
+	if ($hasbulldozed){
+?>
+	<span style="display:inline-block;vertical-align:middle;width:20px;height:20px;text-align:center;border:solid 1px #dedede;border-radius:4px;" class="legend warn">
+		<span style="color:#cc0000;">*</span>
+	</span>
+	<span style="vertical-align:middle;">The user knowingly overwrote the record despite the edit conflict warning.</span>
+<?php		
+	}
 ?>
 
 </div><!-- section -->

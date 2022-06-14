@@ -265,7 +265,7 @@ input:disabled{
 .gridrow.even{background:#F2F2F2;}
 .gridheader .gridrow{font-weight:bold;}
 
-.gridrow.warn{color:#4A4831;background:#FFF9AC;border-color:#CAC9B8;}
+.gridrow.warn, .legend.warn{color:#4A4831;background:#FFF9AC;border-color:#CAC9B8;}
 .gridrow.evenwarn{color:#4A4831;background:#F2ECA3;border-color:#CAC588;}
 
 .gridpager{padding:20px 0;}
