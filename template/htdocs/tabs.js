@@ -161,15 +161,7 @@ function reloadtab(key,title,params,loadfunc,data,opts,gskey){
 	  if (!sconfirm("Are you sure you want to override the edit conflict\n and save your version regardless?")){
 		  return;
 	  }
-  }
-  
-  /*
-  document.tabconflictbypass=true;
-  setTimeout(function(){
-	  document.tabconflictbypass=null;
-  },300);
-  */
-	
+  }	
   
   if (document.tabtitles[tabid].tablock) return;
   document.tabtitles[tabid].tablock=1;
