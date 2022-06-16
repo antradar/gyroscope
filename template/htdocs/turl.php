@@ -18,7 +18,7 @@ function turl_setopt(&$turl,$flag,$val){
 }
 
 
-function turl_exec($turl,$extra='',$checkfunc=null,$failfunc=null,$attempts=null){
+function turl_exec($turl,$extra='',$checkfunc=null,$failfunc=null,$successfunc=null,$attempts=null){
 	global $db;
 	global $vdb;
 	
@@ -69,7 +69,7 @@ function turl_exec($turl,$extra='',$checkfunc=null,$failfunc=null,$attempts=null
 	
 	//by default, http errors do not trigger a retry
 	//checkfunc can change this behavior
-	
+		
 	if ($err!=0){//default fail processing
 		$defattempts=array(15*60, 60*60, 90*60);
 		if (!is_array($attempts)) $attempts=$defattempts;
@@ -79,6 +79,7 @@ function turl_exec($turl,$extra='',$checkfunc=null,$failfunc=null,$attempts=null
 		$turl['extra']=$extra;
 		$turl['checkfunc']=$checkfunc;
 		$turl['failfunc']=$failfunc;
+		$turl['successfunc']=$successfunc;
 		
 		$dbturl=$turl;
 		unset($dbturl['url']);
@@ -88,7 +89,7 @@ function turl_exec($turl,$extra='',$checkfunc=null,$failfunc=null,$attempts=null
 		
 		if (is_numeric($nextattempt)){
 			//schedule the next attempt
-
+			
 			$query="insert into turlq(turlurl,turldate,turlattempt,turlnext,turlerr,turlopts) values (?,?,?,?,?,?)";
 			sql_prep($query,$db,array($turl['url'],$now,$attempt+1,$now+$nextattempt,$errmsg,json_encode($dbturl)));	
 		} else {
@@ -101,7 +102,12 @@ function turl_exec($turl,$extra='',$checkfunc=null,$failfunc=null,$attempts=null
 			$failfunc($turl,$res,$errmsg); //additional fail processing
 		}
 		
-	}//err!=0
+	} else {
+		if (isset($successfunc)){
+			if (is_callable($successfunc)) $successfunc($turl,$res);
+			else echo "Warning: not callable [$successfunc]\r\n";
+		}	
+	}
 	
 	//echo "$baseurl $nettime $srvtime $netsize Status_$httpstatus\r\n"; return;
 	
