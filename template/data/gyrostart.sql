@@ -246,3 +246,21 @@ key faultdate(faultdate),
 key faultcode(faultcode),
 key faulttype(faulttype)
 );
+
+create table turlq(
+turlid bigint unsigned not null auto_increment,
+turlurl longtext,
+turldate bigint,
+turlattempt tinyint unsigned default 0,
+turlnext bigint,
+finalattempt tinyint(1) unsigned default 0,
+turlerr varchar(255),
+turlopts longtext,
+primary key (turlid),
+key turldate (turldate),
+key turlnext (turlnext),
+key turlattempt (turlattempt),
+key finalattempt (finalattempt)
+);
+
+

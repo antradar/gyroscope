@@ -7,10 +7,26 @@ turl - a curl wrapper for outbound logging
  curl_setopt($curl, CURLOPT_TIMEOUT, 10);
  
 */
+function turl_init($url){
+	$curl=curl_init($url);
+	return array('type'=>'turlobj','url'=>$url,'curl'=>$curl,'opts'=>array());	
+}
 
-function turl_exec($curl,$extra=''){
+function turl_setopt(&$turl,$flag,$val){
+	$turl['opts'][$flag]=$val;
+	curl_setopt($turl['curl'],$flag,$val);	
+}
+
+
+function turl_exec($turl,$extra='',$checkfunc=null,$failfunc=null,$attempts=null){
 	global $db;
 	global $vdb;
+	
+	if (is_array($turl)&&$turl['type']=='turlobj'){
+		$opts=$turl['opts'];
+		$curl=$turl['curl'];	
+		
+	} else $curl=$turl;
 	
 	if (!isset($db)||!isset($vdb)) return curl_exec($curl);
 		
@@ -25,6 +41,7 @@ function turl_exec($curl,$extra=''){
 	$netsize=intval($after['size_download']);
 	
 	$err=curl_errno($curl);
+	$errmsg='';
 	
 	$rawurl=$after['url'];
 	
@@ -40,9 +57,55 @@ function turl_exec($curl,$extra=''){
 	$httpstatus=intval($after['http_code']);
 	if ($err!=0) $httpstatus=5000+$err;
 	
+	$now=time();	
+	
+	if ($err==0&&isset($checkfunc)&&is_callable($checkfunc)) {
+		list($checkokay,$errmsg)=$checkfunc($res,$httpstatus);
+		if (!$checkokay){
+			$err=6000;
+			$httpstatus=6000;
+		}
+	}
+	
+	//by default, http errors do not trigger a retry
+	//checkfunc can change this behavior
+	
+	if ($err!=0){//default fail processing
+		$defattempts=array(15*60, 60*60, 90*60);
+		if (!is_array($attempts)) $attempts=$defattempts;
+		$attempt=intval($turl['attempt']);
+		$nextattempt=$attempts[$attempt];
+		
+		$turl['extra']=$extra;
+		$turl['checkfunc']=$checkfunc;
+		$turl['failfunc']=$failfunc;
+		
+		$dbturl=$turl;
+		unset($dbturl['url']);
+		unset($dbturl['curl']);
+		unset($dbturl['type']);		
+		$dbturl['attempts']=$attempts;
+		
+		if (is_numeric($nextattempt)){
+			//schedule the next attempt
+
+			$query="insert into turlq(turlurl,turldate,turlattempt,turlnext,turlerr,turlopts) values (?,?,?,?,?,?)";
+			sql_prep($query,$db,array($turl['url'],$now,$attempt+1,$now+$nextattempt,$errmsg,json_encode($dbturl)));	
+		} else {
+			//final attempt
+			$query="insert into turlq(turlurl,turldate,turlattempt,turlnext,turlerr,turlopts,finalattempt) values (?,?,?,?,?,?,?)";
+			sql_prep($query,$db,array($turl['url'],$now,$attempt+1,$now+$nextattempt,$errmsg,json_encode($dbturl),1));	
+		}
+		
+		if (isset($failfunc)&&is_callable($failfunc)){
+			$failfunc($turl,$res,$errmsg); //additional fail processing
+		}
+		
+	}//err!=0
+	
 	//echo "$baseurl $nettime $srvtime $netsize Status_$httpstatus\r\n"; return;
 	
-	$now=time();
+
 	
 	$query="insert into accesslogseq() values ()";
 	$rs=sql_prep($query,$db);
