@@ -404,9 +404,12 @@ if (document.createEvent){
 		if (metakey&&document.keyboard['key_190']&&document.keyboard['key_188']) toggletabdock();
 		
 		if (metakey&&document.keyboard['key_16']&&document.keyboard['key_82']) {refreshtab(document.tabkeys[document.currenttab]);return false;}
-		if (metakey&&document.keyboard['key_16']&&document.keyboard['key_52']&&document.tabtitles[document.currenttab]!=null&&!document.tabtitles[document.currenttab].noclose) {
+		if (!document.fsshowing&&metakey&&document.keyboard['key_16']&&document.keyboard['key_52']&&document.tabtitles[document.currenttab]!=null&&!document.tabtitles[document.currenttab].noclose) {
 			if (!sconfirm('Are you sure you want to CLOSE the current tab?')) return;
 			closetab(document.tabkeys[document.currenttab]);
+		}
+		if (document.fsshowing&&metakey&&document.keyboard['key_16']&&document.keyboard['key_52']) {
+			closefs();
 		}
 		
 		

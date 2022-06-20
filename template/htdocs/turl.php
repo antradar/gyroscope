@@ -28,7 +28,7 @@ function turl_exec($turl,$extra='',$checkfunc=null,$failfunc=null,$successfunc=n
 		
 	} else $curl=$turl;
 	
-	if (!isset($db)||!isset($vdb)) return curl_exec($curl);
+	if (!isset($db)) return curl_exec($curl);
 		
 	$res=curl_exec($curl); //this could take some time
 
@@ -112,29 +112,37 @@ function turl_exec($turl,$extra='',$checkfunc=null,$failfunc=null,$successfunc=n
 	//echo "$baseurl $nettime $srvtime $netsize Status_$httpstatus\r\n"; return;
 	
 
+	if (isset($db)&&isset($vdb)){
 	
-	$query="insert into accesslogseq() values ()";
-	$rs=sql_prep($query,$db);
-	$logid=sql_insert_id($db,$rs);
-	if ($logid>0){
-		$query="insert into accesslog(
-		logsitename,logid,ip,logdate,
-		method,baseurl,gsfunc,
-		httpstatus,netsize,nettime,srvtime,logextra
-		) values (
-		?,?,?,?,
-		?,?,?,
-		?,?,?,?,?
-		)";
+		$query="insert into accesslogseq() values ()";
+		$rs=sql_prep($query,$db);
+		$logid=sql_insert_id($db,$rs);
 		
-		vsql_prep($query,$vdb,array(
-		$host,$logid,$ip,$now,
-		'CURL',$baseurl,$gsfunc,
-		$httpstatus,$netsize,$nettime,$srvtime,$extra
-		),1);	
+		if ($logid%5000==0) {
+			$query="delete from accesslogseq where logid<?";
+			sql_prep($query,$logid);
+		}
+		
+		if ($logid>0){
+			$query="insert into accesslog(
+			logsitename,logid,ip,logdate,
+			method,baseurl,gsfunc,
+			httpstatus,netsize,nettime,srvtime,logextra
+			) values (
+			?,?,?,?,
+			?,?,?,
+			?,?,?,?,?
+			)";
+			
+			vsql_prep($query,$vdb,array(
+			$host,$logid,$ip,$now,
+			'CURL',$baseurl,$gsfunc,
+			$httpstatus,$netsize,$nettime,$srvtime,$extra
+			),1);	
+		}
+		
+		
 	}
-		
-	//log the aftermath
 	
 	return $res;
 		
