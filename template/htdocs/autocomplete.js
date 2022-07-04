@@ -22,7 +22,7 @@ picklookup=function(val){
 		}
 	}
 	if (gid(document.hotspot.id+'_lookup')) gid(document.hotspot.id+'_lookup').style.display='none';
-	hidelookup();
+	if (document.hotspot.attributes['keeplookup']==null) hidelookup(); //place "keeplookup" on the trigger
 	if (document.hotspot.onchange) document.hotspot.onchange();
 	
 	if (document.hotspot){
@@ -289,7 +289,7 @@ _picktime=function(d,opts,def){
 	d.timer=setTimeout(f(d,opts),200);
 }
 
-lookupentity=function(d,entity,title,data){
+lookupentity=function(d,entity,title,data,mini){
 	if (!d.value) d.value='';
 	if (d.disabled) return;
 	var gval=encodeHTML(d.value);
@@ -301,14 +301,14 @@ lookupentity=function(d,entity,title,data){
 		}
 		gval='';
 	}
-	listlookup(d,title,'lookup'+entity+'&key='+gval,null,data);	
+	listlookup(d,title,'lookup'+entity+'&key='+gval,mini,data);	
 }
 
-_lookupentity=function(d,entity,title,data){
+_lookupentity=function(d,entity,title,data,mini){
 	if (d.disabled) return;
 	if (d.timer) clearTimeout(d.timer);
 	d.timer=setTimeout(function(){
-		lookupentity(d,entity,title,data);
+		lookupentity(d,entity,title,data,mini);
 	},200);
 }
 
