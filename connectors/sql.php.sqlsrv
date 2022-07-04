@@ -25,7 +25,7 @@ function sql_get_db($dbhost,$dbsource,$dbuser=null,$dbpass=null,$lazyname=null){
 	return $db;
 }
 
-function sql_prep($query,&$db,$params){
+function sql_prep($query,&$db,$params=null){
 	global $gsdbprofile;
 	
 	if (is_string($db)){
