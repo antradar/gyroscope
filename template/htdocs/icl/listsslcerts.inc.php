@@ -8,7 +8,7 @@ function listsslcerts(){
 	$texp=$now+3600*24*1;
 	$twarn=$now+3600*24*5;
 
-	$query="select * from sslcerts where lastscanned<? or certexp<?  order by certserver,certexp ";
+	$query="select * from sslcerts where (lastscanned<? or certexp<?)  order by certserver,certexp ";
 	$rs=sql_prep($query,$db,array($tscan,$twarn));
 
 	$c=sql_affected_rows($db,$rs);
@@ -26,6 +26,7 @@ function listsslcerts(){
 	<tr>
 		<td><b>Server</b></td>
 		<td><b>Cert</b></td>
+		<td><b>Domain</b></td>
 		<td><b>Expiry</b></td>
 		<td><b>Last Scanned</b></td>
 		<td><b>Issue</b></td>
@@ -40,16 +41,25 @@ function listsslcerts(){
 		$dscanned=date('Y-n-j H:i:s',$lastscanned);
 		$dexp=date('Y-n-j',$certexp);
 		$server=$myrow['certserver'];
+		$alts=explode(',',$myrow['certalts']);
 	?>
 	<tr>
-	<td><?php echo $server;?></td>
-	<td><?php echo $certfn;?></td>
-	<td><?php echo $dexp;?></td>
-	<td><?php echo $dscanned;?></td>
-	<td>
+	<td valign="top"><?php echo $server;?></td>
+	<td valign="top"><?php echo $certfn;?></td>
+	<td valign="top">
+		<?php echo htmlspecialchars($myrow['certdomain']);?>
+		<?php foreach ($alts as $alt){
+			if (trim($alt)=='') continue;
+		?>
+			<br><span style="color:#848cf7;">+</span> <?php echo htmlspecialchars($alt);?>
+		<?php }?>
+	</td>
+	<td valign="top"><?php echo $dexp;?></td>
+	<td valign="top"><?php echo $dscanned;?></td>
+	<td valign="top">
 		<?php 
 		$label='';
-		if ($certexp<$twarn) $label='DUE in '.(ceil(($certexp-$now)/3600/24)).' days';
+		if ($certexp<$twarn) $label='DUE in '.(ceil(($twarn-$now)/3600/24)).' days';
 		if ($certexp<$texp) $label='EXPIRED';
 		if ($lastscanned<$tscan) $label.=' (stale scan)';
 
