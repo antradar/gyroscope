@@ -9,10 +9,9 @@ function updatetemplatetype(){
 	$activetemplateid=SQET('activetemplateid');
 	$plugins=SQET('templatetypeplugins');
 	$classes=SQET('templatetypeclasses');
-	
 
 	if ($activetemplateid==-1) {
-		$activetemplateid='null';
+		$activetemplateid=null;
 		if (!is_numeric($templatetypeid)) $activetemplateid=NULL_UUID;
 	}
 
@@ -38,10 +37,11 @@ function updatetemplatetype(){
 		$query.=", templatetypekey=?, plugins=?, classes=? ";
 		array_push($params,$templatetypekey,$plugins,$classes);
 	}
-	if ($activetemplateid>0 or $activetemplateid=='null') {
+	if ($activetemplateid>0||$activetemplateid==null) {
 		$query.=", activetemplateid=? ";
 		array_push($params,$activetemplateid);
 	}
+	
 	$query.=" where templatetypeid=? and gsid=? ";
 	array_push($params,$templatetypeid,$gsid);
 	$rs=sql_prep($query,$db,$params);

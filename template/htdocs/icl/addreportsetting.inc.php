@@ -31,11 +31,14 @@ function addreportsetting(){
 	
 	
 	$query="insert into ".TABLENAME_REPORTS." (".COLNAME_GSID.",reportname_$lang,reportgroup_$lang,reportfunc,reportkey,reportdesc_$lang) values (?,?,?,?,?,?) ";
+	ob_start();
 	$rs=sql_prep($query,$db,array($gsid,$reportname,$reportgroup,$reportfunc,$reportkey,$reportdesc));
+	$err=ob_get_clean();
+	
 	$reportid=sql_insert_id($db,$rs);
 
 	if (!$reportid) {
-		apperror(_tr('error_creating_record'));
+		apperror(_tr('error_creating_record '.$err));
 	}
 	
 	logaction("added Report Settings #$reportid $reportname",array('reportid'=>$reportid,'reportname'=>"$reportname"));

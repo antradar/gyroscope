@@ -50,11 +50,14 @@ function sql_prep($query,&$db,$params=null){
 		$db=sql_get_db($dbinfo['host'],$dbinfo['source'],$dbinfo['user'],$dbinfo['pass']);
 	}	
 	
-	if (!is_array($params)) $params=array($params);
-	
+	if (isset($params)){
+		if (!is_array($params)) $params=array($params);
+	} else $params=array();
+		
 	$a=microtime(1);
 	
 	$typestr=str_pad('',count($params),'s');
+			
 	$stmt=mysqli_stmt_init($db);
 	mysqli_stmt_prepare($stmt,$query);
 		
@@ -64,18 +67,22 @@ function sql_prep($query,&$db,$params=null){
 		return;
 	}
 	
+
+	if ($typestr!=''){
 		
 	///////// [[[ ////////	< PHP 5.6
 		
-/*
+	/*
 	$cparams=array($stmt,$typestr);
 	foreach ($params as $param) array_push($cparams,isset($param)?$param.'':null);
 	$func=new ReflectionFunction('mysqli_stmt_bind_param');
-	$func->invokeArgs($cparams);
-*/	
+	@$func->invokeArgs($cparams);
+	*/
 	////////// ]]] ///////	>= PHP 5.6
-	
+		
 	mysqli_stmt_bind_param($stmt,$typestr,...$params);
+
+	}//need to bind
 	
 	///////////////////////
 		
