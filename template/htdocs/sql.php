@@ -67,14 +67,15 @@ function sql_prep($query,&$db,$params=null){
 		
 	///////// [[[ ////////	< PHP 5.6
 		
+/*
 	$cparams=array($stmt,$typestr);
 	foreach ($params as $param) array_push($cparams,isset($param)?$param.'':null);
 	$func=new ReflectionFunction('mysqli_stmt_bind_param');
 	$func->invokeArgs($cparams);
-	
+*/	
 	////////// ]]] ///////	>= PHP 5.6
 	
-	// mysqli_stmt_bind_param($stmt,$typestr,...$params);
+	mysqli_stmt_bind_param($stmt,$typestr,...$params);
 	
 	///////////////////////
 		

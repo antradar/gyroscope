@@ -9,7 +9,7 @@ function list#records#(){
 	$mode=SGET('mode');
 	$key=SGET('key');
 	
-	$page=intval($_GET['page']);
+	$page=isset($_GET['page'])?intval($_GET['page']):0;
 	
 	header('listviewtitle:'.tabtitle(_tr('icon_#records#')));
 	header('listviewflag:'._jsflag('show#record#'));

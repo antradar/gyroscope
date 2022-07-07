@@ -14,7 +14,7 @@ function listreportsettings(){
 	$mode=SGET('mode');
 	$key=SGET('key');
 	
-	$page=intval($_GET['page']);
+	$page=isset($_GET['page'])?intval($_GET['page']):0;
 	
 	if ($mode!='embed'){
 

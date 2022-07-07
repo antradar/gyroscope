@@ -78,13 +78,14 @@ function updateuser(){
 			if (!$user['groups'][$gname]&&!$mygroupnames[$gname]) unset($gnames[$idx]);
 		}
 	}
-	
+
 	foreach ($mygroupnames as $mygroupname=>$label){
+		if ($mygroupname=='') continue;
 		if (!$user['groups'][$mygroupname]&&in_array($mygroupname,$userrolelocks)&&!in_array($mygroupname,$gnames)){
 			array_push($gnames,$mygroupname);	
 		}
 	}
-		
+			
 	$groupnames=implode('|',$gnames);
 		
 	if ($virtual){

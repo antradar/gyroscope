@@ -1,10 +1,10 @@
 <?php
 
-function GETVAL($key){ $val=trim($_GET[$key]); if (!is_numeric($val)) apperror('apperror:invalid parameter '.$key); return $val;}
-function QETVAL($key){ $val=trim($_POST[$key]); if (!is_numeric($val)) apperror('apperror:invalid parameter '.$key); return $val;}
+function GETVAL($key){ $val=trim(isset($_GET[$key])?$_GET[$key]:''); if (!is_numeric($val)) apperror('apperror:invalid parameter '.$key); return $val;}
+function QETVAL($key){ $val=trim(isset($_POST[$key])?$_POST[$key]:''); if (!is_numeric($val)) apperror('apperror:invalid parameter '.$key); return $val;}
 function noapos($val,$trimnl=1){$val=addslashes($val); if ($trimnl) $val=str_replace(array("\n","\r","\r\n"),' ',$val); return $val;}
-function GETSTR($key,$trim=1){$val=$_GET[$key];if ($trim) $val=trim($val);return noapos($val,0);}
-function QETSTR($key,$trim=1){$val=$_POST[$key];if ($trim) $val=trim($val);return noapos($val,0);}
+function GETSTR($key,$trim=1){$val=isset($_GET[$key])?$_GET[$key]:'';if ($trim) $val=trim($val);return noapos($val,0);}
+function QETSTR($key,$trim=1){$val=isset($_POST[$key])?$_POST[$key]:'';if ($trim) $val=trim($val);return noapos($val,0);}
 
 function GETCUR($key){$val=trim($_GET[$key]); $val=str_replace(_tr('currency_separator_thousands'),'',$val); $val=str_replace(_tr('currency_separator_decimal'),'.',$val); if (!is_numeric($val)) apperror('apperror:invalid parameter '.$key); return $val; }
 function QETCUR($key){$val=trim($_POST[$key]); $val=str_replace(_tr('currency_separator_thousands'),'',$val); $val=str_replace(_tr('currency_separator_decimal'),'.',$val); if (!is_numeric($val)) apperror('apperror:invalid parameter '.$key); return $val; }
@@ -354,7 +354,7 @@ function logaction($message,$rawobj=null,$syncobj=null,$gsid=0,$trace=null){
 	global $vdb;
 	
 	$bulldozed=0;
-	if (is_numeric($_GET['__tabconflicted'])&&$_GET['__tabconflicted']) $bulldozed=1;
+	if (isset($_GET['__tabconflicted'])&&is_numeric($_GET['__tabconflicted'])&&$_GET['__tabconflicted']) $bulldozed=1;
 		
 	if (is_callable('userinfo')) {
 		$user=userinfo();
@@ -367,7 +367,7 @@ function logaction($message,$rawobj=null,$syncobj=null,$gsid=0,$trace=null){
 	}
 
 	global $db;
-	$wssid=intval($_GET['wssid_']);
+	$wssid=isset($_GET['wssid_'])?intval($_GET['wssid_']):0;
 
 	if (!isset($rawobj)) $rawobj=array();
 	//$message=noapos($message);

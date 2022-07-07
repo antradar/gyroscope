@@ -145,7 +145,7 @@ function gsguard($val,$tables,$keys,$extfields='',$nocache=0,$rootgskey=COLNAME_
 	if (count($tables)!=count($keys)) apperror('gsguard: parameter count mismatch');
 	
 	$cachekey=$val.'-T-'.implode(',',$tables).'-K-'.implode(',',$keys);//.'-E-'.$extfields;
-	$hit=0;$res=$gsguard_cache[$cachekey];
+	$hit=0;$res=isset($gsguard_cache[$cachekey])?$gsguard_cache[$cachekey]:null;
 	if (!$nocache&&is_array($res)) $hit=1;
 	
 	if ($extfields!=''){
@@ -247,7 +247,7 @@ function authreport($groupnames){
 	$user=userinfo();
 		
 	foreach ($user['groups'] as $ugroup=>$val){
-		if ($groups[$ugroup]) return;	
+		if (isset($groups[$ugroup])&&$groups[$ugroup]) return;	
 	}
 	
 	apperror('Report access denied');

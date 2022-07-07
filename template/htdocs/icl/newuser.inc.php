@@ -26,7 +26,7 @@ function newuser(){
 	</div>
 	<div class="inputrow">
 		<div class="formlabel"><?php tr('dispname');?>:</div>
-		<input class="inpmed" id="dispname_new" value="<?php echo htmlspecialchars($dispname);?>" onfocus="document.hotspot=this;this.select();">
+		<input class="inpmed" id="dispname_new" value="" onfocus="document.hotspot=this;this.select();">
 	</div>
 	<div class="inputrow">
 		<input type="checkbox" id="active_new" checked> <label for="active_new"><?php tr('account_active');?></label>

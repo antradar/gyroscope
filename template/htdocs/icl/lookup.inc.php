@@ -46,7 +46,7 @@ function showdatepicker(){
 	$d=date('j');
 
 
-	if ($_GET['nodate']) {
+	if (isset($_GET['nodate'])&&$_GET['nodate']) {
 		if ($_GET['y']) $y=$_GET['y'];
 		if ($_GET['m']) $m=$_GET['m'];
 		if ($_GET['d']) $d=$_GET['d'];
@@ -160,10 +160,10 @@ if (!document.hotspot) {pickdate(null,{mini:<?php echo $mini;?>,tz:'<?php echo $
 <?php
 for ($i=1;$i<=$ld;$i++){
 	$block=0;
-	if (is_array($yesdays)&&!$yesdays["$y-$m-$i"]) $block=1;	
+	if (isset($yesdays)&&is_array($yesdays)&&(!isset($yesdays["$y-$m-$i"])||!$yesdays["$y-$m-$i"])) $block=1;	
 	
 	$dbackground='';
-	if ($colormaps["$y-$m-$i"]) $dbackground='background:'.$colormaps["$y-$m-$i"].';';
+	if (isset($colormaps)&&isset($colormaps["$y-$m-$i"])&&$colormaps["$y-$m-$i"]) $dbackground='background:'.$colormaps["$y-$m-$i"].';';
 ?>
 <div onclick<?php if ($block) echo 'a';?>="<?php if ($mode!='datetime'){?>if (document.hotspot) {document.hotspot.value='<?php echo "$y-$m-$i"?>';if (document.hotspot.onchange) document.hotspot.onchange();if (document.hotspot.lookupview) document.hotspot.lookupview.style.display='none';if (gid(document.hotspot.id+'_lookup')) gid(document.hotspot.id+'_lookup').style.display='none';}else showday('<?php echo "$y-$m-$i"?>');<?php } else {?>gid('cale_daypicker').style.display='none';ajxpgn('timepicker',document.appsettings.codepage+'?cmd=showtimepicker&y=<?php echo $y;?>&m=<?php echo $m;?>&d=<?php echo $i;?>&start=<?php echo $hstart;?>&end=<?php echo $hend;?>&res=60&tz=<?php echo $tz;?><?php echo $tailparams;?>',1);<?php }?>" style="cursor:pointer;width:14%;float:left;">
 <div class="calecell" style="<?php echo $dbackground;?><?php if ($today=="$y-$m-$i"&&!$block) echo 'font-weight:bold;color:#ab0200';?><?php if ($block) echo 'opacity:0.4;cursor:not-allowed;filter:alpha(opacity=40);';?>"><?php echo $i;?>

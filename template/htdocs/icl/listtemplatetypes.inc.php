@@ -5,7 +5,7 @@ function listtemplatetypes(){
 	$mode=SGET('mode');
 	$key=SGET('key');
 	
-	$page=intval($_GET['page']);
+	$page=isset($_GET['page'])?intval($_GET['page']):0;
 	
 	$user=userinfo();
 	$gsid=$user['gsid'];

@@ -43,7 +43,7 @@ function passtest($pass){
 	
 	$url="https://api.pwnedpasswords.com/range/$seed"; //production
 	
-	if ($_SERVER['REMOTE_ADDR']=='127.0.0.1') $url="http://www.antradar.com/pwned.php?range=$seed";
+	if ($_SERVER['REMOTE_ADDR']=='127.0.0.1'||$_SERVER['REMOTE_ADDR']=='::1') $url="http://www.antradar.com/pwned.php?range=$seed";
 	
 	$curl=curl_init($url);
 
@@ -51,7 +51,7 @@ function passtest($pass){
 		
 	curl_setopt($curl,CURLOPT_RETURNTRANSFER,1);
 
-	curl_setopt($curl,CURLOPT_SSL_VERIFYHOST,1);
+	curl_setopt($curl,CURLOPT_SSL_VERIFYHOST,2);
 	curl_setopt($curl,CURLOPT_SSL_VERIFYPEER,1);
 	
 	$res=curl_exec($curl);

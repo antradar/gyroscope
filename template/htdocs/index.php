@@ -99,7 +99,7 @@ foreach ($toolbaritems as $modid=>$ti){
 	}
 	
 	$binmode='null';
-	if ($ti['bingo']==1) $binmode=1;
+	if (isset($ti['bingo'])&&$ti['bingo']==1) $binmode=1;
 	
 	$action="showview('".$modid."',1,null,null,null,".$binmode.");";
 	if (isset($ti['action'])&&$ti['action']!='') $action=$ti['action'];

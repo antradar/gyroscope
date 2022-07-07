@@ -58,7 +58,8 @@ function rptfaultlog(){
 	
 		
 	$perpage=25;
-	$page=intval($_GET['page']);
+	$page=isset($_GET['page'])?intval($_GET['page']):0;
+	
 	$maxpage=ceil($count/$perpage)-1;
 	if ($maxpage<0) $maxpage=0;
 	if ($page<0) $page=0;
@@ -75,11 +76,11 @@ function rptfaultlog(){
 			ob_start();
 ?>
 <div class="listpager">
-	<a onclick="reloadtab('rptfaultlog',null,'rptfaultlog&key=<?php echo urlencode($key);?>&pairs=<?php echo urlencode($opairs);?>&page=<?php echo $page-1;?>',null,null,{persist:true});return false;" class="hovlink" href=#><img src="imgs/t.gif" class="img-pageleft">Prev</a>
+	<a onclick="reloadtab('rptfaultlog',null,'rptfaultlog&page=<?php echo $page-1;?>',null,null,{persist:true});return false;" class="hovlink" href=#><img src="imgs/t.gif" class="img-pageleft">Prev</a>
 	&nbsp; &nbsp;
-	<a onclick="var pagenum=sprompt('Go to page:',<?php echo $page+1;?>);if (pagenum==null||parseInt(pagenum,0)!=pagenum) return false;reloadtab('rptfaultlog',null,'rptfaultlog&key=<?php echo urlencode($key);?>&pairs=<?php echo urlencode($opairs);?>&page='+(pagenum-1),null,null,{persist:true});" class="pageskipper"><?php echo $page+1;?></a> of <?php echo $maxpage+1;?>
+	<a onclick="var pagenum=sprompt('Go to page:',<?php echo $page+1;?>);if (pagenum==null||parseInt(pagenum,0)!=pagenum) return false;reloadtab('rptfaultlog',null,'rptfaultlog&page='+(pagenum-1),null,null,{persist:true});" class="pageskipper"><?php echo $page+1;?></a> of <?php echo $maxpage+1;?>
 	&nbsp; &nbsp;
-	<a onclick="reloadtab('rptfaultlog',null,'rptfaultlog&key=<?php echo urlencode($key);?>&pairs=<?php echo urlencode($opairs);?>&page=<?php echo $page+1;?>',null,null,{persist:true});return false;" class="hovlink" href=#>Next<img src="imgs/t.gif" class="img-pageright"></a>
+	<a onclick="reloadtab('rptfaultlog',null,'rptfaultlog&page=<?php echo $page+1;?>',null,null,{persist:true});return false;" class="hovlink" href=#>Next<img src="imgs/t.gif" class="img-pageright"></a>
 </div>
 <?php			$pager=ob_get_clean();
 	}
@@ -134,7 +135,8 @@ function rptfaultlog(){
 		$logdate=$myrow['faultdate'];
 		$dlogdate=date('Y-n-j H:i:s',$logdate);
 		$logmessage=$myrow['faultmessage'];
-		$obj=json_decode($myrow['rawobj'],1);
+		$obj='';
+		if (isset($myrow['rawobj'])) json_decode($myrow['rawobj'],1);
 		
 		$faultfile=$myrow['faultfile'];
 		$faultline=$myrow['faultline'];
@@ -177,7 +179,7 @@ function rptfaultlog(){
 </div><!-- stable -->
 
 <?php
-	if ($count>=5||$key!=''||$opairs!='') echo $pager;
+	if ($count>=5) echo $pager;
 ?>
 
 </div><!-- section -->

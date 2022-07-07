@@ -26,16 +26,15 @@ function listusers(){
 	    
 	    if ($valid){
 		    $agentmap=json_decode($redis->get(REDIS_PREFIX.'agentmap'),1);
-		    $activeagents=$agentmap[$gsid];
+		    $activeagents=isset($agentmap[$gsid])?$agentmap[$gsid]:array();
 	    }
 	    
     }
-	
-	
+		
 	$mode=SGET('mode');
 	$key=SGET('key');
 	
-	$page=intval($_GET['page']);
+	$page=isset($_GET['page'])?intval($_GET['page']):0;
 	
 	
 	

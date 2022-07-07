@@ -36,7 +36,7 @@ if (isset($_POST['lang'])&&in_array($_POST['lang'],array_keys($langs))) {
 
 $dkey=md5(GYROSCOPE_PROJECT);
 
-$deflogin=$_COOKIE['fingername'];
+$deflogin=isset($_COOKIE['fingername'])?$_COOKIE['fingername']:'';
 
 if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['gyroscope_login_'.$dkey])&&$_POST['gyroscope_login_'.$dkey]) ){	
 	
