@@ -55,7 +55,7 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['gyroscope
 		
 		$passok=0;
 		
-		$nopass=intval($_POST['loginnopass']);
+		$nopass=isset($_POST['loginnopass'])?intval($_POST['loginnopass']):0;
 		
 			
 		if ($myrow=sql_fetch_array($rs)){

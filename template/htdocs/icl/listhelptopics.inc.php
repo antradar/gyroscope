@@ -12,7 +12,7 @@ function listhelptopics(){
 	$mode=SGET('mode');
 	$key=SGET('key');
 	
-	$page=intval($_GET['page']);
+	$page=isset($_GET['page'])?intval($_GET['page']):0;
 	
 	header('listviewtitle:'.tabtitle(_tr('icon_helptopics')));
 	header('listviewflag:'._jsflag('showhelptopic'));
@@ -94,6 +94,9 @@ function listhelptopics(){
 	$query.=" order by helptopicsort limit $start,$perpage";	
 	
 	$rs=sql_prep($query,$db,$params);
+	
+	$pagelead=0;
+	$pageleadidx=0;
 	
 	while ($myrow=sql_fetch_array($rs)){
 		$helptopicid=$myrow['helptopicid'];

@@ -40,13 +40,13 @@ function addyubikey(){
 	$credid=$attestdata['credid'];
 	$credkey=$attestdata['credkey'];
 	
-	$kty=$credkey['kty'];
-	$alg=$credkey['alg'];
-	$crv=$credkey['crv']; //ec
-	$x=$credkey['x']; //ec
-	$y=$credkey['y']; //ec
-	$n=$credkey['n']; //rsa
-	$e=$credkey['e']; //rsa
+	$kty=isset($credkey['kty'])?$credkey['kty']:null;
+	$alg=isset($credkey['alg'])?$credkey['alg']:null;
+	$crv=isset($credkey['crv'])?$credkey['crv']:null; //ec
+	$x=isset($credkey['x'])?$credkey['x']:null; //ec
+	$y=isset($credkey['y'])?$credkey['y']:null; //ec
+	$n=isset($credkey['n'])?$credkey['n']:null; //rsa
+	$e=isset($credkey['e'])?$credkey['e']:null; //rsa
 	
 	$keyname=substr($attid,0,8);
 		

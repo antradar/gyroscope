@@ -68,6 +68,7 @@ function rptactionlog(){
 		}
 		foreach ($pairs as $pair){
 			$parts=explode('=',$pair);
+			if (count($parts)<2) continue;
 			$k=trim($parts[0]);
 			$v=trim($parts[1]);
 			if ($k==''||$v=='') continue;
@@ -97,7 +98,7 @@ function rptactionlog(){
 		
 	if ($key!=''||$opairs!=''){
 		$perpage=10;
-		$page=intval($_GET['page']);
+		$page=isset($_GET['page'])?intval($_GET['page']):0;
 		$maxpage=ceil($count/$perpage)-1;
 		if ($maxpage<0) $maxpage=0;
 		if ($page<0) $page=0;

@@ -1,7 +1,7 @@
 <?php
 set_time_limit(0);
 
-include 'libresize.php'; //available with commercial license
+//include 'libresize.php'; //available with commercial license
 
 function embeduserprofileuploader(){
 	
@@ -24,7 +24,7 @@ function embeduserprofileuploader(){
 	$msg='';
 		
 	
-	if ($_FILES['file']&&$_FILES['file']['name']){
+	if (isset($_FILES['file'])&&$_FILES['file']&&$_FILES['file']['name']){
 		checkgskey('embeduserprofileuploader_'.$userid);
 		//echo '<pre>';print_r($_FILES);echo '</pre>'; return;
 			
@@ -62,6 +62,9 @@ function embeduserprofileuploader(){
 						fclose($f);
 						chmod($dst,0777);
 					} else{
+						
+						if (!is_callable('image_cropfit')) apperror("libresize.php is missing");
+						
 						if ($tinypngapi!=''&&$w>=270&&$h>=270){
 							$crops=tinypng_crop($c,array('main'=>array('width'=>270,'height'=>270)),$tinypngapi);
 							
@@ -97,7 +100,7 @@ function embeduserprofileuploader(){
 		
 	}
 	
-	if ($_GET['diag']) {
+	if (isset($_GET['diag'])&&$_GET['diag']) {
 		echo $msg;
 		return;
 	}

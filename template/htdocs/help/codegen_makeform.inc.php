@@ -13,7 +13,7 @@ function codegen_makeform($seed=null){
 			$seedobj=$v;
 			break;	
 		}
-		if ($v['package']){
+		if (isset($v['package'])&&$v['package']){
 			foreach ($v['items'] as $ik=>$iv){
 				if ($seed==$ik) $seedobj=$iv;	
 			}	
@@ -22,10 +22,10 @@ function codegen_makeform($seed=null){
 	}
 	
 	
-	$seedname=$seedobj['name'];
-	$desc=$seedobj['desc'];
-	$icon=$seedobj['icon'];
-	$package=$seedobj['package'];	
+	$seedname=isset($seedobj['name'])?$seedobj['name']:'*no name*';
+	$desc=isset($seedobj['desc'])?$seedobj['desc']:null;
+	$icon=isset($seedobj['icon'])?$seedobj['icon']:null;
+	$package=isset($seedobj['package'])?$seedobj['package']:null;	
 	
 	if ($package){
 		

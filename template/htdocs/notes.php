@@ -1,4 +1,5 @@
 <?php
+include 'lb.php';
 include 'auth.php';
 include 'sql.php';
 

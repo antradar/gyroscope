@@ -3,7 +3,7 @@ include 'icl/showkeyfilepad.inc.php';
 include 'icl/showuserhelptopics.inc.php';
 
 include 'icl/showgaqr.inc.php';
-include 'inbound/libmsgraph.php';
+//include 'inbound/libmsgraph.php'; //uncomment if the file is available
 
 include 'icl/showuserprofile.inc.php';
 include 'icl/listyubikeys.inc.php';

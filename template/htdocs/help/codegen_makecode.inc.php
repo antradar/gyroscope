@@ -17,7 +17,7 @@ function codegen_makecode(){
 	foreach ($templates as $idx=>$template){
 		$fseed=$template['template'];
 		$filename=$template['filename'];
-		$nocopy=intval($template['nocopy']);
+		$nocopy=isset($template['nocopy'])?intval($template['nocopy']):0;
 		foreach ($opts as $k=>$v) $filename=str_replace("#$k#",$v,$filename);	
 	
 		codegen_quotecode($fseed,$filename,$opts,$idx,$nocopy);
@@ -78,7 +78,7 @@ function codegen_quotecode($seed,$filename,$opts,$midx,$nocopy){
 <a class="labelbutton" onclick="codegen_copy(<?php echo $midx;?>)">copy</a>
 <?php } else {
 ?>
-<span class="labelbutton" style="cursor:default;background:#eeeeee;">copy</span>
+<span class="labelbutton" style="cursor:default;background:#cccccc;">copy</span>
 <?php	
 }?>
 
