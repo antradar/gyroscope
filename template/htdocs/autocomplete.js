@@ -136,7 +136,9 @@ listlookup=function(d,title,command,mini,data){
 	if (document.widen) mini=1;
 	if (document.hotspot&&document.hotspot.id) document.hotspot=gid(document.hotspot.id);
 	if (document.hotspot&&!d) d=document.hotspot;
+	
 	if (mini&&!d) return;
+	
 		
 	var lookupdismiss=function(e){
 		if (e==null||e.target==null) return;
@@ -175,6 +177,7 @@ listlookup=function(d,title,command,mini,data){
 		return;	
 	}
 
+	/*
 	if (document.iphone_portrait&&!document.portraitlock){
 		if (gid('rotate_indicator')){
 			gid('rotate_indicator').style.display='block';
@@ -184,9 +187,10 @@ listlookup=function(d,title,command,mini,data){
 		}
 		return;	
 	}
+	*/
 	
 	document.hotspot=d;
-	
+
 	if (gid('lkv')){
 		gid('lkvt').innerHTML=title;
 		gid('lkvc').innerHTML='';
@@ -301,6 +305,7 @@ lookupentity=function(d,entity,title,data,mini){
 		}
 		gval='';
 	}
+
 	listlookup(d,title,'lookup'+entity+'&key='+gval,mini,data);	
 }
 

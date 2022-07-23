@@ -26,6 +26,8 @@ body{background:#f2f2f2;}
 
 #homeicon{display:none;}
 
+#lkv.dismounted{z-index:auto;}
+
 .qnav_{position:absolute;top:0px;left:230px;height:100%;overflow:hidden;}
 .qnav{padding-top:145px;}
 

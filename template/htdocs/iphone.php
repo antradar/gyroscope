@@ -15,6 +15,7 @@ evict_check();
 
 login();
 $user=userinfo();
+$userid=$user['userid'];
 $query="select * from users where userid=?";
 $rs=sql_prep($query,$db,$userid);
 $usermeta=sql_fetch_assoc($rs);
@@ -273,6 +274,17 @@ function rotate(){
 		
 		hidelookup();
 
+		if (!document.lkvdismounted){
+			gid('lkv').id='lkv_origin';
+			document.lkvdismounted=true;
+			var lkv=document.createElement('div');
+			lkv.id='lkv';
+			lkv.innerHTML=gid('lkv_origin').innerHTML;
+			gid('lkv_origin').innerHTML='';
+			lkv.className='dismounted';
+			document.body.appendChild(lkv);
+			console.log('lkv dismounted');
+		}
 		
 	break;
 	case <?php echo $ori_landscape_forward;?>: case <?php echo $ori_landscape_backward;?>: 
@@ -300,6 +312,13 @@ function rotate(){
 		document.iphone_portrait=null;
 		gid('rotate_indicator').style.display='none';
 		
+		if (gid('lkv_origin')){
+			gid('lkv_origin').innerHTML=gid('lkv').innerHTML;
+			gid('lkv').parentNode.removeChild(gid('lkv'));
+			gid('lkv_origin').id='lkv';
+			document.lkvdismounted=null;
+			console.log('lkv remounted');
+		}
 	break;
 	}
 	

@@ -19,6 +19,8 @@ body{background:#ffffff;}
 .qnav_{position:fixed;left:0;top:0px;height:100%;overflow:hidden;}
 .qnav{padding-top:160px;}
 
+#lkv_origin{display:none;}
+#lkv.dismounted{z-index:1000;}
 
 #toolicons a img{margin:5px 3px;}
 #toollist{height:45px;}
@@ -32,4 +34,5 @@ body{background:#ffffff;}
 	.listitem,.sortlistitem{border-bottom:solid 1px #21262D;}
 	#tooltitle{background:#131F2F;border-bottom:none;border-top:solid 1px #3690D9;border-bottom:solid 1px #3690D9;}
 }
+
 
