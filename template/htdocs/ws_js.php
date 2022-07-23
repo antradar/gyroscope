@@ -14,7 +14,7 @@ function wss_init(){
 	global $wssecret; //defined in auth.php
 		
 	$wsskey=md5($wssecret.$gsid.date('Y-n-j-H').$userid).'-'.$gsid.'-'.$userid;	
-	$wsuri='ws://localhost:9999/wss.php'; // wss:// in production
+	$wsuri='ws://localhost:9999/wss/dummy'; // wss:// in production; in nginx, set /wss/ to split protocol via "proxy_pass" and upgrade headers if needed
 
 ?>
 <script src="wss.js?v=2"></script>
