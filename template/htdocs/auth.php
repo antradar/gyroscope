@@ -145,8 +145,8 @@ function gsguard($val,$tables,$keys,$extfields='',$nocache=0,$rootgskey=COLNAME_
 	if (count($tables)!=count($keys)) apperror('gsguard: parameter count mismatch');
 	
 	$cachekey=$val.'-T-'.implode(',',$tables).'-K-'.implode(',',$keys);//.'-E-'.$extfields;
-	$hit=0;$res=isset($gsguard_cache[$cachekey])?$gsguard_cache[$cachekey]:null;
-	if (!$nocache&&is_array($res)) $hit=1;
+	$hit=0;$res=isset($gsguard_cache[$cachekey])?$gsguard_cache[$cachekey]:array();
+	if (!$nocache&&is_array($res)&&count($res)>0) $hit=1;
 	
 	if ($extfields!=''){
 		$exfs=explode(',',$extfields);
