@@ -9,7 +9,7 @@ function evict_check(){
 	if (!isset($user)||!isset($user['login'])) return;
 	$userid=$user['userid'];
 	
-	if (in_array($userid,$blockedids)) evict_user();
+	if (is_array($blockedids)&&in_array($userid,$blockedids)) evict_user();
 
 	//uncomment to enable forced nightly flush
 	//if ((date('H')==23&&date('i')>=55) || (date('H')==0&&date('i')<=5)) evict_user();	

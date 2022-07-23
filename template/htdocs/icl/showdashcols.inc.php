@@ -17,12 +17,12 @@ function showdashcols($container,$cols,$func){
 	<div style="padding:5px 0;line-height:2em;margin-bottom:10px;">
 		<?php foreach ($cols as $cidx=>$col){
 			$hint=htmlspecialchars($col['title']);
-			if ($col['title2']!='') $hint.='; '.htmlspecialchars($col['title2']);
+			if (isset($col['title2'])&&$col['title2']!='') $hint.='; '.htmlspecialchars($col['title2']);
 			
 			$subborder='';
 			if ($subtitled){
 				$subcolor='#dedede';
-				if ($col['color2']!='') $subcolor=$col['color2'];
+				if (isset($col['color2'])&&$col['color2']!='') $subcolor=$col['color2'];
 				$subborder='border-bottom:solid 3px '.$subcolor.';';
 			}	
 		?>
