@@ -14,7 +14,33 @@ function wss_init(){
 	global $wssecret; //defined in auth.php
 		
 	$wsskey=md5($wssecret.$gsid.date('Y-n-j-H').$userid).'-'.$gsid.'-'.$userid;	
-	$wsuri='ws://localhost:9999/wss/dummy'; // wss:// in production; in nginx, set /wss/ to split protocol via "proxy_pass" and upgrade headers if needed
+	$wsuri='wss://localhost:9999/wss/dummy'; // wss:// in production; in nginx, set /wss/ to split protocol via "proxy_pass" and upgrade headers if needed
+	
+	/*
+	Protocol-splitting on Nginx:
+
+upstream wss{
+	server 127.0.0.1:8001; #remember to block outbound access
+}
+
+server{
+	# ...
+	
+	location /wss/ {
+		proxy_http_version 1.1;
+		proxy_set_header Upgrade $http_upgrade;
+		proxy_set_header Connection "upgrade";
+		proxy_pass http://wss;
+	}		
+}		
+	*/
+	
+	//use same-port protocol splitting:
+	$wshost=$_SERVER['HTTP_HOST'];
+	$wsport=$_SERVER['SERVER_PORT'];
+	$wsproto='ws';
+	if (isset($_SERVER['REQUEST_SCHEME'])&&$_SERVER['REQUEST_SCHEME']=='https') $wsproto='wss';
+	$wsuri=$wsproto.'://'.$wshost.':'.$wsport.'/wss/dummy';
 
 ?>
 <script src="wss.js?v=2"></script>
