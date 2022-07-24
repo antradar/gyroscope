@@ -604,7 +604,7 @@ function undocktab(){
 		else tab.className='afloat';
 		tab.afloat=true;
 		document.tabafloat=true;
-		
+		lkv_dismount();
 		rescaletabs();
 	},10);
 	
@@ -632,7 +632,7 @@ function redocktab(){
 		else tab.className='';
 		tab.afloat=null;
 		document.tabafloat=null;
-		
+		lkv_remount();
 		rescaletabs();
 		
 	},200);	

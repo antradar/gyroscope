@@ -186,10 +186,10 @@ hdpromote('gyroscope_hd.css');
 hddemote('legacy.css');
 document.nanoperf=500; //in microseconds, set to null or comment out to disable
 </script>
-<script src="tabs.js"></script>
+<script src="tabs.js?v=2"></script>
 <script src="viewport.js"></script>
 <script src="validators.js"></script>
-<script src="autocomplete.js"></script>
+<script src="autocomplete.js?v=2"></script>
 
 <?php
 

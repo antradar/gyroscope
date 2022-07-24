@@ -69,6 +69,10 @@ acronym.help{cursor:help;border-bottom:dotted 1px #4444ee;}
 	#lkvx{position:absolute;top:0;right:0;cursor:pointer;background:transparent url(imgs/sprite.png) no-repeat -285px -174px;}	
 	#lkvc{border-right:solid 1px #666666;overflow:auto;background-color:#ffffff;transition:background 250ms;-webkit-transition:background 220ms;}
 	#lkvs{width:260px;height:60px;position:absolute;top:-40px;left:0;background:#ffffff;opacity:0.8;filter:alpha(opacity=80);}	
+	
+#lkv_origin{display:none;}
+#lkv.dismounted{z-index:1000;}
+	
 #lefticons{width:100%;position:absolute;top:0px;left:0;height:72px;background:transparent url(imgs/sprite.png) repeat-x 0 -258px;}
 #sptr{background:#666666;position:absolute;left:0;bottom:24px;height:6px;width:100%;font-size:1px;opacity:0.2;-webkit-opacity:0.2;filter:alpha(opacity=20);}
 #tabtitles{background:transparent url(imgs/tabbg.gif) repeat top left;position:absolute;left:295px;height:38px;top:90px;}

@@ -378,7 +378,7 @@ svg > g > g.google-visualization-tooltip { pointer-events: none }
 	#tabviews,#tabviews.bgready{background:#0D1117;color:#C9D1D9;box-shadow:none;}
 	#tabviews.bgflash{background:#000000;color:#C9D1D9;box-shadow:none;}
 
-	#leftview{background:#0D1117;color:#C9D1D9;}
+	#leftview,#lkv.dismounted{background:#0D1117;color:#C9D1D9;}
 	#leftview.bgready{background:#0D1117;color:#C9D1D9;}
 	#leftview.bgflash{background:#000000;color:#C9D1D9;}
 	

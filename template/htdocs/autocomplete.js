@@ -214,6 +214,30 @@ listlookup=function(d,title,command,mini,data){
 		
 }
 
+lkv_dismount=function(){
+	if (!document.lkvdismounted){
+		gid('lkv').id='lkv_origin';
+		document.lkvdismounted=true;
+		var lkv=document.createElement('div');
+		lkv.id='lkv';
+		lkv.innerHTML=gid('lkv_origin').innerHTML;
+		gid('lkv_origin').innerHTML='';
+		lkv.className='dismounted';
+		document.body.appendChild(lkv);
+		console.log('lkv dismounted');
+	}	
+}
+
+lkv_remount=function(){
+	if (gid('lkv_origin')){
+		gid('lkv_origin').innerHTML=gid('lkv').innerHTML;
+		gid('lkv').parentNode.removeChild(gid('lkv'));
+		gid('lkv_origin').id='lkv';
+		document.lkvdismounted=null;
+		console.log('lkv remounted');
+	}	
+}
+
 showrelrec=function(id,showfunc,defid){
 	var d=gid(id);
 	if (d.disabled) showfunc(d.value2?d.value2:defid,d.value,arguments);
