@@ -486,6 +486,44 @@ function timeformat($sec){
 	return $time;	
 }
 
+function duration_format($sec){
+	$sec=intval($sec);
+	
+	if ($sec<60) return "$sec secs";
+	if ($sec<3600) {
+		$mins=floor($sec/60);
+		$secs=$sec-$mins*60;
+		$res="$mins min";
+		if ($mins>1) $res.='s';
+		if ($secs>0) $res.=", $secs secs";
+		return $res;
+	}
+
+	if ($sec<3600*24){
+		$hours=floor($sec/3600);
+		$mins=floor(($sec-$hours*3600)/60);
+		$secs=$sec-$hours*3600-$mins*60;
+		$res="$hours hour";
+		if ($hours>1) $res.='s';
+		if ($mins>0) $res.=", $mins min";
+		if ($mins>1) $res.='s';
+		
+		return $res;
+			
+	}
+	
+	$days=floor($sec/3600/24);
+	$hours=floor(($sec-$days*3600*24)/3600);
+	
+	$res="$days day";
+	if ($days>1) $res.='s';
+	if ($hours>0) $res.=", $hours hour";
+	if ($hours>1) $res.='s';
+
+	
+	return $res;
+}
+
 function currency_format($val,$digits=2,$bracket=0,$omitzero=0){
 	if (!is_numeric($val)) return 0;	
 

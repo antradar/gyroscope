@@ -1,3 +1,8 @@
+19.3
+- dismountable lookup view
+- wss proto split
+- strict mode cleanup
+
 19.2
 - Callouts
 
