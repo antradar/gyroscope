@@ -26,6 +26,8 @@ use toolbar.psp to generate toolbar.gif
 .ssrp_link{font-family:arial, sans-serif; color:#006621; font-size:14px;line-height:16px;}
 .ssrp_desc{font-family:arial, sans-serif; color:#545454; font-size:13px;line-height:18.2px;}
 
+.listitem{overflow-wrap:break-word;}
+
 .hovlink, .hovlink:visited, .hovlink:hover, .hovlink:link,
 .listitem .hovlink, .listitem .hovlink:visited, .listitem .hovlink:hover, .listitem .hovlink:link{color:#187CA6;text-decoration:none;border-bottom:dotted 1px #187CA6;}
 
@@ -111,6 +113,9 @@ input:disabled{
 .img-tracker{background:transparent url(imgs/toolbar.gif) no-repeat -288px 0;}
 .img-tracker-light{background:transparent url(imgs/toolbar.gif) no-repeat -288px -32px;}
 
+.img-salesforce{background:transparent url(imgs/toolbar.gif) no-repeat -736px 0;}
+.img-salesforce-light{background:transparent url(imgs/toolbar.gif) no-repeat -736px -32px;}
+
 .ico-setting{background:transparent url(imgs/toolbar.gif) no-repeat -480px 0;width:16px;height:16px;vertical-align:middle;margin-right:8px;}
 .dulltab .ico-setting{background:transparent url(imgs/toolbar.gif) no-repeat -480px -16px;}
 
@@ -122,6 +127,9 @@ input:disabled{
 
 .ico-helptopic{background:transparent url(imgs/toolbar.gif) no-repeat -496px -32px;width:16px;height:16px;vertical-align:middle;margin-right:8px;}
 .dulltab .ico-helptopic{background:transparent url(imgs/toolbar.gif) no-repeat -496px -48px;}
+
+.ico-salesforce{background:transparent url(imgs/toolbar.gif) no-repeat -720px 0;width:16px;height:16px;vertical-align:middle;margin-right:8px;}
+.dulltab .ico-salesforce{background:transparent url(imgs/toolbar.gif) no-repeat -720px -16px;}
 
 .phelpspot{z-index:500;position:absolute;top:0;left:0;width:auto;max-width:270px;}
 .phelpspot_static{position:relative;}
@@ -435,6 +443,7 @@ svg > g > g.google-visualization-tooltip { pointer-events: none }
 	.img-chats-light{background-position: -320px 0;}
 	.img-settings-light{background-position: -384px 0;}
 	.img-helptopics-light{background-position: -576px 0;}
+	.img-salesforce-light{background-position: -736px 0;}
 	
 	.stable::-webkit-scrollbar-track {
 		border-radius: 2px;
