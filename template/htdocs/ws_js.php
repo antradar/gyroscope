@@ -20,7 +20,7 @@ function wss_init(){
 	Protocol-splitting on Nginx:
 
 upstream wss{
-	server 127.0.0.1:8001; #remember to block outbound access
+	server 127.0.0.1:2095; #remember to block outbound access
 }
 
 server{

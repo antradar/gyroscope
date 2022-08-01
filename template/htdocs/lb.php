@@ -14,7 +14,7 @@ $portalchannel=5; //Channel 5 on Antradar's chat server
 $targetgsid=1; //gsid in the receiving multi-tenant server; typically "1" in a single instance
 $targetgsauth='12ee3b09f3d9893e508a7fd8b9f4b405f1fee9ae'; //sha1($targetgsid.$target_chatkey), target_chatkey is undisclosed
 $chatserver_http='https://www.antradar.com/gschat/chatd.gsb';
-$chatserver_wss='wss://www.antradar.com:2096';
+$chatserver_wss='wss://www.antradar.com/wss/dummy';
 	
 $encclientid='pubtest'; //community key for testing only
 $encapikey='yK2aP2vE1rF8tN6m';
