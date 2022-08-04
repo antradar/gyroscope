@@ -12,11 +12,14 @@ function add#record#(){
 	checkgskey('add#record#');
 	
 	$query="insert into #tablename# (".COLNAME_GSID.",#iterator-fieldlist-sqlflist#) values (?,#iterator-fieldlist-sqlqlist#) ";
+	ob_start();
 	$rs=sql_prep($query,$db,array($gsid,#iterator-fieldlist-sqlplist#));
+	$err=ob_get_clean();
+
 	$#primarykey#=sql_insert_id($db,$rs);
 
 	if (!$#primarykey#) {
-		apperror(_tr('error_creating_record'));
+		apperror(_tr('error_creating_record').': '.$err);
 	}
 	
 	logaction("added #c_record# #$#primarykey# $#dispfield#",array('#primarykey#'=>$#primarykey#,'#dispfield#'=>"$#dispfield#"),null,0,array(

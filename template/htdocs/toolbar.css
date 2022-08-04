@@ -31,6 +31,9 @@ use toolbar.psp to generate toolbar.gif
 .hovlink, .hovlink:visited, .hovlink:hover, .hovlink:link,
 .listitem .hovlink, .listitem .hovlink:visited, .listitem .hovlink:hover, .listitem .hovlink:link{color:#187CA6;text-decoration:none;border-bottom:dotted 1px #187CA6;}
 
+.listitem .diminished{color:#888888;}
+.listitem:hover .diminished{color:#444444;}
+
 .hovlink:focus, .listitem .hovlink:focus{color:#29ABE1;}
 
 .hovlink:hover, .listitem .hovlink:hover{border-bottom:solid 1px #29ABE1;color:#29ABE1;}
@@ -402,6 +405,7 @@ svg > g > g.google-visualization-tooltip { pointer-events: none }
 
 	.listitem, .sortlistitem{border-bottom:solid 1px #21262D;}
 	.listitem a,.listitem a:link,.listitem a:visited,.listitem a:hover{text-decoration:none;color:#C9D1D9;}
+	.listitem:hover .diminished{color:#aaaade;}
 	
 	.qnavitem{box-shadow:none;background:#10233B;color:#68A7EA;border:solid 1px #294B70;}
 	
