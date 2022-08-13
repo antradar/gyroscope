@@ -12,7 +12,7 @@ function remove#primaryfield##mediatype#pic(){
 	$query="update #tablename# set #picflag#=0 where #primarykey#=?";
 	sql_prep($query,$db,$#primarykey#);
 		
-	$fn='#uploaddir#'.$#primarykey#.'#fileext#';
+	$fn=numfile_make_path($#primarykey#,'#uploaddir#',100).'/'.$#primarykey#.'#fileext#';
 	if (file_exists($fn)) unlink($fn);
 		
 	logaction("removed #mediatype# picture of #primaryfield# #$#primarykey#",array('#primarykey#'=>$#primarykey#));

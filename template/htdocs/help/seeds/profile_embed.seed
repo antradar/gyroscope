@@ -2,6 +2,7 @@
 set_time_limit(0);
 
 include 'libresize.php'; //available with commercial license
+include 'libnumfile.php';
 
 function embed#primaryfield##mediatype#uploader(){
 	
@@ -15,14 +16,12 @@ function embed#primaryfield##mediatype#uploader(){
 	global $db;
 	global $codepage;
 
-	$path='#uploaddir#';
-		
-	$msg='';
-		
+	$msg='';	
 	
 	if ($_FILES['file']&&$_FILES['file']['name']){
 		checkgskey('embed#primaryfield##mediatype#uploader_'.$#primarykey#);
 		//echo '<pre>';print_r($_FILES);echo '</pre>'; return;
+		$path=numfile_make_path($#primarykey#,'#uploaddir#',100,1).'/';
 			
 		$file=$_FILES['file'];
 		$realfns=$file['tmp_name'];

@@ -1,10 +1,12 @@
-function valstr(d){
-	if (d.value==''){d.style.borderColor='red';d.style.outline=0;return false;}
-	d.style.borderColor='#999999';
-	d.style.outline='';
+function valstr(d,cp){
+	var ocp=cp;
+	if (cp==null) cp=d;
+	if (d.value==''){cp.style.borderColor='red';cp.style.outline=0;if (ocp!=null) cp.style.color='red';return false;}
+	cp.style.borderColor='#999999';
+	cp.style.outline='';
+	if (ocp!=null) cp.style.color='';
 	return true;
 }
-
 function valmonth(d){
 	if (d.value.replace(/\d\d\d\d\-\d+/g,'')!=''||d.value==''){d.style.borderColor='red';d.style.outline=0;return false;}
 	d.style.borderColor='#999999';

@@ -1,4 +1,5 @@
 <?php
+include 'libnumfile.php';
 
 function show#primaryfield##mediatype#($#primarykey#=null){
 	if (!isset($#primarykey#)) $#primarykey#=SGET('#primarykey#');
@@ -14,8 +15,9 @@ function show#primaryfield##mediatype#($#primarykey#=null){
 	$imgv=intval($myrow['imgv']);
 	
 	if ($#picflag#){
+		$base=numfile_make_path($#primarykey#,'#uploaddir#');	
 ?>
-<img src="#uploaddir#<?php echo $#primarykey#;?>#fileext#?v=<?php echo $imgv;?>" style="width:100%;max-width:#thumbwidth#px;">
+<img src="<?php echo $base;?>/<?php echo $#primarykey#;?>#fileext#?v=<?php echo $imgv;?>" style="width:100%;max-width:#thumbwidth#px;">
 <div style="padding:10px 0;">
 	<a onclick="remove#primaryfield##mediatype#pic('<?php echo $#primarykey#;?>','<?php emitgskey('remove#primaryfield##mediatype#pic_'.$#primarykey#);?>')"><img src="imgs/t.gif" class="img-del"> remove picture</a>
 </div>
