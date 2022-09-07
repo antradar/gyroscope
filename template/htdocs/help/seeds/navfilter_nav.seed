@@ -96,7 +96,7 @@ function #entity#_strfilters($filters,$nfilters=null){
 	return $filter;
 }
 
-function #entity#_shownav($container, $cmd, $title,$fieldname,$multi=null){
+function #entity#_shownav($container, $cmd, $title,$fieldname,$multi=null,$multior=false){
 	
 	global $pcharts;
 
@@ -143,17 +143,40 @@ function #entity#_shownav($container, $cmd, $title,$fieldname,$multi=null){
 	}
 
 	//add any parents of a nested dimension in the exemption list below:
-	if (!$multi&&count($counts)<2&&!in_array($fieldname,array('exempt_1','exempt_2'))) return; //comment out to show singular filters
-?>
-<div class="navgroup ng_<?php echo $fieldname;?>">
-<div class="navtitle"><?php echo $title;?></div>
-<?php	
+	if (!multior&&!$multi&&count($counts)<2&&!in_array($fieldname,array('exempt_1','exempt_2'))) return; //comment out to show singular filters
+	
 	$bfilters=#entity#_makefilters();
 	$basefilters=$bfilters['filters'];
 	$nbasefilters=$bfilters['nfilters'];
+		
+?>
+<div class="navgroup ng_<?php echo $fieldname;?>">
+<div class="navtitle"><?php echo $title;?>
+	<?php if ($multior){
+		$mybasefilters=$basefilters;
+		unset($mybasefilters[$fieldname]);
+		$strbasefilter=#entity#_strfilters($mybasefilters,$nbasefilters);		
+		
+	?>
+	<span style="margin-left:20px;visibility:hidden;"><button id="multior_<?php echo $fieldname;?>" onclick="nav_applymultior('<?php echo $container;?>','<?php echo $fieldname;?>','#searchkey#','<?php echo $cmd;?>','<?php echo $strbasefilter;?>');">select multiple</button></span>
+	<?php }?>
+</div>
+<?php	
+
 	
 	#entity#_shownegfilters($fieldname,$container,$cmd);
 	
+	if ($multior){
+		$selids=array();
+		if (isset($_GET['multior_'.$fieldname])&&$_GET['multior_'.$fieldname]!=''){	
+			$selids=explode('||',$_GET['multior_'.$fieldname]);
+		}
+	}
+	
+	$mymultiorfilters=$basefilters;
+	unset($mymultiorfilters["multior_"+$fieldname]);
+	$multiorfilters=rptcards_strfilters($mymultiorfilters,$nbasefilters);
+			
 	foreach ($counts as $key=>$count){
 		$dispname=#entity#_dispname($fieldname,$key,array_keys($counts));
 		$myfilters=$basefilters;
@@ -177,9 +200,15 @@ function #entity#_shownav($container, $cmd, $title,$fieldname,$multi=null){
 		<?php
 		if ($multi){
 	?>		
-		<input <?php if ($basefilters[$multi][$key]) echo 'checked';?> type="checkbox" href=# onclick="nav_setfilter('<?php echo $container;?>','#searchkey#','<?php echo $cmd;?>','<?php echo $filters;?>');return false;"> 
+		<input class="multiand" <?php if ($basefilters[$multi][$key]) echo 'checked';?> type="checkbox" href=# onclick="nav_setfilter('<?php echo $container;?>','#searchkey#','<?php echo $cmd;?>','<?php echo $filters;?>');return false;"> 
 	<?php		
 		}
+		
+		if ($multior){
+		?>
+		<input <?php if (in_array($key,$selids)) echo 'checked';?> value="<?php echo $key;?>"  type="checkbox" onclick="nav_selectfilter(this,'<?php echo $container;?>','<?php echo $fieldname;?>','#searchkey#','<?php echo $cmd;?>','<?php echo $multiorfilters;?>');"> 
+		<?php		
+		}		
 
 ?>
 	<a href=# onclick="nav_setfilter('<?php echo $container;?>','#searchkey#','<?php echo $cmd;?>','<?php echo $filters;?>');return false;"><?php echo htmlspecialchars($dispname);?></a> 

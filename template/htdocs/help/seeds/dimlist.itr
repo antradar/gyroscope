@@ -1,1 +1,2 @@
 	if (isset($_GET['#fld0#'])) $filters.=" and #fld0#='".GETSTR('#fld0#')."' ";
+	if (isset($_GET['multior_#fld0#'])) $filters['multior_#fld0#']=$_GET['multior_#fld0#'];

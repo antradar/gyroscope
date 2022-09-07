@@ -181,7 +181,7 @@ hddemote('legacy.css');
 <script src="iphone/tabs.js"></script>
 <script src="iphone/viewport.js"></script>
 <script src="validators.js"></script>
-<script src="autocomplete.js?v=2"></script>
+<script src="autocomplete.js?v=3"></script>
 
 <script>
 

@@ -394,7 +394,7 @@ filterkeys=function(d){
 	}	
 }
 
-function pastetotextarea(id,text){
+pastetotextarea=function(id,text){
 	
 	var oobj=gid(id);
 	var ovalue=oobj.value;
@@ -412,7 +412,7 @@ function pastetotextarea(id,text){
 	
 }
 
-function nav_setfilter(container,keyid,cmd,filter,bingo){
+nav_setfilter=function(container,keyid,cmd,filter,bingo){
 	var codepage=document.appsettings.codepage;
 	if (bingo) codepage=document.appsettings.binpage;
 	
@@ -433,7 +433,30 @@ function nav_setfilter(container,keyid,cmd,filter,bingo){
 	}
 }
 
-function nav_loadcharts(container,keyid,cmd){
+nav_multiorids=function(fieldname){
+	var os=gid('navfilters_'+fieldname).getElementsByTagName('input');
+	var ids=[];
+	for (var i=0;i<os.length;i++){
+		var o=os[i];
+		if (o.type==null||o.type!='checkbox') continue;
+		if (o.checked) ids.push(o.value);
+	}	
+	return ids;	
+}
+
+nav_selectfilter=function(d,container,fieldname,keyid,cmd,filter,bingo){
+	var ids=nav_multiorids(fieldname);
+	if (ids.length>0) gid('multior_'+fieldname).style.visibility='visible'; else gid('multior_'+fieldname).style.visibility='hidden';
+	if (!d.checked) nav_applymultior(container,fieldname,keyid,cmd,filter,bingo);
+}
+
+nav_applymultior=function(container,fieldname,keyid,cmd,filter,bingo){
+	var ids=nav_multiorids(fieldname);
+	filter+='&multior_'+fieldname+'='+ids.join('||');
+	nav_setfilter(container,keyid,cmd,filter,bingo);
+}
+
+nav_loadcharts=function(container,keyid,cmd){
 
 	xajxjs('google.charts','https://www.gstatic.com/charts/loader.js?',function(){
 		
@@ -526,7 +549,7 @@ function nav_loadcharts(container,keyid,cmd){
 // use the following version for a standalone product, i.e. no dependency on Google
 // additional licencing may be necessary
 
-function nav_loadcharts(container,keyid,cmd,bingo){
+nav_loadcharts=function(container,keyid,cmd,bingo){
 	
 	xajxjs('Highcharts.BubbleLegend','highcharts.js?cv=8',function(){ //use Highcharts.chart for simpler versions
 	

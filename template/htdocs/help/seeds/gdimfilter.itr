@@ -1,3 +1,4 @@
 
+	if (isset($_GET['multior_#fld0#'])) $filters['multior_#fld0#']=$_GET['multior_#fld0#'];
 	if (is_array($_GET['neg__#fld0#'])) $nfilters['#fld0#']=$_GET['neg__#fld0#'];
 	if ($_GET['#fld0#']!=''&&(!is_array($_GET['neg__#fld0#'])||!in_array($_GET['#fld0#'],$_GET['neg__#fld0#']))) $filters['#fld0#']=$_GET['#fld0#'];

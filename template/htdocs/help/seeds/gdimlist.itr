@@ -1,4 +1,12 @@
-
+	if (isset($_GET['multior_#fld0#'])&&$_GET['multior_#fld0#']!=''){
+		$rawids=explode('||',$_GET['multior_#fld0#']);
+		$ids=array();
+		foreach ($rawids as $id) array_push($ids,"'".noapos($id)."'");
+		$strids=implode(',',$ids);
+		if (count($ids)>0){
+			$filters.=" and #fld0# in ($strids) ";	
+		}		
+	}	
 	if (isset($_GET['neg__#fld0#'])) {
 		foreach ($_GET['neg__#fld0#'] as $neg) {
 			$filters.=" and #fld0#!=? ";

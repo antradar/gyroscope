@@ -189,7 +189,7 @@ document.nanoperf=500; //in microseconds, set to null or comment out to disable
 <script src="tabs.js?v=2"></script>
 <script src="viewport.js"></script>
 <script src="validators.js"></script>
-<script src="autocomplete.js?v=2"></script>
+<script src="autocomplete.js?v=3"></script>
 
 <?php
 
