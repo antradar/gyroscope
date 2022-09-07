@@ -110,7 +110,7 @@ function #entity#_shownav($container, $cmd, $title,$fieldname,$multi=null,$multi
 		unset($myfilters[$fieldname]);
 		$filter=#entity#_strfilters($myfilters,$nbasefilters);
 ?>
-<div class="navgroup ng_<?php echo $fieldname;?>">
+<div class="navgroupx ng_<?php echo $fieldname;?>">
 	<div class="navtitle"><?php echo $title;?></div>
 <?php
 	#entity#_shownegfilters($fieldname,$container,$cmd);
@@ -118,7 +118,7 @@ function #entity#_shownav($container, $cmd, $title,$fieldname,$multi=null,$multi
 	<div class="navfilter">
 		<a href=# onclick="nav_setfilter('<?php echo $container;?>','#searchkey#','<?php echo $cmd;?>','<?php echo $filter;?>');return false;">[x]</a> <?php echo #entity#_dispname($fieldname,$basefilters[$fieldname]);?>
 	</div>
-</div><!-- navgroup -->
+</div><!-- navgroupx -->
 <?php		
 		return;
 	}
@@ -131,12 +131,12 @@ function #entity#_shownav($container, $cmd, $title,$fieldname,$multi=null,$multi
 	if (count($counts)<=0) {
 		if (count($nbasefilters[$fieldname])>0){
 		?>
-		<div class="navgroup ng_<?php echo $fieldname;?>">
+		<div class="navgroupx ng_<?php echo $fieldname;?>">
 		<div class="navtitle"><?php echo $title;?></div>
 		<?php	
 			#entity#_shownegfilters($fieldname,$container,$cmd);
 		?>
-		</div><!-- navgroup -->
+		</div><!-- navgroupx -->
 		<?php
 		}
 		return;
@@ -150,7 +150,7 @@ function #entity#_shownav($container, $cmd, $title,$fieldname,$multi=null,$multi
 	$nbasefilters=$bfilters['nfilters'];
 		
 ?>
-<div class="navgroup ng_<?php echo $fieldname;?>">
+<div class="navgroupx ng_<?php echo $fieldname;?>">
 <div class="navtitle"><?php echo $title;?>
 	<?php if ($multior){
 		$mybasefilters=$basefilters;
@@ -161,6 +161,7 @@ function #entity#_shownav($container, $cmd, $title,$fieldname,$multi=null,$multi
 	<span style="margin-left:20px;visibility:hidden;"><button id="multior_<?php echo $fieldname;?>" onclick="nav_applymultior('<?php echo $container;?>','<?php echo $fieldname;?>','#searchkey#','<?php echo $cmd;?>','<?php echo $strbasefilter;?>');">apply filters</button></span>
 	<?php }?>
 </div>
+<div class="navfilters" id="navfilters_<?php echo $fieldname;?>">
 <?php	
 
 	
@@ -238,7 +239,8 @@ function #entity#_shownav($container, $cmd, $title,$fieldname,$multi=null,$multi
 		);
 	}		
 ?>
-</div><!-- navgroup -->
+</div><!-- navfilters -->
+</div><!-- navgroupx -->
 <?php		
 }
 
@@ -316,7 +318,7 @@ function #entity#_showrange($container,$cmd, $title,$fieldname){
 		unset($myfilters[$fieldname.'_b']);
 		$filter=#entity#_strfilters($myfilters,$nbasefilters);		
 ?>
-<div class="navgroup ng_<?php echo $fieldname;?>">
+<div class="navgroupx ng_<?php echo $fieldname;?>">
 	<div class="navtitle"><?php echo $title;?></div>
 	<div class="navfilter">
 <a class="filterclear" onclick="nav_setfilter('<?php echo $container;?>','#searchkey#','<?php echo $cmd;?>','<?php echo $filter;?>');return false;">[x]</a>
@@ -444,7 +446,7 @@ function #entity#_showrange($container,$cmd, $title,$fieldname){
 				
 	if ($filtered) return;			
 ?>
-<div class="navgroup ng_<?php echo $fieldname;?>">
+<div class="navgroupx ng_<?php echo $fieldname;?>">
 	<div class="navtitle"><?php echo $title;?></div>
 		<input class="inpshort num" id="<?php echo $fieldname?>_a" name="<?php echo $fieldname;?>_a" value="<?php echo $min;?>" style="width:60px;"> - 
 		<input class="inpshort num" id="<?php echo $fieldname?>_b" name="<?php echo $fieldname;?>_b" value="<?php echo $max;?>" style="width:60px;">
@@ -483,7 +485,7 @@ function #entity#_showdaterange($container,$cmd, $title,$fieldname,$subdims=null
 		unset($myfilters[$fieldname.'_b']);
 		$filter=#entity#_strfilters($myfilters,$nbasefilters);		
 ?>
-<div class="navgroup ng_<?php echo $fieldname;?>">
+<div class="navgroupx ng_<?php echo $fieldname;?>">
 	<div class="navtitle"><?php echo $title;?></div>
 	<div class="navfilter">
 <a class="filterclear" onclick="nav_setfilter('<?php echo $container;?>','#searchkey#','<?php echo $cmd;?>','<?php echo $filter;?>');return false;">[x]</a>
@@ -666,7 +668,7 @@ function #entity#_showdaterange($container,$cmd, $title,$fieldname,$subdims=null
 	if ($filtered) return;	
 			
 ?>
-<div class="navgroup ng_<?php echo $fieldname;?>">
+<div class="navgroupx ng_<?php echo $fieldname;?>">
 	<div class="navtitle"><?php echo $title;?></div>
 		<input onfocus="pickdate(this);" onkeyup="_pickdate(this);" class="inp" id="<?php echo $fieldname?>_a" name="<?php echo $fieldname;?>_a" value="<?php echo $min;?>" style="width:80px;"> - 
 		<input onfocus="pickdate(this);" onkeyup="_pickdate(this);" class="inp" id="<?php echo $fieldname?>_b" name="<?php echo $fieldname;?>_b" value="<?php echo $max;?>" style="width:80px;">
@@ -697,7 +699,7 @@ function #entity#_showbubble($container,$cmd, $title,$fieldname,$title2,$fieldna
 		unset($myfilters[$fieldname2.'_b']);
 		$filter=#entity#_strfilters($myfilters,$nbasefilters);		
 ?>
-<div class="navgroup ng_<?php echo $fieldname;?>">
+<div class="navgroupx ng_<?php echo $fieldname;?>">
 	<div class="navtitle"><?php echo $title;?></div>
 	<div class="navfilter">
 <a class="filterclear" onclick="nav_setfilter('<?php echo $container;?>','#searchkey#','<?php echo $cmd;?>','<?php echo $filter;?>');return false;">[x]</a>
@@ -906,7 +908,7 @@ function #entity#_showbubble($container,$cmd, $title,$fieldname,$title2,$fieldna
 				
 	if ($filtered) return;			
 ?>
-<div class="navgroup ng_<?php echo $fieldname;?>">
+<div class="navgroupx ng_<?php echo $fieldname;?>">
 	<div class="navtitle"><?php echo $title;?></div>
 	<input class="inpshort num" id="<?php echo $fieldname?>_a" name="<?php echo $fieldname;?>_a" value="<?php echo $min;?>" style="width:60px;"> - 
 	<input class="inpshort num" id="<?php echo $fieldname?>_b" name="<?php echo $fieldname;?>_b" value="<?php echo $max;?>" style="width:60px;">
@@ -962,7 +964,7 @@ function #entity#_showsearch($container,$cmd,$title,$fieldname){
 	$filters=#entity#_strfilters($basefilter,$nbasefilter);
 	
 ?>
-<div class="navgroup ng_<?php echo $fieldname;?>">
+<div class="navgroupx ng_<?php echo $fieldname;?>">
 	<div class="navtitle"><?php echo $title;?></div>
 	<input class="inp" id="#entity#_<?php echo $fieldname?>" value="" style="width:120px;"> 
 	<button onclick="nav_setfilter('<?php echo $container;?>','#searchkey#','<?php echo $cmd;?>','<?php echo $filters;?>&<?php echo $fieldname;?>='+encodeHTML(gid('#entity#_<?php echo $fieldname?>').value));return false;">Search</button>
