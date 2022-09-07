@@ -31,7 +31,7 @@ $usermeta=sql_fetch_assoc($rs);
 	<meta name="Version" content="Gyroscope <?php echo GYROSCOPE_VERSION?>" />
 	<meta name="theme-color" content="#454242" />	
 	<link href="gyroscope.css" type="text/css" rel="stylesheet" />
-	<link href="toolbar.css" type="text/css" rel="stylesheet" />
+	<link href="toolbar.css?v=3" type="text/css" rel="stylesheet" />
 	<link href="gsnotes.css" type="text/css" rel="stylesheet" />
 	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 	<?php if ($dict_dir==='rtl'){?>

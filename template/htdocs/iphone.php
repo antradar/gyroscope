@@ -29,7 +29,7 @@ $usermeta=sql_fetch_assoc($rs);
 	<meta name="theme-color" content="#454242" />
 	<link href="iphone/gyrodemo.css" type="text/css" rel="stylesheet" />
 	<link href="gsnotes.css" type="text/css" rel="stylesheet" />
-	<link href="toolbar.css" type="text/css" rel="stylesheet" />
+	<link href="toolbar.css?v=3" type="text/css" rel="stylesheet" />
 <?php 
 	if ($_GET['watch']==1||preg_match('/sm\-r840/i',$_SERVER['HTTP_USER_AGENT'])){
 		$roundwatchframe=1;
