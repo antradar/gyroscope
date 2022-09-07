@@ -436,26 +436,32 @@ nav_setfilter=function(container,keyid,cmd,filter,bingo){
 nav_multiorids=function(fieldname){
 	var os=gid('navfilters_'+fieldname).getElementsByTagName('input');
 	var ids=[];
+	var ocount=0;
 	for (var i=0;i<os.length;i++){
 		var o=os[i];
 		if (o.type==null||o.type!='checkbox') continue;
+		ocount++;
 		if (o.checked) ids.push(o.value);
 	}	
-	return ids;	
+	return {"ids":ids,"ocount":ocount};	
 }
 
 nav_selectfilter=function(d,container,fieldname,keyid,cmd,filter,bingo){
-	var ids=nav_multiorids(fieldname);
+	var resids=nav_multiorids(fieldname);
+	var ids=resids.ids;
+	var ocount=resids.ocount;
+	
 	if (gid('multior_'+fieldname).oidlen==null) {
 		gid('multior_'+fieldname).oidlen=ids.length;
 		if (d.checked) gid('multior_'+fieldname).oidlen--;
 	}
 	if (ids.length>0) gid('multior_'+fieldname).style.visibility='visible'; else gid('multior_'+fieldname).style.visibility='hidden';
-	if (ids.length==0&&gid('multior_'+fieldname).oidlen>0) nav_applymultior(container,fieldname,keyid,cmd,filter,bingo);	
+	if (ids.length==0&&(gid('multior_'+fieldname).oidlen>0||ocount==1)) nav_applymultior(container,fieldname,keyid,cmd,filter,bingo);	
 }
 
 nav_applymultior=function(container,fieldname,keyid,cmd,filter,bingo){
-	var ids=nav_multiorids(fieldname);
+	var resids=nav_multiorids(fieldname);
+	var ids=resids.ids;
 	filter+='&multior_'+fieldname+'='+ids.join('||');
 	nav_setfilter(container,keyid,cmd,filter,bingo);
 }
