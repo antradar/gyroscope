@@ -446,8 +446,12 @@ nav_multiorids=function(fieldname){
 
 nav_selectfilter=function(d,container,fieldname,keyid,cmd,filter,bingo){
 	var ids=nav_multiorids(fieldname);
+	if (gid('multior_'+fieldname).oidlen==null) {
+		gid('multior_'+fieldname).oidlen=ids.length;
+		if (d.checked) gid('multior_'+fieldname).oidlen--;
+	}
 	if (ids.length>0) gid('multior_'+fieldname).style.visibility='visible'; else gid('multior_'+fieldname).style.visibility='hidden';
-	if (ids.length==0) nav_applymultior(container,fieldname,keyid,cmd,filter,bingo);	
+	if (ids.length==0&&gid('multior_'+fieldname).oidlen>0) nav_applymultior(container,fieldname,keyid,cmd,filter,bingo);	
 }
 
 nav_applymultior=function(container,fieldname,keyid,cmd,filter,bingo){
