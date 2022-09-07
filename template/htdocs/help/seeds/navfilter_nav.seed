@@ -158,7 +158,7 @@ function #entity#_shownav($container, $cmd, $title,$fieldname,$multi=null,$multi
 		$strbasefilter=#entity#_strfilters($mybasefilters,$nbasefilters);		
 		
 	?>
-	<span style="margin-left:20px;visibility:hidden;"><button id="multior_<?php echo $fieldname;?>" onclick="nav_applymultior('<?php echo $container;?>','<?php echo $fieldname;?>','#searchkey#','<?php echo $cmd;?>','<?php echo $strbasefilter;?>');">select multiple</button></span>
+	<span style="margin-left:20px;visibility:hidden;"><button id="multior_<?php echo $fieldname;?>" onclick="nav_applymultior('<?php echo $container;?>','<?php echo $fieldname;?>','#searchkey#','<?php echo $cmd;?>','<?php echo $strbasefilter;?>');">apply filters</button></span>
 	<?php }?>
 </div>
 <?php	

@@ -447,7 +447,7 @@ nav_multiorids=function(fieldname){
 nav_selectfilter=function(d,container,fieldname,keyid,cmd,filter,bingo){
 	var ids=nav_multiorids(fieldname);
 	if (ids.length>0) gid('multior_'+fieldname).style.visibility='visible'; else gid('multior_'+fieldname).style.visibility='hidden';
-	if (!d.checked) nav_applymultior(container,fieldname,keyid,cmd,filter,bingo);
+	if (ids.length==0) nav_applymultior(container,fieldname,keyid,cmd,filter,bingo);	
 }
 
 nav_applymultior=function(container,fieldname,keyid,cmd,filter,bingo){
