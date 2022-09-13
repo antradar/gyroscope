@@ -319,9 +319,9 @@ svg > g > g.google-visualization-tooltip { pointer-events: none }
 .navchart{position:absolute;top:0;left:0;width:100%;height:100%;background:#dedede;}
 
 .navdash .navgroup{box-sizing:border-box;width:48%;margin-right:2%;float:left;max-height:200px;overflow:auto;}
-.navdash .navgroupx{box-sizing:border-box;width:48%;margin-right:2%;float:left;}
+.navdash .navgroupx{box-sizing:border-box;width:48%;margin-right:2%;float:left;margin-bottom:20px;}
 .navdash .filterneg{display:inline;}
-.navfilters{max-height:200px;overflow:auto;margin-bottom:20px;}
+.navfilters{max-height:200px;overflow:auto;}
 
 
 

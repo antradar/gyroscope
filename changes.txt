@@ -1,3 +1,8 @@
+19.4
+- codegen: multi-or
+- libnumfile
+- valstr "complainer" parameter
+
 19.3
 - dismountable lookup view
 - wss proto split
