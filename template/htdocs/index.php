@@ -30,7 +30,7 @@ $usermeta=sql_fetch_assoc($rs);
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="Version" content="Gyroscope <?php echo GYROSCOPE_VERSION?>" />
 	<meta name="theme-color" content="#454242" />	
-	<link href="gyroscope.css" type="text/css" rel="stylesheet" />
+	<link href="gyroscope.css?v=2" type="text/css" rel="stylesheet" />
 	<link href="toolbar.css?v=3" type="text/css" rel="stylesheet" />
 	<link href="gsnotes.css" type="text/css" rel="stylesheet" />
 	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
@@ -52,7 +52,7 @@ $usermeta=sql_fetch_assoc($rs);
 	}?>
 </head>
 
-<body onload="setTimeout(scrollTo, 0, 0, 1)">
+<body onload="setTimeout(scrollTo, 0, 0, 1);">
 <script>
 document.appsettings={codepage:'<?php echo $codepage;?>',binpage:'<?php echo $binpage;?>', beepnewchat:<?php echo $usermeta['canchat']?'true':'false';?>,fastlane:'<?php echo $fastlane;?>', autosave:null, viewmode:'desktop', views:<?php echo json_encode(array_keys($toolbaritems));?>};
 </script>
@@ -176,7 +176,7 @@ foreach ($toolbaritems as $modid=>$ti){
 
 <div id="gamepadspot" style="border:solid 3px #ffab00;position:absolute;width:32px;height:32px;top:0;left:0;transition:all 200ms;z-index:3002;display:none;"></div>
 
-<div id="callout" style="z-index:2000;opacity:0;transition:top 120ms,left 120ms,opacity 180ms;position:absolute;top:100px;left:250px;"><img src="imgs/callout.png" style="width:56px;"></div>
+<div id="callout" style="z-index:2000;filter:alpha(opacity=0);opacity:0;transition:top 120ms,left 120ms,opacity 180ms;position:absolute;top:100px;left:250px;"><img src="imgs/callout.png" style="width:56px;"></div>
 
 <script src="lang/dict.<?php echo $lang;?>.js"></script>
 <script src="nano.js?v=4_9"></script>

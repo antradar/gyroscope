@@ -163,26 +163,28 @@ function loadfs(title,cmd,func,initfunc,bingo){
 
 
 function autosize(){
-
-  scaleall(document.body);
-  var caleview=gid('caleview');
-  if (caleview){
-
-  }
-  if (document.tabcount>0){
-  var t=document.tabtitles[document.tabcount-1];
-  var topmargin=0; //change this if changing tab style
-//wrapping
-      document.rowcount=(t.offsetTop-topmargin)/38+1;
-      if (!document.lastrowcount) document.lastrowcount=1;
-      if (document.lastrowcount!=document.rowcount) {
-        gid('tabtitles').style.height=38*document.rowcount+'px';
-        gid('tabviews').style.top=122+38*(document.rowcount-1)+'px';
-        gid('tabviews').scalech=147+38*(document.rowcount-1);
-      }
-      scaleall(document.body);
-      document.lastrowcount=document.rowcount;
-  }
+  if (document.autosizing) clearTimeout(document.autosizing);
+  document.autosizing=setTimeout(function(){
+	  scaleall(document.body);
+	  var caleview=gid('caleview');
+	  if (caleview){
+	
+	  }
+	  if (document.tabcount>0){
+	  var t=document.tabtitles[document.tabcount-1];
+	  var topmargin=0; //change this if changing tab style
+	//wrapping
+	      document.rowcount=(t.offsetTop-topmargin)/38+1;
+	      if (!document.lastrowcount) document.lastrowcount=1;
+	      if (document.lastrowcount!=document.rowcount) {
+	        gid('tabtitles').style.height=38*document.rowcount+'px';
+	        gid('tabviews').style.top=122+38*(document.rowcount-1)+'px';
+	        gid('tabviews').scalech=147+38*(document.rowcount-1);
+	      }
+	      scaleall(document.body);
+	      document.lastrowcount=document.rowcount;
+	  }
+  },30);
 
 }
 
@@ -222,6 +224,7 @@ function callout_section(d){
 	if (y>h) y=h;
 		
 	callout.style.opacity=1;
+	callout.style.filter='alpha(opacity=100)';
 	callout.style.top=y+'px';
 	callout.style.left=(rect.x-56)+'px';
 		
@@ -231,6 +234,7 @@ function callout_section(d){
 	setTimeout(function(){
 		d.className=cls;	
 		callout.style.opacity=0;
+	callout.style.filter='alpha(opacity=0)';
 		callout.style.left=0;
 		callout.style.top=h+'px';
 	},500);

@@ -4,7 +4,7 @@
 gschat_getcookie=function(cookiename){
 	var rawcookies=document.cookie.split(';');
 	for (var i=0;i<rawcookies.length;i++){
-		var rawcookie=rawcookies[i].trim();
+		var rawcookie=rawcookies[i].replace(/^\s+|\s+$/g, '');
 		var parts=rawcookie.split('=');
 		if (parts[0]==cookiename){
 			return rawcookie.substr(cookiename.length+1);

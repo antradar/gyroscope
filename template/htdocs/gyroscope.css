@@ -1,4 +1,4 @@
-body{margin:0;padding:0;background:#F2F2F2;}
+body{margin:0;padding:0;background:#F2F2F2;overflow:hidden;}
 body, td, textarea, .img-mg{font-family:arial,sans-serif;font-size:13px;-webkit-text-size-adjust:none;}
 
 .img-mg,.sectiontitle,

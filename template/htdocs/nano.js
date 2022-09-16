@@ -162,7 +162,7 @@ function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce,gskey,creds,headless){
 	
 	
 	var rq=xmlHTTPRequestObject();
-	if (creds) rq.withCredentials=true;
+	//if (creds) rq.withCredentials=true;
 	
 	if (ct.reqobj!=null&&runonce!=2){
 		ct.abortflag=1;
