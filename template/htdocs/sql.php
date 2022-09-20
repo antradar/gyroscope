@@ -129,6 +129,7 @@ function sql_prep($query,&$db,$params=null){
 function sql_query($query,&$db,$mode=MYSQLI_STORE_RESULT){
 	global $gsdbprofile;
 	global $SQL_READONLY;
+	global $dbdefers;
 	
 	if ($SQL_READONLY){
 		$tokens=explode(' ',trim($query));
@@ -137,11 +138,16 @@ function sql_query($query,&$db,$mode=MYSQLI_STORE_RESULT){
 	}
 		
 	if (is_string($db)){
-		global $dbdefers;
 		$dbinfo=$dbdefers[$db];
-		$db=sql_get_db($dbinfo['host'],$dbinfo['source'],$dbinfo['user'],$dbinfo['pass']);
+		$db=sql_get_db($dbinfo['host'],$dbinfo['source'],$dbinfo['user'],$dbinfo['pass'],null,$dbinfo['lazyname']);
 	}	
-	
+	if (is_object($db)&&$db->stat==null&&isset($db->lazyname)){
+		//echo "disconnected, reconnecting...\r\n";
+		usleep(10000);
+		$dbinfo=$dbdefers[$db->lazyname];
+		$db=sql_get_db($dbinfo['host'],$dbinfo['source'],$dbinfo['user'],$dbinfo['pass'],null,$db->lazyname);
+	}
+		
 	$a=microtime(1);
 	$rs=mysqli_query($db,$query,$mode);
 	$b=microtime(1);
