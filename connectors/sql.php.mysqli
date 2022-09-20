@@ -9,6 +9,13 @@ if (!defined('MYSQLI_ASYNC')) define('MYSQLI_ASYNC',8);
 $SQL_ENGINE="MySQLi";
 //$SQL_READONLY=1; //uncomment to trigger readonly mode
 
+class LazyMySQLi extends mysqli{
+	public $lazyname;
+	public function __construct($host,$user,$pass,$db,$lazyname=null,$port=null,$socket=null){
+		$this->lazyname=$lazyname;
+		parent::__construct($host,$user,$pass,$db,$port,$socket);
+	}
+}
 
 function sql_escape($str){
 	global $db;
@@ -19,24 +26,25 @@ function sql_select_db($db,$name){
 	mysqli_select_db($db,$name);	
 }
 
-function sql_get_db($dbhost,$dbsource,$dbuser,$dbpass,$lazyname=null){
+function sql_get_db($dbhost,$dbsource,$dbuser,$dbpass,$lazyname=null,$rlazyname=null){
 	if (isset($lazyname)){
 		global $dbdefers;
 		if (!isset($dbdefers)) $dbdefers=array();
 		$dbdefers[$lazyname]=array(
 			'host'=>$dbhost,'source'=>$dbsource,
-			'user'=>$dbuser,'pass'=>$dbpass
+			'user'=>$dbuser,'pass'=>$dbpass,'lazyname'=>$lazyname
 		);
 		return $lazyname;
 	}
-	
-	$db=mysqli_connect($dbhost,$dbuser,$dbpass,$dbsource);
+
+	$db=new LazyMySQLi($dbhost,$dbuser,$dbpass,$dbsource,$rlazyname);
 	return $db;
 }
 
 function sql_prep($query,&$db,$params=null){
 	global $gsdbprofile;
 	global $SQL_READONLY;
+	global $dbdefers;
 	
 	if ($SQL_READONLY){
 		$tokens=explode(' ',trim($query));
@@ -45,16 +53,24 @@ function sql_prep($query,&$db,$params=null){
 	}
 	
 	if (is_string($db)){
-		global $dbdefers;
 		$dbinfo=$dbdefers[$db];
-		$db=sql_get_db($dbinfo['host'],$dbinfo['source'],$dbinfo['user'],$dbinfo['pass']);
+		$db=sql_get_db($dbinfo['host'],$dbinfo['source'],$dbinfo['user'],$dbinfo['pass'],null,$dbinfo['lazyname']);
 	}	
+	if (is_object($db)&&$db->stat==null){
+		echo "disconnected, reconnecting...\r\n";
+		usleep(10000);
+		$dbinfo=$dbdefers[$db->lazyname];
+		$db=sql_get_db($dbinfo['host'],$dbinfo['source'],$dbinfo['user'],$dbinfo['pass'],null,$db->lazyname);
+	}
 	
-	if (!is_array($params)) $params=array($params);
-	
+	if (isset($params)){
+		if (!is_array($params)) $params=array($params);
+	} else $params=array();
+		
 	$a=microtime(1);
 	
 	$typestr=str_pad('',count($params),'s');
+			
 	$stmt=mysqli_stmt_init($db);
 	mysqli_stmt_prepare($stmt,$query);
 		
@@ -64,17 +80,22 @@ function sql_prep($query,&$db,$params=null){
 		return;
 	}
 	
+
+	if ($typestr!=''){
 		
 	///////// [[[ ////////	< PHP 5.6
 		
+	/*
 	$cparams=array($stmt,$typestr);
 	foreach ($params as $param) array_push($cparams,isset($param)?$param.'':null);
 	$func=new ReflectionFunction('mysqli_stmt_bind_param');
-	$func->invokeArgs($cparams);
-	
+	@$func->invokeArgs($cparams);
+	*/
 	////////// ]]] ///////	>= PHP 5.6
-	
-	// mysqli_stmt_bind_param($stmt,$typestr,...$params);
+		
+	mysqli_stmt_bind_param($stmt,$typestr,...$params);
+
+	}//need to bind
 	
 	///////////////////////
 		
@@ -83,7 +104,8 @@ function sql_prep($query,&$db,$params=null){
 		$file=basename($backtrace[0]['file']);
 		$line=$backtrace[0]['line'];
 
-		echo "@$file [$line] sql query error: ".$query.' '.$stmt->error."\r\n";
+		echo "@$file [$line] sql query error: ".$query.' '.$stmt->error." \r\n";
+		return;
 	}
 	
 	$rs=mysqli_stmt_get_result($stmt);

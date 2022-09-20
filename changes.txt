@@ -1,4 +1,6 @@
 19.4
+- mysqli connector - auto recover from zombie connections
+- fixed main view scroll bar in specific screen resolutions
 - codegen: multi-or
 - libnumfile
 - valstr "complainer" parameter
