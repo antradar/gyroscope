@@ -262,6 +262,9 @@ key turlattempt (turlattempt),
 key finalattempt (finalattempt)
 );
 
-
+create table accesslogseq(
+  logid bigint(20) unsigned NOT NULL auto_increment,
+  primary key(logid)
+);
 
 

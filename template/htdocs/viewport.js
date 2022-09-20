@@ -184,7 +184,7 @@ function autosize(){
 	      scaleall(document.body);
 	      document.lastrowcount=document.rowcount;
 	  }
-  },30);
+  },50);
 
 }
 
