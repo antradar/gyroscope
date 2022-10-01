@@ -5,14 +5,15 @@
 
 $SQL_ENGINE="SQLSRV";
 
-function sql_get_db($dbhost,$dbsource,$dbuser=null,$dbpass=null,$lazyname=null){
+function sql_get_db($dbhost,$dbsource,$dbuser=null,$dbpass=null,$lazyname=null,$rlazyname=null){
 
 	if (isset($lazyname)){
 		global $dbdefers;
 		if (!isset($dbdefers)) $dbdefers=array();
 		$dbdefers[$lazyname]=array(
 			'host'=>$dbhost,'source'=>$dbsource,
-			'user'=>$dbuser,'pass'=>$dbpass
+			'user'=>$dbuser,'pass'=>$dbpass,
+			'lazyname'=>$lazyname,
 		);
 		return $lazyname;
 	}
@@ -23,27 +24,45 @@ function sql_get_db($dbhost,$dbsource,$dbuser=null,$dbpass=null,$lazyname=null){
 
 	$config['CharacterSet']='UTF-8'; // the default SQLSRV_ENC_CHAR is problematic in Linux
 	
-	$db=sqlsrv_connect($dbhost,$config);
+	$db=array(
+		'raw'=>sqlsrv_connect($dbhost,$config),
+		'lazyname'=>$rlazyname
+	);
+		
 	return $db;
 }
 
 function sql_prep($query,&$db,$params=null){
 	global $gsdbprofile;
+	global $dbdefers;
 	
 	if (is_string($db)){
-		global $dbdefers;
 		$dbinfo=$dbdefers[$db];
-		$db=sql_get_db($dbinfo['host'],$dbinfo['source'],$dbinfo['user'],$dbinfo['pass']);
+		$db=sql_get_db($dbinfo['host'],$dbinfo['source'],$dbinfo['user'],$dbinfo['pass'],null,$dbinfo['lazyname']);
 	}	
 	
 	if (!is_array($params)&&isset($params)) $params=array($params);
 	
 	$a=microtime(1);
 	
-	$rs=sqlsrv_prepare($db, $query, $params,array( "Scrollable" => SQLSRV_CURSOR_KEYSET ));
+	$rs=sqlsrv_prepare($db['raw'], $query, $params,array( "Scrollable" => SQLSRV_CURSOR_KEYSET ));
+	
 	if (!sqlsrv_execute($rs)){
 		$err=sqlsrv_errors();
-		echo 'SQL Error: '.$query.' '.$err[0]['message']; 	
+		if ($db['lazyname']!=''&&is_array($err)&&$err[0]['SQLSTATE']=='08S01'){
+			error_log("mssql disconnected, reconnecting...");
+			usleep(10000);
+			//reconnect and try again
+			$dbinfo=$dbdefers[$db['lazyname']];
+			$db=sql_get_db($dbinfo['host'],$dbinfo['source'],$dbinfo['user'],$dbinfo['pass'],null,$dbinfo['lazyname']);
+			$rs=sqlsrv_prepare($db['raw'], $query, $params,array( "Scrollable" => SQLSRV_CURSOR_KEYSET ));
+			if (!sqlsrv_execute($rs)){//failed again, no recovery
+				$err=sqlsrv_errors();
+				echo 'SQL Error: '.$query.' '.$err[0]['message'];
+			}
+		} else {
+			echo 'SQL Error: '.$query.' '.$err[0]['message'];
+		}
 	}
 	
 	$b=microtime(1);
@@ -98,25 +117,40 @@ function sql_reescape($inp){
 
 function sql_query($query,&$db){
 	global $gsdbprofile;
-
+	global $dbdefers;
 	
 	if (is_string($db)){
-		global $dbdefers;
 		$dbinfo=$dbdefers[$db];
-		$db=sql_get_db($dbinfo['host'],$dbinfo['source'],$dbinfo['user'],$dbinfo['pass']);	
+		$db=sql_get_db($dbinfo['host'],$dbinfo['source'],$dbinfo['user'],$dbinfo['pass'],null,$dbinfo['lazyname']);	
 	}
 
 	$query=sql_reescape($query);	
 	
 	$params=array();
-	$a=microtime(1);		
-	$rs=sqlsrv_query($db,$query,$params,array( "Scrollable" => SQLSRV_CURSOR_KEYSET ));
-	$b=microtime(1);	
+	$a=microtime(1);
+			
+	$rs=sqlsrv_query($db['raw'],$query,$params,array( "Scrollable" => SQLSRV_CURSOR_KEYSET ));
+	
 	if (!$rs) {
-		$errors=sqlsrv_errors();
-		$message=$errors[0]['message'];
-		echo "sql_error: <u>".$query.'</u> '.$message;
+		$err=sqlsrv_errors();
+		if ($db['lazyname']!=''&&is_array($err)&&$err[0]['SQLSTATE']=='08S01'){
+			error_log("mssql disconnected, reconnecting...");
+			usleep(10000);
+			//reconnect and try again
+			$dbinfo=$dbdefers[$db['lazyname']];
+			$db=sql_get_db($dbinfo['host'],$dbinfo['source'],$dbinfo['user'],$dbinfo['pass'],null,$dbinfo['lazyname']);
+			$rs=sqlsrv_query($db['raw'], $query, $params,array( "Scrollable" => SQLSRV_CURSOR_KEYSET ));
+			if (!$rs){//failed again, no recovery
+				$err=sqlsrv_errors();
+				echo 'SQL Error: '.$query.' '.$err[0]['message'];
+			}
+		} else {
+			echo 'SQL Error: '.$query.' '.$err[0]['message'];
+		}		
 	}
+	
+	$b=microtime(1);
+		
 	if (is_array($gsdbprofile)) array_push($gsdbprofile,array('query'=>$query,'time'=>$b-$a));
 	return $rs;
 }
@@ -137,7 +171,7 @@ function sql_insert_id($db,$rs=null){
 }
 
 function sql_affected_rows($db,$rs){
-	$c1=sqlsrv_rows_affected($db);
+	$c1=sqlsrv_rows_affected($db['raw']);
 	$c2=sqlsrv_num_rows($rs);
 
 	return max($c1,$c2);

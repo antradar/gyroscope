@@ -57,7 +57,7 @@ function sql_prep($query,&$db,$params=null){
 		$db=sql_get_db($dbinfo['host'],$dbinfo['source'],$dbinfo['user'],$dbinfo['pass'],null,$dbinfo['lazyname']);
 	}	
 	if (is_object($db)&&$db->stat==null&&isset($db->lazyname)){
-		//echo "disconnected, reconnecting...\r\n";
+		error_log("mysql disconnected, reconnecting...");
 		usleep(10000);
 		$dbinfo=$dbdefers[$db->lazyname];
 		$db=sql_get_db($dbinfo['host'],$dbinfo['source'],$dbinfo['user'],$dbinfo['pass'],null,$db->lazyname);

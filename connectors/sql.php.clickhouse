@@ -25,7 +25,8 @@ function sql_get_db($dbhost,$dbsource,$dbuser,$dbpass,$lazyname=null){
 		'host'=>$dbhost,
 		'database'=>$dbsource,
 		'user'=>$dbuser,
-		'pass'=>$dbpass
+		'pass'=>$dbpass,
+		'raw'=>'dnu',//do not use
 	);
 
 	return $db;

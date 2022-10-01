@@ -11,6 +11,37 @@ $usecache=1;
 $cache=null;
 $cachetest=0; //set to 1 to use file-based cache
 
+function cache_onerror(){
+	global $cache;
+	
+	$e=error_get_last();
+	error_log('memcache disconnected. attempting to reconnect '.$e['file'].'('.$e['line'].'): '.$e['message']);
+	
+	//return; //comment out to enable connection recovery
+		
+	memcache_close($cache);
+	usleep(10000);
+	$cache=null;
+	cache_init();
+	
+}
+
+function cache_keepalive(){
+	
+	//return;
+	
+	global $usecache;
+	if (!$usecache) return 0;
+
+	global $cache;
+
+	//error_reporting(E_ALL);
+	set_error_handler('cache_onerror',E_NOTICE);
+	memcache_get($cache,'memcache_keepalive');
+	restore_error_handler();
+
+}
+
 function cache_init(){
 	global $usecache;
 	if (!$usecache) return;
@@ -19,8 +50,19 @@ function cache_init(){
 	global $cachetest;
 
 	if ($cachetest) return;
+	
+	if (is_object($cache)){
+		error_log('duplicate memcache connection ignored');
+		return;
+	}	
 
-	$cache=@memcache_connect('127.0.0.1',11211) or die('cannot connect to aux database');	
+	$cache=@memcache_connect('127.0.0.1',11211);
+	if (!$cache) {
+		error_log('cannot connect to memcached');
+		//die('cannot connect to aux database');
+	}
+	
+	memcache_set($cache,'memcache_keepalive','stayalive',null,3600);
 }
 
 function cache_flush(){
@@ -38,6 +80,7 @@ function cache_flush(){
 		closedir($dh);
 		}		
 	} else {
+		cache_keepalive();
 		memcache_flush($cache);
 	}
 }
@@ -54,6 +97,7 @@ function cache_set($key,$obj,$expiry){
 		fwrite($f,serialize($obj));
 		fclose($f);
 	} else {
+		cache_keepalive();
 		memcache_set($cache,$key,$obj,null,$expiry);
 	}	
 
@@ -70,7 +114,7 @@ function cache_delete($key){
 		if (file_exists('cache/'.$key)) unlink('cache/'.$key);
 		return;	
 	}	
-	
+	cache_keepalive();
 	return memcache_delete($cache,$key);
 }
 
@@ -88,6 +132,7 @@ function cache_get($key){
 		fclose($f);
 		return unserialize($c);
 	} else {
+		cache_keepalive();
 		return memcache_get($cache,$key);
 	}
 
