@@ -66,6 +66,8 @@ function listreports(){
 		$found=1;
 		
 		$bingo=intval($myrow['bingo']);
+		$params=$myrow['reportparams'];
+		if ($params!='') $params='&'.trim(trim($params),'&');
 				
 		if ($lastgroup!=$reportgroup){
 ?>
@@ -75,7 +77,7 @@ function listreports(){
 		}
 ?>
 	<div class="listitem">
-		<a onclick="<?php echo $reportfunc;?>reloadtab('rpt<?php echo $reportkey;?>','<img src=&quot;imgs/t.gif&quot; class=&quot;ico-report&quot;><?php echo $dbreportname;?>','rpt<?php echo $reportkey;?>',(self.rptreload_<?php echo $reportkey;?>?rptreload_<?php echo $reportkey;?>:null),null,{bingo:<?php echo $bingo;?>});addtab('rpt<?php echo $reportkey;?>','<img src=&quot;imgs/t.gif&quot; class=&quot;ico-report&quot;><?php echo $dbreportname;?>','rpt<?php echo $reportkey;?>',(self.rptinit_<?php echo $reportkey;?>?rptinit_<?php echo $reportkey;?>:null),null,{bingo:<?php echo $bingo;?>});"><?php echo htmlspecialchars($reportname);?></a>
+		<a onclick="<?php echo $reportfunc;?>reloadtab('rpt<?php echo $reportkey;?>','<img src=&quot;imgs/t.gif&quot; class=&quot;ico-report&quot;><?php echo $dbreportname;?>','rpt<?php echo $reportkey.$params;?>',(self.rptreload_<?php echo $reportkey;?>?rptreload_<?php echo $reportkey;?>:null),null,{bingo:<?php echo $bingo;?>});addtab('rpt<?php echo $reportkey;?>','<img src=&quot;imgs/t.gif&quot; class=&quot;ico-report&quot;><?php echo $dbreportname;?>','rpt<?php echo $reportkey.$params;?>',(self.rptinit_<?php echo $reportkey;?>?rptinit_<?php echo $reportkey;?>:null),null,{bingo:<?php echo $bingo;?>});"><?php echo htmlspecialchars($reportname);?></a>
 	</div>
 <?php		
 	}//while

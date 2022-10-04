@@ -176,7 +176,7 @@ function #entity#_shownav($container, $cmd, $title,$fieldname,$multi=null,$multi
 	
 	$mymultiorfilters=$basefilters;
 	unset($mymultiorfilters["multior_"+$fieldname]);
-	$multiorfilters=rptcards_strfilters($mymultiorfilters,$nbasefilters);
+	$multiorfilters=#entity#_strfilters($mymultiorfilters,$nbasefilters);
 			
 	foreach ($counts as $key=>$count){
 		$dispname=#entity#_dispname($fieldname,$key,array_keys($counts));
