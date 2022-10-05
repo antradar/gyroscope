@@ -1,3 +1,6 @@
+19.5
+- document tab title syncs with tab title if GYROSCOPE_SHORT_APP_NAME is set
+
 19.4
 - mysqli connector - auto recover from zombie connections
 - fixed main view scroll bar in specific screen resolutions

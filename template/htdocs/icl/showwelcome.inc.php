@@ -21,12 +21,14 @@ function showwelcome(){
 
 //listsslcerts();
 
+/*
 ?>
 	Wide View Test: 
 	<a class="hovlink" onclick="ajxjs(self.showwideviewdemo,'wideview.js');addtab('wide_1','Wide View 1','showwidedemo&wideid=1',null,null,{wide:true});">wide view 1</a>
 	&nbsp;
 	<a class="hovlink" onclick="ajxjs(self.showwideviewdemo,'wideview.js');addtab('wide_2','Wide View 2','showwidedemo&wideid=2',null,null,{wide:true});">wide view 2</a>
 <?php
+*/
 	
 /*
 

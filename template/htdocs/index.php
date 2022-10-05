@@ -54,7 +54,7 @@ $usermeta=sql_fetch_assoc($rs);
 
 <body onload="setTimeout(scrollTo, 0, 0, 1);">
 <script>
-document.appsettings={codepage:'<?php echo $codepage;?>',binpage:'<?php echo $binpage;?>', beepnewchat:<?php echo $usermeta['canchat']?'true':'false';?>,fastlane:'<?php echo $fastlane;?>', autosave:null, viewmode:'desktop', views:<?php echo json_encode(array_keys($toolbaritems));?>};
+document.appsettings={codepage:'<?php echo $codepage;?>',binpage:'<?php echo $binpage;?>', beepnewchat:<?php echo $usermeta['canchat']?'true':'false';?>,shortappname:'<?php echo GYROSCOPE_SHORT_APP_NAME;?>', fastlane:'<?php echo $fastlane;?>', autosave:null, viewmode:'desktop', views:<?php echo json_encode(array_keys($toolbaritems));?>};
 </script>
 
 <div style="display:none;"><img src="imgs/t.gif"><img src="imgs/hourglass.gif"></div>
