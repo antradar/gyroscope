@@ -133,7 +133,7 @@ function makehelp($id,$text,$once=0,$dx=0){
 	$topic='';
 	if ($once){
 		if (!isset($helpspots[$text])) {
-			echo 'invalid helpspot configuration';
+			echo 'invalid helpspot configuration "'.htmlspecialchars($text).'"';
 			return;	
 		}
 		

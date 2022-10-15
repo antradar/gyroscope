@@ -25,7 +25,8 @@ addhomedashreport=function(rpttitle,rpttabkey,rptkey,rptlink,bingo){
 	rptlink=encodeHTML(rptlink);
 	
 	ajxpgn('homedashreports',document.appsettings.codepage+'?cmd=addhomedashreport&rptname='+rptname+'&rpttabkey='+rpttabkey+'&rptkey='+rptkey+'&rpttitle='+rpttitle+'&rptlink='+rptlink+'&bingo='+bingo,0,0,null,function(){
-		salert('Report bookmark added to the Home Tab');	
+		//salert('Report bookmark added to the Home Tab');
+		showtab('welcome',{bookmark:'homedashreports'});
 	});
 	
 }

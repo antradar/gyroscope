@@ -11,21 +11,6 @@ $usecache=1;
 $cache=null;
 $cachetest=0; //set to 1 to use file-based cache
 
-function cache_onerror(){
-	global $cache;
-	
-	$e=error_get_last();
-	error_log('memcache disconnected. attempting to reconnect '.$e['file'].'('.$e['line'].'): '.$e['message']);
-	
-	//return; //comment out to enable connection recovery
-		
-	memcache_close($cache);
-	usleep(10000);
-	$cache=null;
-	cache_init();
-	
-}
-
 function cache_keepalive(){
 	
 	//return;
@@ -35,8 +20,14 @@ function cache_keepalive(){
 
 	global $cache;
 
-	//error_reporting(E_ALL);
-	set_error_handler('cache_onerror',E_NOTICE);
+	set_error_handler(function($en,$msg,$file,$line){
+		global $cache;
+		error_log("memcache disconnected. attempting to reconnect $file:$line $msg");
+		memcache_close($cache);
+		usleep(10000);
+		$cache=null;
+		cache_init();		
+	},E_ALL);
 	memcache_get($cache,'memcache_keepalive');
 	restore_error_handler();
 

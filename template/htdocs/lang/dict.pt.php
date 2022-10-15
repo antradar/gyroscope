@@ -89,11 +89,24 @@ $dict=array(
 	
 	'icon_sqlcompare'=>'Comparação de SQL',	
 				
-	'tab_welcome'=>'Bem Vinda',
+	'tab_welcome'=>'Bem Vindo',
 	'hometab_welcome'=>'Bem-vindo ao Antradar Gyroscope',	
 	'list_users'=>'Users',
 	'list_user_add'=>'add a user',
 	'list_user_add_tab'=>'New User',
 	'csrf_expire'=>'You\'ve been on this screen for some time. For better security, please sign in again.'
 	
+);
+
+$helpspots=array(
+	'topicons'=>'<div class="tiptitle">Entry Icons</div>the icons on top of the screen are "entry points" to your application. when there are many icons, you may scroll through them.',
+	'lookupview'=>'<div class="tiptitle">Lookup View</div>the results in this lookup panel are relevant to your input. often you can press Ctrl+Enter to auto select the top record.<br><br>if the label of the input field is blue, it links to the selected record.',
+	'listviewpos'=>'<div class="tiptitle">List View</div>this is the list view for quickly locating records. record details are displayed in tabs.<br><br>the list and tab views are not synchronized; the list view is not a menu. knowing this helps you take take advantage of Gyroscope\'s flexible navigation.', 
+	'listviewlookup'=>'<div class="tiptitle">Instant Lookup</div>start typing, the results will show up as you type',
+	'fsview'=>'<div class="tiptitle">Full-Screen Mode</div>this is the full screen view. on a mobile device, the screen will stay on even if you have a screen lock enabled.',
+	'tabview'=>'<div class="tiptitle">Tab View</div>this is a record detail view that\'s displayed in a tab. double click on the tab to refresh. on mobile devices use the reload link.',
+	'maxtab'=>'<div class="tiptitle">Maximuze the Tab</div>press Ctrl,<,> at the same time to toggle maximized tab view.',
+	'mysettings'=>'<div class="tiptitle">Personal Settings</div>you may change your account settings here, such as changing password or resetting the personalized help tips.',
+	'richtexteditor'=>'<div class="tiptitle">Partial Editing</div>did you know that you can edit the source of selected content instead of the entire document?<br><br>highlight some text and then click the &lt;/&gt; button.',
+	'templatevar'=>'<div class="tiptitle">Variable Lookup</div>template variables are inserted in the %%&mdash;%% format.<br><br>when the %%&mdash;%% text is selected in the editor, a reverse lookup is performed... you are welcome.',
 );

@@ -143,7 +143,9 @@ function tab_setdoctitle(t,title){
 	if (title==null||title=='') title=t.tabname;
 	if (title=='') return;
 	t.tabname=title.replace(/(<([^>]+)>)/gi,'');
-	if (document.appsettings.shortappname) document.title=document.appsettings.shortappname+' | '+t.tabname;		
+	var sptr=' | ';
+	if (document.appsettings.shortappname==' ') sptr='';
+	if (document.appsettings.shortappname) document.title=document.appsettings.shortappname+sptr+t.tabname;		
 }
 
 function settabtitle(key,title,opts){

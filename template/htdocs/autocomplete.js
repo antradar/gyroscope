@@ -466,7 +466,7 @@ nav_applymultior=function(container,fieldname,keyid,cmd,filter,bingo){
 	nav_setfilter(container,keyid,cmd,filter,bingo);
 }
 
-nav_loadcharts=function(container,keyid,cmd){
+nav_loadcharts=function(container,keyid,cmd,bingo){
 
 	xajxjs('google.charts','https://www.gstatic.com/charts/loader.js?',function(){
 		
@@ -478,7 +478,7 @@ nav_loadcharts=function(container,keyid,cmd){
 			var cf=function(c,d){return function(){
 				var sel=c.getSelection()[0];
 				if (sel){
-					nav_setfilter(container,keyid,cmd,d[sel.row]['f']);
+					nav_setfilter(container,keyid,cmd,d[sel.row]['f'],bingo);
 				}
 								
 			}};				
