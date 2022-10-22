@@ -365,8 +365,10 @@ body{padding:0;margin:0;background:transparent url(imgs/bgtile.png) repeat;font-
 #cardlink{display:none;}
 #cardinfo{padding:5px;font-size:12px;padding-left:26px;background:#fcfcdd url(imgs/smartcard.png) no-repeat 5px 50%;margin-bottom:10px;display:none;}
 
-.lfinp{border:solid 1px #999999;display:block;margin-bottom:5px;font-size:18px;border-radius:3px;-webkit-appearance:none;}
-.lfinp:active, .lfinp:focus{outline:0;border:solid 2px #29ABE1;}
+.lfinp,.lfsel{border:solid 1px #999999;display:block;margin-bottom:5px;border-radius:3px;}
+.lfinp:active, .lfinp:focus, .lfsel:active, .lfsel:focus{outline:0;border:solid 2px #29ABE1;}
+.lfinp{font-size:18px;-webkit-appearance:none;}
+.lfsel{font-size:15px;}
 
 #lang{padding:5px 0;}
 
@@ -471,7 +473,7 @@ body{font-size:28px;}
 	<?php }?>
 
 	<?php if (!$textmode){?>
-	<div style="width:100%;margin-bottom:10px;<?php if (count($langs)<2) echo 'display:none;';?>"><select id="lang" style="width:100%;" name="lang" onchange="document.skipcheck=true;">
+	<div style="width:100%;margin-bottom:10px;<?php if (count($langs)<2) echo 'display:none;';?>"><select id="lang" style="width:100%;" class="lfsel" name="lang" onchange="document.skipcheck=true;">
 	<?php 
 	foreach ($langs as $langkey=>$label){
 	?>

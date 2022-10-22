@@ -213,6 +213,7 @@ function streamaction($wssid,$rectype,$recid,$gsid,$userid,$extra=null,$rdprefix
 	            $redis->connect($WSS_INTERNAL_HOST,REDIS_PORT);
 	            $valid=1;
             } catch (Exception $e){
+	            error_log("cannot connect to Redis server");
 	         	echo "warn: cannot connect to Redis server";
             }
 	    } else $valid=1;
