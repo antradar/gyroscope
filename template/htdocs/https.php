@@ -17,6 +17,6 @@ if ($_SERVER['SCRIPT_NAME']!='/404.php' && (!isset($_SERVER['HTTPS'])||($_SERVER
 	die();
 }
 
-if ($_SERVER['HTTPS']!='on'&&$_SERVER['HTTPS']!=1){
+if (!isset($_SERVER['HTTPS'])||($_SERVER['HTTPS']!='on'&&$_SERVER['HTTPS']!=1)){
 	$usehttps=0;	
 }

@@ -127,6 +127,18 @@ $now=time();
 $enc=encstr('test'.$now,$dbsalt);
 $dec=decstr($enc,$dbsalt);
 
+$infostr='';
+ob_start();
+phpinfo();
+$infostr=ob_get_clean();
+$jitstatus='n/a';
+$jitcode=2;
+if (preg_match('/<td class="e">JIT\s*<\/td>\s*<td class="v">([\S\s]*?)<\/td>/',$infostr,$matches)){
+	$jitstatus=trim($matches[1]);
+	if (strtolower($jitstatus)=='on'||strtolower($jitstatus)=='enabled') $jitcode=1;
+	else $jitcode=0;
+}
+
 $ciphers=array();
 if (is_callable('mcrypt_list_algorithms')) $ciphers=mcrypt_list_algorithms();
 
@@ -176,10 +188,11 @@ $tests=array(
 'Date beyond 2038'=>array('res'=>'2412-12-12'==date('Y-n-j',13978113132),'message'=>''),
 'Direct IP'=>array('res'=>$_SERVER['REMOTE_ADDR']==$_SERVER['RAW_IP'],'message'=>$_SERVER['RAW_IP'].(($_SERVER['REMOTE_ADDR']==$_SERVER['RAW_IP'])?'':' vs. '.$_SERVER['REMOTE_ADDR'])),
 'Protected IP'=>array('res'=>2,'message'=>$_SERVER['O_IP']),
-'Proxy via'=>array('res'=>2,'message'=>$_SERVER['HTTP_VIA']),
+'Proxy via'=>array('res'=>2,'message'=>isset($_SERVER['HTTP_VIA'])?$_SERVER['HTTP_VIA']:''),
 'IPv6 Socket'=>array('res'=>strpos($ip,':')!==false,'message'=>$ip),
 'Server'=>array('res'=>2,'message'=>$_SERVER['SERVER_SOFTWARE']),
-'PHP Version'=>array('res'=>2,'message'=>str_replace('+',' + ',phpversion()))
+'PHP Version'=>array('res'=>2,'message'=>str_replace('+',' + ',phpversion())),
+'&nbsp; &nbsp; &nbsp; &nbsp; JIT'=>array('res'=>$jitcode,'message'=>$jitstatus)
 );
 
 if (!isset($SQL_ENGINE2)) unset($tests['Co-SQL Connector']);
@@ -210,7 +223,7 @@ if ($SQL_ENGINE!='MySQL'&&$SQL_ENGINE!='MySQLi'){
 	unset($tests['InnoDB table space']);		
 }
 
-if (!$user['login']){
+if (!isset($user['login'])||$user['login']==''){
 	$tests['MCrypt']=array('res'=>2,'message'=>'****');
 	$tests['Cipher']=array('res'=>2,'message'=>'****');
 	$tests['OpenSSL']=array('res'=>2,'message'=>'****');
@@ -220,6 +233,8 @@ if (!$user['login']){
 	$tests['Native Redis Client']=array('res'=>2,'message'=>'****');
 	$tests['Server']=array('res'=>2,'message'=>'****');		
 	$tests['PHP Version']=array('res'=>2,'message'=>'****');
+	
+	unset($tests['&nbsp; &nbsp; &nbsp; &nbsp; JIT']);
 }
 
 
@@ -266,7 +281,8 @@ foreach ($tests as $test=>$result){
 <?php		
 	}
 	
-	if ($dbconfigs&&$user['login']){
+	
+	if (isset($dbconfigs)&&$user['login']){
 	?>
 	<div style="background:#444444;color:#ffffff;padding:5px 10px;margin-top:20px;">Cluster Information</div>
 	<table style="width:100%;">

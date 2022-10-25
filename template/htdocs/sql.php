@@ -11,6 +11,7 @@ $SQL_ENGINE="MySQLi";
 
 class LazyMySQLi extends mysqli{
 	public $lazyname;
+	public $stat; //https://www.php.net/manual/en/migration74.incompatible.php#migration74.incompatible.mysqli
 	public function __construct($host,$user,$pass,$db,$lazyname=null,$port=null,$socket=null){
 		$this->lazyname=$lazyname;
 		parent::__construct($host,$user,$pass,$db,$port,$socket);
