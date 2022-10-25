@@ -24,8 +24,7 @@ include 'lang/dict.'.$lang.'.php';
 function _tr($strkey,$reps=null){
 	global $dict;
 	
-	$str=$dict[$strkey];
-	if (!isset($str)) $str='['.$strkey.']';
+	$str=isset($dict[$strkey])?$dict[$strkey]:'['.$strkey.']';
 	
 	if (is_array($reps)){
 		foreach ($reps as $k=>$v){

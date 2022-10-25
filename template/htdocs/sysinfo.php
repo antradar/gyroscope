@@ -275,7 +275,7 @@ foreach ($tests as $test=>$result){
 </div>
 
 <?php
-	if (!$user['login']){
+	if (!isset($user['login'])||$user['login']==''){
 ?>
 <div style="background:#ffffcc;font-size:14px;margin:10px 0;padding:10px 5px;">**** Sign in to see details.</div>
 <?php		

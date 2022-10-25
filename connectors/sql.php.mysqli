@@ -11,10 +11,9 @@ $SQL_ENGINE="MySQLi";
 
 class LazyMySQLi extends mysqli{
 	public $lazyname;
-	public $stat; //https://www.php.net/manual/en/migration74.incompatible.php#migration74.incompatible.mysqli
 	public function __construct($host,$user,$pass,$db,$lazyname=null,$port=null,$socket=null){
 		$this->lazyname=$lazyname;
-		parent::__construct($host,$user,$pass,$db,$port,$socket);
+		@parent::__construct($host,$user,$pass,$db,$port,$socket);
 	}
 }
 
@@ -57,12 +56,21 @@ function sql_prep($query,&$db,$params=null){
 		$dbinfo=$dbdefers[$db];
 		$db=sql_get_db($dbinfo['host'],$dbinfo['source'],$dbinfo['user'],$dbinfo['pass'],null,$dbinfo['lazyname']);
 	}	
-	if (is_object($db)&&$db->stat==null&&isset($db->lazyname)){
-		//echo "disconnected, reconnecting...\r\n";
-		usleep(10000);
+	
+	if (is_object($db)&& ((isset($db->stat)&&$db->stat==null)||(isset($db->connect_error)&&$db->connect_error!='')||$db->sqlstate=='HY000') &&isset($db->lazyname)){
+		error_log("mysql disconnected, reconnecting...");
+		
 		$dbinfo=$dbdefers[$db->lazyname];
-		$db=sql_get_db($dbinfo['host'],$dbinfo['source'],$dbinfo['user'],$dbinfo['pass'],null,$db->lazyname);
+		$maxtry=5;
+		$tryidx=0;
+		do{
+			usleep(1000000*($tryidx*2));
+			error_log("reconnect #".($tryidx+1));
+			$db=sql_get_db($dbinfo['host'],$dbinfo['source'],$dbinfo['user'],$dbinfo['pass'],null,$db->lazyname);
+			$tryidx++;
+		} while ( ((isset($db->connect_error)&&$db->connect_error!='') || (isset($db->error)||$db->error!='') || $db->sqlstate=='HY000' ) &&$tryidx<$maxtry);
 	}
+	
 	
 	if (isset($params)){
 		if (!is_array($params)) $params=array($params);
@@ -99,6 +107,14 @@ function sql_prep($query,&$db,$params=null){
 	}//need to bind
 	
 	///////////////////////
+
+	
+	if (!isset($stmt)||!is_object($stmt)||!isset($stmt->id)||!$stmt->id){
+		error_log('sql connection interrupted and an atom was split. reconnecting...');
+		$dbinfo=$dbdefers[$db->lazyname];
+		$db=sql_get_db($dbinfo['host'],$dbinfo['source'],$dbinfo['user'],$dbinfo['pass'],null,$db->lazyname);
+		return;	
+	}
 		
 	if (!mysqli_stmt_execute($stmt)) {
 		$backtrace=debug_backtrace();
@@ -142,11 +158,19 @@ function sql_query($query,&$db,$mode=MYSQLI_STORE_RESULT){
 		$dbinfo=$dbdefers[$db];
 		$db=sql_get_db($dbinfo['host'],$dbinfo['source'],$dbinfo['user'],$dbinfo['pass'],null,$dbinfo['lazyname']);
 	}	
-	if (is_object($db)&&$db->stat==null&&isset($db->lazyname)){
-		//echo "disconnected, reconnecting...\r\n";
-		usleep(10000);
+	
+	if (is_object($db)&& ((isset($db->stat)&&$db->stat==null)||(isset($db->connect_error)&&$db->connect_error!='')||$db->sqlstate=='HY000') &&isset($db->lazyname)){	
+		error_log("disconnected, reconnecting...\r\n");
 		$dbinfo=$dbdefers[$db->lazyname];
-		$db=sql_get_db($dbinfo['host'],$dbinfo['source'],$dbinfo['user'],$dbinfo['pass'],null,$db->lazyname);
+		$maxtry=5;
+		$tryidx=0;
+		do{
+			usleep(1000000*($tryidx+1));
+			error_log("reconnect #".($tryidx+1));
+			$db=sql_get_db($dbinfo['host'],$dbinfo['source'],$dbinfo['user'],$dbinfo['pass'],null,$db->lazyname);
+			$tryidx++;
+		} while ( ((isset($db->connect_error)&&$db->connect_error!='') || (isset($db->error)||$db->error!='') || $db->sqlstate=='HY000' ) &&$tryidx<$maxtry);
+				
 	}
 		
 	$a=microtime(1);
@@ -157,7 +181,7 @@ function sql_query($query,&$db,$mode=MYSQLI_STORE_RESULT){
 		$backtrace=debug_backtrace();
 		$file=basename($backtrace[0]['file']);
 		$line=$backtrace[0]['line'];
-		
+				
 		echo "@$file [$line] sql_error: ".$query.' '.mysqli_error($db)."\r\n";
 	}
 	if (is_array($gsdbprofile)) array_push($gsdbprofile,array('query'=>$query,'time'=>$b-$a));

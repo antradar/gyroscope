@@ -4,7 +4,7 @@ define ('GSSERVICE',1);
 
 include 'lb.php';
 
-if (isset($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!='on'&&$_SERVER['HTTPS']!=1){
+if (!isset($_SERVER['HTTPS'])||($_SERVER['HTTPS']!='on'&&$_SERVER['HTTPS']!=1)){
 	$usehttps=0;	
 }
 
