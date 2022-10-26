@@ -173,7 +173,7 @@ $tests=array(
 'Segment size'=>array('res'=>2,'message'=>$seg),
 'Number Formatter'=>array('res'=>class_exists('NumberFormatter')),
 'SQL Connector'=>array('res'=>2,'message'=>$SQL_ENGINE),
-'Co-SQL Connector'=>array('res'=>2,'message'=>$SQL_ENGINE2),
+'Co-SQL Connector'=>array('res'=>2,'message'=>isset($SQL_ENGINE2)?$SQL_ENGINE2:'-'),
 //'MySQLi Reflect Bind'=>array('res'=>!$bindfail),
 'MySQL client charset'=>array('res'=>$csets['character_set_client']=='latin1','message'=>$csets['character_set_client']),
 'MySQL connection charset'=>array('res'=>$csets['character_set_connection']=='latin1','message'=>$csets['character_set_connection']),
@@ -235,6 +235,10 @@ if (!isset($user['login'])||$user['login']==''){
 	$tests['PHP Version']=array('res'=>2,'message'=>'****');
 	
 	unset($tests['&nbsp; &nbsp; &nbsp; &nbsp; JIT']);
+}
+
+if ($jitcode==2){
+	unset($tests['&nbsp; &nbsp; &nbsp; &nbsp; JIT']);	
 }
 
 

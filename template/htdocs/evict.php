@@ -37,7 +37,7 @@ function evict_getblockedids(){
 	global $db;
 	
 	$user=userinfo();
-	$gsid=$user['gsid'];
+	$gsid=isset($user['gsid'])?$user['gsid']:0;
 	
 	$blockedids=cache_get(TABLENAME_GSS.'gyroscopeblockedids_'.$gsid);
 	if (!is_array($blockedids)){

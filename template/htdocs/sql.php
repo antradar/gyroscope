@@ -6,7 +6,9 @@
 if (!defined('MYSQLI_STORE_RESULT')) define('MYSQLI_STORE_RESULT',0);
 if (!defined('MYSQLI_ASYNC')) define('MYSQLI_ASYNC',8);
 
-$SQL_ENGINE="MySQLi";
+$SQL_ENGINE="MySQLi"; mysqli_report(MYSQLI_REPORT_OFF);
+
+
 //$SQL_READONLY=1; //uncomment to trigger readonly mode
 
 class LazyMySQLi extends mysqli{
