@@ -3,7 +3,7 @@
 function maketailparams(){
 	$tailparams='';
 		
-	$vmode=$_GET['vmode'];
+	$vmode=SGET('vmode');
 	if ($vmode=='test'){
 			$tailparams='&vmode='.$_GET['vmode'].'&testid='.$_GET['testid'];
 	}
@@ -25,7 +25,7 @@ function showdatepicker(){
 	$user=userinfo();
 	$gsid=$user['gsid'];
 
-	$key=trim(preg_replace('/[^A-Za-z0-9-]/','',SGET('key')));
+	$key=trim(preg_replace('/[^A-Za-z0-9-\ ]/','',SGET('key')));
 	
 	$mode=preg_replace('/[^A-Za-z0-9-]/','',SGET('mode'));
 	$tz=preg_replace('/[^A-Za-z0-9-]/','',SGET('tz'));
@@ -66,9 +66,9 @@ function showdatepicker(){
 
 	$keys=explode(" ",str_replace("-"," ",$key));
 	if (strlen($keys[0])==4) $y=$keys[0];
-	if (strlen($keys[1])==4) $y=$keys[1];
+	if (isset($keys[1])&&strlen($keys[1])==4) $y=$keys[1];
 	if (strlen($keys[0])<3&&$keys[0]>0&&$keys[0]<=12) $m=$keys[0];
-	if (strlen($keys[1])<3&&$keys[1]>0&&$keys[1]<=12) $m=$keys[1];
+	if (isset($keys[1])&&strlen($keys[1])<3&&$keys[1]>0&&$keys[1]<=12) $m=$keys[1];
 
 	$nm=$m+1;
 	$ny=$y;
@@ -91,7 +91,7 @@ function showdatepicker(){
 	
 	$colors=array('#c5c0fb','#cdc0f3','#d7c0e9','#dec0e2','#e6c0da','#efc0d1','#f8c0c8','#febbbe','#fea4a7','#ff8588','#ff6a6e','#ff4e52');
 
-	$vmode=$_GET['vmode'];
+	$vmode=SGET('vmode');
 	
 	if ($vmode=='test'){ // implement blockmap
 		$yesdays=array();
@@ -199,8 +199,8 @@ function showtimepicker($y=null,$m=null,$d=null,$start=null,$end=null,$res=null,
 		$m=GETVAL('m');
 		$d=GETVAL('d');
 		
-		if ($_GET['start']) $start=$_GET['start'];
-		if ($_GET['end']) $end=$_GET['end'];
+		if (isset($_GET['start'])) $start=$_GET['start'];
+		if (isset($_GET['end'])) $end=$_GET['end'];
 		if ($end==24) $end=26;
 
 		$res=SGET('res');	
@@ -212,7 +212,7 @@ function showtimepicker($y=null,$m=null,$d=null,$start=null,$end=null,$res=null,
 	$rstart=$base+$start*3600;
 	$rend=$base+$end*3600;
 	
-	if ($_GET['rstart']){
+	if (isset($_GET['rstart'])&&$_GET['rstart']){
 		$rstart=$_GET['rstart'];
 		$rend=$_GET['rend'];	
 	}
@@ -233,7 +233,7 @@ function showtimepicker($y=null,$m=null,$d=null,$start=null,$end=null,$res=null,
 		$hend=$val+$res*60-$nextres*60;
 
 		$picked=date('Y-n-j',$val).' '.$t;
-		if ($_GET['nodate']) $picked=$t;
+		if (isset($_GET['nodate'])&&$_GET['nodate']) $picked=$t;
 		$ds=date('I',$val);
 		if ($ds) $picked.=' *';
 
@@ -249,7 +249,7 @@ function showtimepicker($y=null,$m=null,$d=null,$start=null,$end=null,$res=null,
 			<?php }?>
 			<?php if ($res>1&&$mdkey==$daykey){?>
 			<a style="position:absolute;display:block;padding:1px 5px;font-size:10px;border-radius:5px;background-color:#666666;color:#ffffff;top:20px;right:10px;"
-				onclick="this.style.display='none';ajxpgn('subtime_<?php echo $i;?>',document.appsettings.codepage+'?cmd=showtimepicker&nodate=<?php echo intval($_GET['nodate']);?>&y=<?php echo $y;?>&m=<?php echo $m;?>&d=<?php echo $d;?>&rstart=<?php echo $hstart;?>&rend=<?php echo $hend;?>&res=<?php echo $nextres;?>&tz=<?php echo $tz;?>');">...</a>
+				onclick="this.style.display='none';ajxpgn('subtime_<?php echo $i;?>',document.appsettings.codepage+'?cmd=showtimepicker&nodate=<?php echo intval(SGET('nodate'));?>&y=<?php echo $y;?>&m=<?php echo $m;?>&d=<?php echo $d;?>&rstart=<?php echo $hstart;?>&rend=<?php echo $hend;?>&res=<?php echo $nextres;?>&tz=<?php echo $tz;?>');">...</a>
 			<?php }?>
 		</div>
 		<div id="subtime_<?php echo $i;?>" style="margin:0 10px;">

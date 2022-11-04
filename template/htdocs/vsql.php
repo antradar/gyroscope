@@ -230,7 +230,7 @@ function vsql_prep($query,&$db,$params=array(),$quickinsert=0){
 	// $query=preg_replace('/ limit\s*(\d+),(\d+)/i',' offset ${1} limit ${2}', $query);
 	
 	$b=microtime(1);
-	$querytime=$rs['statistics']['elapsed'];
+	$querytime=isset($rs)&&isset($rs['statistics'])&&isset($rs['statistics']['elapsed'])?$rs['statistics']['elapsed']:null;
 		
 	if (is_array($gsdbprofile)) array_push($gsdbprofile,array('query'=>$query,'time'=>$querytime,'nettime'=>$b-$a,'overhead'=>$b-$a-$querytime));
 

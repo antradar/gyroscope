@@ -138,10 +138,10 @@ function showrange($title,$fieldname){
 		
 
 // start inline breadcrumb		
-	if (is_numeric($filters[$fieldname.'_a'])||is_numeric($filters[$fieldname.'_b'])){
+	if ((isset($filters[$fieldname.'_a'])&&is_numeric($filters[$fieldname.'_a']))||(isset($filters[$fieldname.'_b'])&&is_numeric($filters[$fieldname.'_b']))){
 		$myfilters=$filters;
-		unset($myfilters[$fieldname.'_a']);
-		unset($myfilters[$fieldname.'_b']);
+		if (isset($myfilters[$fieldname.'_a'])) unset($myfilters[$fieldname.'_a']);
+		if (isset($myfilters[$fieldname.'_b'])) unset($myfilters[$fieldname.'_b']);
 		$filter=strfilters($myfilters,$nbasefilters);		
 ?>
 <div class="navgroup">
@@ -221,7 +221,7 @@ function shownegfilters($fieldname){
 	$filters=$bfilters['filters'];
 	$nfilters=$bfilters['nfilters'];
 			
-	if (!is_array($nfilters)||!is_array($nfilters[$fieldname])||count($nfilters[$fieldname])==0) return;
+	if (!is_array($nfilters)||!isset($nfilters[$fieldname])||!is_array($nfilters[$fieldname])||count($nfilters[$fieldname])==0) return;
 ?>
 <div class="neglabel">Excluding:</div>
 <div class="neggroup">
@@ -270,7 +270,7 @@ function shownav($title,$fieldname,$multi=null){
 
 	$counts=countfield($fieldname);
 	if (count($counts)<=0) {
-		if (count($nbasefilters[$fieldname])>0){
+		if (isset($nbasefilters[$fieldname])&&is_array($nbasefilters[$fieldname])&&count($nbasefilters[$fieldname])>0){
 		?>
 		<div class="navgroup">
 		<div class="navtitle"><?php echo $title;?></div>
@@ -300,9 +300,9 @@ function shownav($title,$fieldname,$multi=null){
 		$dispname=dispname($fieldname,$key,array_keys($counts));
 		$myfilters=$basefilters;
 		if ($multi){
-			if (!is_array($myfilters[$multi])) $myfilters[$multi]=array();
+			if (!isset($myfilters[$multi])||!is_array($myfilters[$multi])) $myfilters[$multi]=array();
 			$myfilters[$multi][$key]=1;
-			if ($basefilters[$multi][$key]) unset($myfilters[$multi][$key]);
+			if (isset($basefilters[$multi][$key])) unset($myfilters[$multi][$key]);
 		} else $myfilters[$fieldname]=$key;
 		$filters=strfilters($myfilters,$nbasefilters);
 		
@@ -316,7 +316,7 @@ function shownav($title,$fieldname,$multi=null){
 		<?php
 		if ($multi){
 	?>		
-		<input <?php if ($basefilters[$multi][$key]) echo 'checked';?> type="checkbox" href="<?php echo $_SERVER['PHP_SELF'];?>?<?php echo $filters;?>" onclick="setfilter('nav','bc','list','ajax#prefix#nav.php','<?php echo $filters;?>');return false;"> 
+		<input <?php if (isset($basefilters[$multi][$key])&&$basefilters[$multi][$key]) echo 'checked';?> type="checkbox" href="<?php echo $_SERVER['PHP_SELF'];?>?<?php echo $filters;?>" onclick="setfilter('nav','bc','list','ajax#prefix#nav.php','<?php echo $filters;?>');return false;"> 
 	<?php		
 		}
 
@@ -324,12 +324,12 @@ function shownav($title,$fieldname,$multi=null){
 	<a href="<?php echo $_SERVER['PHP_SELF'];?>?<?php echo $filters;?>" onclick="setfilter('nav','bc','list','ajax#prefix#nav.php','<?php echo $filters;?>');return false;"><?php echo $dispname;?></a> 
 	
 	<?php
-	if (!$multi||!$basefilters[$multi][$key]||true){ //remove true to hide refinement count for selected multi fields
+	if (!$multi||!isset($basefilters[$multi][$key])||!$basefilters[$multi][$key]||true){ //remove true to hide refinement count for selected multi fields
 	?>
 	<em>(<?php echo $count;?>)</em>
 	<?php }?>
 	
-	<?php if (!$basefilters[$multi][$key]){?>
+	<?php if (!isset($basefilters[$multi][$key])||!$basefilters[$multi][$key]){?>
 	<a class="filterneg" href="<?php echo $_SERVER['PHP_SELF'];?>?<?php echo $filters;?>&neg__<?php echo $fieldname;?>[]=<?php echo $key;?>" onclick="setfilter('nav','bc','list','ajax#prefix#nav.php','<?php echo $filters;?>&neg__<?php echo $fieldname;?>[]=<?php echo $key;?>');return false;">
 	<acronym title="exclude from results">[-]</acronym>
 	</a>

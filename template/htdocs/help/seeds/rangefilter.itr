@@ -1,2 +1,2 @@
-	if (is_numeric($_REQUEST['#fld0#_a'])) $filters['#fld0#_a']=$_REQUEST['#fld0#_a'];
-	if (is_numeric($_REQUEST['#fld0#_b'])) $filters['#fld0#_b']=$_REQUEST['#fld0#_b'];
+	if (isset($_REQUEST['#fld0#_a'])&&is_numeric($_REQUEST['#fld0#_a'])) $filters['#fld0#_a']=$_REQUEST['#fld0#_a'];
+	if (isset($_REQUEST['#fld0#_b'])&&is_numeric($_REQUEST['#fld0#_b'])) $filters['#fld0#_b']=$_REQUEST['#fld0#_b'];

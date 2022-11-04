@@ -51,6 +51,10 @@ function turl_exec($turl,$extra='',$checkfunc=null,$failfunc=null,$successfunc=n
 	$params=$urlinfo['query'];
 	
 	$gsfunc='';
+	if (is_array($extra)){
+		$gsfunc=$extra['gsfunc'];
+		$extra=$extra['extra'];	
+	}
 	
 	$ip=$after['primary_ip'];
 		

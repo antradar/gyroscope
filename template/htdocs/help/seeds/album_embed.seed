@@ -24,7 +24,7 @@ function embed#primaryfield##record#uploader(){
 	$#primarydispfield#=$myrow['#primarydispfield#'];
 	
 	
-	if ($_FILES['file']&&$_FILES['file']['name']){
+	if (isset($_FILES['file'])&&$_FILES['file']&&$_FILES['file']['name']){
 		//echo '<pre>';print_r($_FILES);echo '</pre>'; return;
 		checkgskey('embed#primaryfield##record#uploader_'.$#primarykey#);
 			
@@ -66,7 +66,7 @@ function embed#primaryfield##record#uploader(){
 					);
 	
 									
-					if ($tinypngapi!=''){
+					if (isset($tinypngapi)&&$tinypngapi!=''){
 						$crops=tinypng_crop($c,$sizes,$tinypngapi);
 						
 						$f=fopen($org,'wb');
@@ -97,7 +97,7 @@ function embed#primaryfield##record#uploader(){
 			}
 				
 		
-		if (!$_GET['diag']){
+		if (!isset($_GET['diag'])||!$_GET['diag']){
 ?>
 <script>parent.list#primaryfield##records#(<?php echo $#primarykey#;?>,"<?php echo $msg;?>");</script>
 <?php			
@@ -105,7 +105,7 @@ function embed#primaryfield##record#uploader(){
 		
 	}
 	
-	if ($_GET['diag']) {echo $msg;return;}
+	if (isset($_GET['diag'])&&$_GET['diag']) {echo $msg;return;}
 	
 ?>
 <html>

@@ -25,8 +25,8 @@ function maketemplate($templatetypekey,$reps,$preprocessor=null,$gsid=null){
 		$templatename=str_replace('%%'.$k.'%%',$v,$templatename);	
 	}	
 	
-	$templatepn=$myrow['templatepn'];
-	$templateinit=$myrow['templateinit'];
+	$templatepn = isset($myrow['templatepn'])?intval($myrow['templatepn']):0;
+	$templateinit = isset($myrow['templateinit'])?intval($myrow['templateinit']):0;
 	
 	$c=$myrow['templatetext'];
 	

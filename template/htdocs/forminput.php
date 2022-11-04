@@ -14,6 +14,10 @@ function SQET($key,$trim=1){$val=isset($_POST[$key])?$_POST[$key]:'';if ($trim) 
 
 function hspc($str){return htmlspecialchars($str,ENT_SUBSTITUTE|ENT_COMPAT);}
 
+//array with nullable nodes
+function narray_val($arr,$key){if (!isset($arr[$key])) return null; return $arr[$key];}
+
+
 function tzconvert($stamp,$src,$dst){
 	
 	$tz=date_default_timezone_get();

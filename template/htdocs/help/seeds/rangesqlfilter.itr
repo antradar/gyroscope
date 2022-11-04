@@ -1,8 +1,8 @@
-	if (is_numeric($_REQUEST['#fld0#_a'])) {
+	if (isset($_REQUEST['#fld0#_a'])&&is_numeric($_REQUEST['#fld0#_a'])) {
 		$filters.=' and #fld0#>=? ';
 		array_push($params,$_REQUEST['#fld0#_a']);
 	}
-	if (is_numeric($_REQUEST['#fld0#_b'])) {
+	if (isset($_REQUEST['#fld0#_b'])&&is_numeric($_REQUEST['#fld0#_b'])) {
 		$filters.=' and #fld0#<=? ';
 		array_push($params,$_REQUEST['#fld0#_b']);
 	}

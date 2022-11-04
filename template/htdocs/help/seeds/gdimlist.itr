@@ -7,13 +7,13 @@
 			$filters.=" and #fld0# in ($strids) ";	
 		}		
 	}	
-	if (isset($_GET['neg__#fld0#'])) {
+	if (isset($_GET['neg__#fld0#'])&&is_array($_GET['neg__#fld0#'])) {
 		foreach ($_GET['neg__#fld0#'] as $neg) {
 			$filters.=" and #fld0#!=? ";
 			array_push($params,$neg);
 		}
 	}	
-	if ($_GET['#fld0#']!=''&&(!is_array($_GET['neg__#fld0#'])||!in_array($_GET['#fld0#'],$_GET['neg__#fld0#']))) {
+	if (isset($_GET['#fld0#'])&&$_GET['#fld0#']!=''&&(!isset($_GET['neg__#fld0#'])||!is_array($_GET['neg__#fld0#'])||!in_array($_GET['#fld0#'],$_GET['neg__#fld0#']))) {
 		$filters.=" and #fld0#=? ";
 		array_push($params,SGET('#fld0#'));
 	}
