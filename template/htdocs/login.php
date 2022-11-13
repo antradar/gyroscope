@@ -269,7 +269,7 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['gyroscope
 					setcookie('gstier',$gstier,null,null,null,$usehttps,true);
 					setcookie('userid',$userid,null,null,null,$usehttps,true);
 					setcookie('login',$login,null,null,null,$usehttps,true);
-					setcookie('dispname',$dispname,null,null,null,$usehttps,true);
+					setrawcookie('dispname',rawurlencode($dispname),null,null,null,$usehttps,true);
 					setcookie('groupnames',$groupnames,null,null,null,$usehttps,true);
 					setcookie('gsfrac',$rand,null,null,null,$usehttps,true);
 					

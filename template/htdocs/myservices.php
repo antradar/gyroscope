@@ -53,7 +53,7 @@ header('gsuid: '.($user['userid'])); //uncomment for logging in nginx as $upstre
 try {  //comment out in older PHP versions
 	
 switch($cmd){
-		
+			
 // Chat - gsb place holder
 
 	case 'slv_codegen__chats': die('<div class="section">Commercial License Required</div>'); break;

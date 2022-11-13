@@ -67,8 +67,8 @@ SD Icons:
 <?php
 
 foreach ($icons as $icon){
-	$subs=$icon['subs'];
-	$style=$icon['style'];
+	$subs=isset($icon['subs'])?$icon['subs']:null;
+	$style=isset($icon['style'])?$icon['style']:'';
 	if ($style=='') $style='s';
 ?>
 
@@ -77,7 +77,7 @@ foreach ($icons as $icon){
 	<?php
 	if (is_array($subs)){
 		foreach ($subs as $sub){
-			$sstyle=$sub['style'];
+			$sstyle=isset($sub['style'])?$sub['style']:'';
 			if ($sstyle=='') $sstyle='s';
 	?>
 	<span class="fa<?php echo $sstyle;?> fa-<?php echo $sub['name'];?>" style="color:<?php echo $facecolor;?>;font-size:<?php echo 32+ceil($sub['adjust']/2);?>px;position:absolute;top:<?php echo floor($sub['dy']/2);?>px;left:<?php echo floor($sub['dx']/2);?>px;"></span>
@@ -93,7 +93,7 @@ foreach ($icons as $icon){
 	<span class="fa<?php echo $style;?> fa-<?php echo $icon['name'];?>" style="color:<?php echo $facecolor;?>;font-size:<?php echo 32+ceil($icon['adjust']/2);?>px;margin-right:10px;position:relative;">
 	<?php
 		foreach ($subs as $sub){
-			$sstyle=$sub['style'];
+			$sstyle=isset($sub['style'])?$sub['style']:'';
 			if ($sstyle=='') $sstyle='s';
 	?>
 	+ <span class="fa<?php echo $sstyle;?> fa-<?php echo $sub['name'];?>" style="color:<?php echo $facecolor;?>;font-size:<?php echo 32+ceil($sub['adjust']/2);?>px;"></span>
@@ -109,7 +109,7 @@ foreach ($icons as $icon){
 	<?php 
 	if (is_array($subs)){
 		foreach ($subs as $sub){
-			$sstyle=$sub['style'];
+			$sstyle=isset($sub['style'])?$sub['style']:'';
 			if ($sstyle=='') $sstyle='s';
 	?>
 	<span class="fa<?php echo $sstyle;?> fa-<?php echo $sub['name'];?>" style="color:#ffffff;font-size:<?php echo 24+ceil($sub['adjust']*12/32);?>px;position:absolute;top:<?php echo floor($sub['dy']*12/32);?>px;left:<?php echo floor($sub['dx']*12/32);?>px;"></span>
@@ -124,7 +124,7 @@ foreach ($icons as $icon){
 	<span class="fa<?php echo $style;?> fa-<?php echo $icon['name'];?>" style="color:#ffffff;font-size:<?php echo 24+ceil($icon['adjust']*12/32);?>px;"></span>
 	<?php
 		foreach ($subs as $sub){
-			$sstyle=$sub['style'];
+			$sstyle=isset($sub['style'])?$sub['style']:'';
 			if ($sstyle=='') $sstyle='s';
 	?>
 	<span style="color:#ffffff;">+</span> <span class="fa<?php echo $sstyle;?> fa-<?php echo $sub['name'];?>" style="color:#ffffff;font-size:<?php echo 24+ceil($sub['adjust']*12/32);?>px;"></span>	
@@ -148,8 +148,8 @@ SD Tab Icons:
 <?php
 
 foreach ($icons as $icon){
-	$subs=$icon['subs'];
-	$style=$icon['style'];
+	$subs=isset($icon['subs'])?$icon['subs']:null;
+	$style=isset($icon['style'])?$icon['style']:'';
 	if ($style=='') $style='s';
 ?>
 
@@ -174,8 +174,8 @@ HD Tab Icons:
 <?php
 
 foreach ($icons as $icon){
-	$subs=$icon['subs'];
-	$style=$icon['style'];
+	$subs=isset($icon['subs'])?$icon['subs']:null;
+	$style=isset($icon['style'])?$icon['style']:'';
 	if ($style=='') $style='s';
 ?>
 
@@ -197,8 +197,8 @@ foreach ($icons as $icon){
 </div>
 
 <?php foreach ($icons as $icon){
-	$subs=$icon['subs'];
-	$style=$icon['style'];
+	$subs=isset($icon['subs'])?$icon['subs']:null;
+	$style=isset($icon['style'])?$icon['style']:'';
 	if ($style=='') $style='s';
 ?>
 
@@ -207,7 +207,7 @@ foreach ($icons as $icon){
 	<?php
 	if (is_array($subs)){
 		foreach ($subs as $sub){
-			$sstyle=$sub['style'];
+			$sstyle=isset($sub['style'])?$sub['style']:'';
 			if ($sstyle=='') $sstyle='s';
 	?>
 	<span class="fa<?php echo $sstyle;?> fa-<?php echo $sub['name'];?>" style="color:<?php echo $facecolor;?>;font-size:<?php echo 64+$sub['adjust'];?>px;position:absolute;top:<?php echo $sub['dy'];?>px;left:<?php echo $sub['dx'];?>px;"></span>
@@ -223,7 +223,7 @@ foreach ($icons as $icon){
 	<span class="fa fa-<?php echo $icon['name'];?>" style="position:relative;color:<?php echo $facecolor;?>;font-size:<?php echo 64+$icon['adjust'];?>px;">
 	<?php
 		foreach ($subs as $sub){
-			$sstyle=$sub['style'];
+			$sstyle=isset($sub['style'])?$sub['style']:'';
 			if ($sstyle=='') $sstyle='s';
 	?>
 	<span style="font-size:22px;vertical-align:middle;">+</span> <span class="fa<?php echo $sstyle;?> fa-<?php echo $sub['name'];?>" style="color:<?php echo $facecolor;?>;font-size:<?php echo 64+$sub['adjust'];?>px;"></span>
@@ -239,7 +239,7 @@ foreach ($icons as $icon){
 	<?php
 	if (is_array($subs)){
 		foreach ($subs as $sub){
-			$sstyle=$sub['style'];
+			$sstyle=isset($sub['style'])?$sub['style']:'';
 			if ($sstyle=='') $sstyle='s';
 	?>
 	<span class="fa<?php echo $sstyle;?> fa-<?php echo $sub['name'];?>" style="color:#ffffff;font-size:<?php echo 48+ceil($sub['adjust']*24/32);?>px;position:absolute;top:<?php echo floor($sub['dy']*24/32);?>px;left:<?php echo floor($sub['dx']*24/32);?>px;"></span>
@@ -254,7 +254,7 @@ foreach ($icons as $icon){
 	<span class="fa<?php echo $style;?> fa-<?php echo $icon['name'];?>" style="position:relative;color:#ffffff;font-size:<?php echo 48+$icon['adjust'];?>px;">
 	<?php
 		foreach ($subs as $sub){
-			$sstyle=$sub['style'];
+			$sstyle=isset($sub['style'])?$sub['style']:'';
 			if ($sstyle='') $sstyle='s';
 	?>
 	<span style="color:#ffffff;font-size:20px;vertical-align:middle;">+</span> 

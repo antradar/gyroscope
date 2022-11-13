@@ -28,7 +28,7 @@ $userroles=array(
 	'helpedit'=>'edit help topics',
 	'chatsettings'=>'manage chat settings',
 	'chats'=>'respond to support chats',
-	'sharedashreports'=>'share custom reports on the home tab'
+	'sharedashreports'=>'share custom reports on the home tab',
 );
 
 //a user can grant the following rights only if the user also has the right themselves
@@ -43,6 +43,10 @@ $user=userinfo();
 
 
 $toolbaritems=array(
+'codegen.sap'=>array('title'=>'SAP','icon'=>'img-sap','modversion'=>'91','lockdown'=>1),
+	'codegen.sapentitysets'=>array('title'=>'SAP Entity Sets','icon'=>'','modversion'=>'91','lockdown'=>1),
+	'codegen.sapentities'=>array('title'=>'SAP Entities','icon'=>'','modversion'=>'91','lockdown'=>1),
+
 'core.settings'=>array('title'=>_tr('icon_settings'),'icon'=>'img-settings','modversion'=>'91','lockdown'=>1),
 	'core.users'=>array('title'=>'Users','icon'=>'','modversion'=>'78','lockdown'=>1),
 	'core.reportsettings'=>array('title'=>'Report Settings','icon'=>'','modversion'=>'92','lockdown'=>1),	
@@ -54,6 +58,5 @@ $toolbaritems=array(
 'codegen.chats'=>array('title'=>'Chats','icon'=>'img-chats','modversion'=>1,'bingo'=>1),
 
 );
-
 
 foreach ($toolbaritems as $idx=>$item) if (!$item) unset($toolbaritems[$idx]);

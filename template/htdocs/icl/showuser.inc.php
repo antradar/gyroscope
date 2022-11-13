@@ -48,12 +48,12 @@ function showuser($userid=null){
 	//vendor auth 2
 	
 	$jsroles=str_replace('"',"'",json_encode(array_keys($userroles)));
-	
 		
 	header('newtitle: '.tabtitle('<img src="imgs/t.gif" class="ico-user">'.htmlspecialchars($login)));
 	
 	makechangebar('user_'.$userid,"updateuser('$userid',$jsroles,'".makegskey('updateuser_'.$userid)."');",'');
 	makesavebar('user_'.$userid);
+	
 ?>
 
 
@@ -144,8 +144,8 @@ function showuser($userid=null){
 		$warning=0;
 		foreach ($userroles as $role=>$label){
 		?>
-		<div style="padding-left:10px;margin-bottom:3px;<?php if (in_array($role,$userrolelocks)&&!in_array($role,$groups)&&!$user['groups'][$role]) echo 'display:none;';?>">
-			<input <?php if (in_array($role,$userrolelocks)&&!$user['groups'][$role]) echo 'disabled';?> onclick="marktabchanged('user_<?php echo $userid;?>');" type="checkbox" id="userrole_<?php echo $role;?>_<?php echo $userid;?>" <?php if (in_array($role,$groups)) echo 'checked';?>> 
+		<div style="padding-left:10px;margin-bottom:3px;<?php if (in_array($role,$userrolelocks)&&!in_array($role,$groups)&&!isset($user['groups'][$role])) echo 'display:none;';?>">
+			<input <?php if (in_array($role,$userrolelocks)&&!isset($user['groups'][$role])) echo 'disabled';?> onclick="marktabchanged('user_<?php echo $userid;?>');" type="checkbox" id="userrole_<?php echo $role;?>_<?php echo $userid;?>" <?php if (in_array($role,$groups)) echo 'checked';?>> 
 			<label for="userrole_<?php echo $role;?>_<?php echo $userid;?>"><?php echo $label;?><?php if ($myuserid==$userid&&in_array($role,$userrolelocks)&&$user['groups'][$role]) {$warning=1;echo ' <span style="color:#ab0200;">*</span>';}?></label>
 		</div>
 		<?php	
