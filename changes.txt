@@ -1,3 +1,8 @@
+19.6
+- cookie encoding backward compatibility fix for php7.3
+- syntax cleanup for php8.1, narray_val in forminput
+- php8 connector fixes; JIT indicator in sysinfo
+
 19.5
 - document tab title syncs with tab title if GYROSCOPE_SHORT_APP_NAME is set
 

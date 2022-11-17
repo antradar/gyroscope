@@ -5,6 +5,8 @@ include 'lang.php';
 include 'forminput.php';
 include 'bcrypt.php';
 
+include 'gsratecheck.php';
+
 if (isset($usehttps)&&$usehttps) include 'https.php'; 
 include 'connect.php';
 include 'auth.php';
@@ -18,6 +20,14 @@ xsscheck();
 
 $login=SQET('login');
 $nopass=intval(SQET('nopass'));
+
+if ($login==''){header('HTTP/1.0 403');die('.');}
+
+list($rateok,$penalty)=gsratecheck_verify($_SERVER['REMOTE_ADDR'],$login);
+if (!$rateok){
+	header('prevalidation: too many login attempts');
+	die();	
+}
 
 $query="select * from ".TABLENAME_USERS." left join ".TABLENAME_GSS." on ".TABLENAME_USERS.".".COLNAME_GSID."=".TABLENAME_GSS.".".COLNAME_GSID." where login=? and active=1 and virtualuser=0";
 $rs=sql_prep($query,$db,$login);  

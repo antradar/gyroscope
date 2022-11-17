@@ -43,9 +43,6 @@ $user=userinfo();
 
 
 $toolbaritems=array(
-'codegen.sap'=>array('title'=>'SAP','icon'=>'img-sap','modversion'=>'91','lockdown'=>1),
-	'codegen.sapentitysets'=>array('title'=>'SAP Entity Sets','icon'=>'','modversion'=>'91','lockdown'=>1),
-	'codegen.sapentities'=>array('title'=>'SAP Entities','icon'=>'','modversion'=>'91','lockdown'=>1),
 
 'core.settings'=>array('title'=>_tr('icon_settings'),'icon'=>'img-settings','modversion'=>'91','lockdown'=>1),
 	'core.users'=>array('title'=>'Users','icon'=>'','modversion'=>'78','lockdown'=>1),

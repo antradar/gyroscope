@@ -3,6 +3,7 @@
 include 'lb.php';
 include 'lang.php';
 include 'forminput.php';
+include 'gsratecheck.php';
 
 include 'encdec.php';
 include 'bcrypt.php';
@@ -50,15 +51,23 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['gyroscope
 		$password=md5($dbsalt.$_POST['password']);
 		$login=SQET('gyroscope_login_'.$dkey);
 		
-		$query="select * from ".TABLENAME_USERS." left join ".TABLENAME_GSS." on ".TABLENAME_USERS.".".COLNAME_GSID."=".TABLENAME_GSS.".".COLNAME_GSID." where lower(login)=lower(?) and active=1 and virtualuser=0";
-		$rs=sql_prep($query,$db,array($login));  
+		
+		list($rateok,$penalty)=gsratecheck_verify($_SERVER['REMOTE_ADDR'],$login);
+		
+		if ($rateok){
+			$query="select * from ".TABLENAME_USERS." left join ".TABLENAME_GSS." on ".TABLENAME_USERS.".".COLNAME_GSID."=".TABLENAME_GSS.".".COLNAME_GSID." where lower(login)=lower(?) and active=1 and virtualuser=0";
+			$rs=sql_prep($query,$db,array($login)); 
+		} else {
+			$error_message='Too many login attempts.<br>Try again in '.duration_format($penalty);	
+		}
+		
 		
 		$passok=0;
 		
 		$nopass=isset($_POST['loginnopass'])?intval($_POST['loginnopass']):0;
 		
 			
-		if ($myrow=sql_fetch_array($rs)){
+		if ($rateok&&$myrow=sql_fetch_array($rs)){
 			
 			$useyubi=intval($myrow['useyubi']);
 			$yubimode=intval($myrow['yubimode']); //0-both password and key required, 1-key required, pass optional, 2-pass required, key optional
@@ -115,8 +124,12 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['gyroscope
 				
 				if ($yubimode==0||$yubimode==2){
 					$passok=password_verify($dbsalt.$_POST['password'],$myrow['password']);
-					if (!$passok) $error_message="Invalid password";
-					else {
+					if (!$passok) {
+						$error_message="Invalid password";
+						list($remlogin,$fpenalty)=gsratecheck_registerfail($_SERVER['REMOTE_ADDR'],$login);
+						if ($remlogin<1) $error_message.="<br>Try again in another ".duration_format($fpenalty);
+												
+					} else {
 						if (!$yubiok&&$yubimode!=2){
 							$passok=0;
 							$error_message="A security device is required for this account.";	
@@ -278,6 +291,8 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['gyroscope
 						setcookie('userlang',$_POST['lang'],time()+3600*24*30*6,null,null,$usehttps,true); //keep for 6 months
 					}
 					
+					gsratecheck_reset($_SERVER['REMOTE_ADDR'],$login);
+					
 					//reset SMS code
 					if ($usesms){
 						$query="update ".TABLENAME_USERS." set smscode='' where userid=?";
@@ -308,7 +323,12 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['gyroscope
 				
 			}//passreset
 		} else {
-			if (!$nopass&&$error_message=='') $error_message=_tr('invalid_password'); //passcheck
+			if (!$nopass&&$error_message=='') {
+				$error_message=_tr('invalid_password'); //passcheck
+				list($remlogin,$fpenalty)=gsratecheck_registerfail($_SERVER['REMOTE_ADDR'],$login);
+				if ($remlogin<1) $error_message.="<br>Try again in another ".duration_format($fpenalty);
+						
+			}
 		}
 	
 	}//csrf
@@ -428,7 +448,7 @@ body{font-size:28px;}
 	<?php }?>
 	
 	<?php if ($error_message!=''){?>
-	<div id="loginerror" style="color:#ab0200;font-weight:bold;padding-top:10px;"><?php echo $error_message;?></div>
+	<div id="loginerror" style="line-height:1.4em;color:#ab0200;font-weight:bold;padding-top:10px;"><?php echo $error_message;?></div>
 	<?php }?>
 		
 	<div style="padding-top:10px;"><label for="login"><?php tr('username');?>:</label> <?php if ($passreset){?><b><?php echo stripslashes($_POST['gyroscope_login_'.$dkey]);?></b> &nbsp; <a href="<?php echo $_SERVER['PHP_SELF'];?>"><em><?php tr('switch_user');?></em></a><?php }?></div>
