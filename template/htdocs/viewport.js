@@ -32,20 +32,32 @@ function scaleall(root){
   var idw=cw();
   
   var os=root.getElementsByTagName('div');
+
+  var tabviewheight=147;
   
+  if (document.appsettings.uiconfig.toolbar_position=='left') tabviewheight=82;
+    
   gid('lefticons').style.width=idw+'px';
-  gid('leftview').style.height=(idh-147)+'px';
-  gid('leftview_').style.height=(idh-147)+'px';
+  gid('leftview').style.height=(idh-tabviewheight)+'px';
+  gid('leftview_').style.height=(idh-tabviewheight)+'px';
   
   gid('lkv').style.height=(idh-187)+'px';
   gid('lkvc').style.height=(idh-220)+'px';
   
   gid('tabtitles').style.width=(idw-296)+'px';
   
-  if (!document.widen) gid('tabviews').style.width=(idw-296)+'px';
-  else gid('tabviews').style.width=(idw-1)+'px';
+  if (!document.widen) {
+	  if (document.appsettings.uiconfig.toolbar_position=='left') gid('tabviews').style.width=(idw-261)+'px';
+	  else gid('tabviews').style.width=(idw-296)+'px';
+ } else {
+	 gid('tabviews').style.width=(idw-1)+'px';
+ }
   
-  gid('tabviews').style.height=(idh-147)+'px';
+
+  gid('tabviews').style.height=(idh-tabviewheight)+'px';
+  //if (document.appsettings.uiconfig.toolbar_position=='top') gid('tabviews').style.height=(idh-147)+'px';
+  //if (document.appsettings.uiconfig.toolbar_position=='left') gid('tabviews').style.height=(idh-147+50)+'px';
+  
   gid('statusinfo').style.top=(idh-25)+'px';
   gid('statusinfo').style.width=idw+'px';
   
@@ -173,13 +185,20 @@ function autosize(){
 	  if (document.tabcount>0){
 	  var t=document.tabtitles[document.tabcount-1];
 	  var topmargin=0; //change this if changing tab style
+	  var tabbase=122;
+	  var tabviewheight=147;
+	  if (document.appsettings.uiconfig.toolbar_position=='left'){
+		  tabbase=57;
+		  tabviewheight=82;
+	  }
+	  
 	//wrapping
 	      document.rowcount=(t.offsetTop-topmargin)/38+1;
 	      if (!document.lastrowcount) document.lastrowcount=1;
 	      if (document.lastrowcount!=document.rowcount) {
 	        gid('tabtitles').style.height=38*document.rowcount+'px';
-	        gid('tabviews').style.top=122+38*(document.rowcount-1)+'px';
-	        gid('tabviews').scalech=147+38*(document.rowcount-1);
+	        gid('tabviews').style.top=tabbase+38*(document.rowcount-1)+'px';
+	        gid('tabviews').scalech=tabviewheight+38*(document.rowcount-1);
 	      }
 	      scaleall(document.body);
 	      document.lastrowcount=document.rowcount;
@@ -303,8 +322,13 @@ function showview(idx,lazy,force,params,func,bingo){
   gid('lv'+idx).viewloaded=1;
   document.viewindex=idx;
   
-  gid('leftview').className='bgflash';
-  setTimeout(function(){gid('leftview').className='bgready';},250);  
+  if (document.appsettings.uiconfig.toolbar_position=='left'){
+    gid('leftview').className='promoted bgflash';
+    setTimeout(function(){gid('leftview').className='promoted bgready';},250);  
+  } else {
+    gid('leftview').className='bgflash';
+    setTimeout(function(){gid('leftview').className='bgready';},250);  
+  }
   
   if (self.livechat_updatesummary&&document.chatstatus=='online') livechat_updatesummary();	
   

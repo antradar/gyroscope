@@ -40,14 +40,22 @@ showtab=function(key,opts){
 //wrapping
   var t=document.tabtitles[document.tabcount-1];
   var topmargin=0; //change this if changing tab style
+  
+  var tabbase=122;
+  var tabviewheight=147;
+  if (document.appsettings.uiconfig.toolbar_position=='left'){
+	  tabbase=57;
+	  tabviewheight=82;
+  }
+
 
       document.rowcount=(t.offsetTop-topmargin)/38+1;
       if (!document.lastrowcount) document.lastrowcount=1;
       if (document.lastrowcount!=document.rowcount) {
         gid('tabtitles').style.height=38*document.rowcount+'px';
-        gid('tabviews').style.top=122+38*(document.rowcount-1)+'px';
+        gid('tabviews').style.top=tabbase+38*(document.rowcount-1)+'px';
         //gid('tabviews').setAttribute("scale:ch",105+30*(document.rowcount-1));
-		gid('tabviews').scalech=147+38*(document.rowcount-1);
+		gid('tabviews').scalech=tabviewheight+38*(document.rowcount-1);
         scaleall(document.body);
       }
       document.lastrowcount=document.rowcount;
@@ -81,8 +89,13 @@ showtab=function(key,opts){
 		gid('leftview').style.visibility='hidden';
 		document.widen=true;
 	} else {
-		gid('tabviews').style.width=(idw-296)+'px';
-		gid('tabviews').style.left='295px';
+		if (document.appsettings.uiconfig.toolbar_position=='left'){
+			gid('tabviews').style.width=(idw-261)+'px';
+			gid('tabviews').style.left='260px';			
+		} else {
+			gid('tabviews').style.width=(idw-296)+'px';
+			gid('tabviews').style.left='295px';
+		}
 		gid('tooltitle').style.display='block';
 		gid('leftview').style.visibility='visible';
 		document.widen=false;
@@ -345,8 +358,14 @@ function refreshtab(key,skipconfirm){
 function resizetabs(){
 	if (document.tabcount==null) return;
 	var count=document.tabcount;
-	if (count>6) gid('tabtitles').className='compact';
-	else gid('tabtitles').className='';
+	
+	if (count>6) {
+		if (document.appsettings.uiconfig.toolbar_position=='top') gid('tabtitles').className='compact';
+		if (document.appsettings.uiconfig.toolbar_position=='left') gid('tabtitles').className='moveup compact';
+	} else {
+		if (document.appsettings.uiconfig.toolbar_position=='top') gid('tabtitles').className='';
+		if (document.appsettings.uiconfig.toolbar_position=='left') gid('tabtitles').className='moveup';
+	}
 }
 
 function addtab(key,title,params,loadfunc,data,opts){	
@@ -364,8 +383,14 @@ function addtab(key,title,params,loadfunc,data,opts){
 	}
   }
 
-  gid('tabviews').className='bgflash';
-  setTimeout(function(){gid('tabviews').className='bgready'},250);      
+  
+  if (document.appsettings.uiconfig.toolbar_position=='left'){
+	  gid('tabviews').className='boundless bgflash';
+  	  setTimeout(function(){gid('tabviews').className='boundless bgready'},250);	  
+  } else {
+	  gid('tabviews').className='bgflash';
+  	  setTimeout(function(){gid('tabviews').className='bgready'},250);
+  }
 
   var rq=xmlHTTPRequestObject();
   var scn=document.appsettings.codepage+'?cmd=';

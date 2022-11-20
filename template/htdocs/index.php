@@ -8,6 +8,7 @@ include 'mswitch.php'; //auto switch to mobile version
 include 'connect.php';
 include 'settings.php';
 
+
 include 'forminput.php';
 
 include 'xss.php';
@@ -22,6 +23,9 @@ $userid=$user['userid'];
 $query="select * from users where userid=?";
 $rs=sql_prep($query,$db,$userid);
 $usermeta=sql_fetch_assoc($rs);
+
+include 'uiconfig.php';
+
 ?>
 <!doctype html>
 <html>
@@ -54,13 +58,13 @@ $usermeta=sql_fetch_assoc($rs);
 
 <body onload="setTimeout(scrollTo, 0, 0, 1);">
 <script>
-document.appsettings={codepage:'<?php echo $codepage;?>',binpage:'<?php echo $binpage;?>', beepnewchat:<?php echo $usermeta['canchat']?'true':'false';?>,shortappname:'<?php echo GYROSCOPE_SHORT_APP_NAME;?>', fastlane:'<?php echo $fastlane;?>', autosave:null, viewmode:'desktop', views:<?php echo json_encode(array_keys($toolbaritems));?>};
+document.appsettings={codepage:'<?php echo $codepage;?>',binpage:'<?php echo $binpage;?>', beepnewchat:<?php echo $usermeta['canchat']?'true':'false';?>,shortappname:'<?php echo GYROSCOPE_SHORT_APP_NAME;?>', fastlane:'<?php echo $fastlane;?>', autosave:null, viewmode:'desktop', uiconfig:<?php echo json_encode($uiconfig);?>, views:<?php echo json_encode(array_keys($toolbaritems));?>};
 </script>
 
 <div style="display:none;"><img src="imgs/t.gif"><img src="imgs/hourglass.gif"></div>
 <!-- left panel -->
-<div id="tooltitle" title="double-click to reload the side view" ondblclick="if (document.viewindex) reloadview(document.viewindex);"></div>
-<div id="leftview" scale:ch="105"><div id="leftview_">
+<div id="tooltitle" class="<?php if ($uiconfig['toolbar_position']=='left') echo 'hidden';?>" title="double-click to reload the side view" ondblclick="if (document.viewindex) reloadview(document.viewindex);"></div>
+<div id="leftview" class="<?php if ($uiconfig['toolbar_position']=='left') echo 'promoted';?>" scale:ch="105"><div id="leftview_">
 	<?php foreach ($toolbaritems as $modid=>$ti){?>
 	<div id="lv<?php echo $modid;?>" style="display:none;width:100%;height:100%;overflow:auto;position:absolute;"></div>
 	<?php }?>
@@ -74,8 +78,8 @@ document.appsettings={codepage:'<?php echo $codepage;?>',binpage:'<?php echo $bi
 	</div>
 	<?php makehelp('mainleftview','listviewpos',1);?>
 </div></div>
-<div id="lefticons" scale:cw="0">
-<div style="margin-top:10px;margin-left:20px;">
+<div id="lefticons" class="<?php if ($uiconfig['toolbar_position']=='left') echo 'solid';?>" scale:cw="0">
+<div style="margin-top:<?php if ($uiconfig['toolbar_position']=='left') echo '0'; else echo '10px';?>;margin-left:<?php if ($uiconfig['toolbar_position']=='left') echo '10'; else echo '20px';?>px;">
 <span class="iconbuttons">
 <!-- usually there is one entity icon per list view -->
 <input id="anchor_top" title="Top View" style="position:absolute;top:-60px;left:-100px;width:20px;">
@@ -87,6 +91,7 @@ document.appsettings={codepage:'<?php echo $codepage;?>',binpage:'<?php echo $bi
 <div id="topicons" style="left:0;">
 <?php
 if ($dict_dir==='rtl') $toolbaritems=array_reverse($toolbaritems);
+if ($uiconfig['toolbar_position']=='top'){
 foreach ($toolbaritems as $modid=>$ti){
 	if (isset($ti['type'])&&$ti['type']==='break') {
 		echo '<div class="break"><span></span></div>';continue;	
@@ -116,6 +121,7 @@ foreach ($toolbaritems as $modid=>$ti){
 <a onmouseover="hintstatus(this,'<?php echo $ti['title'];?>');" onclick="<?php echo $action;?>"><img class="<?php echo $ti['icon'];?>" src="imgs/t.gif" width="32" height="32"><br><?php echo $ti['title']?></a>
 <?php
 }//foreach
+}//ui.toolbar_position
 ?>
 </div><!-- topicons -->
 </div><!-- iconbelt -->
@@ -125,8 +131,8 @@ foreach ($toolbaritems as $modid=>$ti){
 
 </span><!-- iconbuttons -->
 
-<div id="logoutlink">
-<acronym title="<?php echo $user['dispname'];?>"><a onclick="ajxjs(<?php jsflag('setaccountpass');?>,'accounts.js');reloadtab('account','<?php tr('account_settings');?>','showaccount');addtab('account','<?php tr('account_settings');?>','showaccount');return false;"><img src="imgs/t.gif" width="16" height="16" class="admin-user"><span id="labellogin"><?php echo $user['dispname'];?></span><span id="labeldispname" style="display:none;"><?php echo $user['dispname'];?></span></a></acronym>
+<div id="logoutlink" class="<?php if ($usermeta['haspic']) echo 'bigprofile';?> <?php if ($uiconfig['toolbar_position']=='left') echo 'moveup';?>">
+<acronym title="<?php echo $user['dispname'];?>"><a onclick="ajxjs(<?php jsflag('setaccountpass');?>,'accounts.js');reloadtab('account','<?php tr('account_settings');?>','showaccount');addtab('account','<?php tr('account_settings');?>','showaccount');return false;"><?php if ($usermeta['haspic']){?><img src="<?php echo $codepage;?>?cmd=imguserprofile&userid=<?php echo $userid;?>" id="mainuserprofile"><?php } else {?><img src="imgs/t.gif" id="mainuserprofile" class="admin-user"><?php }?><span id="labellogin"><?php echo $user['dispname'];?></span><span id="labeldispname" style="display:none;"><?php echo $user['dispname'];?></span></a></acronym>
 &nbsp; &nbsp;
 <!-- acronym title="<?php tr('account_settings');?>"><a title="<?php tr('account_settings');?>" onclick="ajxjs(<?php jsflag('setaccountpass');?>,'accounts.js');reloadtab('account','<?php tr('account_settings');?>','showaccount');addtab('account','<?php tr('account_settings');?>','showaccount');return false;"><img src="imgs/t.gif" width="16" height="16" class="admin-settings"></a></acronym -->
 &nbsp;
@@ -150,9 +156,13 @@ foreach ($toolbaritems as $modid=>$ti){
 	<span id="statusc"></span>
 </div>
 
+<?php
+$tabbase=122;
+if ($uiconfig['toolbar_position']=='left') $tabbase=57;
+?>
 <!-- right panel -->
 <div id="tabtitles" scale:cw="225"> <a id="closeall" onclick="resettabs('welcome');"><b><img src="imgs/t.gif" class="img-closeall" width="10" height="10"><?php tr('close_all_tabs');?></b></a> </div>
-<div id="tabviews" style="overflow:auto;position:absolute;left:295px;height:30px;top:122px;" scale:cw="225" scale:ch="105"></div>
+<div id="tabviews" class="<?php if ($uiconfig['toolbar_position']=='left') echo 'boundless';?>" style="overflow:auto;position:absolute;left:295px;height:30px;top:<?php echo $tabbase;?>px;" scale:cw="225" scale:ch="105"></div>
 
 
 <div id="sptr" scale:ch="104"></div>
@@ -207,8 +217,14 @@ window.onresize=autosize;
 autosize();
 setTimeout(function(){scaleall(document.body);},100);
 
+<?php if ($uiconfig['toolbar_position']=='left'){?>
+addtab('welcome','-H-','dash_default',function(){showview('lv.welcome',0,1);},null,{noclose:1,bingo:false});
+tabviewfunc_welcome=function(){
+	showview('lv.welcome',0,1);
+}
+<?php } else {?>
 addtab('welcome','<?php tr('tab_welcome');?>','wk',null,null,{noclose:1,bingo:false});
-
+<?php }?>
 
 setInterval(authpump,60000); //check if needs to re-login; comment this out to disable authentication
 

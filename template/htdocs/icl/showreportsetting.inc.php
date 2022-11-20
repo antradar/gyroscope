@@ -103,10 +103,10 @@ function showreportsetting($reportid=null){
 		
 		foreach ($allroles as $role=>$label){
 			//if (in_array($role,$userrolelocks)&&!$user['groups'][$role]) continue; //comment out to show, but grey out flags
-			if (!in_array($role,$userrolelocks)||$user['groups'][$role]) $jsroles.=",'$role' ";
+			if (!in_array($role,$userrolelocks)||isset($user['groups'][$role])) $jsroles.=",'$role' ";
 		?>
 		<div style="padding-left:10px;margin-bottom:3px;">
-			<input <?php if (in_array($role,$userrolelocks)&&!$user['groups'][$role]) echo 'disabled';?> <?php if ($rptgsid==0) echo 'disabled';?> type="checkbox" id="reportrole_<?php echo $role;?>_<?php echo $reportid;?>" <?php if (in_array($role,$reportgroups)) echo 'checked';?>> 
+			<input <?php if (in_array($role,$userrolelocks)&&!isset($user['groups'][$role])) echo 'disabled';?> <?php if ($rptgsid==0) echo 'disabled';?> type="checkbox" id="reportrole_<?php echo $role;?>_<?php echo $reportid;?>" <?php if (in_array($role,$reportgroups)) echo 'checked';?>> 
 			<label for="reportrole_<?php echo $role;?>_<?php echo $reportid;?>"><?php echo $label;?></label>
 		</div>
 		<?php

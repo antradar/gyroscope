@@ -29,10 +29,11 @@ $userroles=array(
 	'chatsettings'=>'manage chat settings',
 	'chats'=>'respond to support chats',
 	'sharedashreports'=>'share custom reports on the home tab',
+	'sapadmin'=>'view SAP data',
 );
 
 //a user can grant the following rights only if the user also has the right themselves
-$userrolelocks=array('devreports','accounts','dbadmin','creditcards','systemplate','msdrive','helpedit','chatsettings','chats','sharedashreports','faultlog');
+$userrolelocks=array('devreports','accounts','dbadmin','creditcards','systemplate','msdrive','helpedit','chatsettings','chats','sharedashreports','faultlog','sapadmin');
 
 //to quickly force every role to be inherited, uncomment the following:
 
@@ -43,7 +44,11 @@ $user=userinfo();
 
 
 $toolbaritems=array(
+'codegen.sap'=>array('title'=>'SAP','icon'=>'img-sap','modversion'=>'91','lockdown'=>1),
+	'codegen.sapentitysets'=>array('title'=>'SAP Entity Sets','icon'=>'','modversion'=>'91','lockdown'=>1),
+	'codegen.sapentities'=>array('title'=>'SAP Entities','icon'=>'','modversion'=>'91','lockdown'=>1),
 
+'lv.welcome'=>array('title'=>'Main Menu','icon'=>''),
 'core.settings'=>array('title'=>_tr('icon_settings'),'icon'=>'img-settings','modversion'=>'91','lockdown'=>1),
 	'core.users'=>array('title'=>'Users','icon'=>'','modversion'=>'78','lockdown'=>1),
 	'core.reportsettings'=>array('title'=>'Report Settings','icon'=>'','modversion'=>'92','lockdown'=>1),	
@@ -51,9 +56,15 @@ $toolbaritems=array(
 	'core.templates'=>array('title'=>_tr('icon_templates'),'icon'=>'','modversion'=>'91'),
 
 'core.reports'=>array('title'=>_tr('icon_reports'),'icon'=>'img-reports','modversion'=>'92','lockdown'=>1),
-'core.helptopics'=>array('title'=>_tr('icon_helptopics'),'icon'=>'img-helptopics','modversion'=>1),
-'codegen.chats'=>array('title'=>'Chats','icon'=>'img-chats','modversion'=>1,'bingo'=>1),
+//'core.helptopics'=>array('title'=>_tr('icon_helptopics'),'icon'=>'img-helptopics','modversion'=>1),
+//'codegen.chats'=>array('title'=>'Chats','icon'=>'img-chats','modversion'=>1,'bingo'=>1),
 
 );
+
+if (!isset($user['groups']['sapadmin'])){
+	unset($toolbaritems['codegen.sap']);	
+	unset($toolbaritems['codegen.sapentitysets']);	
+	unset($toolbaritems['codegen.sapentities']);	
+}
 
 foreach ($toolbaritems as $idx=>$item) if (!$item) unset($toolbaritems[$idx]);

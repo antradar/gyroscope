@@ -31,7 +31,7 @@ $usermeta=sql_fetch_assoc($rs);
 	<link href="gsnotes.css" type="text/css" rel="stylesheet" />
 	<link href="toolbar.css?v=3" type="text/css" rel="stylesheet" />
 <?php 
-	if ($_GET['watch']==1||preg_match('/sm\-r840/i',$_SERVER['HTTP_USER_AGENT'])){
+	if (isset($_GET['watch'])&&$_GET['watch']==1||preg_match('/sm\-r840/i',$_SERVER['HTTP_USER_AGENT'])){
 		$roundwatchframe=1;
 	}
 ?>
@@ -83,20 +83,20 @@ button.warn, .button.warn{display:none;}
 	<div class="menuitem" id="gsnotesclipicon"><a href=# onclick="if (navigator.onLine) gsnotes_listclips(); else onlinestatuschanged();"><img alt="offline clipboard" class="img-gsclip" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
 
 	<?php foreach ($toolbaritems as $modid=>$ti){
-		if ($ti['type']==='break') continue;
-		if ($ti['noiphone']) continue;	
-		if ($ti['type']==='custom'){
+		if (isset($ti['type'])&&$ti['type']=='break') continue;
+		if (isset($ti['noiphone'])&&$ti['noiphone']) continue;	
+		if (isset($ti['type'])&&$ti['type']=='custom'){
 		?>
-		<?php echo $ti['iphone'];?>
+		<?php echo isset($ti['iphone'])?$ti['iphone']:'';?>
 		<?php	
 			continue;
 		}
 		
 		$binmode='null';
-		if ($ti['bingo']==1) $binmode=1;
+		if (isset($ti['bingo'])&&$ti['bingo']==1) $binmode=1;
 
 		$action="showview('".$modid."',1,1,null,null,".$binmode.");";
-		if ($ti['action']!='') $action=$ti['action'];
+		if (isset($ti['action'])&&$ti['action']!='') $action=$ti['action'];
 		if (!isset($ti['icon'])||$ti['icon']=='') continue;
 		
 		if (isset($ti['groups'])){
@@ -174,7 +174,7 @@ hdpromote('toolbar_hd.css');
 hdpromote('iphone/gyrodemo_hd.css');
 hddemote('legacy.css');
 </script>
-<?php if ($roundwatchframe){?>
+<?php if (isset($roundwatchframe)&&$roundwatchframe){?>
 	<link href="watch.css" type="text/css" rel="stylesheet" />
 <?php }?>	
 
@@ -220,7 +220,7 @@ function rotate(){
 	if (preg_match('/playbook/i',$agent)||preg_match('/android/i',$agent)) $ori_invert=1;
 	if (preg_match('/mobile/i',$agent)||preg_match('/opera mini/i',$agent)) $ori_invert=0; //do not invert any phones
 	
-	if ($ori_invert){
+	if (isset($ori_invert)&&$ori_invert){
 		$ori_portrait_backward=-90;
 		$ori_portrait_forward=90;
 		$ori_landscape_backward=180;

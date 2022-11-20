@@ -54,6 +54,18 @@ try {  //comment out in older PHP versions
 	
 switch($cmd){
 	
+// SAP Explorer
+
+	case 'slv_codegen__sap': include 'icl/sap_listentitygroups.inc.php'; sap_listentitygroups(); break;
+	case 'slv_codegen__sapentitysets': include 'icl/sap_listentitysets.inc.php'; sap_listentitysets(); break;
+	case 'slv_codegen__sapentities': include 'icl/sap_listentities.inc.php'; sap_listentities(); break;
+	case 'sap_showentity': include 'icl/sap_showentity.inc.php'; sap_showentity(); break;
+	case 'sap_showrel': include 'icl/sap_showrel.inc.php'; sap_showrel(); break;
+	
+// toolbar_position:left wrappers
+	case 'slv_lv__welcome': include 'icl/listwelcome.inc.php'; listwelcome(); break;
+	case 'dash_default': include 'icl/dash_default.inc.php'; dash_default(); break;
+		
 // Chat - gsb place holder
 
 	case 'slv_codegen__chats': die('<div class="section">Commercial License Required</div>'); break;

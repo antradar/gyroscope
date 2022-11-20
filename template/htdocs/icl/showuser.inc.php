@@ -190,7 +190,7 @@ function showuser($userid=null){
 </div>
 <div class="qnav_">
 	<div class="qnav">
-		<a class="qnavitem" onclick="gototabbookmark('bmusermain_<?php echo $userid;?>');">Ba<b>sic Info</b></a>
+		<a class="qnavitem" onclick="gototabbookmark('bmusertop_<?php echo $userid;?>');">Ba<b>sic Info</b></a>
 		<a id="bmroles_<?php echo $userid;?>" style="display:none<?php if (!$virtual) echo 'a';?>;" class="qnavitem" onclick="gototabbookmark('bmuserroles_<?php echo $userid;?>');">Ro<b>les</b></a>
 		<a id="bmkeyfile_<?php echo $userid;?>" style="display:none<?php if ($needkeyfile) echo 'a';?>;" class="qnavitem" onclick="gototabbookmark('keyfileview_<?php echo $userid;?>');">Ke<b>y File</b></a>
 	</div>

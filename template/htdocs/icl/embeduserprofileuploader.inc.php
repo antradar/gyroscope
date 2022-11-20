@@ -60,7 +60,7 @@ function embeduserprofileuploader(){
 						$f=fopen($dst,'wb');
 						fwrite($f,$c);
 						fclose($f);
-						chmod($dst,0777);
+						@chmod($dst,0777);
 					} else{
 						
 						if (!is_callable('image_cropfit')) apperror("libresize.php is missing");
@@ -74,7 +74,7 @@ function embeduserprofileuploader(){
 							//$img=image_setorientation($img,'landscape');
 							$thumb=image_cropfit($img,270,270);
 							imagepng($thumb,$dst);
-							chmod($dst,0777);
+							@chmod($dst,0777);
 							imagedestroy($thumb);
 						}
 						

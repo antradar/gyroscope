@@ -190,8 +190,9 @@ showuserprofile=function(userid,msg){
 	}
 
 	ajxpgn('userprofile_'+userid,document.appsettings.codepage+'?cmd=showuserprofile&userid='+userid,0,0,null,function(){
-		//gid('mainprofile').src=document.appsettings.codepage+'?cmd=imguserprofile&thumb=1&hb='+hb();
-		//gid('mainprofile').style.borderRadius='100px';
+		gid('mainuserprofile').src=document.appsettings.codepage+'?cmd=imguserprofile&thumb=1&hb='+hb();
+		if (document.appsettings.uiconfig.toolbar_position=='top') gid('logoutlink').className='bigprofile';
+		if (document.appsettings.uiconfig.toolbar_position=='left') gid('logoutlink').className='bigprofile moveup';
 	});
 }
 
@@ -199,8 +200,9 @@ removeuserprofilepic=function(userid,gskey){
 	if (!sconfirm('Are you sure you want to remove this profile picture?')) return;
 	ajxpgn('userprofile_'+userid,
 	document.appsettings.codepage+'?cmd=removeuserprofilepic&userid='+userid,0,0,null,function(){
-		//gid('mainprofile').src=document.appsettings.codepage+'?cmd=imguserprofile&thumb=1&hb='+hb();
-		//gid('mainprofile').style.borderRadius=0;
+		gid('mainuserprofile').src='imgs/t.gif';
+		if (document.appsettings.uiconfig.toolbar_position=='top') gid('logoutlink').className='';
+		if (document.appsettings.uiconfig.toolbar_position=='left') gid('logoutlink').className='moveup';
 	},null,null,gskey);
 }
 

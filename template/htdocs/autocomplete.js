@@ -134,6 +134,7 @@ listlookup=function(d,title,command,mini,data){
 	if (document.iphone_portrait) mini=1;
 	if (document.tabafloat) mini=1;
 	if (document.widen) mini=1;
+	if (document.appsettings.uiconfig.force_inline_lookup) mini=1;
 	if (document.hotspot&&document.hotspot.id) document.hotspot=gid(document.hotspot.id);
 	if (document.hotspot&&!d) d=document.hotspot;
 	
@@ -255,6 +256,9 @@ pickdate=function(d,opts,def){
 
 	if (!opts) opts={mini:0}
 	if (!opts.mini) opts.mini=0;
+	
+	if (document.appsettings.uiconfig.force_inline_lookup) mini=1;
+	
 	if (!opts.tz) opts.tz='';
 	if (!opts.params) opts.params='';
 	
