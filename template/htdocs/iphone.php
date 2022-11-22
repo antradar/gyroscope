@@ -20,6 +20,7 @@ $query="select * from users where userid=?";
 $rs=sql_prep($query,$db,$userid);
 $usermeta=sql_fetch_assoc($rs);
 
+include 'uiconfig.php';
 ?>
 <html>
 <head>
@@ -165,7 +166,7 @@ button.warn, .button.warn{display:none;}
 </div><!-- watchframe_outer -->
 
 <script>
-document.appsettings={codepage:'<?php echo $codepage;?>',binpage:'<?php echo $binpage;?>',beepnewchat:<?php echo $usermeta['canchat']?'true':'false';?>,fastlane:'<?php echo $fastlane;?>',autosave:null, viewmode:'iphone', views:<?php echo json_encode(array_keys($toolbaritems));?>};
+document.appsettings={codepage:'<?php echo $codepage;?>',binpage:'<?php echo $binpage;?>',beepnewchat:<?php echo $usermeta['canchat']?'true':'false';?>,fastlane:'<?php echo $fastlane;?>',autosave:null, viewmode:'iphone',uiconfig:<?php echo json_encode($uiconfig);?>,views:<?php echo json_encode(array_keys($toolbaritems));?>};
 </script>
 <script src="lang/dict.<?php echo $lang;?>.js"></script>
 <script src="nano.js?v=4_9"></script>

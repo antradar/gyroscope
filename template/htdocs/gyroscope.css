@@ -20,6 +20,8 @@ acronym.help{cursor:help;border-bottom:dotted 1px #4444ee;}
 
 .medialibtile{float:left;width:19%;margin-right:1%;position:relative;overflow:hidden;margin-bottom:10px;}
 
+#applogo{position:relative;z-index:10;}
+
 #iconbelt{height:48px;position:relative;width:400px;overflow:hidden;float:left;}
 #topicons{position:absolute;top:0;left:0;transition:left 500ms;}
 
@@ -50,16 +52,19 @@ acronym.help{cursor:help;border-bottom:dotted 1px #4444ee;}
 .savebar_content{padding:10px 300px 10px 5px;text-align:center;}
 
 /* Loaders */
+#mainmenu{position:absolute;top:56px;left:0;width:260px;overflow-y:auto;overflow-x:hidden;z-index:250;}
+#mainmenu.silent{display:none;}
 #leftview{background-color:#ffffff;position:absolute;left:20px;width:260px;top:122px;transition:background 250ms;-webkit-transition:background 250ms;}
 #leftview_{overflow:auto;overflow-y:auto;overflow-x:hidden;border-left:solid 1px #CCCCCC; border-right:solid 1px #cccccc;}
-#leftview.promoted{left:0;top:57px;z-index:300;}
-#leftview.promoted #leftview_{border:none;background_x:#dedede;}
+#leftview.promoted{left:0px;z-index:300;}
+#leftview.promoted #leftview_{background_x:#dedede;}
+
 
 #tooltitle{background:transparent url(imgs/sprite.png) no-repeat 0 -35px;position:absolute;left:20px;width:260px;height:32px;top:90px;}
 	#tooltitle a{font-weight:bold;font-size:16px;color:#f2f2f2;margin-left:15px;margin-top:6px;display:block;transition:color 250ms;}
 	#tooltitle a:hover{color:#72ADDE;}
 	
-#tooltitle.hidden{display:none !important;}
+#tooltitle.promoted{left:0;}
 
 #closeall{margin-left:4px;display:none;float:left;margin-top:5px;margin-right:10px;background:#971B2F;height:20px;font-size:10px;padding:0 5px;padding-right:6px;}
 #closeall b{font-weight:normal;padding-top:2px;display:block;color:#f2f2f2;}
@@ -83,7 +88,8 @@ acronym.help{cursor:help;border-bottom:dotted 1px #4444ee;}
 #lefticons.solid{background:#3A3A3A;height:57px;}
 #sptr{background:#666666;position:absolute;left:0;bottom:24px;height:6px;width:100%;font-size:1px;opacity:0.2;-webkit-opacity:0.2;filter:alpha(opacity=20);}
 #tabtitles{background:transparent url(imgs/tabbg.gif) repeat top left;position:absolute;left:295px;height:38px;top:90px;}
-#tabtitles.moveup{background:none;top:25px;left:212px;}
+#tabtitles.moveup{background:transparent url(imgs/tabbg2.gif) repeat top left;top:25px;left:0;width:100%;}
+#tabtitles.moveup .firsttab{margin-left:212px;}
 
 /* Fullscreen*/
 #fsmask{position:absolute;top:0;left:0;width:100%;height:100%;background:#000000;opacity:0.4;filter:alpha(opacity=40);display:none;z-index:3001;}
@@ -197,8 +203,15 @@ acronym.help{cursor:help;border-bottom:dotted 1px #4444ee;}
 .section{padding:24px 15px;}
 .section.hasqnav{padding-left:45px;}
 
+#tabviews.boundless .section.hasqnav{padding-left:15px;}
+
 .qnav_{position:absolute;top:0px;left:0;height:100%;overflow:hidden;}
 .qnav{padding-top:45px;}
+
+#tabviews.boundless .qnav_{display:none;}
+#tabviews.boundless .afloat .hasqnav{padding-left:45px;}
+#tabviews.boundless .afloat .qnav_{display:block;}
+
 
 .wideview{margin-left:296px;}
 .wideviewmenu_{position:absolute;top:0;left:0;width:295px;height:100%;overflow:auto;direction:rtl;}
@@ -225,6 +238,11 @@ acronym.help{cursor:help;border-bottom:dotted 1px #4444ee;}
 .qnavitem:hover{font-weight:normal;}
 .qnavitem b{display:none;font-weight:normal;}
 .qnavitem:hover b{display:inline;}
+
+#bookmarkview{}
+#bookmarkview .qnavitem{float:none;display:block;font-weight:normal;border-radius:0;text-align:left; padding:5px 0;padding-left:10px;font-size:14px;background:transparent;color:#111111;box-shadow:none;border-bottom:solid 1px #dedede;}
+#bookmarkview .qnavitem b{display:inline;font-weight:normal;}
+
 
 .enl_date{border-bottom:solid 1px #804000;color:#201000;}
 .enl_client{border-bottom:solid 1px #400080;color:#100020;}
@@ -274,6 +292,8 @@ input,textarea{border:solid 1px #999999;}
 .minorcol{width:380px;margin-right:20px;}
 .rmajorcol{width:580px;margin-right:20px;}
 .rminorcol{width:380px;}
+
+/*#tabviews.boundless .col{width:auto;float:none;margin-bottom:20px;}*/
 
 .formlabel{color:#444444;padding-right:10px;margin-bottom:5px;font-weight:bold;}
 .inplong, .inp, .inpmed, .inpshort, .inpxshort{padding:5px 0;padding-left:5px;margin-bottom:5px;border-color:#cccccc;}
@@ -389,6 +409,8 @@ input:disabled{color:#000000;}
 
 @media (prefers-color-scheme:dark) {
 
+	#mainmenu{color:#ffffff;}
+	
 	#tooltitle,#lefticons, .tabclose, .activetab, .dulltab,
 	.activetab .noclose, .dulltab .noclose,
 	.activetab .tabclose, .dulltab .tabclose,#lkvtitle,#lkvx,

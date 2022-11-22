@@ -38,13 +38,14 @@ function scaleall(root){
   if (document.appsettings.uiconfig.toolbar_position=='left') tabviewheight=82;
     
   gid('lefticons').style.width=idw+'px';
-  gid('leftview').style.height=(idh-tabviewheight)+'px';
-  gid('leftview_').style.height=(idh-tabviewheight)+'px';
+  gid('leftview').style.height=(idh-147)+'px';
+  gid('leftview_').style.height=(idh-147)+'px';
+  
   
   gid('lkv').style.height=(idh-187)+'px';
   gid('lkvc').style.height=(idh-220)+'px';
   
-  gid('tabtitles').style.width=(idw-296)+'px';
+  if (document.appsettings.uiconfig.toolbar_position=='top') gid('tabtitles').style.width=(idw-296)+'px';
   
   if (!document.widen) {
 	  if (document.appsettings.uiconfig.toolbar_position=='left') gid('tabviews').style.width=(idw-261)+'px';
@@ -55,8 +56,8 @@ function scaleall(root){
   
 
   gid('tabviews').style.height=(idh-tabviewheight)+'px';
-  //if (document.appsettings.uiconfig.toolbar_position=='top') gid('tabviews').style.height=(idh-147)+'px';
-  //if (document.appsettings.uiconfig.toolbar_position=='left') gid('tabviews').style.height=(idh-147+50)+'px';
+  gid('mainmenu').style.height=(idh-tabviewheight)+'px';
+  gid('bookmarkview').style.height=(idh-tabviewheight)+'px';
   
   gid('statusinfo').style.top=(idh-25)+'px';
   gid('statusinfo').style.width=idw+'px';
@@ -192,6 +193,9 @@ function autosize(){
 		  tabviewheight=82;
 	  }
 	  
+	  if (document.appsettings.uiconfig.toolbar_position=='left') tab_reflow();  
+	  
+	  
 	//wrapping
 	      document.rowcount=(t.offsetTop-topmargin)/38+1;
 	      if (!document.lastrowcount) document.lastrowcount=1;
@@ -199,6 +203,16 @@ function autosize(){
 	        gid('tabtitles').style.height=38*document.rowcount+'px';
 	        gid('tabviews').style.top=tabbase+38*(document.rowcount-1)+'px';
 	        gid('tabviews').scalech=tabviewheight+38*(document.rowcount-1);
+
+	        if (document.appsettings.uiconfig.toolbar_position=='left'){
+	         gid('mainmenu').style.top=tabbase+38*(document.rowcount-1)+'px';
+   		     gid('bookmarkview').style.top=tabbase+38*(document.rowcount-1)+'px';
+		   	 gid('mainmenu').style.height=38*document.rowcount+'px';
+		   	 gid('bookmarkview').style.height=38*document.rowcount+'px';
+	         gid('mainmenu').scalech=tabviewheight+38*(document.rowcount-1);
+	         gid('bookmarkview').scalech=tabviewheight+38*(document.rowcount-1);
+	    	}
+	        	       
 	      }
 	      scaleall(document.body);
 	      document.lastrowcount=document.rowcount;
@@ -261,10 +275,15 @@ function callout_section(d){
 	
 }
 
-function reloadview(idx,listid){
+function reloadview(idx,listid,submenu){
+	if (document.appsettings.uiconfig.toolbar_position=='left'){
+		refreshtab('dash_'+idx.replace(/\./g,'__'),1);
+		return;	
+	}
+	
 	hidelookup();
 	if (document.viewindex!=idx) return;
-
+	
 	var params='';
 	if (gid('lv'+document.viewindex)) params=gid('lv'+document.viewindex).params;
 	var bingo=gid('lv'+document.viewindex).bingo;
@@ -273,10 +292,18 @@ function reloadview(idx,listid){
 	else showview(idx,0,0,params,null,bingo);
 }
 
-function showview(idx,lazy,force,params,func,bingo){
+function showview(idx,lazy,force,params,func,bingo,submenu){
   var codepage=document.appsettings.codepage;
   if (bingo==1) codepage=document.appsettings.binpage;
   if (!params) params='';
+  
+  if (document.appsettings.uiconfig.toolbar_position=='left'){
+	  if (!submenu) reloadtab('welcome','','dash_'+idx.replace(/\./g,'__')+'&'+params,func);
+	  else addtab('dash_'+idx.replace(/\./g,'__'),idx,'dash_'+idx.replace(/\./g,'__')+'&'+params,func);
+	  return; 
+  }
+  
+  
   
   if (gid('gamepadspot')) gid('gamepadspot').vidx=null;
  	
@@ -337,8 +364,10 @@ function showview(idx,lazy,force,params,func,bingo){
 }
 
 function showlookup(){
+	
 	var lkv=gid('lkv');
 	if (lkv.showing) return;
+	
 	
 	if (gid('gamepadspot')) gid('gamepadspot').lookupview=true;
 	
@@ -509,5 +538,26 @@ function hidehelpspot(id,topic,once,gskey){
 		ajxpgn('statusc',document.appsettings.codepage+'?cmd=ackhelpspot&topic='+encodeHTML(topic),0,0,null,null,null,null,gskey);
 		var os=document.getElementsByTagName('span');
 		for (var i=0;i<os.length;i++) if (os[i].attributes&&os[i].attributes.helptopic&&os[i].attributes.helptopic.value==topic) os[i].style.display='none';
+	}
+}
+
+function showmainmenu(){
+	gid('tooltitle').style.display='none';
+	gid('leftview').style.display='none';
+	gid('mainmenu').style.visibility='visible';
+	
+	if (!document.mainmenuloaded){	
+		ajxpgn('mainmenu',document.appsettings.codepage+'?cmd=listwelcome');
+		document.mainmenuloaded=true;
+	}
+	//reloadtab('welcome','','dash_default');
+
+}
+
+function loaddash(tabkey,title,cmd){
+	if (document.appsettings.uiconfig.toolbar_position=='left'){
+		reloadtab('welcome','',cmd);
+	} else {
+		addtab(tabkey,title,cmd);
 	}
 }

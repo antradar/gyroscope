@@ -63,7 +63,8 @@ document.appsettings={codepage:'<?php echo $codepage;?>',binpage:'<?php echo $bi
 
 <div style="display:none;"><img src="imgs/t.gif"><img src="imgs/hourglass.gif"></div>
 <!-- left panel -->
-<div id="tooltitle" class="<?php if ($uiconfig['toolbar_position']=='left') echo 'hidden';?>" title="double-click to reload the side view" ondblclick="if (document.viewindex) reloadview(document.viewindex);"></div>
+<div id="tooltitle" class="<?php if ($uiconfig['toolbar_position']=='left') echo 'promoted';?>" title="double-click to reload the side view" ondblclick="if (document.viewindex) reloadview(document.viewindex);"></div>
+<div id="mainmenu" class="<?php if ($uiconfig['toolbar_position']=='top') echo 'silent';?>"></div>
 <div id="leftview" class="<?php if ($uiconfig['toolbar_position']=='left') echo 'promoted';?>" scale:ch="105"><div id="leftview_">
 	<?php foreach ($toolbaritems as $modid=>$ti){?>
 	<div id="lv<?php echo $modid;?>" style="display:none;width:100%;height:100%;overflow:auto;position:absolute;"></div>
@@ -125,6 +126,8 @@ foreach ($toolbaritems as $modid=>$ti){
 ?>
 </div><!-- topicons -->
 </div><!-- iconbelt -->
+<div id="bookmarkview" style="<?php if ($uiconfig['toolbar_position']=='top') echo 'display:none;'?>;position:absolute;top:56px;left:0;width:260px;z-index:360;overflow:auto;">
+</div><!-- bookmarkview -->
 <?php makehelp('maintopicons','topicons',1);?>
 
 <a id="beltnext" onclick="beltnext();"><img class="beltnext" src="imgs/t.gif" width="16" height="32"></a>
@@ -218,10 +221,11 @@ autosize();
 setTimeout(function(){scaleall(document.body);},100);
 
 <?php if ($uiconfig['toolbar_position']=='left'){?>
-addtab('welcome','-H-','dash_default',function(){showview('lv.welcome',0,1);},null,{noclose:1,bingo:false});
+addtab('welcome','-H-','dash_default',function(){showmainmenu();},null,{noclose:1,bingo:false,tabctx:'dash'});
 tabviewfunc_welcome=function(){
-	showview('lv.welcome',0,1);
+	showmainmenu();
 }
+
 <?php } else {?>
 addtab('welcome','<?php tr('tab_welcome');?>','wk',null,null,{noclose:1,bingo:false});
 <?php }?>

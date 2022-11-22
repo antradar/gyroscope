@@ -340,3 +340,8 @@ function hidehelpspot(id,topic,once,gskey){
 		for (var i=0;i<os.length;i++) if (os[i].attributes&&os[i].attributes.helptopic&&os[i].attributes.helptopic.value==topic) os[i].style.display='none';
 	}
 }
+
+function loaddash(tabkey,title,cmd){
+	//always load as split tabs
+	addtab(tabkey,title,cmd);
+}

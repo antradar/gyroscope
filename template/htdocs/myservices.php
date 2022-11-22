@@ -63,7 +63,7 @@ switch($cmd){
 	case 'sap_showrel': include 'icl/sap_showrel.inc.php'; sap_showrel(); break;
 	
 // toolbar_position:left wrappers
-	case 'slv_lv__welcome': include 'icl/listwelcome.inc.php'; listwelcome(); break;
+	case 'listwelcome': include 'icl/listwelcome.inc.php'; listwelcome(); break;
 	case 'dash_default': include 'icl/dash_default.inc.php'; dash_default(); break;
 		
 // Chat - gsb place holder
@@ -83,7 +83,9 @@ switch($cmd){
 
 //Settings
 	case 'clogo': include 'icl/clogo.inc.php'; clogo(); break;
+	
 	case 'slv_core__settings': include 'icl/listsettings.inc.php'; listsettings(); break;
+	case 'dash_core__settings': include 'icl/dashsettings.inc.php'; dashsettings(); break;
 
 	case 'slv_core__reportsettings': include 'icl/listreportsettings.inc.php'; listreportsettings(); break;
 		
@@ -101,6 +103,8 @@ switch($cmd){
 	case 'resetgakey': include 'icl/resetgakey.inc.php'; resetgakey(); break;
   
 	case 'slv_core__users': include 'icl/listusers.inc.php'; listusers(); break;
+	case 'dash_core__users': include 'icl/dashusers.inc.php'; dashusers(); break;
+	
 	case 'showuser': include 'icl/showuser.inc.php'; showuser(); break;
 	case 'newuser': include 'icl/newuser.inc.php'; newuser(); break;
 	case 'adduser': include 'icl/adduser.inc.php'; adduser(); break;
@@ -181,6 +185,8 @@ switch($cmd){
 	
 //Reports & Audit
 	case 'slv_core__reports': include 'icl/listreports.inc.php'; listreports(); break;
+	case 'dash_core__reports': include 'icl/dashreports.inc.php'; dashreports(); break;
+	
 	case 'rptactionlog': include 'icl/rptactionlog.inc.php'; rptactionlog(); break;  
 	case 'rptfaultlog': include 'icl/rptfaultlog.inc.php'; rptfaultlog(); break;  
 	

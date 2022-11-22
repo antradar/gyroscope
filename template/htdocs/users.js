@@ -198,7 +198,7 @@ updateuser=function(userid,roles,gskey){
 	
 	reloadtab('user_'+userid,ologin.value,'updateuser&userid='+userid+'&'+params.join('&'),function(rq){
 		if (!document.smartcard) gid('cardsettings_'+userid).style.display='none';
-		reloadview('core.users','userlist');
+		reloadview('core.users','userlist',true);
 		if (rq.getResponseHeader('newlogin')!=null&&rq.getResponseHeader('newlogin')!='') gid('labellogin').innerHTML=decodeURIComponent(rq.getResponseHeader('newdispname'));
 		if (rq.getResponseHeader('newdispname')!=null&&rq.getResponseHeader('newdispname')!='') gid('labeldispname').innerHTML=decodeURIComponent(rq.getResponseHeader('newdispname'));
 		flashstatus('User '+ologin.value+' has been updated', 2000);
@@ -214,6 +214,6 @@ deluser=function(userid,gskey){
 		//vendor auth
 
 		closetab('user_'+userid);
-		reloadview('core.users','userlist');
+		reloadview('core.users','userlist',true);
 	},null,{fastlane:1},gskey);
 }

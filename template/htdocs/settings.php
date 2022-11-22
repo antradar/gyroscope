@@ -44,6 +44,7 @@ $user=userinfo();
 
 
 $toolbaritems=array(
+
 'codegen.sap'=>array('title'=>'SAP','icon'=>'img-sap','modversion'=>'91','lockdown'=>1),
 	'codegen.sapentitysets'=>array('title'=>'SAP Entity Sets','icon'=>'','modversion'=>'91','lockdown'=>1),
 	'codegen.sapentities'=>array('title'=>'SAP Entities','icon'=>'','modversion'=>'91','lockdown'=>1),
@@ -60,6 +61,7 @@ $toolbaritems=array(
 //'codegen.chats'=>array('title'=>'Chats','icon'=>'img-chats','modversion'=>1,'bingo'=>1),
 
 );
+
 
 if (!isset($user['groups']['sapadmin'])){
 	unset($toolbaritems['codegen.sap']);	

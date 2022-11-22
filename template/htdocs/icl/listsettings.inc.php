@@ -13,7 +13,7 @@ function listsettings(){
 	<?php	
 	if (isset($user['groups']['accounts'])){
 	?>
-	<div class="listitem"><a onclick="ajxjs(<?php jsflag('showuser');?>,'users.js');showview('core.users',1,null,null,null,null);"><?php tr('icon_accounts');?></a></div>	
+	<div class="listitem"><a onclick="ajxjs(<?php jsflag('showuser');?>,'users.js');ajxjs(<?php jsflag('setaccountpass');?>,'accounts.js');showview('core.users',1,null,null,null,null,true);"><?php tr('icon_accounts');?></a></div>	
 	<?php
 	}
 	?>
@@ -70,9 +70,12 @@ function listsettings(){
 	<?php
 	}
 	
-/*	
-	?>		
+		
+?>	
 </div>
+<?php
+/*
+?>
 <script>
 gid('tooltitle').innerHTML='<a><?php tr('icon_settings');?></a>';
 </script>

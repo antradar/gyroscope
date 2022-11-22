@@ -12,13 +12,31 @@ gettabid=function(key){
   return -1;	
 }
 
+tab_reflow=function(){
+		
+	var idw=cw();
+	var closeall_width=gid('closeall').offsetWidth;
+	if (closeall_width>0) closeall_width+=4+10+8; //+margin_left + margin_right + tab_gap
+	var rowcap=idw-212-gid('logoutlink').offsetWidth-closeall_width-20; //total width - first tab position - right panel - closeall - comfort_20
+	var rowsum=0;
+ 	
+	for (i=0;i<document.tabcount;i++){
+		rowsum+=document.tabtitles[i].offsetWidth+8; //tab_gap=8
+		if (rowsum>rowcap){
+			rowcap=idw;
+		  	rowsum=0;
+		  	document.tabtitles[i].style.clear='left';  
+		} else document.tabtitles[i].style.clear='none';	
+	}
+	
+}
 
 showtab=function(key,opts){
   var i;
   var pasttab=document.currenttab;
   var tabid=gettabid(key);
   if (tabid==-1) return;
-
+  
   if (gid('gamepadspot')) gid('gamepadspot').widx=null;  
   document.currenttab=tabid;
   
@@ -28,15 +46,22 @@ showtab=function(key,opts){
   if (document.tabhistory.length>0) lasttab=document.tabhistory[document.tabhistory.length-1];
   
   if (lasttab!=key) document.tabhistory.push(key);
+
+  if (document.appsettings.uiconfig.toolbar_position=='left') tab_reflow();  
   
   for (i=0;i<document.tabcount;i++){
+	  var submod='';
+	  
 	  if (i==tabid) continue;
+	  if (document.tabkeys[i]=='welcome'&&document.appsettings.uiconfig.toolbar_position=='left') submod=' firsttab';
 	  document.tabviews[i].style.display='none';
-	  document.tabtitles[i].className='dulltab';
+	  document.tabtitles[i].className='dulltab'+submod;
   }	
+  var actmod='';
+  if (document.tabkeys[tabid]=='welcome'&&document.appsettings.uiconfig.toolbar_position=='left') actmod=' firsttab';  
   document.tabviews[tabid].style.display='block';
-  document.tabtitles[tabid].className='activetab';
-  
+  document.tabtitles[tabid].className='activetab'+actmod;
+
 //wrapping
   var t=document.tabtitles[document.tabcount-1];
   var topmargin=0; //change this if changing tab style
@@ -50,12 +75,23 @@ showtab=function(key,opts){
 
 
       document.rowcount=(t.offsetTop-topmargin)/38+1;
+
       if (!document.lastrowcount) document.lastrowcount=1;
       if (document.lastrowcount!=document.rowcount) {
         gid('tabtitles').style.height=38*document.rowcount+'px';
         gid('tabviews').style.top=tabbase+38*(document.rowcount-1)+'px';
         //gid('tabviews').setAttribute("scale:ch",105+30*(document.rowcount-1));
 		gid('tabviews').scalech=tabviewheight+38*(document.rowcount-1);
+		
+        if (document.appsettings.uiconfig.toolbar_position=='left'){
+         gid('mainmenu').style.top=tabbase+38*(document.rowcount-1)+'px';
+         gid('bookmarkview').style.top=tabbase+38*(document.rowcount-1)+'px';
+	   	 gid('mainmenu').style.height=38*document.rowcount+'px';
+	   	 gid('bookmarkview').style.height=38*document.rowcount+'px';
+         gid('mainmenu').scalech=tabviewheight+38*(document.rowcount-1);
+         gid('bookmarkview').scalech=tabviewheight+38*(document.rowcount-1);
+    	}
+		
         scaleall(document.body);
       }
       document.lastrowcount=document.rowcount;
@@ -84,7 +120,7 @@ showtab=function(key,opts){
 	
 	if (document.tabtitles[tabid].reloadinfo&&document.tabtitles[tabid].reloadinfo.opts&&document.tabtitles[tabid].reloadinfo.opts.wide){
 		gid('tabviews').style.left=0;
-		gid('tooltitle').style.display='none';
+		//gid('tooltitle').style.display='none';
 		gid('tabviews').style.width=(idw-1)+'px';
 		gid('leftview').style.visibility='hidden';
 		document.widen=true;
@@ -96,17 +132,120 @@ showtab=function(key,opts){
 			gid('tabviews').style.width=(idw-296)+'px';
 			gid('tabviews').style.left='295px';
 		}
-		gid('tooltitle').style.display='block';
+		//gid('tooltitle').style.display='block';
 		gid('leftview').style.visibility='visible';
 		document.widen=false;
 	}
+	
+	if (document.appsettings.uiconfig.toolbar_position=='left'){
+		
+		gid('bookmarkview').innerHTML='';
+		
+		if (key=='welcome'||(document.tabtitles[tabid].reloadinfo&&document.tabtitles[tabid].reloadinfo.opts&&document.tabtitles[tabid].reloadinfo.opts.tabctx=='dash')){
+			gid('mainmenu').style.visibility='visible';
+			gid('bookmarkview').style.display='none';
+			
+		} else {
+			gid('mainmenu').style.visibility='hidden';	
+			gid('bookmarkview').style.display='block';
+			
+			tab_loadbookmark(document.tabviews[tabid]);	
+			
+			if (!self['tabscrollfunc_'+ckey]) {
+				document.tabviews[document.currenttab].onscroll=tab_syncbookmarks;
+				setTimeout(tab_syncbookmarks,100);
+			}
+			
+		}
+		
+		
+		
+		
+	}//left mode
 	
 	
   }    
       
 }
 
-function synclbookmarks(rectype,recid,marks){
+function tab_syncbookmarks(){
+		if (document.bookmarklock){
+			document.bookmarklock=null;
+			return;	
+		}
+		
+		var bookmarks=gid('bookmarkview').bookmarks;
+		if (bookmarks==null) return;
+		if (bookmarks.length==0) return;
+		
+		var tab=document.tabviews[document.currenttab];
+		var top=tab.scrollTop;
+		
+		var cur=null;
+		var h=ch();
+		var offset=gid('tabviews').offsetTop;
+		var last=null;
+		
+		for (var i=0;i<bookmarks.length;i++){
+			var k=bookmarks[i].ref;
+			var mark=gid(bookmarks[i].target);
+			if (!mark) continue;
+			if (k.offsetHeight<5) continue; //skip invisible bookmarks
+			if (mark.offsetHeight<5) continue; //skip invisible content
+			if (top<mark.offsetTop) {cur=k;break;} //top+h-offset-30>mark.offsetTop && 
+			last=k;
+			
+		}
+
+		if (!cur) cur=last;		
+		
+		for (var i=0;i<bookmarks.length;i++){
+			if (cur==bookmarks[i].ref) cur.style.background='red';
+			else bookmarks[i].ref.style.background='transparent';	
+		}		
+		
+		
+		
+}
+
+function tab_loadbookmark(d){
+	if (d==null) return;
+	var qnavs=d.getElementsByClassName('qnav_'); //polyfill needed for getElementsByClassName < IE8
+	if (qnavs.length>0){
+		gid('bookmarkview').innerHTML=qnavs[0].innerHTML;
+
+		var pattern=/gototabbookmark\((\S+?)\)/g
+		var rawitems=gid('bookmarkview').getElementsByClassName('qnavitem');
+		var items=[];
+		for (var i=0;i<rawitems.length;i++){
+			var item=rawitems[i];
+			var target='';
+			while (matches=pattern.exec(item.onclick+'')) target=matches[1].replace(/'/g,'');
+			if (target!='') items.push({ref:item,target:target}); 	
+		}
+		
+		//sort by target position
+		items.sort(function(a,b){
+			var oa=gid(a.target);
+			var ob=gid(b.target);
+			var va=oa?oa.offsetTop:0;
+			var vb=ob?ob.offsetTop:0;
+			if (va==vb) return 0; if (va<vb) return -1; else return 1;	
+		});
+				
+		gid('bookmarkview').bookmarks=items;
+		
+		for (var i=0;i<items.length;i++){
+			items[i].ref.parentNode.appendChild(items[i].ref.parentNode.removeChild(items[i].ref));	
+		}
+							
+	} else {
+		gid('bookmarkview').bookmarks=null;	
+	}
+	
+}
+
+function synclbookmarks(rectype,recid,marks){//legacy sync code for wide view
 		if (document.bookmarklock){
 			document.bookmarklock=null;
 			return;	
@@ -164,7 +303,6 @@ function tab_setdoctitle(t,title){
 function settabtitle(key,title,opts){
 	var tabid=gettabid(key);
 	if (tabid==-1) return;
-	
 	var tabhtml="<nobr><a class=\"tt\" ondblclick=\"refreshtab('"+key+"');\" onclick=\"showtab('"+key+"');\">"+title+"</a><a onclick=\"closetab('"+key+"')\"><span class=\"tabclose\"></span></a></nobr>";
     if (opts!=null&&opts.noclose) {
 	    tabhtml="<nobr><a class=\"tt\" ondblclick=\"refreshtab('"+key+"');\" onclick=\"showtab('"+key+"');\">"+title+"</a><span class=\"noclose\"></span></nobr>";
@@ -264,29 +402,36 @@ function reloadtab(key,title,params,loadfunc,data,opts,gskey){
 	}
 	
 	var newkey=rq.getResponseHeader('newkey');
+	var tabctx=rq.getResponseHeader('tabctx');
 
-	if (newkey!=null&&newkey!='') {		
-		var newparams=rq.getResponseHeader('newparams');
-		if (newparams==null||newparams==''){
-			salert('Incomplete key change');
-			return;	
+	if ((newkey!=null&&newkey!='')||(tabctx=='dash')) {
+		
+		if (newkey!=null&&newkey!=''){		
+			var newparams=rq.getResponseHeader('newparams');
+			if (newparams==null||newparams==''){
+				salert('Incomplete key change');
+				return;	
+			}
 		}
 		
 		var newloadfunc=rq.getResponseHeader('newloadfunc');
 		if (newloadfunc!=null&&newloadfunc!='') loadfunc=function(){eval(newloadfunc)};
 		
-		document.tabtitles[tabid].reloadinfo={params:newparams,loadfunc:loadfunc,data:null,opts:null};
+		document.tabtitles[tabid].reloadinfo={params:newparams?newparams:params,loadfunc:loadfunc,data:null,opts:null};
 		
-		document.tabkeys[tabid]=newkey;
+		if (newkey!=null&&newkey!=''){
 		
-		if (document.tabhistory){
-			for (i=0;i<document.tabcount;i++) if (document.tabkeys[i]==key) {console.warn('key collision; new key ignored');newkey=key;}
+			document.tabkeys[tabid]=newkey;
 			
-			for (var i=0;i<document.tabhistory.length;i++){
-				if (document.tabhistory[i]==key) document.tabhistory[i]=newkey;
+			if (document.tabhistory){
+				for (i=0;i<document.tabcount;i++) if (document.tabkeys[i]==key) {console.warn('key collision; new key ignored');newkey=key;}
+				
+				for (var i=0;i<document.tabhistory.length;i++){
+					if (document.tabhistory[i]==key) document.tabhistory[i]=newkey;
+				}
 			}
+			key=newkey;
 		}
-		key=newkey;
 		
 	}  
 	
@@ -418,9 +563,20 @@ function addtab(key,title,params,loadfunc,data,opts){
   t.tabname=title.replace(/(<([^>]+)>)/gi,'');
 
   if (opts!=null&&opts.closeall) tabhtml="<nobr><a title=\""+document.dict['close_all_tabs']+"\" onclick=\"resettabs('"+key+"');\" class=\"closeall\"></a><a class=\"tt\" ondblclick=\"refreshtab('"+key+"');\" style=\"padding-left:1px;\" onclick=\"showtab('"+key+"');\">"+title+"</a><span class=\"noclose\"></span></nobr>";
+
+  
+      
   t.innerHTML=tabhtml;
-  gid('tabtitles').appendChild(t);
+  if (document.appsettings.uiconfig.closeall_button=='after'&&key=='welcome') gid('tabtitles').insertBefore(t,gid('closeall')); else gid('tabtitles').appendChild(t);
   gid('tabviews').appendChild(c);
+
+/*
+  if (key=='welcome'){
+	  var closeall=document.createElement('span');
+	  closeall.innerHTML="<nobr><a id=\"subcloseall\" title=\""+document.dict['close_all_tabs']+"\" onclick=\"resettabs('"+key+"');\" class=\"tt\">bbbbb</a></nobr>";
+	  gid('tabtitles').appendChild(closeall);
+  }
+*/      
 
   t.reloadinfo={params:params,loadfunc:loadfunc,data:data,opts:opts};
 
@@ -434,7 +590,13 @@ function addtab(key,title,params,loadfunc,data,opts){
   resizetabs();  
   showtab(key,opts);
   
-  if (document.tabcount>2&&gid('closeall')) gid('closeall').style.display='block';  
+  if (document.tabcount>2&&gid('closeall')) {
+	  //if (document.appsettings.uiconfig.toolbar_position=='top') {
+		  gid('closeall').style.display='block';
+	  //} else {
+		//todo insert closeall as second tab, after the home tab	  
+	  //}  
+  }
     
   rq.onreadystatechange=function(){
     if (rq.readyState==4){
@@ -473,6 +635,8 @@ function addtab(key,title,params,loadfunc,data,opts){
 	if (document.nanoperf) ta=hb();
       
       c.innerHTML=rq.responseText; //'<input id="rightview_'+key+'" style="position:absolute;top:-60px;left:0;" title='+encodeHTML(title)+'>'+
+      
+      tab_loadbookmark(c);
       
 	if (document.nanoperf){
 		var delta=hb()-ta;

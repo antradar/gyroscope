@@ -185,7 +185,10 @@ function showuser($userid=null){
 	<div id="muserhelptopics_<?php echo $userid;?>">
 		<?php showuserhelptopics();?>
 	</div>
-	<?php }?>
+	<?php }
+	
+	
+	?>
 		
 </div>
 <div class="qnav_">

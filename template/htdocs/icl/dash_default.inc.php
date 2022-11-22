@@ -5,9 +5,11 @@
 
 function dash_default(){
 	//then call: dash_real(); return;
+	$title=SGET('title');
+	if ($title=='') $title='Default Dashboard';
 ?>
 <div class="section">
-	<div class="sectiontitle">Default Dashboard</div>
+	<div class="sectiontitle"><?php echo htmlspecialchars($title);?></div>
 </div>
 <?php	
 }
