@@ -81,7 +81,7 @@ function updateuser(){
 
 	foreach ($mygroupnames as $mygroupname=>$label){
 		if ($mygroupname=='') continue;
-		if (!$user['groups'][$mygroupname]&&in_array($mygroupname,$userrolelocks)&&!in_array($mygroupname,$gnames)){
+		if (!isset($user['groups'][$mygroupname])&&in_array($mygroupname,$userrolelocks)&&!in_array($mygroupname,$gnames)){
 			array_push($gnames,$mygroupname);	
 		}
 	}

@@ -91,6 +91,19 @@ function scaleall(root){
 
   if (gid('topicons').offsetWidth+parseInt(gid('topicons').style.left.replace('px',''),10)>gid('iconbelt').offsetWidth) gid('beltnext').style.visibility='visible'; 
   else gid('beltnext').style.visibility='hidden';
+  
+  if (gid('mastersearch')){
+    //sync with autocomplete.js
+    w=(idw-gid('logoutlink').offsetWidth)*3/4;
+    if (w>520) w=520;
+    	
+	if (w<gid('mastersearchshadow').offsetWidth) w=gid('mastersearchshadow').offsetWidth;
+	gid('mastersearch').style.width=w+'px';
+	
+	gid('mainsearchview_').style.right=gid('logoutlink').offsetWidth-gid('mastersearchshadow').offsetWidth+26+'px';
+	gid('mainsearchview_').style.width=(gid('mastersearch').offsetWidth-12)+'px';
+	gid('mainsearchview_').style.maxHeight=(idh-150)+'px';
+  }	  
 
   for (var i=0;i<os.length;i++){
     var node=os[i];

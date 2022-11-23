@@ -65,6 +65,9 @@ switch($cmd){
 // toolbar_position:left wrappers
 	case 'listwelcome': include 'icl/listwelcome.inc.php'; listwelcome(); break;
 	case 'dash_default': include 'icl/dash_default.inc.php'; dash_default(); break;
+	
+	case 'lookupall': include 'icl/lookupall.inc.php'; lookupall(); break;
+	
 		
 // Chat - gsb place holder
 

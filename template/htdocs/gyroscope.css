@@ -25,6 +25,14 @@ acronym.help{cursor:help;border-bottom:dotted 1px #4444ee;}
 #iconbelt{height:48px;position:relative;width:400px;overflow:hidden;float:left;}
 #topicons{position:absolute;top:0;left:0;transition:left 500ms;}
 
+#mastersearchanchor{margin-right:20px;display:inline-block;position:relative;}
+#mastersearchshadow,#mastersearch{font-size:15px;border:solid 1px #5F5C5C;border-radius:6px;line-height:28px;height:30px;box-sizing:border-box;color:#ffffff;outline:0;background:#0D1117 url(imgs/mg_dark.png) no-repeat 6px 50%;width:120px;padding-left:40px;transition:width 250ms,background 250ms,color 250ms,opacity 250ms;}
+#mastersearchshadow{color:#5E5B5B;}
+#mastersearch{position:absolute;top:0;right:0;opacity:0;}
+#mastersearch.expanded{background:#ffffff url(imgs/mg_light.png) no-repeat 6px 50%;color:#000000;opacity:1;}
+#mainsearchview_{position:absolute;top:44px;right:120px;width:300px;background:#ffffff;border:solid 1px #aaaaaa;border-radius:0 0 10px 10px;box-shadow:0 0 4px #000000;max-height:100px;overflow:auto;opacity:1;display:none;transition:opacity 100ms;}
+#mainsearchview{padding:10px;}
+
 #beltprev{visibility:hidden;margin-right:5px;}
 #beltnext{margin-left:5px;margin-right:0;}
 
@@ -240,9 +248,9 @@ acronym.help{cursor:help;border-bottom:dotted 1px #4444ee;}
 .qnavitem:hover b{display:inline;}
 
 #bookmarkview{}
-#bookmarkview .qnavitem{float:none;display:block;font-weight:normal;border-radius:0;text-align:left; padding:5px 0;padding-left:10px;font-size:14px;background:transparent;color:#111111;box-shadow:none;border-bottom:solid 1px #dedede;}
+#bookmarkview .qnavitem{float:none;display:block;font-weight:normal;border-radius:0;text-align:left; padding:5px 0;padding-left:10px;font-size:14px;background:transparent;color:#111111;box-shadow:none;border:none;border-bottom:solid 1px #dedede;border-left:solid 4px transparent;}
 #bookmarkview .qnavitem b{display:inline;font-weight:normal;}
-
+#bookmarkview .qnavitem.infocus{border-left:solid 4px #388BFD;}
 
 .enl_date{border-bottom:solid 1px #804000;color:#201000;}
 .enl_client{border-bottom:solid 1px #400080;color:#100020;}
@@ -410,6 +418,13 @@ input:disabled{color:#000000;}
 @media (prefers-color-scheme:dark) {
 
 	#mainmenu{color:#ffffff;}
+	
+	#bookmarkview .qnavitem	{color:#dedede;border-color:#999999;border-left:solid 4px transparent;}
+	#bookmarkview .qnavitem.infocus{border-left:solid 4px #E87655;}
+	
+	#mainsearchview_{background:#2F3235;color:#dedede;}
+	.mainsearchitem{border-color:#666666;}
+	.mainsearchitem:hover{background:#3A3A3A;}	
 	
 	#tooltitle,#lefticons, .tabclose, .activetab, .dulltab,
 	.activetab .noclose, .dulltab .noclose,

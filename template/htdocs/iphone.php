@@ -28,7 +28,7 @@ include 'uiconfig.php';
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	<meta name="theme-color" content="#454242" />
-	<link href="iphone/gyrodemo.css" type="text/css" rel="stylesheet" />
+	<link href="iphone/gyrodemo.css?v=2" type="text/css" rel="stylesheet" />
 	<link href="gsnotes.css" type="text/css" rel="stylesheet" />
 	<link href="toolbar.css?v=3" type="text/css" rel="stylesheet" />
 <?php 
@@ -77,13 +77,20 @@ button.warn, .button.warn{display:none;}
 	if ($enablelivechat) $tcount=2;
 	foreach ($toolbaritems as $ti) if (isset($ti['icon'])&&$ti['icon']!='') $tcount++;
 	?>
-	<div id="toollist" style="overflow:auto;width:100%;"><div id="toollistcontent" style="width:<?php echo 52*($tcount+1);?>px;">
+	<div id="toollist" style="overflow:auto;width:100%;"><div id="toollistcontent" style="width:<?php echo 52*($tcount+1+($uiconfig['enable_master_search']?4:0));?>px;">
 		
 	<div class="menuitem"><a id="speechstart" href=# onclick="ajxjs(<?php jsflag('speech_startstop');?>,'speech.js');speech_startstop(1);return false;" style="display:none;"><img alt="voice commands" style="" class="img-speechrecog" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
 	<div class="menuitem" id="homeicon"><a href=# onclick="reloadtab('welcome','','wk');showtab('welcome');document.viewindex=null;return false;"><img alt="home menu" class="img-home" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
 	<div class="menuitem" id="gsnotesclipicon"><a href=# onclick="if (navigator.onLine) gsnotes_listclips(); else onlinestatuschanged();"><img alt="offline clipboard" class="img-gsclip" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
 
-	<?php foreach ($toolbaritems as $modid=>$ti){
+	<?php 
+	
+	if ($uiconfig['enable_master_search']){
+		$toolbaritems=array(
+			'ui.search'=>array('title'=>'Search','icon'=>'img-search','action'=>"showmmastersearch();"),
+		);
+	}
+		foreach ($toolbaritems as $modid=>$ti){
 		if (isset($ti['type'])&&$ti['type']=='break') continue;
 		if (isset($ti['noiphone'])&&$ti['noiphone']) continue;	
 		if (isset($ti['type'])&&$ti['type']=='custom'){
@@ -109,14 +116,30 @@ button.warn, .button.warn{display:none;}
 		
 	?>
 	<div class="menuitem"><a onclick="<?php echo $action;?>return false;"><img alt="<?php echo $ti['title'];?>" class="<?php echo $ti['icon'];?>" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
-	<?php }?>
+	<?php }
+	?>
 	<?php if ($enablelivechat){?>
 	<div class="menuitem"><a href=# onclick="livechat_start();return false;"><img alt="live chat" id="chaticon" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
-	<?php }?>
+	<?php }
+	
+	?>
 	</div></div>
 	<span id="labellogin" style="display:none;"><?php echo $user['login'];?></span><span id="labeldispname" style="display:none;"><?php echo $user['dispname'];?></span>	
 	<a href="login.php?from=<?php echo $_SERVER['PHP_SELF'];?>" style="position:absolute;top:10px;right:10px;"><img alt="sign out" border="0" width="16" height="16" src="imgs/t.gif" class="admin-logout"></a>
+
+	<div id="mmastersearch">
+		<div class="mastersearchshell">
+		<input id="mastersearch" onkeyup="_mastersearch();" onblur="hidemmastersearch();">
+		</div>
+		<img id="msearchcloser" onclick="hidemmastersearch();" src="imgs/search-close.gif" width="20">
+	</div>
+	
 </div><!-- toolicons -->
+
+<div id="mainsearchview_">
+	<div id="mainsearchview"></div>
+</div>
+	
 <div id="pusher" style="width:100%;height:50px;"></div>
 
 <div style="display:none;">
@@ -185,6 +208,17 @@ hddemote('legacy.css');
 <script src="autocomplete.js?v=3"></script>
 
 <script>
+
+function showmmastersearch(){//mobile master search
+	gid('mmastersearch').style.display='block';
+	gid('mastersearch').focus();
+	if (gid('mastersearch').value!='') showmainsearchview();
+}
+
+function hidemmastersearch(){
+	gid('mmastersearch').style.display='none';
+	hidemainsearchview();
+}
 
 function showdeck(){
 	switch(document.viewmode){

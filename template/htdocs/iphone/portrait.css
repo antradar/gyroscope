@@ -15,6 +15,12 @@ body{background:#ffffff;}
 .inplong, .inp, .inpmed{padding:3px;width:95%;}
 .inpshort{width:40%;max-width:80px;}
 
+#mmastersearch{height:50px;}
+.mastersearchshell{padding-top:10px;}
+#msearchcloser{top:15px;}
+
+#mainsearchview_{top:45px;}
+
 #homeicon{display:block;}
 .qnav_{position:fixed;left:0;top:0px;height:100%;overflow:hidden;}
 .qnav{padding-top:160px;}

@@ -45,10 +45,11 @@ function gsratecheck_registerfail($ip,$login){
 	
 	$res=cache_get($fkey);
 	
+	$count=1;
+	
 	if (!$res){
 		cache_set($fkey,array('count'=>1,'exp'=>$exp),$penalty);		
 	} else {
-		$count=1;
 		if (isset($res['count'])&&is_numeric($res['count'])) $count=$res['count']+1;
 		//var_dump($res); die();
 		cache_set($fkey,array('count'=>$count,'exp'=>$exp),$penalty);

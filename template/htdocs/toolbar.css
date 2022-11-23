@@ -122,6 +122,8 @@ input:disabled{
 #chaticon{background:transparent url(imgs/toolbar.gif) no-repeat -448px 0;display:none;}
 #chaticon.offline{background:transparent url(imgs/toolbar.gif) no-repeat -448px -32px;display:none;}
 
+.img-search{background:transparent url(imgs/toolbar.gif) no-repeat -544px -32px;}
+
 .img-clock{width:12px;height:12px;background:transparent url(imgs/toolbar.gif) no-repeat 0 -52px;}
 .img-tracker{background:transparent url(imgs/toolbar.gif) no-repeat -288px 0;}
 .img-tracker-light{background:transparent url(imgs/toolbar.gif) no-repeat -288px -32px;}
@@ -131,6 +133,9 @@ input:disabled{
 
 .img-sap{background:transparent url(imgs/toolbar.gif) no-repeat -608px 0;}
 .img-sap-light{background:transparent url(imgs/toolbar.gif) no-repeat -608px -32px;}
+
+.ico-homedash{background:transparent url(imgs/toolbar.gif) no-repeat -528px -32px;width:16px;height:16px;vertical-align:middle;margin-left:6px;}
+.dulltab .ico-homedash{background:transparent url(imgs/toolbar.gif) no-repeat -528px -48px;width:16px;height:16px;vertical-align:middle;margin-left:6px;}
 
 .ico-setting{background:transparent url(imgs/toolbar.gif) no-repeat -480px 0;width:16px;height:16px;vertical-align:middle;margin-right:8px;}
 .dulltab .ico-setting{background:transparent url(imgs/toolbar.gif) no-repeat -480px -16px;}
@@ -336,6 +341,10 @@ svg > g > g.google-visualization-tooltip { pointer-events: none }
 .navdash .filterneg{display:inline;}
 .navfilters{max-height:200px;overflow:auto;}
 
+.mainsearchitem{margin-bottom:5px;border-bottom:solid 1px #cccccc;font-size:15px;}
+.mainsearchitem:hover{background:#dedede;}
+.mainsearchitem a{display:block;cursor:pointer;padding:5px;}
+
 @media screen and (max-width:1080px){
 	.dashbuttons .listitem{width:20%;}
 }
@@ -400,8 +409,7 @@ svg > g > g.google-visualization-tooltip { pointer-events: none }
 	.inpbad{background:#2C1115;color:#F89591;border-color:#69393A;}	
 	
 	.dashcoltitle, .dashcolsubtitle{color:#000000;}
-	.dashcolbutton{}
-			
+	.dashcolbutton{}		
 	
 	body,#lvviews{background:#0D1117;}
 	input, textarea, select{background:#0D1117;color:#C2C3C5;border-color:#8B949E;}

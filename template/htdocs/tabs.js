@@ -200,8 +200,8 @@ function tab_syncbookmarks(){
 		if (!cur) cur=last;		
 		
 		for (var i=0;i<bookmarks.length;i++){
-			if (cur==bookmarks[i].ref) cur.style.background='red';
-			else bookmarks[i].ref.style.background='transparent';	
+			if (cur==bookmarks[i].ref) cur.className='qnavitem infocus';
+			else bookmarks[i].ref.className='qnavitem';	
 		}		
 		
 		

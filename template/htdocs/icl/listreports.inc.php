@@ -4,7 +4,7 @@ function listreports(){
 	$user=userinfo();
 	$gsid=$user['gsid'];
 	$groupnames=$user['groups'];
-	$key=SGET('key');
+	$key=SGET('key',0);
 	$mode=SGET('mode');
 	
 	global $db;

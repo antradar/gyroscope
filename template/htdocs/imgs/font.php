@@ -18,6 +18,8 @@ $backbg='#CCCCCC';//'#2D3239';//'#0D1117';//'#CCCCCC';//'#0D1117';//'#2D3239';//
 $icons=array(
 	array('name'=>'user','adjust'=>-6),
 	array('name'=>'cog','adjust'=>-6),
+	array('name'=>'grip','adjust'=>4),
+	array('name'=>'magnifying-glass','adjust'=>-14),
 	array('name'=>'angle-down','adjust'=>0),
 	array('name'=>'chart-bar','adjust'=>-4),
 	array('name'=>'temperature-full','adjust'=>-18),

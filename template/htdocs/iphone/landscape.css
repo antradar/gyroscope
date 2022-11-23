@@ -24,6 +24,12 @@ body{background:#f2f2f2;}
 #pusher{height:40px;}
 #backlistshadow{height:43px;}
 
+#mmastersearch{height:40px;}
+.mastersearchshell{padding-top:5px;}
+#msearchcloser{top:10px;}
+
+#mainsearchview_{top:40px;}
+
 #homeicon{display:none;}
 
 #lkv.dismounted{z-index:auto;}

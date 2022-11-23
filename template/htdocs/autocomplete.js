@@ -339,8 +339,8 @@ lookupentity=function(d,entity,title,data,mini){
 
 _lookupentity=function(d,entity,title,data,mini){
 	if (d.disabled) return;
-	if (d.lastkey!=null&&d.lastkey==d.value.trim()) return;
-	d.lastkey=d.value.trim();
+	if (d.lastkey!=null&&d.lastkey==d.value) return;
+	d.lastkey=d.value;
 	if (d.timer) clearTimeout(d.timer);
 	d.timer=setTimeout(function(){
 		lookupentity(d,entity,title,data,mini);
@@ -555,7 +555,84 @@ nav_loadcharts=function(container,keyid,cmd,bingo){
     		}//for each chart
         				
 		});
+	});	
+}
+
+showmastersearch=function(){
+	var w;
+	
+	//sync with viewport.js
+	w=(cw()-gid('logoutlink').offsetWidth)*3/4;
+	if (w>520) w=520;
+	
+	if (w<gid('mastersearchshadow').offsetWidth) w=gid('mastersearchshadow').offsetWidth;
+	gid('mastersearch').style.width=w+'px';
+	gid('mastersearch').className='expanded';
+	
+	gid('mainsearchview_').style.right=gid('logoutlink').offsetWidth-gid('mastersearchshadow').offsetWidth+26+'px';
+	gid('mainsearchview_').style.width=w-12+'px';	
+	
+	document.mainsearch=true;
+	
+	if (gid('mastersearch').value!='') showmainsearchview();
+}
+
+hidemastersearch=function(){
+	gid('mastersearch').style.width=gid('mastersearchshadow').offsetWidth+'px';
+	gid('mastersearch').className='';
+	
+	document.mainsearch=null;
+	hidemainsearchview();
+}
+
+showmainsearchview=function(){
+	gid('mainsearchview_').style.display='block';
+	if (gid('mainsearchview_').timer) clearTimeout(gid('mainsearchview_').timer);
+	gid('mainsearchview_').timer=setTimeout(function(){
+		gid('mainsearchview_').style.opacity=1;
+	},30);	
+}
+
+hidemainsearchview=function(){
+	setTimeout(function(){
+		gid('mainsearchview_').style.opacity=0;
+		if (gid('mainsearchview_').timer) clearTimeout(gid('mainsearchview_').timer);
+		gid('mainsearchview_').timer=setTimeout(function(){
+			gid('mainsearchview_').style.display='none';
+		},100);	
+	},80);	
+}
+
+clearmainsearch=function(){
+	gid('mastersearch').value='';
+	gid('mastersearch').lastkey=null;	
+}
+
+mastersearch=function(){
+	var key=encodeHTML(gid('mastersearch').value);
+	if (key=='') return;
+	ajxpgn('mainsearchview',document.appsettings.codepage+'?cmd=lookupall&key='+key,0,0,null,function(rq){
+		showmainsearchview();
 	});
+}
+
+_mastersearch=function(){
+	var d=gid('mastersearch');
+	var key=d.value;
+	
+	if (key==''){
+		hidemainsearchview();
+		return;	
+	}
+	
+	if (d.lastkey!=null&&d.lastkey==d.value) return;
+	d.lastkey=d.value;
+	
+	if (d.timer) clearTimeout(d.timer);	
+	
+	d.timer=setTimeout(function(){
+		mastersearch();	
+	},500);
 	
 }
 

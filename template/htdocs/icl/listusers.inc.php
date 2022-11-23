@@ -32,7 +32,7 @@ function listusers(){
     }
 		
 	$mode=SGET('mode');
-	$key=SGET('key');
+	$key=SGET('key',0);
 	
 	$page=isset($_GET['page'])?intval($_GET['page']):0;
 	
