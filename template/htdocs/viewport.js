@@ -96,7 +96,7 @@ function scaleall(root){
     //sync with autocomplete.js
     w=(idw-gid('logoutlink').offsetWidth)*3/4;
     if (w>520) w=520;
-    	
+    if (!document.mainsearch) w=gid('mastersearchshadow').offsetWidth;	
 	if (w<gid('mastersearchshadow').offsetWidth) w=gid('mastersearchshadow').offsetWidth;
 	gid('mastersearch').style.width=w+'px';
 	
