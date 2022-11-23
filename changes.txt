@@ -1,3 +1,6 @@
+19.7
+- uiconfig (doc-centric model, master search)
+
 19.6
 - cookie encoding backward compatibility fix for php7.3
 - syntax cleanup for php8.1, narray_val in forminput
