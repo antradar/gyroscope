@@ -134,7 +134,7 @@ foreach ($toolbaritems as $modid=>$ti){
 
 </span><!-- iconbuttons -->
 
-<div id="logoutlink" class="<?php if ($usermeta['haspic']) echo 'bigprofile';?> <?php if ($uiconfig['toolbar_position']=='left') echo 'moveup';?>">
+<div id="logoutlink" class="<?php if ($usermeta['haspic']) echo 'bigprofile';?> <?php if ($uiconfig['toolbar_position']=='left') echo 'moveup'; if ($uiconfig['enable_master_search']) echo ' hassearch';?>">
 <?php if ($uiconfig['enable_master_search']){?>
 	<span id="mastersearchanchor">
 		<input id="mastersearchshadow" class="mastersearch" value="Search">

@@ -148,6 +148,10 @@ acronym.help{cursor:help;border-bottom:dotted 1px #4444ee;}
 #logoutlink.moveup{top:20px;}
 #logoutlink.bigprofile.moveup{top:13px;}
 
+#logoutlink.hassearch{top:18px;}
+#logoutlink.moveup.hassearch{top:14px;}
+#logoutlink.bigprofile.moveup.hassearch{top:14px;}
+
 #logoutlink.moveup #labellogin{display:none;}
 	
 #logoutlink img{margin-right:7px;border:none;vertical-align:middle;}

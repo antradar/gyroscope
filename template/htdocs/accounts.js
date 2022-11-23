@@ -192,8 +192,13 @@ showuserprofile=function(userid,msg){
 	ajxpgn('userprofile_'+userid,document.appsettings.codepage+'?cmd=showuserprofile&userid='+userid,0,0,null,function(){
 		gid('mainuserprofile').src=document.appsettings.codepage+'?cmd=imguserprofile&thumb=1&hb='+hb();
 		gid('mainuserprofile').className='';
-		if (document.appsettings.uiconfig.toolbar_position=='top') gid('logoutlink').className='bigprofile';
-		if (document.appsettings.uiconfig.toolbar_position=='left') gid('logoutlink').className='bigprofile moveup';
+		
+		var classname='bigprofile';
+		
+		if (document.appsettings.uiconfig.toolbar_position=='left') classname+=' moveup';
+		if (document.appsettings.uiconfig.enable_master_search) classname+=' hassearch';
+		
+		gid('logoutlink').className=classname;
 	});
 }
 
@@ -203,8 +208,14 @@ removeuserprofilepic=function(userid,gskey){
 	document.appsettings.codepage+'?cmd=removeuserprofilepic&userid='+userid,0,0,null,function(){
 		gid('mainuserprofile').src='imgs/t.gif';
 		gid('mainuserprofile').className='admin-user';
-		if (document.appsettings.uiconfig.toolbar_position=='top') gid('logoutlink').className='';
-		if (document.appsettings.uiconfig.toolbar_position=='left') gid('logoutlink').className='moveup';
+
+		var classname='';
+		
+		if (document.appsettings.uiconfig.toolbar_position=='left') classname+=' moveup';
+		if (document.appsettings.uiconfig.enable_master_search) classname+=' hassearch';
+		
+		gid('logoutlink').className=classname;
+				
 	},null,null,gskey);
 }
 
