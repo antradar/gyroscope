@@ -7,10 +7,12 @@ showuser=function(userid,name,bookmark){
 }
 
 _inline_lookupuser=function(d){
+	if (d.lastkey!=null&&d.lastkey==d.value.trim()) return;
+	d.lastkey=d.value.trim();	
 	if (d.timer) clearTimeout(d.timer);
 	d.timer=setTimeout(function(){
 		ajxpgn('userlist',document.appsettings.fastlane+'?cmd=slv_core__users&mode=embed&key='+encodeHTML(d.value));
-	},300
+	},200
 	);	
 }
 

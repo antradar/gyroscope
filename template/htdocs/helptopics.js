@@ -64,10 +64,13 @@ _inline_lookuphelptopic=function(d){
 	var soundex='';
 	if (d.soundex) soundex='&soundex=1';
 	
+	if (d.lastkey!=null&&d.lastkey==d.value.trim()) return;
+	d.lastkey=d.value.trim();
+		
 	if (d.timer) clearTimeout(d.timer);
 	d.timer=setTimeout(function(){
 		ajxpgn('helptopiclist',document.appsettings.codepage+'?cmd=slv_core__helptopics&mode=embed&key='+encodeHTML(d.value)+soundex);
-	},300
+	},200
 	);	
 }
 

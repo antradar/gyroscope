@@ -339,6 +339,8 @@ lookupentity=function(d,entity,title,data,mini){
 
 _lookupentity=function(d,entity,title,data,mini){
 	if (d.disabled) return;
+	if (d.lastkey!=null&&d.lastkey==d.value.trim()) return;
+	d.lastkey=d.value.trim();
 	if (d.timer) clearTimeout(d.timer);
 	d.timer=setTimeout(function(){
 		lookupentity(d,entity,title,data,mini);
