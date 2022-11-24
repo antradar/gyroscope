@@ -192,9 +192,12 @@ if ($uiconfig['toolbar_position']=='left') $tabbase=57;
 	<?php makehelp('myaccountlink','mysettings',1,-120);?>
 </div>
 
+<?php
+if ($uiconfig['enable_master_search']){?>
 <div id="mainsearchview_">
 	<div id="mainsearchview"></div>
 </div>
+<?php } ?>
 
 <div id="gamepadspot" style="border:solid 3px #ffab00;position:absolute;width:32px;height:32px;top:0;left:0;transition:all 200ms;z-index:3002;display:none;"></div>
 

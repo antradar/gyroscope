@@ -65,6 +65,10 @@ gamepad_register=function(){
 	var spot=gid('gamepadspot');
 	if ((buttons[bmap.topleft]!=null&&buttons[bmap.topleft].pressed)||(buttons[bmap.topright]!=null&&buttons[bmap.topright].pressed)){
 		var elems=gid('topicons').getElementsByTagName('a');
+		if (document.appsettings.uiconfig.toolbar_position=='left') {
+			showtab('welcome');
+			elems=gid('mainmenu').getElementsByTagName('a');
+		}
 		if (spot&&elems.length>0){
 			if (spot.timeout) clearTimeout(spot.timeout);
 			if (spot.idx==null) spot.idx=0;
@@ -105,7 +109,13 @@ gamepad_register=function(){
 		var vcond=gid('lkvc')!=null;
 		var vview=gid('lkvc');	
 	}
-	
+	if (document.appsettings.uiconfig.toolbar_position=='left'){
+		if (gid('bookmarkview').offsetWidth>0) {
+			vview=gid('bookmarkview');
+		} else vview=gid('mainmenu');
+		vcond=true;
+	}
+		
 	if (vcond&&(
 		(axes[amap.vhat]!=null&&Math.abs(axes[amap.vhat])>=0.8)
 		||
@@ -267,6 +277,11 @@ gamepad_register=function(){
 			var vcond=gid('lkvc')!=null;
 			var vview=gid('lkvc');	
 		}
+		if (document.appsettings.uiconfig.toolbar_position=='left'){
+			vcond=true;
+			if (gid('bookmarkview').offsetWidth>0) vview=gid('bookmarkview');
+			else vview=gid('mainmenu');	
+		}
 	
 		if (document.gamebutton_a_timer) clearTimeout(document.gamebutton_a_timer);
 		document.gamebutton_a_timer=setTimeout(function(){
@@ -274,6 +289,7 @@ gamepad_register=function(){
 				switch (spot.mode){
 				case 'topicons':
 					var elems=gid('topicons').getElementsByTagName('a');
+					if (document.appsettings.uiconfig.toolbar_position=='left') elems=gid('mainmenu').getElementsByTagName('a');
 					var elem=null;
 					if (spot.idx!=null&&spot.idx>=0&&spot.idx<elems.length) elem=elems[spot.idx];
 					if (elem){
@@ -397,6 +413,10 @@ gamepad_register=function(){
 	if (axes[amap.list]!=null&&axes[amap.list]){//scroll the left view
 		if (document.viewindex!=null&&document.viewindex!=''&&gid('lv'+document.viewindex)){
 			gid('lv'+document.viewindex).scrollTop+=axes[amap.list]*50;	
+		}
+		if (document.appsettings.uiconfig.toolbar_position=='left'){
+			if (gid('bookmarkview').offsetWidth>0) gid('bookmarkview').scrollTop+=axes[amap.list]*50;
+			else gid('mainmenu').scrollTop+=axes[amap.list]*50;
 		}
 	
 	}
