@@ -18,6 +18,10 @@ include 'evict.php';
 evict_check();
 
 login();
+
+header('gsfunc: gs_index');
+
+
 $user=userinfo();
 $userid=$user['userid'];
 $query="select * from users where userid=?";

@@ -26,6 +26,8 @@ $error_message='';
 
 $passreset=0;
 
+header('gsfunc: login');
+
 $textmode=0;
 $ua=$_SERVER['HTTP_USER_AGENT'];
 if (preg_match('/^lynx\//i',$ua)) $textmode=1;

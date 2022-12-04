@@ -18,7 +18,7 @@ include 'evict.php';
 evict_check();
 
 
-$cmd=$_GET['cmd'];
+$cmd=isset($_GET['cmd'])?$_GET['cmd']:'';
 
 login(true);
 
@@ -49,6 +49,7 @@ if ($gsexpiry!=0&&$gsexpiry<$now){
 
 header(COLNAME_GSID.': '.($user['gsid'])); //uncomment for logging in nginx as $upstream_http_gsid
 header('gsuid: '.($user['userid'])); //uncomment for logging in nginx as $upstream_http_gsuid
+header('gsfunc: '.rawurlencode($cmd));
 
 try {  //comment out in older PHP versions
 	
@@ -252,7 +253,9 @@ switch($cmd){
 	case 'swaphelptopicpos': include 'icl/swaphelptopicpos.inc.php'; swaphelptopicpos(); break;
 
 	
-	default: apperror('unspecified interface:'.preg_replace('/[^A-Za-z0-9-_]/','',$cmd));
+	default: 
+	header('gsfunc: !invalid');
+	apperror('unspecified interface:'.preg_replace('/[^A-Za-z0-9-_]/','',$cmd));	
 }
 
 } catch (FaultException $e){ //comment out in older PHP versions

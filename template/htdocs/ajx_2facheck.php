@@ -23,6 +23,8 @@ $nopass=intval(SQET('nopass'));
 
 if ($login==''){header('HTTP/1.0 403');die('.');}
 
+header('gsfunc: ajx_2facheck');
+
 list($rateok,$penalty)=gsratecheck_verify($_SERVER['REMOTE_ADDR'],$login);
 if (!$rateok){
 	header('prevalidation: too many login attempts');
