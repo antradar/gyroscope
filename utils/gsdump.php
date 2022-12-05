@@ -81,6 +81,8 @@ if (isset($vars['nolock'])){
 	}	
 }
 
+
+
 foreach ($rules as $rule){
 	list($table,$where)=parse_rule($rule,$vars['gscol'],$gsid);
 		
@@ -99,8 +101,13 @@ function parse_rule($rule,$gscol,$gsid){
 	
 	if ($subrule=='*') return array($table,'');
 	
+	if ($subrule=='-') return array($table,'-d');
+
+	if ($subrule=='?') return array($table,'--where="('.$gscol.'='.$gsid.' or '.$gscol.'=0 or '.$gscol.' is null)"');
+		
 	if ($subrule=='') return array($table,'--where="'.$gscol.'='.$gsid.'"');
-	
+
+		
 	$subparts=explode('|',$subrule);
 	$tables=explode(',',trim($subparts[0]));
 	$keys=explode(',',trim($subparts[1]));
