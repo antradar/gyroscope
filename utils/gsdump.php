@@ -16,11 +16,17 @@ $params=array();
 
 $gsid=null;
 
+$append='';
+
 foreach ($argv as $idx=>$arg){
 	if ($idx==0) continue;
 	if (preg_match('/gsid=(\d+)/i',$arg,$matches)){
 		$gsid=$matches[1];
 		continue;	
+	}
+	if (strtolower($arg)=='append'){
+		$append='--skip-add-drop-table --no-create-db --no-create-info --skip-triggers ';
+		continue;
 	}
 	array_push($params,$arg);
 }
@@ -85,25 +91,38 @@ if (isset($vars['nolock'])){
 
 foreach ($rules as $rule){
 	list($table,$where)=parse_rule($rule,$vars['gscol'],$gsid);
-		
-	echo "mysqldump $lock ".$strparams." $table $where $out\n\n";	
+	if (!isset($table)) continue;	
+	echo "mysqldump $lock $append ".$strparams." $table $where $out\n\n";	
 }//foreach rule
 
 
 function parse_rule($rule,$gscol,$gsid){
+	
+	global $append;
+	
 	$table='';
 	$where='';
+	
 	
 	$parts=explode(':',$rule);
 	$table=trim($parts[0]);
 	
 	if (count($parts)==1) $subrule=''; else $subrule=trim($parts[1]);
 	
-	if ($subrule=='*') return array($table,'');
+	if ($append==''){
+		if ($subrule=='*') return array($table,'');
+		if ($subrule=='-') return array($table,'-d');
+		if ($subrule=='?') return array($table,'--where="('.$gscol.'='.$gsid.' or '.$gscol.'=0 or '.$gscol.' is null)"');		
+	} else {
+		
+		if ($subrule=='*') return array(null,null);
+		if ($subrule=='-') return array(null,null);
+		
+		
+		if ($subrule=='?') return array($table,'--where="'.$gscol.'='.$gsid.'"');
+	}
 	
-	if ($subrule=='-') return array($table,'-d');
 
-	if ($subrule=='?') return array($table,'--where="('.$gscol.'='.$gsid.' or '.$gscol.'=0 or '.$gscol.' is null)"');
 		
 	if ($subrule=='') return array($table,'--where="'.$gscol.'='.$gsid.'"');
 
