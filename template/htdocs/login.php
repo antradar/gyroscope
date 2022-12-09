@@ -752,7 +752,9 @@ yubilogin=function(){
 		for (var i=0;i<attids.length;i++){
 			creds.push({type:'public-key',id:Uint8Array.from(atob(attids[i]), function(c){return c.charCodeAt(0);}).buffer});
 		}
-		
+
+	gid('loginbutton').style.opacity=0.6;		
+	gid('loginbutton').style.filter='saturate(0)';		
 	navigator.credentials.get({
 		publicKey:{
 			challenge:stringToArrayBuffer('no-challenge'),
@@ -762,6 +764,8 @@ yubilogin=function(){
 		}
 	}).then(
 		function(raw){
+			gid('loginbutton').style.opacity=1;
+			gid('loginbutton').style.filter='';		
 			var ass={ //assertion
 				id:base64encode(raw.rawId),
 				clientDataJSON:arrayBufferToString(raw.response.clientDataJSON),
@@ -782,7 +786,11 @@ yubilogin=function(){
 						
 			gid('loginform').submit();
 		}
-	);
+				
+	).catch(function(err){
+		gid('loginbutton').style.opacity=1;		
+		gid('loginbutton').style.filter='';		
+	});
 		
 			
 	});
