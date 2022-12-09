@@ -16,7 +16,6 @@ _inline_lookupuser=function(d){
 	);	
 }
 
-
 adduser=function(roles,gskey){
 
 	var suffix='new';

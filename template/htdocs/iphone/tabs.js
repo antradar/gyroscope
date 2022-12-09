@@ -110,7 +110,9 @@ showtab=function(key,opts){
 	  	if (!document.resizefuncs) document.resizefuncs={};
 	  	document.resizefuncs[ckey]=keyparts[1]||0;   
       }      
-      if (self['tabviewfunc_'+ckey]) self['tabviewfunc_'+ckey](keyparts[1]);
+      if (self['tabviewfunc_'+ckey]) {
+	      if (pasttab!=document.currenttab) self['tabviewfunc_'+ckey](keyparts[1]);
+      }
       if (self.livechat_updatesummary&&document.chatstatus=='online') livechat_updatesummary();
       	            
 }
@@ -418,7 +420,15 @@ function refreshtab(key,skipconfirm){
   var tab=document.tabtitles[tabid];
   if (!tab.reloadinfo) return;
   tab.style.color='#000000';
-  reloadtab(key,null,tab.reloadinfo.params,tab.reloadinfo.loadfunc,tab.reloadinfo.data,tab.reloadinfo.opts);
+  
+  var keyparts=key.split('_');
+  var ckey=keyparts[0];
+
+  reloadtab(key,null,tab.reloadinfo.params,function(){
+	  tab.reloadinfo.loadfunc();
+	  if (self['tabviewfunc_'+ckey]) self['tabviewfunc_'+ckey](keyparts[1]);
+  },tab.reloadinfo.data,tab.reloadinfo.opts);
+    
 }
 
 function closetabs(rectype){

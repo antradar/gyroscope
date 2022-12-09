@@ -17,6 +17,7 @@ $params=array();
 $gsid=null;
 
 $append='';
+$appendflags='--skip-add-drop-table --no-create-db --no-create-info --skip-triggers ';
 
 foreach ($argv as $idx=>$arg){
 	if ($idx==0) continue;
@@ -25,7 +26,7 @@ foreach ($argv as $idx=>$arg){
 		continue;	
 	}
 	if (strtolower($arg)=='append'){
-		$append='--skip-add-drop-table --no-create-db --no-create-info --skip-triggers ';
+		$append=$appendflags;
 		continue;
 	}
 	array_push($params,$arg);
@@ -90,41 +91,57 @@ if (isset($vars['nolock'])){
 
 
 foreach ($rules as $rule){
-	list($table,$where)=parse_rule($rule,$vars['gscol'],$gsid);
+	list($table,$where,$useappend)=parse_rule($rule,$vars['gscol'],$gsid);
 	if (!isset($table)) continue;	
-	echo "mysqldump $lock $append ".$strparams." $table $where $out\n\n";	
+	echo "mysqldump $lock $useappend ".$strparams." $table $where $out\n\n";	
 }//foreach rule
 
 
 function parse_rule($rule,$gscol,$gsid){
 	
 	global $append;
+	global $appendflags;
 	
 	$table='';
 	$where='';
 	
+	$useappend=$append;
+	
+	$extrawhere='';
 	
 	$parts=explode(':',$rule);
-	$table=trim($parts[0]);
+	$rawtable=trim($parts[0]);
+	$tableparts=explode('@',$rawtable);
+	$table=$tableparts[0];
+	$altgscol=$gscol;
+	if (count($tableparts)>1) $altgscol=$tableparts[1];
+	if (count($tableparts)>2){
+		switch ($tableparts[2]){
+			case '+': $useappend=$appendflags;	break;
+		}
+	}
+	if (count($tableparts)>3){
+		$extrawhere=$tableparts[3];
+	}
 	
 	if (count($parts)==1) $subrule=''; else $subrule=trim($parts[1]);
 	
-	if ($append==''){
-		if ($subrule=='*') return array($table,'');
-		if ($subrule=='-') return array($table,'-d');
-		if ($subrule=='?') return array($table,'--where="('.$gscol.'='.$gsid.' or '.$gscol.'=0 or '.$gscol.' is null)"');		
+	
+	if ($useappend==''){
+		if ($subrule=='*') return array($table,'',$useappend);
+		if ($subrule=='-') return array($table,'-d',$useappend);
+		if ($subrule=='?') return array($table,'--where="('.$altgscol.'='.$gsid.' or '.$altgscol.'=0 or '.$altgscol.' is null)"',$useappend);		
 	} else {
 		
-		if ($subrule=='*') return array(null,null);
-		if ($subrule=='-') return array(null,null);
-		
-		
-		if ($subrule=='?') return array($table,'--where="'.$gscol.'='.$gsid.'"');
+		if ($subrule=='*') return array(null,null,null);
+		if ($subrule=='-') return array(null,null,null);
+				
+		if ($subrule=='?') return array($table,'--where="'.$altgscol.'='.$gsid.'"',$useappend);
 	}
 	
 
 		
-	if ($subrule=='') return array($table,'--where="'.$gscol.'='.$gsid.'"');
+	if ($subrule=='') return array($table,'--where="'.$altgscol.'='.$gsid.' '.$extrawhere.'"',$useappend);
 
 		
 	$subparts=explode('|',$subrule);
@@ -148,12 +165,12 @@ function parse_rule($rule,$gscol,$gsid){
 		$where.=' and '.$tables[$idx].'.'.$keya.'='.$tables[$idx+1].'.'.$keyb;
 	}
 	
-	$where.=')';
+	$where.=' '.$extrawhere.')';
 	
 	$where.='" ';
 			
 	
-	return array($table,$where);	
+	return array($table,$where,$useappend);	
 }
 
 
