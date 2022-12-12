@@ -424,11 +424,7 @@ function refreshtab(key,skipconfirm){
   var keyparts=key.split('_');
   var ckey=keyparts[0];
 
-  reloadtab(key,null,tab.reloadinfo.params,function(rq){
-	  if (tab.reloadinfo&&tab.reloadinfo.loadfunc) 
-	  tab.reloadinfo.loadfunc(rq);
-	  if (self['tabviewfunc_'+ckey]) self['tabviewfunc_'+ckey](keyparts[1]);
-  },tab.reloadinfo.data,tab.reloadinfo.opts);
+  reloadtab(key,null,tab.reloadinfo.params,tab.reloadinfo.loadfunc,tab.reloadinfo.data,tab.reloadinfo.opts);
     
 }
 

@@ -309,8 +309,6 @@ window.onload=function(){
 	});	
 }
 
-
-
 </script>
 <?php
 include 'offline.php';
