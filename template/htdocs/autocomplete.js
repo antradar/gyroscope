@@ -268,6 +268,8 @@ pickdate=function(d,opts,def){
 }
 
 _pickdate=function(d,opts){
+	if (d.lastkey!=null&&d.lastkey==d.value) return;
+	d.lastkey=d.value;
 	if (d.timer) clearTimeout(d.timer);
 	var f=function(d,opts){return function(){
 		pickdate(d,opts,null);
@@ -293,6 +295,8 @@ pickdatetime=function(d,opts,def){
 }
 
 _pickdatetime=function(d,opts,def){
+	if (d.lastkey!=null&&d.lastkey==d.value) return;
+	d.lastkey=d.value;
 	if (d.timer) clearTimeout(d.timer);
 	var f=function(d,opts){return function(){
 		pickdatetime(d,opts);
@@ -314,6 +318,8 @@ picktime=function(d,opts,def){
 }
 
 _picktime=function(d,opts,def){
+	if (d.lastkey!=null&&d.lastkey==d.value) return;
+	d.lastkey=d.value;
 	if (d.timer) clearTimeout(d.timer);
 	var f=function(d,opts){return function(){
 		picktime(d,null,opts);

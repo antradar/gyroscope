@@ -55,6 +55,8 @@ use toolbar.psp to generate toolbar.gif
 .tslogo,.tsdark{width:210px;}
 .tsdark{display:none;}
 
+#gsstickerview{z-index:1950;border-radius:20px;background:rgba(240,248,255,0.9);width:90%;height:40%;position:fixed;top:25%;left:5%;display:none;border:solid 4px #8f8cf7;}
+#gsstickercontent{line-height:1.3em;font-family:'Times New Roman',Georgia,serif;font-size:40px;text-align:center;width:100%;height:100%;display:table-cell;vertical-align:middle;}
 
 .caleheader{height:20px;border:solid 1px #ffffff;margin-left:1px;}
 .calecell{height:25px;border:solid 1px #444444;margin:1px;}
@@ -392,6 +394,8 @@ svg > g > g.google-visualization-tooltip { pointer-events: none }
 
 
 @media (prefers-color-scheme:dark) {
+	
+	#gsstickerview{background:rgba(53,41,46,0.9);color:#ffffff;border-color:#6A494C;}
 	
 	.calledout{background:#35292E;}
 	

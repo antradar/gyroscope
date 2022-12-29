@@ -285,6 +285,49 @@ foreach ($tests as $test=>$result){
 <?php		
 	}
 	
+	if (isset($user['login'])&&$user['login']!=''){
+		$res=opcache_get_status();
+		$preload=isset($res['preload_statistics'])?$res['preload_statistics']:null;
+		if ($preload){
+			$prefuncs=isset($preload['functions'])?$preload['functions']:array();
+			
+			if (count($prefuncs)>0){
+		?>
+		<div class="testrow">
+			<div class="testitem">Preloaded Functions</div>
+			<div class="testresult">
+				<?php echo count($prefuncs);?> &nbsp; <a href=# onclick="showhide('prefuncs');return false;">view</a>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div id="prefuncs" style="display:none;line-height:1.5em;padding:10px;padding-left:20px;font-size:14px;">
+			<?php foreach ($prefuncs as $prefunc) echo $prefunc.' &nbsp; ';?>
+		</div>
+		<?php	
+		
+			}
+			
+			$preclasses=isset($preload['classes'])?$preload['classes']:array();
+			
+			if (count($preclasses)>0){
+		?>
+		<div class="testrow">
+			<div class="testitem">Preloaded Classes</div>
+			<div class="testresult">
+				<?php echo count($preclasses);?> &nbsp; <a href=# onclick="showhide('preclasses');return false;">view</a>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div id="preclasses" style="display:none;line-height:1.5em;padding:10px;padding-left:20px;font-size:14px;">
+			<?php foreach ($preclasses as $preclass) echo $preclass.' &nbsp; ';?>
+		</div>
+		<?php	
+		
+			}			
+		
+		}//preload	
+	}
+	
 	
 	if (isset($dbconfigs)&&$user['login']){
 	?>

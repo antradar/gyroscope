@@ -139,6 +139,7 @@ CREATE TABLE reports (
   reportfunc varchar(255) DEFAULT NULL default '',
   reportkey varchar(255) NOT NULL default '',
   reportgroupnames varchar(255) NOT NULL default '',
+  reportparams varchar(255),
   bingo tinyint(1) unsigned default 0,
   gyrosys tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (reportid),
@@ -154,11 +155,11 @@ CREATE TABLE reports (
   KEY gsid (gsid)
 ) ENGINE=InnoDB;
 
-INSERT INTO `reports` VALUES (1, 1, 'Activity Log', 'Security', 'This report is mostly used by system administrators for diagnostic purposes.', 'Aktivitätsprotokoll', 'Sicherheit', '', 'Registro de Atividade', '', 'admins', '1', '????', '????', '', 'actionlog', 'admins|reportsettings|systemplateuse|systemplate',0, 0);
-INSERT INTO `reports` VALUES (2, 1, 'Activity Summary', 'Security', '', '', '', '', '', '', 'admins', '1', '', '', '', 'trace', 'admins|reportsettings|systemplateuse|systemplate',1, 0);
-INSERT INTO `reports` VALUES (3, 1, 'Server Access Log', 'Security', '', '', '', '', '', '', 'admins', '1', '', '', '', 'serverlog', 'admins|reportsettings|systemplateuse|systemplate',1, 0);
-INSERT INTO `reports` VALUES (4, 1, 'Mail Server Log', 'Security', '', '', '', '', '', '', 'admins', '1', '', '', '', 'mxevents', 'admins|reportsettings|systemplateuse|systemplate',1, 0);
-INSERT INTO `reports` VALUES (5, 1, 'Fault Log', 'Security', '', '', '', '', '', '', 'admins', '1', '', '', '', 'faultlog', 'faultlog',0, 0);
+INSERT INTO `reports` VALUES (1, 1, 'Activity Log', 'Security', 'This report is mostly used by system administrators for diagnostic purposes.', 'Aktivitätsprotokoll', 'Sicherheit', '', 'Registro de Atividade', '', 'admins', '1', '????', '????', '', 'actionlog', 'admins|reportsettings|systemplateuse|systemplate','',0, 0);
+INSERT INTO `reports` VALUES (2, 1, 'Activity Summary', 'Security', '', '', '', '', '', '', 'admins', '1', '', '', '', 'trace', 'admins|reportsettings|systemplateuse|systemplate','',1, 0);
+INSERT INTO `reports` VALUES (3, 1, 'Server Access Log', 'Security', '', '', '', '', '', '', 'admins', '1', '', '', '', 'serverlog', 'admins|reportsettings|systemplateuse|systemplate','',1, 0);
+INSERT INTO `reports` VALUES (4, 1, 'Mail Server Log', 'Security', '', '', '', '', '', '', 'admins', '1', '', '', '', 'mxevents', 'admins|reportsettings|systemplateuse|systemplate','',1, 0);
+INSERT INTO `reports` VALUES (5, 1, 'Fault Log', 'Security', '', '', '', '', '', '', 'admins', '1', '', '', '', 'faultlog', 'faultlog','',0, 0);
 
 DROP TABLE IF EXISTS userhelpspots;
 CREATE TABLE userhelpspots (

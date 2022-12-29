@@ -258,6 +258,18 @@ function flashstatus(t,l){
 	}
 }
 
+function flashsticker(msg,sec){
+	if (document.stickertimer) clearTimeout(document.stickertimer);
+	gid('gsstickercontent').innerHTML=msg;
+	gid('gsstickerview').style.display='table';
+	if (sec!=null){
+		document.stickertimer=setTimeout(function(){
+			gid('gsstickerview').style.display='none';
+		},sec*1000);	
+	}
+		
+}
+
 function callout_section(d){
 	if (d==null||!d) return;
 	var callout=gid('callout');

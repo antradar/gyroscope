@@ -67,6 +67,18 @@ function rescaletabs(){
   }	
 }
 
+function flashsticker(msg,sec){
+	if (document.stickertimer) clearTimeout(document.stickertimer);
+	gid('gsstickercontent').innerHTML=msg;
+	gid('gsstickerview').style.display='table';
+	if (sec!=null){
+		document.stickertimer=setTimeout(function(){
+			gid('gsstickerview').style.display='none';
+		},sec*1000);	
+	}
+		
+}
+
 function callout_section(d){
 	if (d==null||!d) return;
 	var callout=gid('callout');
@@ -300,6 +312,98 @@ function authpump(){
 }
 
 function sv(d,v){gid(d).value=v;}
+
+if (document.createEvent){
+	document.keyboard=[];
+	
+	window.onblur=function(){
+		document.keyboard=[];
+		document.gamepadlock=true;	
+	}	
+	
+	document.onkeyup=function(e){
+		var keycode;
+		if (e) keycode=e.keyCode; else keycode=event.keyCode;	
+		document.keyboard['key_'+keycode]=null;
+		delete document.keyboard['key_'+keycode];
+	}
+	
+	document.onkeydown=function(e){
+		var keycode;
+		if (e) keycode=e.keyCode; else keycode=event.keyCode;	
+		document.keyboard['key_'+keycode]=1;
+		
+		var metakey=0;
+		if (document.keyboard['key_17']||document.keyboard['key_91']||document.keyboard['key_224']) metakey=1;
+		
+		if (document.keyboard['key_13']&&metakey){
+			picktop();	
+		}
+			
+		if (document.keyboard['key_83']&&metakey){
+			savecurrenttab();
+			return false;
+		}
+		
+		if (document.keyboard['key_16']&&document.keyboard['key_70']&&document.keyboard['key_55']&&!document.fleetview){
+			document.fleetview=true;
+			updategyroscope();	
+		}		
+		
+		if (metakey&&document.keyboard['key_190']&&document.keyboard['key_188']) toggletabdock();
+		
+		if (metakey&&document.keyboard['key_16']&&document.keyboard['key_82']) {refreshtab(document.tabkeys[document.currenttab]);return false;}
+		if (!document.fsshowing&&metakey&&document.keyboard['key_16']&&document.keyboard['key_52']&&document.tabtitles[document.currenttab]!=null&&!document.tabtitles[document.currenttab].noclose) {
+			if (!sconfirm('Are you sure you want to CLOSE the current tab?')) return;
+			closetab(document.tabkeys[document.currenttab]);
+		}
+		if (document.fsshowing&&metakey&&document.keyboard['key_16']&&document.keyboard['key_52']) {
+			closefs();
+		}
+		
+		
+	}
+
+	function savecurrenttab(){
+		if (document.currenttab==null||document.currenttab==-1) return;
+		if (!document.tabviews[document.currenttab]) return;
+		var bts=document.tabviews[document.currenttab].getElementsByTagName('button');
+		var bt=null;
+		for (var i=0;i<bts.length;i++){
+			if (bts[i].className&&bts[i].className=='changebar_button'){
+				bt=bts[i];	
+			}
+		}
+		if (!bt) return;
+		
+		var event=document.createEvent('Events');
+		event.initEvent('click',true,false);
+		bt.dispatchEvent(event);		
+		
+	}
+	
+	function picktop(){
+		document.keyboard=[];
+		if (!document.hotspot) return;
+		if (!gid('lkvc')) return;
+		var os=gid('lkvc').getElementsByTagName('a');
+		var target=null;
+		for (var i=0;i<os.length;i++){
+			var o=os[i];
+			if (o.parentNode&&(o.parentNode.className=='listitem'||o.attributes.pickable)&&o.onclick!=null){
+				target=o;
+				break;	
+			}
+		}//for
+		if (!target) return;
+		
+		var event=document.createEvent('Events');
+		event.initEvent('click',true,false);
+		target.dispatchEvent(event);
+		
+	}
+}
+
 
 function toggle_easyread(){
 	if (!document.easyreading){

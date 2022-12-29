@@ -203,6 +203,10 @@ if ($uiconfig['enable_master_search']){?>
 </div>
 <?php } ?>
 
+<div id="gsstickerview" onclick="this.style.display='none';">
+	<div id="gsstickercontent"></div>
+</div>
+
 <div id="gamepadspot" style="border:solid 3px #ffab00;position:absolute;width:32px;height:32px;top:0;left:0;transition:all 200ms;z-index:3002;display:none;"></div>
 
 <div id="callout" style="z-index:2000;filter:alpha(opacity=0);opacity:0;transition:top 120ms,left 120ms,opacity 180ms;position:absolute;top:-80px;left:250px;"><img src="imgs/callout.png" style="width:56px;"></div>

@@ -256,7 +256,7 @@ function sql_insert_id($db,$rs=null){
 	if ($SQL_READONLY) return 0;	
 
 	if (is_array($rs)&&$rs['type']=='stmt'&&isset($rs['insert_id'])) return $rs['insert_id'];
-	if (!isset($rs)) return mysqli_insert_id();
+	//if (!isset($rs)) return mysqli_insert_id();
 	return mysqli_insert_id($db);
 }
 

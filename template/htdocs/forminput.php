@@ -12,7 +12,7 @@ function QETCUR($key){$val=trim(isset($_POST[$key])?$_POST[$key]:''); $val=str_r
 function SGET($key,$trim=1){$val=isset($_GET[$key])?$_GET[$key]:'';if ($trim) $val=trim($val);return $val;}
 function SQET($key,$trim=1){$val=isset($_POST[$key])?$_POST[$key]:'';if ($trim) $val=trim($val);return $val;}
 
-function hspc($str){return htmlspecialchars($str,ENT_SUBSTITUTE|ENT_COMPAT);}
+function hspc($str){if (!is_string($str)) return $str;return htmlspecialchars($str,ENT_SUBSTITUTE|ENT_COMPAT);}
 
 //array with nullable nodes
 function narray_val($arr,$key){if (!isset($arr[$key])) return null; return $arr[$key];}
@@ -43,7 +43,7 @@ function utf8_fix($str){
 }
 
 function _utf8_fix($str){
-		
+	if (!is_string($str)) return array($str,0);	
 	$tstr=utf8_encode($str);
 	$oqc=0; for ($i=0;$i<strlen($str);$i++) if ($str[$i]=='?') $oqc++;
 	$itr=0;

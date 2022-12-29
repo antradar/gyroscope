@@ -4,14 +4,14 @@ include 'auth.php';
 include 'sql.php';
 
 // $readonlypath='https://exodus.your-domain.com/'; //remember to modify xss.php on the exodus server
-if ($SQL_READONLY) $readonlypath='';
+if (isset($SQL_READONLY)&&$SQL_READONLY) $readonlypath='';
 
 $notetypes=array(
 	'plain'=>'Simple Text',
 	'user'=>'User',
 );
 
-$mode=$_GET['mode'];
+$mode=isset($_GET['mode'])?$_GET['mode']:'';
 if ($mode!='embed'){
 ?>
 <!doctype html>
@@ -68,7 +68,7 @@ body{padding:0;margin:0;}
 		<a class="hovlink" href="./">continue to app</a>
 	<?php }?>
 	
-	<?php if (!$SQL_READONLY&&$readonlypath!=''){?>
+	<?php if ((!isset($SQL_READONLY)||!$SQL_READONLY)&&isset($readonlypath)&&$readonlypath!=''){?>
 	<div style="padding-top:5px;">
 	If the server is unreachable, try the <a href="<?php echo $readonlypath;?>" target=_blank>read-only mode</a>
 	</div>

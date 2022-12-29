@@ -70,7 +70,7 @@ button.warn, .button.warn{display:none;}
 <body onload="setTimeout(scrollTo, 0, 0, 1);">
 <div id="watchframe_outer">
 <div id="toolbg" style="position:fixed;width:100%;z-index:1000;top:0;background:#333333;opacity:0.9"></div>
-<div id="toolicons" style="position:fixed;width:100%;z-index:2000;top:0;">
+<div id="toolicons" style="position:fixed;width:100%;z-index:1900;top:0;">
 
 	<?php
 	$tcount=1;
@@ -183,6 +183,10 @@ button.warn, .button.warn{display:none;}
 	<a id="fsclose" onclick="closefs();"><img alt="close full screen" width="10" height="10" class="img-closeall" src="imgs/t.gif"></a>
 </div>
 <div id="fsview"></div>
+
+<div id="gsstickerview" onclick="this.style.display='none';">
+	<div id="gsstickercontent"></div>
+</div>
 
 <div id="callout" style="z-index:2000;opacity:0;transition:top 200ms,left 200ms,opacity 250ms;position:fixed;top:100px;left:250px;"><img src="imgs/callout.png" style="width:56px;"></div>
 
@@ -377,6 +381,16 @@ scaleall(document.body);
 </script>
 <?php include 'ws_js.php';?>
 <script src="speechloader.js"></script>
+<?php
+/*
+<script src="barcodescanner.js"></script>
+<script>
+	barcodescanner.init();
+	window.onblur=function(){if (gid('barcodewarn')) gid('barcodewarn').style.display='inline';document.keyboard=[];document.gamepadlock=true;}
+	window.onfocus=function(){if (gid('barcodewarn')) gid('barcodewarn').style.display='none';document.gamepadlock=null;}
+</script>
+*/
+?>
 <script>
 if (window.Notification) Notification.requestPermission();
 </script>
