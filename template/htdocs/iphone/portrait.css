@@ -21,6 +21,8 @@ body{background:#ffffff;}
 
 #mainsearchview_{top:45px;}
 
+.savebar_content{padding:10px 5px 10px 5px;text-align:center;}
+
 #homeicon{display:block;}
 .qnav_{position:fixed;left:0;top:0px;height:100%;overflow:hidden;}
 .qnav{padding-top:160px;}

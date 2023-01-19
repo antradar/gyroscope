@@ -119,9 +119,7 @@ function makesavebar($key,$title=null){
 <div id="savebar_<?php echo $key;?>" class="savebar">
 <div class="savebar_anchor">
 <div class="savebar_view">
-<div class="savebar_content">
-	<?php echo $title;?>
-</div>
+<div class="savebar_content"><?php echo $title;?></div>
 </div>
 </div>
 </div>

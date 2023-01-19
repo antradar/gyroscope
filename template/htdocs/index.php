@@ -209,7 +209,7 @@ if ($uiconfig['enable_master_search']){?>
 
 <div id="gamepadspot" style="border:solid 3px #ffab00;position:absolute;width:32px;height:32px;top:0;left:0;transition:all 200ms;z-index:3002;display:none;"></div>
 
-<div id="callout" style="z-index:2000;filter:alpha(opacity=0);opacity:0;transition:top 120ms,left 120ms,opacity 180ms;position:absolute;top:-80px;left:250px;"><img src="imgs/callout.png" style="width:56px;"></div>
+<div id="callout" style="z-index:4000;filter:alpha(opacity=0);opacity:0;transition:top 120ms,left 120ms,opacity 180ms;position:absolute;top:-80px;left:250px;"><img src="imgs/callout.png" style="width:56px;"></div>
 
 <script src="lang/dict.<?php echo $lang;?>.js"></script>
 <script src="nano.js?v=4_9"></script>

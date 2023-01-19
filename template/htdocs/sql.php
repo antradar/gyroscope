@@ -190,7 +190,7 @@ function sql_query($query,&$db,$mode=MYSQLI_STORE_RESULT){
 	return $rs;
 }
 
-function sql_copy_from_query($query,$db,$omits,$table){
+function sql_copy_from_query($query,$db,$omits,$table,$negs=null,$resets=null){ //resets is key-val
 	$rs=sql_query($query,$db);
 	$myrow=sql_fetch_assoc($rs);
 	$fields=array();
@@ -200,6 +200,8 @@ function sql_copy_from_query($query,$db,$omits,$table){
 		if (in_array(strtolower($k),$omits)) continue;
 		array_push($fields,$k);
 		array_push($values,'?');
+		if(isset($negs) && in_array($k, $negs) && is_numeric($v) ) $v = -1*$v;
+		if(isset($resets) && isset($resets[$k])) $v=$resets[$k];
 		array_push($params,$v);
 	}
 	

@@ -608,9 +608,13 @@ function cancelautosaver(tabkey){
 	
 }
 
-function marktabsaved(tabkey){
+
+function marktabsaved(tabkey,title){
 	var tab=gid('savebar_'+tabkey);
 	if (!tab) return;
+	if (!tab.orgsavetitle) tab.orgsavetitle=tab.getElementsByClassName('savebar_content')[0].innerHTML;
+	if (!title) title=tab.orgsavetitle;
+	tab.getElementsByClassName('savebar_content')[0].innerHTML=title;
 	if (tab.timer) clearTimeout(tab.timer);
 	tab.style.display='block';
 	tab.timer=setTimeout(function(){

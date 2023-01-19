@@ -1,3 +1,8 @@
+19.8
+- flashsticker
+- improved marktabsaved (customizable message, portrait alignment)
+- sql_copy_from_query supports negation ($negs) and overrides ($resets)
+
 19.7
 - uiconfig (doc-centric model, master search)
 

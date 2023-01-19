@@ -188,7 +188,7 @@ button.warn, .button.warn{display:none;}
 	<div id="gsstickercontent"></div>
 </div>
 
-<div id="callout" style="z-index:2000;opacity:0;transition:top 200ms,left 200ms,opacity 250ms;position:fixed;top:100px;left:250px;"><img src="imgs/callout.png" style="width:56px;"></div>
+<div id="callout" style="z-index:4000;opacity:0;transition:top 200ms,left 200ms,opacity 250ms;position:fixed;top:100px;left:250px;"><img src="imgs/callout.png" style="width:56px;"></div>
 
 </div><!-- watchframe_outer -->
 

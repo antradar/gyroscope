@@ -4,7 +4,7 @@ function lookup#record#(){
 	global $db; 
 	$key=SGET('key');
 	
-	$page=intval($_GET['page']);
+	$page=isset(intval($_GET['page']))?intval($_GET['page']):0;
 	$mul=$_GET['mul'];
 	
 	//gsguard if applicable
