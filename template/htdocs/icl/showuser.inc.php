@@ -9,7 +9,7 @@ function showuser($userid=null){
 	if (!isset($userid)) $userid=SGET('userid');
 	
 	$user=userinfo();
-	if (!$user['groups']['accounts']) die('Access denied');
+	if (!isset($user['groups']['accounts'])) die('Access denied');
 	$gsid=$user['gsid'];
 		
 	$myuserid=$user['userid'];

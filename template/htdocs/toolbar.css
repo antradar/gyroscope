@@ -33,6 +33,7 @@ use toolbar.psp to generate toolbar.gif
 .ssrp_desc{font-family:arial, sans-serif; color:#545454; font-size:13px;line-height:18.2px;}
 
 .listitem{overflow-wrap:break-word;}
+.listitem span, .listitem .img-del {vertical-align:middle;}
 
 .hovlink, .hovlink:visited, .hovlink:hover, .hovlink:link,
 .listitem .hovlink, .listitem .hovlink:visited, .listitem .hovlink:hover, .listitem .hovlink:link{color:#187CA6;text-decoration:none;border-bottom:dotted 1px #187CA6;}

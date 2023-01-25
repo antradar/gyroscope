@@ -309,7 +309,10 @@ function logfault($e,$gsfault=false){
 		$callfile=basename($trace[0]['file']);
 		$callline=$trace[0]['line'];
 		$callfunc=$trace[0]['function'];
-		$callargs=implode(', ',$trace[0]['args']);
+		$callargs='';
+		if (isset($trace[0]['args'])){
+			$callargs=implode(', ',$trace[0]['args']);
+		}
 	}
 	
 	$faulttype=0;

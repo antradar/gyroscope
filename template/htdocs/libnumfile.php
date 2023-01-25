@@ -1,5 +1,12 @@
 <?php
 
+function numfile_stream_contents($stem,$ext,$basedir,$perfolder=100){
+	$path=numfile_make_path($stem,$basedir,$perfolder);
+	$fn=$path.'/'.$stem.'.'.trim($ext,'.');
+	if (!file_exists($fn)) return;
+	readfile($fn);
+}
+
 function numfile_get_contents($stem,$ext,$basedir,$perfolder=100){
 	$path=numfile_make_path($stem,$basedir,$perfolder);
 	$fn=$path.'/'.$stem.'.'.trim($ext,'.');

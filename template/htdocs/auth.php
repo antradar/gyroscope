@@ -232,7 +232,8 @@ function checkgskey($verb){
 	$userid=$user['userid'];	
 		
 	//$key=$_SERVER['HTTP_X_GSREQ_KEY'];
-	$key=$_POST['X-GSREQ-KEY'];
+	$key=isset($_POST['X-GSREQ-KEY'])?$_POST['X-GSREQ-KEY']:'';
+
 		
 	$gsfrac=preg_replace('/[^A-Za-z0-9-]/','',$_COOKIE['gsfrac']);
 	
