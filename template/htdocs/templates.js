@@ -26,8 +26,10 @@ inittemplatetexteditor=function(templateid,st){
 				setTimeout(function(){document.tabviews[document.currenttab].scrollTop=otop;},300);	
 				if (st!=null) setTimeout(function(){ed.getBody().scrollTop=st;},300);
 			},
+		    handle_event_callback:mce_event_hook,			
 		    setup: function(ed) {
-			    ed.onChange.add(function(){marktabchanged('template_'+templateid)});
+
+			    ed.onChange.add(function(){marktabchanged(document.tabkeys[document.currenttab]);});
 				ed.onMouseUp.add(function(ed){var tag=ed.selection.getContent().replace(/^\s\s*/, '').replace(/\s\s*$/, '');var stem=tag.replace(/%%\S+%%/g,'');if (tag!=''&&stem=='') lookupentity(ed,'templatevar&templateid='+templateid+'&varkey='+encodeHTML(tag.replace(/%/g,'')),'Template Variables'); });
 				// ed.onMouseUp.add(lookupselection(ed)); //uncomment to enable image class selector
 	

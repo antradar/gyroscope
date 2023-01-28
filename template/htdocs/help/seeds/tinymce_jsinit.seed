@@ -22,9 +22,10 @@ init#editfield#editor=function(#primarykey#,st){
 				setTimeout(function(){document.tabviews[document.currenttab].scrollTop=otop;},300);			
 				if (st!=null) setTimeout(function(){ed.getBody().scrollTop=st;},300);
 				ed.getDoc().showqna=function(){}; //declare null function
-			},			
+			},
+			handle_event_callback:mce_event_hook,			
 			setup: function(ed) {
-				ed.onChange.add(function(){marktabchanged('#record#_'+#primarykey#)});
+				ed.onChange.add(function(){marktabchanged(document.tabkeys[document.currenttab]);});
 				ed.onMouseUp.add(lookupselection(ed));
 				ed.addButton('medialib',{title:'media library',image:'tiny_mce/icons/image.gif',onclick:function(){tinyMCE.activeEditor=ed;loadfs('Media Library','showmedialibrary');}});
 				ed.addButton('noamp',{title:'AMP exclusion zone',image:'tiny_mce/icons/noamp.gif',onclick:function(){ed.selection.setContent(mcetemplates.noamp(ed));}});
