@@ -3,6 +3,7 @@
 - improved marktabsaved (customizable message, portrait alignment)
 - sql_copy_from_query supports negation ($negs) and overrides ($resets)
 - numfile: stream mode
+- mce keyboard forwarding
 
 19.7
 - uiconfig (doc-centric model, master search)

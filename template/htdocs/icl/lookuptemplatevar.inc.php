@@ -57,7 +57,7 @@ function lookuptemplatevar(){
 <?php		
 	}//while	
 	
-	if (!$embed){
+	if ($mode!='embed'){
 ?>
 <?php
 	
