@@ -31,7 +31,7 @@ function showtemplate($templateid=null){
 ?>
 <div class="section">
 	<div class="sectiontitle"><a ondblclick="toggletabdock();"><?php echo htmlspecialchars($templatename);?></a></div>
-
+		
 	<input type="hidden" id="templateplugins_<?php echo $templateid;?>" value="<?php echo $plugins;?>">
 
 	<div class="inputrow">

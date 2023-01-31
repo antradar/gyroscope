@@ -24,7 +24,10 @@ inittemplatetexteditor=function(templateid,st){
 				document.tabviews[document.currenttab].scrollTop=document.tabviews[document.currenttab].scrollHeight;				
 				setTimeout(function(){document.tabviews[document.currenttab].scrollTop=0;},80);
 				setTimeout(function(){document.tabviews[document.currenttab].scrollTop=otop;},300);	
-				if (st!=null) setTimeout(function(){ed.getBody().scrollTop=st;},300);
+				if (st!=null) setTimeout(function(){
+					ed.getBody().scrollTop=st;
+					ed.getBody().parentNode.scrollTop=st;
+				},300);
 			},
 		    handle_event_callback:mce_event_hook,			
 		    setup: function(ed) {
@@ -119,7 +122,8 @@ updatetemplate=function(templateid,templatetypeid,gskey){
 	
 	var templatename=encodeHTML(otemplatename.value);
 	var templatetext=encodeHTML(tinyMCE.get('templatetext_'+suffix).getContent());
-	var st=tinyMCE.get('templatetext_'+suffix).getBody().scrollTop;
+	var st=tinyMCE.get('templatetext_'+suffix).getBody().parentNode.scrollTop;
+	if (st<tinyMCE.get('templatetext_'+suffix).getBody().scrollTop) st=tinyMCE.get('templatetext_'+suffix).getBody().scrollTop;
 	
 	var params=[];
 	params.push('templatename='+templatename);

@@ -20,7 +20,10 @@ init#editfield#editor=function(#primarykey#,st){
 				document.tabviews[document.currenttab].scrollTop=document.tabviews[document.currenttab].scrollHeight;				
 				setTimeout(function(){document.tabviews[document.currenttab].scrollTop=0;},80);
 				setTimeout(function(){document.tabviews[document.currenttab].scrollTop=otop;},300);			
-				if (st!=null) setTimeout(function(){ed.getBody().scrollTop=st;},300);
+				if (st!=null) setTimeout(function(){
+					ed.getBody().scrollTop=st;
+					ed.getBody().parentNode.scrollTop=st;
+				},300);
 				ed.getDoc().showqna=function(){}; //declare null function
 			},
 			handle_event_callback:mce_event_hook,			

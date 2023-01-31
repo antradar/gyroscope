@@ -1,3 +1,4 @@
 
 	var #editfield#=encodeHTML(tinyMCE.get('#editfield#_'+suffix).getContent());
 	var st=tinyMCE.get('#editfield#_'+suffix).getBody().scrollTop;	
+	if (st<tinyMCE.get('#editfield#_'+suffix).getBody().parentNode.scrollTop) st=tinyMCE.get('#editfield#_'+suffix).getBody().parentNode.scrollTop;
