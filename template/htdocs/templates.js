@@ -20,14 +20,13 @@ inittemplatetexteditor=function(templateid,st){
 			height:400,
 			content_css:'tiny_mce/templateeditor.css?v='+hb(),
 			init_instance_callback:function(ed){
-				var otop=document.tabviews[document.currenttab].scrollTop;				
-				document.tabviews[document.currenttab].scrollTop=document.tabviews[document.currenttab].scrollHeight;				
-				setTimeout(function(){document.tabviews[document.currenttab].scrollTop=0;},80);
-				setTimeout(function(){document.tabviews[document.currenttab].scrollTop=otop;},300);	
-				if (st!=null) setTimeout(function(){
-					ed.getBody().scrollTop=st;
-					ed.getBody().parentNode.scrollTop=st;
-				},300);
+				if (st!=null){
+					setTimeout(function(){document.tabviews[document.currenttab].scrollTop=document.tabviews[document.currenttab].scrollTop;},400);	
+					setTimeout(function(){
+						ed.getBody().scrollTop=st;
+						ed.getBody().parentNode.scrollTop=st;
+					},300);
+				}
 			},
 		    handle_event_callback:mce_event_hook,			
 		    setup: function(ed) {

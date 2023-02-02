@@ -16,15 +16,14 @@ init#editfield#editor=function(#primarykey#,st){
 			height:300,
 			content_css:'tiny_mce/editor.css?v='+hb(),
 			init_instance_callback:function(ed){
-				var otop=document.tabviews[document.currenttab].scrollTop;
-				document.tabviews[document.currenttab].scrollTop=document.tabviews[document.currenttab].scrollHeight;				
-				setTimeout(function(){document.tabviews[document.currenttab].scrollTop=0;},80);
-				setTimeout(function(){document.tabviews[document.currenttab].scrollTop=otop;},300);			
-				if (st!=null) setTimeout(function(){
-					ed.getBody().scrollTop=st;
-					ed.getBody().parentNode.scrollTop=st;
-				},300);
-				ed.getDoc().showqna=function(){}; //declare null function
+				if (st!=null) {					
+					setTimeout(function(){var otop=document.tabviews[document.currenttab].scrollTop;document.tabviews[document.currenttab].scrollTop=otop;},500);	
+					setTimeout(function(){
+						ed.getBody().scrollTop=st;
+						ed.getBody().parentNode.scrollTop=st;
+					},400);
+				}
+				//ed.getDoc().showqna=function(){}; //declare null function
 			},
 			handle_event_callback:mce_event_hook,			
 			setup: function(ed) {
