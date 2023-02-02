@@ -13,7 +13,7 @@ init#editfield#editor=function(#primarykey#,st){
 			editor_selector:'#editfield#editor_'+#primarykey#,
 			extended_valid_elements : 'img[class|ampwidth|ampheight|src]',
 			paste_preprocess:function(pl,o){paste_clean_image(o);},		
-			height:300,
+			height:300, //match original textarea height
 			content_css:'tiny_mce/editor.css?v='+hb(),
 			init_instance_callback:function(ed){
 				if (st!=null) {					

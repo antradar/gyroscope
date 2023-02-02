@@ -55,7 +55,7 @@ function showtemplate($templateid=null){
 	<div class="inputrow" style="position:relative;">
 		<div class="formlabel"><a class="hovlink" onclick="pullupeditor(this);"><?php tr('template_label_templatetext');?></a>:</div>
 		<?php makelookup('templatetext_'.$templateid);?>
-		<textarea class="templatetexteditor_<?php echo $templateid;?>" id="templatetext_<?php echo $templateid;?>" style="width:100%;height:220px;"><?php echo htmlspecialchars($templatetext);?></textarea>
+		<textarea class="templatetexteditor_<?php echo $templateid;?>" id="templatetext_<?php echo $templateid;?>" style="width:100%;height:300px;"><?php echo htmlspecialchars($templatetext);?></textarea>
 		<?php makehelp('editortip'.$templateid,'richtexteditor',1);?>
 	</div>
 

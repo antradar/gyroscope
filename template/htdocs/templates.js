@@ -17,11 +17,10 @@ inittemplatetexteditor=function(templateid,st){
 			editor_selector:'templatetexteditor_'+templateid,
 			extended_valid_elements : 'img[class|ampwidth|ampheight|src|title|alt'+anysize+'],table[nobr|class|border|cellpadding|cellspacing|width|style],tr[nobr|class|bgcolor|style]',
 			paste_preprocess:function(pl,o){paste_clean_image(o);},		
-			height:400,
+			height:300, //match original textarea height
 			content_css:'tiny_mce/templateeditor.css?v='+hb(),
 			init_instance_callback:function(ed){
 				if (st!=null){
-					setTimeout(function(){document.tabviews[document.currenttab].scrollTop=document.tabviews[document.currenttab].scrollTop;},400);	
 					setTimeout(function(){
 						ed.getBody().scrollTop=st;
 						ed.getBody().parentNode.scrollTop=st;
