@@ -17,7 +17,7 @@ inittemplatetexteditor=function(templateid,st){
 			editor_selector:'templatetexteditor_'+templateid,
 			extended_valid_elements : 'img[class|ampwidth|ampheight|src|title|alt'+anysize+'],table[nobr|class|border|cellpadding|cellspacing|width|style],tr[nobr|class|bgcolor|style]',
 			paste_preprocess:function(pl,o){paste_clean_image(o);},		
-			height:300, //match original textarea height
+			height:500, //match original textarea height
 			content_css:'tiny_mce/templateeditor.css?v='+hb(),
 			init_instance_callback:function(ed){
 				if (st!=null){
