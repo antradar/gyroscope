@@ -24,7 +24,7 @@ inittemplatetexteditor=function(templateid,st){
 					setTimeout(function(){
 						ed.getBody().scrollTop=st;
 						ed.getBody().parentNode.scrollTop=st;
-					},300);
+					},20);
 				}
 			},
 		    handle_event_callback:mce_event_hook,			

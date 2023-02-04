@@ -32,6 +32,10 @@ $textmode=0;
 $ua=$_SERVER['HTTP_USER_AGENT'];
 if (preg_match('/^lynx\//i',$ua)) $textmode=1;
 
+if (isset($_GET['watch'])&&$_GET['watch']==1||preg_match('/sm\-r\d+/i',$_SERVER['HTTP_USER_AGENT'])){
+	$roundwatchframe=1;
+}
+
 if (isset($_POST['lang'])&&in_array($_POST['lang'],array_keys($langs))) {
 	$lang=$_POST['lang'];include 'lang/dict.'.$lang.'.php';  
 	setcookie('userlang',$_POST['lang'],time()+3600*24*30*6,null,null,$usehttps,true); //6 months
@@ -434,6 +438,21 @@ body{font-size:28px;}
 }
 
 </style>
+<?php if (isset($roundwatchframe)&&$roundwatchframe){?>
+<style>
+	body{background-image:url(imgs/dbgtile.png);font-size:22px;}
+	#loginbox__{border-radius:40px;}
+	#loginbox{background:#21262D;color:#C9D1D9;border-radius:40px;}
+	input,#lang{background:#0D1117;color:#C2C3C5;}
+	#loginbutton{box-shadow:none;border:solid 1px #388BFD;font-size:22px;}
+	#loginbutton:hover{background:#125B7A;}
+	.lfinp{margin-bottom:20px;}
+	#logo_light{display:none;margin-bottom:20px;}
+	#logo_dark{display:block;margin-bottom:20px;}
+	.powered{text-align:center;color:#8B949E;padding-bottom:160px;font-size:17px;}
+	#fingerprint{filter:invert(1);}
+</style>
+<?php }?>
 </head>
 <body>
 <div id="loginbox__"><div id="loginbox_">

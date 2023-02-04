@@ -30,9 +30,9 @@ include 'uiconfig.php';
 	<meta name="theme-color" content="#454242" />
 	<link href="iphone/gyrodemo.css?v=2" type="text/css" rel="stylesheet" />
 	<link href="gsnotes.css" type="text/css" rel="stylesheet" />
-	<link href="toolbar.css?v=3" type="text/css" rel="stylesheet" />
+	<link href="toolbar.css?v=4" type="text/css" rel="stylesheet" />
 <?php 
-	if (isset($_GET['watch'])&&$_GET['watch']==1||preg_match('/sm\-r840/i',$_SERVER['HTTP_USER_AGENT'])){
+	if (isset($_GET['watch'])&&$_GET['watch']==1||preg_match('/sm\-r\d+/i',$_SERVER['HTTP_USER_AGENT'])){
 		$roundwatchframe=1;
 	}
 ?>
@@ -70,18 +70,36 @@ button.warn, .button.warn{display:none;}
 <body onload="setTimeout(scrollTo, 0, 0, 1);">
 <div id="watchframe_outer">
 <div id="toolbg" style="position:fixed;width:100%;z-index:1000;top:0;background:#333333;opacity:0.9"></div>
+<?php
+if (isset($roundwatchframe)&&$roundwatchframe){
+?>
+<div id="watchmenu">
+	<a onclick="showhide('toolicons',1);"><img alt="home menu" class="img-home" src="imgs/t.gif" border="0" width="32" height="32"></a>
+</div>
+<?php
+}
+?>
 <div id="toolicons" style="position:fixed;width:100%;z-index:1900;top:0;">
 
 	<?php
 	$tcount=1;
 	if ($enablelivechat) $tcount=2;
 	foreach ($toolbaritems as $ti) if (isset($ti['icon'])&&$ti['icon']!='') $tcount++;
-	?>
+	if (isset($roundwatchframe)&&$roundwatchframe) $tcount=$tcount+4;
+	?>	
 	<div id="toollist" style="overflow:auto;width:100%;"><div id="toollistcontent" style="width:<?php echo 52*($tcount+1+($uiconfig['enable_master_search']?4:0));?>px;">
-		
-	<div class="menuitem"><a id="speechstart" href=# onclick="ajxjs(<?php jsflag('speech_startstop');?>,'speech.js');speech_startstop(1);return false;" style="display:none;"><img alt="voice commands" style="" class="img-speechrecog" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
-	<div class="menuitem" id="homeicon"><a href=# onclick="reloadtab('welcome','','wk');showtab('welcome');document.viewindex=null;return false;"><img alt="home menu" class="img-home" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
-	<div class="menuitem" id="gsnotesclipicon"><a href=# onclick="if (navigator.onLine) gsnotes_listclips(); else onlinestatuschanged();"><img alt="offline clipboard" class="img-gsclip" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
+
+	<?php 
+	if (isset($roundwatchframe)&&$roundwatchframe){
+	?>
+	<div class="menuitem"><a><img src="imgs/t.gif" style="width:80px;height:10px;"></a></div>	
+	<?php	
+	}
+	?>
+			
+	<div class="menuitem"><a id="speechstart" href=# onclick="<?php if (isset($roundwatchframe)&&$roundwatchframe) echo 'initwatchmenu();';?>ajxjs(<?php jsflag('speech_startstop');?>,'speech.js');speech_startstop(1);return false;" style="display:none;"><img alt="voice commands" style="" class="img-speechrecog" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
+	<div class="menuitem" id="homeicon"><a href=# onclick="<?php if (isset($roundwatchframe)&&$roundwatchframe) echo 'initwatchmenu();';?>reloadtab('welcome','','wk');showtab('welcome');document.viewindex=null;return false;"><img alt="home menu" class="img-home" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
+	<div class="menuitem" id="gsnotesclipicon"><a href=# onclick="<?php if (isset($roundwatchframe)&&$roundwatchframe) echo 'initwatchmenu();';?>if (navigator.onLine) gsnotes_listclips(); else onlinestatuschanged();"><img alt="offline clipboard" class="img-gsclip" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
 
 	<?php 
 	
@@ -114,6 +132,8 @@ button.warn, .button.warn{display:none;}
 			if (!$canview) continue;	
 		}
 		
+		if (isset($roundwatchframe)&&$roundwatchframe) $action='initwatchmenu();'.$action;
+		
 	?>
 	<div class="menuitem"><a onclick="<?php echo $action;?>return false;"><img alt="<?php echo $ti['title'];?>" class="<?php echo $ti['icon'];?>" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
 	<?php }
@@ -123,9 +143,20 @@ button.warn, .button.warn{display:none;}
 	<?php }
 	
 	?>
+	
+	<?php 
+	if (isset($roundwatchframe)&&$roundwatchframe){
+	?>
+	<div class="menuitem"><a id="watchlogout" href="login.php?from=<?php echo $_SERVER['PHP_SELF'];?><?php if (isset($_GET['watch'])) echo '&watch='.intval($_GET['watch']);?>"><img src="imgs/t.gif" width="16" height="16" class="admin-logout"></a></div>
+	<div class="menuitem"><a><img src="imgs/t.gif" style="width:10px;height:10px;"></a></div>	
+	<div class="menuitem"><a><img src="imgs/t.gif" style="width:10px;height:10px;"></a></div>	
+	<?php	
+	}
+	?>	
+	
 	</div></div>
 	<span id="labellogin" style="display:none;"><?php echo $user['login'];?></span><span id="labeldispname" style="display:none;"><?php echo $user['dispname'];?></span>	
-	<a href="login.php?from=<?php echo $_SERVER['PHP_SELF'];?>" style="position:absolute;top:10px;right:10px;"><img alt="sign out" border="0" width="16" height="16" src="imgs/t.gif" class="admin-logout"></a>
+	<a id="adminlogout" href="login.php?from=<?php echo $_SERVER['PHP_SELF'];?>" style="position:absolute;top:10px;right:10px;"><img alt="sign out" border="0" width="16" height="16" src="imgs/t.gif" class="admin-logout"></a>
 
 	<div id="mmastersearch">
 		<div class="mastersearchshell">
@@ -203,7 +234,7 @@ hdpromote('iphone/gyrodemo_hd.css');
 hddemote('legacy.css');
 </script>
 <?php if (isset($roundwatchframe)&&$roundwatchframe){?>
-	<link href="watch.css" type="text/css" rel="stylesheet" />
+	<link href="watch.css?v=11" type="text/css" rel="stylesheet" />
 <?php }?>	
 
 <script src="iphone/tabs.js"></script>
@@ -378,6 +409,7 @@ onrotate();
 
 scaleall(document.body);
 
+
 </script>
 <?php include 'ws_js.php';?>
 <script src="speechloader.js"></script>
@@ -393,6 +425,11 @@ scaleall(document.body);
 ?>
 <script>
 if (window.Notification) Notification.requestPermission();
+
+initwatchmenu=function(){
+	showhide('toolicons',1);	
+}
+
 </script>
 <?php if ($enablelivechat){
 	include 'livechat.php';

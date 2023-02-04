@@ -10,7 +10,7 @@ function showgyroscopeupdater(){
 	<div style="text-align:right;">
 		<span class="footerpoweredby"><?php tr('powered_by_',array('power'=>'Antradar Gyroscope '.GYROSCOPE_VERSION.' '.VENDOR_INITIAL.VENDOR_VERSION));?></span>
 	</div>
-	<div style="text-align:right;">
+	<div style="text-align:right;" id="homefooterbuttons">
 		<a class="labelbutton" onclick="updategyroscope();" style="white-space:nowrap;"><?php tr('check_updates');?></a>
 		<?php if ($_SERVER['REMOTE_ADDR']==='127.0.0.1'&&($_SERVER['O_IP']==='127.0.0.1'||$_SERVER['O_IP']==='::1')){
 		?>

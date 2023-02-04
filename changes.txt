@@ -1,3 +1,6 @@
+19.9
+- smart watch UI (tested on Samsung Watch 5)
+
 19.8
 - flashsticker
 - improved marktabsaved (customizable message, portrait alignment)

@@ -195,7 +195,7 @@ if (isset($user['groups']['chats'])){
 	.useccol3{width:21%;margin-right:1%;}
 	.useccol4{width:20%;margin-right:1%;}
 </style>
-<div class="grid">
+
 <?php
 
 	global $vdb;
@@ -209,6 +209,8 @@ if (isset($user['groups']['chats'])){
 	if ($c>0){
 ?>
 <div class="sectionheader">Recent Account Access</div>
+<div class="stable">
+<div class="grid">
 	<div class="gridrow">
 		<div class="gridheader" style="color:#ffffff;">
 			<div class="useccol0">Latest Access</div>
@@ -242,7 +244,15 @@ if (isset($user['groups']['chats'])){
 	<?php
 		$idx++;
 	}//while
+	
+	if ($c>0){
 ?>
+	</div><!-- grid -->
+	</div><!-- stable -->
+<?php		
+	}
+?>
+
 
 </div>
 
