@@ -119,7 +119,7 @@ function showreportsetting($reportid=null){
 	<div class="clear"></div>
 	
 
-	<div class="inputrow">
+	<div class="inputrow buttonbelt">
 		<button <?php if ($rptgsid==0) echo 'class="disabled"';?>onclick<?php if ($rptgsid==0) echo 'a';?>="updatereportsetting('<?php echo $reportid;?>',<?php echo $jsroles;?>,'<?php emitgskey('updatereportsetting_'.$reportid);?>');"><?php tr('button_update');?></button>
 	<?php if (!$gyrosys&&$user['groups']['devreports']){?>
 		&nbsp; &nbsp;

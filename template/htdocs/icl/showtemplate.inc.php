@@ -60,7 +60,7 @@ function showtemplate($templateid=null){
 	</div>
 
 	
-	<div class="inputrow">
+	<div class="inputrow buttonbelt">
 		<button onclick="updatetemplate('<?php echo $templateid;?>','<?php echo $templatetypeid;?>','<?php emitgskey('updatetemplate_'.$templateid);?>');"><?php tr('button_update');?></button>
 
 		&nbsp; &nbsp;

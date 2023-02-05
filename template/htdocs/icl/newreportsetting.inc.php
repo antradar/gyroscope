@@ -34,7 +34,7 @@ function newreportsetting(){
 </div>
 <div class="clear"></div>
 
-		<div class="inputrow">
+		<div class="inputrow buttonbelt">
 			<button onclick="addreportsetting('<?php emitgskey('addreportsetting','reportsettings');?>');"><?php tr('button_reportsetting_add');?></button>
 		</div>
 

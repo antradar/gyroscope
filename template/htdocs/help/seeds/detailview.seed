@@ -27,7 +27,7 @@ function show#record#($#primarykey#=null){
 
 #iterator-fieldlist-detailview#
 	
-	<div class="inputrow">
+	<div class="inputrow buttonbelt">
 		<button onclick="update#record#('<?php echo $#primarykey#;?>','<?php emitgskey('update#record#_'.$#primarykey#);?>');"><?php tr('button_update');?></button>
 
 		&nbsp; &nbsp;

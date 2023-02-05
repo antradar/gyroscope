@@ -34,7 +34,9 @@ function listtemplatetypetemplatevars($templatetypeid=null){
 	<div style="padding-top:10px;margin-bottom:10px;"><b>Add a new variable:</b> &nbsp; <a class="labelbutton" onclick="showhide('quickvars_<?php echo $templatetypeid;?>_');">quick edit</a></div>
 	<div id="quickvars_<?php echo $templatetypeid;?>_" style="display:none;margin-bottom:20px;">
 		<textarea class="inplong" id="quickvars_<?php echo $templatetypeid;?>"><?php foreach ($vars as $var){echo $var['templatevarname'].'|'.$var['templatevardesc']."\r\n";}?></textarea>
-		<button onclick="batchsavetemplatevars('<?php echo $templatetypeid;?>','<?php emitgskey('batchsavetemplatevars_'.$templatetypeid);?>');">Update</button>
+		<div class="buttonbelt">
+			<button onclick="batchsavetemplatevars('<?php echo $templatetypeid;?>','<?php emitgskey('batchsavetemplatevars_'.$templatetypeid);?>');">Update</button>
+		</div>
 	</div>
 	<div class="inputrow">
 		<div class="formlabel">Variable:</div>
@@ -44,7 +46,7 @@ function listtemplatetypetemplatevars($templatetypeid=null){
 		<div class="formlabel">Description:</div>
 		<input class="inplong" id="templatevardesc_<?php echo $templatetypeid;?>">
 	</div>
-	<div class="inputrow">
+	<div class="inputrow buttonbelt">
 		<button onclick="addtemplatevar('<?php echo $templatetypeid;?>','<?php emitgskey('addtemplatevar_'.$templatetypeid);?>');">Add</button>
 	</div>
 	

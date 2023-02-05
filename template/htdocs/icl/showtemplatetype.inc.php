@@ -66,7 +66,7 @@ function showtemplatetype($templatetypeid=null){
 	</div>
 
 	
-	<div class="inputrow">
+	<div class="inputrow buttonbelt">
 		<button onclick="updatetemplatetype('<?php echo $templatetypeid;?>','<?php emitgskey('updatetemplatetype_'.$templatetypeid);?>');"><?php tr('button_update');?></button>
 		<?php if ($user['groups']['systemplate']){?>
 		&nbsp; &nbsp;

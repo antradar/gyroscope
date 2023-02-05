@@ -13,9 +13,9 @@ function new#record#(){
 </div>
 <div class="clear"></div>
 
-		<div class="inputrow">
-			<button onclick="add#record#('<?php emitgskey('add#record#');?>');"><?php tr('button_#record#_add');?></button>
-		</div>
+	<div class="inputrow buttonbelt">
+		<button onclick="add#record#('<?php emitgskey('add#record#');?>');"><?php tr('button_#record#_add');?></button>
+	</div>
 
 </div>
 <?php

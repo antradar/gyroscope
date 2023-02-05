@@ -23,7 +23,7 @@ function newtemplatetype(){
 </div>
 <div class="clear"></div>
 
-		<div class="inputrow">
+		<div class="inputrow buttonbelt">
 			<button onclick="addtemplatetype('<?php emitgskey('addtemplatetype','systemplate');?>');"><?php tr('button_templatetype_add');?></button>
 		</div>
 

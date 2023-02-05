@@ -10,7 +10,7 @@ function showuserhelptopics(){
 	$query="select * from ".TABLENAME_USERHELPSPOTS." where userid=? limit 1";
 	$rs=sql_prep($query,$db,$userid);
 	?>
-<div class="inputrow" style="padding-top:20px;padding-bottom:80px;">
+<div class="inputrow buttonbelt" style="padding-top:20px;padding-bottom:80px;">
 	<?php
 	if ($myrow=sql_fetch_assoc($rs)){
 ?>

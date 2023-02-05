@@ -123,7 +123,7 @@ if (isset($user['groups']['chats'])){
 		<label for="myaccount_usegamepad">enable gamepad controls</label>
 	</div>
 	
-	<div class="inputrow">
+	<div class="inputrow buttonbelt">
 		<button onclick="setaccountpass();"><?php tr('button_update');?></button>
 	</div>
 	

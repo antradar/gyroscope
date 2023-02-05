@@ -51,6 +51,9 @@ body, td, textarea, .img-mg{font-size:22px;}
 
 .qnav{padding-top:80px;}
 
+.buttonbelt{text-align:center;padding-top:10px;padding-bottom:40px;}
+button, .button{font-size:20px;}
+
 #fstitlebar{text-align:center;top:0;height:40px;}
 #fstitle{display:none;}
 #fsclose{position:static;top:auto;right:auto;display:inline-block;margin-top:5px;border-radius:50%;padding:5px 2px;}

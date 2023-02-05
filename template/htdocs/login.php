@@ -441,8 +441,8 @@ body{font-size:28px;}
 <?php if (isset($roundwatchframe)&&$roundwatchframe){?>
 <style>
 	body{background-image:url(imgs/dbgtile.png);font-size:22px;}
-	#loginbox__{border-radius:40px;}
-	#loginbox{background:#21262D;color:#C9D1D9;border-radius:40px;}
+	#loginbox__{margin-top:100px;border-radius:40px;}
+	#loginbox{background:#21262D;color:#C9D1D9;border-radius:40px;overflow:hidden;}
 	input,#lang{background:#0D1117;color:#C2C3C5;}
 	#loginbutton{box-shadow:none;border:solid 1px #388BFD;font-size:22px;}
 	#loginbutton:hover{background:#125B7A;}

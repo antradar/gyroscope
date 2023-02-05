@@ -163,7 +163,7 @@ function showuser($userid=null){
 	<?php	
 	}?>
 	
-	<div class="inputrow">
+	<div class="inputrow buttonbelt">
 		<button onclick="updateuser('<?php echo $userid;?>',<?php echo $jsroles;?>,'<?php emitgskey('updateuser_'.$userid,'accounts');?>');"><?php tr('button_update');?></button>
 		&nbsp; &nbsp;
 		<button class="warn" onclick="deluser('<?php echo $userid;?>','<?php emitgskey('deluser_'.$userid,'accounts');?>');"><?php tr('button_delete');?></button>
