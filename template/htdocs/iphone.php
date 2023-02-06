@@ -234,7 +234,7 @@ hdpromote('iphone/gyrodemo_hd.css');
 hddemote('legacy.css');
 </script>
 <?php if (isset($roundwatchframe)&&$roundwatchframe){?>
-	<link href="watch.css?v=12" type="text/css" rel="stylesheet" />
+	<link href="watch.css?v=14" type="text/css" rel="stylesheet" />
 <?php }?>	
 
 <script src="iphone/tabs.js"></script>

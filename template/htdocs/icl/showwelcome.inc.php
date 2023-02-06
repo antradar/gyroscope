@@ -90,7 +90,8 @@ function showwelcome(){
 <?php
 		//lazy way to generate a starter screen, but better than nothing
 		
-		auto_welcome();			
+		auto_welcome();		
+			
 		showgyroscopeupdater();
 		
 		if ($_SERVER['REMOTE_ADDR']==='127.0.0.1'&&($_SERVER['O_IP']==='127.0.0.1'||$_SERVER['O_IP']==='::1')) showguide(); else echo '<div style="padding-bottom:100px;"></div>';
@@ -143,6 +144,22 @@ function auto_welcome(){
 
 	
 	<div class="clear"></div>	
+	
+<?php	
+/*
+if (preg_match('/sm\-r\d+/i',$_SERVER['HTTP_USER_AGENT'])){				
+?>
+<div class="infobox">
+	Courtesy Browsing:<br>
+	Many smart watch browsers do not offer an interface to enter arbitrary web addresses.
+	Use the following interface instead.
+</div>
+URL: <input class="inp" id="watch_homeurl" value="https://">
+<div class="buttonbelt"><button onclick="window.location.href=gid('watch_homeurl').value;">Go</button></div>
+<?php		
+}
+*/	
+?>
 	
 	<div style="display:none;">
 	<textarea class="inp" id="test"
