@@ -83,9 +83,9 @@ button, .button{font-size:20px;}
 	.activetab, .dulltab,
 	.activetab .noclose, .dulltab .noclose,
 	#lkvtitle, #lkvx
-	{background-image:url(dmsprite.png)}
+	{background-image:url(iphone/dmsprite.png)}
 	
-	.listsearch{background-image:url(../imgs/dbmg.gif);}
+	.listsearch{background-image:url(imgs/dbmg.gif);}
 	
 	#lkvc{border-right:solid 1px #2F5464;}
 
