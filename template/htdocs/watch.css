@@ -44,8 +44,6 @@ body, td, textarea, .img-mg{font-size:22px;}
 
 .listpager{text-align:center;font-size:20px;}
 
-.qnav{padding-top:80px;}
-
 .buttonbelt{text-align:center;padding-top:10px;padding-bottom:40px;}
 button, .button{font-size:20px;}
 
@@ -189,11 +187,7 @@ button, .button{font-size:20px;}
 	.img-helptopics-light{background-position: -576px 0;}
 	.img-salesforce-light{background-position: -736px 0;}
 	.img-sap-light{background-position: -608px 0;}
-	
-	.img-reviews-light{background-position: -640px 0;}
-	.img-problems-light{background-position: -672px 0;}
-	
-	
+		
 	.stable::-webkit-scrollbar-track {
 		border-radius: 2px;
 		background:#10233B url('iphone/ddarrow.png') no-repeat center center;
