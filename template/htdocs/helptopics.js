@@ -309,7 +309,7 @@ helptopic_mouseover=function(d,tmid,parent){
 	if (parent) tg=d;
 	
 	tg.style.borderTop='solid 1px #ffab00';
-	tg.style.borderLeft='solid 5px #ffab00';
+	if (tmid!=-1) tg.style.borderLeft='solid 5px #ffab00';
 	document.targettm=d;	
 	
 	d.onmouseout=function(){

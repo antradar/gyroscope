@@ -36,6 +36,13 @@ style="overflow:hidden;float:left;padding-top:10px;border-left:solid 2px #ffffff
 	//}//while
 
 ?>
+
+<a onselectstart="return false;"
+onmouseover="#record#_mouseover(this,-1,1);" 
+style="display:inline-block;border-left:solid 2px #ffffff;margin-bottom:15px;width:18%;min-width:140px;margin-right:1%;position:relative;cursor:move;user-select:none;-webkit-user-select:none;-moz-user-select:none;-webkit-user-drag:none;">
+	<img src="imgs/t.gif" onselectstart="return false;" style="user-select:none;-webkit-user-select:none;-moz-user-select:none;-webkit-user-drag:none;width:100%;">
+</a>
+				
 <div class="clear"></div>
 <div id="#record#shadow_<?php echo $#masterkey#?>" style="white-space:nowrap;opacity:0.95;cursor:move;user-select:none;-webkit-user-select:none;-moz-user-select:none;-webkit-user-drag:none;display:none;position:absolute;top:20px;left:5px;background:#efefef;padding:5px;width:15%;min-width:120px;"></div>
 <?php

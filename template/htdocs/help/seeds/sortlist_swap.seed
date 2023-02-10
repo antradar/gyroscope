@@ -5,6 +5,7 @@ include 'icl/list#records#.inc.php';
 function swap#record#pos(){
 	$src=SGET('tmid');
 	$dst=SGET('targetid');
+	$dstsort=null;
 
 	$user=userinfo();
 	$gsid=$user['gsid'];
@@ -13,6 +14,16 @@ function swap#record#pos(){
 
 	global $db;
 
+	$finaldst=0;
+	if ($dst==-1) {
+		$finaldst=1;
+		$query="select #primarykey#,#sortkey# from #tablename# order by #sortkey# desc limit 1";
+		$rs=sql_prep($query,$db);
+		$myrow=sql_fetch_assoc($rs);
+		$dst=$myrow['#primarykey#'];
+		$dstsort=$myrow['#sortkey#'];		
+	}	
+	
 	$query="select #sortkey# from #tablename# where #primarykey#=? and gsid=? ";
 	$rs=sql_prep($query,$db,array($src,$gsid));
 	
@@ -31,7 +42,7 @@ function swap#record#pos(){
 	
 	//echo "$src $ssrc < > $dst $sdst";
 
-	if ($ssrc==$sdst-1){list#records#(); return;}
+	if ($ssrc==$sdst-1&&!$finaldst){list#records#(); return;}
 
 	if ($ssrc<$sdst) $query="select * from #tablename# where gsid=? and #sortkey#>? and #sortkey#<? order by #sortkey#";
 	if ($ssrc>=$sdst) $query="select * from #tablename# where gsid=? and #sortkey#<? and #sortkey#>=? order by #sortkey# desc";
@@ -48,6 +59,12 @@ function swap#record#pos(){
 	
 	$query="update #tablename# set #sortkey#=? where gsid=? and #primarykey#=?";
 	sql_prep($query,$db,array($prev,$gsid,$src));
+	
+	if ($finaldst){
+		$query="update #tablename# set #sortkey#=? where #primarykey#=?";
+		sql_prep($query,$db,array($dstsort,$src));
+		sql_prep($query,$db,array($prev,$dst));			
+	}	
 	
 	list#records#();
 }

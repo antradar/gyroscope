@@ -5,6 +5,7 @@ include 'icl/listhelptopics.inc.php';
 function swaphelptopicpos(){
 	$src=GETVAL('tmid');
 	$dst=GETVAL('targetid');
+	$dstsort=null;
 
 	$user=userinfo();
 	$gsid=$user['gsid'];
@@ -15,6 +16,16 @@ function swaphelptopicpos(){
 
 	global $db;
 
+	$finaldst=0;
+	if ($dst==-1) {
+		$finaldst=1;
+		$query="select helptopicid,helptopicsort from helptopics order by helptopicsort desc limit 1";
+		$rs=sql_prep($query,$db);
+		$myrow=sql_fetch_assoc($rs);
+		$dst=$myrow['helptopicid'];
+		$dstsort=$myrow['helptopicsort'];		
+	}
+		
 	$query="select helptopicsort from helptopics where helptopicid=? ";
 	$rs=sql_prep($query,$db,array($src));
 	
@@ -33,7 +44,7 @@ function swaphelptopicpos(){
 	
 	//echo "$src $ssrc < > $dst $sdst";
 
-	if ($ssrc==$sdst-1){listhelptopics(); return;}
+	if ($ssrc==$sdst-1&&!$finaldst){listhelptopics(); return;}
 
 	if ($ssrc<$sdst) $query="select * from helptopics where  helptopicsort>? and helptopicsort<? order by helptopicsort";
 	if ($ssrc>=$sdst) $query="select * from helptopics where  helptopicsort<? and helptopicsort>=? order by helptopicsort desc";
@@ -51,6 +62,12 @@ function swaphelptopicpos(){
 	$query="update helptopics set helptopicsort=? where  helptopicid=?";
 	sql_prep($query,$db,array($prev,$src));
 	
+	if ($finaldst){
+		$query="update helptopics set helptopicsort=? where helptopicid=?";
+		sql_prep($query,$db,array($dstsort,$src));
+		sql_prep($query,$db,array($prev,$dst));			
+	}
+		
 	listhelptopics();
 }
 

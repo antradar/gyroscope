@@ -55,7 +55,7 @@
 			
 			if (document.targettm) {//perform swapping
 				var targetid=document.targettm.tmid;
-				document.targettm.style.borderTop='solid 6px #d4edc9';
+				if (targetid!=-1) document.targettm.style.borderTop='solid 6px #d4edc9';
 				document.targettm=null;
 	
 				ajxpgn('#records#_'+#masterkey#,document.appsettings.codepage+'?cmd=swap#record#pos&#masterkey#='+#masterkey#+'&tmid='+document.dragtmid+'&targetid='+targetid+'&page='+page,0,0,null,null,null,null,gskey);
@@ -79,7 +79,7 @@
 	var tg=d.parentNode;
 	if (parent) tg=d;
 	
-	tg.style.borderTop='solid 6px #ffab00';
+	if (tmid!=-1) tg.style.borderTop='solid 6px #ffab00';
 	tg.style.borderLeft='solid 2px #ffab00';
 	document.targettm=d;	
 	

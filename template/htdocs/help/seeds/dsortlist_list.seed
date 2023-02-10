@@ -9,5 +9,6 @@
 	//}//while
 
 ?>
+<div class="sortlistitem" style="border:none;" onmouseover="#record#_mouseover(this,-1,1);"><a>&nbsp;</a></div>
 <div id="#record#shadow_<?php echo $#masterkey#?>" style="white-space:nowrap;opacity:0.95;cursor:move;user-select:none;-webkit-user-select:none;-moz-user-select:none;-webkit-user-drag:none;display:none;position:absolute;top:20px;left:60px;background:#efefef;padding:5px;"></div>
 <?php

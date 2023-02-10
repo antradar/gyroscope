@@ -6,10 +6,21 @@ function swap#record#pos(){
 	$#masterkey#=GETVAL('#masterkey#');
 	$src=GETVAL('tmid');
 	$dst=GETVAL('targetid');
-
+	$dstsort=null;
+	
 	checkgskey('swap#record#pos_'.$#masterkey#);
 		
 	global $db;
+	
+	$finaldst=0;
+	if ($dst==-1) {
+		$finaldst=1;
+		$query="select #primarykey#,#sortkey# from #tablename# where #masterkey#=? order by #sortkey# desc limit 1";
+		$rs=sql_prep($query,$db,array($#masterkey#));
+		$myrow=sql_fetch_assoc($rs);
+		$dst=$myrow['#primarykey#'];
+		$dstsort=$myrow['#sortkey#'];		
+	}	
 	
 	$query="select #sortkey# from #tablename# where #masterkey#=? and #primarykey#=?";
 	$rs=sql_prep($query,$db,array($#masterkey#,$src));
@@ -27,7 +38,7 @@ function swap#record#pos(){
 	
 	//echo "$src $ssrc < > $dst $sdst";
 
-	if ($ssrc==$sdst-1){list#records#($#masterkey#); return;}
+	if ($ssrc==$sdst-1&&!$finaldst){list#records#($#masterkey#); return;}
 
 	if ($ssrc<$sdst) $query="select * from #tablename# where #masterkey#=? and #sortkey#>? and #sortkey#<? order by #sortkey#";
 	if ($ssrc>=$sdst) $query="select * from #tablename# where #masterkey#=? and #sortkey#<? and #sortkey#>=? order by #sortkey# desc";
@@ -44,6 +55,12 @@ function swap#record#pos(){
 	
 	$query="update #tablename# set #sortkey#=? where #primarykey#=?";
 	sql_prep($query,$db,array($prev,$src));
+	
+	if ($finaldst){
+		$query="update #tablename# set #sortkey#=? where #primarykey#=?";
+		sql_prep($query,$db,array($dstsort,$src));
+		sql_prep($query,$db,array($prev,$dst));			
+	}	
 	
 	list#records#($#masterkey#);
 }
