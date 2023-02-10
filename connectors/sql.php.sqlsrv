@@ -182,16 +182,18 @@ function sql_copy_from_query($query,$db,$omits,$table,$negs=null,$resets=null){ 
 	$myrow=sql_fetch_assoc($rs);
 	$fields=array();
 	$values=array();
+	$params=array();
 	foreach ($myrow as $k=>$v){
 		if (in_array(strtolower($k),$omits)) continue;
 		array_push($fields,$k);
+		array_push($values,'?');
 		if(isset($negs) && in_array($k, $negs) && is_numeric($v) ) $v = -1*$v;
 		if(isset($resets) && isset($resets[$k])) $v=$resets[$k];
-		array_push($values,"'".noapos($v)."'");
+		array_push($params,$v);
 	}
 	
 	$query="insert into $table (".implode(',',$fields).") values (".implode(',',$values).")";
-	$rs=sql_query($query,$db);
+	$rs=sql_prep($query,$db,$params);
 	$id=sql_insert_id($db,$rs);
 	return $id;
 }

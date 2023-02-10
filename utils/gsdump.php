@@ -18,6 +18,7 @@ $gsid=null;
 
 $append='';
 $appendflags='--skip-add-drop-table --no-create-db --no-create-info --skip-triggers ';
+$routineflags='--routines ';
 
 foreach ($argv as $idx=>$arg){
 	if ($idx==0) continue;
@@ -29,8 +30,11 @@ foreach ($argv as $idx=>$arg){
 		$append=$appendflags;
 		continue;
 	}
+
+			
 	array_push($params,$arg);
 }
+
 
 if (!isset($gsid)) die("missing parameter gsid=###\n");
 
@@ -89,11 +93,14 @@ if (isset($vars['nolock'])){
 }
 
 
-
+$idx=0;
 foreach ($rules as $rule){
 	list($table,$where,$useappend)=parse_rule($rule,$vars['gscol'],$gsid);
-	if (!isset($table)) continue;	
-	echo "mysqldump $lock $useappend ".$strparams." $table $where $out\n\n";	
+	if (!isset($table)) continue;
+	$useroutines='';
+	if ($append==''&&$idx==0) $useroutines=$routineflags;
+	$idx++;	
+	echo "mysqldump $lock $useroutines $useappend ".$strparams." $table $where $out\n\n";	
 }//foreach rule
 
 
