@@ -86,7 +86,7 @@
 	d.onmouseout=function(){
 		if (!document.dragtmid) return;
 		document.targettm=null;
-		tg.style.borderTop='solid 6px #dedede';
+		if (tmid!=-1) tg.style.borderTop='solid 6px #dedede';
 		tg.style.borderLeft='solid 2px #ffffff';
 	}
 }

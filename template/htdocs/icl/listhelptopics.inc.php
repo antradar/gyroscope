@@ -142,7 +142,7 @@ onmouseover="helptopic_mouseover(this,'<?php echo $helptopicid;?>',1);" style="b
 	}//while
 	
 ?>
-<div class="sortlistitem" style="border:none;" onmouseover="helptopic_mouseover(this,-1,1);"><a>&nbsp;</a></div>
+<div class="sortlistitem" style="border:none;border-left:none;" onmouseover="helptopic_mouseover(this,-1,1);"><a>&nbsp;</a></div>
 <div id="helptopicshadow" style="white-space:nowrap;opacity:0.95;cursor:move;user-select:none;-webkit-user-select:none;-moz-user-select:none;display:none;position:absolute;top:20px;left:60px;background:#efefef;padding:5px;"></div>
 <?php
 	

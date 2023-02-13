@@ -316,7 +316,7 @@ helptopic_mouseover=function(d,tmid,parent){
 		if (!document.dragtmid) return;
 		document.targettm=null;
 		tg.style.borderTop='none';
-		tg.style.borderLeft='solid 5px #dedede';
+		if (tmid!=-1) tg.style.borderLeft='solid 5px #dedede';
 	}
 }
 
