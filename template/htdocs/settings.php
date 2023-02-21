@@ -6,7 +6,11 @@ include 'lang.php';
 include 'auth.php';
 
 $codepage='myservices.php';
-$binpage='myservices.gsb'; //set to .gsb on commercial license
+$binpages=array(
+	1=>'myservices.gsb', //bingo bridge to Go
+	2=>'myservices.pyb', //python
+	3=>'myservices.njs', //nodejs
+);
 $fastlane='phpx-services.php'; //change this name if HAProxy is set up to route by filename to a dedicated server
 
 //define constants that are shared by both front- and back-end code

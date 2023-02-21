@@ -31,7 +31,7 @@ if (window.WebSocket){
 				var atabid=gettabid('chat_'+msg.chatid);
 				if (atabid>0&&document.userid!=msg.fromagentid) document.tabtitles[atabid].style.color='#00aa00';
 
-				ajxpgn('chattransport_'+msg.chatid,document.appsettings.binpage+'?cmd=getchatmsgs&chatid='+msg.chatid+'&from='+(gid('chatlines_'+msg.chatid).maxmsgid||0),0,0,null,function(rq){
+				ajxpgn('chattransport_'+msg.chatid,document.appsettings.binpages['1']+'?cmd=getchatmsgs&chatid='+msg.chatid+'&from='+(gid('chatlines_'+msg.chatid).maxmsgid||0),0,0,null,function(rq){
 					gid('chatlines_'+msg.chatid).innerHTML+=rq.responseText;
 					gid('chatlines_'+msg.chatid).maxmsgid=parseInt(rq.getResponseHeader('maxmsgid'),10);
 					

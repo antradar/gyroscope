@@ -1,5 +1,5 @@
 <?php
-define ('GYROSCOPE_VERSION', '19.9');
+define ('GYROSCOPE_VERSION', '20.0');
 
 //remember to personalize the project name
 define ('GYROSCOPE_PROJECT', 'Gyroscope Starter');

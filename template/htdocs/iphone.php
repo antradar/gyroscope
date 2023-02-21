@@ -16,7 +16,7 @@ evict_check();
 login();
 $user=userinfo();
 $userid=$user['userid'];
-$query="select * from users where userid=?";
+$query="select * from ".TABLENAME_USERS." where userid=?";
 $rs=sql_prep($query,$db,$userid);
 $usermeta=sql_fetch_assoc($rs);
 
@@ -224,7 +224,7 @@ if (isset($roundwatchframe)&&$roundwatchframe){
 </div><!-- watchframe_outer -->
 
 <script>
-document.appsettings={codepage:'<?php echo $codepage;?>',binpage:'<?php echo $binpage;?>',beepnewchat:<?php echo $usermeta['canchat']?'true':'false';?>,fastlane:'<?php echo $fastlane;?>',autosave:null, viewmode:'iphone',uiconfig:<?php echo json_encode($uiconfig);?>,views:<?php echo json_encode(array_keys($toolbaritems));?>};
+document.appsettings={codepage:'<?php echo $codepage;?>',binpages:<?php echo json_encode($binpages);?>,beepnewchat:<?php echo $usermeta['canchat']?'true':'false';?>,fastlane:'<?php echo $fastlane;?>',autosave:null, viewmode:'iphone',uiconfig:<?php echo json_encode($uiconfig);?>,views:<?php echo json_encode(array_keys($toolbaritems));?>};
 </script>
 <script src="lang/dict.<?php echo $lang;?>.js"></script>
 <script src="nano.js?v=4_9"></script>

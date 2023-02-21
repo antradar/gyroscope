@@ -24,7 +24,7 @@ header('gsfunc: gs_index');
 
 $user=userinfo();
 $userid=$user['userid'];
-$query="select * from users where userid=?";
+$query="select * from ".TABLENAME_USERS." where userid=?";
 $rs=sql_prep($query,$db,$userid);
 $usermeta=sql_fetch_assoc($rs);
 
@@ -62,7 +62,7 @@ include 'uiconfig.php';
 
 <body onload="setTimeout(scrollTo, 0, 0, 1);">
 <script>
-document.appsettings={codepage:'<?php echo $codepage;?>',binpage:'<?php echo $binpage;?>', beepnewchat:<?php echo $usermeta['canchat']?'true':'false';?>,shortappname:'<?php echo GYROSCOPE_SHORT_APP_NAME;?>', fastlane:'<?php echo $fastlane;?>', autosave:null, viewmode:'desktop', uiconfig:<?php echo json_encode($uiconfig);?>, views:<?php echo json_encode(array_keys($toolbaritems));?>};
+document.appsettings={codepage:'<?php echo $codepage;?>',binpages:<?php echo json_encode($binpages);?>, beepnewchat:<?php echo $usermeta['canchat']?'true':'false';?>,shortappname:'<?php echo GYROSCOPE_SHORT_APP_NAME;?>', fastlane:'<?php echo $fastlane;?>', autosave:null, viewmode:'desktop', uiconfig:<?php echo json_encode($uiconfig);?>, views:<?php echo json_encode(array_keys($toolbaritems));?>};
 </script>
 
 <div style="display:none;"><img src="imgs/t.gif"><img src="imgs/hourglass.gif"></div>

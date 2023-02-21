@@ -426,7 +426,7 @@ pastetotextarea=function(id,text){
 
 nav_setfilter=function(container,keyid,cmd,filter,bingo){
 	var codepage=document.appsettings.codepage;
-	if (bingo) codepage=document.appsettings.binpage;
+	if (bingo) codepage=document.appsettings.binpages[bingo+''];
 	
 	ajxpgn(container,codepage+'?cmd='+cmd+'&mode=embed&key='+encodeHTML(gid(keyid).value)+filter,0,0,null,function(){
 		if (gid(container+'_chartrelay')) {

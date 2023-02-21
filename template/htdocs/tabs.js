@@ -344,11 +344,11 @@ function reloadtab(key,title,params,loadfunc,data,opts,gskey){
   var scn=document.appsettings.codepage+'?cmd=';
   if (opts&&opts.fastlane) scn=document.appsettings.fastlane+'?cmd=';
   if (opts&&opts.bingo) {
-	  scn=document.appsettings.binpage+'?cmd=';
-	  document.tabtitles[tabid].bingo=true;
+	  scn=document.appsettings.binpages[opts.bingo+'']+'?cmd=';
+	  document.tabtitles[tabid].bingo=opts.bingo;
   }
   if (tabbingo){
-	  scn=document.appsettings.binpage+'?cmd=';
+	  scn=document.appsettings.binpages[tabbingo+'']+'?cmd=';
   }
   
   if (document.tabtitles[tabid].conflicted){
@@ -547,10 +547,8 @@ function addtab(key,title,params,loadfunc,data,opts){
   var rq=xmlHTTPRequestObject();
   var scn=document.appsettings.codepage+'?cmd=';
   if (opts&&opts.fastlane) scn=document.appsettings.fastlane+'?cmd=';
-  if (opts&&opts.bingo) scn=document.appsettings.binpage+'?cmd=';
+  if (opts&&opts.bingo) scn=document.appsettings.binpages[opts.bingo+'']+'?cmd=';
   
-  
-
   if (document.wssid) params=params+'&wssid_='+document.wssid;
   
   rq.open('POST',scn+params+'&hb='+hb(),true);
@@ -591,7 +589,7 @@ function addtab(key,title,params,loadfunc,data,opts){
   document.tabtitles[document.tabcount]=t;
   document.tabkeys[document.tabcount]=key;
   
-  if (opts&&opts.bingo) document.tabtitles[document.tabcount].bingo=true;
+  if (opts&&opts.bingo) document.tabtitles[document.tabcount].bingo=opts.bingo;
   
   document.tabcount++;
   resizetabs();  

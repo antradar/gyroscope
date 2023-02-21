@@ -162,7 +162,7 @@ function closefs(){
 function loadfs(title,cmd,func,initfunc,bingo){
 	setnosleep(true);
 	var codepage=document.appsettings.codepage;
-	if (bingo) codepage=document.appsettings.binpage;
+	if (bingo) codepage=document.appsettings.binpages[bingo+''];
 	ajxpgn('fsview',codepage+'?cmd='+cmd,1,0,'',function(){
 		gid('fstitle').innerHTML=title;	
 		showfs(func,initfunc);	
@@ -235,7 +235,7 @@ function reloadview(idx,listid){
 
 function showview(idx,lazy,force,params,func,bingo){
     var codepage=document.appsettings.codepage;
-    if (bingo==1) codepage=document.appsettings.binpage;
+    if (bingo>0) codepage=document.appsettings.binpages[bingo+''];
 	if (!params) params='';
 	
 	if (!force&&document.viewmode!=1&&document.iphone_portrait) return;	

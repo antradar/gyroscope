@@ -140,7 +140,7 @@ CREATE TABLE reports (
   reportkey varchar(255) NOT NULL default '',
   reportgroupnames varchar(255) NOT NULL default '',
   reportparams varchar(255),
-  bingo tinyint(1) unsigned default 0,
+  bingo tinyint(3) unsigned default 0,
   gyrosys tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (reportid),
   KEY reportkey (reportkey),

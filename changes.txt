@@ -1,3 +1,6 @@
+*20.0
+- multi-bingo channels
+
 19.9
 - smart watch UI (tested on Samsung Watch 5)
 
