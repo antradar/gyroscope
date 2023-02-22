@@ -123,7 +123,7 @@ function userinfo(){
 		'groups'=>array()
 	);	
 	
-	$groups=explode('|',$_COOKIE['groupnames']);
+	$groups=explode('|',($_COOKIE['groupnames']??''));
 	foreach ($groups as $group) $info['groups'][$group]=true;
 	
 	return $info;

@@ -1,7 +1,10 @@
 showuser=function(userid,name,bookmark){
 	addtab('user_'+userid,'<img src="imgs/t.gif" class="ico-user">'+name,'showuser&userid='+userid,function(){
 		if (gid('cardsettings_'+userid)){
-			if (!document.smartcard) gid('cardsettings_'+userid).style.display='none';
+			if (!document.smartcard){
+				if (!gid('needcert_'+userid).checked) gid('cardsettings_'+userid).style.display='none';
+				gid('smartcardloader_'+userid).style.display='none';
+			}
 		}
 	},null,{fastlane:1,bookmark:bookmark});	
 }

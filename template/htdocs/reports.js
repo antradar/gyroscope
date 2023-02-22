@@ -17,7 +17,7 @@ showreport=function(){
 }
 
 addhomedashreport=function(rpttitle,rpttabkey,rptkey,rptlink,bingo){
-	if (bingo) bingo=1; else bingo=0;
+	if (bingo==null) bingo=0;
 	
 	var rptname=sprompt('Custom Report Name');
 	if (rptname==null||rptname=='') return;
@@ -46,24 +46,24 @@ sharehomedashreport=function(homedashreportid,d){
 }
 
 rptinit_serverlog=function(){ //todo: drop "rpt"
-	nav_loadcharts('rptserverlog','rptserverlogkey','rptserverlog',true); //bingo
+	nav_loadcharts('rptserverlog','rptserverlogkey','rptserverlog',1); //bingo
 }
 rptreload_serverlog=function(){ //todo: drop "rpt"
-	nav_loadcharts('rptserverlog','rptserverlogkey','rptserverlog',true); //bingo
+	nav_loadcharts('rptserverlog','rptserverlogkey','rptserverlog',1); //bingo
 }
 
 rptinit_mxevents=function(){ //todo: drop "rpt"
-	nav_loadcharts('rptmxevents','rptmxeventkey','rptmxevents',true); //bingo
+	nav_loadcharts('rptmxevents','rptmxeventkey','rptmxevents',1); //bingo
 }
 rptreload_mxevents=function(){ //todo: drop "rpt"
-	nav_loadcharts('rptmxevents','rptmxeventkey','rptmxevents',true); //bingo
+	nav_loadcharts('rptmxevents','rptmxeventkey','rptmxevents',1); //bingo
 }
 
 rptinit_trace=function(){ //todo: drop "rpt"
-	nav_loadcharts('rpttrace','rpttracekey','rpttrace',true); //bingo
+	nav_loadcharts('rpttrace','rpttracekey','rpttrace',1); //bingo
 }
 rptreload_trace=function(){ //todo: drop "rpt"
-	nav_loadcharts('rpttrace','rpttracekey','rpttrace',true); //bingo
+	nav_loadcharts('rpttrace','rpttracekey','rpttrace',1); //bingo
 }
 
 

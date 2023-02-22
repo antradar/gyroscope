@@ -101,7 +101,8 @@ function showuser($userid=null){
 
 	<div class="inputrow" id="cardsettings_<?php echo $userid;?>">
 		<div class="formlabel">ID Card: &nbsp; 
-			<span style="font-weight:normal;" id="cardstatus_<?php echo $userid;?>"><?php echo $certname;?></span> <a class="labelbutton" onclick="loadsmartcard(<?php echo $userid;?>);">load card</a>
+			<span style="font-weight:normal;" id="cardstatus_<?php echo $userid;?>"><?php echo $certname;?></span> 
+			<a class="labelbutton" id="smartcardloader_<?php echo $userid;?>" onclick="loadsmartcard(<?php echo $userid;?>);">load card</a>
 			<span style="display:none;"><textarea id="cert_<?php echo $userid;?>" value=""></textarea></span>
 		</div>
 		<input onclick="marktabchanged('user_<?php echo $userid;?>');" type="checkbox" id="needcert_<?php echo $userid;?>" <?php if ($needcert) echo 'checked';?>> <label for="needcert_<?php echo $userid;?>">card must be present at sign-in</label>
