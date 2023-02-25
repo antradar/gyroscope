@@ -10,6 +10,11 @@ evict_check();
 
 login();
 $user=userinfo();
+$userid=$user['userid'];
+$query="select * from ".TABLENAME_USERS." where userid=?";
+$rs=sql_prep($query,$db,$userid);
+$usermeta=sql_fetch_assoc($rs);
+
 ?>
 <html>
 <head>
@@ -116,7 +121,7 @@ body{font-family:helvetica;}
 <div id="fsview"></div>
 
 <script>
-document.appsettings={codepage:'<?php echo $codepage;?>',fastlane:'<?php echo $fastlane;?>', viewmode:'kpw', views:<?php echo json_encode(array_keys($toolbaritems));?>};
+document.appsettings={codepage:'<?php echo $codepage;?>',binpages:<?php echo json_encode($binpages);?>,beepnewchat:<?php echo $usermeta['canchat']?'true':'false';?>,fastlane:'<?php echo $fastlane;?>', viewmode:'kpw', views:<?php echo json_encode(array_keys($toolbaritems));?>};
 </script>
 <script src="lang/dict.<?php echo $lang;?>.js"></script>
 <script src="nano.js"></script>
