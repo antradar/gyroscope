@@ -45,7 +45,7 @@ function reajxpgn(c,p){
 		if (p) reajxpgn(p); else console.warn('reload params not set');
 		return;
 	}
-	ajxpgn(c,ct.reloadparams.u,ct.reloadparams.d,ct.reloadparams.e,ct.reloadparams.data,ct.reloadparams.callack,ct.reloadparams.slowtimer,ct.reloadparams.runonce);		
+	ajxpgn(c,ct.reloadparams.u,ct.reloadparams.d,ct.reloadparams.e,ct.reloadparams.data,ct.reloadparams.callback,ct.reloadparams.slowtimer,ct.reloadparams.runonce);		
 }
 
 function cancelgswi(ct){

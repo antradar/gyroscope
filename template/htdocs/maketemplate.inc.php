@@ -22,7 +22,7 @@ function maketemplate($templatetypekey,$reps,$preprocessor=null,$gsid=null){
 	$templatename=$myrow['templatename'];
 	
 	foreach ($reps as $k=>$v){
-		$templatename=str_replace('%%'.$k.'%%',$v,$templatename);	
+		if (!is_array($v)&&!is_object($v)) $templatename=str_replace('%%'.$k.'%%',$v,$templatename);	
 	}	
 	
 	$templatepn = isset($myrow['templatepn'])?intval($myrow['templatepn']):0;
@@ -35,7 +35,7 @@ function maketemplate($templatetypekey,$reps,$preprocessor=null,$gsid=null){
 	}
 	
 	foreach ($reps as $k=>$v){
-		$c=str_replace('%%'.$k.'%%',$v,$c);	
+		if (!is_array($v)&&!is_object($v)) $c=str_replace('%%'.$k.'%%',$v,$c);	
 	}
 	
 	return array('name'=>$templatename,'content'=>$c,'pn'=>$templatepn,'init'=>$templateinit);	
