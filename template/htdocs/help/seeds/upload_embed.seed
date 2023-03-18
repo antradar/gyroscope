@@ -148,6 +148,7 @@ function upload(d,dfiles){
 			return;
 		}
 		parent.list#primaryfield##records#(<?php echo $#primarykey#;?>,'');
+		gid('uploader').reset();
 	}
 
 	rq.onabort=function(e){

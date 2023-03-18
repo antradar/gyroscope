@@ -171,6 +171,7 @@ function upload(d,dfiles){
 			return;
 		}
 		parent.show#primaryfield##mediatype#(<?php echo $#primarykey#;?>,'');
+		gid('uploader').reset();
 	}
 
 	rq.onabort=function(e){
