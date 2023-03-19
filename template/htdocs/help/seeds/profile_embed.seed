@@ -7,6 +7,9 @@ include 'libnumfile.php';
 function embed#primaryfield##mediatype#uploader(){
 	
 	$#primarykey#=GETVAL('#primarykey#');
+	
+	if (chunksize>=Math.ceil(binfile.size/4)) chunksize=Math.ceil(binfile.size/4);
+	if (chunksize<512) chunksize=512;	
 
 	$dmaxsize=20; //20 MB
 	$maxsize=1024*1024*$dmaxsize;
@@ -18,7 +21,7 @@ function embed#primaryfield##mediatype#uploader(){
 
 	$msg='';	
 	
-	if ($_FILES['file']&&$_FILES['file']['name']){
+	if (isset($_FILES['file'])&&$_FILES['file']&&$_FILES['file']['name']){
 		checkgskey('embed#primaryfield##mediatype#uploader_'.$#primarykey#);
 		//echo '<pre>';print_r($_FILES);echo '</pre>'; return;
 		$path=numfile_make_path($#primarykey#,'#uploaddir#',100,1).'/';
@@ -28,6 +31,18 @@ function embed#primaryfield##mediatype#uploader(){
 		$filesizes=$file['size'];
 		$filetypes=$file['type'];
 		
+		//echo '<pre>';print_r($_POST); print_r($_FILES); echo '</pre>'; return;
+		
+		$chunkend=$filesizes; //backward compatible
+		$firstchunk=1;
+		
+		if (isset($_POST['X-CHUNK-END'])){
+			if (intval($_POST['X-CHUNK-START'])>0) $firstchunk=0;
+			$chunkend=intval($_POST['X-CHUNK-END']);
+			$filesizes=intval($_POST['X-FILE-SIZE']);
+			$file['name']=$_POST['X-FILE-NAME'];	
+		}
+		
 		$ofn=noapos($file['name']);
 		
 			$realfn=$realfns;//[$idx];
@@ -35,8 +50,43 @@ function embed#primaryfield##mediatype#uploader(){
 			$filetype=$filetypes;//[$idx];
 			$dst=$path.$#primarykey#.'#fileext#';
 			$error=$file['error'];
+			$c=null;
+			
+			$partdst=$dst.'.part';
+			if ($chunkend<$filesize){
+				if ($firstchunk) {
+					if (file_exists($partdst)) {
+						if (!isset($_POST['X-CHUNK-RESET'])||$_POST['X-CHUNK-RESET']!=1){
+							header('GS-RESUME-START:'.filesize($partdst));
+							die('upload-resume');
+						}
+					}
+					
+					$f=fopen($partdst,'wb');				
+				} else {
+					$f=fopen($partdst,'ab');
+				}
+				
+				fwrite($f,file_get_contents($realfn));
+				fclose($f);
+				clearstatcache();
+								
+				header('GS-SEND-MORE:'.filesize($partdst));
+				return;
+			} else {
+				if (file_exists($partdst)){
+					$f=fopen($partdst,'ab');
+					fwrite($f,file_get_contents($realfn));
+					fclose($f);
+									
+					$c=file_get_contents($partdst); //avoid loading large files in memory if applicable
+					
+					unlink($partdst);
+				}
+			}
 
-			$c=file_get_contents($realfn);
+			if (!isset($c)) $c=file_get_contents($realfn); //legacy mode, read the entire file
+			
 
 			$img=@imagecreatefromstring($c);
 			if (!$img){
@@ -84,7 +134,7 @@ function embed#primaryfield##mediatype#uploader(){
 			
 					
 		
-		if (!$_GET['diag']){
+		if (!isset($_GET['diag'])||!$_GET['diag']){
 ?>
 <script>parent.show#primaryfield##mediatype#(<?php echo $#primarykey#;?>,"<?php echo $msg;?>");</script>
 <?php			
@@ -92,10 +142,7 @@ function embed#primaryfield##mediatype#uploader(){
 		
 	}
 	
-	if ($_GET['diag']) {
-		echo $msg;
-		return;
-	}
+	if (isset($_GET['diag'])&&$_GET['diag']) {echo $msg;return;}
 	
 ?>
 <html>
@@ -115,8 +162,13 @@ function embed#primaryfield##mediatype#uploader(){
 <br>
 <button onclick="upload(this);return false;" id="uploadbutton">Upload</button> (max <?php echo $dmaxsize;?>MB)
 </form>
-<div id="cancel" style="display:none;font-size:12px;padding:5px 0;"><a href=# onclick="cancelupload();return false;"><u>cancel</u></a></div>
-<div id="debug" style="font-size:11px;"></div>
+<div id="cancel" style="display:none;font-size:12px;padding:5px 0;">
+	<span id="progress_">
+		<span id="progress"></span>
+	</span>
+	<a id="cancelbutton" onclick="cancelupload();return false;">x</a>
+</div>
+<div id="debug"></div>
 <script src="nano.js"></script>
 <script>
 function cancelupload(){
@@ -125,7 +177,8 @@ function cancelupload(){
 	btn.rq.abort();	
 }
 
-function upload(d,dfiles){
+function upload(d,dfiles,chunkstart,reset){
+	
 	var file=gid('file');
 	var form=gid('uploader');
 	var rq=xmlHTTPRequestObject();
@@ -147,26 +200,69 @@ function upload(d,dfiles){
 		alert('File too large. Upload a smaller file');
 		return;	
 	}
+	
+	var chunksize=<?php echo $chunksize;?>;
+	if (chunksize>=Math.ceil(binfile.size/4)) chunksize=Math.ceil(binfile.size/4);
+	if (chunksize<512) chunksize=512;
+	
+	if (chunkstart==null) chunkstart=0;	
+	var chunkend=chunkstart+chunksize;
+	if (chunkend>binfile.size) chunkend=binfile.size;
+		
+	var chunk=binfile.slice(chunkstart,chunkend);
 
-	fd.append('file',binfile);
+	fd.append('file',chunk);
+	fd.append('X-CHUNK-START',chunkstart);
+	fd.append('X-CHUNK-END',chunkend);
+	fd.append('X-FILE-SIZE',binfile.size);
+	fd.append('X-FILE-NAME',binfile.name);
+	
+	if (reset!=null) fd.append('X-CHUNK-RESET',reset);
+	
+
 	fd.append('X-GSREQ-KEY','<?php emitgskey('embed#primaryfield##mediatype#uploader_'.$#primarykey#);?>');
 	
 	fd.append('#primarykey#',<?php echo $#primarykey#;?>);
 	rq.open('POST','<?php echo $codepage;?>?cmd=embed#primaryfield##mediatype#uploader&#primarykey#=<?php echo $#primarykey#;?>&diag=1',true);
 
-	gid('debug').innerHTML='upload started...';
-	rq.upload.onprogress=function(e){
-		gid('cancel').style.display='block';
-		if (e.lengthComputable) {
-			gid('debug').innerHTML=Math.floor(e.loaded*100/e.total)+'%';
-			if (Math.floor(e.loaded*100/e.total)==100) gid('debug').innerHTML='Processing...';
-			gid('dropzoneprogress').innerHTML=gid('debug').innerHTML;
-		} else gid('debug').innerHTML='uploading...';
-	};
+	if (chunkstart==0) {
+		gid('debug').innerHTML='upload started...';		
+	}
+	
+	var pct=Math.round(chunkstart*100/binfile.size);
+	gid('progress').style.width=pct+'%';
+	gid('cancel').style.display='block';
+	gid('dropzonetext').style.display='none';
+	gid('dropzoneprogress').innerHTML=pct+'%';
+	
 	rq.onload=function(e){
+		
+		var sendmore=rq.getResponseHeader('GS-SEND-MORE');
+		if (sendmore!=null) sendmore=parseInt(sendmore,10); else sendmore=0;
+		if (sendmore>chunkstart){
+			upload(d,dfiles,sendmore);
+			return;				
+		}
+		gid('dropzonetext').style.display='inline';
+		gid('progress').style.width='100%';
+		gid('dropzoneprogress').innerHTML='';
+		
 		gid('debug').innerHTML='uploaded';
 		gid('cancel').style.display='none';
 		if (e.target.responseText!=null&&e.target.responseText!='') {
+			if (e.target.responseText=='upload-resume'){
+				var restart=parseInt(rq.getResponseHeader('GS-RESUME-START'),10);
+				var rpct=Math.round(restart*100/binfile.size);
+				
+				if (confirm('A previous upload was interrupted at '+rpct+'%.\nWould you like to resume the upload?\n\nMake sure it is the same file you are uploading.')){
+					
+					upload(d,dfiles,restart);
+				} else {
+					upload(d,dfiles,0,1);
+				}
+
+				return;
+			}
 			alert(e.target.responseText);
 			return;
 		}
@@ -177,7 +273,7 @@ function upload(d,dfiles){
 	rq.onabort=function(e){
 		gid('cancel').style.display='none';
 		gid('debug').innerHTML='canceled';
-		gid('dropzonetext').innerHTML='Upload canceled';
+		gid('dropzonetext').style.display='inline';
 		gid('dropzoneprogress').innerHTML='';	
 	}
 	

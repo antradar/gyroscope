@@ -215,6 +215,9 @@ function upload(d,dfiles,chunkstart,reset){
 	}
 	
 	var chunksize=<?php echo $chunksize;?>;
+	if (chunksize>=Math.ceil(binfile.size/4)) chunksize=Math.ceil(binfile.size/4);
+	if (chunksize<512) chunksize=512;
+	
 	if (chunkstart==null) chunkstart=0;	
 	var chunkend=chunkstart+chunksize;
 	if (chunkend>binfile.size) chunkend=binfile.size;
@@ -236,8 +239,7 @@ function upload(d,dfiles,chunkstart,reset){
 	rq.open('POST','<?php echo $codepage;?>?cmd=embed#primaryfield##record#uploader&#primarykey#=<?php echo $#primarykey#;?>&diag=1',true);
 
 	if (chunkstart==0) {
-		gid('debug').innerHTML='upload started...';
-		
+		gid('debug').innerHTML='upload started...';		
 	}
 	
 	var pct=Math.round(chunkstart*100/binfile.size);

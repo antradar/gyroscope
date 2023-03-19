@@ -21,7 +21,7 @@ function list#primaryfield##records#($#primarykey#=null){
 	}//while	
 	
 	?>
-	<iframe style="width:90%;border:none;height:200px;" frameborder="no" src="<?php echo $codepage;?>?cmd=embed#primaryfield##record#uploader&#primarykey#=<?php echo $#primarykey#;?>&hb=<?php echo time();?>"></iframe>
+	<iframe style="width:90%;border:none;height:240px;" frameborder="no" src="<?php echo $codepage;?>?cmd=embed#primaryfield##record#uploader&#primarykey#=<?php echo $#primarykey#;?>&hb=<?php echo time();?>"></iframe>
 	<?php
 	
 }
