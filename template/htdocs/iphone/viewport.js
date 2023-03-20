@@ -234,6 +234,8 @@ function reloadview(idx,listid){
 }
 
 function showview(idx,lazy,force,params,func,bingo){
+	if (gid('defleftview')) gid('defleftview').style.display='none';
+	
     var codepage=document.appsettings.codepage;
     if (bingo>0) codepage=document.appsettings.binpages[bingo+''];
 	if (!params) params='';

@@ -318,6 +318,7 @@ function reloadview(idx,listid,submenu){
 }
 
 function showview(idx,lazy,force,params,func,bingo,submenu){
+  if (gid('defleftview')) gid('defleftview').style.display='none';
   var codepage=document.appsettings.codepage;
   if (bingo>0) codepage=document.appsettings.binpages[bingo+''];
   if (!params) params='';

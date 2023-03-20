@@ -1,3 +1,4 @@
+alter table #primaryrecords# add gstier tinyint unsigned default 0, add gsexpiry bigint unsigned;
 
 CREATE TABLE #primaryfield#actionlog (
   alogid bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -106,6 +107,7 @@ CREATE TABLE #primaryfield#reports (
   reportfunc varchar(255) DEFAULT NULL,
   reportkey varchar(255) NOT NULL,
   reportgroupnames varchar(255) NOT NULL,
+  reportparams varchar(255),
   bingo tinyint(3) unsigned default 0,
   gyrosys tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (reportid),
@@ -121,8 +123,8 @@ CREATE TABLE #primaryfield#reports (
   KEY #primarykey# (#primarykey#)
 ) ENGINE=InnoDB;
 
-INSERT INTO #primaryfield#reports VALUES (1, 0, 'Activity Log', 'Security', 'This report is mostly used by system administrators for diagnostic purposes.', '', '', '', '', '', 'admins', '1', 'Activity Log', 'Activity Log', '', 'actionlog', 'admins|reportsettings|systemplateuse|systemplate',0, 0);
-INSERT INTO #primaryfield#reports VALUES (2, 0, 'Faults', 'Security', '', '', '', '', '', '', 'faultlog', '1', 'Fault Log', 'Fault Log', '', 'faultlog', 'faultlog',0, 0);
+INSERT INTO #primaryfield#reports VALUES (1, 0, 'Activity Log', 'Security', 'This report is mostly used by system administrators for diagnostic purposes.', '', '', '', '', '', 'admins', '1', 'Activity Log', 'Activity Log', '', 'actionlog', 'admins|reportsettings|systemplateuse|systemplate','',0, 0);
+INSERT INTO #primaryfield#reports VALUES (2, 0, 'Faults', 'Security', '', '', '', '', '', '', 'faultlog', '1', 'Fault Log', 'Fault Log', '', 'faultlog', 'faultlog','',0, 0);
 
 CREATE TABLE #primaryfield#userhelpspots (
   uhid bigint(20) unsigned NOT NULL AUTO_INCREMENT,

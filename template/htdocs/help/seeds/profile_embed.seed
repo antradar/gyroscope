@@ -8,8 +8,8 @@ function embed#primaryfield##mediatype#uploader(){
 	
 	$#primarykey#=GETVAL('#primarykey#');
 	
-	if (chunksize>=Math.ceil(binfile.size/4)) chunksize=Math.ceil(binfile.size/4);
-	if (chunksize<512) chunksize=512;	
+	//adjust this according to expected file size. the size should be under upload_max_filesize in php.ini
+	$chunksize=1024*512; 
 
 	$dmaxsize=20; //20 MB
 	$maxsize=1024*1024*$dmaxsize;

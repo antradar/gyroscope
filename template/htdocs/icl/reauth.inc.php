@@ -14,14 +14,15 @@ function reauth(){
 	$gsexpiry=0;
 	$gstier=0;
 	
-	if (TABLENAME_GSS=='gss'){	
+	//every portalized table should have its own gsexpiry and gstier
+	//if (TABLENAME_GSS=='gss'){	
 	$query="select gsexpiry,gstier from ".TABLENAME_GSS." where ".COLNAME_GSID."=?";
 	$rs=sql_prep($query,$db,$gsid);
 	$myrow=sql_fetch_assoc($rs);
 	
 	$gsexpiry=intval($myrow['gsexpiry']);
 	$gstier=intval($myrow['gstier']);
-	}
+	//}
 	
 	$query="select * from ".TABLENAME_USERS." where userid=? and ".COLNAME_GSID."=? ";
 	$rs=sql_prep($query,$db,array($userid,$gsid));

@@ -29,6 +29,7 @@ $rs=sql_prep($query,$db,$userid);
 $usermeta=sql_fetch_assoc($rs);
 
 include 'uiconfig.php';
+include 'icl/showdefleftcontent.inc.php';
 
 ?>
 <!doctype html>
@@ -70,6 +71,7 @@ document.appsettings={codepage:'<?php echo $codepage;?>',binpages:<?php echo jso
 <div id="tooltitle" class="<?php if ($uiconfig['toolbar_position']=='left') echo 'promoted';?>" title="double-click to reload the side view" ondblclick="if (document.viewindex) reloadview(document.viewindex);"></div>
 <div id="mainmenu" class="<?php if ($uiconfig['toolbar_position']=='top') echo 'silent';?>"></div>
 <div id="leftview" class="<?php if ($uiconfig['toolbar_position']=='left') echo 'promoted';?>" scale:ch="105"><div id="leftview_">
+	<div id="defleftview" style="width:100%;height:100%;overflow:auto;position:absolute;"><?php showdefleftcontent();?></div>
 	<?php foreach ($toolbaritems as $modid=>$ti){?>
 	<div id="lv<?php echo $modid;?>" style="display:none;width:100%;height:100%;overflow:auto;position:absolute;"></div>
 	<?php }?>

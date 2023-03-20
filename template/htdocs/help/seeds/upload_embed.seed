@@ -107,7 +107,7 @@ function embed#primaryfield##record#uploader(){
 					
 					if (isset($#lookupkey#)){
 						$query="update #lookuptable# set mimetype=? where #lookupkey#=? and #primarykey#=?";
-						sql_prep($query,$db,array($mimetype,$#lookupke#,$#primarykey#));	
+						sql_prep($query,$db,array($mimetype,$#lookupkey#,$#primarykey#));	
 					}
 					
 					logaction("finished uploading $ofn to $#primarydispfield#",array('#primarykey#'=>$#primarykey#,'file'=>$ofn,'#primarydispfield#'=>$#primarydispfield#,'#lookupkey#'=>$#lookupkey#));			
@@ -115,7 +115,7 @@ function embed#primaryfield##record#uploader(){
 				}
 			}					
 		
-		if (!isset($_GET['diag'])!!$_GET['diag']){
+		if (!isset($_GET['diag'])||!$_GET['diag']){
 ?>
 <script>parent.list#primaryfield##records#(<?php echo $#primarykey#;?>,"<?php echo $msg;?>");</script>
 <?php			
@@ -247,7 +247,7 @@ function upload(d,dfiles,chunkstart,chunkid){
 		gid('dropzoneprogress').innerHTML='';
 		
 		if (chunkid!=null){
-			ajxpgn('debug','<?php echo $codepage;?>?cmd=embedproductmanualuploader&productid=<?php echo $productid;?>&diag=1&abortid='+chunkid,0,0,null,function(){
+			ajxpgn('debug','<?php echo $codepage;?>?cmd=embedproductmanualuploader&#primarykey#=<?php echo $#primarykey#;?>&diag=1&abortid='+chunkid,0,0,null,function(){
 				gid('debug').innerHTML='canceled';
 				gid('uploader').reset();	
 			});
