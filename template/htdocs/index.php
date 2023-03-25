@@ -147,7 +147,7 @@ foreach ($toolbaritems as $modid=>$ti){
 		<input id="mastersearch" class="mastersearch" placeholder="Search All" onfocus="showmastersearch();" onblur="hidemastersearch();" onkeyup="_mastersearch();">
 	</span>
 <?php }?>
-<acronym title="<?php echo $user['dispname'];?>"><a onclick="ajxjs(<?php jsflag('setaccountpass');?>,'accounts.js');reloadtab('account','<?php tr('account_settings');?>','showaccount');addtab('account','<?php tr('account_settings');?>','showaccount');return false;"><?php if ($usermeta['haspic']){?><img src="<?php echo $codepage;?>?cmd=imguserprofile&userid=<?php echo $userid;?>" id="mainuserprofile"><?php } else {?><img src="imgs/t.gif" id="mainuserprofile" class="admin-user"><?php }?><span id="labellogin"><?php echo $user['dispname'];?></span><span id="labeldispname" style="display:none;"><?php echo $user['dispname'];?></span></a></acronym>
+<acronym title="<?php echo $user['dispname'];?>"><a onclick="ajxjs(<?php jsflag('setaccountpass');?>,'accounts.js');reloadtab('account','<?php tr('account_settings');?>','showaccount');addtab('account','<?php tr('account_settings');?>','showaccount',null,null);return false;"><?php if ($usermeta['haspic']){?><img src="imgs/t.gif" id="mainuserprofile"><?php } else {?><img src="imgs/t.gif" id="mainuserprofile" class="admin-user"><?php }?><span id="labellogin"><?php echo $user['dispname'];?></span><span id="labeldispname" style="display:none;"><?php echo $user['dispname'];?></span></a></acronym>
 &nbsp; &nbsp;
 <!-- acronym title="<?php tr('account_settings');?>"><a title="<?php tr('account_settings');?>" onclick="ajxjs(<?php jsflag('setaccountpass');?>,'accounts.js');reloadtab('account','<?php tr('account_settings');?>','showaccount');addtab('account','<?php tr('account_settings');?>','showaccount');return false;"><img src="imgs/t.gif" width="16" height="16" class="admin-settings"></a></acronym -->
 &nbsp;
@@ -315,9 +315,12 @@ window.onload=function(){
 	});	
 }
 
+ajxblobimg('mainuserprofile','<?php echo $codepage;?>?cmd=imguserprofile&userid=<?php echo $userid;?>','<?php echo $codepage;?>?cmd=imguserprofile&userid=<?php echo $userid;?>',null);
+
 </script>
 <?php
 include 'offline.php';
+
 ?>
 </body>
 </html>

@@ -9,7 +9,6 @@ include 'icl/listhomedashreports.inc.php';
 //include 'gsx_hello.inc.php'; //uncomment this to see gsx in bypass mode, remember to modify gsx.php
 
 function showwelcome(){
-
 		
 ?>
 <div style="position:relative;margin-left:60px;"><?php makehelp('welcometab2','maxtab',1);?></div>
@@ -102,6 +101,8 @@ function showwelcome(){
 	
 </div><!-- section -->
 <?php
+
+
 }
 
 function auto_welcome(){
@@ -170,6 +171,7 @@ URL: <input class="inp" id="watch_homeurl" value="https://">
 		
 </div>
 <?php
+
 		
 }
 

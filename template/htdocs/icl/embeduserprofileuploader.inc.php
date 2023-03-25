@@ -4,6 +4,7 @@ set_time_limit(0);
 //include 'libresize.php'; //available with commercial license
 
 function embeduserprofileuploader(){
+	header('Cache-Control: no-store');
 	
 	$user=userinfo();
 	$userid=$user['userid']+0;

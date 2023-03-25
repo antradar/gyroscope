@@ -27,6 +27,8 @@ $dbsalt='gyroscope_demo__'; //do not change this once it's set
 include 'gsreqkey.php';
 if ($gsreqkey===''||$gsreqkey===null) die('Missing GS Req Key - incorrect configuration');
 
+$blobkey='a_not_so_important_random_key';
+
 //$wssecret is moved to lb.php
 
 //$gsxkey //change this in lb.php

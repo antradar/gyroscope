@@ -218,4 +218,3 @@ removeuserprofilepic=function(userid,gskey){
 				
 	},null,null,gskey);
 }
-

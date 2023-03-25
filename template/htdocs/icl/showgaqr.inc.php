@@ -44,7 +44,7 @@ function showgaqr($userid){
 
 	if (!$fresh){		
 ?>	
-	<a class="hovlink" onclick="showhide('myaccount_gakeyview');">show QR setup code</a>
+	<a class="hovlink" onclick="showhide('myaccount_gakeyview');ajxblobimg('myqrcode','<?php echo $codepage;?>?cmd=imgqrcode&data=<?php echo $url;?>','<?php echo $codepage;?>?cmd=imgqrcode','data=<?php echo $url;?>');">show QR setup code</a>
 <?php
 	} //fresh
 ?>
@@ -59,8 +59,14 @@ function showgaqr($userid){
 	</div>
 <?php
 	}	
+	
+	/*
 ?>
-		<img src="<?php echo $codepage;?>?cmd=imgqrcode&data=<?php echo $url;?>" width="180">
+		<img id="myqrcode" src="<?php echo $codepage;?>?cmd=imgqrcode&data=<?php echo $url;?>" width="180">
+<?php
+	*/
+?>
+	<img id="myqrcode" src="imgs/t.gif" style="background:#999999;" width="180">
 	</div>
 <?php	
 			

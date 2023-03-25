@@ -115,7 +115,7 @@ gschat_init=function(containerid,portalparams,gsid,gsauth,reauth){ //portalauth:
 		document.lastwindowexit=null;
 		if (window.onbeforeunload!=null) document.lastwindowexit=window.onbeforeunload;
 		window.onbeforeunload=function(){
-			ajxpgn(document.chattransport,document.gschatpath+'?cmd=autoleave&chatid='+document.chatid+'&chatauth='+document.chatauth);
+			ajxpgn(document.chattransport,document.gschatpath+'?cmd=autoleave&chatid='+document.chatid+'&chatauth='+document.chatauth,0,0,'nocache=1');
 			if (document.lastwindowexit!=null) return document.lastwindowexit();
 		}
 		
@@ -274,7 +274,7 @@ chatwss_init=function(chatid,chatauth,wsuri,gsid){
 gschat_loadmessages=function(maxmsgid){
 		var msgida=gid(document.chatcontainer+'_chatbox').maxmsgid
 		if (msgida==null) msgida=0;
-		ajxpgn(document.chattransport,document.gschatpath+'?cmd=getmessages&chatid='+document.chatid+'&chatauth='+document.chatauth+'&from='+msgida,0,0,null,function(rq){
+		ajxpgn(document.chattransport,document.gschatpath+'?cmd=getmessages&chatid='+document.chatid+'&chatauth='+document.chatauth+'&from='+msgida,0,0,'nocache=1',function(rq){
 			var parts=rq.responseText.split('||||');
 			gid(document.chatcontainer+'_chatbox').innerHTML+=parts[1];
 			gid(document.chatcontainer+'_chatbox').maxmsgid=parseInt(parts[0],10);
@@ -309,7 +309,7 @@ function gschat_end(){
 	if (!confirm('Are you sure you want to end this conversation?')) return;
 	
 	
-	ajxpgn(document.chattransport,document.gschatpath+'?cmd=endchat&chatid='+document.chatid+'&chatauth='+document.chatauth,0,0,null,function(rq){
+	ajxpgn(document.chattransport,document.gschatpath+'?cmd=endchat&chatid='+document.chatid+'&chatauth='+document.chatauth,0,0,'nocache=1',function(rq){
 		if (rq.responseText!=parseInt(rq.responseText,10)){
 			alert(rq.responseText);
 			return;	

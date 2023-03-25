@@ -9,7 +9,10 @@ include 'icl/showuserprofile.inc.php';
 include 'icl/listyubikeys.inc.php';
 
 function showaccount(){
+		
 	global $smskey;
+	
+	//ob_start();
 	
 	$user=userinfo();
 
@@ -264,5 +267,7 @@ if (isset($user['groups']['chats'])){
 
 </div><!-- section -->
 <?php
+//	$output=ob_get_clean();
+//	blobout($output);	
 	
 }

@@ -340,7 +340,8 @@ function reloadtab(key,title,params,loadfunc,data,opts,gskey){
   if (document.tabtitles[tabid].autosaver) {clearTimeout(document.tabtitles[tabid].autosaver);document.tabtitles[tabid].autosavertimer=null;}
   
   var rq=xmlHTTPRequestObject();
-
+  
+  
   var scn=document.appsettings.codepage+'?cmd=';
   if (opts&&opts.fastlane) scn=document.appsettings.fastlane+'?cmd=';
   if (opts&&opts.bingo) {
@@ -361,6 +362,7 @@ function reloadtab(key,title,params,loadfunc,data,opts,gskey){
   
   rq.open('POST',scn+params+'&hb='+hb(),true);
   rq.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
+  
   if (gskey!=null) {
 	  //rq.setRequestHeader('X-GSREQ-KEY',gskey);
 	  if (data==null) data='X-GSREQ-KEY='+gskey;
@@ -464,8 +466,7 @@ function reloadtab(key,title,params,loadfunc,data,opts,gskey){
 	
 	var ta=0;
 	if (document.nanoperf) ta=hb();
-	
-	
+		
 	document.tabviews[tabid].innerHTML=rq.responseText;
 	
 	if (document.nanoperf){
@@ -553,7 +554,8 @@ function addtab(key,title,params,loadfunc,data,opts){
   
   rq.open('POST',scn+params+'&hb='+hb(),true);
   rq.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
-  
+    
+    
   var c=document.createElement('div');
   c.style.display='none'; c.style.width="100%"; c.style.height="100%"; c.style.overflow="auto";
   

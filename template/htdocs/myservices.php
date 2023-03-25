@@ -50,6 +50,7 @@ if ($gsexpiry!=0&&$gsexpiry<$now){
 header(COLNAME_GSID.': '.($user['gsid'])); //uncomment for logging in nginx as $upstream_http_gsid
 header('gsuid: '.($user['userid'])); //uncomment for logging in nginx as $upstream_http_gsuid
 header('gsfunc: '.rawurlencode($cmd));
+header('Cache-Control: no-store'); //if an individual handler must return a cached content, add " header('Cache-Control: '); " inside the handler
 
 try {  //comment out in older PHP versions
 	

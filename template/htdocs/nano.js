@@ -7,7 +7,7 @@ Documentation: www.antradar.com/docs-nano-ajax-manual
 
 Warning: this copy of Nano Ajax Library is modified for running in Gyroscope. Use the public version for general purpose applications.
 
-ver g4.9
+ver g5.0
 */
 
 function gid(d){return document.getElementById(d);}
@@ -130,7 +130,9 @@ function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce,gskey,creds,headless){
 			if (document.nanoperf) ta=hb();
 
 			
-			if (!headless) ct.innerHTML=rq.responseText;
+			if (!headless) {
+					ct.innerHTML=rq.responseText;
+			}
 			
 			if (d) ct.style.display='block';
 			
@@ -162,6 +164,7 @@ function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce,gskey,creds,headless){
 	
 	
 	var rq=xmlHTTPRequestObject();
+		
 	if (creds) try{rq.withCredentials=true;} catch (e) {}
 	
 	if (ct.reqobj!=null&&runonce!=2){
@@ -382,6 +385,38 @@ function showhide(id,preopen,trigger){
 	}
 }
 
+if (window.Blob){
+	ajxblob=function(url,data,mode,func){
+		var rq=xmlHTTPRequestObject();
+		
+		rq.open('POST',url+'&hb='+hb(),true);
+		rq.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
+		rq.setRequestHeader('SENDBLOB','1');
+		rq.responseType='blob';
+		rq.onreadystatechange=function(){
+			if (rq.readyState==4){
+				var data=rq.response;
+				var blob=new Blob([data]);
+				func(blob);
+			}	  
+		}
+		rq.send(data);
+	}	
+}
 
-
+ajxblobimg=function(imgid,url_get,url_post,data){
+	if (!self.ajxblob){
+		gid(imgid).src=url_get;
+		return;	
+	}
+	
+	ajxblob(url_post,data,'image',function(blob){
+		var burl = URL.createObjectURL(blob);
+		gid(imgid).src=burl;
+		gid(imgid).onload=function(){
+			URL.revokeObjectURL(gid(imgid).src);	
+		}		
+	});
+	
+}
 

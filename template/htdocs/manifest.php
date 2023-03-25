@@ -1,6 +1,8 @@
 <?php
 include 'lb.php';
 include 'auth.php';
+header('Cache-Control: no-store');
+
 ?>
 {
 	"name":"<?php echo GYROSCOPE_PROJECT;?>",

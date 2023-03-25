@@ -355,7 +355,7 @@ function showview(idx,lazy,force,params,func,bingo,submenu){
 				document.lvxhr.abortflag=1;document.lvxhr.reqobj.abort();document.lvxhr.reqobj=null;cancelgswi(document.lvxhr);
 			}
 			document.lvxhr=gid('lv'+i);
-			ajxpgn('lv'+i,codepage+'?cmd=slv_'+i.replace(/\./g,'__')+'&'+params,true,true,'',function(rq){
+			ajxpgn('lv'+i,codepage+'?cmd=slv_'+i.replace(/\./g,'__')+'&'+params,true,true,'nocache=1',function(rq){
 				var title=rq.getResponseHeader('listviewtitle');
 				if (title!=null&&title!='') gid('tooltitle').innerHTML='<a>'+decodeHTML(title)+'</a>';
 				var flag=rq.getResponseHeader('listviewflag');
@@ -438,9 +438,9 @@ function authpump(){
  		
     }
   }
-  rq.open('GET',document.appsettings.codepage+'?cmd=pump&hb='+stamp,true);
+  rq.open('POST',document.appsettings.codepage+'?cmd=pump&hb='+stamp,true);
   rq.onreadystatechange=f;
-  rq.send(null);
+  rq.send('nocache='+stamp);
 }
 
 

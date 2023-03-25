@@ -308,9 +308,9 @@ function authpump(){
  		}
     }
   }
-  rq.open('GET',document.appsettings.codepage+'?cmd=pump&hb='+stamp,true);
+  rq.open('POST',document.appsettings.codepage+'?cmd=pump&hb='+stamp,true);
   rq.onreadystatechange=f;
-  rq.send(null);
+  rq.send('nocache='+stamp);
 }
 
 function sv(d,v){gid(d).value=v;}
