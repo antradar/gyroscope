@@ -30,6 +30,8 @@ $usermeta=sql_fetch_assoc($rs);
 $quicklist=isset($usermeta['quicklist'])&&$usermeta['quicklist']?1:0;
 $dark=isset($usermeta['darkmode'])?intval($usermeta['darkmode']):0;
 
+setcookie('userdarkmode',$dark,time()+3600*24*30*6,null,null,$usehttps,true); //6 months
+
 include 'uiconfig.php';
 include 'icl/showdefleftcontent.inc.php';
 

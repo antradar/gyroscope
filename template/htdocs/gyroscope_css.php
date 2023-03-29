@@ -228,10 +228,10 @@ acronym.help{cursor:help;border-bottom:dotted 1px #4444ee;}
 #tabviews.boundless .afloat .qnav_{display:block;}
 
 #tabexpander{position:absolute;width:28px;height:28px;top:-200px;right:12px;z-index:3000;cursor:pointer;background:transparent url(imgs/toolbar.gif) no-repeat -643px -4px;transform:scale(0.65);transition:transform 250ms;}
-#tabexpander:hover{transform:scale(0.85);}
+#tabexpander:hover{transform:scale(0.8);}
 
-#tabexpander.afloat{background:transparent url(imgs/toolbar.gif) no-repeat -643px -36px;transform:scale(0.8);}
-#tabexpander.afloat:hover{transform:scale(0.65);}
+#tabexpander.afloat{background:transparent url(imgs/toolbar.gif) no-repeat -643px -36px;transform:scale(0.7);}
+#tabexpander.afloat:hover{transform:scale(0.55);}
 
 .wideview{margin-left:296px;}
 .wideviewmenu_{position:absolute;top:0;left:0;width:295px;height:100%;overflow:auto;direction:rtl;}

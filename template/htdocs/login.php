@@ -41,6 +41,8 @@ if (isset($_POST['lang'])&&in_array($_POST['lang'],array_keys($langs))) {
 	setcookie('userlang',$_POST['lang'],time()+3600*24*30*6,null,null,$usehttps,true); //6 months
 }
 
+$dark=isset($_COOKIE['userdarkmode'])?intval($_COOKIE['userdarkmode']):0;
+
 $dkey=md5(GYROSCOPE_PROJECT);
 
 $deflogin=isset($_COOKIE['fingername'])?$_COOKIE['fingername']:'';
@@ -425,7 +427,15 @@ body{font-size:28px;}
 #loginbutton{height:auto;padding:6px 0;font-size:28px;width:280px;-webkit-appearance: none;}
 <?php }?>
 
+<?php
+if ($dark==0){
+?>
 @media (prefers-color-scheme:dark) {
+<?php
+}
+
+if ($dark==0||$dark==1){
+?>
 	body{background-image:url(imgs/dbgtile.png);}
 	#loginbox{background: #21262D;color:#C9D1D9;}
 	input,#lang{background:#0D1117;color:#C2C3C5;}
@@ -435,7 +445,16 @@ body{font-size:28px;}
 	#logo_dark{display:block;}
 	.powered{color:#8B949E;}
 	#fingerprint{filter:invert(1);}
+<?php	
+
+}//if dark==0||dark==1
+	
+if ($dark==0){
+?>
 }
+<?php	
+}
+?>
 
 </style>
 <?php if (isset($roundwatchframe)&&$roundwatchframe){?>
