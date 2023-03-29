@@ -117,8 +117,9 @@ function sql_prep($query,&$db,$params=null){
 		$db=sql_get_db($dbinfo['host'],$dbinfo['source'],$dbinfo['user'],$dbinfo['pass'],null,$db->lazyname);
 		return;	
 	}
-		
+			
 	if (!mysqli_stmt_execute($stmt)) {
+		
 		$backtrace=debug_backtrace();
 		$file=basename($backtrace[0]['file']);
 		$line=$backtrace[0]['line'];

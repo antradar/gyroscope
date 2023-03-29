@@ -20,6 +20,10 @@ $query="select * from ".TABLENAME_USERS." where userid=?";
 $rs=sql_prep($query,$db,$userid);
 $usermeta=sql_fetch_assoc($rs);
 
+$quicklist=1; //always enable quick list for mobile views
+$dark=isset($usermeta['darkmode'])?intval($usermeta['darkmode']):0;
+
+
 include 'uiconfig.php';
 ?>
 <html>
@@ -28,9 +32,9 @@ include 'uiconfig.php';
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	<meta name="theme-color" content="#454242" />
-	<link href="iphone/gyrodemo.css?v=2" type="text/css" rel="stylesheet" />
+	<link href="iphone/gyrodemo_css.php?dark=<?php echo $dark;?>v=2" type="text/css" rel="stylesheet" />
 	<link href="gsnotes.css" type="text/css" rel="stylesheet" />
-	<link href="toolbar.css?v=4" type="text/css" rel="stylesheet" />
+	<link href="toolbar_css.php?dark=<?php echo $dark;?>v=4" type="text/css" rel="stylesheet" />
 <?php 
 	if (isset($_GET['watch'])&&$_GET['watch']==1||preg_match('/sm\-r\d+/i',$_SERVER['HTTP_USER_AGENT'])){
 		$roundwatchframe=1;
@@ -224,13 +228,13 @@ if (isset($roundwatchframe)&&$roundwatchframe){
 </div><!-- watchframe_outer -->
 
 <script>
-document.appsettings={codepage:'<?php echo $codepage;?>',binpages:<?php echo json_encode($binpages);?>,beepnewchat:<?php echo $usermeta['canchat']?'true':'false';?>,fastlane:'<?php echo $fastlane;?>',autosave:null, viewmode:'iphone',uiconfig:<?php echo json_encode($uiconfig);?>,views:<?php echo json_encode(array_keys($toolbaritems));?>};
+document.appsettings={codepage:'<?php echo $codepage;?>',binpages:<?php echo json_encode($binpages);?>,quicklist:<?php echo $quicklist?'true':'false';?>,beepnewchat:<?php echo $usermeta['canchat']?'true':'false';?>,fastlane:'<?php echo $fastlane;?>',autosave:null, viewmode:'iphone',uiconfig:<?php echo json_encode($uiconfig);?>,views:<?php echo json_encode(array_keys($toolbaritems));?>};
 </script>
 <script src="lang/dict.<?php echo $lang;?>.js"></script>
 <script src="nano.js?v=4_9"></script>
 <script>
-hdpromote('toolbar_hd.css');
-hdpromote('iphone/gyrodemo_hd.css');
+hdpromote('toolbar_hd_css.php?dark=<?php echo $dark;?>');
+hdpromote('iphone/gyrodemo_hd_css.php?dark=<?php echo $dark;?>');
 hddemote('legacy.css');
 </script>
 <?php if (isset($roundwatchframe)&&$roundwatchframe){?>
@@ -337,7 +341,7 @@ function rotate(){
 		gid('tabtitleshadow').style.display='none';
 		gid('content').style.width=vw+'px';
 		
-		if (document.lastori==null||document.lastori!=ori) ajxcss(self.cssloader,'iphone/portrait.css');
+		if (document.lastori==null||document.lastori!=ori) ajxcss(self.cssloader,'iphone/portrait_css.php?dark=<?php echo $dark;?>');
 		document.viewheight=vw+30;
 		scaleall(document.body);
 		document.iphone_portrait=1;
@@ -365,7 +369,7 @@ function rotate(){
 		gid('tabtitleshadow').style.display='block';
 		gid('content').style.width=cw-230+'px';
 		gid('tabtitles').style.width=cw-230+'px';
-		if (document.lastori==null||document.lastori!=ori) ajxcss(self.cssloader,'iphone/landscape.css');
+		if (document.lastori==null||document.lastori!=ori) ajxcss(self.cssloader,'iphone/landscape_css.php?dark=<?php echo $dark;?>');
 		document.viewheight=210;
 
 		scaleall(document.body);

@@ -41,12 +41,16 @@ setaccountpass=function(){
 	
 	var smscell=encodeHTML(osmscell.value);
 	
+	var quicklist=gid('myaccount_quicklist').value;
+	var darkmode=gid('myaccount_darkmode').value;
+	
 	var rq=xmlHTTPRequestObject();
-	rq.open('POST',document.appsettings.fastlane+'?cmd=setaccount&needkeyfile='+needkeyfile+'&usesms='+usesms+'&smscell='+smscell+'&usega='+usega+'&usegamepad='+usegamepad+'&useyubi='+useyubi+'&yubimode='+yubimode,true);
+	rq.open('POST',document.appsettings.fastlane+'?cmd=setaccount&needkeyfile='+needkeyfile+'&usesms='+usesms+'&smscell='+smscell+'&usega='+usega+'&usegamepad='+usegamepad+'&useyubi='+useyubi+'&yubimode='+yubimode+'&quicklist='+quicklist+'&darkmode='+darkmode,true);
 	rq.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 	rq.onreadystatechange=function(){
 		if (rq.readyState==4){
 			salert(rq.responseText);
+			document.appsettings.quicklist=quicklist=='1'?true:false;
 			refreshtab('account',1);
 			
 			if (usegamepad) ajxjs(self.gamepad_register,'gamepad.js');

@@ -1,3 +1,6 @@
+<?php
+header('Content-Type: text/css');
+?>
 /*
 use toolbar.psp to generate toolbar.gif
 */
@@ -393,9 +396,17 @@ svg > g > g.google-visualization-tooltip { pointer-events: none }
 
 /* ------------ */
 
+<?php
+$dark=isset($_GET['dark'])?intval($_GET['dark']):0;
 
+if ($dark==0){
+?>
 @media (prefers-color-scheme:dark) {
-	
+<?php	
+}
+
+if ($dark==0||$dark==1){
+?>
 	#gsstickerview{background:rgba(53,41,46,0.9);color:#ffffff;border-color:#6A494C;}
 	
 	.calledout{background:#35292E;}
@@ -576,7 +587,17 @@ svg > g > g.google-visualization-tooltip { pointer-events: none }
 	}
 	.highcharts-contextmenu .highcharts-menu{background:#0D1117 !important;color:#C9D1CF !important;box-shadow:none !important;}
 	.highcharts-contextmenu .highcharts-menu .highcharts-menu-item{color:#C9D1CF !important;}	
+<?php	
+
+}//if dark==0||dark==1
+
+
 	
+if ($dark==0){
+?>
 }
+<?php	
+}
+	
 
 

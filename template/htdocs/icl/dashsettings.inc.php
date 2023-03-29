@@ -5,6 +5,7 @@ include 'icl/listsettings.inc.php';
 function dashsettings(){
 
 	header('tabctx: dash');
+	header('newtitle: Settings');
 
 ?>
 <div class="section">

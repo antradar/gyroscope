@@ -1,3 +1,6 @@
+<?php
+header('Content-Type: text/css');
+?>
 body{background:#ffffff;}
 #tooltitle{height:25px;background:transparent url(tbbg.png) repeat top left;border-bottom:solid 1px #6f6e6e;width:320px;text-shadow:0 1px 0 #000000;}
 #lvviews{height:auto;overflow:visible;}
@@ -37,10 +40,32 @@ body{background:#ffffff;}
 #pusher{height:50px;}
 #backlistshadow{height:43px;}
 
+<?php
+$dark=isset($_GET['dark'])?intval($_GET['dark']):0;
+
+if ($dark==0){
+?>
 @media (prefers-color-scheme:dark) {
+<?php	
+}
+
+if ($dark==0||$dark==1){
+?>
+
 	body{background:#0D1117;}
 	.listitem,.sortlistitem{border-bottom:solid 1px #21262D;}
 	#tooltitle{background:#131F2F;border-bottom:none;border-top:solid 1px #3690D9;border-bottom:solid 1px #3690D9;}
+	
+<?php	
+
+}//if dark==0||dark==1
+
+
+	
+if ($dark==0){
+?>
+}
+<?php	
 }
 
 

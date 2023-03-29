@@ -20,7 +20,9 @@ gschat_getcookie=function(cookiename){
 gschat_init=function(containerid,portalparams,gsid,gsauth,reauth){ //portalauth: portalid=#&pgsid=#&puserid=#&portalauth=#
 	var chatid=gschat_getcookie('chatid');
 	var chatauth=gschat_getcookie('chatauth');
+
 	ajxpgn(containerid+'_chattransport',document.gschatpath+'?cmd=getchatid&chatid='+chatid+'&chatauth='+chatauth+'&gsid='+gsid+'&gsauth='+gsauth,0,0,portalparams,function(rq){
+
 		var chatparts=rq.responseText.split('||');
 		var chatid=chatparts[0];//rq.getResponseHeader('chatid');
 		var chatauth=chatparts[1];//rq.getResponseHeader('chatauth');

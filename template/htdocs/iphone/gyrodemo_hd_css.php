@@ -1,3 +1,6 @@
+<?php
+header('Content-Type: text/css');
+?>
 .activetab .tabclose,
 .dulltab .tabclose,
 .activetab, .dulltab,
@@ -12,7 +15,18 @@
 */
 
 
+<?php
+$dark=isset($_GET['dark'])?intval($_GET['dark']):0;
+
+if ($dark==0){
+?>
 @media (prefers-color-scheme:dark) {
+<?php	
+}
+
+if ($dark==0||$dark==1){
+?>
+
 	.activetab .tabclose,
 	.dulltab .tabclose,
 	.activetab, .dulltab,
@@ -21,4 +35,15 @@
 	#lkvtitle, #lkvx,
 	.img-calel, .img-caler, 
 	.img-help, .img-print{background-image:url(dmsprite_hd.png);}
+	
+<?php	
+
+}//if dark==0||dark==1
+
+
+	
+if ($dark==0){
+?>
+}
+<?php	
 }

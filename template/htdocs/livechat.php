@@ -42,6 +42,7 @@ type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
 }
 
 function livechat_gschat(){
+	
 	$user=userinfo();
 	$gsid=$user['gsid'];
 	$userid=$user['userid'];

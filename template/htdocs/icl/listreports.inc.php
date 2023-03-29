@@ -71,6 +71,7 @@ function listreports(){
 				
 		if ($lastgroup!=$reportgroup){
 ?>
+<div class="clear"></div>
 <div class="sectionheader"><?php echo $reportgroup;?></div>
 <?php			
 			$lastgroup=$reportgroup;

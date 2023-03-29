@@ -15,10 +15,12 @@ function showgaqr($userid){
 	$query="select usega,gakey,login from ".TABLENAME_USERS." where userid=? and ".COLNAME_GSID."=?";
 	$rs=sql_prep($query,$db,array($userid,$gsid));
 	$myrow=sql_fetch_assoc($rs);
+	
+	$enc_remote=0; //set $remote=1 in production
 		
 	$usega=$myrow['usega'];
 	$gakey=$myrow['gakey'];
-	if ($gakey!='') $gakey=decstr($gakey,GYROSCOPE_PROJECT.'gakey-'.COLNAME_GSID.'-'.$gsid.'-'.$userid,1);
+	if ($gakey!='') $gakey=decstr($gakey,GYROSCOPE_PROJECT.'gakey-'.COLNAME_GSID.'-'.$gsid.'-'.$userid,$enc_remote); 
 	$login=$myrow['login'];
 	
 	$gsproj_parts=explode(' ',GYROSCOPE_PROJECT);
@@ -30,7 +32,7 @@ function showgaqr($userid){
 	if ($gakey==''){
 		$gakey=substr(encstr($dbsalt.$userid.time().rand(1,9999),$dbsalt),0,20);
 		$dbgakey=$gakey;
-		$dbgakey=encstr($gakey,GYROSCOPE_PROJECT.'gakey-'.COLNAME_GSID.'-'.$gsid.'-'.$userid,1); //use remote encryption key
+		$dbgakey=encstr($gakey,GYROSCOPE_PROJECT.'gakey-'.COLNAME_GSID.'-'.$gsid.'-'.$userid,$enc_remote); //use remote encryption key
 		$query="update ".TABLENAME_USERS." set gakey=? where userid=? and ".COLNAME_GSID."=?";
 		sql_prep($query,$db,array($dbgakey,$userid,$gsid));
 		$fresh=1;

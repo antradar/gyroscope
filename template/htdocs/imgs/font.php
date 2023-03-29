@@ -19,6 +19,8 @@ $icons=array(
 	array('name'=>'user','adjust'=>-6),
 	array('name'=>'cog','adjust'=>-6),
 	array('name'=>'grip','adjust'=>4),
+	array('name'=>'expand','adjust'=>44),
+	array('name'=>'compress','adjust'=>44),
 	array('name'=>'magnifying-glass','adjust'=>-14),
 	array('name'=>'angle-down','adjust'=>0),
 	array('name'=>'chart-bar','adjust'=>-4),

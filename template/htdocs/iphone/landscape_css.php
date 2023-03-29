@@ -1,3 +1,6 @@
+<?php
+header('Content-Type: text/css');
+?>
 body{background:#f2f2f2;}
 #tooltitle{height:24px;background:#f2f2f2 url(msprite.png) no-repeat 0 0;width:150px;text-shadow:none;border-bottom:none;}
 
@@ -44,9 +47,33 @@ body{background:#f2f2f2;}
 	.mceToolbar .mceSeparator, .mceToolbar .mce_link, .mceToolbar .mce_unlink{display:none !important;}
 }
 
+<?php
+$dark=isset($_GET['dark'])?intval($_GET['dark']):0;
+
+if ($dark==0){
+?>
 @media (prefers-color-scheme:dark) {
+<?php	
+}
+
+if ($dark==0||$dark==1){
+?>
+
 	body,#tooltitle{background:#353535;}
 	#tabtitles{background:#353535;}
 	.listitem,.sortlistitem{border-bottom:solid 1px #21262D;}
+	
+<?php	
+
+}//if dark==0||dark==1
+
+
+	
+if ($dark==0){
+?>
 }
+<?php	
+}
+
+
 	

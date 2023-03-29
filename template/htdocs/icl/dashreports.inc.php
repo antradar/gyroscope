@@ -4,6 +4,7 @@ include 'icl/listreports.inc.php'; //for now
 
 function dashreports(){
 	header('tabctx: dash');
+	header('newtitle: Reports');
 	header('newloadfunc: '."ajxjs(self.showreport,'reports.js');");	
 ?>
 <div class="section">

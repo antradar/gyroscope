@@ -50,6 +50,8 @@ CREATE TABLE `users` (
   `dispname` varchar(255) NOT NULL DEFAULT '',
   `active` tinyint(1) unsigned NOT NULL DEFAULT '1',
   `virtualuser` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `quicklist` tinyint(3) unsigned DEFAULT '0',
+  `darkmode` tinyint(3) unsigned DEFAULT '0',
   `password` varchar(255) NOT NULL DEFAULT '',
   `passreset` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `groupnames` longtext,
@@ -83,7 +85,7 @@ CREATE TABLE `users` (
 -- OpenSSL --
 -- INSERT INTO `users` VALUES (101,1,'admin','Admin',1,0,'uSAsxyX3v44q3+/4Md7lzkhaNlIvTHFTMkZsN1lFRWVMRzB2UlloZTJqWHRjSG9mRDgybTI3U0xZUjhzYVhUeDlUZ2dLQ283QkUrVmExaEY=',0,'users|admins|reportsettings|systemplateuse|systemplate|accounts|dbadmin|upgrademods',null,0,0,'','',null,0,null);
 -- BCrypt --
-INSERT INTO `users` VALUES (101,1,'admin','Admin',1,0,'$2y$12$MbnxI00l82cSYWgNCGxAUeVtTL3CmlZTT.NFuscnnYUk6cbBs7vH2',0,'devreports|admins|reportsettings|systemplateuse|systemplate|accounts|dbadmin|creditcards|helpedit|chatsettings|chats|sharedashreports',0,null,0,0,'','',0,null,0,0,0,0,0,null,0,null,null);
+INSERT INTO `users` VALUES (101,1,'admin','Admin',1,0,0,0,'$2y$12$MbnxI00l82cSYWgNCGxAUeVtTL3CmlZTT.NFuscnnYUk6cbBs7vH2',0,'devreports|admins|reportsettings|systemplateuse|systemplate|accounts|dbadmin|creditcards|helpedit|chatsettings|chats|sharedashreports',0,null,0,0,'','',0,null,0,0,0,0,0,null,0,null,null);
 
 DROP TABLE IF EXISTS `templates`;
 CREATE TABLE `templates` (

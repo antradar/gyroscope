@@ -27,6 +27,8 @@ $userid=$user['userid'];
 $query="select * from ".TABLENAME_USERS." where userid=?";
 $rs=sql_prep($query,$db,$userid);
 $usermeta=sql_fetch_assoc($rs);
+$quicklist=isset($usermeta['quicklist'])&&$usermeta['quicklist']?1:0;
+$dark=isset($usermeta['darkmode'])?intval($usermeta['darkmode']):0;
 
 include 'uiconfig.php';
 include 'icl/showdefleftcontent.inc.php';
@@ -39,8 +41,8 @@ include 'icl/showdefleftcontent.inc.php';
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="Version" content="Gyroscope <?php echo GYROSCOPE_VERSION?>" />
 	<meta name="theme-color" content="#454242" />	
-	<link href="gyroscope.css?v=2" type="text/css" rel="stylesheet" />
-	<link href="toolbar.css?v=3" type="text/css" rel="stylesheet" />
+	<link href="gyroscope_css.php?dark=<?php echo $dark;?>&v=2" type="text/css" rel="stylesheet" />
+	<link href="toolbar_css.php?v=3&dark=<?php echo $dark;?>" type="text/css" rel="stylesheet" />
 	<link href="gsnotes.css" type="text/css" rel="stylesheet" />
 	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 	<?php if ($dict_dir==='rtl'){?>
@@ -63,7 +65,7 @@ include 'icl/showdefleftcontent.inc.php';
 
 <body onload="setTimeout(scrollTo, 0, 0, 1);">
 <script>
-document.appsettings={codepage:'<?php echo $codepage;?>',binpages:<?php echo json_encode($binpages);?>, beepnewchat:<?php echo $usermeta['canchat']?'true':'false';?>,shortappname:'<?php echo GYROSCOPE_SHORT_APP_NAME;?>', fastlane:'<?php echo $fastlane;?>', autosave:null, viewmode:'desktop', uiconfig:<?php echo json_encode($uiconfig);?>, views:<?php echo json_encode(array_keys($toolbaritems));?>};
+document.appsettings={codepage:'<?php echo $codepage;?>',binpages:<?php echo json_encode($binpages);?>, quicklist:<?php echo $quicklist?'true':'false';?>, beepnewchat:<?php echo $usermeta['canchat']?'true':'false';?>,shortappname:'<?php echo GYROSCOPE_SHORT_APP_NAME;?>', fastlane:'<?php echo $fastlane;?>', autosave:null, viewmode:'desktop', uiconfig:<?php echo json_encode($uiconfig);?>, views:<?php echo json_encode(array_keys($toolbaritems));?>};
 </script>
 
 <div style="display:none;"><img src="imgs/t.gif"><img src="imgs/hourglass.gif"></div>
@@ -71,7 +73,7 @@ document.appsettings={codepage:'<?php echo $codepage;?>',binpages:<?php echo jso
 <div id="tooltitle" class="<?php if ($uiconfig['toolbar_position']=='left') echo 'promoted';?>" title="double-click to reload the side view" ondblclick="if (document.viewindex) reloadview(document.viewindex);"></div>
 <div id="mainmenu" class="<?php if ($uiconfig['toolbar_position']=='top') echo 'silent';?>"></div>
 <div id="leftview" class="<?php if ($uiconfig['toolbar_position']=='left') echo 'promoted';?>" scale:ch="105"><div id="leftview_">
-	<div id="defleftview" style="width:100%;height:100%;overflow:auto;position:absolute;"><?php showdefleftcontent();?></div>
+	<div id="defleftview" style="width:100%;height:100%;overflow:auto;position:absolute;"><?php showdefleftcontent($quicklist);?></div>
 	<?php foreach ($toolbaritems as $modid=>$ti){?>
 	<div id="lv<?php echo $modid;?>" style="display:none;width:100%;height:100%;overflow:auto;position:absolute;"></div>
 	<?php }?>
@@ -179,6 +181,7 @@ if ($uiconfig['toolbar_position']=='left') $tabbase=57;
 <div id="tabtitles" scale:cw="225"> <a id="closeall" onclick="resettabs('welcome');"><b><img src="imgs/t.gif" class="img-closeall" width="10" height="10"><?php tr('close_all_tabs');?></b></a> </div>
 <div id="tabviews" class="<?php if ($uiconfig['toolbar_position']=='left') echo 'boundless';?>" style="overflow:auto;position:absolute;left:295px;height:30px;top:<?php echo $tabbase;?>px;" scale:cw="225" scale:ch="105"></div>
 
+<div id="tabexpander" onclick="toggletabdock();"></div>
 
 <div id="sptr" scale:ch="104"></div>
 
@@ -216,8 +219,8 @@ if ($uiconfig['enable_master_search']){?>
 <script src="lang/dict.<?php echo $lang;?>.js"></script>
 <script src="nano.js?v=4_9"></script>
 <script>
-hdpromote('toolbar_hd.css');
-hdpromote('gyroscope_hd.css');
+hdpromote('toolbar_hd_css.php?dark=<?php echo $dark;?>');
+hdpromote('gyroscope_hd_css.php?dark=<?php echo $dark;?>');
 hddemote('legacy.css');
 document.nanoperf=500; //in microseconds, set to null or comment out to disable
 </script>

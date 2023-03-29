@@ -89,6 +89,8 @@ switch($cmd){
 //Settings
 	case 'clogo': include 'icl/clogo.inc.php'; clogo(); break;
 	
+	case 'setmyquicklist': include 'icl/setmyquicklist.inc.php'; setmyquicklist(); break;
+	
 	case 'slv_core__settings': include 'icl/listsettings.inc.php'; listsettings(); break;
 	case 'dash_core__settings': include 'icl/dashsettings.inc.php'; dashsettings(); break;
 
@@ -123,6 +125,7 @@ switch($cmd){
 	case 'downloadgskeyfile': include 'icl/downloadgskeyfile.inc.php'; downloadgskeyfile(); break;
 	
 	case 'slv_core__templatetypes': include 'icl/listtemplatetypes.inc.php'; listtemplatetypes(); break;
+	case 'dash_core__templatetypes': include 'icl/dashtemplatetypes.inc.php'; dashtemplatetypes(); break;
 	
 	case 'rptsqlcomp': include 'icl/rptsqlcomp.inc.php'; rptsqlcomp(); break;  
 	

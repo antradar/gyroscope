@@ -1,3 +1,6 @@
+<?php
+header('Content-Type: text/css');
+?>
 body{margin:0;padding:0;background:#F2F2F2;overflow:hidden;}
 body, td, textarea, .img-mg{font-family:arial,sans-serif;font-size:13px;-webkit-text-size-adjust:none;}
 
@@ -224,6 +227,11 @@ acronym.help{cursor:help;border-bottom:dotted 1px #4444ee;}
 #tabviews.boundless .afloat .hasqnav{padding-left:45px;}
 #tabviews.boundless .afloat .qnav_{display:block;}
 
+#tabexpander{position:absolute;width:28px;height:28px;top:-200px;right:12px;z-index:3000;cursor:pointer;background:transparent url(imgs/toolbar.gif) no-repeat -643px -4px;transform:scale(0.65);transition:transform 250ms;}
+#tabexpander:hover{transform:scale(0.85);}
+
+#tabexpander.afloat{background:transparent url(imgs/toolbar.gif) no-repeat -643px -36px;transform:scale(0.8);}
+#tabexpander.afloat:hover{transform:scale(0.65);}
 
 .wideview{margin-left:296px;}
 .wideviewmenu_{position:absolute;top:0;left:0;width:295px;height:100%;overflow:auto;direction:rtl;}
@@ -419,8 +427,20 @@ input:disabled{color:#000000;}
 	.stable{overflow:auto;}
 }
 
-@media (prefers-color-scheme:dark) {
+<?php
+$dark=isset($_GET['dark'])?intval($_GET['dark']):0;
 
+if ($dark==0){
+?>
+@media (prefers-color-scheme:dark) {
+<?php	
+}
+
+if ($dark==0||$dark==1){
+?>
+
+	#tabexpander{filter:invert(1);}
+	
 	#mainmenu{color:#ffffff;}
 	
 	#bookmarkview .qnavitem	{color:#dedede;border-color:#999999;border-left:solid 4px transparent;}
@@ -445,5 +465,15 @@ input:disabled{color:#000000;}
 	.afloat{background:#0D1117;}
 	.tabchanged{background:#291313;}	
 	
+<?php	
+
+}//if dark==0||dark==1
+
+
+	
+if ($dark==0){
+?>
+}
+<?php	
 }
 

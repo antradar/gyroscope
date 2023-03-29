@@ -1,3 +1,6 @@
+<?php
+header('Content-Type: text/css');
+?>
 .admin-logout, .admin-settings, .admin-user, #speechstart img,
 .beltprev, .beltnext, .daylightsaving, #wsswarn, #barcodewarn, #diagwarn, #imecree, #lI01, #gamepadicon, #gsnotesclip, #chatindicator, #chatindicator.offline, .img-up, .img-down,
 #chaticon, #chaticon.offline,
@@ -8,7 +11,7 @@
 .img-tracker,.img-tracker-light,.img-clock, .img-settings, .img-settings-light, .img-chats, .img-chats-light,
 .img-helptopics, .img-helptopics-light,.img-salesforce, .img-salesforce-light, .img-sap, .img-sap-light,
 .img-closeall, .img-speechrecog, .img-reports, .img-reports-light, .img-xls, .img-pdf,
-.img-pageleft, .img-pageright, .img-search
+.img-pageleft, .img-pageright, .img-search, #tabexpander, #tabexpander.afloat
 {background-image:url(imgs/toolbar_hd.gif);background-size:768px 64px;}	
 
 .msgraph-drive,.msgraph-folder,.msgraph-file,.msgraph-site{background-size:48px 32px;}
@@ -39,11 +42,32 @@
 */
 
 
+<?php
+$dark=isset($_GET['dark'])?intval($_GET['dark']):0;
+
+if ($dark==0){
+?>
 @media (prefers-color-scheme:dark) {
+<?php	
+}
+
+if ($dark==0||$dark==1){
+?>
+
 	.daylightsaving, #wsswarn, #barcodewarn, #diagwarn, #sysreswarn, #imecree, #lI01, 
 	#gamepadicon, #gsnotesclip, #chatindicator, #chatindicator.offline,
 	.img-addrec, .img-speechrecog,
 	.img-speechrecog,
 	.img-pageleft, .img-pageright
 	{background-image:url(imgs/sysicons_hd.gif);background-size:240px 64px;}
+<?php	
+
+}//if dark==0||dark==1
+
+
+	
+if ($dark==0){
+?>
+}
+<?php	
 }

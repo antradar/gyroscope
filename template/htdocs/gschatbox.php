@@ -58,6 +58,7 @@ textarea.chatinp{vertical-align:middle;}
 }
 
 @media (prefers-color-scheme:dark) {
+	
 	.gschatcontent{box-shadow:none;background:#2D3239;border:solid 1px #294B70;color:#cccccc;}
 }
 </style>

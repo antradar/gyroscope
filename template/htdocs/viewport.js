@@ -318,7 +318,7 @@ function reloadview(idx,listid,submenu){
 }
 
 function showview(idx,lazy,force,params,func,bingo,submenu){
-  if (gid('defleftview')) gid('defleftview').style.display='none';
+  if (gid('defleftview')&&document.appsettings.quicklist) gid('defleftview').style.display='none';
   var codepage=document.appsettings.codepage;
   if (bingo>0) codepage=document.appsettings.binpages[bingo+''];
   if (!params) params='';
@@ -327,6 +327,11 @@ function showview(idx,lazy,force,params,func,bingo,submenu){
 	  if (!submenu) reloadtab('welcome','','dash_'+idx.replace(/\./g,'__')+'&'+params,func);
 	  else addtab('dash_'+idx.replace(/\./g,'__'),idx,'dash_'+idx.replace(/\./g,'__')+'&'+params,func);
 	  return; 
+  }
+  
+  if (!document.appsettings.quicklist){
+	  addtab('dash_'+idx.replace(/\./g,'__'),idx,'dash_'+idx.replace(/\./g,'__')+'&'+params,func);
+	  return;
   }
   
   

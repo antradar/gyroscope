@@ -1,3 +1,6 @@
+<?php
+header('Content-Type: text/css');
+?>
 body{background:#f2f2f2;margin:0;padding:0;}
 body,textarea,td, .img-mg{font-family:verdana, tahoma, arial;font-size:13px;-webkit-text-size-adjust:none;}
 
@@ -360,7 +363,18 @@ input:disabled{color:#000000;-webkit-appearance: none;}
 	.mceToolbar .mce_indent, .mceToolbar .mce_outdent, .mceToolbar .mce_forecolor, .mceToolbar .mce_backcolor{display:none !important;}
 }
 
+<?php
+$dark=isset($_GET['dark'])?intval($_GET['dark']):0;
+
+if ($dark==0){
+?>
 @media (prefers-color-scheme:dark) {
+<?php	
+}
+
+if ($dark==0||$dark==1){
+?>
+
 	table{color:#C9D1D9;}
 	.reloader{background:#353A2C;color:#EAE661;border-bottom:solid 1px #6B7247;border-top:solid 1px #6B7247;}
 	#backlist{background-image:url(dhbg.png);}
@@ -383,4 +397,14 @@ input:disabled{color:#000000;-webkit-appearance: none;}
 	#lkvc{border-right:solid 1px #2F5464;}
 
 	
+<?php	
+
+}//if dark==0||dark==1
+
+
+	
+if ($dark==0){
+?>
+}
+<?php	
 }

@@ -141,6 +141,8 @@ showtab=function(key,opts){
 		document.widen=false;
 	}
 	
+	if (gid('tabexpander')) gid('tabexpander').style.top=document.tabviews[tabid].offsetParent.offsetTop+'px';
+	
 	if (document.appsettings.uiconfig.toolbar_position=='left'){
 		
 		gid('bookmarkview').innerHTML='';
@@ -808,6 +810,7 @@ function undocktab(){
 	tab.style.height=Math.floor(tab.oheight*100/ch())+'%';
 	tab.style.zIndex=600;
 	
+	if (gid('tabexpander')) gid('tabexpander').style.display='none';
 	
 	setTimeout(function(){
 		tab.style.left=0;
@@ -820,6 +823,11 @@ function undocktab(){
 		document.tabafloat=true;
 		lkv_dismount();
 		rescaletabs();
+		if (gid('tabexpander')) {
+			gid('tabexpander').style.display='block';
+			gid('tabexpander').className='afloat';
+			gid('tabexpander').style.top='12px';
+		}
 	},10);
 	
 }
@@ -834,6 +842,7 @@ function redocktab(){
 	tab.style.top=tab.otop+'px';
 	tab.style.width=Math.floor(tab.owidth*100/cw())+'%';
 	tab.style.height=Math.floor(tab.oheight*100/ch())+'%';
+	if (gid('tabexpander')) gid('tabexpander').style.display='none';
 	
 	setTimeout(function(){
 		tab.style.left='auto';
@@ -848,6 +857,12 @@ function redocktab(){
 		document.tabafloat=null;
 		lkv_remount();
 		rescaletabs();
+		
+		if (gid('tabexpander')) {
+			gid('tabexpander').style.display='block';
+			gid('tabexpander').className='';
+			gid('tabexpander').style.top=document.tabviews[document.currenttab].offsetParent.offsetTop+'px';
+		}		
 		
 	},200);	
 		
