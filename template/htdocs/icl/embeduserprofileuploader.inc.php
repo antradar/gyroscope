@@ -6,15 +6,20 @@ set_time_limit(0);
 function embeduserprofileuploader(){
 	header('Cache-Control: no-store');
 	
+	global $db;
 	$user=userinfo();
-	$userid=$user['userid']+0;
+	$userid=intval($user['userid']);
+
+	$query="select darkmode from ".TABLENAME_USERS." where userid=?";
+	$rs=sql_prep($query,$db,$userid);
+	$myrow=sql_fetch_assoc($rs);
+	$dark=$myrow['darkmode'];
 
 	$dmaxsize=20; //20 MB
 	$maxsize=1024*1024*$dmaxsize;
 	
 	global $tinypngapi; //comment this out to disable TinyPNG
 	
-	global $db;
 	global $codepage;
 	
 	$vendorhead='';

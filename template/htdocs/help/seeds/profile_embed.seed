@@ -19,6 +19,12 @@ function embed#primaryfield##mediatype#uploader(){
 	global $db;
 	global $codepage;
 
+	$user=userinfo();
+	$userid=$user['userid'];
+	$query="select darkmode from ".TABLENAME_USERS." where userid=?";
+	$rs=sql_prep($query,$db,$userid);
+	$myrow=sql_fetch_assoc($rs);
+	$dark=$myrow['darkmode'];	
 	$msg='';	
 	
 	if (isset($_FILES['file'])&&$_FILES['file']&&$_FILES['file']['name']){

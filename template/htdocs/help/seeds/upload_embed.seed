@@ -14,6 +14,13 @@ function embed#primaryfield##record#uploader(){
 	global $db;
 	global $codepage;
 
+	$user=userinfo();
+	$userid=$user['userid'];
+	$query="select darkmode from ".TABLENAME_USERS." where userid=?";
+	$rs=sql_prep($query,$db,$userid);
+	$myrow=sql_fetch_assoc($rs);
+	$dark=$myrow['darkmode'];
+
 	$path='../../#primaryfield##records#/';
 		
 	$msg='';
