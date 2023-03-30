@@ -2,6 +2,7 @@
 //#c_records#
 
 	case 'slv_#fviewindex#': include 'icl/list#records#.inc.php'; list#records#(); break;
+	case 'dash_#fviewindex#': include 'icl/dash#records#.inc.php'; dash#records#(); break;
 	case 'show#record#': include 'icl/show#record#.inc.php'; show#record#(); break;
 	case 'new#record#': include 'icl/new#record#.inc.php'; new#record#(); break;
 	case 'add#record#': include 'icl/add#record#.inc.php'; add#record#(); break;

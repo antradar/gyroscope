@@ -1,0 +1,20 @@
+<?php
+include 'icl/list#records#.inc.php';
+
+function dash#records#(){
+	
+	header("newloadfunc: ajxjs(self.show#record#,'#records#.js');");
+	header('newtitle: '._tr('icon_#records#'));
+	//header('tabctx: subdash'); //uncomment if the list is tucked in listsettings.php
+?>
+<div class="section">
+	<div class="sectiontitle"><?php tr('icon_#records#');?></div>
+	
+	
+		<?php list#records#(); ?>
+	
+		<div class="clear"></div>
+</div>
+
+<?php		
+}
