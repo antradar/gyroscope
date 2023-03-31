@@ -43,8 +43,8 @@ include 'icl/showdefleftcontent.inc.php';
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="Version" content="Gyroscope <?php echo GYROSCOPE_VERSION?>" />
 	<meta name="theme-color" content="#454242" />	
-	<link href="gyroscope_css.php?dark=<?php echo $dark;?>&v=2" type="text/css" rel="stylesheet" />
-	<link href="toolbar_css.php?v=3&dark=<?php echo $dark;?>" type="text/css" rel="stylesheet" />
+	<link id="ajxcss_gyroscope" href="gyroscope_css.php?dark=<?php echo $dark;?>&v=2" type="text/css" rel="stylesheet" />
+	<link id="ajxcss_toolbar" href="toolbar_css.php?v=3&dark=<?php echo $dark;?>" type="text/css" rel="stylesheet" />
 	<link href="gsnotes.css" type="text/css" rel="stylesheet" />
 	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 	<?php if ($dict_dir==='rtl'){?>

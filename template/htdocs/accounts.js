@@ -1,4 +1,4 @@
-setaccountpass=function(){
+setaccountpass=function(lastdarkmode){
 	var ooldpass=gid('accountpass');
 	var opass1=gid('accountpass1');
 	var opass2=gid('accountpass2');
@@ -44,6 +44,8 @@ setaccountpass=function(){
 	var quicklist=gid('myaccount_quicklist').value;
 	var darkmode=gid('myaccount_darkmode').value;
 	
+	if (!lastdarkmode) lastdarkmode=0;
+	
 	var rq=xmlHTTPRequestObject();
 	rq.open('POST',document.appsettings.fastlane+'?cmd=setaccount&needkeyfile='+needkeyfile+'&usesms='+usesms+'&smscell='+smscell+'&usega='+usega+'&usegamepad='+usegamepad+'&useyubi='+useyubi+'&yubimode='+yubimode+'&quicklist='+quicklist+'&darkmode='+darkmode,true);
 	rq.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
@@ -54,6 +56,9 @@ setaccountpass=function(){
 			setTimeout(function(){marktabsaved('account',rq.responseText);},100);
 			
 			if (usegamepad) ajxjs(self.gamepad_register,'gamepad.js');
+			
+			if (lastdarkmode!=darkmode && self.resetdarkmode) resetdarkmode(darkmode);
+			
 		}	
 	}
 	

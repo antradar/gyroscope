@@ -609,3 +609,19 @@ function resetleftviews(){
 	gid('tooltitle').innerHTML='';
 	document.viewindex=null;
 }
+
+function resetdarkmode(darkmode){
+	//reloading the desktop css
+	
+	if (gid('ajxcss_gyroscope')){
+		ajxcss(null,'gyroscope_css.php?dark='+darkmode,'gyroscope','gyroscope');
+		hdpromote('gyroscope_hd_css.php?dark='+darkmode);
+	}
+	
+	if (gid('ajxcss_toolbar')){
+		ajxcss(null,'toolbar_css.php?dark='+darkmode,'toolbar','toolbar');
+		hdpromote('toolbar_hd_css.php?dark='+darkmode);
+	}		
+
+	
+}

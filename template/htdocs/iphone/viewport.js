@@ -451,3 +451,25 @@ function loaddash(tabkey,title,cmd){
 	//always load as split tabs
 	addtab(tabkey,title,cmd);
 }
+
+function resetdarkmode(darkmode){
+	
+	if (gid('ajxcss_gyrodemo')){
+		ajxcss(null,'iphone/gyrodemo_css.php?dark='+darkmode,'gyrodemo','gyrodemo');
+		hdpromote('iphone/gyrodemo_hd_css.php?dark='+darkmode);
+	}
+		
+	if (gid('ajxcss_toolbar')){
+		ajxcss(null,'toolbar_css.php?dark='+darkmode,'toolbar','toolbar');
+		hdpromote('toolbar_hd_css.php?dark='+darkmode);
+	}		
+	
+	if (gid('ajxcss_portrait')){
+		ajxcss(null,'iphone/portrait_css.php?dark='+darkmode,'portrait','portrait');
+	}			
+	
+	if (gid('ajxcss_landscape')){
+		ajxcss(null,'iphone/landscape_css.php?dark='+darkmode,'landscape','landscape');
+	}			
+	
+}

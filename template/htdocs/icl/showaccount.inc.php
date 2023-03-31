@@ -49,7 +49,7 @@ function showaccount(){
 	
 	$canchat=$myrow['canchat'];
 
-	makechangebar('account',"setaccountpass();",''); //disabled for now
+	makechangebar('account',"setaccountpass($darkmode);",''); //disabled for now
 	makesavebar('account');	
 ?>
 <div class="section">
@@ -131,7 +131,7 @@ if (isset($user['groups']['chats'])){
 	</div>
 	
 	<div class="inputrow buttonbelt">
-		<button onclick="setaccountpass();"><?php tr('button_update');?></button>
+		<button onclick="setaccountpass(<?php echo $darkmode;?>);"><?php tr('button_update');?></button>
 	</div>
 	
 </div>
@@ -154,9 +154,7 @@ if (isset($user['groups']['chats'])){
 	
 	<div class="inputrow" style="line-height:1.5em;">
 		<div class="formlabel">Dark Mode:</div>
-		<div class="infobox" style="padding:0;">
-			Dark mode settings take effect after <a onclick="window.location.reload();" class="hovlink">reloading the browser</a>.
-		</div>
+
 		<input type="radio" name="myaccount_darkmode" id="myaccount_darkmode_0" onclick="sv('myaccount_darkmode',0);marktabchanged('account');" <?php if ($darkmode==0) echo 'checked';?>>
 		<label for="myaccount_darkmode_0">same as the web browser</label> <br>
 
