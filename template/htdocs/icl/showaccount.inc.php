@@ -144,10 +144,10 @@ if (isset($user['groups']['chats'])){
 			QuickList is always enabled on mobile devices.
 		</div>
 		
-		<input type="radio" name="myaccount_quicklist" id="myaccount_quicklist_0" onclick="sv('myaccount_quicklist',0);" <?php if ($quicklist==0) echo 'checked';?>>
+		<input type="radio" name="myaccount_quicklist" id="myaccount_quicklist_0" onclick="sv('myaccount_quicklist',0);marktabchanged('account');" <?php if ($quicklist==0) echo 'checked';?>>
 		<label for="myaccount_quicklist_0">Off - show records in the main view</label><br>
 		
-		<input type="radio" name="myaccount_quicklist" id="myaccount_quicklist_1" onclick="sv('myaccount_quicklist',1);" <?php if ($quicklist==1) echo 'checked';?>>
+		<input type="radio" name="myaccount_quicklist" id="myaccount_quicklist_1" onclick="sv('myaccount_quicklist',1);marktabchanged('account');" <?php if ($quicklist==1) echo 'checked';?>>
 		<label for="myaccount_quicklist_1">On - show records in the independent left panel first</label><br>
 		<input id="myaccount_quicklist" value="<?php echo $quicklist;?>" type="hidden">
 	</div>
@@ -157,13 +157,13 @@ if (isset($user['groups']['chats'])){
 		<div class="infobox" style="padding:0;">
 			Dark mode settings take effect after <a onclick="window.location.reload();" class="hovlink">reloading the browser</a>.
 		</div>
-		<input type="radio" name="myaccount_darkmode" id="myaccount_darkmode_0" onclick="sv('myaccount_darkmode',0);" <?php if ($darkmode==0) echo 'checked';?>>
+		<input type="radio" name="myaccount_darkmode" id="myaccount_darkmode_0" onclick="sv('myaccount_darkmode',0);marktabchanged('account');" <?php if ($darkmode==0) echo 'checked';?>>
 		<label for="myaccount_darkmode_0">same as the web browser</label> <br>
 
-		<input type="radio" name="myaccount_darkmode" id="myaccount_darkmode_1" onclick="sv('myaccount_darkmode',1);" <?php if ($darkmode==1) echo 'checked';?>>
+		<input type="radio" name="myaccount_darkmode" id="myaccount_darkmode_1" onclick="sv('myaccount_darkmode',1);marktabchanged('account');" <?php if ($darkmode==1) echo 'checked';?>>
 		<label for="myaccount_darkmode_1">use dark theme</label> <br>
 
-		<input type="radio" name="myaccount_darkmode" id="myaccount_darkmode_2" onclick="sv('myaccount_darkmode',2);" <?php if ($darkmode==2) echo 'checked';?>>
+		<input type="radio" name="myaccount_darkmode" id="myaccount_darkmode_2" onclick="sv('myaccount_darkmode',2);marktabchanged('account');" <?php if ($darkmode==2) echo 'checked';?>>
 		<label for="myaccount_darkmode_2">use light theme</label> <br>
 				
 		<input id="myaccount_darkmode" value="<?php echo $darkmode;?>" type="hidden">		

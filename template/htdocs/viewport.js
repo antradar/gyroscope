@@ -318,6 +318,7 @@ function reloadview(idx,listid,submenu){
 }
 
 function showview(idx,lazy,force,params,func,bingo,submenu){
+	
   if (gid('defleftview')&&document.appsettings.quicklist) gid('defleftview').style.display='none';
   var codepage=document.appsettings.codepage;
   if (bingo>0) codepage=document.appsettings.binpages[bingo+''];
@@ -334,7 +335,7 @@ function showview(idx,lazy,force,params,func,bingo,submenu){
 	  return;
   }
   
-  
+  gid('leftviewcloser').style.display='block';
   
   if (gid('gamepadspot')) gid('gamepadspot').vidx=null;
  	
@@ -343,6 +344,7 @@ function showview(idx,lazy,force,params,func,bingo,submenu){
   if (document.viewindex!=null) {
 	  gid('lv'+document.viewindex).tooltitle=gid('tooltitle').innerHTML;
   }
+  
   
   if (gid('lv'+idx)) {
 	  gid('lv'+idx).params=params;
@@ -356,8 +358,8 @@ function showview(idx,lazy,force,params,func,bingo,submenu){
       gid('lv'+i).style.display='none';
     } else {
 		if (!lazy||document.viewindex==idx||!gid('lv'+i).viewloaded){
-			if (document.lvxhr&&document.lvxhr.reqobj) {
-				document.lvxhr.abortflag=1;document.lvxhr.reqobj.abort();document.lvxhr.reqobj=null;cancelgswi(document.lvxhr);
+			if (document.lvxhr&&document.lvxhr.reqobj){
+				document.lvxhr.abortflag=1;document.lvxhr.reqobj.abort(); document.lvxhr.reqobj=null;cancelgswi(document.lvxhr);
 			}
 			document.lvxhr=gid('lv'+i);
 			ajxpgn('lv'+i,codepage+'?cmd=slv_'+i.replace(/\./g,'__')+'&'+params,true,true,'nocache=1',function(rq){
@@ -591,4 +593,19 @@ function loaddash(tabkey,title,cmd){
 	} else {
 		addtab(tabkey,title,cmd);
 	}
+}
+
+function resetleftviews(){
+	if (!document.viewindex) return;
+	if (!gid('lv'+document.viewindex)) return;
+	if (!gid('defleftview')) return;
+	
+	gid('leftviewcloser').style.display='none';
+	
+	gid('lv'+document.viewindex).style.display='none';
+	gid('lv'+document.viewindex).viewloaded=null;
+	gid('defleftview').style.display='block';
+	
+	gid('tooltitle').innerHTML='';
+	document.viewindex=null;
 }

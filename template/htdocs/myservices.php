@@ -147,6 +147,8 @@ switch($cmd){
 //Report Settings
 
 	case 'slv_core__reportsettings': include 'icl/listreportsettings.inc.php'; listreportsettings(); break;
+	case 'dash_core__reportsettings': include 'icl/dashreportsettings.inc.php'; dashreportsettings(); break;
+	
 	case 'showreportsetting': include 'icl/showreportsetting.inc.php'; showreportsetting(); break;
 	case 'newreportsetting': include 'icl/newreportsetting.inc.php'; newreportsetting(); break;
 	case 'addreportsetting': include 'icl/addreportsetting.inc.php'; addreportsetting(); break;

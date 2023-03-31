@@ -305,6 +305,9 @@ input,textarea{border:solid 1px #999999;}
 .lookupview #timepicker{height:200px;overflow:auto;}
 .minilookup .closer{position:absolute;top:3px;right:20px;line-height:16px;}
 
+#leftviewcloser{display:none;position:absolute;top:-22px;right:8px;color:red;cursor:pointer;}
+#leftviewcloser img{dislay:block;width:9px;height:9px;background:transparent url(imgs/sprite.png) -301px -31px;}
+
 .clear{clear:both;}
 .col{width:450px;margin-right:20px;float:left;}
 .majorcol, .minorcol, .rmajorcol, .rminorcol{float:left;}

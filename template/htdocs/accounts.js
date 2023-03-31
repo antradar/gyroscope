@@ -49,9 +49,9 @@ setaccountpass=function(){
 	rq.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 	rq.onreadystatechange=function(){
 		if (rq.readyState==4){
-			salert(rq.responseText);
 			document.appsettings.quicklist=quicklist=='1'?true:false;
 			refreshtab('account',1);
+			setTimeout(function(){marktabsaved('account',rq.responseText);},100);
 			
 			if (usegamepad) ajxjs(self.gamepad_register,'gamepad.js');
 		}	

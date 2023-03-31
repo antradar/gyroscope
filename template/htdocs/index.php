@@ -88,6 +88,8 @@ document.appsettings={codepage:'<?php echo $codepage;?>',binpages:<?php echo jso
 		<div id="lkvc"></div>
 	</div>
 	<?php makehelp('mainleftview','listviewpos',1);?>
+	
+	<div id="leftviewcloser" onclick="resetleftviews();"><img src="imgs/t.gif"></div>
 </div></div>
 <div id="lefticons" class="<?php if ($uiconfig['toolbar_position']=='left') echo 'solid';?>" scale:cw="0">
 <div style="margin-top:<?php if ($uiconfig['toolbar_position']=='left') echo '0'; else echo '10px';?>;margin-left:<?php if ($uiconfig['toolbar_position']=='left') echo '10'; else echo '20px';?>px;">

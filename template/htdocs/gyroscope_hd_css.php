@@ -7,6 +7,7 @@ header('Content-Type: text/css');
 .dulltab .noclose, .activetab, .dulltab,
 .dulltab .tabclose, .img-close,
 .img-calel, .img-caler, .img-mg, .mediaimg-mg,
+#leftviewcloser img,
 .img-help,
 .img-print{background-image:url(imgs/sprite_hd.png);background-size:399px 370px;}
 
