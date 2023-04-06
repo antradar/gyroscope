@@ -6,10 +6,7 @@ function show#record#($#primarykey#=null){
 	global $db;
 	
 	$user=userinfo();
-	$gsid=$user['gsid'];
-	
-	$query="select * from #tablename# where ".COLNAME_GSID."=? and #primarykey#=?";
-	$rs=sql_prep($query,$db,array($gsid,$#primarykey#));
+#include-detailview_nogs-when-gslock-is-0##include-detailview_gs-when-gslock-is-1#
 	
 	if (!$myrow=sql_fetch_assoc($rs)) die(_tr('record_removed'));
 	

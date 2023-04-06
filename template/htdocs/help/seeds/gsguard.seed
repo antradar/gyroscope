@@ -1,0 +1,2 @@
+
+	gsguard($#primarykey#,'#tablename#',#primarykey#);

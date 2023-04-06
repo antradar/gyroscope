@@ -1,0 +1,4 @@
+	$gsid=$user['gsid'];
+	$query="insert into #tablename# (".COLNAME_GSID.",#iterator-fieldlist-sqlflist#) values (?,#iterator-fieldlist-sqlqlist#) ";
+	ob_start();
+	$rs=sql_prep($query,$db,array($gsid,#iterator-fieldlist-sqlplist#));

@@ -7,13 +7,10 @@ function add#record#(){
 #iterator-fieldlist-servervars#	
 	global $db;
 	$user=userinfo();
-	$gsid=$user['gsid'];
 	
 	checkgskey('add#record#');
 	
-	$query="insert into #tablename# (".COLNAME_GSID.",#iterator-fieldlist-sqlflist#) values (?,#iterator-fieldlist-sqlqlist#) ";
-	ob_start();
-	$rs=sql_prep($query,$db,array($gsid,#iterator-fieldlist-sqlplist#));
+#include-addrecord_gs-when-gslock-is-1##include-addrecord_nogs-when-gslock-is-0#
 	$err=ob_get_clean();
 
 	$#primarykey#=sql_insert_id($db,$rs);

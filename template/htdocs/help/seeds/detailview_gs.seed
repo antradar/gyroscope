@@ -1,0 +1,4 @@
+	$gsid=$user['gsid'];
+	
+	$query="select * from #tablename# where ".COLNAME_GSID."=? and #primarykey#=?";
+	$rs=sql_prep($query,$db,array($gsid,$#primarykey#));

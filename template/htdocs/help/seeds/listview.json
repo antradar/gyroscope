@@ -1,6 +1,7 @@
 {
 "fields":[
 	{"field":"viewindex","disp":"Module Key","def":"codegen.clients"},
+	{"field":"gslock","disp":"enforce multi-tenant container \"gsid\"","def":"checked","type":"checkbox"},
 	{"field":"record","disp":"Record Entity Name","def":"client"},
 	{"field":"c_record","disp":"Record Entity Label","def":"Client"},
 	{"field":"records","disp":"Record Entity Name (Plural)","def":"clients"},
@@ -12,6 +13,7 @@
 	{"field":"sortquery","disp":"Sort Filters","def":"fname, lname"},
 	
 	{"field":"dispfield","disp":"Display Field Name","def":"fname"},
+	{"field":"splitdispfield","disp":"allow direct editing of record title","type":"checkbox"},
 	{"field":"fieldlist","disp":"List of Fields","def":"fname|Firstname\nlname|Lastname", "type":"fieldlist", "optional":1}
 
 		
@@ -24,7 +26,10 @@
 	{"template":"listview_js","filename":"#records#.js"},
 	{"template":"listview","filename":"icl/list#records#.inc.php"},
 	{"template":"dashview","filename":"icl/dash#records#.inc.php"},
+	
 	{"template":"detailview","filename":"icl/show#record#.inc.php"},
+	{"template":"rectitle_updater","filename":"icl/update#record#_rectitle.inc.php","show-when":"splitdispfield=1"},
+	
 	{"template":"newrecord","filename":"icl/new#record#.inc.php"},
 	{"template":"addrecord","filename":"icl/add#record#.inc.php"},
 	{"template":"delrecord","filename":"icl/del#record#.inc.php"},	

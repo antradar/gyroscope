@@ -13,11 +13,17 @@ function codegen_makecode(){
 	$opts=$_POST;
 	
 	$templates=$obj['templates'];
-	
+
 	foreach ($templates as $idx=>$template){
 		$fseed=$template['template'];
 		$filename=$template['filename'];
 		$nocopy=isset($template['nocopy'])?intval($template['nocopy']):0;
+		
+		if (isset($template['show-when'])){
+			$condparts=explode('=',$template['show-when']);
+			if ($opts[$condparts[0]]!=$condparts[1]) continue;
+		}
+		
 		foreach ($opts as $k=>$v) $filename=str_replace("#$k#",$v,$filename);	
 	
 		codegen_quotecode($fseed,$filename,$opts,$idx,$nocopy);
@@ -25,7 +31,8 @@ function codegen_makecode(){
 	}
 }
 
-function codegen_quotecode($seed,$filename,$opts,$midx,$nocopy){
+function codegen_quotecode($seed,$filename,$opts,$midx,$nocopy,$subcall=0){
+
 	$fn='help/seeds/'.$seed.'.seed';
 	if (!file_exists($fn)) {echo "missing seed file $seed.seed<br>";return;}
 	$code=file_get_contents($fn);
@@ -67,6 +74,22 @@ function codegen_quotecode($seed,$filename,$opts,$midx,$nocopy){
 		return $str;
 	},$code);
 	
+	$code=preg_replace_callback('/#include-(\S+?)-when-(\S+?)-is-(\S+?)#/',function($matches) use ($opts){
+		$var=$opts[$matches[2]]??'';
+		$val=$matches[3];
+		
+		if ($var==$val) return '#include-'.$matches[1].'#';
+		
+	},$code);	
+	
+	$code=preg_replace_callback('/#include-([\S]+?)#/',function($matches) use ($opts){
+		$subseed=str_replace(array('.','/'),'',$matches[1]);
+		$c=codegen_quotecode($subseed,$filename,$opts,$midx,$nocopy,1);
+		return $c;
+	},$code);
+	
+	if ($subcall) return $code;
+		
 	$lines=explode("\n",$code);
 	$height=200;
 	$lc=count($lines);

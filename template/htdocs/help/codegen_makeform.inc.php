@@ -29,7 +29,7 @@ function codegen_makeform($seed=null){
 	
 	if ($package){
 		
-		$items=$codegen_seeds[$seed]['items'];
+		$items=$seedobj['items'];
 	?>
 	This code generator supports a few variants:
 	<div style="padding-top:10px;padding-bottom:20px;">
@@ -82,6 +82,28 @@ if ($desc!=''){
 		if ($type=='viewindex') $def=$defindex;
 		$tag='input'; $ctag='';
 		if ($type=='fieldlist') {$tag='textarea';$ctag=$def.'</textarea>';}
+		if ($type=='enum'){
+			$tag='select';
+			$ctag='';
+			$fopts=explode(',',$def);
+			foreach ($fopts as $fopt){
+				$optparts=explode('|',$fopt);
+				$ctag.='<option value="'.$optparts[0].'">'.($optparts[1]??'!undefined').'</option>';	
+			}
+			$ctag.='</select>';	
+		}
+		if ($type=='checkbox'){
+		?>
+		<tr>
+			<td></td>
+			<td>
+				<input type="checkbox" <?php echo $def;?> id="codegenfield_<?php echo $field;?>">
+				<label for="codegenfield_<?php echo $field;?>"><?php echo $disp;?></label>
+			</td>
+		</tr>
+		<?php
+			continue;	
+		}
 ?>
 <tr>
 	<td class="formlabel" style="text-align:right;" valign="top"><?php echo $disp;?>:</td>
@@ -93,7 +115,7 @@ if ($desc!=''){
 	}//foreach	
 ?>
 <tr><td></td><td>
-	<button onclick="codegen_makecode('<?php echo $seed;?>');">Generate Code!</button>	
+	<button id="codegen_button" onclick="codegen_makecode('<?php echo $seed;?>');">Generate Code!</button>	
 </td></tr>
 </table>
 

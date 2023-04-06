@@ -1,0 +1,10 @@
+	$gsid=$user['gsid'];
+
+	$query="select * from #tablename# where ".COLNAME_GSID."=? and #primarykey#=?";
+	$rs=sql_prep($query,$db,array($gsid,$#primarykey#));
+	if (!$myrow=sql_fetch_array($rs)) die('Invalid #record# record');
+	
+	$#dispfield#=$myrow['#dispfield#'];
+	
+	$query="delete from #tablename# where ".COLNAME_GSID."=? and #primarykey#=?";
+	sql_prep($query,$db,array($gsid,$#primarykey#));

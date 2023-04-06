@@ -81,3 +81,5 @@ del#record#=function(#primarykey#,gskey){
 		reloadview('#viewindex#','#record#list');
 	},null,null,gskey);
 }
+
+#include-listview_js_splitrectitle-when-splitdispfield-is-1#

@@ -18,7 +18,11 @@ codegen_makecode=function(seed){
 			if (!valstr(ofield)) valid=0;
 			if (fields[i].numeric&&!valfloat(ofield)) valid=0;
 		}
-		myfields.push(fields[i].field+'='+encodeHTML(ofield.value));
+		var thisvalue=encodeHTML(ofield.value);
+		if(fields[i].type=='checkbox'){
+			thisvalue=ofield.checked?1:0;
+		}
+		myfields.push(fields[i].field+'='+thisvalue);
 	}	
 	
 	if (gid('codegenfield_viewindex')) myfields.push('fviewindex='+encodeHTML(gid('codegenfield_viewindex').value.replace(/\./g,'__')));

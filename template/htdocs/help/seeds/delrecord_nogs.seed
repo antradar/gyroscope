@@ -1,0 +1,8 @@
+	$query="select * from #tablename# where #primarykey#=?";
+	$rs=sql_prep($query,$db,array($#primarykey#));
+	if (!$myrow=sql_fetch_array($rs)) die('Invalid #record# record');
+	
+	$#dispfield#=$myrow['#dispfield#'];
+	
+	$query="delete from #tablename# where #primarykey#=?";
+	sql_prep($query,$db,array($#primarykey#));

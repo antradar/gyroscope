@@ -4,19 +4,9 @@ function del#record#(){
 	$#primarykey#=SGET('#primarykey#');
 	global $db;
 	$user=userinfo();
-	$gsid=$user['gsid'];
 	
 	checkgskey('del#record#_'.$#primarykey#);	
-	
-	$query="select * from #tablename# where ".COLNAME_GSID."=? and #primarykey#=?";
-	$rs=sql_prep($query,$db,array($gsid,$#primarykey#));
-	if (!$myrow=sql_fetch_array($rs)) die('Invalid #record# record');
-	
-	$#dispfield#=$myrow['#dispfield#'];
-	
-	$query="delete from #tablename# where ".COLNAME_GSID."=? and #primarykey#=?";
-	sql_prep($query,$db,array($gsid,$#primarykey#));
-	
+#include-delrecord_gs-when-gslock-is-1##include-delrecord_nogs-when-gslock-is-0#		
 	logaction("deleted #c_record# #$#primarykey# $#dispfield#",
 		array('#primarykey#'=>$#primarykey#,'#dispfield#'=>$#dispfield#),
 		array('rectype'=>'#record#','recid'=>$#primarykey#));

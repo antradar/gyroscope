@@ -1,0 +1,6 @@
+update#record#_rectitle=function(#primarykey#){
+	var otitle=gid('dir_#dispfield#_'+#primarykey#);
+	if (!valstr(otitle)) return;
+	
+	if (gid('#dispfield#_'+#primarykey#)) gid('#dispfield#_'+#primarykey#).value=otitle.value;
+}

@@ -1,0 +1,3 @@
+	$query="insert into #tablename# (#iterator-fieldlist-sqlflist#) values (#iterator-fieldlist-sqlqlist#) ";
+	ob_start();
+	$rs=sql_prep($query,$db,array(#iterator-fieldlist-sqlplist#));
