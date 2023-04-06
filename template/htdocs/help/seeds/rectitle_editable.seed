@@ -1,0 +1,13 @@
+	<div class="sectiontitle">
+		<a id="vrectitle_#dispfield#_<?php echo $#primarykey#;?>" onclick="gid('vrectitle_#dispfield#_<?php echo $#primarykey#;?>').style.display='none';gid('mrectitle_#dispfield#_<?php echo $#primarykey#;?>').style.display='inline';">
+			<?php echo htmlspecialchars($#dispfield#);?> <span class="edithover"></span>
+		</a>
+		<span id="mrectitle_#dispfield#_<?php echo $#primarykey#;?>" style="display:none;">
+			<input class="inpmed" id="dir_#dispfield#_<?php echo $#primarykey#;?>" 
+				value="<?php echo htmlspecialchars($#dispfield#);?>" 
+			>
+			<button onclick="update#record#_rectitle(<?php echo $#primarykey#;?>);">Update</button>
+			&nbsp;
+			<button class="trivial" onclick="gid('vrectitle_#dispfield#_<?php echo $#primarykey#;?>').style.display='inline';gid('mrectitle_#dispfield#_<?php echo $#primarykey#;?>').style.display='none';">Cancel</button>
+		</span>
+	</div><!-- sectiontitle -->

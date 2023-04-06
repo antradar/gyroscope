@@ -8,3 +8,4 @@
 	case 'add#record#': include 'icl/add#record#.inc.php'; add#record#(); break;
 	case 'del#record#': include 'icl/del#record#.inc.php'; del#record#(); break;
 	case 'update#record#': include 'icl/update#record#.inc.php'; update#record#(); break;
+#include-listview_switch_rectitle-when-splitdispfield-is-1#

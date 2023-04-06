@@ -17,7 +17,7 @@ function show#record#($#primarykey#=null){
 	makesavebar('#record#_'.$#primarykey#);
 ?>
 <div class="section">
-	<div class="sectiontitle"><?php echo htmlspecialchars($#dispfield#);?></div>
+#include-rectitle_basic-when-splitdispfield-is-0##include-rectitle_editable-when-splitdispfield-is-1#
 
 	<div class="col">
 

@@ -161,6 +161,9 @@ height:22px;
 
 #tooltitle a{font-weight:bold;font-size:13px;color:white;margin-left:10px;padding-top:3px;display:block;white-space:nowrap;cursor:default;}
 .sectiontitle{font-weight:bold;font-size:14px;margin-bottom:10px;}
+.sectiontitle .edithover{display:inline-block;width:16px;height:16px;margin-left:0;background:transparent url(../imgs/toolbar.gif) no-repeat -704px 0;}
+
+
 input{border:solid 1px #666666;}
 .sectionheader{font-size:12px;font-weight:bold;background-color:#dedede;margin-top:12px;margin-bottom:10px;padding:3px 10px;}
 #statusbar a{font-size:12px;display:block;margin-top:2px;margin-left:2px;}

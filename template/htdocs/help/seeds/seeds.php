@@ -31,8 +31,7 @@ $codegen_seeds=array(
 	'sortlists'=>array('name'=>'Drag & Drop Sort List','icon'=>'','package'=>1,
 		'items'=>array(
 			'sortlist'=>array('name'=>'List View','desc'=>'','icon'=>''),
-			'dsortlist'=>array('name'=>'Direct List (1-N) List','desc'=>'','icon'=>''),
-			'tsortlist'=>array('name'=>'Direct List (1-N) Tile','desc'=>'','icon'=>'')
+			'dirsortlist'=>array('name'=>'Direct List (1-N)','desc'=>'','icon'=>''),
 		)
 	),
 	

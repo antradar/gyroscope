@@ -6,10 +6,14 @@ function update#record#_rectitle($#primarykey#=null){
 #include-gsguard-when-gslock-is-1#
 	$#dispfield#=SGET('#dispfield#');
 	
-	$query="select $#dispfield# from $#records# where #primarykey#=?";
-	$before=sql_prep($query,$db,array($#primarykey#));
+	$query="select #dispfield# from #records# where #primarykey#=?";
+	$rs=sql_prep($query,$db,array($#primarykey#));
+	$before=sql_fetch_assoc($rs);
 	
 	if ($before['#dispfield#']!=$#dispfield#){
+		$query="update #records# set #dispfield#=? where #primarykey#=?";
+		sql_prep($query,$db,array($#dispfield#,$#primarykey#));
+	
 		$dbchanges=array('#primarykey#'=>$#primarykey#);	
 		$after=array('#dispfield#'=>$#dispfield#);
 		$diffs=diffdbchanges($before,$after);
@@ -21,8 +25,8 @@ function update#record#_rectitle($#primarykey#=null){
 			'after'=>$after,
 			'diffs'=>$diffs
 		);
-		
-		logaction("changed #dispfield# of #record#_$#primarykey#,$dbchanges,array('rectype'=>'#record#','recid'=>$#primarykey#),0,$trace);
+		header('newtitle:'.tabtitle($#dispfield#));
+		logaction("changed #dispfield# of #record#_$#primarykey#",$dbchanges,array('rectype'=>'#record#','recid'=>$#primarykey#),0,$trace);
 	
 	} else {
 		echo "No changes made";

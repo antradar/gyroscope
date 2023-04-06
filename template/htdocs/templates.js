@@ -147,3 +147,22 @@ deltemplate=function(templateid,templatetypeid,gskey){
 		reloadview('core.templates','templatelist');
 	},null,null,gskey);
 }
+
+updatetemplate_rectitle=function(templateid){
+	var otitle=gid('dir_templatename_'+templateid);
+	if (!valstr(otitle)) return;
+	
+	if (gid('templatename_'+templateid)) gid('templatename_'+templateid).value=otitle.value;
+	
+	ajxpgn('statusc',document.appsettings.codepage+'?cmd=updatetemplate_rectitle&templateid='+templateid+'&templatename='+encodeHTML(otitle.value),0,0,null,function(rq){
+		marktabsaved('template_'+templateid,rq.responseText);
+		gid('vrectitle_templatename_'+templateid).style.display='inline';
+		gid('mrectitle_templatename_'+templateid).style.display='none';
+		var newtitle=rq.getResponseHeader('newtitle');
+		if (newtitle==null||newtitle=='') newtitle=otitle.value; else newtitle=decodeHTML(newtitle);
+		gid('vrectitle_templatename_'+templateid).innerHTML=newtitle+' <span class="edithover"></span>';
+		settabtitle('template_'+templateid,newtitle);
+	});
+}
+
+

@@ -408,6 +408,7 @@ if ($dark==0){
 if ($dark==0||$dark==1){
 ?>
 	#gsstickerview{background:rgba(53,41,46,0.9);color:#ffffff;border-color:#6A494C;}
+	.sectiontitle:hover .edithover{filter:invert(1);}
 	
 	.calledout{background:#35292E;}
 	

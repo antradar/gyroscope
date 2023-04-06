@@ -149,3 +149,19 @@ batchsavetemplatevars=function(templatetypeid,gskey){
 	},null,null,gskey);	
 }
 
+updatetemplatetype_rectitle=function(templatetypeid){
+	var otitle=gid('dir_templatetypename_'+templatetypeid);
+	if (!valstr(otitle)) return;
+	
+	if (gid('templatetypename_'+templatetypeid)) gid('templatetypename_'+templatetypeid).value=otitle.value;
+	
+	ajxpgn('statusc',document.appsettings.codepage+'?cmd=updatetemplatetype_rectitle&templatetypeid='+templatetypeid+'&templatetypename='+encodeHTML(otitle.value),0,0,null,function(rq){
+		marktabsaved('templatetype_'+templatetypeid,rq.responseText);
+		gid('vrectitle_templatetypename_'+templatetypeid).style.display='inline';
+		gid('mrectitle_templatetypename_'+templatetypeid).style.display='none';
+		var newtitle=rq.getResponseHeader('newtitle');
+		if (newtitle==null||newtitle=='') newtitle=otitle.value; else newtitle=decodeHTML(newtitle);
+		gid('vrectitle_templatetypename_'+templatetypeid).innerHTML=newtitle+' <span class="edithover"></span>';
+		settabtitle('templatetype_'+templatetypeid,newtitle);
+	});
+}

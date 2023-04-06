@@ -3,4 +3,14 @@ update#record#_rectitle=function(#primarykey#){
 	if (!valstr(otitle)) return;
 	
 	if (gid('#dispfield#_'+#primarykey#)) gid('#dispfield#_'+#primarykey#).value=otitle.value;
+	
+	ajxpgn('statusc',document.appsettings.codepage+'?cmd=update#record#_rectitle&#primarykey#='+#primarykey#+'&#dispfield#='+encodeHTML(otitle.value),0,0,null,function(rq){
+		marktabsaved('#record#_'+#primarykey#,rq.responseText);
+		gid('vrectitle_#dispfield#_'+#primarykey#).style.display='inline';
+		gid('mrectitle_#dispfield#_'+#primarykey#).style.display='none';
+		var newtitle=rq.getResponseHeader('newtitle');
+		if (newtitle==null||newtitle=='') newtitle=otitle.value; else newtitle=decodeHTML(newtitle);
+		gid('vrectitle_#dispfield#_'+#primarykey#).innerHTML=newtitle+' <span class="edithover"></span>';
+		settabtitle('#record#_'+#primarykey#,newtitle);
+	});
 }

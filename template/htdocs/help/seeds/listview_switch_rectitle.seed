@@ -1,0 +1,1 @@
+	case 'update#record#_rectitle': include 'icl/update#record#_rectitle.inc.php'; update#record#_rectitle(); break;

@@ -28,9 +28,22 @@ function showtemplate($templateid=null){
 	header('parenttab: templatetype_'.$templatetypeid);
 	
 	makechangebar('template_'.$templateid,"updatetemplate('$templateid','$templatetypeid','".makegskey('updatetemplate_'.$templateid)."');");
+	makesavebar('template_'.$templateid);
 ?>
 <div class="section">
-	<div class="sectiontitle"><a ondblclick="toggletabdock();"><?php echo htmlspecialchars($templatename);?></a></div>
+	<div class="sectiontitle">
+		<a id="vrectitle_templatename_<?php echo $templateid;?>" onclick="gid('vrectitle_templatename_<?php echo $templateid;?>').style.display='none';gid('mrectitle_templatename_<?php echo $templateid;?>').style.display='inline';">
+			<?php echo htmlspecialchars($templatename);?> <span class="edithover"></span>
+		</a>
+		<span id="mrectitle_templatename_<?php echo $templateid;?>" style="display:none;">
+			<input class="inpmed" id="dir_templatename_<?php echo $templateid;?>" 
+				value="<?php echo htmlspecialchars($templatename);?>" 
+			>
+			<button onclick="updatetemplate_rectitle(<?php echo $templateid;?>);">Update</button>
+			&nbsp;
+			<button class="trivial" onclick="gid('vrectitle_templatename_<?php echo $templateid;?>').style.display='inline';gid('mrectitle_templatename_<?php echo $templateid;?>').style.display='none';">Cancel</button>
+		</span>
+	</div><!-- sectiontitle -->
 		
 	<input type="hidden" id="templateplugins_<?php echo $templateid;?>" value="<?php echo $plugins;?>">
 
@@ -48,7 +61,7 @@ function showtemplate($templateid=null){
 	<div style="border:solid 1px #efefef;padding:3px 10px;">$template = maketemplate('<?php echo $templateid;?>', ...</div>
 	</div>
 		
-	<div class="inputrow">
+	<div class="inputrow" style="display:none;">
 		<div class="formlabel"><?php tr('template_label_templatename');?>:</div>
 		<input onfocus="document.hotspot=this;" class="inpmed" id="templatename_<?php echo $templateid;?>" value="<?php echo htmlspecialchars($templatename);?>" oninput="this.onchange();" onchange="marktabchanged('template_<?php echo $templateid;?>');">
 	</div>

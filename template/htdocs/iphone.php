@@ -32,9 +32,9 @@ include 'uiconfig.php';
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	<meta name="theme-color" content="#454242" />
-	<link id="ajxcss_gyrodemo" href="iphone/gyrodemo_css.php?dark=<?php echo $dark;?>v=2" type="text/css" rel="stylesheet" />
+	<link id="ajxcss_gyrodemo" href="iphone/gyrodemo_css.php?dark=<?php echo $dark;?>&v=2" type="text/css" rel="stylesheet" />
 	<link href="gsnotes.css" type="text/css" rel="stylesheet" />
-	<link id="ajxcss_toolbar" href="toolbar_css.php?dark=<?php echo $dark;?>v=4" type="text/css" rel="stylesheet" />
+	<link id="ajxcss_toolbar" href="toolbar_css.php?dark=<?php echo $dark;?>&v=4" type="text/css" rel="stylesheet" />
 <?php 
 	if (isset($_GET['watch'])&&$_GET['watch']==1||preg_match('/sm\-r\d+/i',$_SERVER['HTTP_USER_AGENT'])){
 		$roundwatchframe=1;
@@ -223,7 +223,7 @@ if (isset($roundwatchframe)&&$roundwatchframe){
 	<div id="gsstickercontent"></div>
 </div>
 
-<div id="callout" style="z-index:4000;opacity:0;transition:top 200ms,left 200ms,opacity 250ms;position:fixed;top:100px;left:250px;"><img src="imgs/callout.png" style="width:56px;"></div>
+<div id="callout" style="z-index:4000;opacity:0;transition:top 200ms,left 200ms,opacity 250ms;position:fixed;top:-80px;left:250px;"><img src="imgs/callout.png" style="width:56px;"></div>
 
 </div><!-- watchframe_outer -->
 

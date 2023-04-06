@@ -1,0 +1,22 @@
+{
+"fields":[
+	{"field":"style","disp":"Display Style","def":"list|Linear List,tiled|Tiled","type":"enum"},
+	{"field":"masterrecord","disp":"Master Entity Name","def":"program"},
+	{"field":"masterkey","disp":"Master Key","def":"programid"},
+	{"field":"record","disp":"Record Entity Name","def":"programstep"},
+	{"field":"records","disp":"Record Entity Name (Plural)","def":"programsteps"},
+
+	{"field":"tablename","disp":"DB Table Name","def":"programsteps"},
+	{"field":"primarykey","disp":"Primary Key","def":"stepid"},
+	{"field":"sortkey","disp":"Sort Key","def":"stepsort"}		
+],
+
+"templates":[
+	{"template":"dirsortlist_js","filename":"append to <em>#masterrecord#s.js</em>"},
+	{"template":"dsortlist_container","filename":"modify <em>show#masterrecord#s.php</em>"},
+	{"template":"dirsortlist_list","filename":"modify <em>icl/list#records#.inc.php</em>"},
+	{"template":"dsortlist_swap","filename":"icl/swap#record#pos.inc.php"},
+	{"template":"sortlist_add","filename":"add to <em>icl/add#record#.inc.php</em>"},
+	{"template":"sortlist_switch","filename":"myservices.php <em>switch ($cmd){</em>"}
+]
+}

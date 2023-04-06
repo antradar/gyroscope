@@ -33,11 +33,24 @@ function showtemplatetype($templatetypeid=null){
 	makesavebar('templatetype_'.$templatetypeid);
 ?>
 <div class="section hasqnav">
-	<div class="sectiontitle"><a ondblclick="toggletabdock();"><?php echo htmlspecialchars($templatetypename);?></a></div>
+
+	<div class="sectiontitle">
+		<a id="vrectitle_templatetypename_<?php echo $templatetypeid;?>" onclick="gid('vrectitle_templatetypename_<?php echo $templatetypeid;?>').style.display='none';gid('mrectitle_templatetypename_<?php echo $templatetypeid;?>').style.display='inline';">
+			<?php echo htmlspecialchars($templatetypename);?> <span class="edithover"></span>
+		</a>
+		<span id="mrectitle_templatetypename_<?php echo $templatetypeid;?>" style="display:none;">
+			<input class="inpmed" id="dir_templatetypename_<?php echo $templatetypeid;?>" 
+				value="<?php echo htmlspecialchars($templatetypename);?>" 
+			>
+			<button onclick="updatetemplatetype_rectitle(<?php echo $templatetypeid;?>);">Update</button>
+			&nbsp;
+			<button class="trivial" onclick="gid('vrectitle_templatetypename_<?php echo $templatetypeid;?>').style.display='inline';gid('mrectitle_templatetypename_<?php echo $templatetypeid;?>').style.display='none';">Cancel</button>
+		</span>
+	</div><!-- sectiontitle -->
 
 	<div class="col">
 	<div id="templatetypemain_<?php echo $templatetypeid;?>">
-	<div class="inputrow">
+	<div class="inputrow" style="display:none;">
 		<div class="formlabel"><?php tr('templatetype_label_templatetypename');?>:</div>
 		<input class="inpmed" onfocus="document.hotspot=this;" oninput="this.onchange();" onchange="marktabchanged('templatetype_<?php echo $templatetypeid;?>');" id="templatetypename_<?php echo $templatetypeid;?>" value="<?php echo htmlspecialchars($templatetypename);?>">
 	</div>

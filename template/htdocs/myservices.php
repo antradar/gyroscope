@@ -164,6 +164,7 @@ switch($cmd){
 	case 'addtemplatetype': include 'icl/addtemplatetype.inc.php'; addtemplatetype(); break;
 	case 'deltemplatetype': include 'icl/deltemplatetype.inc.php'; deltemplatetype(); break;
 	case 'updatetemplatetype': include 'icl/updatetemplatetype.inc.php'; updatetemplatetype(); break;
+	case 'updatetemplatetype_rectitle': include 'icl/updatetemplatetype_rectitle.inc.php'; updatetemplatetype_rectitle(); break;	
 	case 'lookuptemplate': include 'icl/lookuptemplate.inc.php'; lookuptemplate(); break;
 	case 'addtemplatevar': include 'icl/addtemplatevar.inc.php'; addtemplatevar(); break;
 	case 'deltemplatevar': include 'icl/deltemplatevar.inc.php'; deltemplatevar(); break;
@@ -178,6 +179,7 @@ switch($cmd){
 	case 'addtemplate': include 'icl/addtemplate.inc.php'; addtemplate(); break;
 	case 'deltemplate': include 'icl/deltemplate.inc.php'; deltemplate(); break;
 	case 'updatetemplate': include 'icl/updatetemplate.inc.php'; updatetemplate(); break;
+	case 'updatetemplate_rectitle': include 'icl/updatetemplate_rectitle.inc.php'; updatetemplate_rectitle(); break;
 	case 'lookuptemplatevar': include 'icl/lookuptemplatevar.inc.php'; lookuptemplatevar(); break;
 	case 'lookupstyles': include 'icl/lookupstyles.inc.php'; lookupstyles(); break;
 	

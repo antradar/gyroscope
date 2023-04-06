@@ -84,7 +84,7 @@ function codegen_quotecode($seed,$filename,$opts,$midx,$nocopy,$subcall=0){
 	
 	$code=preg_replace_callback('/#include-([\S]+?)#/',function($matches) use ($opts){
 		$subseed=str_replace(array('.','/'),'',$matches[1]);
-		$c=codegen_quotecode($subseed,$filename,$opts,$midx,$nocopy,1);
+		$c=codegen_quotecode($subseed,'',$opts,-1,1,1);
 		return $c;
 	},$code);
 	

@@ -1,2 +1,2 @@
 
-	gsguard($#primarykey#,'#tablename#',#primarykey#);
+	gsguard($#primarykey#,'#tablename#','#primarykey#'); //may need to change this to a full chain
