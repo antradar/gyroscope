@@ -100,6 +100,10 @@ acronym.help{cursor:help;border-bottom:dotted 1px #4444ee;}
 	
 #lefticons{width:100%;position:absolute;top:0px;left:0;height:72px;background:transparent url(imgs/sprite.png) repeat-x 0 -258px;}
 #lefticons.solid{background:#3A3A3A;height:57px;}
+#vsptr{position:absolute;left:280px;width:12px;height:100px;top:122px;font-size:1px;cursor:pointer;transition:left 50ms,background 100ms,opacity 100ms;background:rgba(250,100,10,0) url(imgs/lcollapse.png) no-repeat 50% 50%;background-size:12px 27px;opacity:0.4;}
+#vsptr:hover{background:rgba(250,250,10,0.2) url(imgs/lcollapse.png) no-repeat 50% 50%;background-size:12px 27px;opacity:0.95;}
+  #vsptr.rexpand{background:rgba(250,250,10,0) url(imgs/rexpand.png) no-repeat 50% 50%;background-size:12px 27px;}
+  #vsptr.rexpand:hover{background:rgba(250,250,10,0.2) url(imgs/rexpand.png) no-repeat 50% 50%;background-size:12px 27px;opacity:0.95;}
 #sptr{background:#666666;position:absolute;left:0;bottom:24px;height:6px;width:100%;font-size:1px;opacity:0.2;-webkit-opacity:0.2;filter:alpha(opacity=20);}
 #tabtitles{background:transparent url(imgs/tabbg.gif) repeat top left;position:absolute;left:295px;height:38px;top:90px;transition:left 50ms,width 50ms;}
 #tabtitles.moveup{background:transparent url(imgs/tabbg2.gif) repeat top left;top:25px;left:0;width:100%;}

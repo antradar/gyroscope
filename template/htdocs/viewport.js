@@ -40,6 +40,7 @@ function scaleall(root){
   gid('lefticons').style.width=idw+'px';
   gid('leftview').style.height=(idh-147)+'px';
   gid('leftview_').style.height=(idh-147)+'px';
+  gid('vsptr').style.height=idh-146+'px';
   
   if (gid('tabexpander')&&document.currenttab) gid('tabexpander').style.top=document.tabviews[document.currenttab].offsetParent.offsetTop+'px';
   
@@ -358,7 +359,7 @@ function showview(idx,lazy,force,params,func,bingo,submenu){
 	  return; 
   }
   
-  if (!document.appsettings.quicklist){
+  if (!document.appsettings.quicklist||document.tabafloat){
 	  addtab('dash_'+idx.replace(/\./g,'__'),idx,'dash_'+idx.replace(/\./g,'__')+'&'+params,func);
 	  return;
   }
@@ -679,14 +680,20 @@ function setquicklist(quicklist){
 		gid('tabtitles').style.left='20px';
 		gid('tabviews').style.left='20px';
 		
+		gid('vsptr').style.left='0px';
+		gid('vsptr').style.width='16px';
+		gid('vsptr').className='rexpand';
 	} else {
 		gid('tooltitle').style.left='20px';
 		gid('leftview').style.left='20px';
 
 		gid('tabtitles').style.left='295px';
 		gid('tabviews').style.left='295px';
+		gid('vsptr').style.left='280px';
+		gid('vsptr').style.width='12px';
+		gid('vsptr').className='';
 				
-		if (!document.tabafloat&&!document.fsshowing) lkv_remount();	
+		if (!document.tabafloat&&!document.fsshowing) lkv_remount();
 	}
 	
 	ajxpgn('statusc',document.appsettings.codepage+'?cmd=setmyquicklist&silent=1&quicklist='+(quicklist?1:0));

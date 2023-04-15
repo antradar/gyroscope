@@ -187,6 +187,7 @@ if ($uiconfig['toolbar_position']=='left') $tabbase=57;
 
 <div id="tabexpander" onclick="toggletabdock();"></div>
 
+<div id="vsptr" onclick="setquicklist(document.appsettings.quicklist?0:1);" <?php if ($uiconfig['toolbar_position']=='left') echo 'style="display:none;"';?>></div>
 <div id="sptr" scale:ch="104"></div>
 
 <div id="fsmask"></div>

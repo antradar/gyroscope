@@ -138,7 +138,7 @@ if (isset($user['groups']['chats'])){
 <div class="col">
 	<div class="sectionheader">Interface Preferences</div>
 	
-	<div class="inputrow" style="line-height:1.5em;">
+	<div class="inputrow" style="line-height:1.5em;display:none;">
 		<div class="formlabel">QuickList:</div>
 		<div class="infobox" style="padding:0">
 			QuickList is always enabled on mobile devices.
