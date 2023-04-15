@@ -86,7 +86,7 @@ acronym.help{cursor:help;border-bottom:dotted 1px #4444ee;}
 .lksel{position:absolute;top:5px;right:5px;}
 	
 #lkv{position:absolute;left:0;width:258px;top:40px;left:-280px;transition:left 100ms;-webkit-transition:left 100ms;}
-#lkvtitle{background:transparent url(imgs/sprite.png) no-repeat 0 -223px;height:32px;position:relative;}
+#lkvtitle{background:transparent url(imgs/sprite.png) no-repeat 0 -223px;height:32px;position:relative;border-radius:4px 4px 0 0;overflow:hidden;}
 	#lkvtitle a{font-weight:bold;font-size:14px;color:white;margin-left:30px;margin-right:30px;padding-top:6px;display:block;}
 	#lkvx{position:absolute;top:0;right:0;cursor:pointer;background:transparent url(imgs/sprite.png) no-repeat -285px -174px;}	
 	#lkvc{border-right:solid 1px #666666;overflow:auto;background-color:#ffffff;transition:background 250ms;-webkit-transition:background 220ms;}
@@ -95,7 +95,8 @@ acronym.help{cursor:help;border-bottom:dotted 1px #4444ee;}
 #lkv_origin{display:none;}
 #lkv.dismounted{z-index:3010;border:none;}
 #lkv.dismounted #lkvc{border:solid 1px #666666;border-top:none;box-shadow:0 2px 4px #000000;}
-#lkv.dismounted #lkvtitle{background:#187CA6;border-radius:4px 4px 0 0;overflow:hidden;}
+#lkv.dismounted #lkvtitle{background:#187CA6;border-radius:4px 4px 0 0;overflow:hidden;cursor:move;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none;}
+#lkv.dismounted #lkvtitle #lkvt{cursor:move;}
 #lkv.dismounted #lkvs{display:none;}
 	
 #lefticons{width:100%;position:absolute;top:0px;left:0;height:72px;background:transparent url(imgs/sprite.png) repeat-x 0 -258px;}

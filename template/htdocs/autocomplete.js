@@ -243,6 +243,47 @@ lkv_dismount=function(){
 		
 		document.body.appendChild(lkv);
 		gid('lkvc').style.height=(h-33)+'px';
+		var idw=cw();
+		var idh=ch();
+		
+		if (!lkv.moveable){
+			lkv.onmousedown=function(e){
+				var ox,oy;
+				if (e) {ox=e.clientX; oy=e.clientY;}
+				else {ox=window.event.clientX; oy=window.event.clientY;}
+				var posx=lkv.offsetLeft;
+				var posy=lkv.offsetTop;
+				
+				lkv.onmousemove=function(e){
+					var x,y;
+					if (e) {x=e.clientX; y=e.clientY;}
+					else {x=window.event.clientX;y=window.event.clientY;}
+					
+					var nx=posx+x-ox;
+					var ny=posy+y-oy;
+					
+					if (nx>idw-405) nx=idw-405;
+					if (nx<5) nx=5;
+					if (ny>idh-lkv.offsetHeight-5) ny=idh-lkv.offsetHeight-5+'px';
+					if (ny<5) ny=5;
+					
+					lkv.style.left=nx+'px';
+					lkv.style.top=ny+'px';
+					
+				}
+				
+				document.onmousemove=lkv.onmousemove;
+				
+				lkv.moveable=true;			
+			}//mousedown
+		}
+		lkv.onmouseup=function(){
+			lkv.onmousemove=null;
+			document.onmousemove=null;
+			document.onmouseup=null;
+			lkv.moveabe=null;
+		}
+		document.onmouseup=lkv.onmouseup;
 		
 		console.log('lkv dismounted');
 	}	
