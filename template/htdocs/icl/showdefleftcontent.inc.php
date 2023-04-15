@@ -14,7 +14,7 @@ function showdefleftcontent($quicklist=null){
 			is independent from the right. It works like a second monitor.
 		</div>
 		<div style="text-align:center;">
-			<button onclick="ajxpgn('defleftview',document.appsettings.codepage+'?cmd=setmyquicklist&quicklist=1');document.appsettings.quicklist=true;lkv_remount();">Enable QuickList</button>
+			<button onclick="setquicklist(1);">Enable QuickList</button>
 		</div>
 		<?php
 		
@@ -25,7 +25,7 @@ function showdefleftcontent($quicklist=null){
 			
 		</div>
 		<div style="text-align:center;">
-			<button onclick="ajxpgn('defleftview',document.appsettings.codepage+'?cmd=setmyquicklist&quicklist=0');document.appsettings.quicklist=false;lkv_dismount();">Disable QuickList</button>
+			<button onclick="setquicklist(0);">Disable QuickList</button>
 		</div>
 		<?php		
 	}

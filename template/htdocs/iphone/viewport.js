@@ -109,10 +109,25 @@ function callout_section(d){
 
 function showlookup(){
 	var lkv=gid('lkv');
+		
 	if (lkv.showing) return;
 	
 	lkv.showing=true;
-	lkv.style.left='10px';		
+	
+	if (document.fsshowing||document.iphone_portrait){
+		lkv.style.top='20px';
+		var w=cw()-40;
+		if (w>400) w=400;
+		lkv.style.width=w+'px';
+		lkv.style.left=(cw()-w)/2+'px';
+
+		var h=ch()-40;
+		lkv.style.height=h+'px';
+		gid('lkvc').style.height=h-24+'px';
+		
+	} else {
+		lkv.style.left='10px';
+	}
 }
 
 function hidelookup(){
@@ -120,7 +135,12 @@ function hidelookup(){
 	if (!lkv.showing) return;
 	
 	lkv.showing=null;
-	lkv.style.left='-230px';	
+	
+	if (document.fsshowing||document.iphone_portrait){
+		lkv.style.top=-1*(ch()-40)-20+'px';
+	} else {
+		lkv.style.left='-230px';
+	}	
 }
 
 function setnosleep(mode){

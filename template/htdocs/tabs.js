@@ -133,8 +133,14 @@ showtab=function(key,opts){
 			gid('tabviews').style.width=(idw-261)+'px';
 			gid('tabviews').style.left='260px';			
 		} else {
-			gid('tabviews').style.width=(idw-296)+'px';
-			gid('tabviews').style.left='295px';
+			if (document.appsettings.quicklist){
+				gid('tabviews').style.width=(idw-296)+'px';
+				gid('tabviews').style.left='295px';
+			} else {
+				gid('tabviews').style.width=(idw-21)+'px';
+				gid('tabviews').style.left='20px';
+				
+			}
 		}
 		//gid('tooltitle').style.display='block';
 		gid('leftview').style.visibility='visible';

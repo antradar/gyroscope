@@ -8,6 +8,7 @@ function setmyquicklist(){
 	$userid=$user['userid'];
 	
 	$quicklist=GETVAL('quicklist');
+	$silent=intval(SGET('silent'));
 	
 	global $db;
 	
@@ -15,6 +16,6 @@ function setmyquicklist(){
 	
 	sql_prep($query,$db,array($quicklist,$userid));
 	
-	showdefleftcontent();
+	if (!$silent) showdefleftcontent();
 		
 }

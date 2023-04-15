@@ -41,6 +41,7 @@ function scaleall(root){
   gid('leftview').style.height=(idh-147)+'px';
   gid('leftview_').style.height=(idh-147)+'px';
   
+  if (gid('tabexpander')&&document.currenttab) gid('tabexpander').style.top=document.tabviews[document.currenttab].offsetParent.offsetTop+'px';
   
   if (document.tabafloat||document.fsshowing||!document.appsettings.quicklist){
 	  var w=idw;
@@ -49,16 +50,31 @@ function scaleall(root){
 	  gid('lkv').style.left=(idw-w)/2+'px';
 	  gid('lkv').style.height=(idh-40)+'px';
       gid('lkvc').style.height=(idh-40-33)+'px';
+      
+      if (gid('lkv').showing) gid('lkv').style.top='20px';
+      else gid('lkv').style.top=-1*(idh-40)-20+'px'; 
+      
   } else {
 	  gid('lkv').style.height=(idh-187)+'px';
       gid('lkvc').style.height=(idh-187-33)+'px';
   }
   
-  if (document.appsettings.uiconfig.toolbar_position=='top') gid('tabtitles').style.width=(idw-296)+'px';
+  if (document.appsettings.uiconfig.toolbar_position=='top') {
+	  if (document.appsettings.quicklist) {
+		  gid('tabtitles').style.left='295px';
+		  gid('tabtitles').style.width=(idw-296)+'px';
+  	  } else {
+		  gid('tabtitles').style.left='20px';
+	  	  gid('tabtitles').style.width=(idw-20)+'px';
+  	  }
+  }
   
   if (!document.widen) {
 	  if (document.appsettings.uiconfig.toolbar_position=='left') gid('tabviews').style.width=(idw-261)+'px';
-	  else gid('tabviews').style.width=(idw-296)+'px';
+	  else {
+		  if (document.appsettings.quicklist) gid('tabviews').style.width=(idw-296)+'px';
+		  else gid('tabviews').style.width=(idw-20)+'px';
+	  }
  } else {
 	 gid('tabviews').style.width=(idw-1)+'px';
  }
@@ -647,5 +663,36 @@ function resetdarkmode(darkmode){
 		hdpromote('toolbar_hd_css.php?dark='+darkmode);
 	}		
 
+	
+}
+
+function setquicklist(quicklist){
+	//if (document.lastquicklist!=null&&document.lastquicklist==quicklist) return;
+	//if (!document.lastquicklist) document.lastquicklist=quicklist;
+	document.appsettings.quicklist=quicklist;
+	if (!quicklist) {
+		lkv_dismount();
+		
+		gid('tooltitle').style.left='-260px';
+		gid('leftview').style.left='-260px';
+		
+		gid('tabtitles').style.left='20px';
+		gid('tabviews').style.left='20px';
+		
+	} else {
+		gid('tooltitle').style.left='20px';
+		gid('leftview').style.left='20px';
+
+		gid('tabtitles').style.left='295px';
+		gid('tabviews').style.left='295px';
+				
+		if (!document.tabafloat&&!document.fsshowing) lkv_remount();	
+	}
+	
+	ajxpgn('statusc',document.appsettings.codepage+'?cmd=setmyquicklist&silent=1&quicklist='+(quicklist?1:0));
+	
+	autosize();
+	
+	setTimeout(autosize,50);
 	
 }

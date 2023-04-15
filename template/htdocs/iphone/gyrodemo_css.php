@@ -123,6 +123,11 @@ height:22px;
 	#lkvx{position:absolute;top:0;right:0;cursor:pointer;background:transparent url(msprite.png) no-repeat -298px -130px;}	
 	#lkvc{border-right:solid 1px #dedede;overflow:auto;background-color:#ffffff;}
 
+#lkv.dismounted{z-index:3010;border:none;}
+#lkv.dismounted #lkvtitle{background:#187CA6;border-radius:4px 4px 0 0;overflow:hidden;}
+#lkv.dismounted #lkvx{background:transparent url(msprite.png) no-repeat -296px -130px;}
+#lkv.dismounted #lkvc{border:solid 1px #666666;border-top:none;box-shadow:0 2px 4px #000000;}
+	
 .warnbox{padding:10px;margin-bottom:10px;background:#ffdede;line-height:1.5em;}
 .infobox{padding:10px 0;font-size:13px;font-style:italic;color:#666666;line-height:1.5em;}
 	

@@ -138,9 +138,9 @@ listlookup=function(d,title,command,mini,data){
 	if (document.hotspot&&document.hotspot.id) document.hotspot=gid(document.hotspot.id);
 	if (document.hotspot&&!d) d=document.hotspot;
 	
+	if (!document.appsettings.quicklist) mini=1;
 	if (mini&&!d) return;
-	
-		
+			
 	var lookupdismiss=function(e){
 		if (e==null||e.target==null) return;
 		var p=e.target;
@@ -225,7 +225,10 @@ lkv_dismount=function(){
 		gid('lkv_origin').innerHTML='';
 		lkv.className='dismounted';
 		
-		lkv.style.position='absolute';
+		if (!document.iphone_portrait) lkv.style.position='absolute';
+		
+		lkv.style.zIndex=3010;
+		
 		lkv.style.transition='top 100ms';
 		var w=cw();
 		if (w>400) w=400;
