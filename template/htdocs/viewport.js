@@ -42,8 +42,17 @@ function scaleall(root){
   gid('leftview_').style.height=(idh-147)+'px';
   
   
-  gid('lkv').style.height=(idh-187)+'px';
-  gid('lkvc').style.height=(idh-220)+'px';
+  if (document.tabafloat||document.fsshowing||!document.appsettings.quicklist){
+	  var w=idw;
+	  if (w>400) w=400;
+	  gid('lkv').style.width=w+'px';
+	  gid('lkv').style.left=(idw-w)/2+'px';
+	  gid('lkv').style.height=(idh-40)+'px';
+      gid('lkvc').style.height=(idh-40-33)+'px';
+  } else {
+	  gid('lkv').style.height=(idh-187)+'px';
+      gid('lkvc').style.height=(idh-187-33)+'px';
+  }
   
   if (document.appsettings.uiconfig.toolbar_position=='top') gid('tabtitles').style.width=(idw-296)+'px';
   
@@ -165,6 +174,7 @@ function showfs(func,initfunc){
 	gid('fsmask').style.display='block';
 	gid('fstitlebar').style.display='block';
 	gid('fsview').style.display='block';
+	lkv_dismount();
 	gid('fsclose').closeaction=func;
 	if (initfunc) initfunc();
 }
@@ -174,6 +184,8 @@ function closefs(){
 	gid('fsview').style.display='none';
 	gid('fstitlebar').style.display='none';
 	gid('fsmask').style.display='none';
+	
+	if (!document.tabafloat&&document.appsettings.quicklist) lkv_remount();
 
 	if (gid('fsclose').closeaction) gid('fsclose').closeaction();	
 }
@@ -405,10 +417,17 @@ function showlookup(){
 	if (gid('gamepadspot')) gid('gamepadspot').lookupview=true;
 	
 	lkv.showing=true;
-	lkv.style.left='0px';
 
 	//gid('lkvc').style.background='#ffffc0';
-	//setTimeout(function(){gid('lkvc').style.background='#ffffff';},200);				
+	//setTimeout(function(){gid('lkvc').style.background='#ffffff';},200);
+	
+	if (document.tabafloat||document.fsshowing||!document.appsettings.quicklist){
+		lkv.style.top='20px';
+		lkv.style.height=ch()-40+'px';	
+		gid('lkvc').style.height=ch()-40-33+'px';
+	} else {
+		lkv.style.left='0px';	
+	}				
 }
 
 function hidelookup(){
@@ -417,7 +436,12 @@ function hidelookup(){
 	if (gid('gamepadspot')) gid('gamepadspot').lookupview=null;
 	
 	lkv.showing=null;
-	lkv.style.left='-280px';	
+	if (document.tabafloat||document.fsshowing||!document.appsettings.quicklist){
+		h=ch()-40;
+		lkv.style.top=-1*h-20+'px';
+	} else {
+		lkv.style.left='-280px';
+	}	
 }
 
 function stackview(){ //used by auto-completes

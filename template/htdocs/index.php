@@ -232,8 +232,11 @@ document.nanoperf=500; //in microseconds, set to null or comment out to disable
 <script src="viewport.js"></script>
 <script src="validators.js"></script>
 <script src="autocomplete.js?v=4"></script>
-
+<script>
+	if (!document.appsettings.quicklist) lkv_dismount();
+</script>
 <?php
+
 
 if ($usermeta['usegamepad']){
 ?>

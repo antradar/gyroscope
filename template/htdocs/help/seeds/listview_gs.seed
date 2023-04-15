@@ -1,0 +1,2 @@
+	$params=array($gsid);
+	$query="select * from #tablename# where ".COLNAME_GSID."=? ";

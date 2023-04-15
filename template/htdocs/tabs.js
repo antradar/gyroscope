@@ -858,7 +858,7 @@ function redocktab(){
 		else tab.className='';
 		tab.afloat=null;
 		document.tabafloat=null;
-		lkv_remount();
+		if (!document.fsshowing&&document.appsettings.quicklist) lkv_remount();
 		rescaletabs();
 		
 		if (gid('tabexpander')) {

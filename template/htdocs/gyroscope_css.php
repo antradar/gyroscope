@@ -93,7 +93,10 @@ acronym.help{cursor:help;border-bottom:dotted 1px #4444ee;}
 	#lkvs{width:260px;height:60px;position:absolute;top:-40px;left:0;background:#ffffff;opacity:0.8;filter:alpha(opacity=80);}	
 	
 #lkv_origin{display:none;}
-#lkv.dismounted{z-index:1000;}
+#lkv.dismounted{z-index:3010;border:none;}
+#lkv.dismounted #lkvc{border:solid 1px #666666;border-top:none;box-shadow:0 2px 4px #000000;}
+#lkv.dismounted #lkvtitle{background:#187CA6;border-radius:4px 4px 0 0;overflow:hidden;}
+#lkv.dismounted #lkvs{display:none;}
 	
 #lefticons{width:100%;position:absolute;top:0px;left:0;height:72px;background:transparent url(imgs/sprite.png) repeat-x 0 -258px;}
 #lefticons.solid{background:#3A3A3A;height:57px;}

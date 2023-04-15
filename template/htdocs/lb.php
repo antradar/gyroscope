@@ -65,7 +65,7 @@ if (isset($_SERVER['HTTP_GSXIP'])&&$_SERVER['HTTP_GSXIP']!=''){
 	$_SERVER['REMOTE_ADDR']=$_SERVER['HTTP_GSXIP'];	//comment this out to completely disable gsx
 }
 
-$_SERVER['REMOTE_ADDR']=ip_strip_port($_SERVER['REMOTE_ADDR']);
+$_SERVER['REMOTE_ADDR']=ip_strip_port($_SERVER['REMOTE_ADDR']??'');
 
 $_SERVER['RAW_IP']=$_SERVER['REMOTE_ADDR'];
 $_SERVER['O_IP']=$_SERVER['REMOTE_ADDR'];

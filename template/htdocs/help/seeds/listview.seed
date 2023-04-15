@@ -38,8 +38,8 @@ function list#records#(){
 <?php		
 	}
 
-	$params=array($gsid);
-	$query="select * from #tablename# where ".COLNAME_GSID."=? ";
+#include-listview_gs-when-gslock-is-1##include-listview_nogs-when-gslock-is-0#	
+
 	
 	$soundex=is_numeric(SGET('soundex'))?SGET('soundex'):0;
 	$sxsearch='';

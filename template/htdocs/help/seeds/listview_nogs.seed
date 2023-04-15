@@ -1,0 +1,2 @@
+	$params=array();
+	$query="select * from #tablename# where 1 ";

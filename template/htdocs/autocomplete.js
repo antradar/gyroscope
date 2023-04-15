@@ -224,7 +224,23 @@ lkv_dismount=function(){
 		lkv.innerHTML=gid('lkv_origin').innerHTML;
 		gid('lkv_origin').innerHTML='';
 		lkv.className='dismounted';
+		
+		lkv.style.position='absolute';
+		lkv.style.transition='top 100ms';
+		var w=cw();
+		if (w>400) w=400;
+		var left=(cw()-w)/2;
+		
+		lkv.style.width=w+'px';
+		lkv.style.left=left+'px';
+		
+		var h=ch()-40;
+		
+		lkv.style.top=-1*h-20+'px';
+		
 		document.body.appendChild(lkv);
+		gid('lkvc').style.height=(h-33)+'px';
+		
 		console.log('lkv dismounted');
 	}	
 }
@@ -234,6 +250,7 @@ lkv_remount=function(){
 		gid('lkv_origin').innerHTML=gid('lkv').innerHTML;
 		gid('lkv').parentNode.removeChild(gid('lkv'));
 		gid('lkv_origin').id='lkv';
+		gid('lkvc').style.height=(ch()-187-33)+'px';
 		document.lkvdismounted=null;
 		console.log('lkv remounted');
 	}	

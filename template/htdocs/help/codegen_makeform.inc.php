@@ -76,7 +76,7 @@ if ($desc!=''){
 	foreach ($obj['fields'] as $fld){
 		$field=$fld['field'];
 		$disp=$fld['disp'];
-		$def=$fld['def'];
+		$def=$fld['def']??null;
 		$numeric=isset($fld['numeric'])?$fld['numeric']:0;
 		$type=isset($fld['type'])?$fld['type']:null;
 		if ($type=='viewindex') $def=$defindex;
