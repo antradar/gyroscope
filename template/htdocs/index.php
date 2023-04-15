@@ -234,7 +234,7 @@ document.nanoperf=500; //in microseconds, set to null or comment out to disable
 <script src="validators.js"></script>
 <script src="autocomplete.js?v=4"></script>
 <script>
-	setquicklist(document.appsettings.quicklist);
+	setquicklist(document.appsettings.quicklist,true);
 </script>
 <?php
 

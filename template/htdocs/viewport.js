@@ -667,7 +667,7 @@ function resetdarkmode(darkmode){
 	
 }
 
-function setquicklist(quicklist){
+function setquicklist(quicklist,noupdate){
 	//if (document.lastquicklist!=null&&document.lastquicklist==quicklist) return;
 	//if (!document.lastquicklist) document.lastquicklist=quicklist;
 	document.appsettings.quicklist=quicklist;
@@ -696,7 +696,7 @@ function setquicklist(quicklist){
 		if (!document.tabafloat&&!document.fsshowing) lkv_remount();
 	}
 	
-	ajxpgn('statusc',document.appsettings.codepage+'?cmd=setmyquicklist&silent=1&quicklist='+(quicklist?1:0));
+	if (!noupdate) ajxpgn('statusc',document.appsettings.codepage+'?cmd=setmyquicklist&silent=1&quicklist='+(quicklist?1:0));
 	
 	autosize();
 	
