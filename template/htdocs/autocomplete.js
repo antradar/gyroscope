@@ -246,15 +246,16 @@ lkv_dismount=function(){
 		var idw=cw();
 		var idh=ch();
 		
-		if (!lkv.moveable){
-			lkv.onmousedown=function(e){
+		var lkvt=gid('lkvtitle');
+		
+		if (!lkvt.moveable){
+			lkvt.onmousedown=function(e){
 				var ox,oy;
 				if (e) {ox=e.clientX; oy=e.clientY;}
 				else {ox=window.event.clientX; oy=window.event.clientY;}
 				var posx=lkv.offsetLeft;
 				var posy=lkv.offsetTop;
-				
-				lkv.onmousemove=function(e){
+				lkvt.onmousemove=function(e){
 					var x,y;
 					if (e) {x=e.clientX; y=e.clientY;}
 					else {x=window.event.clientX;y=window.event.clientY;}
@@ -271,19 +272,21 @@ lkv_dismount=function(){
 					lkv.style.top=ny+'px';
 					
 				}
+				lkv.onmousemove=lkvt.onmousemove;
+				document.onmousemove=lkvt.onmousemove;
 				
-				document.onmousemove=lkv.onmousemove;
-				
-				lkv.moveable=true;			
+				lkvt.moveable=true;			
 			}//mousedown
 		}
-		lkv.onmouseup=function(){
+		lkvt.onmouseup=function(){
+			lkvt.onmousemove=null;
 			lkv.onmousemove=null;
 			document.onmousemove=null;
 			document.onmouseup=null;
-			lkv.moveabe=null;
+			lkvt.moveabe=null;
 		}
-		document.onmouseup=lkv.onmouseup;
+		lkv.onmouseup=lkvt.onmouseup;
+		document.onmouseup=lkvt.onmouseup;
 		
 		console.log('lkv dismounted');
 	}	
