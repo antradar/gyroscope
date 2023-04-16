@@ -22,7 +22,7 @@ picklookup=function(val){
 		}
 	}
 	if (gid(document.hotspot.id+'_lookup')) gid(document.hotspot.id+'_lookup').style.display='none';
-	if (document.hotspot.attributes['keeplookup']==null) hidelookup(); //place "keeplookup" on the trigger
+	if (document.hotspot.attributes['keeplookup']==null) hidelookup(true); //place "keeplookup" on the trigger
 	if (document.hotspot.onchange) document.hotspot.onchange();
 	
 	if (document.hotspot){
