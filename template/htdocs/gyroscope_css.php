@@ -85,7 +85,7 @@ acronym.help{cursor:help;border-bottom:dotted 1px #4444ee;}
 
 .lksel{position:absolute;top:5px;right:5px;}
 	
-#lkv{position:absolute;left:0;width:258px;top:40px;left:-280px;transition:left 100ms;-webkit-transition:left 100ms;}
+#lkv{position:absolute;left:0;width:258px;top:40px;left:-280px;transition:left 100ms;-webkit-transition:left 100ms;border-radius:4px 4px 0 0;}
 #lkvtitle{background:transparent url(imgs/sprite.png) no-repeat 0 -223px;height:32px;position:relative;border-radius:4px 4px 0 0;overflow:hidden;}
 	#lkvtitle a{font-weight:bold;font-size:14px;color:white;margin-left:30px;margin-right:30px;padding-top:6px;display:block;}
 	#lkvx{position:absolute;top:0;right:0;cursor:pointer;background:transparent url(imgs/sprite.png) no-repeat -285px -174px;}	

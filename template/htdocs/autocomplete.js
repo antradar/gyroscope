@@ -243,18 +243,19 @@ lkv_dismount=function(){
 		
 		document.body.appendChild(lkv);
 		gid('lkvc').style.height=(h-33)+'px';
-		var idw=cw();
-		var idh=ch();
 		
 		var lkvt=gid('lkvtitle');
 		
 		if (!lkvt.moveable){
 			lkvt.onmousedown=function(e){
+				var idw=cw();
+				var idh=ch();
 				var ox,oy;
 				if (e) {ox=e.clientX; oy=e.clientY;}
 				else {ox=window.event.clientX; oy=window.event.clientY;}
 				var posx=lkv.offsetLeft;
 				var posy=lkv.offsetTop;
+				
 				lkvt.onmousemove=function(e){
 					var x,y;
 					if (e) {x=e.clientX; y=e.clientY;}
@@ -270,6 +271,8 @@ lkv_dismount=function(){
 					
 					lkv.style.left=nx+'px';
 					lkv.style.top=ny+'px';
+					
+					if (nx!=ox||ny!=oy) lkv.moved=true;
 					
 				}
 				lkv.onmousemove=lkvt.onmousemove;

@@ -48,12 +48,23 @@ function scaleall(root){
 	  var w=idw;
 	  if (w>400) w=400;
 	  gid('lkv').style.width=w+'px';
-	  gid('lkv').style.left=(idw-w)/2+'px';
+	  if (!gid('lkv').moved){
+	  	gid('lkv').style.left=(idw-w)/2+'px';
+  	  } else {
+	  	if (gid('lkv').offsetLeft+w+5>idw) gid('lkv').style.left=idw-w-5+'px';	  
+  	  }
 	  gid('lkv').style.height=(idh-40)+'px';
       gid('lkvc').style.height=(idh-40-33)+'px';
       
-      if (gid('lkv').showing) gid('lkv').style.top='20px';
-      else gid('lkv').style.top=-1*(idh-40)-20+'px'; 
+      if (gid('lkv').showing) {
+	      if (!gid('lkv').moved){
+		      gid('lkv').style.top='20px';
+	      } else {
+		      
+	      }
+  	  } else {
+		  gid('lkv').style.top=-1*(idh-40)-20+'px';
+      }
       
   } else {
 	  gid('lkv').style.height=(idh-187)+'px';
@@ -439,6 +450,11 @@ function showlookup(){
 	//setTimeout(function(){gid('lkvc').style.background='#ffffff';},200);
 	
 	if (document.tabafloat||document.fsshowing||!document.appsettings.quicklist){
+		if (!lkv.moved){
+			var w=400;
+			if (w>cw()) w=cw();
+			lkv.style.left=(cw()-w)/2+'px';
+		}
 		lkv.style.top='20px';
 		lkv.style.height=ch()-40+'px';	
 		gid('lkvc').style.height=ch()-40-33+'px';
@@ -447,12 +463,13 @@ function showlookup(){
 	}				
 }
 
-function hidelookup(){
+function hidelookup(keep_position){
 	var lkv=gid('lkv');
 	if (!lkv.showing) return;
 	if (gid('gamepadspot')) gid('gamepadspot').lookupview=null;
 	
 	lkv.showing=null;
+	if (!keep_position) lkv.moved=null;
 	if (document.tabafloat||document.fsshowing||!document.appsettings.quicklist){
 		h=ch()-40;
 		lkv.style.top=-1*h-20+'px';
