@@ -150,7 +150,7 @@ Search: <input autocomplete="off" class="inp" style="width:30%;" id="actionlog_k
 <?php
 		$pager=ob_get_clean();
 		
-	makelookup('rptactionlogdate',1);
+	//makelookup('rptactionlogdate',1);
 
 }
 

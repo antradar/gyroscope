@@ -42,7 +42,7 @@ function scaleall(root){
   gid('leftview_').style.height=(idh-147)+'px';
   gid('vsptr').style.height=idh-146+'px';
   
-  if (gid('tabexpander')&&document.currenttab) gid('tabexpander').style.top=document.tabviews[document.currenttab].offsetParent.offsetTop+'px';
+  if (gid('tabexpander')&&document.currenttab&&!document.tabafloat) gid('tabexpander').style.top=document.tabviews[document.currenttab].offsetParent.offsetTop+'px';
   
   if (document.tabafloat||document.fsshowing||!document.appsettings.quicklist){
 	  var w=idw;
