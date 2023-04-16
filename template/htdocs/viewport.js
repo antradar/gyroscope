@@ -510,7 +510,7 @@ function authpump(){
 
 
 
-function sv(d,v){gid(d).value=v;}
+function sv(d,v,r){gid(d).value=v;if (r&&gid(d).onchange) gid(d).onchange();}
 
 if (document.createEvent){
 	document.keyboard=[];
