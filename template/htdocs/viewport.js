@@ -26,6 +26,14 @@ function tabh(){
 }
 
 function scaleall(root){
+	
+	//defer
+  if (document.scalealllock) {return;}
+  document.scalealllock=true;
+  if (document.scalealltimer) clearTimeout(document.scalealltimer);
+  document.scalealltimer=setTimeout(function(){
+	delete document.scalealllock; 
+  },10);  
     
   var i,j;
   var idh=ch();
@@ -44,7 +52,7 @@ function scaleall(root){
   
   if (gid('tabexpander')&&document.currenttab&&!document.tabafloat) gid('tabexpander').style.top=document.tabviews[document.currenttab].offsetParent.offsetTop+'px';
   
-  if (document.tabafloat||document.fsshowing||!document.appsettings.quicklist){
+  if (document.tabafloat||!document.appsettings.quicklist||document.fsshowing){
 	  var w=idw;
 	  if (w>400) w=400;
 	  gid('lkv').style.width=w+'px';
@@ -459,6 +467,8 @@ function showlookup(){
 		lkv.style.height=ch()-40+'px';	
 		gid('lkvc').style.height=ch()-40-33+'px';
 	} else {
+		lkv.style.width='258px';
+		lkv.style.top='40px';
 		lkv.style.left='0px';	
 	}				
 }

@@ -6,7 +6,7 @@ header('Content-Type: text/css');
 .activetab, .dulltab,
 .activetab .noclose,
 .dulltab .noclose,
-#lkvtitle, #lkvx,
+#lkvtitle, #lkvx, #lkv.dismounted #lkvx,
 .img-calel, .img-caler, 
 .img-help, .img-print{background-image:url(msprite_hd.png);background-size:399px 154px;}
 

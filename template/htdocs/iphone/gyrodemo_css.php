@@ -117,7 +117,7 @@ height:22px;
 #fsview{z-index:3002;position:fixed;top:40px;left:10px;width:100%;background:#ffffff;display:none;overflow:auto;}
 
 .lksel{position:absolute;top:5px;right:5px;}
-#lkv{position:fixed;width:210px;top:95px;left:-230px;}
+#lkv{position:fixed;width:210px;top:95px;left:-230px;border-radius:4px 4px 0 0;}
 #lkvtitle{background:transparent url(msprite.png) no-repeat 0 -130px;height:24px;position:relative;}
 	#lkvtitle a{font-weight:bold;font-size:14px;color:white;margin-left:30px;margin-right:30px;padding-top:6px;display:block;}
 	#lkvx{position:absolute;top:0;right:0;cursor:pointer;background:transparent url(msprite.png) no-repeat -298px -130px;}	
