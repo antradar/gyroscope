@@ -1,3 +1,8 @@
+*20.2
+- collapsible left view (quicklist view)
+- moveable Unbound Lookup View (ULV)
+- actionable "sv"
+
 *20.1
 - codegen enhancements
 - forced theme
