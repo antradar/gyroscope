@@ -4,8 +4,7 @@ function lookup#record#(){
 	global $db; 
 	$key=SGET('key');
 	
-	$page=isset(intval($_GET['page']))?intval($_GET['page']):0;
-	$mul=$_GET['mul'];
+	$mul=intval(SGET('mul'));
 	
 	//gsguard if applicable
 
@@ -17,20 +16,54 @@ function lookup#record#(){
 	
 	$params=array();
 	
-	$query="select * from #lookuptable# ";
+	$query="select * from #lookuptable# where 1 ";
 	if ($key!='') {
-		$query.=" where (#searchquery#) ";
+		$query.=" and (#searchquery#) ";
 		//array_push($params,...);
 	}
 	
-	$query.=" order by #sortquery# ";
+	$cquery="select count(*) as c from ($query) t";
 	
-	$query.=" limit $clip";	//comment out if no clipping wanted
+	$rs=sql_prep($cquery,$db,$params);
+	$myrow=sql_fetch_assoc($rs);
+
+	$perpage=20;
+	$count=$myrow['c'];
+	
+	
+	$page=intval(SGET('page'));
+	
+	$maxpage=ceil($count/$perpage)-1;
+	if ($maxpage<0) $maxpage=0;
+
+	if ($page<0) $page=0;
+	if ($page>$maxpage) $page=$maxpage;
+	
+	$start=$page*$perpage;
+	
+	$pager='';
+	if ($maxpage>0){
+		ob_start();
+	?>
+	<div style="text-align:center;padding:5px 0;">
+		<a class="hovlink" onclick="lookupentity(document.hotspot,'#record#&page=<?php echo $page-1;?>&mul=<?php echo $mul;?>','#c_record#');"><img src="imgs/t.gif" class="img-pageleft">Prev</a>
+		&nbsp;
+		Page <?php echo $page+1;?> of <?php echo $maxpage+1;?>
+		&nbsp;
+		<a class="hovlink" onclick="lookupentity(document.hotspot,'#record#&page=<?php echo $page+1;?>&mul=<?php echo $mul;?>','#c_record#');">Next<img src="imgs/t.gif" class="img-pageright"></a>
+	</div>
+	<?php
+		$pager=ob_get_clean();	
+	}
+	
+	echo $pager;
+	
+	$query.=" order by #sortquery# limit $start, $perpage ";
+	
 	
 	$rs=sql_prep($query,$db,$params);
 	
-	$c=sql_affected_rows($db,$rs);
-	if ($c>1&&$mul){
+	if ($count>1&&$mul){
 ?>
 <div class="inputrow">
 	<a class="hovlink" onclick="pickupalllookups(this);">select all items</a>
@@ -56,5 +89,6 @@ function lookup#record#(){
 <?php		
 	}//while
 	
+	echo $pager;
 
 }

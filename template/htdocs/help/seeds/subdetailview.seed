@@ -21,7 +21,7 @@ function show#record#($#primarykey#=null){
 	
 	header('newtitle:'.tabtitle(htmlspecialchars($#dispfield#)));
 	header('parenttab: #master_record#_'.$#masterkey#);
-	makechangebar('#record#_'.$#primarykey#,"update#record#($#primarykey#,<?php echo $#foreignkey#;?>,'".makegskey('update#record#_'.$#primarykey#)."');");
+	makechangebar('#record#_'.$#primarykey#,"update#record#($#primarykey#,$#foreignkey#,'".makegskey('update#record#_'.$#primarykey#)."');");
 	makesavebar('#record#_'.$#primarykey#);	
 ?>
 <div class="section">
