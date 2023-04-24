@@ -108,9 +108,9 @@ if (isset($roundwatchframe)&&$roundwatchframe){
 	<?php 
 	
 	if ($uiconfig['enable_master_search']){
-		$toolbaritems=array(
-			'ui.search'=>array('title'=>'Search','icon'=>'img-search','action'=>"showmmastersearch();"),
-		);
+		$toolbaritems['ui.search']=array('title'=>'Search','icon'=>'img-search','action'=>"showmmastersearch();");
+		$item=array_pop($toolbaritems);
+		array_unshift($toolbaritems,$item);
 	}
 		foreach ($toolbaritems as $modid=>$ti){
 		if (isset($ti['type'])&&$ti['type']=='break') continue;
