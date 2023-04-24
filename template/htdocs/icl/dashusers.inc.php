@@ -3,7 +3,7 @@
 include 'icl/listusers.inc.php';
 
 function dashusers(){
-	//subdash, do not set the tabctx to dash
+	
 	header('tabctx: subdash');
 	header('newtitle: Users');
 ?>

@@ -3,8 +3,10 @@
 include 'icl/listreports.inc.php'; //for now
 
 function dashreports(){
+	global $uiconfig;
+	
 	header('tabctx: dash');
-	header('newtitle: Reports');
+	if ($uiconfig['toolbar_position']=='top') header('newtitle: Reports');
 	header('newloadfunc: '."ajxjs(self.showreport,'reports.js');");	
 ?>
 <div class="section">

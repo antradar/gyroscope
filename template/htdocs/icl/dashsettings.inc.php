@@ -3,9 +3,10 @@
 include 'icl/listsettings.inc.php';
 
 function dashsettings(){
-
+	global $uiconfig;
+	
 	header('tabctx: dash');
-	header('newtitle: Settings');
+	if ($uiconfig['toolbar_position']=='top') header('newtitle: Settings');
 
 ?>
 <div class="section">

@@ -1,0 +1,4 @@
+	global $uiconfig;
+	header('tabctx: dash');
+	header("newloadfunc: ajxjs(self.show#record#,'#records#.js');");
+	if ($uiconfig['toolbar_position']=='top') header('newtitle: '._tr('icon_#records#'));

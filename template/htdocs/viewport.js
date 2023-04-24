@@ -371,19 +371,23 @@ function showview(idx,lazy,force,params,func,bingo,submenu){
   var codepage=document.appsettings.codepage;
   if (bingo>0) codepage=document.appsettings.binpages[bingo+''];
   if (!params) params='';
-  
+      
   if (document.appsettings.uiconfig.toolbar_position=='left'){
 	  if (!submenu) reloadtab('welcome','','dash_'+idx.replace(/\./g,'__')+'&'+params,func);
 	  else addtab('dash_'+idx.replace(/\./g,'__'),idx,'dash_'+idx.replace(/\./g,'__')+'&'+params,func);
 	  return; 
   }
   
+  
   if (!document.appsettings.quicklist||document.tabafloat){
 	  addtab('dash_'+idx.replace(/\./g,'__'),idx,'dash_'+idx.replace(/\./g,'__')+'&'+params,func);
 	  return;
   }
   
+  
   gid('leftviewcloser').style.display='block';
+  
+  
   
   if (gid('gamepadspot')) gid('gamepadspot').vidx=null;
  	
@@ -701,24 +705,29 @@ function setquicklist(quicklist,noupdate){
 	if (!quicklist) {
 		lkv_dismount();
 		
-		gid('tooltitle').style.left='-260px';
-		gid('leftview').style.left='-260px';
+		if (document.appsettings.uiconfig.toolbar_position=='top'){
+			gid('tooltitle').style.left='-260px';
+			gid('leftview').style.left='-260px';
+			
+			gid('tabtitles').style.left='20px';
+			gid('tabviews').style.left='20px';
+			
+			gid('vsptr').style.left='0px';
+			gid('vsptr').style.width='16px';
+			gid('vsptr').className='rexpand';
+		}
 		
-		gid('tabtitles').style.left='20px';
-		gid('tabviews').style.left='20px';
-		
-		gid('vsptr').style.left='0px';
-		gid('vsptr').style.width='16px';
-		gid('vsptr').className='rexpand';
 	} else {
-		gid('tooltitle').style.left='20px';
-		gid('leftview').style.left='20px';
-
-		gid('tabtitles').style.left='295px';
-		gid('tabviews').style.left='295px';
-		gid('vsptr').style.left='280px';
-		gid('vsptr').style.width='12px';
-		gid('vsptr').className='';
+		if (document.appsettings.uiconfig.toolbar_position=='top'){
+			gid('tooltitle').style.left='20px';
+			gid('leftview').style.left='20px';
+	
+			gid('tabtitles').style.left='295px';
+			gid('tabviews').style.left='295px';
+			gid('vsptr').style.left='280px';
+			gid('vsptr').style.width='12px';
+			gid('vsptr').className='';
+		}
 				
 		if (!document.tabafloat&&!document.fsshowing) lkv_remount();
 	}

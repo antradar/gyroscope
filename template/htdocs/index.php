@@ -35,6 +35,8 @@ setcookie('userdarkmode',$dark,time()+3600*24*30*6,null,null,$usehttps,true); //
 include 'uiconfig.php';
 include 'icl/showdefleftcontent.inc.php';
 
+if ($uiconfig['toolbar_position']=='left') $quicklist=0;
+
 ?>
 <!doctype html>
 <html>

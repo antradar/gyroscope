@@ -1,0 +1,3 @@
+	header("newloadfunc: ajxjs(self.show#record#,'#records#.js');");
+	header('newtitle: '._tr('icon_#records#'));
+	header('tabctx: subdash');

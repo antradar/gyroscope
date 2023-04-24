@@ -23,7 +23,7 @@ $cmd=isset($_GET['cmd'])?$_GET['cmd']:'';
 login(true);
 
 include 'forminput.php';
-
+include 'uiconfig.php';
 
 //enforcing gs expiry
 
@@ -249,6 +249,7 @@ switch($cmd){
 //Help
 
 	case 'slv_core__helptopics': include 'icl/listhelptopics.inc.php'; listhelptopics(); break;
+	case 'dash_core__helptopics': include 'icl/dashhelptopics.inc.php'; dashhelptopics(); break;
 	case 'edithelptopic': include 'icl/edithelptopic.inc.php'; edithelptopic(); break;
 	case 'showhelptopic': include 'icl/showhelptopic.inc.php'; showhelptopic(); break;
 	case 'safe_showhelptopic': include 'icl/safe_showhelptopic.inc.php'; safe_showhelptopic(); break;

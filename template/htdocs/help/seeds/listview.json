@@ -13,7 +13,11 @@
 	{"field":"sortquery","disp":"Sort Filters","def":"fname, lname"},
 	
 	{"field":"dispfield","disp":"Display Field Name","def":"fname"},
+	
 	{"field":"splitdispfield","disp":"allow direct editing of record title","type":"checkbox"},
+	
+	{"field":"dashmode","disp":"Dashboard Mode","def":"root|Root,sub|Sub","type":"enum"},
+	
 	{"field":"fieldlist","disp":"List of Fields","def":"fname|Firstname\nlname|Lastname", "type":"fieldlist", "optional":1}
 
 		
