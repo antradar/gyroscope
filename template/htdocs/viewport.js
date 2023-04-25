@@ -393,6 +393,8 @@ function showview(idx,lazy,force,params,func,bingo,submenu){
 	  return;
   }
   
+  closetab('dash_'+idx.replace(/\./g,'__'),idx);
+  
   
   gid('leftviewcloser').style.display='block';
   
