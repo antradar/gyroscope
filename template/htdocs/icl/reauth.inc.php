@@ -15,19 +15,19 @@ function reauth(){
 	$gstier=0;
 	
 	//every portalized table should have its own gsexpiry and gstier
-	//if (TABLENAME_GSS=='gss'){	
-	$query="select gsexpiry,gstier from ".TABLENAME_GSS." where ".COLNAME_GSID."=?";
-	$rs=sql_prep($query,$db,$gsid);
+	
+	$query="select gsexpiry,gstier,login,dispname,active,virtualuser,groupnames from 
+	".TABLENAME_USERS.",".TABLENAME_GSS." 
+	where userid=? and ".TABLENAME_USERS.".".COLNAME_GSID."=?
+	and ".TABLENAME_USERS.".".COLNAME_GSID."=".TABLENAME_GSS.".".COLNAME_GSID;
+	
+	$rs=sql_prep($query,$db,array($userid,$gsid));
+		
 	$myrow=sql_fetch_assoc($rs);
 	
 	$gsexpiry=intval($myrow['gsexpiry']);
 	$gstier=intval($myrow['gstier']);
-	//}
 	
-	$query="select * from ".TABLENAME_USERS." where userid=? and ".COLNAME_GSID."=? ";
-	$rs=sql_prep($query,$db,array($userid,$gsid));
-	
-	$myrow=sql_fetch_assoc($rs);
 	$login=$myrow['login'];
 	$dispname=$myrow['dispname'];
 	

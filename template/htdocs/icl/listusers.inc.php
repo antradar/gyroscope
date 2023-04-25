@@ -119,7 +119,7 @@ function listusers(){
 	
 	//vendor auth 3
 	
-	$query.=" order by userid=? desc, virtualuser, login limit $start,$dperpage ";	
+	$query.=" order by  virtualuser,active desc, userid=? desc, login limit $start,$dperpage ";	
 	array_push($params,$myuserid);
 
 	$rs=sql_prep($query,$db,$params);
@@ -127,11 +127,16 @@ function listusers(){
 	
 	$pageleadidx=0;
 	
+	$lastmode=0;
+	
+	$dusermodes=array(0=>'Active Users',1=>'Deactivated Users',2=>'Virtual Accounts');
+	
 	while ($myrow=sql_fetch_array($rs)){
 		$userid=$myrow['userid'];
 		$login=$myrow['login'];
 		$dispname=htmlspecialchars($myrow['dispname']);
 		$virtual=$myrow['virtualuser'];
+		$active=$myrow['active'];
 		
 		$usertitle="$login"; //change this if needed
 		
@@ -139,8 +144,25 @@ function listusers(){
 		
 		$dbusertitle=noapos(htmlspecialchars(htmlspecialchars($usertitle)));
 		$groupnames=$myrow['groupnames'];
-		$hash=substr(md5($groupnames),0,6);
-		if ($virtual) $hash='ffffff';
+		$hash='#'.substr(md5($groupnames),0,6);
+		
+		$class='';
+		
+		$usermode=0;
+		$style='';
+
+		if (!$active) {$usermode=1;$hash='transparent';$class='recbad';}
+		if ($virtual) {$usermode=2;$hash='transparent';$class='recdim';}	
+		
+		if ($usermode!=$lastmode){
+		?>
+		<div class="sectionheader">
+			<?php echo $dusermodes[$usermode];?>
+		</div>
+		<?php
+			$lastmode=$usermode;	
+		}	
+		
 		
 		if ($pagelead!=0&&$pageleadidx==$pagelead&&$page>0){
 ?>
@@ -152,10 +174,9 @@ function listusers(){
 		//vendor auth 4
 		
 ?>
-<div class="listitem" style="<?php if ($pageleadidx<$pagelead&&$page>0) echo 'opacity:0.6;';?>border-left:solid 3px #<?php echo $hash;?>;padding-left:5px;">
-<!-- a onclick="showuser('<?php echo $userid;?>','<?php echo $dbusertitle;?>','bmuserroles_<?php echo $userid;?>');" -->
+<div class="listitem" style="<?php if ($pageleadidx<$pagelead&&$page>0) echo 'opacity:0.6;';?>border-left:solid 3px <?php echo $hash;?>;padding-left:5px;">
 <a onclick="showuser('<?php echo $userid;?>','<?php echo $dbusertitle;?>');">
-	<?php echo htmlspecialchars($usertitle);?>
+	<span class="<?php echo $class;?>"><?php echo htmlspecialchars($usertitle);?></span>
 	<?php if ($online){?>
 	&nbsp; <span class="labelbutton">online</span>
 	<?php }?>

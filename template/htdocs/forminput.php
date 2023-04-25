@@ -150,7 +150,7 @@ function makehelp($id,$text,$once=0,$dx=0){
 				$rs=sql_prep($query,$db,$userid);
 				while ($myrow=sql_fetch_assoc($rs)) array_push($userhelpspots,$myrow['helptopic']);
 			
-				cache_set('userhelpspots_'.$userid,$userhelpspots,3600*24*7);
+				cache_set(TABLENAME_GSS.'userhelpspots_'.$userid,$userhelpspots,3600*24*7);
 			}
 		}
 		

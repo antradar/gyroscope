@@ -25,6 +25,9 @@ use toolbar.psp to generate toolbar.gif
 .inpgood{background:#D1E7D1;}
 .inpbad{background:#EFCAC9;}
 
+.recbad{color:#cc0000;}
+.recdim{font-style:italic;color:#666666;}
+
 .reloader.busy{background:#ffcccc;}
 .listchanged{background:#ffcccc;}
 
@@ -423,7 +426,10 @@ if ($dark==0||$dark==1){
 	.tsdark{display:inline;}
 	
 	.inpgood{background:#0B2313;color:#00FD00;border-color:#07650D;}
-	.inpbad{background:#2C1115;color:#F89591;border-color:#69393A;}	
+	.inpbad{background:#2C1115;color:#F89591;border-color:#69393A;}
+	
+	.recbad{color:#ff4444;}
+	.recdim{font-style:italic;color:#aaaaaa;}	
 	
 	.dashcoltitle, .dashcolsubtitle{color:#000000;}
 	.dashcolbutton{}		

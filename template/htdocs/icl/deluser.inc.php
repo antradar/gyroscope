@@ -23,4 +23,8 @@ function deluser(){
 	
 	logaction("deleted User #$userid $login",array('userid'=>$userid,'login'=>"$login"),array('rectype'=>'reauth','recid'=>$userid));
 	reauth();
+	
+	cache_delete(TABLENAME_GSS.'gyroscopeblockedids_'.$gsid);
+	cache_delete(TABLENAME_GSS.'gyroscopebinblockedids_'.$gsid);
+	
 }
