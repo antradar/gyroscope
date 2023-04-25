@@ -7,7 +7,7 @@ function dashusers(){
 	header('tabctx: subdash');
 	header('newtitle: Users');
 ?>
-<div class="section">
+<div class="section userdash">
 	<div class="sectiontitle">Users</div>
 	
 	

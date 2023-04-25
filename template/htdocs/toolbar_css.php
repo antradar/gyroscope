@@ -312,6 +312,8 @@ input:disabled{
 .img-pageright{width:8px;height:16px;background:transparent url(imgs/toolbar.gif) no-repeat -520px 0;margin-left:6px;vertical-align:middle;}
 
 .navgroup,.navgroupx{border:solid 1px #dedede;padding:10px;margin:0;margin-bottom:10px;}
+.userdash .navgroupx{width:30%;margin-right:2%;float:left;max-width:400px;}	
+
 .navtitle{text-transform:uppercase;margin-bottom:5px;font-size:14px;font-weight:bold;color:#333333;}
 
 .multiand{border-color:#009966;-webkit-appearance: none;-moz-appearance: none;width:14px;height:14px;vertical-align:middle;}
@@ -557,8 +559,8 @@ if ($dark==0||$dark==1){
 	.navtitle{color:#A6BAF9;}
 	.navfilter a, .navfilter a:hover, .navfilter a:visited, .navfilter a:link{text-decoration:none;color:#C9D1D9;}
 	.navfilter a:hover{text-decoration:underline;}
-	.navfilter em{color:#AEB4BA;font-size:14px;}	
-	
+	.navfilter em{color:#AEB4BA;font-size:14px;}
+		
 	.navopen, .navclose{background:#2C3041;border-bottom:solid 1px #545A7A;}
 	.navopen a, .navclose a{color:#A6BAF9;}
 

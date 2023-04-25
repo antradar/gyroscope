@@ -1,5 +1,7 @@
 <?php
 
+include 'icl/user_nav.inc.php';
+
 function listusers(){
 	
 	global $db;
@@ -66,21 +68,14 @@ function listusers(){
 <?php		
 	}
 	
-	$params=array($gsid);
-	$query="select * from ".TABLENAME_USERS." where ".COLNAME_GSID."=? ";
+	user_shownavs('userlist','slv_core__users');
 	
-	if ($key!='') {
-		$query.=" and (lower(login) like lower(?) or lower(dispname) like lower(?) ";
-		array_push($params,"$key%","%$key%");
+	$sqlfilters=user_sqlfilters();
+	
+	$params=array($gsid);
+	$query="select * from ".TABLENAME_USERS." where ".COLNAME_GSID."=? ".$sqlfilters['clauses'];
+	$params=array_merge($params,$sqlfilters['params']);	
 
-		if (is_numeric($gsid)){
-			$query.="or userid=? ";
-			array_push($params,$key);
-		}
-		
-
-		$query.=") ";
-	}
 	
 	//vendor auth 2
 	

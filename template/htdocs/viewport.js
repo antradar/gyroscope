@@ -381,6 +381,15 @@ function showview(idx,lazy,force,params,func,bingo,submenu){
   
   if (!document.appsettings.quicklist||document.tabafloat){
 	  addtab('dash_'+idx.replace(/\./g,'__'),idx,'dash_'+idx.replace(/\./g,'__')+'&'+params,func);
+	  
+	
+		if (document.viewindex==idx){		
+			resetleftviews();
+		} else {
+			gid('lv'+idx).viewloaded=null;
+			gid('lv'+idx).innerHTML='';
+		}
+	  
 	  return;
   }
   
@@ -716,7 +725,7 @@ function setquicklist(quicklist,noupdate){
 			gid('vsptr').style.width='16px';
 			gid('vsptr').className='rexpand';
 		}
-		
+				
 	} else {
 		if (document.appsettings.uiconfig.toolbar_position=='top'){
 			gid('tooltitle').style.left='20px';
@@ -730,6 +739,11 @@ function setquicklist(quicklist,noupdate){
 		}
 				
 		if (!document.tabafloat&&!document.fsshowing) lkv_remount();
+		
+		for (var i=0;i<document.appsettings.views.length;i++){
+			var tabkey='dash_'+document.appsettings.views[i].replace(/\./g,'__');
+			if (gid('lv'+document.appsettings.views[i]).innerHTML!='') closetab(tabkey);
+		}
 	}
 	
 	if (!noupdate) ajxpgn('statusc',document.appsettings.codepage+'?cmd=setmyquicklist&silent=1&quicklist='+(quicklist?1:0));
