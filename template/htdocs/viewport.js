@@ -382,12 +382,11 @@ function showview(idx,lazy,force,params,func,bingo,submenu){
   if (!document.appsettings.quicklist||document.tabafloat){
 	  addtab('dash_'+idx.replace(/\./g,'__'),idx,'dash_'+idx.replace(/\./g,'__')+'&'+params,func);
 	  
-	
+		gid('lv'+idx).viewloaded=null;
+		gid('lv'+idx).innerHTML='';
+			
 		if (document.viewindex==idx){		
 			resetleftviews();
-		} else {
-			gid('lv'+idx).viewloaded=null;
-			gid('lv'+idx).innerHTML='';
 		}
 	  
 	  return;
