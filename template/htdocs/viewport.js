@@ -318,7 +318,7 @@ function flashsticker(msg,sec){
 		
 }
 
-function callout_section(d){
+function callout_section(d,keepstyle){
 	if (d==null||!d) return;
 	var callout=gid('callout');
 	if (!callout) return;
@@ -336,9 +336,9 @@ function callout_section(d){
 		
 	var cls=d.className;
 	
-	d.className='calledout';
+	if (!keepstyle) d.className='calledout';
 	setTimeout(function(){
-		d.className=cls;	
+		if (!keepstyle) d.className=cls;	
 		callout.style.opacity=0;
 	callout.style.filter='alpha(opacity=0)';
 		callout.style.left=0;
@@ -392,8 +392,13 @@ function showview(idx,lazy,force,params,func,bingo,submenu){
 	  return;
   }
   
-  closetab('dash_'+idx.replace(/\./g,'__'),idx);
-  
+  //closetab('dash_'+idx.replace(/\./g,'__'));
+  //instead of closing, keep the tab, skip the list view, and call out the tab
+  var dashtabid=gettabid('dash_'+idx.replace(/\./g,'__'));
+  if (dashtabid>=0){
+	callout_section(document.tabtitles[dashtabid],true);
+	return;	  
+  }
   
   gid('leftviewcloser').style.display='block';
   
@@ -741,10 +746,13 @@ function setquicklist(quicklist,noupdate){
 				
 		if (!document.tabafloat&&!document.fsshowing) lkv_remount();
 		
+		/*
+		//reclaiming clashing tabs
 		for (var i=0;i<document.appsettings.views.length;i++){
 			var tabkey='dash_'+document.appsettings.views[i].replace(/\./g,'__');
 			if (gid('lv'+document.appsettings.views[i]).innerHTML!='') closetab(tabkey);
 		}
+		*/
 	}
 	
 	if (!noupdate) ajxpgn('statusc',document.appsettings.codepage+'?cmd=setmyquicklist&silent=1&quicklist='+(quicklist?1:0));
@@ -754,3 +762,41 @@ function setquicklist(quicklist,noupdate){
 	setTimeout(autosize,50);
 	
 }
+
+function quicklist_to_dash(){
+	if (document.viewindex==null||document.viewindex=='') return;
+	var idx=document.viewindex;
+	var dashkey='dash_'+idx.replace(/\./g,'__');
+	
+	var params=gid('lv'+idx).params;
+	gid('lv'+idx).innerHTML='';
+	resetleftviews();		
+	addtab('dash_'+idx.replace(/\./g,'__'),idx,'dash_'+idx.replace(/\./g,'__')+'&'+params);  
+}
+
+function dash_to_quicklist(){
+	var tabid=document.currenttab;
+	if (tabid==null||tabid==-1) return;
+	
+	var tabkey=document.tabkeys[tabid];
+	var idx=tabkey.replace('dash_','').replace('__','.');
+	
+	var found=false;
+	for (var i=0;i<document.appsettings.views.length;i++){
+		if (document.appsettings.views[i]==idx){
+			found=true;
+			break;
+		}
+	}
+	
+	if (!found){
+		salert('The current tab cannot be pushed to the QuickList view');
+		return;	
+	}
+	
+	closetab(tabkey);
+	if (!document.appsettings.quicklist) setquicklist(true);
+	showview(idx);
+			
+}
+

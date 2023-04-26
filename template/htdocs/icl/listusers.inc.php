@@ -59,8 +59,9 @@ function listusers(){
 		<?php makehelp('userlistlookup','listviewlookup',1);?>
 	</form>
 
-	<div style="padding-top:10px;">
-	<a class="recadder" onclick="closetab('user_new');addtab('user_new','<img src=&quot;imgs/t.gif&quot; class=&quot;ico-user&quot;><?php tr('list_user_add_tab');?>','newuser');"> <img src="imgs/t.gif" class="img-addrec"><?php tr('list_user_add');?></a>
+	<div style="padding-top:10px;position:relative;">
+		<a class="recadder" onclick="closetab('user_new');addtab('user_new','<img src=&quot;imgs/t.gif&quot; class=&quot;ico-user&quot;><?php tr('list_user_add_tab');?>','newuser');"> <img src="imgs/t.gif" class="img-addrec"><?php tr('list_user_add');?></a>
+		<span class="list_to_dash" style="position:absolute;top:3px;right:5px;" onclick="quicklist_to_dash();">&#11122;</span>
 	</div>
 </div>
 

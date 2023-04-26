@@ -8,8 +8,10 @@ function dashusers(){
 	header('newtitle: Users');
 ?>
 <div class="section userdash">
-	<div class="sectiontitle">Users</div>
 	
+	<span class="dash_to_list" onclick="dash_to_quicklist();">&mapstoleft;</span>
+		
+	<div class="sectiontitle">Users</div>
 	
 		<?php listusers(); ?>
 	

@@ -13,6 +13,18 @@ use toolbar.psp to generate toolbar.gif
 
 .watchonly{display:none;}
 
+.list_to_dash, .dash_to_list{
+	cursor:pointer;font-size:24px;
+	color:#6096AC;opacity:0.6;transition:color 100ms,opacity 100ms;
+}
+
+.list_to_dash:hover, .dash_to_list:hover{color:#3DE527;opacity:1;}
+
+.list_to_dash{display:none;}
+#leftview .list_to_dash{display:inline;}
+
+.afloat .dash_to_list{display:none;}
+
 .inputrow input[type=checkbox],.inputrow input[type=radio]{vertical-align:middle;}
 .inputrow label{vertical-align:middle;}
 

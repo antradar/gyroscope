@@ -1,3 +1,8 @@
+*20.3
+- quicklist to tab dash switching
+- list-tab collision callout
+- tab-list collision avoidance
+
 *20.2
 - collapsible left view (quicklist view)
 - moveable Unbound Lookup View (ULV)
