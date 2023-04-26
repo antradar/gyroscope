@@ -396,6 +396,7 @@ function showview(idx,lazy,force,params,func,bingo,submenu){
   //instead of closing, keep the tab, skip the list view, and call out the tab
   var dashtabid=gettabid('dash_'+idx.replace(/\./g,'__'));
   if (dashtabid>=0){
+	showtab(document.tabkeys[dashtabid]);
 	callout_section(document.tabtitles[dashtabid],true);
 	return;	  
   }
