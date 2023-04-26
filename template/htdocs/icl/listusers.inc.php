@@ -100,11 +100,11 @@ function listusers(){
 		ob_start();
 ?>
 <div class="listpager">
-<a href=# class="hovlink" onclick="ajxpgn('userlist',document.appsettings.codepage+'?cmd=slv_core__users&page=<?php echo $page-1;?>&mode=embed&key='+encodeHTML(gid('userkey').value));return false;"><img src="imgs/t.gif" class="img-pageleft">Prev</a>
+<a href=# class="hovlink" onclick="ajxpgn('userlist',document.appsettings.codepage+'?cmd=slv_core__users&page=<?php echo $page-1;?>&mode=embed&key='+encodeHTML(gid('userkey').value)+gid('searchfilter_user').value);return false;"><img src="imgs/t.gif" class="img-pageleft">Prev</a>
 &nbsp;
-<a class="pageskipper" onclick="var pagenum=sprompt('Go to page:',<?php echo $page+1;?>);if (pagenum==null||parseInt(pagenum,0)!=pagenum) return false;ajxpgn('userlist',document.appsettings.codepage+'?cmd=slv_core__users&key='+encodeHTML(gid('userkey').value)+'&page='+(pagenum-1)+'&mode=embed');return false;"><?php echo $page+1;?></a> of <?php echo $maxpage+1;?>
+<a class="pageskipper" onclick="var pagenum=sprompt('Go to page:',<?php echo $page+1;?>);if (pagenum==null||parseInt(pagenum,0)!=pagenum) return false;ajxpgn('userlist',document.appsettings.codepage+'?cmd=slv_core__users&key='+encodeHTML(gid('userkey').value)+gid('searchfilter_user').value+'&page='+(pagenum-1)+'&mode=embed');return false;"><?php echo $page+1;?></a> of <?php echo $maxpage+1;?>
 &nbsp;
-<a href=# class="hovlink" onclick="ajxpgn('userlist',document.appsettings.codepage+'?cmd=slv_core__users&page=<?php echo $page+1;?>&mode=embed&key='+encodeHTML(gid('userkey').value));return false;">Next<img src="imgs/t.gif" class="img-pageright"></a>
+<a href=# class="hovlink" onclick="ajxpgn('userlist',document.appsettings.codepage+'?cmd=slv_core__users&page=<?php echo $page+1;?>&mode=embed&key='+encodeHTML(gid('userkey').value)+gid('searchfilter_user').value);return false;">Next<img src="imgs/t.gif" class="img-pageright"></a>
 </div>
 <?php		
 		$pager=ob_get_clean();

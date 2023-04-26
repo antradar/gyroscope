@@ -14,7 +14,7 @@ _inline_lookupuser=function(d){
 	d.lastkey=d.value;	
 	if (d.timer) clearTimeout(d.timer);
 	d.timer=setTimeout(function(){
-		ajxpgn('userlist',document.appsettings.fastlane+'?cmd=slv_core__users&mode=embed&key='+encodeHTML(d.value));
+		ajxpgn('userlist',document.appsettings.fastlane+'?cmd=slv_core__users&mode=embed&key='+encodeHTML(d.value)+gid('searchfilter_user').value);
 	},200
 	);	
 }

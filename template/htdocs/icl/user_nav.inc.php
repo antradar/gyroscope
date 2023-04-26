@@ -10,7 +10,7 @@ function user_countfield($fieldname,$limit=null){
 
 	// if ($fieldname=='expression_field') $qfieldname=" some_expression as mapped_field ";
 	
-	$query="select count(distinct users.userid) as c, $qfieldname from ".TABLENAME_USERS;
+	$query="select count(*) as c, $qfieldname from ".TABLENAME_USERS;
 			
 		
 	$query.=" where 1 ";
@@ -624,13 +624,13 @@ function user_showrange($container,$cmd, $title,$fieldname){
 				
 	$params=array();
 	
-	$query="select count(distinct users.userid) as c,min($bucketsize*floor($fieldname/$bucketsize)) as cmin, max($bucketsize*floor($fieldname/$bucketsize+1)) as cmax 
+	$query="select count(*) as c,min($bucketsize*floor($fieldname/$bucketsize)) as cmin, max($bucketsize*floor($fieldname/$bucketsize+1)) as cmax 
 		from ".TABLENAME_USERS." where 1 ".$sqlfilters['clauses'];
 	$query.=" group by floor($fieldname/$bucketsize) ";
 	
 	if (!$filtered&&isset($ranges)){//no range filter applied, use custom bucket ranges if defined
 		
-		$query="select count(distinct users.userid) as c,
+		$query="select count(*) as c,
 		case
 		";
 		foreach ($ranges as $range){
@@ -736,7 +736,7 @@ function user_showdaterange($container,$cmd, $title,$fieldname,$subdims=null){ /
 	switch ($dimmode){
 		//case 'a': $tally='avg(...)'; break;
 		//case 's': $tally='sum(...)'; break;
-		default: $tally='count(distinct users.userid)';	
+		default: $tally='count(*)';	
 	}		
 
 // start inline breadcrumb		
@@ -1240,7 +1240,7 @@ function user_shownavs($container, $cmd){
 	if (count($vfilters)>0||count($nbasefilter)>0){
 		$strfilters=user_strfilters($basefilter,$nbasefilter);
 	?>
-		<button onclick="nav_setfilter('<?php echo $container;?>','userkey','<?php echo $cmd;?>','');">Clear Filters</button>
+		<button onclick="gid('userkey').value='';nav_setfilter('<?php echo $container;?>','userkey','<?php echo $cmd;?>','');">Clear Filters</button>
 	<?php		
 	}	
 ?>
