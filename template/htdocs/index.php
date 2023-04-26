@@ -85,9 +85,10 @@ document.appsettings={codepage:'<?php echo $codepage;?>',binpages:<?php echo jso
 		<div id="lkvs"></div>
 		<div id="lkvtitle">
 			<a id="lkvt"></a><img id="lkvx" width="29" height="32" src="imgs/t.gif" onclick="hidelookup();">
-			<?php makehelp('lookupview','lookupview',1);?>
+			
 		</div>
 		<div id="lkvc"></div>
+		<?php makehelp('lookupview','lookupview',1);?>
 	</div>
 	<?php makehelp('mainleftview','listviewpos',1);?>
 	
