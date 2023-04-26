@@ -7,6 +7,8 @@ body,textarea,td, .img-mg{font-family:verdana, tahoma, arial;font-size:13px;-web
 .img-mg,.sectiontitle,
 .listitem,.inplong, .inp, .inpmed, .inpshort, .inpxshort{font-family:Arial,serif;}
 
+.list_to_dash, .dash_to_list{display:none !important;}
+
 .wideview{}
 .wideviewmenu_{}
 .wideviewmenu{display:none;}
