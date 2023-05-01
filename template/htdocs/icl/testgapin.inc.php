@@ -18,7 +18,8 @@ function testgapin(){
 	
 	$gakey=$myrow['gakey'];
 		
-	if ($gakey!='') $gakey=decstr($gakey,GYROSCOPE_PROJECT.'gakey-'.COLNAME_GSID.'-'.$gsid.'-'.$userid,1); //remote key
+	$enc_remote=0; //set $remote=1 in production, sync with showgaqr.inc.php
+	if ($gakey!='') $gakey=decstr($gakey,GYROSCOPE_PROJECT.'gakey-'.COLNAME_GSID.'-'.$gsid.'-'.$userid,$enc_remote); //remote key
 
 	$pin=str_replace(array(' ','-','.'),'',SQET('pin'));
 	

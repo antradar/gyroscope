@@ -16,7 +16,7 @@ function showgaqr($userid){
 	$rs=sql_prep($query,$db,array($userid,$gsid));
 	$myrow=sql_fetch_assoc($rs);
 	
-	$enc_remote=0; //set $remote=1 in production
+	$enc_remote=0; //set $remote=1 in production, sync with testgapin.inc.php
 		
 	$usega=$myrow['usega'];
 	$gakey=$myrow['gakey'];

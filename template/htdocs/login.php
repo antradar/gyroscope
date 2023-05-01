@@ -203,7 +203,9 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['gyroscope
 			if ($smskey=='') $usesms=0;
 			if ($gakey=='') $usega=0;
 
-			if ($usega&&$gakey!='') $gakey=decstr($gakey,GYROSCOPE_PROJECT.'gakey-'.COLNAME_GSID.'-'.$gsid.'-'.$userid,1); //remote key
+			$enc_remote=0; //sync with showgaqr, testgapin
+
+			if ($usega&&$gakey!='') $gakey=decstr($gakey,GYROSCOPE_PROJECT.'gakey-'.COLNAME_GSID.'-'.$gsid.'-'.$userid,$enc_remote); //remote key
 						
 			$gaokay=1;
 			
@@ -698,8 +700,14 @@ function tfa_callback(rq){
 	if (tfas!=null&&tfas!=''){
 		tfa=true;
 		var tfaparts=tfas.split(',');
+		var popyubi=false;
+
 		for (var i=0;i<tfaparts.length;i++){
 			var part=tfaparts[i];
+			if (part=='yubi'){
+				popyubi=true;
+				continue;	
+			}
 			if (gid('tfa_'+part)) {
 				gid('tfa_'+part).style.display='block';
 				if (part=='keyfile') {
@@ -710,7 +718,8 @@ function tfa_callback(rq){
 				if (focalpoint!=null&&focalpoint!=''&&gid(focalpoint)) gid(focalpoint).focus();
 			}
 			
-		}	
+		}
+		if (popyubi) yubilogin();	
 	}
 	return tfa;
 }

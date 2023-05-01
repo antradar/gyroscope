@@ -72,8 +72,10 @@ if ($myrow=sql_fetch_array($rs)){
 	
 	$userid=$myrow['userid'];
 		
-		
 	$needcert=$myrow['needcert'];
+
+	$useyubi=$myrow['useyubi'];
+	$yubimode=$myrow['yubimode'];	
 	
 } else {
 	password_hash($dbsalt.time(),PASSWORD_DEFAULT,array('cost'=>PASSWORD_COST));
@@ -141,6 +143,10 @@ if ($needcert){
 if ($usega){
 	array_push($tfas,'ga');
 	array_push($foci,'gapin');
+}
+
+if ($useyubi&&$yubimode==0){
+	array_push($tfas,'yubi');	
 }
 
 if (count($tfas)>0){
