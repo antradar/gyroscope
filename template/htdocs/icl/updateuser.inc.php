@@ -75,7 +75,7 @@ function updateuser(){
 	foreach ($gnames as $idx=>$gname){
 		if (!isset($userroles[$gname])) unset($gnames[$idx]);
 		if (in_array($gname,$userrolelocks)){
-			if (!$user['groups'][$gname]&&!$mygroupnames[$gname]) unset($gnames[$idx]);
+			if (!isset($user['groups'][$gname])&&!isset($mygroupnames[$gname])) unset($gnames[$idx]);
 		}
 	}
 
