@@ -562,7 +562,7 @@ if ($dark==0){
 			
 		<div  style="text-align:center;">
 			<input id="loginbutton" type="submit" value="<?php echo $passreset?_tr('change_password'):_tr('signin');?>">
-			<a style="display:none<?php if (!$passreset) echo 'a';?>;" id="fingerprint" onclick="yubilogin();"><img src="imgs/fingerprint.png"></a>
+			<a style="display:none<?php if (!$passreset) echo 'a';?>;" id="fingerprint" onclick="yubilogin();return false;" href=#><img src="imgs/fingerprint.png" border="0"></a>
 		</div>
 		<div id="tfa_cert" style="display:none;">
 		<div style="text-align:center;padding-top:20px;">Smart Card Needed</div>
