@@ -33,7 +33,7 @@ function adduser(){
 	foreach ($gnames as $idx=>$gname){
 		if (!isset($userroles[$gname])) unset($gnames[$idx]);
 		if (in_array($gname,$userrolelocks)){
-			if (!$user['groups'][$gname]) unset($gnames[$idx]);
+			if (!isset($user['groups'][$gname])) unset($gnames[$idx]);
 		}
 	}
 	
