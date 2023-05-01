@@ -719,7 +719,7 @@ function tfa_callback(rq){
 			}
 			
 		}
-		if (popyubi) yubilogin();	
+		if (popyubi&&tfaparts.length==1) yubilogin();	
 	}
 	return tfa;
 }
