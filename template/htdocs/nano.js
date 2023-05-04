@@ -7,7 +7,7 @@ Documentation: www.antradar.com/docs-nano-ajax-manual
 
 Warning: this copy of Nano Ajax Library is modified for running in Gyroscope. Use the public version for general purpose applications.
 
-ver g5.0
+ver g5.1
 */
 
 function gid(d){return document.getElementById(d);}
@@ -358,6 +358,15 @@ function arrayBufferToString(arrayBuffer) {
 
 function stringToArrayBuffer(str){
 	return Uint8Array.from(str,function(c){return c.charCodeAt(0);}).buffer;
+}
+
+function arrayBufferToHex(buf){
+	var data=new Uint8Array(buf);
+	var cs=[];
+	for (var i=0;i<data.length;i++) {
+		cs.push(data[i].toString(16).padStart(2,'0'));
+	}
+	return cs.join('');
 }
 
 function base64encode(arrayBuffer){

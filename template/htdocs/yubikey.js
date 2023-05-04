@@ -14,17 +14,17 @@ addyubikey=function(challenge,userid,login,username){
 	}).then(
 		function(raw){
 			var att={
-				id:base64encode(raw.rawId),
+				id:arrayBufferToHex(raw.rawId),
 				clientDataJSON:arrayBufferToString(raw.response.clientDataJSON),
-				attestationObject:base64encode(raw.response.attestationObject)
+				attestationObject:arrayBufferToHex(raw.response.attestationObject)
 			}
 			if (att.id!=''){
 
 				var params=[];
-				params.push('id='+encodeHTML(att.id));
+				params.push('id='+att.id);
 				params.push('clientdata='+encodeHTML(att.clientDataJSON));
 				params.push('att='+att.attestationObject);
-
+				
 				ajxpgn('myaccount_yubikeys',document.appsettings.codepage+'?cmd=addyubikey',0,0,params.join('&'));
 			} else {
 				salert('Failed to add credential');
@@ -55,17 +55,17 @@ testyubikey=function(challenge,attids){
 	}).then(
 		function(raw){
 			var ass={ //assertion
-				id:base64encode(raw.rawId),
+				id:arrayBufferToHex(raw.rawId),
 				clientDataJSON:arrayBufferToString(raw.response.clientDataJSON),
-				userHandle:base64encode(raw.response.userHandle),
-				signature:base64encode(raw.response.signature),
-				authenticatorData:base64encode(raw.response.authenticatorData)
+				//userHandle:arrayBufferToHex(raw.response.userHandle),
+				signature:arrayBufferToHex(raw.response.signature),
+				authenticatorData:arrayBufferToHex(raw.response.authenticatorData)
 			}
 
 			var params=[];
-			params.push('id='+encodeHTML(ass.id));
+			params.push('id='+ass.id);
 			params.push('clientdata='+encodeHTML(ass.clientDataJSON));
-			params.push('signature='+encodeHTML(ass.signature));
+			params.push('signature='+ass.signature);
 			params.push('auth='+ass.authenticatorData);
 
 			ajxpgn('myaccount_yubikeytest',document.appsettings.codepage+'?cmd=testyubikey',0,0,params.join('&'));

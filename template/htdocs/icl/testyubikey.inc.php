@@ -7,13 +7,14 @@ function testyubikey(){
 	
 	$user=userinfo();
 	$userid=$user['userid'];
-
-	$attid=SQET('id');
-	$clientdata=SQET('clientdata');
-	$signature=strtr(SQET('signature'),' ','+');
-	$clientauth=strtr(SQET('auth'),' ','+');
 	
-	//$clientobj=json_decode($clientdata,1);
+	$attidbin=hex2bin(SQET('id'));
+	$attid=base64_encode($attidbin);
+	$clientdata=SQET('clientdata');
+	$signature=base64_encode(hex2bin(SQET('signature')));
+	$clientauth=base64_encode(hex2bin(SQET('auth')));
+			
+	$clientobj=json_decode($clientdata,1);
 	//echo '<pre>'; print_r($clientobj); echo '</pre>';
 	
 	$query="select * from ".TABLENAME_YUBIKEYS." where userid=? and attid=?";

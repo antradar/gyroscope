@@ -9,6 +9,9 @@ DER routines based on Lukas Buchs' implementation
 https://github.com/lbuchs/WebAuthn/blob/master/src/Attestation/AuthenticatorData.php
 MIT License
 
+CBOR Debugger:
+https://cbor.nemo157.com/
+
 Rewritten by Schien Dong
 
 */
@@ -97,7 +100,7 @@ function cbor_parse_map($buf,&$offset,$val){
 function cbor_parse_authdata($data){
 	
 	$jsoffset=0;
-	if (strlen($data)<196) $jsoffset=196-strlen($data);
+	if (strlen($data)<152) $jsoffset=152-strlen($data);
 	
 	
 	$rpidhash=substr($data,0,32);

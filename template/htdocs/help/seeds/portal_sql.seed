@@ -28,7 +28,7 @@ CREATE TABLE #primaryfield#users (
   dispname varchar(255) NOT NULL DEFAULT '',
   active tinyint(1) unsigned NOT NULL DEFAULT '1',
   virtualuser tinyint(1) unsigned NOT NULL DEFAULT '0',
-  quicklist tinyint(3) unsigned DEFAULT '0',
+  quicklist tinyint(3) unsigned DEFAULT '1',
   darkmode tinyint(3) unsigned DEFAULT '0',
   password varchar(255) NOT NULL DEFAULT '',
   passreset tinyint(1) unsigned NOT NULL DEFAULT '0',

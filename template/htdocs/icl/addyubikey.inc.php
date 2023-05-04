@@ -10,10 +10,13 @@ function addyubikey(){
 	$user=userinfo();
 	$userid=$user['userid'];
 		
-	$attid=SQET('id');
+	$attidbin=hex2bin(SQET('id'));
+	$attid=base64_encode($attidbin);
+	
+	$attbin=hex2bin(SQET('att'));
+	$att=base64_encode($attbin);
+	
 	$clientdata=SQET('clientdata');
-	$rawatt=strtr(SQET('att'),' ','+');
-	$att=base64_decode($rawatt);
 	
 	$clientobj=json_decode($clientdata,1);	
 	//echo '<pre>'; print_r($clientobj); echo '</pre>';
@@ -24,7 +27,7 @@ function addyubikey(){
 	if ($challenge!=$challenge_) apperror('Invalid credential challenge');
 	
 	$offset=0;
-	$dec=cbor_decode($att,$offset);
+	$dec=cbor_decode($attbin,$offset);
 	
 	//echo '<pre>'; print_r($dec); echo '</pre>';
 	

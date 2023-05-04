@@ -1,6 +1,6 @@
 <html>
 <head>
-<link href="https://use.fontawesome.com/releases/v6.0.0/css/all.css" rel="stylesheet">
+<link href="https://use.fontawesome.com/releases/v6.1.1/css/all.css" rel="stylesheet">
 </head>
 <body>
 <div style="padding:20px 0;">
