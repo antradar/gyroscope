@@ -10,7 +10,7 @@ header('Content-Type: text/css');
 .img-addrec, .img-del, .img-save, .img-tick, .img-xls, .img-pdf, .img-speechrecog, .img-home, .img-gsclip,
 .img-tracker,.img-tracker-light,.img-clock, .img-settings, .img-settings-light, .img-chats, .img-chats-light,
 .img-helptopics, .img-helptopics-light,.img-salesforce, .img-salesforce-light, .img-sap, .img-sap-light,
-.sectiontitle:hover .edithover,
+.sectiontitle a:hover .edithover,
 .img-closeall, .img-speechrecog, .img-reports, .img-reports-light, .img-xls, .img-pdf,
 .img-pageleft, .img-pageright, .img-search, #tabexpander, #tabexpander.afloat
 {background-image:url(imgs/toolbar_hd.gif);background-size:768px 64px;}	

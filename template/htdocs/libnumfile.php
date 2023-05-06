@@ -24,7 +24,7 @@ function numfile_put_contents($stem,$ext,$basedir,$data,$perfolder=100){
 function numfile_make_path($stem,$basedir,$perfolder=100,$createfolder=0){
 	if (!is_numeric($stem)) throw new ErrorException('not a numeric stem');
 		
-	$dir=trim($basedir,'/');
+	$dir=rtrim($basedir,'/');
 	$level1=floor($stem/$perfolder/$perfolder);
 	$level2=floor($stem/$perfolder);
 

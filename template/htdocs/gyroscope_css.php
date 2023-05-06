@@ -278,8 +278,8 @@ acronym.help{cursor:help;border-bottom:dotted 1px #4444ee;}
 
 .sectiontitle{font-weight:bold;font-size:18px;margin-bottom:20px;}
 
-.sectiontitle .edithover{display:inline-block;width:16px;height:16px;background:transparent;margin-left:5px;transition:margin 50ms;}
-.sectiontitle:hover .edithover{margin-left:0;background:transparent url(imgs/toolbar.gif) no-repeat -704px 0;}
+.sectiontitle a .edithover{display:inline-block;width:16px;height:16px;background:transparent;margin-left:5px;transition:margin 50ms;}
+.sectiontitle a:hover .edithover{margin-left:0;background:transparent url(imgs/toolbar.gif) no-repeat -704px 0;margin-right:5px;}
 
 .sectiontitle a{
 	-webkit-touch-callout: none;

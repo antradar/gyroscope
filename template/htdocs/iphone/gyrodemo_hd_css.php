@@ -18,7 +18,7 @@ header('Content-Type: text/css');
 sync background size with toolbar_hd_css.php
 */
 
-.sectiontitle .edithover{background-image:url(../imgs/toolbar_hd.gif);background-size:768px 64px;}
+.sectiontitle a .edithover{background-image:url(../imgs/toolbar_hd.gif);background-size:768px 64px;}
 
 <?php
 $dark=isset($_GET['dark'])?intval($_GET['dark']):0;
@@ -41,7 +41,7 @@ if ($dark==0||$dark==1){
 	.img-calel, .img-caler, 
 	.img-help, .img-print{background-image:url(dmsprite_hd.png);}
 
-	.sectiontitle .edithover{filter:invert(1);}
+	.sectiontitle a .edithover{filter:invert(1);}
 	
 <?php	
 
