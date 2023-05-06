@@ -115,13 +115,13 @@ function showlookup(){
 	lkv.showing=true;
 	
 	if (document.fsshowing||document.iphone_portrait){
-		lkv.style.top='20px';
-		var w=cw()-40;
+		lkv.style.top='55px';
+		var w=cw()-70;
 		if (w>400) w=400;
 		lkv.style.width=w+'px';
 		lkv.style.left=(cw()-w)/2+'px';
 
-		var h=ch()-40;
+		var h=ch()-70;
 		lkv.style.height=h+'px';
 		gid('lkvc').style.height=h-24+'px';
 		
