@@ -866,7 +866,6 @@ function redocktab(){
 		document.tabafloat=null;
 		if (!document.fsshowing&&document.appsettings.quicklist) lkv_remount();
 		rescaletabs();
-		
 		if (gid('tabexpander')) {
 			gid('tabexpander').style.display='block';
 			gid('tabexpander').className='';
@@ -882,7 +881,27 @@ function toggletabdock(){
 	if (document.currenttab>=document.tabcount) return;
 	var tab=document.tabviews[document.currenttab];
 	
-	if (!tab.afloat) undocktab(); else redocktab();		
+	if (!tab.afloat) undocktab(); else redocktab();
+	
+	 var os=document.body.getElementsByTagName('div');
+
+	//also in viewport.js: scaleall
+	
+	var idh=ch();
+	
+	setTimeout(function(){ 
+		var menutop=0;
+		if (document.tabviews[document.currenttab].offsetParent) menutop=document.tabviews[document.currenttab].offsetParent.offsetTop;
+		 	 
+		for (var i=0;i<os.length;i++){
+			var node=os[i];
+			if (node.scalech) node.style.height=(idh-node.scalech)+'px';
+			if (node.scalerch){
+				node.style.height=(idh-menutop-node.scalerch)+'px';   
+			}
+		}
+	},210);
+  	 
 }
 
 
@@ -987,8 +1006,8 @@ function marktabchanged(tabkey,hide){
 	if (hide) mode='none';
 	if (gid('changebar_'+tabkey)) gid('changebar_'+tabkey).style.display=mode;
 	else return;
-
-	if (document.appsettings.autosave==null) return;
+	
+	if (document.appsettings.autosave==null&&!gid('autosavetimeout_'+tabkey)) return;
 		
 	var tabid=gettabid(tabkey);
 	var tab=document.tabtitles[tabid];

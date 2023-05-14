@@ -150,9 +150,16 @@ function scaleall(root){
 	gid('mainsearchview_').style.maxHeight=(idh-150)+'px';
   }	  
 
+  var menutop=0;
+  if (document.tabviews[document.currenttab].offsetParent) menutop=document.tabviews[document.currenttab].offsetParent.offsetTop;
+  
+  //also in tabs.js: toggletabdock
   for (var i=0;i<os.length;i++){
     var node=os[i];
     if (node.scalech) node.style.height=(idh-node.scalech)+'px';
+    if (node.scalerch){
+	 	node.style.height=(idh-menutop-node.scalerch)+'px';   
+    }
   }
   
   if (gid('gschat_chatbox')){
