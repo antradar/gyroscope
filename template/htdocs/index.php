@@ -95,7 +95,7 @@ document.appsettings={codepage:'<?php echo $codepage;?>',binpages:<?php echo jso
 	<div id="leftviewcloser" onclick="resetleftviews();"><img src="imgs/t.gif"></div>
 </div></div>
 <div id="lefticons" class="<?php if ($uiconfig['toolbar_position']=='left') echo 'solid';?>" scale:cw="0">
-<div style="margin-top:<?php if ($uiconfig['toolbar_position']=='left') echo '0'; else echo '10px';?>;margin-left:<?php if ($uiconfig['toolbar_position']=='left') echo '10'; else echo '20px';?>px;">
+<div style="margin-top:<?php if ($uiconfig['toolbar_position']=='left') echo '0'; else echo '10px';?>;margin-left:<?php if ($uiconfig['toolbar_position']=='left') echo '10px'; else echo '20px';?>;">
 <span class="iconbuttons">
 <!-- usually there is one entity icon per list view -->
 <input id="anchor_top" title="Top View" style="position:absolute;top:-60px;left:-100px;width:20px;">

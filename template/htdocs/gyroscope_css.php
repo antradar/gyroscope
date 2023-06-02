@@ -298,10 +298,10 @@ input,textarea{border:solid 1px #999999;}
 .minicalenext{position:absolute;display:block;top:0px;right:5px;}
 
 .iconbuttons img{border:none;}
-.iconbuttons a{display:block;float:left;text-align:center;margin-right:20px;font-size:10px;}
+.iconbuttons a{display:block;float:left;text-align:center;margin-right:20px;font-size:10px;transition:opacity 400ms; -webkit-transition:opacity 400ms;}
 .iconbuttons a, .iconbuttons a:hover, .iconbuttons a:visited, .iconbuttons a:link{color:#F2F2F2;text-decoration:none;}
 
-.iconbuttons a:hover{opacity:0.6; filter:alpha(opacity=60);transition:opacity 400ms; -webkit-transition:opacity 400ms;}
+.iconbuttons a:hover{opacity:0.6; filter:alpha(opacity=60);}
 .iconbuttons .noblink, .iconbuttons .noblink:hover{opacity:1;filter:none;cursor:default;}
 
 .labelbutton{font-size:11px;background-color:#444444;padding:1px 4px;border-radius:2px;color:#ffffff;white-space:nowrap;}
