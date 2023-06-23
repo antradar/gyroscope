@@ -729,8 +729,8 @@ function setquicklist(quicklist,noupdate){
 		lkv_dismount();
 		
 		if (document.appsettings.uiconfig.toolbar_position=='top'){
-			gid('tooltitle').style.left='-260px';
-			gid('leftview').style.left='-260px';
+			gid('tooltitle').style.left='-261px';
+			gid('leftview').style.left='-261px';
 			
 			gid('tabtitles').style.left='20px';
 			gid('tabviews').style.left='20px';

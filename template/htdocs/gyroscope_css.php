@@ -316,7 +316,7 @@ input,textarea{border:solid 1px #999999;}
 .lookupview #timepicker{height:200px;overflow:auto;}
 .minilookup .closer{position:absolute;top:3px;right:20px;line-height:16px;}
 
-#leftviewcloser{display:none;position:absolute;top:-30px;right:0;cursor:pointer;padding:8px;}
+#leftviewcloser{display:none;position:absolute;top:-31px;right:0;cursor:pointer;padding:8px;}
 #leftviewcloser img{dislay:block;width:9px;height:9px;background:transparent url(imgs/sprite.png) -301px -31px;}
 
 .clear{clear:both;}

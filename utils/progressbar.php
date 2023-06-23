@@ -9,7 +9,7 @@ function progressbar($idx,$max,$w=50){
 		$base[$i+1]='=';
 	}	
 
-	$base[$wstart+1]='>';
+	$base[intval($wstart+1)]='>';
 
 	$strprogress=' '.round(($progress)*100).'% ';
 
@@ -17,7 +17,7 @@ function progressbar($idx,$max,$w=50){
 	$len=strlen($strprogress);
 	$start=floor(($w-$len)/2);
 	for ($i=0;$i<$len;$i++){
-		$base[$start+$i+1]=$strprogress[$i];
+		$base[intval($start+$i+1)]=$strprogress[$i];
 	}
 
 	$base[$w+1]=']';
