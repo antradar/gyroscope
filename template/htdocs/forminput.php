@@ -439,7 +439,7 @@ function logaction($message,$rawobj=null,$syncobj=null,$gsid=0,$trace=null){
 			$qs=array();
 			$params=array();
 			
-			$query="insert into traces (tracedate,alogid,trace".COLNAME_GSID.",traceuserid,tablename,recid,varname,txtval) values ";
+			$query="insert into traces (tracedate,alogid,tracegsid,traceuserid,tablename,recid,varname,txtval) values ";
 			foreach ($txtvals as $k=>$v){
 				array_push($qs,"(?,?,?,?,?,?,?,?)");
 				array_push($params,$now,$alogid,$gsid,$userid,$trace['table'],intval($trace['recid']),$k,$v);	
@@ -453,7 +453,7 @@ function logaction($message,$rawobj=null,$syncobj=null,$gsid=0,$trace=null){
 			$qs=array();
 			$params=array();
 			
-			$query="insert into traces (tracedate,alogid,trace".COLNAME_GSID.",traceuserid,tablename,recid,varname,numval) values ";
+			$query="insert into traces (tracedate,alogid,tracegsid,traceuserid,tablename,recid,varname,numval) values ";
 			foreach ($numvals as $k=>$v){
 				array_push($qs,"(?,?,?,?,?,?,?,?)");
 				array_push($params,$now,$alogid,$gsid,$userid,$trace['table'],intval($trace['recid']),$k,$v);	

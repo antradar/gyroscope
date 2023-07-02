@@ -344,7 +344,10 @@ function addtab(key,title,params,loadfunc,data,opts){
 		var newtitle=rq.getResponseHeader('newtitle');
 		if (newtitle!=null&&newtitle!=''){
 			settabtitle(key,decodeURIComponent(newtitle));	
-		}	       
+		}
+
+		var newloadfunc=rq.getResponseHeader('newloadfunc');
+		if (newloadfunc!=null&&newloadfunc!='') loadfunc=function(){eval(newloadfunc)};	       
 	      
 		var parenttab=rq.getResponseHeader('parenttab');
 		if (parenttab!=null&&parenttab!='') {		
