@@ -269,6 +269,7 @@ addtab('welcome','<?php tr('tab_welcome');?>','wk',null,null,{noclose:1,bingo:fa
 setInterval(authpump,60000); //check if needs to re-login; comment this out to disable authentication
 
 skipconfirm=function(){
+	if (document.websocket) document.websocket.onclose=null;
 	if (document.confirmskipper) clearTimeout(document.confirmskipper);
 	window.onbeforeunload=null;	
 	document.confirmskipper=setTimeout(function(){

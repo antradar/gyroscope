@@ -151,7 +151,7 @@ if (isset($roundwatchframe)&&$roundwatchframe){
 	<?php 
 	if (isset($roundwatchframe)&&$roundwatchframe){
 	?>
-	<div class="menuitem"><a id="watchlogout" href="login.php?from=<?php echo $_SERVER['PHP_SELF'];?><?php if (isset($_GET['watch'])) echo '&watch='.intval($_GET['watch']);?>"><img src="imgs/t.gif" width="16" height="16" class="admin-logout"></a></div>
+	<div class="menuitem"><a id="watchlogout" onclick="if (document.websocket) document.websocket.onclose=null;" href="login.php?from=<?php echo $_SERVER['PHP_SELF'];?><?php if (isset($_GET['watch'])) echo '&watch='.intval($_GET['watch']);?>"><img src="imgs/t.gif" width="16" height="16" class="admin-logout"></a></div>
 	<div class="menuitem"><a><img src="imgs/t.gif" style="width:10px;height:10px;"></a></div>	
 	<div class="menuitem"><a><img src="imgs/t.gif" style="width:10px;height:10px;"></a></div>	
 	<?php	
@@ -160,7 +160,7 @@ if (isset($roundwatchframe)&&$roundwatchframe){
 	
 	</div></div>
 	<span id="labellogin" style="display:none;"><?php echo $user['login'];?></span><span id="labeldispname" style="display:none;"><?php echo $user['dispname'];?></span>	
-	<a id="adminlogout" href="login.php?from=<?php echo $_SERVER['PHP_SELF'];?>" style="position:absolute;top:10px;right:10px;"><img alt="sign out" border="0" width="16" height="16" src="imgs/t.gif" class="admin-logout"></a>
+	<a id="adminlogout" onclick="if (document.websocket) document.websocket.onclose=null;" href="login.php?from=<?php echo $_SERVER['PHP_SELF'];?>" style="position:absolute;top:10px;right:10px;"><img alt="sign out" border="0" width="16" height="16" src="imgs/t.gif" class="admin-logout"></a>
 
 	<div id="mmastersearch">
 		<div class="mastersearchshell">
