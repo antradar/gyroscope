@@ -89,9 +89,9 @@ if (window.WebSocket){
 		var rest=Math.round(Math.random()*span)+500; //
 
 		console.log('web socket closed, restarting in '+rest+'ms. reconnect attempt #'+document.nomoresocket);
-		if (self.authpump) authpump();
+		
 		if (document.wsskey) wsskey=document.wsskey;		
-		setTimeout(function(){if (document.wsskey) wsskey=document.wsskey;document.wssid=null;wss_init(userid,wsuri,wsskey,gsid);},rest);	
+		setTimeout(function(){if (document.wsskey) wsskey=document.wsskey;document.wssid=null;wss_init(userid,wsuri,wsskey,gsid);if (self.authpump) authpump();},rest);	
 	}
 	
 } else {

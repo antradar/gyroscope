@@ -80,7 +80,7 @@ body{font-family:helvetica;}
 
 	</div></div>
 	<span id="labellogin" style="display:none;"><?php echo $user['login'];?></span><span id="labeldispname" style="display:none;"><?php echo $user['dispname'];?></span>	
-	<a href="login.php?from=<?php echo $_SERVER['PHP_SELF'];?>" style="position:absolute;top:20px;right:30px;"><img border="0" width="32" height="32" src="imgs/t.gif" class="admin-logout"></a>
+	<a onclick="if (document.websocket) document.websocket.onclose=null;" href="login.php?from=<?php echo $_SERVER['PHP_SELF'];?>" style="position:absolute;top:20px;right:30px;"><img border="0" width="32" height="32" src="imgs/t.gif" class="admin-logout"></a>
 </div><!-- toolicons -->
 <div id="pusher" style="width:100%;height:100px;"></div>
 

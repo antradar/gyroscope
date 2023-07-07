@@ -12,6 +12,7 @@ function wss_init(){
 	$userid=$user['userid'];
 	$gsid=$user['gsid'];
 	global $wssecret; //defined in auth.php
+	global $stablecf;
 		
 	$wsskey=md5($wssecret.$gsid.date('Y-n-j-H').$userid).'-'.$gsid.'-'.$userid;	
 	$wsuri='wss://localhost:9999/wss/dummy'; // wss:// in production; in nginx, set /wss/ to split protocol via "proxy_pass" and upgrade headers if needed
@@ -39,7 +40,7 @@ server{
 	$wshost=$_SERVER['HTTP_HOST'];
 	$wsport=$_SERVER['SERVER_PORT'];
 	$wsproto='ws';
-	if (isset($_SERVER['REQUEST_SCHEME'])&&$_SERVER['REQUEST_SCHEME']=='https') $wsproto='wss';
+	if ($stablecf||isset($_SERVER['REQUEST_SCHEME'])&&$_SERVER['REQUEST_SCHEME']=='https') $wsproto='wss';
 	$wsuri=$wsproto.'://'.$wshost.':'.$wsport.'/wss/dummy';
 
 ?>
