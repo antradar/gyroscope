@@ -1,4 +1,4 @@
-alter table #primaryrecords# add gstier tinyint unsigned default 0, add gsexpiry bigint unsigned;
+alter table #primaryrecords# add gstier tinyint unsigned default 0, add gsexpiry bigint unsigned, add gsslug varchar(50);
 
 CREATE TABLE #primaryfield#actionlog (
   alogid bigint(20) unsigned NOT NULL AUTO_INCREMENT,

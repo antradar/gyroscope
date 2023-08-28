@@ -12,7 +12,7 @@ showchat=function(chatid,maxmsgid,chatname){
 gschat_setautotrans=function(chatid){
 	var notrans=1;
 	if (gid('chatnotrans_'+chatid).checked) notrans=0;
-	ajxpgn('statusc',document.appsettings.binpage+'?cmd=setchatnotrans&chatid='+chatid+'&notrans='+notrans);
+	ajxpgn('statusc',document.appsettings.binpages[1]+'?cmd=setchatnotrans&chatid='+chatid+'&notrans='+notrans);
 }
 
 gschat_updatechatsettings=function(){
@@ -40,7 +40,7 @@ sendchat=function(chatid){
 	var atabid=gettabid('chat_'+chatid);
 	if (atabid>0) document.tabtitles[atabid].style.color='#000000';
 	
-	ajxpgn('chattransport_'+chatid,document.appsettings.binpage+'?cmd=sendchat&chatid='+chatid+'&from='+maxmsgid,0,0,'msg='+msg,function(rq){
+	ajxpgn('chattransport_'+chatid,document.appsettings.binpages[1]+'?cmd=sendchat&chatid='+chatid+'&from='+maxmsgid,0,0,'msg='+msg,function(rq){
 		gid('chatlines_'+chatid).innerHTML+=rq.responseText;
 		gid('chatlines_'+chatid).maxmsgid=parseInt(rq.getResponseHeader('maxmsgid'),10);
 	});			
@@ -63,7 +63,7 @@ loadchatpre=function(d,chatid,msgto){
 	d.parentNode.removeChild(d);
 	var omsg='';
 	//console.log(omsg);
-	ajxpgn('chatpreloader_'+chatid,document.appsettings.binpage+'?cmd=loadchatpre&chatid='+chatid+'&to='+msgto,0,0,null,function(rq){
+	ajxpgn('chatpreloader_'+chatid,document.appsettings.binpages[1]+'?cmd=loadchatpre&chatid='+chatid+'&to='+msgto,0,0,null,function(rq){
 		gid('chatpre_'+chatid).innerHTML=gid('chatpreloader_'+chatid).innerHTML+gid('chatpre_'+chatid).innerHTML;
 	});	
 }
@@ -71,7 +71,7 @@ loadchatpre=function(d,chatid,msgto){
 claimchat=function(chatid,chatname){
 	if (!sconfirm('Are you sure you want to claim this chat?')) return;
 			
-	ajxpgn('statusc',document.appsettings.binpage+'?cmd=claimchat&chatid='+chatid,0,0,null,function(){
+	ajxpgn('statusc',document.appsettings.binpages[1]+'?cmd=claimchat&chatid='+chatid,0,0,null,function(){
 		reloadview('codegen.chats');
 		closetab('chat_'+chatid)	
 		addtab('dashchats','Chat Sessions','dashchats',null,null,{bingo:1});
@@ -143,7 +143,7 @@ gschat_sethush=function(chatid){
 			
 		}
 	}
-	ajxpgn('statusc',document.appsettings.binpage+'?cmd=setchathush&chatid='+chatid+'&hush='+hush);
+	ajxpgn('statusc',document.appsettings.binpages[1]+'?cmd=setchathush&chatid='+chatid+'&hush='+hush);
 }
 
 linkchatcustomer=function(chatid){

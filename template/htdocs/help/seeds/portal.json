@@ -22,6 +22,10 @@
 	{"template":"portal_deluser","filename":"Host App: add icl/del#primaryfield#user.inc.php"},	
 	{"template":"portal_switches","filename":"modify myservices.php"},
 	{"template":"portal_serviceworker","filename":"modify service_worker.js"},
+	{"template":"portal_slug_newuser","filename":"modify icl/newuser.inc.php"},	
+	{"template":"portal_slug_adduser","filename":"modify icl/adduser.inc.php"},	
+	{"template":"portal_slug_showuser","filename":"modify icl/showuser.inc.php"},	
+	{"template":"portal_slug_updateuser","filename":"modify icl/updateuser.inc.php"},	
 	{"template":"portal_refresh","filename":"modify refresh.php"},
 	{"template":"portal_master","filename":"create a super #primaryfield# admin account","nocopy":1}
 	

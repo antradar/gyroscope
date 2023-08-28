@@ -1,0 +1,13 @@
+	global $db;
+	
+	$query="select gsslug from ".TABLENAME_GSS." where ".COLNAME_GSID."=?";
+	$rs=sql_prep($query,$db,$gsid);
+	$myrow=sql_fetch_assoc($rs);
+	$gsslug=$myrow['gsslug'];
+	
+	//$login=SGET('login');
+	$loginparts=explode('@',$login);
+	if ($loginparts[count($loginparts)-1]!=$gsslug) $login=$login.'@'.$gsslug;
+	
+	
+	

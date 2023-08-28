@@ -419,8 +419,8 @@ function logaction($message,$rawobj=null,$syncobj=null,$gsid=0,$trace=null){
 			$alogid=sql_insert_id($db,$rs);
 		} else {
 			if ($message!=''){//stream directly, but still log the main message
-				$query="insert into ".TABLENAME_ACTIONLOG." (userid,".COLNAME_GSID.",logname,logdate,logmessage,rawobj,wssdone,bulldozed) values (?,?,?,?,?,?,?,?)";
-				$rs=sql_prep($query,$db,array($userid,$gsid,$logname,$now,$message,$obj,1,$bulldozed));
+				$query="insert into ".TABLENAME_ACTIONLOG." (userid,".COLNAME_GSID.",logname,logdate,logmessage,rawobj,wssdone,bulldozed,rectype,recid) values (?,?,?,?,?,?,?,?,?,?)";
+				$rs=sql_prep($query,$db,array($userid,$gsid,$logname,$now,$message,$obj,1,$bulldozed,$rectype,$recid));
 				$alogid=sql_insert_id($db,$rs);
 			}	
 			streamaction($sid,$rectype,$recid,$gsid,$userid);
@@ -479,18 +479,19 @@ function phoneformat($phone){
 	
 }
 
-function timeformat($sec){
-	$sec_num = intval($sec);
+function timeformat($sec,$round=1,$radix=1){
+	if ($round) $sec_num = intval($sec); else $sec_num=$sec;
 	$hours = floor($sec_num / 3600);
 	$minutes = floor(($sec_num - ($hours * 3600)) / 60);
 	$seconds = $sec_num - ($hours * 3600) - ($minutes * 60);
 		
 	if ($hours   < 10) $hours = "0".$hours;
 	if ($minutes < 10) $minutes = "0".$minutes;
-	if ($seconds < 10) $seconds = "0".$seconds;
+	if ($seconds < 10) $seconds = "0".round($seconds*$radix)/$radix;
 	$time  = "$hours:$minutes:$seconds";
 	return $time;	
 }
+
 
 function duration_format($sec){
 	$sec=intval($sec);

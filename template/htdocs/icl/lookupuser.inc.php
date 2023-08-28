@@ -13,7 +13,7 @@ function lookupuser(){
 	
 	$params=array($gsid);
 	
-	$query="select * from users where gsid=? ";
+	$query="select * from ".TABLENAME_USERS." where ".COLNAME_GSID."=? ";
 	
 	$activeagents=array();
     $agentfilters='';

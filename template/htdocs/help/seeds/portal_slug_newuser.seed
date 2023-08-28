@@ -1,0 +1,19 @@
+	global $db;
+	$user=userinfo();
+	$gsid=$user['gsid'];
+
+	$query="select gsslug from ".TABLENAME_GSS." where ".COLNAME_GSID."=?";
+	$rs=sql_prep($query,$db,$gsid);
+	$myrow=sql_fetch_assoc($rs);
+	$gsslug=$myrow['gsslug'];
+	
+	//replace the "username" block with the following
+	
+	<div class="inputrow">
+		<div class="formlabel"><?php tr('username');?>:</div>
+		<input class="inpshort" id="login_new" 
+			onfocus="if (self.gsnotes_listclips) gsnotes_listclips('user');"
+			onblur="if (gid('dispname_new').value==''&&this.value!='') {var val=this.value.charAt(0).toUpperCase()+this.value.slice(1);gid('dispname_new').value=val;}"
+		> @<?php echo htmlspecialchars($gsslug);?>
+	</div>
+		

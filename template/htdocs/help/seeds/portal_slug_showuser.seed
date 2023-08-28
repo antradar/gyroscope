@@ -1,0 +1,16 @@
+	$query="select gsslug from ".TABLENAME_GSS." where ".COLNAME_GSID."=?";
+	$rs=sql_prep($query,$db,$gsid);
+	$myrow=sql_fetch_assoc($rs);
+	$gsslug=$myrow['gsslug'];
+	
+	//...
+	//$login=$myrow['login'];
+	$dlogin=preg_replace('/@'.$gsslug.'/','',$login);
+	
+	//replace the "username" block with the following
+	
+	<div class="inputrow">
+		<div class="formlabel"><?php tr('username');?>:</div>
+		<input class="inpshort" id="login_<?php echo $userid;?>" value="<?php echo htmlspecialchars($dlogin);?>" oninput="this.onchange();" onchange="marktabchanged('user_<?php echo $userid;?>');" onblur="if (gid('dispname_<?php echo $userid;?>').value==''&&this.value!='') {var val=this.value.charAt(0).toUpperCase()+this.value.slice(1);gid('dispname_<?php echo $userid;?>').value=val;}">
+		@<?php echo $gsslug;?>
+	</div>	

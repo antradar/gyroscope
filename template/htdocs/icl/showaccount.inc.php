@@ -62,7 +62,7 @@ function showaccount(){
 if (isset($user['groups']['chats'])){
 ?>
 <div class="inputrow">
-<input type="checkbox" id="accountcanchat" <?php if ($canchat) echo 'checked';?> onclick="document.appsettings.beepnewchat=this.checked;ajxpgn('statusc',document.appsettings.binpage+'?cmd=setcanchat&canchat='+(this.checked?1:0));"> <label for="accountcanchat">I'm available for a support chat</label>
+<input type="checkbox" id="accountcanchat" <?php if ($canchat) echo 'checked';?> onclick="document.appsettings.beepnewchat=this.checked;ajxpgn('statusc',document.appsettings.binpages[1]+'?cmd=setcanchat&canchat='+(this.checked?1:0));"> <label for="accountcanchat">I'm available for a support chat</label>
 </div>
 <?php	
 }
