@@ -1,10 +1,16 @@
 <?php
+include 'stripe.inc.php';
 
 function listsettings(){
 	global $db;
 	$user=userinfo();
 	$gsexpiry=intval($user['gsexpiry']);
-
+	
+	global $lang;
+	global $stripe_config;
+	
+	if (isset($stripe_config)) $stripe_pkey=$stripe_config['pkey_'.$stripe_config['mode']]; else $stripe_pkey='';
+	
 	header('listviewtitle:'.tabtitle(_tr('icon_settings')));
 ?>
 <div class="section">
@@ -23,11 +29,13 @@ function listsettings(){
 	
 	if (isset($user['groups']['creditcards'])){
 	?>
-	<div class="listitem"><a onclick="ajxjs(<?php jsflag('addcreditcard');?>,'creditcards.js');addtab('creditcards','Credit Cards','showcreditcards');">Credit Cards</a></div>
 	
 	<?php if ($gsexpiry!=0){?>	
 	<div class="listitem"><a onclick="ajxjs(<?php jsflag('showgssubscription');?>,'gssubscriptions.js');showgssubscription();">Subscription</a></div>	
 	<?php }?>
+	
+	<div class="listitem"><a onclick="ajxjs(<?php jsflag('addcreditcard');?>,'creditcards.js');addtab('creditcards','Credit Cards','showcreditcards',function(){stripe_init('<?php echo $lang;?>','<?php echo $stripe_pkey;?>');});">Credit Cards</a></div>
+	
 	
 	<?php
 	}

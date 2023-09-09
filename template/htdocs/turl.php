@@ -48,7 +48,7 @@ function turl_exec($turl,$extra='',$checkfunc=null,$failfunc=null,$successfunc=n
 	$urlinfo=parse_url($rawurl);
 	$baseurl=$urlinfo['path'];
 	$host=$urlinfo['host'];
-	$params=$urlinfo['query'];
+	$params=$urlinfo['query']??'';
 	
 	$gsfunc='';
 	if (is_array($extra)){

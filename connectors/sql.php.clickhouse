@@ -412,10 +412,12 @@ function sql_fetch_array(&$rs){
 	$assoc=sql_fetch_assoc($rs);
 	if (!isset($assoc)) return $combo;
 	$idx=0;
-	foreach ($assoc as $k=>$v){
-		$combo[$idx]=$v;
-		$combo[$k]=$v;
-		$idx++;
+	if (is_array($assoc)){
+		foreach ($assoc as $k=>$v){
+			$combo[$idx]=$v;
+			$combo[$k]=$v;
+			$idx++;
+		}
 	}
 	return $combo;
 }

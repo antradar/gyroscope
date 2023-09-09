@@ -1,41 +1,65 @@
-addcreditcard=function(gskey){
-	var occname=gid('ccname');
-	var occnum=gid('ccnum');
-	var occv=gid('ccv');
-	
-	var valid=1;
-	var offender=null;
-	
-	if (!valstr(occname)) {valid=0;offender=offender||occname;}
-	if (!valstr(occnum)) {valid=0;offender=offender||occnum;}
-	if (!valstr(occv)) {valid=0;offender=offender||occv;}
-	
+stripe_init=function(lang,pkey){
+	xajxjs('Stripe','https://js.stripe.com/v3/',function(){
+		console.log('Stripe library loaded');
+		
+		var stripe = Stripe(pkey);
+		var elements=stripe.elements({locale:lang});
+		var style = {
+		  base: {
+		    color: '#A7202F',
+		    lineHeight: '30px',
+		    fontFamily: 'Arial, sans-serif',
+		    fontSmoothing: 'antialiased',
+		    fontSize: '16px',
+		    '::placeholder': {
+		      color: '#aab7c4'
+		    }
+		  },
+		  invalid: {
+		    color: '#fa755a',
+		    iconColor: '#fa755a'
+		  }
+		};
+				
+		var card = elements.create('card');
+		card.mount('#ccnum',{style:style});
+		gid('ccnum').ccard=card;			
+		document.stripe=stripe;	
+			
+	});
+}
 
-	if (!valid){
-		if (offender) offender.focus();
-		return;	
-	}
+
+addcreditcard=function(lang,pkey,gskey){
+	var occnum=gid('ccnum');
 	
-	var ccname=encodeHTML(occname.value);
-	var ccnum=encodeHTML(occnum.value);
-	var ccv=encodeHTML(occv.value);
+	if (!occnum.ccard) return;	
 	
-	var expmon=gid('expmon').value;
-	var expyear=gid('expyear').value;
+	document.stripe.createToken(occnum.ccard).then(function(res){
+		
+		if (res.error){
+			salert(res.error.message);
+			
+			return;
+		} else {
+			
+			var params=[];
+			
+			params.push('token='+res.token.id); 
+			
+			reloadtab('creditcards','','addcreditcard',function(){stripe_init(lang,pkey);},params.join('&'),null,gskey);
+				
+		}
+	});	
 	
-	var params=[];
-	
-	params.push('ccname='+ccname); params.push('ccnum='+ccnum); params.push('ccv='+ccv); params.push('expmon='+expmon); params.push('expyear='+expyear);
-	
-	reloadtab('creditcards','','addcreditcard',null,params.join('&'),null,gskey);
 		
 }
 
-setdefaultcreditcard=function(cardid,gskey){
-	reloadtab('creditcards','','setdefaultcreditcard',null,'cardid='+cardid,null,null,null,gskey);
+setdefaultcreditcard=function(cardid,lang,pkey,gskey){
+	reloadtab('creditcards','','setdefaultcreditcard',function(){stripe_init(lang,pkey);},'cardid='+cardid,null,gskey);
 }
 
-delcreditcard=function(cardid,gskey){
+delcreditcard=function(cardid,lang,pkey,gskey){
 	if (!sconfirm('Are you sure you want to remove this card?')) return;
-	reloadtab('creditcards','','delcreditcard',null,'cardid='+cardid,null,null,null,gskey);
+	reloadtab('creditcards','','delcreditcard',function(){stripe_init(lang,pkey);},'cardid='+cardid,null,gskey);
 }

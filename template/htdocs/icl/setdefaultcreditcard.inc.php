@@ -20,7 +20,7 @@ function setdefaultcreditcard(){
 	checkgskey('setdefaultcreditcard_'.$cardid);
 	
 	$res=stripe_setdefaultmembercard($customerid,$cardid);
-	if ($res['error']) apperror($res['error']['message']);
+	if (isset($res['error'])) apperror($res['error']['message']);
 	
 	logaction('update default credit card',array('type'=>'creditcard'),array('rectype'=>'creditcards','recid'=>0));
 

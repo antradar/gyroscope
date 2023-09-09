@@ -405,10 +405,12 @@ function vsql_fetch_array(&$rs){
 	$combo=array();
 	$assoc=vsql_fetch_assoc($rs);
 	$idx=0;
-	foreach ($assoc as $k=>$v){
-		$combo[$idx]=$v;
-		$combo[$k]=$v;
-		$idx++;
+	if (is_array($assoc)){
+		foreach ($assoc as $k=>$v){
+			$combo[$idx]=$v;
+			$combo[$k]=$v;
+			$idx++;
+		}
 	}
 	return $combo;
 }
