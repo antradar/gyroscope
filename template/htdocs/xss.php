@@ -5,9 +5,13 @@ function xsscheck($easy=0){
 	header('X-Frame-Options: SAMEORIGIN');
 	header('X-XSS-Protection: 1; mode=block');
 	header('X-Content-Type-Options: nosniff');
-	header("Content-Security-Policy: child-src 'self'");
-	//header("Content-Security-Policy: default-src 'self'; child-src 'self';");
+	
+	//header("Content-Security-Policy: child-src 'self'");
 
+	header("Content-Security-Policy: child-src 'self' *.stripe.com ");
+
+	//header("Content-Security-Policy: default-src 'self'; child-src 'self';");
+		
 if (!$easy||true){ //comment out ||true to relax cross-site signon
 	$referer=isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:'';
 	$referer=str_replace('http://','',$referer);
