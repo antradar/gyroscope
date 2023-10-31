@@ -39,8 +39,11 @@ scal_init=function(calid,opts,curyear,curmon,st,oh1){
 			gid('scal_rotation_indicator_'+calid).innerHTML='Switched to '+mons[curmon]+' '+curyear;
 			gid('scal_rotation_indicator_'+calid).style.display='block';
 			
+			var filter='';
+			if (opts.filterfunc) filter=opts.filterfunc();
+			
 			if (gid('scal_dataloader_'+calid)){
-				ajxpgn('scal_dataloader_'+calid,document.appsettings.codepage+'?cmd=scal_'+gid('scal_datafunc').value+'&calid='+calid+'&year='+curyear+'&mon='+curmon,0,0,null,function(){
+				ajxpgn('scal_dataloader_'+calid,document.appsettings.codepage+'?cmd=scal_'+gid('scal_datafunc').value+'&'+filter+'&calid='+calid+'&year='+curyear+'&mon='+curmon,0,0,null,function(){
 					scal_loaddata(calid,opts);	
 				});
 			}

@@ -78,14 +78,18 @@ cale_cellclick=function(cell,daykey){return function(){
 	console.log(cell,daykey);	
 }}
 
+cale_filters=function(){
+	return '&test_filter=123';	
+}
+
 rptinit_cale=function(){
 	ajxjs(null,'scal.js');
-	scal_init('rptcale',{cellfunc:cale_cellfunc,cellclick:cale_cellclick});	
+	scal_init('rptcale',{cellfunc:cale_cellfunc,cellclick:cale_cellclick,filterfunc:cale_filters});	
 }
 
 rptreload_cale=function(){
 	ajxjs(null,'scal.js');
-	scal_init('rptcale',{cellfunc:cale_cellfunc,cellclick:cale_cellclick});	
+	scal_init('rptcale',{cellfunc:cale_cellfunc,cellclick:cale_cellclick,filterfunc:cale_filters});	
 }
 
 //add report-specific functions and hooks here
