@@ -41,7 +41,7 @@ function updatereportsetting(){
 	$newgroups=explode('|',$reportgroupnames);
 		
 	foreach ($oldgroups as $idx=>$oldgroup){
-		if (!in_array($oldgroup,$newgroups)&&!$user['groups'][$oldgroup]){
+		if ($oldgroup!=''&&!in_array($oldgroup,$newgroups)&&!$user['groups'][$oldgroup]){
 			if (in_array($oldgroup,$userrolelocks)) array_push($newgroups,$oldgroup);
 		}
 	}

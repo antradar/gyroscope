@@ -70,6 +70,23 @@ rptreload_trace=function(){ //todo: drop "rpt"
 rptinit_actionlog=function(){} //hook for loading for the first time
 rptreload_actionlog=function(){} //sample hook for implicit reloading
 
+cale_cellfunc=function(cell,obj){
+	cell.innerHTML='<b style="font-size:20px;margin-top:10px;color:red;display:inline-block;">'+obj.count+'</b>';
+}
+
+cale_cellclick=function(cell,daykey){return function(){
+	console.log(cell,daykey);	
+}}
+
+rptinit_cale=function(){
+	ajxjs(null,'scal.js');
+	scal_init('rptcale',{cellfunc:cale_cellfunc,cellclick:cale_cellclick});	
+}
+
+rptreload_cale=function(){
+	ajxjs(null,'scal.js');
+	scal_init('rptcale',{cellfunc:cale_cellfunc,cellclick:cale_cellclick});	
+}
 
 //add report-specific functions and hooks here
 

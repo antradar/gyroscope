@@ -5,6 +5,10 @@ header('Content-Type: text/css');
 use toolbar.psp to generate toolbar.gif
 */
 
+.scal_view::-webkit-scrollbar{
+	display:none;
+}
+
 .charttoolbar{
 	border:solid 1px #dedede;
 	background:#ffffff;

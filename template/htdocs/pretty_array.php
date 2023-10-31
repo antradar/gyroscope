@@ -5,6 +5,11 @@ function pretty_array($items,$stem='unique_container_name',$showall=0,$depth=0,$
 	if (!is_array($items)) return;
 	
 	foreach ($items as $k=>$v){
+
+		if (str_replace('-','',$k)==''&&$v==''){
+			echo '<hr>';
+			continue;	
+		}
 	
 	?>
 	<div style="padding:3px 0;padding-left:<?php echo $depth*5;?>px;<?php if ($depth>0){?>border-left:solid 2px #848cf7;margin-left:5px;<?php }?>">

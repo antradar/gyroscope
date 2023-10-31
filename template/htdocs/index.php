@@ -263,7 +263,11 @@ tabviewfunc_welcome=function(){
 }
 
 <?php } else {?>
-addtab('welcome','<?php tr('tab_welcome');?>','wk',null,null,{noclose:1,bingo:false});
+addtab('welcome','<?php tr('tab_welcome');?>','wk',function(){
+	//set this func block to null later
+	//ajxjs(null,'scal.js');
+	//scal_init('test',2023,12);
+},null,{noclose:1,bingo:false});
 <?php }?>
 
 setInterval(authpump,60000); //check if needs to re-login; comment this out to disable authentication

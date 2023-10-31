@@ -149,6 +149,9 @@ switch($cmd){
 	case 'slv_core__reportsettings': include 'icl/listreportsettings.inc.php'; listreportsettings(); break;
 	case 'dash_core__reportsettings': include 'icl/dashreportsettings.inc.php'; dashreportsettings(); break;
 	
+	case 'rptcale': include 'icl/rptcale.inc.php'; rptcale(); break;
+	case 'scal_rptcale_data': include 'icl/scal_rptcale_data.inc.php'; scal_rptcale_data(); break;
+	
 	case 'showreportsetting': include 'icl/showreportsetting.inc.php'; showreportsetting(); break;
 	case 'newreportsetting': include 'icl/newreportsetting.inc.php'; newreportsetting(); break;
 	case 'addreportsetting': include 'icl/addreportsetting.inc.php'; addreportsetting(); break;
