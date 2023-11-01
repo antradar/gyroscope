@@ -9,6 +9,9 @@ use toolbar.psp to generate toolbar.gif
 	display:none;
 }
 
+.scal_view .scal_cell{border:solid 1px #444444;}
+.scal_view .scal_cell.today{border:solid 3px #ffab00;}
+
 .charttoolbar{
 	border:solid 1px #dedede;
 	background:#ffffff;

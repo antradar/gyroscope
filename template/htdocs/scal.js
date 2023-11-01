@@ -43,7 +43,7 @@ scal_init=function(calid,opts,curyear,curmon,st,oh1){
 			if (opts.filterfunc) filter=opts.filterfunc();
 			
 			if (gid('scal_dataloader_'+calid)){
-				ajxpgn('scal_dataloader_'+calid,document.appsettings.codepage+'?cmd=scal_'+gid('scal_datafunc').value+'&'+filter+'&calid='+calid+'&year='+curyear+'&mon='+curmon,0,0,null,function(){
+				ajxpgn('scal_dataloader_'+calid,document.appsettings.codepage+'?cmd=scal_'+gid('scal_datafunc_'+calid).value+'&'+filter+'&calid='+calid+'&year='+curyear+'&mon='+curmon,0,0,null,function(){
 					scal_loaddata(calid,opts);	
 				});
 			}
@@ -163,6 +163,7 @@ scal_makemonth=function(calid,year,mon,paneltype,opts){
 	
 	//console.log(paneltype,year,mon,fd,initday,'fd',fd,ld,ldx);
 	
+	var today=gid('scal_today_'+calid).value;
 	for (var i=initday;i<=ldx;i++){
 		var xstyle='';
 		var di=i;
@@ -172,9 +173,12 @@ scal_makemonth=function(calid,year,mon,paneltype,opts){
 			daykey=ny+'-'+nm+'-'+di;	
 		}
 		
+		var classname='scal_cell';
+		if (daykey==today) classname=classname+' today';
+		
 		if ((paneltype=='prev'&&i<=ld)||(paneltype=='cur'&&i>ld)||paneltype=='next') xstyle='opacity:0.5;filter:blur(1px);';
 		
-		html.push('<div id="scal_cell_'+calid+'_'+daykey+'" onclick="alert(\'no opts.cellclick for '+daykey+'\');" style="'+xstyle+'cursor:pointer;float:left;overflow:hidden;width:14%;box-sizing:border-box;border:solid 1px;text-align:center;aspect-ratio:1;">'+di+'<div id="scal_cellc_'+calid+'_'+daykey+'"></div></div>');	
+		html.push('<div class="'+classname+'" id="scal_cell_'+calid+'_'+daykey+'" onclick="alert(\'no opts.cellclick for '+daykey+'\');" style="'+xstyle+'cursor:pointer;float:left;overflow:hidden;width:14%;box-sizing:border-box;text-align:center;aspect-ratio:1;">'+di+'<div id="scal_cellc_'+calid+'_'+daykey+'"></div></div>');	
 	}
 	
 	html.push('<div class="clear"></div>');

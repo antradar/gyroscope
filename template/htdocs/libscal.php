@@ -7,7 +7,8 @@ function scal_makecal($calid,$defyear,$defmon,$roto=true,$datafunc=null){
 		$end=mktime(0,0,0,$defmon+2,0,$defyear);
 	
 ?>
-<input id="scal_datafunc" value="<?php echo $datafunc;?>" type="hidden">
+<input id="scal_datafunc_<?php echo $calid;?>" value="<?php echo $datafunc;?>" type="hidden">
+<input id="scal_today_<?php echo $calid;?>" value="<?php echo date('Y-n-j');?>" type="hidden">
 <div id="scal_dataloader_<?php echo $calid;?>" style="display:none;">
 	<textarea id="scal_data_<?php echo $calid;?>" class="inplong" style="display:none;"><?php echo json_encode($datafunc($start,$end));?></textarea>
 </div>
