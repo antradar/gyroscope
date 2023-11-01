@@ -14,7 +14,7 @@ function scal_rptcale_data(){
 			
 	
 ?>
-<textarea id="scal_data_<?php echo $calid;?>" class="inplong" style="display:nonea;"><?php echo json_encode(rptcale_data($start,$end));?></textarea>
+<textarea id="scal_data_<?php echo $calid;?>" class="inplong" style="display:none;"><?php echo json_encode(rptcale_data($start,$end));?></textarea>
 <?php	
 		
 }

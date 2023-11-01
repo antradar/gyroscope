@@ -75,7 +75,8 @@ cale_cellfunc=function(cell,obj){
 }
 
 cale_cellclick=function(cell,daykey){return function(){
-	console.log(cell,daykey);	
+	console.log(cell,daykey);
+	alert("selected: "+daykey);	
 }}
 
 cale_filters=function(){

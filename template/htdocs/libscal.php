@@ -14,9 +14,14 @@ function scal_makecal($calid,$defyear,$defmon,$roto=true,$datafunc=null){
 <?php
 	}
 ?>
-<div id="scal_title_<?php echo $calid;?>" style="text-align:center;padding:10px 0;">
-	MMM YYYY
+<div class="scal_title" style="text-align:center;padding:10px 0;position:relative;width:50%;margin:0 auto;">
+	<a class="hovlink" id="scal_prevlink_<?php echo $calid;?>" style="position:absolute;top:10px;left:10px;">&laquo; Prev</a>
+	<div id="scal_title_<?php echo $calid;?>">
+		MMM YYYY
+	</div>
+	<a class="hovlink" id="scal_nextlink_<?php echo $calid;?>" style="position:absolute;top:10px;right:10px;">Next &raquo;</a>
 </div>
+
 <div id="scal_head" style="position:relative;">
 <?php
 $weekdays=array('Sun','Mon','Tue','Wed','Thu','Fri','Sat');
