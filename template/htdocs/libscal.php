@@ -17,7 +17,7 @@ function scal_makecal($calid,$defyear,$defmon,$roto=true,$datafunc=null,$woffset
 <?php
 	}
 ?>
-<div class="scal_title" style="text-align:center;padding:10px 0;position:relative;width:50%;margin:0 auto;">
+<div class="scal_title" style="text-align:center;padding:10px 0;position:relative;width:90%;margin:0 auto;">
 	<a class="hovlink" id="scal_prevlink_<?php echo $calid;?>" style="position:absolute;top:10px;left:10px;">&laquo; Prev</a>
 	<div id="scal_title_<?php echo $calid;?>">
 		MMM YYYY
