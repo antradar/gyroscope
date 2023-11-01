@@ -139,6 +139,7 @@ scal_makemonth=function(calid,year,mon,paneltype,opts){
 	var fd=new Date(year,mon-1,1).getDay();
 	var ld=new Date(year,mon,0).getDate();
 	
+	var ofd=fd;
 	fd=(fd-woffset+7)%7;
 	
 	var py=year;
@@ -180,12 +181,14 @@ scal_makemonth=function(calid,year,mon,paneltype,opts){
 			daykey=ny+'-'+nm+'-'+di;	
 		}
 		
-		var classname='scal_cell';
+		var dow=(i+ofd-1)%7;
+		
+		var classname='scal_cell dow_'+dow;
 		if (daykey==today) classname=classname+' today';
 		
 		if ((paneltype=='prev'&&i<=ld)||(paneltype=='cur'&&i>ld)||paneltype=='next') xstyle='opacity:0.5;filter:blur(1px);';
 		
-		html.push('<div class="'+classname+'" id="scal_cell_'+calid+'_'+daykey+'" onclick="alert(\'no opts.cellclick for '+daykey+'\');" style="'+xstyle+'cursor:pointer;float:left;overflow:hidden;width:14%;box-sizing:border-box;text-align:center;aspect-ratio:1;">'+di+'<div id="scal_cellc_'+calid+'_'+daykey+'"></div></div>');	
+		html.push('<div class="'+classname+'" id="scal_cell_'+calid+'_'+daykey+'" onclick="alert(\'no opts.cellclick for '+daykey+'\');" style="'+xstyle+'cursor:pointer;float:left;overflow:hidden;box-sizing:border-box;text-align:center;aspect-ratio:1;">'+di+'<div id="scal_cellc_'+calid+'_'+daykey+'"></div></div>');	
 	}
 	
 	html.push('<div class="clear"></div>');

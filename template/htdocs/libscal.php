@@ -25,13 +25,13 @@ function scal_makecal($calid,$defyear,$defmon,$roto=true,$datafunc=null,$woffset
 	<a class="hovlink" id="scal_nextlink_<?php echo $calid;?>" style="position:absolute;top:10px;right:10px;">Next &raquo;</a>
 </div>
 
-<div id="scal_head" style="position:relative;">
+<div class="scal_head" style="position:relative;">
 <?php
 $weekdays=array('Sun','Mon','Tue','Wed','Thu','Fri','Sat');
 
 for ($i=0;$i<7;$i++){
 ?>
-	<div style="float:left;width:14%;border:solid 1px;box-sizing:border-box;text-align:center;"><?php echo $weekdays[($i+$woffset)%7];?></div>
+	<div class="scal_hcell dow_<?php echo ($i+$woffset)%7;?>" style="float:left;border:solid 1px;box-sizing:border-box;text-align:center;"><?php echo $weekdays[($i+$woffset)%7];?></div>
 <?php	
 }
 ?>

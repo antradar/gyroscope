@@ -9,8 +9,23 @@ use toolbar.psp to generate toolbar.gif
 	display:none;
 }
 
+.scal_head .scal_hcell{width:14%;}
+.scal_view .scal_cell{width:14%;}
+
+
 .scal_view .scal_cell{border:solid 1px #444444;}
 .scal_view .scal_cell.today{border:solid 3px #ffab00;}
+.scal_view .scal_cell.dow_0,.scal_view .scal_cell.dow_6{background:#ffeecc;} /* remember to update dark mode */
+
+
+/*
+.scal_head .scal_hcell{width:20%;}
+.scal_view .scal_cell{width:20%;}
+.scal_view .scal_cell.dow_0,.scal_view .scal_cell.dow_6,
+.scal_head .scal_hcell.dow_0, .scal_head .scal_hcell.dow_6 {display:none;}
+
+*/
+
 
 .charttoolbar{
 	border:solid 1px #dedede;
@@ -431,6 +446,9 @@ if ($dark==0){
 
 if ($dark==0||$dark==1){
 ?>
+
+	.scal_view .scal_cell.dow_0,.scal_view .scal_cell.dow_6{background:#2C2935;color:#E87655;}
+
 	#gsstickerview{background:rgba(53,41,46,0.9);color:#ffffff;border-color:#6A494C;}
 	.sectiontitle a:hover .edithover{filter:invert(1);}
 	

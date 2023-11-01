@@ -36,7 +36,7 @@ function rptcale_data($start,$end){
 		$daykey=$myrow['daykey'];
 		$daykey=preg_replace('/-0(\d)/','-$1',$daykey);
 		$days[$daykey]=array(
-			'count'=>$myrow['c']
+			'count'=>$myrow['c'],
 		);
 	}//while
 	
