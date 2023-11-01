@@ -1,6 +1,7 @@
 <?php
 
-function scal_makecal($calid,$defyear,$defmon,$roto=true,$datafunc=null){
+function scal_makecal($calid,$defyear,$defmon,$roto=true,$datafunc=null,$woffset=0){
+	//woffset: 1-mon as first day of week; 6-sat as first day of week
 	
 	if (isset($datafunc)&&is_string($datafunc)&&is_callable($datafunc)){
 		$start=mktime(0,0,0,$defmon-1,1,$defyear);
@@ -9,6 +10,7 @@ function scal_makecal($calid,$defyear,$defmon,$roto=true,$datafunc=null){
 ?>
 <input id="scal_datafunc_<?php echo $calid;?>" value="<?php echo $datafunc;?>" type="hidden">
 <input id="scal_today_<?php echo $calid;?>" value="<?php echo date('Y-n-j');?>" type="hidden">
+<input id="scal_woffset_<?php echo $calid;?>" value="<?php echo $woffset;?>" type="hidden">
 <div id="scal_dataloader_<?php echo $calid;?>" style="display:none;">
 	<textarea id="scal_data_<?php echo $calid;?>" class="inplong" style="display:none;"><?php echo json_encode($datafunc($start,$end));?></textarea>
 </div>
@@ -29,7 +31,7 @@ $weekdays=array('Sun','Mon','Tue','Wed','Thu','Fri','Sat');
 
 for ($i=0;$i<7;$i++){
 ?>
-	<div style="float:left;width:14%;border:solid 1px;box-sizing:border-box;text-align:center;"><?php echo $weekdays[$i];?></div>
+	<div style="float:left;width:14%;border:solid 1px;box-sizing:border-box;text-align:center;"><?php echo $weekdays[($i+$woffset)%7];?></div>
 <?php	
 }
 ?>

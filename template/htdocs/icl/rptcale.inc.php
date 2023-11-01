@@ -8,7 +8,7 @@ function rptcale(){
 	<div class="sectiontitle">Event Calendar</div>
 	
 	<div style="width:98%;max-width:600px;">
-		<?php scal_makecal('rptcale',date('Y'),date('n'),true,'rptcale_data');?>
+		<?php scal_makecal('rptcale',date('Y'),date('n'),true,'rptcale_data',0);?>
 	</div>
 	
 </div>

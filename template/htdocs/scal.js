@@ -1,4 +1,6 @@
 scal_init=function(calid,opts,curyear,curmon,st,oh1){
+
+	
 	if (curyear==null){
 		curyear=parseInt(gid('scal_cur_'+calid).attributes['defyear'].value,10);
 		curmon=parseInt(gid('scal_cur_'+calid).attributes['defmon'].value,10);	
@@ -131,8 +133,13 @@ scal_scroll=function(calid,opts){
 
 scal_makemonth=function(calid,year,mon,paneltype,opts){
 	var html=[];
+
+	var woffset=parseInt(gid('scal_woffset_'+calid).value,10);
+		
 	var fd=new Date(year,mon-1,1).getDay();
 	var ld=new Date(year,mon,0).getDate();
+	
+	fd=(fd-woffset+7)%7;
 	
 	var py=year;
 	var pm=mon-1;
