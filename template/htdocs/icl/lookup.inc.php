@@ -77,9 +77,17 @@ function showdatepicker(){
 
 	if ($nm>12) {$ny++;$nm-=12;}
 	if ($pm<1) {$py--;$pm+=12;}
+	
+	$woffset=0;
+	
+	if (isset($_COOKIE['dowoffset'])) $woffset=intval($_COOKIE['dowoffset']);
+	if ($woffset<0||$woffset>6) $woffset=0;
 
 	$fd=mktime(0,0,0,$m,1,$y);
 	$ld=date('j',mktime(23,59,59,$nm,0,$ny));
+	
+	$ofd=$fd;
+	//$fd=($fd+$woffset)%7;
 	
 	$pld=date('j',mktime(0,0,0,$m,0,$y));
 
@@ -157,7 +165,7 @@ if (!document.hotspot) {pickdate(null,{mini:<?php echo $mini;?>,tz:'<?php echo $
 <div id="calepicker">
 <?php for ($i=0;$i<7;$i++){?>
 <div style="width:14%;float:left;">
-<div class="caleheader"><?php echo $wdays[$i];?></div>
+<div class="caleheader"><?php echo $wdays[($i+$woffset)%7];?></div>
 </div>
 <?php }?>
 
@@ -173,7 +181,12 @@ for ($i=0;$i<$w;$i++){?>
 ?>
 <?php
 
-for ($i=1-$w;$i<=$ldx;$i++){
+$ia=1-$w+$woffset;
+$ib=$ldx+$woffset;
+
+if ($ia>0) {$ia-=7;$ib-=7;}
+
+for ($i=$ia;$i<=$ib;$i++){
 	$calekey="$y-$m-$i";
 	
 	$di=$i;

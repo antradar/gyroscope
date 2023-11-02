@@ -3,12 +3,17 @@
 include 'libscal.php';
 
 function rptcale(){
+	
+	$woffset=0;
+	if (isset($_COOKIE['dowoffset'])) $woffset=intval($_COOKIE['dowoffset']);
+	if ($woffset<0||$woffset>6) $woffset=0;
+	
 ?>
 <div class="section">
 	<div class="sectiontitle">Event Calendar</div>
 	
 	<div style="width:98%;max-width:600px;">
-		<?php scal_makecal('rptcale',date('Y'),date('n'),true,'rptcale_data',0);?>
+		<?php scal_makecal('rptcale',date('Y'),date('n'),true,'rptcale_data',$woffset);?>
 	</div>
 	
 </div>

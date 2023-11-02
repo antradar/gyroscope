@@ -2,6 +2,7 @@
 
 $dict_mons=array('','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec');
 $dict_wdays=array('Su','Mo','Tu','We','Th','Fr','Sa');
+$dict_weekdays=array('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');
 $dict_dir='ltr';
 
 $dict=array(

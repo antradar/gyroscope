@@ -5,7 +5,8 @@ include 'passtest.php';
 function setaccountpass(){
 	global $dbsalt;
 	global $db;
-	
+	global $usehttps;
+		
 	$user=userinfo();
 	$userid=$user['userid'];
 	
@@ -21,6 +22,9 @@ function setaccountpass(){
 	
 	$quicklist=GETVAL('quicklist');
 	$darkmode=GETVAL('darkmode');
+	$dowoffset=GETVAL('dowoffset');
+	
+	setcookie('dowoffset',$dowoffset,time()+3600*24*30*6,null,null,$usehttps,true); //6 months
 	
 	//set useyubi to 0 if no devices are enrolled
 	$query="select count(*) as kcount from ".TABLENAME_YUBIKEYS." where userid=?";
@@ -50,8 +54,8 @@ function setaccountpass(){
 		$query.=" password=?, passreset=0, ";
 		array_push($params,$pass);
 	}
-	$query.=" needkeyfile=?,usesms=?,smscell=?, usega=?, usegamepad=?, useyubi=?, yubimode=?, quicklist=?, darkmode=? where userid=?";
-	array_push($params,$needkeyfile,$usesms,$smscell,$usega,$usegamepad,$useyubi,$yubimode, $quicklist, $darkmode, $userid);
+	$query.=" needkeyfile=?,usesms=?,smscell=?, usega=?, usegamepad=?, useyubi=?, yubimode=?, quicklist=?, darkmode=?, dowoffset=? where userid=?";
+	array_push($params,$needkeyfile,$usesms,$smscell,$usega,$usegamepad,$useyubi,$yubimode, $quicklist, $darkmode, $dowoffset, $userid);
 	sql_prep($query,$db,$params);
 
 	if ($_POST['oldpass']=='') echo 'Account settings updated'; else tr('password_changed'); 

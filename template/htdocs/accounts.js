@@ -43,11 +43,12 @@ setaccountpass=function(lastdarkmode){
 	
 	var quicklist=gid('myaccount_quicklist').value;
 	var darkmode=gid('myaccount_darkmode').value;
+	var dowoffset=gid('myaccount_dowoffset').value;
 	
 	if (!lastdarkmode) lastdarkmode=0;
 	
 	var rq=xmlHTTPRequestObject();
-	rq.open('POST',document.appsettings.fastlane+'?cmd=setaccount&needkeyfile='+needkeyfile+'&usesms='+usesms+'&smscell='+smscell+'&usega='+usega+'&usegamepad='+usegamepad+'&useyubi='+useyubi+'&yubimode='+yubimode+'&quicklist='+quicklist+'&darkmode='+darkmode,true);
+	rq.open('POST',document.appsettings.fastlane+'?cmd=setaccount&needkeyfile='+needkeyfile+'&usesms='+usesms+'&smscell='+smscell+'&usega='+usega+'&usegamepad='+usegamepad+'&useyubi='+useyubi+'&yubimode='+yubimode+'&quicklist='+quicklist+'&darkmode='+darkmode+'&dowoffset='+dowoffset,true);
 	rq.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 	rq.onreadystatechange=function(){
 		if (rq.readyState==4){

@@ -287,6 +287,8 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['gyroscope
 					$groupnames=$myrow['groupnames'];
 					$auth=md5($salt.$userid.$groupnames.$salt.$login.$salt.$dispname.$salt.$gsid.$salt.$gsexpiry.$salt.$gstier);
 					
+					$dowoffset=$myrow['dowoffset']??0;
+					
 					setcookie('auth',$auth,null,null,null,$usehttps,true);
 					setcookie('gsid',$gsid,null,null,null,$usehttps,true);
 					setcookie('gsexpiry',$gsexpiry,null,null,null,$usehttps,true);
@@ -296,6 +298,7 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['gyroscope
 					setrawcookie('dispname',rawurlencode($dispname),null,null,null,$usehttps,true);
 					setcookie('groupnames',$groupnames,null,null,null,$usehttps,true);
 					setcookie('gsfrac',$rand,null,null,null,$usehttps,true);
+					setcookie('dowoffset',$dowoffset,time()+3600*24*30*6,null,null,$usehttps,true); //6 months
 					
 					if (isset($_POST['lang'])){
 						if (!in_array($_POST['lang'],array_keys($langs))) $_POST['lang']=$deflang;

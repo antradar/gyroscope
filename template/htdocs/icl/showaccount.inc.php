@@ -11,6 +11,7 @@ include 'icl/listyubikeys.inc.php';
 function showaccount(){
 		
 	global $smskey;
+	global $dict_weekdays;
 	
 	//ob_start();
 	
@@ -33,7 +34,8 @@ function showaccount(){
 	
 	$quicklist=isset($myrow['quicklist'])?intval($myrow['quicklist']):0;
 	$darkmode=isset($myrow['darkmode'])?intval($myrow['darkmode']):0;
-	
+	$dowoffset=isset($myrow['dowoffset'])?intval($myrow['dowoffset']):0;
+
 	
 	$useyubi=$myrow['useyubi'];
 	
@@ -164,7 +166,16 @@ if (isset($user['groups']['chats'])){
 		<input type="radio" name="myaccount_darkmode" id="myaccount_darkmode_2" onclick="sv('myaccount_darkmode',2);marktabchanged('account');" <?php if ($darkmode==2) echo 'checked';?>>
 		<label for="myaccount_darkmode_2">use light theme</label> <br>
 				
-		<input id="myaccount_darkmode" value="<?php echo $darkmode;?>" type="hidden">		
+		<input id="myaccount_darkmode" value="<?php echo $darkmode;?>" type="hidden">
+	</div>
+	
+	<div class="inputrow" style="line-height:1.5em;margin-bottom:30px;">
+		<div class="formlabel">Week starts on:</div>
+		<select class="inp" id="myaccount_dowoffset" onchange="marktabchanged('account');">
+		<?php foreach ($dict_weekdays as $dow=>$label){?>
+			<option <?php if ($dowoffset==$dow) echo 'selected';?> value="<?php echo $dow;?>"><?php echo $label;?></option>
+		<?php }?>
+		</select>
 	</div>
 	
 	<div class="sectionheader">Profile Photo (270x270)</div>
