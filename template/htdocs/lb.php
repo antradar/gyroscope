@@ -125,8 +125,8 @@ if (trim($_SERVER['PHP_SELF'])=='') $_SERVER['PHP_SELF']=$_SERVER['SCRIPT_NAME']
 include 'memcache.php'; //'memcache_stub.php'; 
 cache_init();
 
-include 'ipmap.php';
-map_ip_aliases();
+//include 'ipmap.php';
+//map_ip_aliases();
 
 
 function _jsflag($flag){
