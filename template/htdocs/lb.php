@@ -37,6 +37,8 @@ $forceajxjs=0; //set to 1 to enable live reloading of JS during switch-over depl
 
 date_default_timezone_set('America/Toronto');
 
+define ('YUBIHELP','https://www.antradar.com/blog-using-hardware-security-keys-in-gyroscope');
+
 define ('NULL_UUID','00000000-0000-0000-0000-000000000000');
 
 define ('TABLENAME_GSS','gss');

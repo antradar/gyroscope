@@ -384,6 +384,9 @@ body{padding:0;margin:0;background:transparent url(imgs/bgtile.png) repeat;font-
 #logo_light{display:block;}
 #logo_dark{display:none;}
 
+#yubikeysetup a, #yubikeysetup a:hover, #yubikeysetup a:link, #yubikeysetup a:visited{text-decoration:none;color:#187CA6;}
+#yubikeysetup a:hover{text-decoration:underline;}
+
 #loginbox__{width:320px;margin:0 auto;background-color:<?php echo $framecolor;?>;margin-top:100px;border-radius:4px;}
 #loginbox_{padding:10px;}
 #loginbox{background-color:#FFFFFF;text-align:<?php if ($dict_dir=='rtl') echo 'right'; else echo 'left';?>;}
@@ -451,6 +454,7 @@ if ($dark==0||$dark==1){
 	#logo_dark{display:block;}
 	.powered{color:#8B949E;}
 	#fingerprint{filter:invert(1);}
+	#yubikeysetup a, #yubikeysetup a:hover, #yubikeysetup a:link, #yubikeysetup a:visited{text-decoration:none;color:#29ABE1;}	
 <?php	
 
 }//if dark==0||dark==1
@@ -567,6 +571,9 @@ if ($dark==0){
 		<div  style="text-align:center;">
 			<input id="loginbutton" type="submit" value="<?php echo $passreset?_tr('change_password'):_tr('signin');?>">
 			<a style="display:none<?php if (!$passreset) echo 'a';?>;" id="fingerprint" onclick="yubilogin();return false;" href=#><img src="imgs/fingerprint.png" border="0"></a>
+		</div>	
+		<div id="yubikeysetup" style="display:none;padding-top:20px;text-align:center;">
+			<a href="<?php echo YUBIHELP;?>" target=_blank>how to use security keys?</a> 
 		</div>
 		<div id="tfa_cert" style="display:none;">
 		<div style="text-align:center;padding-top:20px;">Smart Card Needed</div>
@@ -634,6 +641,7 @@ if ($dark==0){
 	<script src="nano.js?v=4_9"></script>
 	<script>
 		function checkform(){
+			if (gid('yubikeysetup')) gid('yubikeysetup').style.display='none';
 						
 			if (navigator.onLine!=null&&!navigator.onLine){
 				onlinestatuschanged();
@@ -782,7 +790,12 @@ checkpass=function(d){
 }
 
 yubilogin=function(){
-	if (gid('login').value==''){gid('login').focus();return;}
+	if (gid('login').value==''){
+		if (gid('yubikeysetup')) gid('yubikeysetup').style.display='block';
+		gid('login').focus();
+		return;
+	}
+	
 	var login=encodeHTML(gid('login').value);
 
 	var tfa=false;
@@ -796,7 +809,13 @@ yubilogin=function(){
 	
 	ajxpgn('certid','ajx_getyubikeys.php?login='+login,0,0,null,function(rq){
 		var rawattids=rq.responseText;
-		if (rawattids=='') return;
+		if (rawattids=='') {
+			if (gid('yubikeysetup')) gid('yubikeysetup').style.display='block';	
+			return;
+		}
+		
+		if (gid('yubikeysetup')) gid('yubikeysetup').style.display='none';
+		
 		var attids=rawattids.split(',');
 		var creds=[];
 				

@@ -114,7 +114,7 @@ if (isset($user['groups']['chats'])){
 	
 	<div class="inputrow">
 		<input type="checkbox" id="myaccount_useyubi" <?php if ($useyubi) echo 'checked';?> onclick="marktabchanged('account'); if (this.checked) {gid('myaccount_yubikeys').style.display='block';} else gid('myaccount_yubikeys').style.display='none';">
-		<label for="myaccount_useyubi">enable hardware security keys and screen lock</label>
+		<label for="myaccount_useyubi">enable hardware security keys and screen lock <a class="hovlink" href="<?php echo YUBIHELP;?>" target=_blank>[?]</a></label>
 	</div>
 	
 	<div id="myaccount_yubikeys" style="padding-left:30px;padding-bottom:10px;display:none<?php if ($useyubi) echo 'a';?>;">
