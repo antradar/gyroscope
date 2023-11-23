@@ -80,7 +80,9 @@ function listusers(){
 	
 	//vendor auth 2
 	
-	$cquery="select count(*) as c from ($query) as query_counter";
+	$cbase=preg_replace('/\([\S\s]+?\)/','',$query);
+	$cbase=preg_replace('/^select([\S\s]+?) from /i','select 1 from ',$cbase);	
+	$cquery="select count(*) as c from ($cbase) as query_counter";
 	$rs=sql_prep($cquery,$db,$params);
 	$myrow=sql_fetch_assoc($rs);
 	$count=$myrow['c'];
