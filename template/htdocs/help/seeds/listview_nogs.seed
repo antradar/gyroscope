@@ -1,3 +1,3 @@
 	$params=array();
 	
-	$basequery="select %%sel%% from #tablename# where 1 ";
+	$basequery=" from #tablename# where 1 ";

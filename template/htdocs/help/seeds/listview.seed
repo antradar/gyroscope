@@ -56,8 +56,8 @@ function list#records#(){
 	}
 	
 	$sel='*'; //be specific with the select
-	$cquery=str_replace('%%sel%%','count(*) as c',$basequery);
-	$query=str_replace('%%sel%%',$sel,$basequery);		
+	$cquery="select count(*) as c $basequery ";
+	$query="select $sel $basequery ";		
 	$rs=sql_prep($cquery,$db,$params);
 	
 	$myrow=sql_fetch_assoc($rs);

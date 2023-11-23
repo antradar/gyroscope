@@ -74,15 +74,15 @@ function listusers(){
 	$sqlfilters=user_sqlfilters();
 	
 	$params=array($gsid);
-	$basequery="select %%sel%% from ".TABLENAME_USERS." where ".COLNAME_GSID."=? ".$sqlfilters['clauses'];
+	$basequery=" from ".TABLENAME_USERS." where ".COLNAME_GSID."=? ".$sqlfilters['clauses'];
 	$params=array_merge($params,$sqlfilters['params']);	
 
 	
 	//vendor auth 2
 	
 	$sel='*';	
-	$cquery=str_replace('%%sel%%','count(*) as c',$basequery);
-	$query=str_replace('%%sel%%',$sel,$basequery);
+	$cquery="select count(*) as c $basequery ";
+	$query="select $sel $basequery ";		
 	$rs=sql_prep($cquery,$db,$params);
 		
 	$myrow=sql_fetch_assoc($rs);
