@@ -49,16 +49,17 @@ function list#records#(){
 	}
 	
 	if ($key!='') {
-		$query.=" and (#searchquery# $sxsearch) ";
+		$basequery.=" and (#searchquery# $sxsearch) ";
 		//array_push($params,...);
 		
 		if ($soundex) array_push($params,$key);
 	}
 	
-	$cbase=preg_replace('/\([\S\s]+?\)/','',$query);
-	$cquery=preg_replace('/^select([\S\s]+?) from /i','select count(*) as c from ',$cbase);	
-	
+	$sel='*'; //be specific with the select
+	$cquery=str_replace('%%sel%%','count(*) as c',$basequery);
+	$query=str_replace('%%sel%%',$sel,$basequery);		
 	$rs=sql_prep($cquery,$db,$params);
+	
 	$myrow=sql_fetch_assoc($rs);
 	$count=$myrow['c']; //sql_affected_rows($db,$rs);
 	

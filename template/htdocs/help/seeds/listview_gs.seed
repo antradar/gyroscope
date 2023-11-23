@@ -1,2 +1,3 @@
 	$params=array($gsid);
-	$query="select * from #tablename# where ".COLNAME_GSID."=? ";
+		
+	$basequery="select %%sel%% from #tablename# where ".COLNAME_GSID."=? ";
