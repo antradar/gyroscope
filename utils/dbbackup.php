@@ -325,6 +325,8 @@ function planbackup($tables,$cur){
 			if (isset($myrow['tapecursor'])) $tapecursor=$myrow['tapecursor'];
 		}
 		
+		$otapecursor=$tapecursor;
+		
 		$query="select max(backupid) as lastbackupid from backups";
 		$rs=sql_prep($query,$db);
 		$myrow=sql_fetch_assoc($rs);
@@ -348,10 +350,16 @@ function planbackup($tables,$cur){
 			if (isset($minmin)){
 				
 				$forced=0;
-				//if ($cond!='') $forced=1;
-							
+				if ($cond!=''&&$otapecursor!=$maxid) $forced=1;
+				//echo "$minmin $maxid $tapecursor $otapecursor\r\n"; die();			
 				array_push($taperanges,array('table'=>$tkey,'min'=>1,'max'=>$minmin,'cursor'=>$minmin));
 				array_push($taperanges,array('table'=>$tkey,'min'=>$minmin,'max'=>$maxid,'cursor'=>$tapecursor,'forced'=>$forced));
+				
+				/*
+				if (!$forced){
+					array_push($taperanges,array('table'=>$tkey,'min'=>$minmin,'max'=>$minmin,'cursor'=>$minmin,'forced'=>1));
+				}
+				*/
 				
 			} else {
 				
