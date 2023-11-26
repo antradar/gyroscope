@@ -16,7 +16,7 @@ $regfn='tableshots';
 $skiptables=array('backups','backuptables','backuptapes','accesslogseq');
 $tapetables=array(
 	'actionlog'=>array('pkey'=>'alogid','cond'=>''),
-	'chats'=>array('pkey'=>'chatid','cond'=>'chatstatus=2'),
+	//'chats'=>array('pkey'=>'chatid','cond'=>'chatstatus=2'), //experimental, do not use
 );
 
 
@@ -340,30 +340,78 @@ function planbackup($tables,$cur){
 		}
 				
 		if ($tapecursor!=$maxid){
-			array_push($taperanges,array('table'=>$tkey,'min'=>1,'max'=>$tapecursor));
-			array_push($taperanges,array('table'=>$tkey,'min'=>$tapecursor,'max'=>$maxid));
+			$forced=0;
+			if ($cond!='') $forced=1;
+			array_push($taperanges,array('table'=>$tkey,'min'=>1,'max'=>$tapecursor,'cursor'=>$tapecursor));
+			array_push($taperanges,array('table'=>$tkey,'min'=>$tapecursor,'max'=>$maxid,'cursor'=>$tapecursor,'forced'=>$forced));
 		} else {
 			if (isset($minmin)){
-				//array_push($taperanges,array('table'=>$tkey,'min'=>1,'max'=>$minmin));
-				array_push($taperanges,array('table'=>$tkey,'min'=>$minmin,'max'=>$maxid));
+				
+				$forced=0;
+				//if ($cond!='') $forced=1;
+							
+				array_push($taperanges,array('table'=>$tkey,'min'=>1,'max'=>$minmin,'cursor'=>$minmin));
+				array_push($taperanges,array('table'=>$tkey,'min'=>$minmin,'max'=>$maxid,'cursor'=>$tapecursor,'forced'=>$forced));
 				
 			} else {
-				array_push($taperanges,array('table'=>$tkey,'min'=>1,'max'=>$maxid));
+				
+				array_push($taperanges,array('table'=>$tkey,'min'=>1,'max'=>$maxid,'cursor'=>$tapecursor));
 			}				
 		}
+		
 
 						
 	}//foreach tapetable
 	
 	//print_r($taperanges); die();
 	
-	//print_r($taperanges);
+	$rawtaperanges=$taperanges;
+	$taperanges=array();
+	foreach ($rawtaperanges as $taperange){
+		if ($taperange['min']==1){
+			$tmin=1;
+			$tmax=1;
+			$query="select * from backuptapes where tapekey=? and tapemax<=? order by tapemin ";
+			$rs=sql_prep($query,$db,array($taperange['table'],$taperange['cursor']));
+			
+			while ($myrow=sql_fetch_assoc($rs)){
+				if ($tmin==1||$myrow['tapemax']){
+					array_push($taperanges,array(
+						'table'=>$taperange['table'],
+						'min'=>$myrow['tapemin'],
+						'max'=>$myrow['tapemax'],
+						'split'=>1
+					));
+					$tmin=$myrow['tapemin'];
+					$tmax=$myrow['tapemax'];
+				}
+				
+			}//while
+			
+			if ($tmax<$taperange['max']){
+				array_push($taperanges,array(
+					'table'=>$taperange['table'],
+					'min'=>$tmax,
+					'max'=>$taperange['max'],
+					'residual'=>1
+				));	
+			}
+						
+			
+		} else {
+			array_push($taperanges,$taperange);
+		}
+	}
+	
+	//print_r($taperanges); die();
+	
 	$missingtapes=array();
 	
 	foreach ($taperanges as $taperange){
 		$tkey=$taperange['table'];
 		$forced=0;
 		if (isset($taperange['forced'])&&$taperange['forced']) $forced=1;
+		if (isset($taperange['residual'])&&$taperange['residual']) $forced=1;		
 		
 		$query="select backupid,tapemin,tapemax from backuptapes where tapekey=? and tapedate<=? and tapemin=? and tapemax>=? order by tapedate desc limit 1";
 		$rs=sql_prep($query,$db,array($tkey,$cur,$taperange['min'],$taperange['max']));
