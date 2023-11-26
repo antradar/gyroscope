@@ -16,7 +16,7 @@ $regfn='tableshots';
 $skiptables=array('backups','backuptables','backuptapes','accesslogseq');
 $tapetables=array(
 	'actionlog'=>array('pkey'=>'alogid','cond'=>''),
-	//'chats'=>array('pkey'=>'chatid','cond'=>'chatstatus=2'), //experimental, do not use
+	'chats'=>array('pkey'=>'chatid','cond'=>'chatstatus=2'), //experimental, do not use
 );
 
 
@@ -333,8 +333,8 @@ function planbackup($tables,$cur){
 		$lastbackupid=$myrow['lastbackupid'];
 		$minmin=null;
 		if (isset($lastbackupid)){
-			$query="select min(tapemax) as minmax,min(tapemin) as minmin from backuptapes where tapekey=? and backupid=?";
-			$rs=sql_prep($query,$db,array($tkey,$lastbackupid));
+			$query="select min(tapemax) as minmax,min(tapemin) as minmin from backuptapes where tapemax<=? and tapekey=? and backupid=?";
+			$rs=sql_prep($query,$db,array($otapecursor,$tkey,$lastbackupid));
 			$myrow=sql_fetch_assoc($rs);
 			if (isset($myrow['minmax'])) $tapecursor=$myrow['minmax'];
 			$minmin=$myrow['minmin'];
@@ -351,19 +351,32 @@ function planbackup($tables,$cur){
 				
 				$forced=0;
 				if ($cond!=''&&$otapecursor!=$maxid) $forced=1;
+				if ($cond!='') $forced=1; //force the force 
 				//echo "$minmin $maxid $tapecursor $otapecursor\r\n"; die();			
 				array_push($taperanges,array('table'=>$tkey,'min'=>1,'max'=>$minmin,'cursor'=>$minmin));
 				array_push($taperanges,array('table'=>$tkey,'min'=>$minmin,'max'=>$maxid,'cursor'=>$tapecursor,'forced'=>$forced));
 				
 				/*
-				if (!$forced){
+				if ($cond!=''&&!$forced){
 					array_push($taperanges,array('table'=>$tkey,'min'=>$minmin,'max'=>$minmin,'cursor'=>$minmin,'forced'=>1));
 				}
 				*/
 				
-			} else {
 				
-				array_push($taperanges,array('table'=>$tkey,'min'=>1,'max'=>$maxid,'cursor'=>$tapecursor));
+			} else {
+				/*
+				$query="select min(tapemax) as aminmax from backuptapes where tapekey=? and backupid=?";
+				$rs=sql_prep($query,$db,array($tkey,$lastbackupid));
+				$forced=0;
+				if (!$myrow=sql_fetch_assoc($rs)) $forced=1;
+				else {
+					if (!isset($myrow['aminmax'])) $forced=1;
+				}
+				*/
+				$forced=1;
+
+				
+				array_push($taperanges,array('table'=>$tkey,'min'=>1,'max'=>$maxid,'cursor'=>$tapecursor,'forced'=>$forced));
 			}				
 		}
 		
@@ -424,7 +437,17 @@ function planbackup($tables,$cur){
 		$query="select backupid,tapemin,tapemax from backuptapes where tapekey=? and tapedate<=? and tapemin=? and tapemax>=? order by tapedate desc limit 1";
 		$rs=sql_prep($query,$db,array($tkey,$cur,$taperange['min'],$taperange['max']));
 		if ((!$myrow=sql_fetch_assoc($rs))||$forced){
-			array_push($missingtapes,$taperange);	
+			array_push($missingtapes,$taperange);
+				if ($forced&&isset($myrow)){
+				//check if actual file exists
+				$tapefn=$tkey.'_'.$myrow['tapemin'].'_'.$myrow['tapemax'];
+				if (!file_exists($backupdir.$tapefn.'.tape.sql')){
+					$taperange['missingfile']=$tapefn.'.tape.sql';
+					array_push($missingtapes,$taperange);
+				} else {	
+					$backups[$tapefn]=$myrow['backupid'];
+				}					
+			}
 		} else {
 			//check if actual file exists
 			$tapefn=$tkey.'_'.$myrow['tapemin'].'_'.$myrow['tapemax'];
