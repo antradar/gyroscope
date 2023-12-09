@@ -7,7 +7,7 @@ function gsratecheck_verify($ip,$login){
 	
 	$fkey=$ip.strtolower(trim($login));
 	
-	$threshold=5;
+	$threshold=5*2;
 	
 	$res=cache_get($fkey);
 		
@@ -38,7 +38,7 @@ function gsratecheck_registerfail($ip,$login){
 	if (!$usecache) return;
 		
 	$fkey=$ip.strtolower(trim($login));
-	$threshold=5;
+	$threshold=5*2;
 	$penalty=60;
 	$start=time();
 	$exp=$start+$penalty;

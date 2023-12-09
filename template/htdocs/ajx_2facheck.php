@@ -109,6 +109,7 @@ $foci=array();
 
 if (!$passok){
 	header('prevalidation: invalid credentials');
+	gsratecheck_registerfail($_SERVER['REMOTE_ADDR'],$login);
 	die();
 }
 

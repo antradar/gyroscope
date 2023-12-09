@@ -12,5 +12,6 @@ update#record#_rectitle=function(#primarykey#){
 		if (newtitle==null||newtitle=='') newtitle=otitle.value; else newtitle=decodeHTML(newtitle);
 		gid('vrectitle_#dispfield#_'+#primarykey#).innerHTML=newtitle+' <span class="edithover"></span>';
 		settabtitle('#record#_'+#primarykey#,newtitle);
+		reloadview('#viewindex#','#record#list');
 	});
 }

@@ -135,7 +135,7 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['gyroscope
 					$passok=password_verify($dbsalt.$_POST['password'],$myrow['password']);
 					if (!$passok) {
 						$error_message="Invalid password";
-						list($remlogin,$fpenalty)=gsratecheck_registerfail($_SERVER['REMOTE_ADDR'],$login);
+						list($remlogin,$fpenalty)=gsratecheck_registerfail($_SERVER['REMOTE_ADDR'],$login); //registerfail, or verify?
 						if ($remlogin<1) $error_message.="<br>Try again in another ".duration_format($fpenalty);
 												
 					} else {
