@@ -296,11 +296,118 @@ function vsql_save_chunks($db,$table,$chunks){
 }
 
 /*
-create table products(productid UInt64,productname String,cat String,sign Int8 default 1,ver UInt64 default 0) engine=CollapsingMergeTree(sign) primary key (productid) order by productid;
+create table products(productid UInt64,productname String,cat String,sign Int8 default 1,ver UInt64 default 0) engine=VersionedCollapsingMergeTree(sign,ver) primary key (productid) order by productid;
 
-select productid,productname, ...,  max(ver) as ver from products group by productid,productname, ... having sum(sign)>0;
+select productid,productname, ...,  ver from products group by productid,productname, ..., ver having sum(sign)>0;
 
+create view products_view as select productid,productname, cat, ver from products group by productid,productname, cat, ver having sum(sign)>0;
+create table products_writer as products engine=Buffer(dbname, products, 1, 5, 10, ,100,1000,10000000,100000000);
 */
+
+/*
+define vsql_qsrc_companies in vsqlx.php
+
+vsql_patchx('companies','companies_writer','companyid',$companyid,'insert','vsql_qsrc_companies');
+vsql_patchx('companies','companies_writer','companyid',$companyid,'update','vsql_qsrc_companies',$query,array($companyid));
+vsql_patchx('companies','companies_writer','companyid',$companyid,'delete','vsql_qsrc_companies');
+*/
+
+function vsql_patchx($table,$writer,$pkey,$pval,$mode,$recfunc,$modquery=null,$modparams=null,$orec=null){
+	global $db;
+	global $vdb;
+	
+	$mode=strtolower($mode);
+
+	$rec=$recfunc($pval);
+	if (!isset($orec)) $orec=$rec;
+	
+		
+	switch ($mode){
+	case 'insert':
+		$rec['sign']=1;
+		$orec['sign']=1;
+	
+	break;
+	case 'delete':
+		$rec['sign']=-1;
+		$orec['sign']=-1;
+	
+	break;
+	case 'update':
+		$rec['sign']=-1;
+		$orec['sign']=-1;	
+	break;
+	}
+		
+
+	$fieldlist=implode(', ',array_keys($rec));
+	$qs=array();
+	$params=array();
+	
+	foreach ($orec as $k=>$v){
+		array_push($qs,'?');
+		$dv=$v;
+		if (!isset($v)) $dv='Null'; else $dv=$v;
+		array_push($params,$dv);			
+	}
+		
+	$strqs=implode(', ',$qs);
+	
+	switch ($mode){
+	case 'insert':
+		$query="insert into $writer ($fieldlist) values ($strqs)";
+		//echo $query."\r\n"; die();
+		//var_dump($rec);
+		//print_r($params); die();
+		$rs=vsql_prep($query,$vdb,$params,1);
+		//print_r($rs);
+	break;
+	case 'delete':
+	
+		$query="insert into $writer ($fieldlist) values ($strqs)";
+		$rs=vsql_prep($query,$vdb,$params,1);
+	
+	break;
+	case 'update':
+	
+		$query="insert into $writer ($fieldlist) values ($strqs)";
+		$rs=vsql_prep($query,$vdb,$params,1);
+		//print_r($rs);
+
+		$query="update $table set ver=ver+1 where $pkey=$pval";
+		sql_prep($query,$db);
+		
+		sql_prep($modquery,$db,$modparams);
+		
+		
+		$urec=$recfunc($pval);
+		$urec['sign']=1;
+		
+		
+		//echo 'orec: '; print_r($orec);
+		//echo 'urec: '; print_r($urec);
+		
+		$uparams=array();
+		
+		foreach ($urec as $k=>$v){
+			$dv=$v;
+			if (!isset($v)) $dv='Null'; else $dv=$v;
+			array_push($uparams,$dv);			
+		}
+		
+		
+		$query="insert into $writer ($fieldlist) values ($strqs)";
+		
+		$rs=vsql_prep($query,$vdb,$uparams,1);
+		//print_r($rs);
+		
+		
+		
+	
+	break;
+	}	
+			
+}
 
 function vsql_patch($db,$table,$pkey,$recs,$wtable=null,$signfield='sign',$verfield='ver'){
 /*
