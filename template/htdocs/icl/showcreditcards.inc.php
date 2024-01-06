@@ -20,7 +20,7 @@ function showcreditcards(){
 	
 	
 	$customerid=$myrow['stripecustomerid'];
-	
+			
 	if ($customerid==''){
 	?>
 	<div class="section">
@@ -34,7 +34,7 @@ function showcreditcards(){
 		//auto recovery for switching from test to live tokens
 		$res=stripe_addmember($gsid);
 		$customerid=$res['id'];
-		$query="update gss set stripecustomerid=? where gsid=?";
+		$query="update ".TABLENAME_GSS." set stripecustomerid=? where ".COLNAME_GSID."=?";
 		sql_prep($query,$db,array($customerid,$gsid));
 	*/
 		return;	
@@ -52,8 +52,13 @@ function showcreditcards(){
 		
 	}
 
-	$res=stripe_member($customerid);
-	$cards=$res['sources']['data'];
+	$customer=stripe_member($customerid);	
+	$defcardid=$customer['default_source']??'';
+
+	$res=stripe_membercards($customerid);
+	$cards=$res['data'];
+	
+	//echo '<pre>'; print_r($cards); echo '</pre>';	
 	
 ?>
 <div class="section">
@@ -74,13 +79,15 @@ function showcreditcards(){
 	<div class="stable">
 	<table class="subtable">
 	<?php
-	$defcardid=$res['default_source'];
-	foreach ($cards as $card){
+
+	foreach ($cards as $card_){
+		$card=$card_['card'];
+		
 		$default=0;
-		$cardid=$card['id'];
+		$cardid=$card_['id'];
 		if ($defcardid=='') $defcardid=$cardid;
 		if ($defcardid==$cardid) $default=1;
-		$cardname=$card['name'];
+		//$cardname=$card['name'];
 		$brand=$card['brand'];
 		$expmon=$card['exp_month'];
 		$expyear=$card['exp_year'];
@@ -88,8 +95,7 @@ function showcreditcards(){
 		
 	?>
 	<tr>
-	<td><?php echo $brand;?></td>
-	<td><?php echo $cardname;?></td>
+	<td><?php echo strtoupper($brand);?></td>
 	<td><?php echo $last4;?></td>
 	<td><?php echo $expmon.'/'.$expyear;?></td>
 	<td>
