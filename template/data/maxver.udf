@@ -1,0 +1,20 @@
+drop function if exists maxver;
+
+DELIMITER ;;
+CREATE FUNCTION maxver (rectype_ varchar(50)) 
+
+returns bigint 
+not deterministic
+reads sql data
+
+begin
+
+declare maxver_ bigint;
+
+update maxvers set ver=ver+1 where rectype=rectype_;
+select ver from maxvers where rectype=rectype_ limit 1 into maxver_;
+
+return maxver_;
+
+end ;;
+DELIMITER ;

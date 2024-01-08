@@ -338,6 +338,13 @@ function vsql_patchx($table,$writer,$pkey,$pval,$mode,$recfunc,$modquery=null,$m
 	break;
 	}
 		
+	$query="select maxver(?) as maxver";
+	$rs=sql_prep($query,$db,$table);
+	$myrow=sql_fetch_assoc($rs);
+	$maxver=intval($myrow['maxver']);
+	
+	$rec['maxver']=$maxver;
+	$orec['maxver']=$maxver;
 
 	$fieldlist=implode(', ',array_keys($rec));
 	$qs=array();
