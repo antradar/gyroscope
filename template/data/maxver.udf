@@ -1,7 +1,7 @@
 drop function if exists maxver;
 
 DELIMITER ;;
-CREATE FUNCTION maxver (rectype_ varchar(50)) 
+CREATE FUNCTION maxver (rectype_ varchar(50), gsid_ bigint) 
 
 returns bigint 
 not deterministic
@@ -11,8 +11,8 @@ begin
 
 declare maxver_ bigint;
 
-update maxvers set ver=ver+1 where rectype=rectype_;
-select ver from maxvers where rectype=rectype_ limit 1 into maxver_;
+update maxvers set ver=ver+1 where rectype=rectype_ and gsid=gsid_;
+select ver from maxvers where rectype=rectype_ and gsid=gsid_ limit 1 into maxver_;
 
 return maxver_;
 

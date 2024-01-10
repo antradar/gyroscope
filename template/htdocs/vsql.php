@@ -311,7 +311,7 @@ vsql_patchx('companies','companies_writer','companyid',$companyid,'update','vsql
 vsql_patchx('companies','companies_writer','companyid',$companyid,'delete','vsql_qsrc_companies');
 */
 
-function vsql_patchx($table,$writer,$pkey,$pval,$mode,$recfunc,$modquery=null,$modparams=null,$orec=null){
+function vsql_patchx($table,$writer,$pkey,$pval,$mode,$recfunc,$modquery=null,$modparams=null,$orec=null,$gsid=0,$vertables=null){
 	global $db;
 	global $vdb;
 	
@@ -338,10 +338,16 @@ function vsql_patchx($table,$writer,$pkey,$pval,$mode,$recfunc,$modquery=null,$m
 	break;
 	}
 		
-	$query="select maxver(?) as maxver";
-	$rs=sql_prep($query,$db,$table);
+	$query="select maxver(?,?) as maxver";
+	$rs=sql_prep($query,$db,array($table,$gsid));
 	$myrow=sql_fetch_assoc($rs);
 	$maxver=intval($myrow['maxver']);
+		
+	if (is_array($vertables)){
+		foreach ($vertables as $subtable=>$subgsid){
+			sql_prep("update maxvers set ver=? where rectype=? and gsid=?",$db,array($maxver,$subtable,$subgsid));	
+		}
+	}
 	
 	$rec['maxver']=$maxver;
 	$orec['maxver']=$maxver;

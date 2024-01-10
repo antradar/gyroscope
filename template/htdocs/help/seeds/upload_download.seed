@@ -14,7 +14,7 @@ function download#primaryfield##record#(){
 	$fn='../../#primaryfield##records#/'.$#lookupkey#.'#fileext#';
 	$docfn=$myrow['#dispfield#'];
 	
-	$ofn=str_replace(' ','_',$myrow['ofn']);
+	$ofn=str_replace(array(' ',',','&'),'_',$myrow['ofn']);
 	$mimetype=$myrow['mimetype'];
 
 
