@@ -394,6 +394,7 @@ function vsql_patchx($table,$writer,$pkey,$pval,$mode,$recfunc,$modquery=null,$m
 		
 		$urec=$recfunc($pval);
 		$urec['sign']=1;
+		$urec['maxver']=$maxver;
 		
 		
 		//echo 'orec: '; print_r($orec);
