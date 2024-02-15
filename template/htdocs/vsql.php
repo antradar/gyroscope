@@ -295,20 +295,20 @@ function vsql_save_chunks($db,$table,$chunks){
 }
 
 /*
-create table products(productid UInt64,productname String,cat String,sign Int8 default 1,ver UInt64 default 0) engine=VersionedCollapsingMergeTree(sign,ver) primary key (productid) order by productid;
+create table products(productid UInt64,productname String,cat String,sign Int8 default 1,ver UInt64 default 0,maxver UInt64 default 0) engine=VersionedCollapsingMergeTree(sign,ver) primary key (productid) order by productid;
 
 select productid,productname, ...,  ver from products group by productid,productname, ..., ver having sum(sign)>0;
 
 create view products_view as select productid,productname, cat, ver from products group by productid,productname, cat, ver having sum(sign)>0;
-create table products_writer as products engine=Buffer(dbname, products, 1, 5, 10, ,100,1000,10000000,100000000);
+create table products_writer as products engine=Buffer(dbname, products, 1, 5, 10, 100,1000,10000000,100000000);
 */
 
 /*
 define vsql_qsrc_companies in vsqlx.php
 
-vsql_patchx('companies','companies_writer','companyid',$companyid,'insert','vsql_qsrc_companies');
-vsql_patchx('companies','companies_writer','companyid',$companyid,'update','vsql_qsrc_companies',$query,array($companyid));
-vsql_patchx('companies','companies_writer','companyid',$companyid,'delete','vsql_qsrc_companies');
+vsql_patchx('companies','companies_writer','companyid',$companyid,'insert','vsql_qsrc_companies',null,null,null,$gsid);
+vsql_patchx('companies','companies_writer','companyid',$companyid,'update','vsql_qsrc_companies',$query,array($companyid),null,$gsid);
+vsql_patchx('companies','companies_writer','companyid',$companyid,'delete','vsql_qsrc_companies',null,null,null,$gsid);
 */
 
 function vsql_patchx($table,$writer,$pkey,$pval,$mode,$recfunc,$modquery=null,$modparams=null,$orec=null,$gsid=0,$vertables=null){

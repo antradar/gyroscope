@@ -391,9 +391,9 @@ body{padding:0;margin:0;background:transparent url(imgs/bgtile.png) repeat;font-
 #loginbox_{padding:10px;}
 #loginbox{background-color:#FFFFFF;text-align:<?php if ($dict_dir=='rtl') echo 'right'; else echo 'left';?>;}
 .powered{color:#000000;text-align:right;font-size:12px;width:320px;margin:0 auto;padding-top:10px;}
-#loginbutton,.loginbutton{color:#ffffff;background:#187CA6;padding:8px 20px;border-radius:3px;border:none;cursor:pointer;box-shadow:0px 1px 2px #c9c9c9;-webkit-appearance:none;text-decoration:none;}
-#loginbutton:focus, #loginbutton:hover{background:#29ABE1;}
-#loginbutton:active, #loginbuttonbutton:active{box-shadow:1px 1px 3px #999999;}
+.loginbutton_,.loginbutton{color:#ffffff;background:#187CA6;padding:8px 20px;border-radius:3px;border:none;cursor:pointer;box-shadow:0px 1px 2px #c9c9c9;-webkit-appearance:none;text-decoration:none;}
+.loginbutton_:focus, .loginbutton_:hover{background:#29ABE1;}
+.loginbutton_:active, #loginbuttonbutton:active{box-shadow:1px 1px 3px #999999;}
 
 #fingerprint{cursor:pointer;vertical-align:middle;}
 #fingerprint img{width:22px;border-radius:3px;}
@@ -419,7 +419,7 @@ body{padding:0;margin:0;background:transparent url(imgs/bgtile.png) repeat;font-
 }
 
 @media screen and (max-width:300px){
-	#loginbutton{width:auto;padding-left:15px;padding-right:15px;}
+	.loginbutton_{width:auto;padding-left:15px;padding-right:15px;}
 }
 
 @media screen and (max-width:260px){
@@ -433,7 +433,7 @@ body{font-size:28px;}
 #loginbox_{padding:20px;}
 .powered{font-size:24px;width:640px;padding-top:20px;}
 #login, #password{height:45px;font-size:32px;line-height:32px;}
-#loginbutton{height:auto;padding:6px 0;font-size:28px;width:280px;-webkit-appearance: none;}
+.loginbutton_{height:auto;padding:6px 0;font-size:28px;width:280px;-webkit-appearance: none;}
 <?php }?>
 
 <?php
@@ -448,8 +448,8 @@ if ($dark==0||$dark==1){
 	body{background-image:url(imgs/dbgtile.png);}
 	#loginbox{background: #21262D;color:#C9D1D9;}
 	input,#lang{background:#0D1117;color:#C2C3C5;}
-	#loginbutton{box-shadow:none;border:solid 1px #388BFD;}
-	#loginbutton:hover{background:#125B7A;}
+	.loginbutton_{box-shadow:none;border:solid 1px #388BFD;}
+	.loginbutton_:hover{background:#125B7A;}
 	#logo_light{display:none;}
 	#logo_dark{display:block;}
 	.powered{color:#8B949E;}
@@ -473,8 +473,8 @@ if ($dark==0){
 	#loginbox__{margin-top:100px;border-radius:40px;}
 	#loginbox{background:#21262D;color:#C9D1D9;border-radius:40px;overflow:hidden;}
 	input,#lang{background:#0D1117;color:#C2C3C5;}
-	#loginbutton{box-shadow:none;border:solid 1px #388BFD;font-size:22px;}
-	#loginbutton:hover{background:#125B7A;}
+	.loginbutton_{box-shadow:none;border:solid 1px #388BFD;font-size:22px;}
+	.loginbutton_:hover{background:#125B7A;}
 	.lfinp{margin-bottom:20px;}
 	#logo_light{display:none;margin-bottom:20px;}
 	#logo_dark{display:block;margin-bottom:20px;}
@@ -569,7 +569,7 @@ if ($dark==0){
 		</div>
 			
 		<div  style="text-align:center;">
-			<input id="loginbutton" type="submit" value="<?php echo $passreset?_tr('change_password'):_tr('signin');?>">
+			<input id="loginbutton" class="loginbutton_" type="submit" value="<?php echo $passreset?_tr('change_password'):_tr('signin');?>">
 			<a style="display:none<?php if (!$passreset) echo 'a';?>;" id="fingerprint" onclick="yubilogin();return false;" href=#><img src="imgs/fingerprint.png" border="0"></a>
 		</div>	
 		<div id="yubikeysetup" style="display:none;padding-top:20px;text-align:center;">
@@ -587,14 +587,14 @@ if ($dark==0){
 	
 	<?php if (!$textmode){?>
 	<div id="cardview" style="display:none;">
-		<div style="text-align:center;"><input id="loginbutton" type="submit" value="<?php tr('signin');?>" onclick="if (!cardauth()) return false;"></div>
+		<div style="text-align:center;"><input class="loginbutton_" type="submit" value="<?php tr('signin');?>" onclick="if (!cardauth()) return false;"></div>
 		<div id="passlink">
 			<a href=# onclick="passview();return false;">Sign in with password</a>
 		</div>
 	</div>
 	<?php } else {?>
 		<br>&nbsp;<br>
-		<input id="loginbutton" type="submit" value="[<?php tr('signin');?>]">
+		<input type="submit" value="[<?php tr('signin');?>]">
 	<?php } ?>
 	<input name="cfk" id="cfk" value="<?php echo $csrfkey;?>" type="hidden">
 	
@@ -610,7 +610,7 @@ if ($dark==0){
 		<img src="imgs/logo.png" style="margin:10px 0;width:100%;" alt="Gyroscope Logo">
 		There is currently no network access, but you can take offline notes:
 		<div style="padding-top:30px;text-align:center;">
-			<a class="loginbutton" href="notes.php">Launch Notepad</a>
+			<a class="loginbutton_" href="notes.php">Launch Notepad</a>
 		</div>
 	</div>
 	&nbsp;
