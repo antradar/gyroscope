@@ -112,6 +112,7 @@ function embeduserprofileuploader(){
 	}
 	
 ?>
+<!doctype html>
 <html>
 <body style="padding:0;margin:0;">
 <style>

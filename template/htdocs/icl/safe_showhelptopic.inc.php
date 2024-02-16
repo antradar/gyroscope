@@ -29,10 +29,11 @@ function safe_showhelptopic($helptopicid=null){
 	header('newtitle:'.tabtitle(htmlspecialchars($helptopictitle)));
 	
 ?>
+<!doctype html>
 <html>
 <head>
-	<link href="gyroscope.css?v=2" type="text/css" rel="stylesheet" />
-	<link href="toolbar.css" type="text/css" rel="stylesheet" />
+	<link href="gyroscope_css.php?v=2" type="text/css" rel="stylesheet" />
+	<link href="toolbar_css.php" type="text/css" rel="stylesheet" />
 	<link href="tiny_mce/editor.css" type="text/css" rel="stylesheet" />
 </head>
 <body style="background:#ffffff;">

@@ -26,6 +26,7 @@ $dark=isset($usermeta['darkmode'])?intval($usermeta['darkmode']):0;
 
 include 'uiconfig.php';
 ?>
+<!doctype html>
 <html>
 <head>
 	<title><?php echo GYROSCOPE_PROJECT;?></title>

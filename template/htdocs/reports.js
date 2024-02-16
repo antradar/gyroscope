@@ -84,8 +84,10 @@ cale_filters=function(){
 }
 
 rptinit_cale=function(){
-	ajxjs(null,'scal.js');
-	scal_init('rptcale',{cellfunc:cale_cellfunc,cellclick:cale_cellclick,filterfunc:cale_filters});	
+	ajxjs2('scal_init','scal.js',function(){
+		scal_init('rptcale',{cellfunc:cale_cellfunc,cellclick:cale_cellclick,filterfunc:cale_filters});			
+	});
+
 }
 
 rptreload_cale=function(){

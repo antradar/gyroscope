@@ -56,7 +56,7 @@ setaccountpass=function(lastdarkmode){
 			refreshtab('account',1);
 			setTimeout(function(){marktabsaved('account',rq.responseText);},100);
 			
-			if (usegamepad) ajxjs(self.gamepad_register,'gamepad.js');
+			if (usegamepad) ajxjs2(self.gamepad_register,'gamepad.js');
 			
 			if (lastdarkmode!=darkmode && self.resetdarkmode) resetdarkmode(darkmode);
 			

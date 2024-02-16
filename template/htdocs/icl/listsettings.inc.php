@@ -14,12 +14,12 @@ function listsettings(){
 	header('listviewtitle:'.tabtitle(_tr('icon_settings')));
 ?>
 <div class="section">
-	<div class="listitem <?php if (isset($user['groups']['accounts'])) echo ' mobileonly';?>"><a onclick="ajxjs(<?php jsflag('setaccountpass');?>,'accounts.js');reloadtab('account','<?php tr('account_settings');?>','showaccount');addtab('account','<?php tr('account_settings');?>','showaccount');return false;"><?php tr('account_settings');?></a></div>
+	<div class="listitem <?php if (isset($user['groups']['accounts'])) echo ' mobileonly';?>"><a onclick="ajxjs2('setaccountpass','accounts.js',function(){reloadtab('account','<?php tr('account_settings');?>','showaccount');addtab('account','<?php tr('account_settings');?>','showaccount');});return false;"><?php tr('account_settings');?></a></div>
 	
 	<?php	
 	if (isset($user['groups']['accounts'])){
 	?>
-	<div class="listitem"><a onclick="ajxjs(<?php jsflag('showuser');?>,'users.js');ajxjs(<?php jsflag('setaccountpass');?>,'accounts.js');showview('core.users',1,null,null,null,null,true);"><?php tr('icon_accounts');?></a></div>	
+	<div class="listitem"><a onclick="ajxjs2('showuser','users.js');ajxjs2('setaccountpass','accounts.js');showview('core.users',1,null,null,null,null,true);"><?php tr('icon_accounts');?></a></div>	
 	<?php
 	}
 	?>
@@ -43,7 +43,7 @@ function listsettings(){
 
 	if (isset($user['groups']['reportsettings'])){
 	?>
-	<div class="listitem"><a onclick="ajxjs(<?php jsflag('showreport');?>,'reportsettings.js');showview('core.reportsettings',1);"><?php tr('icon_reportsettings');?></a></div>	
+	<div class="listitem"><a onclick="ajxjs2('showreportsetting','reportsettings.js');showview('core.reportsettings',1);"><?php tr('icon_reportsettings');?></a></div>	
 	<?php
 	}
 	

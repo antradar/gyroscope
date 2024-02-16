@@ -22,6 +22,7 @@ function ajxb(u,data,callback,myhb){
 	
 	var rq=xmlHTTPRequestObject();
 	if (myhb==null) myhb=hb();
+		
 	rq.open(method, u+'&hb='+myhb,false);
 	rq.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
 	rq.send(data);
@@ -228,6 +229,35 @@ function xajx(url){
 }
 
 function ajxjs(f,js){if (f==null) eval(ajxb(js+'?'));} //unsafe
+
+function ajxjs2(flag,js,callback,mockfunc){
+	if (self[flag]!=null) {
+		if (callback!=null) callback();
+		return;
+	}
+	var ajxjsreset=function(){
+			document.body.style.filter='none';
+			document.body.style.opacity=1;		
+	}
+	if (mockfunc==null) mockfunc=function(){
+		if (document.ajxjsbeep) clearTimeout(document.ajxjsbeep);
+		
+		document.body.style.filter='blur(2px)';
+		document.body.style.opacity=0.95;
+		
+		document.ajxjsbeep=setTimeout(ajxjsreset,300);
+		
+	}
+	self[flag]=mockfunc;
+	var rq=xmlHTTPRequestObject();
+	ajxnb(rq,js+'?',function(){
+		if (rq.readyState==4){
+			eval(rq.responseText);
+			ajxjsreset();
+			if (callback!=null) callback();
+		}
+	});
+}
 
 function sajxjs(flag,js){
 	if (self[flag]!=null) return;

@@ -198,8 +198,8 @@ function listusers(){
 
 <script>
 gid('tooltitle').innerHTML='<a><?php tr('list_users');?></a>';
-ajxjs(<?php jsflag('showuser');?>,'users.js');
-ajxjs(<?php jsflag('setaccountpass');?>,'accounts.js');
+ajxjs('showuser','users.js');
+ajxjs('setaccountpass','accounts.js');
 </script>
 <?php	
 	}//embed mode

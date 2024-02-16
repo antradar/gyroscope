@@ -39,7 +39,7 @@ function listyubikeys(){
 		array_push($attids,$attid);
 	?>
 	<div class="listtiem">
-		<input class="inpshort" onchange="ajxjs(self.updateyubikeyname,'yubikey.js');updateyubikeyname(<?php echo $keyid;?>,this);" value="<?php echo htmlspecialchars($keyname);?>">
+		<input name="_" class="inpshort" onchange="ajxjs(self.updateyubikeyname,'yubikey.js');updateyubikeyname(<?php echo $keyid;?>,this);" value="<?php echo htmlspecialchars($keyname);?>">
 		&nbsp;
 		<button class="labelbutton" onclick="ajxjs(self.testyubikey,'yubikey.js');testyubikey('<?php echo $challenge;?>',['<?php echo $dattid;?>']);">Test</button>
 		&nbsp; &nbsp;

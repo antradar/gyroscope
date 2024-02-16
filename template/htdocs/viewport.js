@@ -443,10 +443,11 @@ function showview(idx,lazy,force,params,func,bingo,submenu){
 				var flag=rq.getResponseHeader('listviewflag');
 				var js=rq.getResponseHeader('listviewjs');
 				if (flag!=null&&js!=null&&js!=''){
-					ajxjs(self[flag],js);
+					ajxjs2(flag,js,function(){
+						if (func!=null) func();					
+					});
 					//sajxjs(flag,js);
 				}
-				if (func) func();	
 			});
 		} else {
 	      gid('lv'+idx).style.display='block';

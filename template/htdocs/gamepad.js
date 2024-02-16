@@ -398,7 +398,7 @@ gamepad_register=function(){
 	if (buttons[bmap.start]!=null&&buttons[bmap.start].pressed){
 		if (document.gamebutton_9_timer) clearTimeout(document.gamebutton_9_timer);
 		document.gamebutton_9_timer=setTimeout(function(){
-			ajxjs(self.setaccountpass,'accounts.js');reloadtab('account','My Account','showaccount');addtab('account','My Account','showaccount');	
+			ajxjs2('setaccountpass','accounts.js',function(){reloadtab('account','My Account','showaccount');addtab('account','My Account','showaccount');});
 		},100);
 	}	
 	
