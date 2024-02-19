@@ -143,7 +143,7 @@ function #entity#_shownav($container, $cmd, $title,$fieldname,$multi=null,$multi
 	}
 
 	//add any parents of a nested dimension in the exemption list below:
-	if (!multior&&!$multi&&count($counts)<2&&!in_array($fieldname,array('exempt_1','exempt_2'))) return; //comment out to show singular filters
+	if (!$multior&&!$multi&&count($counts)<2&&!in_array($fieldname,array('exempt_1','exempt_2'))) return; //comment out to show singular filters
 	
 	$bfilters=#entity#_makefilters();
 	$basefilters=$bfilters['filters'];
@@ -175,7 +175,7 @@ function #entity#_shownav($container, $cmd, $title,$fieldname,$multi=null,$multi
 	}
 	
 	$mymultiorfilters=$basefilters;
-	unset($mymultiorfilters["multior_"+$fieldname]);
+	unset($mymultiorfilters["multior_".$fieldname]);
 	$multiorfilters=#entity#_strfilters($mymultiorfilters,$nbasefilters);
 			
 	foreach ($counts as $key=>$count){
@@ -1024,6 +1024,8 @@ function #entity#_shownavs($container, $cmd){
 #iterator-daterangelist-gsdaterangeshownav#
 	}
 	
+	if (!isset($pcharts)) $pcharts=array();
+
 	foreach ($pcharts as $pidx=>$chart){
 		if ($chart['type']=='pie'){
 			usort($pcharts[$pidx]['counts'],function($a,$b){
