@@ -50,6 +50,8 @@ use toolbar.psp to generate toolbar.gif
 .inputrow input[type=checkbox],.inputrow input[type=radio]{vertical-align:middle;}
 .inputrow label{vertical-align:middle;}
 
+.inp.busy, .inpmed.busy, .inplong.busy, .inpshort.busy, .inpxshort.busy{opacity:0.6;}
+
 #tabviews.bgready{background:#ffffff;}
 #tabviews.bgflash{background:#ffffc0;}
 

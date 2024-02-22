@@ -6,7 +6,7 @@ function listusers(){
 	
 	global $db;
 	global $WSS_INTERNAL_HOST;
-		
+			
 	$user=userinfo();
 	$myuserid=$user['userid'];
 	$gsid=$user['gsid'];	
@@ -35,6 +35,8 @@ function listusers(){
 		
 	$mode=SGET('mode');
 	$key=SGET('key',0);
+	
+	echo $key.'<hr>';
 	
 	$page=isset($_GET['page'])?intval($_GET['page']):0;
 	

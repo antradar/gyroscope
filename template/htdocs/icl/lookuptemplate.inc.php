@@ -5,6 +5,8 @@ function lookuptemplate(){
 	$key=SGET('key');
 	global $db;
 	
+	//usleep(500000);
+		
 	$user=userinfo();
 	$gsid=$user['gsid'];
 			
