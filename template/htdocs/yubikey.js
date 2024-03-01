@@ -77,7 +77,13 @@ testyubikey=function(challenge,attids){
 
 delyubikey=function(keyid){
 	if (!sconfirm('Are you sure you want to remove this authentication device?')) return;
-	ajxpgn('myaccount_yubikeys',document.appsettings.codepage+'?cmd=delyubikey&keyid='+keyid);	
+	ajxpgn('myaccount_yubikeys',document.appsettings.codepage+'?cmd=delyubikey&keyid='+keyid,0,0,null,function(rq){
+		var disableyubi=rq.getResponseHeader('disableyubi');
+		if (disableyubi!=null&&disableyubi=='1'&&gid('myaccount_useyubi')) {
+			gid('myaccount_useyubi').checked='';
+			gid('myaccount_yubikeys').style.display='none';
+		}	
+	});	
 }
 
 updateyubikeyname=function(keyid,d){
