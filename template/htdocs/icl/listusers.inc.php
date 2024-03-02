@@ -6,7 +6,6 @@ function listusers(){
 	
 	global $db;
 	global $WSS_INTERNAL_HOST;
-			
 	$user=userinfo();
 	$myuserid=$user['userid'];
 	$gsid=$user['gsid'];	

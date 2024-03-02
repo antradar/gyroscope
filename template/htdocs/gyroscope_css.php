@@ -7,7 +7,6 @@ body, td, textarea, .img-mg{font-family:arial,sans-serif;font-size:13px;-webkit-
 .img-mg,.sectiontitle,
 .listitem,.inplong, .inp, .inpmed, .inpshort, .inpxshort{font-family:Arial,serif;}
 
-
 table{line-height:25px;}
 table.subtable{line-height:18px;}
 a{cursor:pointer;}

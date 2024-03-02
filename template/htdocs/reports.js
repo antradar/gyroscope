@@ -1,14 +1,23 @@
 _inline_lookupreport=function(d){
 	var soundex='';
 	if (d.soundex) soundex='&soundex=1';
+	
+	if (!d.oclassname) d.oclassname=d.className;	
 
-	if (d.lastkey!=null&&d.lastkey==d.value) return;
+	if (d.lastkey!=null&&d.lastkey==d.value) {
+		lookupentity_completed(d);
+		return;
+	}
 	d.lastkey=d.value;
 			
 	if (d.timer) clearTimeout(d.timer);
 	d.timer=setTimeout(function(){
-		ajxpgn('reportlist',document.appsettings.codepage+'?cmd=slv_core__reports&mode=embed&key='+encodeHTML(d.value)+soundex);
-	},200
+		//d.setAttribute('readonly',''); //do not block
+		d.className=d.oclassname+' busy';		
+		ajxpgn('reportlist',document.appsettings.codepage+'?cmd=slv_core__reports&mode=embed&key='+encodeHTML(d.value)+soundex,0,0,null,function(){
+			lookupentity_completed(d);	
+		});
+	},400
 	);	
 }
 

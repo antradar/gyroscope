@@ -49,7 +49,7 @@ function listsettings(){
 	
 	if (isset($user['groups']['systemplate'])||isset($user['groups']['systemplateuse'])){
 	?>
-	<div class="listitem"><a onclick="ajxjs(self.showtemplatetype,'templatetypes.js');showview('core.templatetypes',1);"><?php tr('icon_systemplates');?></a></div>	
+	<div class="listitem"><a onclick="ajxjs2('showtemplatetype','templatetypes.js');showview('core.templatetypes',1);"><?php tr('icon_systemplates');?></a></div>	
 	<?php
 	}
 

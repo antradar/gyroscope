@@ -1,3 +1,7 @@
+20.7
+- auto disabling 2fa when all devices removed
+- per-usage lookup throttle; staggered lookup prevention
+
 *20.6
 - ajxjs2 async-sync js loading
 

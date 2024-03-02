@@ -11,12 +11,21 @@ showuser=function(userid,name,bookmark){
 
 
 _inline_lookupuser=function(d){
-	if (d.lastkey!=null&&d.lastkey==d.value) return;
+	if (d.lastkey!=null&&d.lastkey==d.value) {
+		lookupentity_completed(d);
+		return;
+	}
+	
+	if (!d.oclassname) d.oclassname=d.className;
+	
 	d.lastkey=d.value;	
 	if (d.timer) clearTimeout(d.timer);
 	d.timer=setTimeout(function(){
-		ajxpgn('userlist',document.appsettings.fastlane+'?cmd=slv_core__users&mode=embed&key='+encodeHTML(d.value)+gid('searchfilter_user').value);
-	},200
+		d.className=d.oclassname+' busy';
+		ajxpgn('userlist',document.appsettings.fastlane+'?cmd=slv_core__users&mode=embed&key='+encodeHTML(d.value)+gid('searchfilter_user').value,0,0,null,function(){
+			lookupentity_completed(d);	
+		});
+	},400
 	);	
 }
 

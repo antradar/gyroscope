@@ -55,7 +55,7 @@ function listtemplatetypetemplatevars($templatetypeid=null){
 	</div>
 	
 	<div id="templatevarscode_<?php echo $templatetypeid;?>" style="display:none;">
-		<textarea class="inplong">
+		<textarea name="_" class="inplong">
 	//include 'maketemplate.inc.php';
 	$template=maketemplate('<?php echo $templatetypekey;?>',array(
 

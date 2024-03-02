@@ -14,10 +14,21 @@ _inline_lookuptemplatetype=function(d){
 	var soundex='';
 	if (d.soundex) soundex='&soundex=1';
 	
+	if (!d.oclassname) d.oclassname=d.className;	
+
+	if (d.lastkey!=null&&d.lastkey==d.value) {
+		lookupentity_completed(d);
+		return;
+	}
+	d.lastkey=d.value;	
+	
 	if (d.timer) clearTimeout(d.timer);
 	d.timer=setTimeout(function(){
-		ajxpgn('templatetypelist',document.appsettings.codepage+'?cmd=slv_core__templatetypes&mode=embed&key='+encodeHTML(d.value)+soundex);
-	},300
+		d.className=d.oclassname+' busy';
+		ajxpgn('templatetypelist',document.appsettings.codepage+'?cmd=slv_core__templatetypes&mode=embed&key='+encodeHTML(d.value)+soundex,0,0,null,function(){
+			lookupentity_completed(d);	
+		});
+	},400
 	);	
 }
 

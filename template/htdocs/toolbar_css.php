@@ -50,7 +50,7 @@ use toolbar.psp to generate toolbar.gif
 .inputrow input[type=checkbox],.inputrow input[type=radio]{vertical-align:middle;}
 .inputrow label{vertical-align:middle;}
 
-.inp.busy, .inpmed.busy, .inplong.busy, .inpshort.busy, .inpxshort.busy{opacity:0.6;}
+.inp.busy, .inpmed.busy, .inplong.busy, .inpshort.busy, .inpxshort.busy, .img-mg.busy{opacity:0.6;text-shadow:0 0 2px #663300;}
 
 #tabviews.bgready{background:#ffffff;}
 #tabviews.bgflash{background:#ffffc0;}
@@ -455,6 +455,9 @@ if ($dark==0||$dark==1){
 	.sectiontitle a:hover .edithover{filter:invert(1);}
 	
 	.calledout{background:#35292E;}
+	
+	.inp.busy, .inpmed.busy, .inplong.busy, .inpshort.busy, .inpxshort.busy, .img-mg.busy{opacity:0.6;text-shadow:0 0 4px #ffffff;}
+	
 	
 	.charttoolbar{
 		border:solid 1px #6B7247;

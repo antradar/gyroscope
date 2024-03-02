@@ -416,9 +416,11 @@ lookupentity_completed=function(d){
 	if (d.oclassname!=null) d.className=d.oclassname;	
 }
 
-_lookupentity=function(d,entity,title,data,mini,throttle){
-	if (throttle==null) throttle=300;
+_lookupentity=function(d,entity,title,data,mini,throttle,blockinput){
+	if (throttle==null) throttle=400;
 	if (d.disabled) return;
+	
+	if (blockinput==null) blockinput=0;
 	
 	if (!d.oclassname) d.oclassname=d.className;
 	
@@ -429,7 +431,7 @@ _lookupentity=function(d,entity,title,data,mini,throttle){
 	d.lastkey=d.value;
 	if (d.timer) clearTimeout(d.timer);
 	d.timer=setTimeout(function(){
-		d.setAttribute('readonly','');
+		if (blockinput) d.setAttribute('readonly','');
 		d.className=d.oclassname+' busy';
 		lookupentity(d,entity,title,data,mini,function(){	
 			lookupentity_completed(d);
