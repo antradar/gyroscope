@@ -300,6 +300,8 @@ input,textarea{border:solid 1px #999999;}
 .iconbuttons a{display:block;float:left;text-align:center;margin-right:20px;font-size:10px;transition:opacity 400ms; -webkit-transition:opacity 400ms;}
 .iconbuttons a, .iconbuttons a:hover, .iconbuttons a:visited, .iconbuttons a:link{color:#F2F2F2;text-decoration:none;}
 
+.iconbuttons a.narrow{font-family:'Arial Narrow';}
+
 .iconbuttons a:hover{opacity:0.6; filter:alpha(opacity=60);}
 .iconbuttons .noblink, .iconbuttons .noblink:hover{opacity:1;filter:none;cursor:default;}
 

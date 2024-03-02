@@ -132,9 +132,12 @@ foreach ($toolbaritems as $modid=>$ti){
 		foreach ($gs as $g) if (isset($user['groups'][$g])) $canview=1;
 		if (!$canview) continue;	
 	}
+	
+	$narrow='';
+	if (count(explode(' ',$ti['title']))>1||mb_strlen($ti['title'])>15) $narrow='class="narrow"';
 		
 ?>	
-<a onmouseover="hintstatus(this,'<?php echo $ti['title'];?>');" onclick="<?php echo $action;?>"><img class="<?php echo $ti['icon'];?>" src="imgs/t.gif" width="32" height="32"><br><?php echo $ti['title']?></a>
+<a onmouseover="hintstatus(this,'<?php echo $ti['title'];?>');" <?php echo $narrow;?> onclick="<?php echo $action;?>"><img class="<?php echo $ti['icon'];?>" src="imgs/t.gif" width="32" height="32"><br><?php echo $ti['title']?></a>
 <?php
 }//foreach
 }//ui.toolbar_position
