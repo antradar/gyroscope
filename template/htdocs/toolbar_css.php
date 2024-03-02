@@ -92,7 +92,7 @@ use toolbar.psp to generate toolbar.gif
 .hovlink:hover, .listitem .hovlink:hover{border-bottom:solid 1px #29ABE1;color:#29ABE1;}
 
 .largertext{font-size:18px;}
-.smallertext{font-size:13px;}
+.smallertext{font-size:12px;}
 
 .tsinfo{text-align:right;}
 .tslogo,.tsdark{width:210px;}

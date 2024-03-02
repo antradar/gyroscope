@@ -17,7 +17,7 @@ _inline_lookup#record#=function(d){
 	if (d.timer) clearTimeout(d.timer);
 	d.timer=setTimeout(function(){
 		d.className=d.oclassname+' busy';
-		ajxpgn('#record#list',document.appsettings.codepage+'?cmd=slv_#fviewindex#&mode=embed&key='+encodeHTML(d.value)+soundex,0,0,function(){
+		ajxpgn('#record#list',document.appsettings.codepage+'?cmd=slv_#fviewindex#&mode=embed&key='+encodeHTML(d.value)+soundex,0,0,null,function(){
 			lookupentity_completed(d);
 		});
 	},400

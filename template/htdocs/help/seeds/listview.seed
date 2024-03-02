@@ -93,7 +93,7 @@ function list#records#(){
 	
 	$rs=sql_prep($query,$db,$params);
 	
-	while ($myrow=sql_fetch_array($rs)){
+	while ($myrow=sql_fetch_assoc($rs)){
 		$#primarykey#=$myrow['#primarykey#'];
 		$#dispfield#=$myrow['#dispfield#'];
 		
