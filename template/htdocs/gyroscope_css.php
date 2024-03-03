@@ -70,7 +70,7 @@ acronym.help{cursor:help;border-bottom:dotted 1px #4444ee;}
 #leftview.promoted #leftview_{background_x:#dedede;}
 
 
-#tooltitle{background:transparent url(imgs/sprite.png) no-repeat 0 -35px;position:absolute;left:20px;width:260px;height:32px;top:90px;transition:left 50ms;}
+#tooltitle{border-radius:5px 5px 0 0;background:#3A3A3A url(imgs/sprite.png) no-repeat 0 -35px;position:absolute;left:20px;width:260px;height:32px;top:90px;transition:left 50ms;}
 	#tooltitle a{font-weight:bold;font-size:16px;color:#f2f2f2;margin-left:15px;margin-top:6px;display:block;transition:color 250ms;}
 	#tooltitle a:hover{color:#72ADDE;}
 	
@@ -98,7 +98,7 @@ acronym.help{cursor:help;border-bottom:dotted 1px #4444ee;}
 #lkv.dismounted #lkvtitle #lkvt{cursor:move;}
 #lkv.dismounted #lkvs{display:none;}
 	
-#lefticons{width:100%;position:absolute;top:0px;left:0;height:72px;background:transparent url(imgs/sprite.png) repeat-x 0 -258px;}
+#lefticons{width:100%;position:absolute;top:0px;left:0;height:72px;background:#3A3A3A url(imgs/sprite.png) repeat-x 0 -258px;}
 #lefticons.solid{background:#3A3A3A;height:57px;}
 #vsptr{position:absolute;left:280px;width:12px;height:100px;top:122px;font-size:1px;cursor:pointer;transition:left 50ms,background 100ms,opacity 100ms;background:rgba(250,100,10,0) url(imgs/lcollapse.png) no-repeat 50% 50%;background-size:12px 27px;opacity:0.4;}
 #vsptr:hover{background:rgba(250,250,10,0.2) url(imgs/lcollapse.png) no-repeat 50% 50%;background-size:12px 27px;opacity:0.95;}
