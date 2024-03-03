@@ -101,6 +101,13 @@ function showdatepicker(){
 
 	$start=$fd;
 	$end=mktime(23,59,59,$nm,0+$postdays,$ny);
+	
+	$ia=1-$w+$woffset;
+	$ib=$ldx+$woffset;
+	
+	if ($ia>0) {$ia-=7;$ib-=7;}
+	
+	$datastart=mktime(0,0,0,$nm,$ia-$ld,$ny);
 
 	$tailparams=maketailparams();
 	
@@ -113,7 +120,7 @@ function showdatepicker(){
 		$yesdays["$y-$m-10"]=1; //demo: enable the 10th day of the month
 	}
 	
-	if ($vmode=='heat'){ // sample implementation of a heat map
+	if ($vmode=='heat'){ // sample implementation of a heat map, in live query, use $datastart intead of $start
 		$colormaps=array();
 		$colormaps["$y-$m-".rand(1,8)]='#848cf7';
 		$colormaps["$y-$m-".rand(10,20)]='#ffab00';
@@ -121,7 +128,7 @@ function showdatepicker(){
 	
 	if ($vmode=='actionlog'){
 		$colormaps=array();
-		$query="select * from ".TABLENAME_ACTIONLOG." where ".COLNAME_GSID."='$gsid' and logdate>=$start and logdate<=$end";
+		$query="select * from ".TABLENAME_ACTIONLOG." where ".COLNAME_GSID."='$gsid' and logdate>=$datastart and logdate<=$end";
 		$rs=sql_query($query,$db);
 
 		$logdays=array();
@@ -181,10 +188,7 @@ for ($i=0;$i<$w;$i++){?>
 ?>
 <?php
 
-$ia=1-$w+$woffset;
-$ib=$ldx+$woffset;
 
-if ($ia>0) {$ia-=7;$ib-=7;}
 
 for ($i=$ia;$i<=$ib;$i++){
 	$calekey="$y-$m-$i";
