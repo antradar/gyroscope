@@ -14,9 +14,9 @@ header('Cache-Control: no-store');
 		"sizes":"192x192"
 	},
 	{
-	"src": "appicons/512x512.png",
-	"type": "image/png",
-	"sizes": "512x512"
+		"src":"appicons/512x512.png",
+		"type":"image/png",
+		"sizes":"512x512"
 	}
 	],
 	"start_url":"login.php",

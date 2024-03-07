@@ -203,10 +203,12 @@ if ($uiconfig['toolbar_position']=='left') $tabbase=57;
 </div>
 <div id="fsview"></div>
 
+<?php if ($enablelivechat){?>
 <div style="display:none;">
 <audio id="gschatsound_msgin"><source src="chatsounds/msgin.mp3"></audio>
 <audio id="gschatsound_newchat"><source src="chatsounds/newchat.mp3"></audio>
 </div>
+<?php }?>
 
 <div style="position:absolute;top:25px;right:20px;width:160px;">
 	<?php makehelp('myaccountlink','mysettings',1,-120);?>
