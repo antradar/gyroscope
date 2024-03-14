@@ -1,3 +1,16 @@
+autopickentity=function(d,entity){
+	if (d.disabled||d.value=='') return;
+	ajxpgn('statusc',document.appsettings.codepage+'?cmd=autopick'+entity+'&key='+encodeHTML(d.value),0,0,null,function(rq){
+		var recid=rq.getResponseHeader('recid');
+		var recid3=rq.getResponseHeader('recid3');
+		var recid4=rq.getResponseHeader('recid4');
+		if (recid!=null&&parseInt(recid,10)>0){
+			var recname=decodeHTML(rq.getResponseHeader('recname'));
+			picklookup(recname,recid,recid3,recid4);
+		}
+	});	
+}
+
 picklookup=function(val){
 	if (document.hotspot==null) return;
 	
@@ -431,8 +444,10 @@ _lookupentity=function(d,entity,title,data,mini,throttle,blockinput){
 	d.lastkey=d.value;
 	if (d.timer) clearTimeout(d.timer);
 	d.timer=setTimeout(function(){
-		if (blockinput) d.setAttribute('readonly','');
-		d.className=d.oclassname+' busy';
+		if (!d.disabled){
+			if (blockinput) d.setAttribute('readonly','');
+			d.className=d.oclassname+' busy';
+		}
 		lookupentity(d,entity,title,data,mini,function(){	
 			lookupentity_completed(d);
 		});

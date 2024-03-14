@@ -126,6 +126,7 @@ switch($cmd){
 	
 	case 'slv_core__templatetypes': include 'icl/listtemplatetypes.inc.php'; listtemplatetypes(); break;
 	case 'dash_core__templatetypes': include 'icl/dashtemplatetypes.inc.php'; dashtemplatetypes(); break;
+	case 'autopicktemplate': include 'icl/autopicktemplate.inc.php'; autopicktemplate(); break;
 	
 	case 'rptsqlcomp': include 'icl/rptsqlcomp.inc.php'; rptsqlcomp(); break;  
 	

@@ -508,7 +508,7 @@ if ($dark==0){
 	<div id="passview">
 		<div><label for="password"><?php tr('password');?>:</label></div>
 		<div style="padding-top:5px;padding-bottom:15px;">
-			<input style="width:100%;" class="lfinp" id="password" type="password" name="password">
+			<input style="width:100%;" class="lfinp" id="password" type="password" name="password" autocomplete="off">
 		</div>
 		<?php if (!$textmode){?>
 		<div id="tfa_sms" style="display:none;">

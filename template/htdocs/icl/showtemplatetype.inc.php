@@ -62,7 +62,7 @@ function showtemplatetype($templatetypeid=null){
 		<div class="formlabel">
 		<a class="hovlink" onclick="ajxjs(<?php jsflag('showtemplate');?>,'templates.js');
  		showrelrec('activetemplateid_<?php echo $templatetypeid;?>', showtemplate,'<?php echo $activetemplateid;?>');"><?php tr('templatetype_label_activetemplateid');?></a>:</div>
-		<input onfocus="lookupentity(this,'template&templatetypeid=<?php echo $templatetypeid;?>','Template');"
+		<input onblur="autopickentity(this,'template');" onfocus="lookupentity(this,'template&templatetypeid=<?php echo $templatetypeid;?>','Template');"
 			onkeyup="_lookupentity(this,'template&templatetypeid=<?php echo $templatetypeid;?>','Template',null,null,600);"
 			 oninput="this.onchange();" onchange="marktabchanged('templatetype_<?php echo $templatetypeid;?>');"
 			 class="inpmed" id="activetemplateid_<?php echo $templatetypeid;?>" value="<?php echo htmlspecialchars($templatename);?>" <?php if ($activetemplateid) echo 'disabled';?>>
