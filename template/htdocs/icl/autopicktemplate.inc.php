@@ -1,13 +1,15 @@
 <?php
 
 function autopicktemplate(){
-	//todo: apply gsguard if applicable
+	
 	global $db;
 	
 	$key=SGET('key');
+	$user=userinfo();
+	$gsid=$user['gsid'];
 
-	$query="select templateid,templatename from templates where templatename like ?";
-	$rs=sql_prep($query,$db,array($key));
+	$query="select templateid,templatename from templates,templatetypes where templatename like ? and templatetypes.".COLNAME_GSID."=?";
+	$rs=sql_prep($query,$db,array($key,$gsid));
 	
 	$recid=0;
 	$recname='';
