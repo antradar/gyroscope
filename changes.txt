@@ -1,3 +1,6 @@
+20.8
+- auto entity lookup picker (autopick) with custom deduplication
+
 20.7
 - auto disabling 2fa when all devices removed
 - per-usage lookup throttle; staggered lookup prevention
