@@ -8,7 +8,7 @@ function xsscheck($easy=0){
 	
 	//header("Content-Security-Policy: child-src 'self'");
 
-	header("Content-Security-Policy: child-src 'self' *.stripe.com ");
+	header("Content-Security-Policy: child-src 'self' *.stripe.com");
 
 	//header("Content-Security-Policy: default-src 'self'; child-src 'self';");
 		

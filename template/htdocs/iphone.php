@@ -79,7 +79,7 @@ button.warn, .button.warn{display:none;}
 if (isset($roundwatchframe)&&$roundwatchframe){
 ?>
 <div id="watchmenu">
-	<a onclick="showhide('toolicons',1);"><img alt="home menu" class="img-home" src="imgs/t.gif" border="0" width="32" height="32"></a>
+	<a onclick="showhide('toolicons',1);"><img alt="home menu" class="img-home" src="imgs/t.gif" border="0" width="28" height="28"></a>
 </div>
 <?php
 }
@@ -102,9 +102,9 @@ if (isset($roundwatchframe)&&$roundwatchframe){
 	}
 	?>
 			
-	<div class="menuitem"><a id="speechstart" href=# onclick="<?php if (isset($roundwatchframe)&&$roundwatchframe) echo 'initwatchmenu();';?>ajxjs(<?php jsflag('speech_startstop');?>,'speech.js');speech_startstop(1);return false;" style="display:none;"><img alt="voice commands" style="" class="img-speechrecog" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
-	<div class="menuitem" id="homeicon"><a href=# onclick="<?php if (isset($roundwatchframe)&&$roundwatchframe) echo 'initwatchmenu();';?>reloadtab('welcome','','wk');showtab('welcome');document.viewindex=null;return false;"><img alt="home menu" class="img-home" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
-	<div class="menuitem" id="gsnotesclipicon"><a href=# onclick="<?php if (isset($roundwatchframe)&&$roundwatchframe) echo 'initwatchmenu();';?>if (navigator.onLine) gsnotes_listclips(); else onlinestatuschanged();"><img alt="offline clipboard" class="img-gsclip" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
+	<div class="menuitem"><a id="speechstart" href=# onclick="<?php if (isset($roundwatchframe)&&$roundwatchframe) echo 'initwatchmenu();';?>ajxjs(<?php jsflag('speech_startstop');?>,'speech.js');speech_startstop(1);return false;" style="display:none;"><img alt="voice commands" style="" class="img-speechrecog" src="imgs/t.gif" border="0" width="28" height="28"></a></div>
+	<div class="menuitem" id="homeicon"><a href=# onclick="<?php if (isset($roundwatchframe)&&$roundwatchframe) echo 'initwatchmenu();';?>reloadtab('welcome','','wk');showtab('welcome');document.viewindex=null;return false;"><img alt="home menu" class="img-home" src="imgs/t.gif" border="0" width="28" height="28"></a></div>
+	<div class="menuitem" id="gsnotesclipicon"><a href=# onclick="<?php if (isset($roundwatchframe)&&$roundwatchframe) echo 'initwatchmenu();';?>if (navigator.onLine) gsnotes_listclips(); else onlinestatuschanged();"><img alt="offline clipboard" class="img-gsclip" src="imgs/t.gif" border="0" width="28" height="28"></a></div>
 
 	<?php 
 	
@@ -140,11 +140,11 @@ if (isset($roundwatchframe)&&$roundwatchframe){
 		if (isset($roundwatchframe)&&$roundwatchframe) $action='initwatchmenu();'.$action;
 		
 	?>
-	<div class="menuitem"><a onclick="<?php echo $action;?>return false;"><img alt="<?php echo $ti['title'];?>" class="<?php echo $ti['icon'];?>" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
+	<div class="menuitem"><a onclick="<?php echo $action;?>return false;"><img alt="<?php echo $ti['title'];?>" class="<?php echo $ti['icon'];?>" src="imgs/t.gif" border="0" width="28" height="28"></a></div>
 	<?php }
 	?>
 	<?php if ($enablelivechat){?>
-	<div class="menuitem"><a href=# onclick="livechat_start();return false;"><img alt="live chat" id="chaticon" src="imgs/t.gif" border="0" width="32" height="32"></a></div>
+	<div class="menuitem"><a href=# onclick="livechat_start();return false;"><img alt="live chat" id="chaticon" src="imgs/t.gif" border="0" width="28" height="28"></a></div>
 	<?php }
 	
 	?>
