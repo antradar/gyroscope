@@ -202,7 +202,7 @@ function analyse($fn){
 	
 	global $stats;
 	
-	$stats[files]++;
+	$stats['files']++;
 	
 	$c=file_get_contents($fn);
 	

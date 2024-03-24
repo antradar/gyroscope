@@ -306,7 +306,7 @@ tablock=false;
 function tab_setdoctitle(t,title){
 	if (title==null||title=='') title=t.tabname;
 	if (title=='') return;
-	t.tabname=title.replace(/(<([^>]+)>)/gi,'');
+	t.tabname=title.replace(/(<([^>]+)>)/gi,'').replace('&nbsp;','');
 	var sptr=' | ';
 	if (document.appsettings.shortappname==' ') sptr='';
 	if (document.appsettings.shortappname) document.title=document.appsettings.shortappname+sptr+t.tabname;		

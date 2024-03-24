@@ -159,7 +159,7 @@ input:disabled{
 .img-helptopics{background:transparent url(imgs/toolbar.gif) no-repeat -576px 0;}
 .img-helptopics-light{background:transparent url(imgs/toolbar.gif) no-repeat -576px -32px;}
 
-.img-speechrecog{background:transparent url(imgs/toolbar.gif) no-repeat -128px 0;}
+.img-speechrecog{background:transparent url(imgs/toolbar.gif) no-repeat -128px -2px;}
 
 .img-chats{background:transparent url(imgs/toolbar.gif) no-repeat -320px 0;}
 .img-chats-light{background:transparent url(imgs/toolbar.gif) no-repeat -320px -32px;}
