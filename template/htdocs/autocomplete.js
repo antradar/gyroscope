@@ -29,7 +29,7 @@ picklookup=function(val){
 	if (document.hotspot.lookupview) document.hotspot.lookupview.style.display='none';		
 	if (document.hotspot.id) {
 		var v2c=gid(document.hotspot.id+'_val2');
-		if (v2c){
+		if (v2c&&document.hotspot.value2!=null){
 				gid(document.hotspot.id).disabled='disabled';
 				v2c.innerHTML='<a class="labelbutton" href=# onclick="cancelpickup(\''+document.hotspot.id+'\');return false;">'+document.dict['edit']+'</a>';
 		}
