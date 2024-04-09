@@ -94,6 +94,7 @@ function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce,gskey,creds,headless){
 				return;
 			}
 
+			
 			if (ct.reqobj!=null){
 				ct.reqobj=null;
 			}
@@ -108,6 +109,15 @@ function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce,gskey,creds,headless){
 			    return;
 			}
 				
+			if (rq.status==504){
+				if (self.flashsticker) {
+					flashsticker('Server timed out',2);
+				} else {
+					ct.innerHTML='Server timed out';
+					if (d) ct.style.display='block';
+				}
+				return;   
+			}
 
 			var apperror=creds==null?rq.getResponseHeader('apperror'):null;
 			if (apperror!=null&&apperror!=''){

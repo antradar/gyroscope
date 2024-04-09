@@ -403,6 +403,12 @@ function reloadtab(key,title,params,loadfunc,data,opts,gskey){
 		    return;
       }
       
+      if (rq.status==504){
+	      
+		if (self.flashsticker) flashsticker('Server timed out',2);
+		else c.innerHTML='Server timed out';
+	    return;   
+      }
       
 	   
     document.tabtitles[tabid].tablock=null;
@@ -628,6 +634,15 @@ function addtab(key,title,params,loadfunc,data,opts){
 		  showgssubscription();
 	      return;
 	  }            
+	  
+		if (rq.status==504){
+			
+			if (self.flashsticker) flashsticker('Server timed out',2);
+			else c.innerHTML='Server timed out';
+			
+			return;   
+		}
+	  
 
 		var newtitle=rq.getResponseHeader('newtitle');
 		if (newtitle!=null&&newtitle!=''){
