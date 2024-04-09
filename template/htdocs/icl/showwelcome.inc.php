@@ -11,8 +11,8 @@ include 'libscal.php';
 //include 'gsx_hello.inc.php'; //uncomment this to see gsx in bypass mode, remember to modify gsx.php
 
 function showwelcome(){
-	
-makechangebar('welcome',"if (gid('codegen_button')) gid('codegen_button').onclick();");
+
+	makechangebar('welcome',"if (gid('codegen_button')) gid('codegen_button').onclick();");
 		
 ?>
 <div style="position:relative;margin-left:60px;"><?php makehelp('welcometab2','maxtab',1);?></div>
