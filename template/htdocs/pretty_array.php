@@ -2,7 +2,10 @@
 
 function pretty_array($items,$stem='unique_container_name',$showall=0,$depth=0,$pk=''){
 
-	if (!is_array($items)) return;
+	if (!is_array($items)) {
+		if (isset($items)) echo $items;
+		return;
+	}
 	
 	foreach ($items as $k=>$v){
 
