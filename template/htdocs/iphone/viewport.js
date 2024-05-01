@@ -335,7 +335,13 @@ function authpump(){
   rq.send('nocache='+stamp);
 }
 
-function sv(d,v,r){gid(d).value=v;if (r&&gid(d).onchange) gid(d).onchange();}
+function sv(d,v,r){
+	gid(d).value=v;
+	if (r&&gid(d).onchange) {
+		var ev=document.createEvent('Events'); ev.initEvent('change',true,false);
+		gid(d).dispatchEvent(ev);
+	}
+}
 
 if (document.createEvent){
 	document.keyboard=[];

@@ -10,7 +10,9 @@ function clogo(){
 	
 	$basedir=numfile_make_path($gsid,'../../protected/clogos/').'/';
 	$fn=$basedir.$vendorhead.$gsid.'.gif';
-		
+
+	header('lfn:'.str_replace('../../protected/clogos/','',$fn));
+			
 	if (!file_exists($fn)) $fn='../../protected/clogos/'.$vendorhead.'default.gif';
 
 	header('Content-Type: image/gif');

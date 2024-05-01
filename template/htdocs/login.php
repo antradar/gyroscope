@@ -29,10 +29,10 @@ $passreset=0;
 header('gsfunc: login');
 
 $textmode=0;
-$ua=$_SERVER['HTTP_USER_AGENT'];
+$ua=$_SERVER['HTTP_USER_AGENT']??'';
 if (preg_match('/^lynx\//i',$ua)) $textmode=1;
 
-if (isset($_GET['watch'])&&$_GET['watch']==1||preg_match('/sm\-r\d+/i',$_SERVER['HTTP_USER_AGENT'])){
+if (isset($_GET['watch'])&&$_GET['watch']==1||preg_match('/sm\-r\d+/i',$ua)){
 	$roundwatchframe=1;
 }
 
