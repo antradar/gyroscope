@@ -71,10 +71,11 @@ selectpickup=function(sf,title){
 	d.value2=sels.join(',');
 	
 	if (document.hotspot.id) {
+		gid(document.hotspot.id).valuecount=1;
 		var v2c=gid(document.hotspot.id+'_val2');
 		if (v2c){
-				gid(document.hotspot.id).disabled='disabled';
-				v2c.innerHTML='<a class="labelbutton" href=# onclick="cancelpickup(\''+document.hotspot.id+'\');return false;">'+document.dict['edit']+'</a>';
+			gid(document.hotspot.id).disabled='disabled';
+			v2c.innerHTML='<a class="labelbutton" href=# onclick="cancelpickup(\''+document.hotspot.id+'\');return false;">'+document.dict['edit']+'</a>';
 		}
 	}
 		
@@ -114,10 +115,11 @@ pickupalllookups=function(sf){
 	d.value2=sels.join(',');
 	
 	if (document.hotspot.id) {
+		gid(document.hotspot.id).valuecount=1;
 		var v2c=gid(document.hotspot.id+'_val2');
 		if (v2c){
-				gid(document.hotspot.id).disabled='disabled';
-				v2c.innerHTML='<a class="labelbutton" style="color:#ffffff;" onclick="cancelpickup(\''+document.hotspot.id+'\');">'+document.dict['edit']+'</a>';
+			gid(document.hotspot.id).disabled='disabled';
+			v2c.innerHTML='<a class="labelbutton" style="color:#ffffff;" onclick="cancelpickup(\''+document.hotspot.id+'\');">'+document.dict['edit']+'</a>';
 		}
 	}
 		
@@ -126,6 +128,7 @@ pickupalllookups=function(sf){
 
 
 cancelpickup=function(c,unlockonly){
+	if (gid(c).valuecount) {for (var i=0;i<gid(c).valuecount;i++) delete gid(c)['value'+(i+2)];gid(c).valuecount=0;}
 	if (unlockonly) {
 		gid(c).disabled='';
 		gid(c).value='';
@@ -136,7 +139,6 @@ cancelpickup=function(c,unlockonly){
 	
 	if (gid(c)) {gid(c).disabled=''; gid(c).value='';gid(c).focus();}
 	if (gid(c+'_val2')) gid(c+'_val2').innerHTML='';
-	if (gid(c).valuecount) for (var i=0;i<gid(c).valuecount;i++) delete gid(c)['value'+(i+2)];
 	
 	if (document.hotspot&&document.hotspot.id) document.hotspot=gid(document.hotspot.id);
 	if (document.hotspot&&document.hotspot.onchange) document.hotspot.onchange();
