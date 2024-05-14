@@ -55,16 +55,38 @@ selectpickup=function(sf,title){
 	
 	var d=document.hotspot;
 	
-	sf.seltitle=title;
+	if (sf!=null){
 	
-	var sels=[]
+		sf.seltitle=title;
+		
+		if (!document.hotspot.picks) document.hotspot.picks={};
+		if (sf.checked) document.hotspot.picks[sf.value]=sf.value;
+		else delete document.hotspot.picks[sf.value];
+	}
+	
 	var os=gid('lkvc').getElementsByTagName('input');
 	
 	if (document.iphone_portrait&&d.id&&gid(d.id+'_lookup')) os=gid(d.id+'_lookup').getElementsByTagName('input');
 	
 	var dtitle='';
-	for (var i=0;i<os.length;i++) if (os[i].className=='lksel'&&os[i].checked) {sels.push(os[i].value);dtitle=os[i].seltitle;}
 	
+	for (var i=0;i<os.length;i++) {
+		if (os[i].className=='lksel'){
+			if (document.hotspot.picks&&document.hotspot.picks[os[i].value]!=null) {
+				os[i].checked='checked';
+				dtitle=os[i].seltitle;
+				
+			} else {
+				os[i].checked='';
+			}
+		}
+	}
+	
+	if (sf==null) return;
+		
+	var sels=[];
+	for (var k in document.hotspot.picks) sels.push(k);
+		
 	if (sels.length==0) {cancelpickup(d.id,true);return;}
 		
 	if (sels.length==1) d.value=dtitle; else d.value='('+sels.length+' items selected)';
@@ -79,7 +101,7 @@ selectpickup=function(sf,title){
 		}
 	}
 		
-	if (d.onchage) d.onchange();
+	if (sf!=null&&d.onchage) d.onchange();
 }
 
 pickupalllookups=function(sf){
@@ -129,6 +151,7 @@ pickupalllookups=function(sf){
 
 cancelpickup=function(c,unlockonly){
 	if (gid(c).valuecount) {for (var i=0;i<gid(c).valuecount;i++) delete gid(c)['value'+(i+2)];gid(c).valuecount=0;}
+	if (document.hotspot&&document.hotspot.picks) delete document.hotspot.picks;
 	if (unlockonly) {
 		gid(c).disabled='';
 		gid(c).value='';

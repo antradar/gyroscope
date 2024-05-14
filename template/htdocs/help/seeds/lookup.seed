@@ -40,6 +40,10 @@ function lookup#record#(){
 	if ($page>$maxpage) $page=$maxpage;
 	
 	$start=$page*$perpage;
+
+	/*
+	multi-select: use ajxpgn instead of lookupentity, callback: selectpickup(null,'');
+	*/
 	
 	$pager='';
 	if ($maxpage>0){
