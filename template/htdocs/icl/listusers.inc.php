@@ -48,7 +48,6 @@ function listusers(){
 ?>
 <div class="section">
 <div class="listbar">
-
 	<form class="listsearch" onsubmit="_inline_lookupuser(gid('userkey'));return false;" style="position:relative;">
 		<div class="listsearch_">
 			<input onfocus="document.hotspot=this;" id="userkey" class="img-mg" onkeyup="_inline_lookupuser(this);" autocomplete="off">

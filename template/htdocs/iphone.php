@@ -160,7 +160,7 @@ if (isset($roundwatchframe)&&$roundwatchframe){
 	?>	
 	
 	</div></div>
-	<span id="labellogin" style="display:none;"><?php echo $user['login'];?></span><span id="labeldispname" style="display:none;"><?php echo $user['dispname'];?></span>	
+	<span id="labellogin" style="display:none;"><?php echo htmlspecialchars($user['login']);?></span><span id="labeldispname" style="display:none;"><?php echo htmlspecialchars($user['dispname']);?></span>	
 	<a id="adminlogout" onclick="if (document.websocket) document.websocket.onclose=null;" href="login.php?from=<?php echo $_SERVER['PHP_SELF'];?>" style="position:absolute;top:10px;right:10px;"><img alt="sign out" border="0" width="16" height="16" src="imgs/t.gif" class="admin-logout"></a>
 
 	<div id="mmastersearch">

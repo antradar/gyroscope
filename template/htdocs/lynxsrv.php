@@ -27,7 +27,7 @@ login();
 <body>
 <a href="lynx.php">Home</a>
 &nbsp; &nbsp;
-<a href="login.php?from=<?php echo $_SERVER['PHP_SELF'];?>" onmouseover="hintstatus(this,'Logout');"><?php tr('signout');?> "<?php echo $user['dispname'];?>"</a>
+<a href="login.php?from=<?php echo $_SERVER['PHP_SELF'];?>" onmouseover="hintstatus(this,'Logout');"><?php tr('signout');?> "<?php echo htmlspecialchars($user['dispname']);?>"</a>
 <br>
 ___________________________________________________
 <br>&nbsp;

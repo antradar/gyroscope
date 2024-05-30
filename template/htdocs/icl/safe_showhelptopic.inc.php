@@ -19,6 +19,8 @@ function safe_showhelptopic($helptopicid=null){
 	$helptopickeywords=$myrow['helptopickeywords'];
 	$helptopictext=$myrow['helptopictext'];
 	
+
+		
 	//$helptopictext=htmlspecialchars($helptopictext);
 	
 	//$helptopictext=str_replace("\n","<br>\n",$helptopictext);
@@ -36,12 +38,16 @@ function safe_showhelptopic($helptopicid=null){
 	<link href="toolbar_css.php" type="text/css" rel="stylesheet" />
 	<link href="tiny_mce/editor.css" type="text/css" rel="stylesheet" />
 </head>
-<body style="background:#ffffff;">
+<body style="background:#ffffff;overflow:auto;">
 <div class="section">
 	<div class="sectiontitle"><?php echo htmlspecialchars($helptopictitle);?></div>
 	
 	<?php if (is_callable('tmpl')) tmpl($helptopictext); else echo $helptopictext;?>
+	
+
+	
 </div>
+
 </body>
 </html>
 <?php

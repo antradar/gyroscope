@@ -92,7 +92,7 @@ function listreportsettings(){
 		
 		if ($lastgroup!=$reportgroup){
 ?>
-<div class="sectionheader"><?php echo $reportgroup;?></div>
+<div class="sectionheader"><?php echo htmlspecialchars($reportgroup);?></div>
 <?php			
 			$lastgroup=$reportgroup;
 		}

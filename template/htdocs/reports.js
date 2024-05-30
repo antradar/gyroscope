@@ -61,6 +61,13 @@ rptreload_serverlog=function(){ //todo: drop "rpt"
 	nav_loadcharts('rptserverlog','rptserverlogkey','rptserverlog',1); //bingo
 }
 
+rptinit_serverdigest=function(){ //todo: drop "rpt"
+	nav_loadcharts('rptserverdigest','rptserverdigestkey','rptserverdigest',1); //bingo
+}
+rptreload_serverdigest=function(){ //todo: drop "rpt"
+	nav_loadcharts('rptserverdigest','rptserverdigestkey','rptserverdigest',1); //bingo
+}
+
 rptinit_mxevents=function(){ //todo: drop "rpt"
 	nav_loadcharts('rptmxevents','rptmxeventkey','rptmxevents',1); //bingo
 }

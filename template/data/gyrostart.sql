@@ -164,6 +164,7 @@ INSERT INTO `reports` VALUES (3, 1, 'Server Access Log', 'Security', '', '', '',
 INSERT INTO `reports` VALUES (4, 1, 'Mail Server Log', 'Security', '', '', '', '', '', '', 'admins', '1', '', '', '', 'mxevents', 'admins|reportsettings|systemplateuse|systemplate','',1, 0);
 INSERT INTO `reports` VALUES (5, 1, 'Fault Log', 'Security', '', '', '', '', '', '', 'admins', '1', '', '', '', 'faultlog', 'faultlog','',0, 0);
 INSERT INTO `reports` VALUES (6, 1, 'Activity Calendar (Demo)', 'Security', '', '', '', '', '', '', 'admins', '1', '', '', '', 'cale', 'admins|reportsettings|systemplateuse|systemplate','\'+cale_filters()+\'',0, 0);
+INSERT INTO `reports` VALUES (7, 1, 'App Usage Summary', 'Security', '', '', '', '', '', '', 'admins', '1', '', '', '', 'serverdigest', 'admins|reportsettings|systemplateuse|systemplate','',1, 0);
 
 DROP TABLE IF EXISTS userhelpspots;
 CREATE TABLE userhelpspots (
