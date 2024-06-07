@@ -75,17 +75,21 @@ if (isset($user['groups']['chats'])){
 	
 	<div class="inputrow">
 		<div class="formlabel"><?php tr('current_password');?>:</div>
+
 		<input class="inp" id="accountpass" type="password" oninput="this.onchange();" onchange="marktabchanged('account');">
+		<img class="passtoggle" src="imgs/t.gif" onclick="togglepass(this,'accountpass');">
 	</div>
 	
 	<div class="inputrow">
 		<div class="formlabel"><?php tr('new_password');?>: &nbsp; &nbsp; <span style="font-weight:normal;color:#ab0200;" id="accountpasswarn"></span></div>
 		<input class="inp" autocomplete="new-password" id="accountpass1" type="password" onkeyup="_checkpass(this,'accountpasswarn');" onchange="checkpass(this,'accountpasswarn');">
+		<img class="passtoggle" src="imgs/t.gif" onclick="togglepass(this,'accountpass1');">
 	</div>
 	
 	<div class="inputrow">
 		<div class="formlabel"><?php tr('repeat_password');?>:</div>
 		<input class="inp" id="accountpass2" type="password">
+		<img class="passtoggle" src="imgs/t.gif" onclick="togglepass(this,'accountpass2');">
 	</div>
 
 	<div class="inputrow">

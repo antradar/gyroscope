@@ -35,6 +35,8 @@ $icons=array(
 		array('name'=>'camera-retro','adjust'=>-36,'dx'=>16,'dy'=>20)
 	)),
 	array('name'=>'gamepad','adjust'=>-16),
+	array('name'=>'eye','adjust'=>-16,'style'=>'r'),
+	array('name'=>'eye-slash','adjust'=>-16,'style'=>'r'),
 
 	array('name'=>'microphone','adjust'=>-10),
 	array('name'=>'unlink','adjust'=>-14),

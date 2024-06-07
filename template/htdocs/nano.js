@@ -7,7 +7,7 @@ Documentation: www.antradar.com/docs-nano-ajax-manual
 
 Warning: this copy of Nano Ajax Library is modified for running in Gyroscope. Use the public version for general purpose applications.
 
-ver g5.1
+ver g5.2
 */
 
 function gid(d){return document.getElementById(d);}
@@ -444,6 +444,20 @@ function showhidepass(id,d,text_show,text_hide){
 		d.innerText=text_show;
 		gid(id).showing=null;
 	}
+}
+
+function togglepass(s,id){
+	var d=gid(id); if (!d) return;
+	if (!d.showing) {
+		d.type='text';
+		d.showing=true;
+		s.className='passtoggle_show';
+	} else {
+		d.type='password';
+		d.showing=null;
+		s.className='passtoggle';
+	}
+	d.focus();	
 }
 
 if (window.Blob){

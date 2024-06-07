@@ -89,10 +89,12 @@ function showuser($userid=null){
 	<div class="inputrow">
 		<div class="formlabel"><?php tr('new_password');?>: &nbsp; &nbsp; <span style="font-weight:normal;color:#ab0200;" id="passwarn_<?php echo $userid;?>"></span></div>
 		<input class="inp" autocomplete="new-password" id="newpass_<?php echo $userid;?>" onkeyup="ajxjs(self.checkpass,'accounts.js');_checkpass(this,'passwarn_<?php echo $userid;?>');" type="password" onchange="marktabchanged('user_<?php echo $userid;?>');ajxjs(self.checkpass,'accounts.js');checkpass(this,'passwarn_<?php echo $userid;?>');">
+		<img class="passtoggle" src="imgs/t.gif" onclick="togglepass(this,'newpass_<?php echo $userid;?>');">
 	</div>
 	<div class="inputrow">
 		<div class="formlabel"><?php tr('repeat_password');?>:</div>
 		<input class="inp" id="newpass2_<?php echo $userid;?>" type="password" oninput="this.onchange();" onchange="marktabchanged('user_<?php echo $userid;?>');">
+		<img class="passtoggle" src="imgs/t.gif" onclick="togglepass(this,'newpass2_<?php echo $userid;?>');">
 	</div>
 	
 	<div class="inputrow">

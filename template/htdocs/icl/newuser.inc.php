@@ -37,10 +37,12 @@ function newuser(){
 		<div class="inputrow">
 			<div class="formlabel"><?php tr('new_password');?>: &nbsp; &nbsp; <span style="font-weight:normal;color:#ab0200;" id="passwarn_new"></span></div>
 			<input class="inp" id="newpass_new" type="password" onkeyup="ajxjs(self.checkpass,'accounts.js');_checkpass(this,'passwarn_new');" type="password" onchange="ajxjs(self.checkpass,'accounts.js');checkpass(this,'passwarn_new');">
+			<img class="passtoggle" src="imgs/t.gif" onclick="togglepass(this,'newpass_new');">
 		</div>
 		<div class="inputrow">
 			<div class="formlabel"><?php tr('repeat_password');?>:</div>
 			<input class="inp" id="newpass2_new" type="password">
+			<img class="passtoggle" src="imgs/t.gif" onclick="togglepass(this,'newpass2_new');">
 		</div>	
 		<div class="inputrow">
 			<input type="checkbox" id="passreset_new"> <label for="passreset_new"><?php tr('account_login_reset');?></label>

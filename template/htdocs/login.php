@@ -409,6 +409,8 @@ body{padding:0;margin:0;background:transparent url(imgs/bgtile.png) repeat;font-
 
 #lang{padding:5px 0;}
 
+.passtoggle{position:absolute;top:12px;right:8px;width:18px;cursor:pointer;}
+
 @media screen and (min-width:20px){
 	.lfinp{padding:5px;box-sizing:border-box;height:34px;line-height:32px;font-size:15px;}
 }
@@ -453,7 +455,7 @@ if ($dark==0||$dark==1){
 	#logo_light{display:none;}
 	#logo_dark{display:block;}
 	.powered{color:#8B949E;}
-	#fingerprint{filter:invert(1);}
+	#fingerprint,.passtoggle{filter:invert(1);}
 	#yubikeysetup a, #yubikeysetup a:hover, #yubikeysetup a:link, #yubikeysetup a:visited{text-decoration:none;color:#29ABE1;}	
 <?php	
 
@@ -507,8 +509,9 @@ if ($dark==0){
 	
 	<div id="passview">
 		<div><label for="password"><?php tr('password');?>:</label></div>
-		<div style="padding-top:5px;padding-bottom:15px;">
+		<div style="padding-top:5px;padding-bottom:15px;position:relative;">
 			<input style="width:100%;" class="lfinp" id="password" type="password" name="password" autocomplete="off">
+			<img class="passtoggle" onclick="togglepass_login(this,'password');" src="imgs/eye-slash.png">
 		</div>
 		<?php if (!$textmode){?>
 		<div id="tfa_sms" style="display:none;">
@@ -530,15 +533,18 @@ if ($dark==0){
 	
 	<?php if ($passreset){?>
 	<div><label for="password"><?php tr('new_password');?>:</label></div>
-	<div style="padding-top:5px;padding-bottom:15px;">
-		<input class="lfinp" style="width:100%;" id="password" type="password" name="newpassword" onkeyup="_checkpass(this);" onchange="checkpass(this);">
+	<div style="padding-top:5px;padding-bottom:15px;position:relative;">
+		<input class="lfinp" style="width:100%;" id="newpassword" type="password" name="newpassword" onkeyup="_checkpass(this);" onchange="checkpass(this);">
+		<img class="passtoggle" src="imgs/eye-slash.png" onclick="togglepass_login(this,'newpassword');">
 		<div style="font-weight:normal;color:#ab0200;" id="passwarn"></div>
 	</div>
 	
 		
 	<div><?php tr('repeat_password');?>:</div>
-	<div style="padding-top:5px;padding-bottom:15px;">
-	<input class="lfinp" style="width:100%;" id="password" type="password" name="newpassword2"></div>
+	<div style="padding-top:5px;padding-bottom:15px;position:relative;">
+		<input class="lfinp" style="width:100%;" id="newpassword2" type="password" name="newpassword2">
+		<img class="passtoggle" src="imgs/eye-slash.png" onclick="togglepass_login(this,'newpassword2');">
+	</div>
 	<input type="hidden" name="passreset" value="1">
 	<?php }?>
 
@@ -599,7 +605,7 @@ if ($dark==0){
 	<input name="cfk" id="cfk" value="<?php echo $csrfkey;?>" type="hidden">
 	
 	<?php if (!$textmode){?>
-	<div style="display:none;"><span id="nullloader"></span><textarea name="certid" id="certid"></textarea></div>
+	<div style="display:none;"><span id="nullloader"></span><textarea name="certid" id="certid"></textarea><img src="imgs/eye.png"></div>
 	<?php } ?>
 	
 	</form>
@@ -698,6 +704,20 @@ function cardview(){
 function passview(){
 	gid('cardview').style.display='none';
 	gid('passview').style.display='block';
+}
+
+function togglepass_login(s,id){
+	var d=gid(id); if (!d) return;
+	if (!d.showing) {
+		d.type='text';
+		d.showing=true;
+		s.src='imgs/eye.png';
+	} else {
+		d.type='password';
+		d.showing=null;
+		s.src='imgs/eye-slash.png';
+	}
+	d.focus();	
 }
 
 function tfa_callback(rq){

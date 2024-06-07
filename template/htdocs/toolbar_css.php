@@ -26,7 +26,8 @@ use toolbar.psp to generate toolbar.gif
 
 */
 
-
+.passtoggle,.passtoggle_show{margin-left:-28px;width:16px;height:20px;cursor:pointer;background:transparent url(imgs/eye-slash.png) no-repeat 0 7px;background-size:16px 16px;}
+.passtoggle_show{background-image:url(imgs/eye.png);}
 .charttoolbar{
 	border:solid 1px #dedede;
 	background:#ffffff;
@@ -448,6 +449,8 @@ if ($dark==0){
 
 if ($dark==0||$dark==1){
 ?>
+
+	.passtoggle,.passtoggle_show{filter:invert(1);}
 
 	.scal_view .scal_cell.dow_0,.scal_view .scal_cell.dow_6{background:#2C2935;color:#E87655;}
 

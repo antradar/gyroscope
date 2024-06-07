@@ -329,7 +329,7 @@ lkv_dismount=function(){
 		lkv.onmouseup=lkvt.onmouseup;
 		document.onmouseup=lkvt.onmouseup;
 		
-		console.log('lkv dismounted');
+		//console.log('lkv dismounted');
 	}	
 }
 
@@ -340,7 +340,7 @@ lkv_remount=function(){
 		gid('lkv_origin').id='lkv';
 		gid('lkvc').style.height=(ch()-187-33)+'px';
 		document.lkvdismounted=null;
-		console.log('lkv remounted');
+		//console.log('lkv remounted');
 	}	
 }
 
