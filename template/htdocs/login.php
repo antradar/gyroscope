@@ -396,7 +396,8 @@ body{padding:0;margin:0;background:transparent url(imgs/bgtile.png) repeat;font-
 .loginbutton_:active, #loginbuttonbutton:active{box-shadow:1px 1px 3px #999999;}
 
 #fingerprint{cursor:pointer;vertical-align:middle;}
-#fingerprint img{width:22px;border-radius:3px;}
+#fingerprint img{width:22px;margin-right:-10px;filter:saturate(0.4);}
+#fingerprint img:hover{filter:saturate(1);}
 
 #cardlink, #passlink{display:none;text-align:center;padding-top:10px;}
 #cardlink{display:none;}
@@ -455,7 +456,8 @@ if ($dark==0||$dark==1){
 	#logo_light{display:none;}
 	#logo_dark{display:block;}
 	.powered{color:#8B949E;}
-	#fingerprint,.passtoggle{filter:invert(1);}
+	#fingerprint,.passtoggle{filter:invert(1) hue-rotate(180deg);}
+	.passtoggle{filter:invert(1);}
 	#yubikeysetup a, #yubikeysetup a:hover, #yubikeysetup a:link, #yubikeysetup a:visited{text-decoration:none;color:#29ABE1;}	
 <?php	
 
@@ -576,7 +578,7 @@ if ($dark==0){
 			
 		<div  style="text-align:center;">
 			<input id="loginbutton" class="loginbutton_" type="submit" value="<?php echo $passreset?_tr('change_password'):_tr('signin');?>">
-			<a style="display:none<?php if (!$passreset) echo 'a';?>;" id="fingerprint" onclick="yubilogin();return false;" href=#><img src="imgs/fingerprint.png" border="0"></a>
+			<a style="display:none<?php if (!$passreset) echo 'a';?>;" id="fingerprint" onclick="yubilogin();return false;" href=#><img src="imgs/yubikey.png" border="0"></a>
 		</div>	
 		<div id="yubikeysetup" style="display:none;padding-top:20px;text-align:center;">
 			<a href="<?php echo YUBIHELP;?>" target=_blank>how to use security keys?</a> 
