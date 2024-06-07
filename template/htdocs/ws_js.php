@@ -38,10 +38,12 @@ server{
 	
 	//use same-port protocol splitting:
 	$wshost=$_SERVER['HTTP_HOST'];
-	$wsport=$_SERVER['SERVER_PORT'];
+	$wsport=$_SERVER['SERVER_PORT']; //set to a manual value if wss is not tucked under httpd
 	$wsproto='ws';
+	$dport=':'.$wsport;
+	if ($wsport==443||$wsport==80) $dport='';
 	if ($stablecf||isset($_SERVER['REQUEST_SCHEME'])&&$_SERVER['REQUEST_SCHEME']=='https') $wsproto='wss';
-	$wsuri=$wsproto.'://'.$wshost.':'.$wsport.'/wss/dummy';
+	$wsuri=$wsproto.'://'.$wshost.$dport.'/wss/dummy';
 
 ?>
 <script src="wss.js?v=2"></script>
