@@ -9,7 +9,7 @@ include 'auth.php';
 	<meta name="viewport" content="width=device-width" />
 	<style>
 		body{padding:0;margin:0;text-align:center;font-family:'Times New Roman',serif;font-size:18px;background:#222222;line-height:1.45em;}
-		#page{padding:40px;max-width:860px;text-align:left;margin:0 auto;background:#f8f8f8;min-height:600px;}
+		#page{padding:40px;max-width:860px;text-align:left;margin:0 auto;background:#fcfcfc;min-height:600px;}
 		#appicon{text-align:center;padding:20px 0;margin-bottom:20px;}
 		  #appicon img{width:90px;border-radius:50%;}
 		h1{padding:0;margin:0;margin-bottom:20px;font-size:32px;font-weight:normal;}
@@ -18,7 +18,8 @@ include 'auth.php';
 		h2{font-size:20px;padding-top:20px;}
 		
 		.fig{width:80%;max-width:600px;margin:20px auto;}
-		.fig img{display:block;width:100%;border-radius:10px;}
+		.fig img{display:block;width:100%;}
+		.fig.lanchor{margin-left:0;}
 		
 		@media screen and (max-width:680px){
 			
@@ -37,7 +38,17 @@ include 'auth.php';
 			#page{padding:30px;}
 			p{word-wrap:break-word;hyphen:auto;}
 		}
-		
+
+		@media screen and (max-width:460px){
+			#page{padding:20px;}
+			.fig{width:100%;overflow:hidden;}
+			.fig img{width:160%;display:block;margin-left:-30%;}
+			
+			.fig.lanchor img{width:120%;margin-left:0%;}
+			.fig.sbs img{width:110%;margin-left:-5%;}
+			.fig.lhalf img{width:150%;margin-left:0%;}
+		}
+				
 		@media screen and (max-width:420px){
 			.trivial{display:none;}
 		}
@@ -65,25 +76,25 @@ Due to the very personal nature of multi-factor authentication (MFA), the interf
 <br><br>
 To set up a security key, go to Account Settings by clicking on the user icon on the top right corner of the app. Then check the box that says "enable hardware security keys and screen lock":
 <br><br>
-<div class="fig"><img src="help/yubi-config.png"></div>
+<div class="fig"><img src="help/yubi-config.svg"></div>
 <br><br>
 You can enroll multiple keys and test the keys separately or at the same time. The "Test All" button is useful for identifying which device is picked as a primary authentication method by the system. In fact, one can plug in multiple keys and see which profile matches:
 <br><br>
-<div class="fig"><img src="help/yubi-multikey.jpg"></div>
+<div class="fig lanchor"><img src="help/yubi-multikey.svg"></div>
 <br><br>
 You will be asked to touch the key first before going through the typical key registration steps.
 <br><br>
 In a browser that supports FIDO2, you will be asked to set up a PIN during the first time of using a security key. The PIN is then required before further verification: 
 </p>
-<div class="fig"><img src="help/yubi-pin.png"></div>
+<div class="fig"><img src="help/yubi-pin.svg"></div>
 <br><br>
 Afterward, you will be prompted to touch the key:
 <br><br>
-<div class="fig"><img src="help/yubi-touch.png"></div>
+<div class="fig"><img src="help/yubi-touch.svg"></div>
 <br><br>
-On a mobile device, you might be presented additional options:
+On a mobile device, you might be presented with additional options:
 <br><br>
-<div class="fig"><img src="help/yubi-mobile.jpg"></div>
+<div class="fig sbs"><img src="help/yubi-mobile.svg"></div>
 <br><br>
 If a finger print is enrolled in the mobile device, it is then supported by the screen lock method. A NFC-enabled security key can also be tapped against the back of the device without selecting the "use security key with NFC" option first.
 
@@ -104,7 +115,7 @@ The same error is given when enrolling a key through an NFC touch. This is by de
 <br><br>
 To add an NFC key to an account, use a laptop to enroll the key first. Similarly, a FIDO2 key can be enrolled before switching it to U2F-only mode:
 <br><br>
-<div class="fig"><img src="help/yubi-disable-fido2.png"></div>
+<div class="fig lhalf"><img src="help/yubi-disable-fido2.svg"></div>
 <br>
 </p>
 
@@ -124,7 +135,7 @@ Furthermore, when additional 2FA methods such as SMS verification or Google auth
 <p>
 On the login screen, the username must be provided to enable the Hardware Key option. If the user has no security token configured, a link to this help page is provided instead.
 <br><br>
-<div class="fig"><img src="help/mfa-login.png"></div>
+<div class="fig"><img src="help/mfa-login.svg"></div>
 <br><br>
 If the user signs in with a hardware key, the user's login is remembered for future sessions. A strict username-password sign-on would remove such memory.
 <br><br>

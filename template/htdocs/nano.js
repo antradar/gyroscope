@@ -434,18 +434,6 @@ function showhide(id,preopen,trigger){
 	}
 }
 
-function showhidepass(id,d,text_show,text_hide){
-	if (!gid(id).showing){
-		gid(id).type='text';
-		d.innerText=text_hide;
-		gid(id).showing=true;
-	} else {
-		gid(id).type='password';
-		d.innerText=text_show;
-		gid(id).showing=null;
-	}
-}
-
 function togglepass(s,id){
 	var d=gid(id); if (!d) return;
 	if (!d.showing) {
