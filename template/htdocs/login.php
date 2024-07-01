@@ -300,6 +300,10 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['gyroscope
 					setcookie('gsfrac',$rand,null,null,null,$usehttps,true);
 					setcookie('dowoffset',$dowoffset,time()+3600*24*30*6,null,null,$usehttps,true); //6 months
 					
+					header(COLNAME_GSID.': '.$gsid);
+					header('gsuid: '.$userid);
+					
+					
 					if (isset($_POST['lang'])){
 						if (!in_array($_POST['lang'],array_keys($langs))) $_POST['lang']=$deflang;
 						setcookie('userlang',$_POST['lang'],time()+3600*24*30*6,null,null,$usehttps,true); //keep for 6 months

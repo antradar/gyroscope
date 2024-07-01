@@ -26,6 +26,9 @@ use toolbar.psp to generate toolbar.gif
 
 */
 
+.chatbubble_client, .chatbubble_server{padding:10px;width:70%;border:solid 1px #dedede;border-radius:10px;margin-bottom:10px;}
+.chatbubble_server{margin-left:30%;}
+
 .passtoggle,.passtoggle_show{margin-left:-28px;width:16px;height:20px;cursor:pointer;background:transparent url(imgs/eye-slash.png) no-repeat 0 7px;background-size:16px 16px;}
 .passtoggle_show{background-image:url(imgs/eye.png);}
 .charttoolbar{

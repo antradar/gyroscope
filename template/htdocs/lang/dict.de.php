@@ -52,7 +52,7 @@ $dict=array(
 	'account_virtual'=>'virtuelle Benutzer',
 	
 	'rights_accounts'=>'Benutzer bearbeiten',
-	'rights_standardadmin'=>'typische Adminrechte',
+	'rights_standardadmin'=>'typische Rechte',
 	'rights_managereports'=>'Berichte ändern',
 	'rights_configtemplates'=>'Vorlagen konfigurieren',
 	'rights_managetemplates'=>'Vorlagen ändern',

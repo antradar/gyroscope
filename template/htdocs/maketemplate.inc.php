@@ -29,7 +29,16 @@ function maketemplate($templatetypekey,$reps,$preprocessor=null,$gsid=null){
 	$templateinit = isset($myrow['templateinit'])?intval($myrow['templateinit']):0;
 	
 	$c=$myrow['templatetext'];
-	
+
+	if (isset($gsid)){
+		$c=preg_replace_callback('/##secure_image_(\S+)##/',function($matches) use ($gsid){
+			$stem=$matches[1];
+			$params=urlencode(serialize(array($gsid,$stem,'../../protected/sec_imgs/')));
+			
+			return '<tcpdf method="InsertSecureImage" params="'.$params.'" />';
+		},$c);
+	}
+		
 	if (isset($preprocessor)&&is_callable($preprocessor)){
 		$c=$preprocessor($c);
 	}

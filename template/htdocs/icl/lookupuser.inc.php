@@ -3,6 +3,7 @@
 function lookupuser(){
 	$key=SGET('key');
 	$canchatnow=intval(SGET('canchatnow'));
+	$activeonly=intval(SGET('activeonly'));
 	
 	global $db;
 	global $WSS_INTERNAL_HOST;
@@ -51,6 +52,10 @@ function lookupuser(){
 	
 	if ($canchatnow){
 		$query.=" and canchat=1 and userid!=".$userid." ".$agentfilters;	
+	}
+	
+	if ($activeonly){
+		$query.=" and active=1 and virtualuser=0 ";	
 	}
 	
 	$query.=" order by dispname";

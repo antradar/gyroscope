@@ -56,6 +56,14 @@ try {  //comment out in older PHP versions
 	
 switch($cmd){
 	
+//msgpipes
+
+	case 'dashmsgpipes': include 'icl/dashmsgpipes.inc.php'; dashmsgpipes(); break;
+	case 'addmsgpipe': include 'icl/addmsgpipe.inc.php'; addmsgpipe(); break;
+	case 'delmsgpipe': include 'icl/delmsgpipe.inc.php'; delmsgpipe(); break;
+	case 'addmsgpipeuser': include 'icl/addmsgpipeuser.inc.php'; addmsgpipeuser(); break;
+	case 'delmsgpipeuser': include 'icl/delmsgpipeuser.inc.php'; delmsgpipeuser(); break;
+	
 // SAP Explorer
 
 	case 'slv_codegen__sap': include 'icl/sap_listentitygroups.inc.php'; sap_listentitygroups(); break;

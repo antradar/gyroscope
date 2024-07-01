@@ -19,8 +19,6 @@ evict_check();
 
 login();
 
-header('gsfunc: gs_index');
-
 
 $user=userinfo();
 $userid=$user['userid'];
@@ -31,6 +29,10 @@ $quicklist=isset($usermeta['quicklist'])&&$usermeta['quicklist']?1:0;
 $dark=isset($usermeta['darkmode'])?intval($usermeta['darkmode']):0;
 
 setcookie('userdarkmode',$dark,time()+3600*24*30*6,null,null,$usehttps,true); //6 months
+
+header('gsfunc: gs_index');
+header(COLNAME_GSID.': '.($user['gsid'])); //uncomment for logging in nginx as $upstream_http_gsid
+header('gsuid: '.($user['userid']));
 
 include 'uiconfig.php';
 include 'icl/showdefleftcontent.inc.php';

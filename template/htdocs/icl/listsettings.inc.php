@@ -23,9 +23,10 @@ function listsettings(){
 	<?php
 	}
 	?>
-	
-	
+		
 	<?php
+	
+	
 	
 	if (isset($user['groups']['creditcards'])){
 	?>
@@ -64,6 +65,13 @@ function listsettings(){
 	if (isset($user['groups']['chatsettings'])){
 	?>
 	<div class="listitem"><a onclick="ajxjs(<?php jsflag('showchatsettings');?>,'chats.js');addtab('chatsettings','Chat Settings','showchatsettings',null,null,{bingo:1});">Chat Settings</a></div>	
+	<?php
+	}
+	
+	if (isset($user['groups']['msgpipe'])||isset($user['groups']['msgpipeuse'])){
+
+	?>
+	<div class="listitem"><a onclick="ajxjs2('dashmsgpipes','msgpipes.js',function(){dashmsgpipes()});">Notification Lists</a></div>			
 	<?php
 	}
 			

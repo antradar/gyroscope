@@ -34,10 +34,12 @@ $userroles=array(
 	'chats'=>'respond to support chats',
 	'sharedashreports'=>'share custom reports on the home tab',
 	'sapadmin'=>'view SAP data',
+	'msgpipe'=>'provision notification lists',
+	'msgpipeuse'=>'modify notification list recipients',
 );
 
 //a user can grant the following rights only if the user also has the right themselves
-$userrolelocks=array('devreports','accounts','dbadmin','creditcards','systemplate','msdrive','helpedit','chatsettings','chats','sharedashreports','faultlog','sapadmin');
+$userrolelocks=array('devreports','accounts','dbadmin','creditcards','systemplate','msdrive','helpedit','chatsettings','chats','sharedashreports','faultlog','sapadmin','msgpipe','msgpipeuse');
 
 //to quickly force every role to be inherited, uncomment the following:
 

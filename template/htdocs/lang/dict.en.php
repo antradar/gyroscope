@@ -62,7 +62,7 @@ $dict=array(
 	'account_virtual'=>'virtual account',
 	
 	'rights_accounts'=>'manage users',
-	'rights_standardadmin'=>'standard admin rights',
+	'rights_standardadmin'=>'standard access',
 	'rights_managereports'=>'manage report settings',
 	'rights_configtemplates'=>'implement system templates',
 	'rights_managetemplates'=>'create/modify system templates',
