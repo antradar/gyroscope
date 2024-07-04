@@ -1,3 +1,6 @@
+21.1
+- activity log tracking groupname changes
+
 21.0
 - msg pipe
 - yubikey guide

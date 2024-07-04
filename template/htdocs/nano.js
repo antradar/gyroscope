@@ -109,11 +109,11 @@ function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce,gskey,creds,headless){
 			    return;
 			}
 				
-			if (rq.status==504){
+			if (rq.status==504||rq.status==404){
 				if (self.flashsticker) {
-					flashsticker('Server timed out',2);
+					flashsticker('Server error '+rq.status,2);
 				} else {
-					ct.innerHTML='Server timed out';
+					ct.innerHTML='Server error '+rq.status;
 					if (d) ct.style.display='block';
 				}
 				return;   

@@ -403,10 +403,10 @@ function reloadtab(key,title,params,loadfunc,data,opts,gskey){
 		    return;
       }
       
-      if (rq.status==504){
+      if (rq.status==504||rq.status==404){
 	      
-		if (self.flashsticker) flashsticker('Server timed out',2);
-		else c.innerHTML='Server timed out';
+		if (self.flashsticker) flashsticker('Server error '+rq.status,2);
+		else c.innerHTML='Server error '+rq.status;
 	    return;   
       }
       
@@ -635,10 +635,10 @@ function addtab(key,title,params,loadfunc,data,opts){
 	      return;
 	  }            
 	  
-		if (rq.status==504){
+		if (rq.status==504||rq.status==404){
 			
-			if (self.flashsticker) flashsticker('Server timed out',2);
-			else c.innerHTML='Server timed out';
+			if (self.flashsticker) flashsticker('Server error '+rq.status,2);
+			else c.innerHTML='Server error '+rq.status;
 			
 			return;   
 		}

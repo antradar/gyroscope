@@ -133,8 +133,23 @@ function updateuser(){
 		
 		$dbchanges=array('userid'=>$userid,'login'=>"$login");
 
+		$diffs=diffdbchanges($before,$after,array('password'),array('groupnames'));
 		
-		$diffs=diffdbchanges($before,$after,array('groupnames','password'));
+		$groupnames_a=$before['groupnames'];
+		$groupnames_b=$groupnames;
+		
+		if ($groupnames_a!=$groupnames_b){
+			$diffs['groupnames']='';
+			$gns_b=explode('|',$groupnames_b);
+			$gns_a=explode('|',$groupnames_a);
+			foreach ($gns_a as $v){
+				if (!in_array($v,$gns_b)) $diffs['groupnames'].='+'.$v.'; ';
+			}
+			foreach ($gns_b as $v){
+				if (!in_array($v,$gns_a)) $diffs['groupnames'].='-'.$v.'; ';
+			}
+		}
+		
 		$dbchanges=array_merge($dbchanges,$diffs);
 		$trace=array(
 			'table'=>'users',
