@@ -143,10 +143,10 @@ function updateuser(){
 			$gns_b=explode('|',$groupnames_b);
 			$gns_a=explode('|',$groupnames_a);
 			foreach ($gns_a as $v){
-				if (!in_array($v,$gns_b)) $diffs['groupnames'].='+'.$v.'; ';
+				if (!in_array($v,$gns_b)) $diffs['groupnames'].='-'.$v.'; ';
 			}
 			foreach ($gns_b as $v){
-				if (!in_array($v,$gns_a)) $diffs['groupnames'].='-'.$v.'; ';
+				if (!in_array($v,$gns_a)) $diffs['groupnames'].='+'.$v.'; ';
 			}
 		}
 		
