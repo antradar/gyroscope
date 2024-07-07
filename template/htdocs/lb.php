@@ -27,6 +27,8 @@ $WSS_INTERNAL_PORT='9999';
 
 $wssecret='asdf'; //sync this value in wss.php or wsss.php
 
+$enable_vectorhelp=0; //requires commercial license
+
 $GSX_ENABLED=0;
 $GSX_SERVERS=array(
 	'http://gyroscope/myservices.php'

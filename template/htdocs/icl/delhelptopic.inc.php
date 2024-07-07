@@ -1,8 +1,15 @@
 <?php
 
+if (file_exists('vectorhelp.ext.php')){
+	include 'vectorhelp.ext.php';
+}
+
 function delhelptopic(){
 	$helptopicid=SGET('helptopicid');
 	global $db;
+	global $vdb;
+	global $enable_vectorhelp;
+	
 	$user=userinfo();
 	$gsid=$user['gsid'];
 	
@@ -16,6 +23,10 @@ function delhelptopic(){
 	
 	$query="delete from ".TABLENAME_HELPTOPICS." where helptopicid=?";
 	sql_prep($query,$db,array($helptopicid));
+	
+	if (isset($enable_vectorhelp)&&$enable_vectorhelp&&isset($vdb)&&is_callable('vectorhelp_remove')){
+		vectorhelp_remove($helptopicid);
+	}	
 	
 	logaction("deleted Help #$helptopicid $helptopictitle",
 		array('helptopicid'=>$helptopicid,'helptopictitle'=>$helptopictitle),

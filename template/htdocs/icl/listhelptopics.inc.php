@@ -1,12 +1,15 @@
 <?php
+include 'help/gethelptoc.inc.php';
 
 function listhelptopics(){
 	global $db;
+	global $enable_vectorhelp;
 	
 	$user=userinfo();
 	$gsid=$user['gsid'];
 	
-	
+	$toc=gethelptoc();
+		
 	//unset($user['groups']['helpedit']); //debug
 	
 	$mode=SGET('mode');
@@ -35,10 +38,25 @@ function listhelptopics(){
 	<?php if ($user['groups']['helpedit']){?>
 
 	<div style="padding-top:10px;">
+	<?php if (isset($enable_vectorhelp)&&$enable_vectorhelp){?>
+		<div style="text-align:right;margin-bottom:10px;">
+			<a class="hovlink" onclick="addtab('dashvectorhelpsearch','Content Search','dashvectorhelpsearch');">Content Search</a>
+		</div>
+	<?php }?>
 	<a class="recadder" onclick="addtab('helptopic_new','<img src=&quot;imgs/t.gif&quot; class=&quot;ico-setting&quot;><?php tr('list_helptopic_add_tab');?>','newhelptopic');"> <img src="imgs/t.gif" class="img-addrec"><?php tr('list_helptopic_add');?></a>
 	</div>
 	
-	<?php }?>
+	<?php } else {
+		if (isset($enable_vectorhelp)&&$enable_vectorhelp){
+		?>
+	<div style="padding-bottom:10px;">
+		<a class="hovlink" onclick="addtab('dashvectorhelpsearch','Content Search','dashvectorhelpsearch');">Content Search</a>
+	</div>
+	
+	<?php 
+		}
+	
+	}?>
 </div>
 
 <div id="helptopiclist" style="position:relative;">

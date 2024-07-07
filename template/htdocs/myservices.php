@@ -55,7 +55,21 @@ header('gsfunc: '.rawurlencode($cmd));
 try {  //comment out in older PHP versions
 	
 switch($cmd){
-	
+
+	case 'dashvectorhelpsearch':
+		if (file_exists('vectorhelp.ext.php')){
+			include 'vectorhelp.ext.php';
+			dashvectorhelpsearch();	
+		}
+	break;
+	case 'vectorsearchhelp':
+		if (file_exists('vectorhelp.ext.php')){
+			include 'help/gethelptoc.inc.php';
+			include 'vectorhelp.ext.php';
+			vectorhelpsearch();	
+		}
+	break;
+		
 //msgpipes
 
 	case 'dashmsgpipes': include 'icl/dashmsgpipes.inc.php'; dashmsgpipes(); break;
