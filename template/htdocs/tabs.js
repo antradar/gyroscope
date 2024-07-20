@@ -920,13 +920,23 @@ function toggletabdock(){
 }
 
 
-function sconfirm(msg){
+function sconfirm(msg,skippable){
+	if (skippable){
+		var metakey=0;
+		if (document.keyboard&&document.keyboard['key_17']||document.keyboard['key_91']||document.keyboard['key_224']) metakey=1;
+		document.keyboard=[];
+		if (metakey) return true;
+	}
+
+	document.keyboard=[];
+		
 	var a=hb();
 	var res=confirm(msg);
 	var b=hb();
 	if (b-a<50&&gid('diagwarn')) {gid('diagwarn').style.display='inline';flashstatus('Warning: dialogs suppressed');}
 	return res;
 }
+
 
 function salert(msg){
 	document.keyboard=[];

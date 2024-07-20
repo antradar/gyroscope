@@ -81,6 +81,8 @@ use toolbar.psp to generate toolbar.gif
 .listitem{overflow-wrap:break-word;}
 .listitem span, .listitem .img-del {vertical-align:middle;}
 
+.img-del.spdy:hover{filter:hue-rotate(100deg);}
+
 .hovlink, .hovlink:visited, .hovlink:hover, .hovlink:link,
 .listitem .hovlink, .listitem .hovlink:visited, .listitem .hovlink:hover, .listitem .hovlink:link{color:#187CA6;text-decoration:none;border-bottom:dotted 1px #187CA6;}
 

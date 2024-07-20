@@ -23,7 +23,7 @@ function listtemplatetypetemplatevars($templatetypeid=null){
 	?>
 	<div style="margin-bottom:10px;">
 		<span class="labelbutton"><?php echo $varname;?></span>
-		&nbsp; &nbsp; <a onclick="deltemplatevar('<?php echo $templatevarid;?>','<?php echo $templatetypeid;?>','<?php emitgskey('deltemplatevar-'.$templatevarid);?>');"><img src="imgs/t.gif" class="img-del"></a> &nbsp; 
+		&nbsp; &nbsp; <a onclick="deltemplatevar('<?php echo $templatevarid;?>','<?php echo $templatetypeid;?>','<?php emitgskey('deltemplatevar-'.$templatevarid);?>');"><img src="imgs/t.gif" class="img-del spdy"></a> &nbsp; 
 		<span><?php echo $vardesc;?></span>
 		
 	</div>

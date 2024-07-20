@@ -145,7 +145,7 @@ addtemplatevar=function(templatetypeid,gskey){
 }
 
 deltemplatevar=function(templatevarid,templatetypeid,gskey){
-	if (!sconfirm('Are you sure you want to remove this variable?')) return;
+	if (!sconfirm('Are you sure you want to remove this variable?',1)) return;
 		
 	ajxpgn('templatetypetemplatevars_'+templatetypeid,document.appsettings.codepage+'?cmd=deltemplatevar&templatetypeid='+templatetypeid+'&templatevarid='+templatevarid,0,0,null,function(){
 		marktabsaved('templatetype_'+templatetypeid);
