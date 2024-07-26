@@ -29,6 +29,8 @@ $wssecret='asdf'; //sync this value in wss.php or wsss.php
 
 $enable_vectorhelp=0; //requires commercial license
 
+$enable_gs_tracer=1; //one-time tracer; see utils/trace_once.php
+
 $GSX_ENABLED=0;
 $GSX_SERVERS=array(
 	'http://gyroscope/myservices.php'

@@ -16,7 +16,7 @@ function showuser($userid=null){
 	
 	global $db;
 	global $userroles;
-	
+		
 	//vendor auth 1
 	
 	$query="select * from ".TABLENAME_USERS." where userid=? and ".COLNAME_GSID."=? ";

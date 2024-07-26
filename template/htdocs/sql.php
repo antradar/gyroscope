@@ -45,6 +45,7 @@ function sql_get_db($dbhost,$dbsource,$dbuser,$dbpass,$lazyname=null,$rlazyname=
 
 function sql_prep($query,&$db,$params=null){
 	global $gsdbprofile;
+	global $gsdbprofile_fulltrace;
 	global $SQL_READONLY;
 	global $dbdefers;
 	
@@ -140,7 +141,16 @@ function sql_prep($query,&$db,$params=null){
 	
 	$b=microtime(1);
 			
-	if (is_array($gsdbprofile)) array_push($gsdbprofile,array('query'=>$query,'time'=>$b-$a));
+	if (is_array($gsdbprofile)) {
+		if (isset($gsdbprofile_fulltrace)&&$gsdbprofile_fulltrace){
+			$backtrace=debug_backtrace();
+			$file=basename($backtrace[0]['file']);
+			$line=$backtrace[0]['line'];			
+			array_push($gsdbprofile,array('query'=>$query,'time'=>$b-$a,'file'=>$file,'line'=>$line));
+		} else {
+			array_push($gsdbprofile,array('query'=>$query,'time'=>$b-$a));
+		}
+	}
 
 	return $rs;
 		
@@ -150,6 +160,7 @@ function sql_query($query,&$db,$mode=MYSQLI_STORE_RESULT){
 	global $gsdbprofile;
 	global $SQL_READONLY;
 	global $dbdefers;
+	global $gsdbprofile_fulltrace;
 	
 	if ($SQL_READONLY){
 		$tokens=explode(' ',trim($query));
@@ -187,7 +198,16 @@ function sql_query($query,&$db,$mode=MYSQLI_STORE_RESULT){
 				
 		echo "@$file [$line] sql_error: ".$query.' '.mysqli_error($db)."\r\n";
 	}
-	if (is_array($gsdbprofile)) array_push($gsdbprofile,array('query'=>$query,'time'=>$b-$a));
+	if (is_array($gsdbprofile)) {
+		if (isset($gsdbprofile_fulltrace)&&$gsdbprofile_fulltrace){
+			$backtrace=debug_backtrace();
+			$file=basename($backtrace[0]['file']);
+			$line=$backtrace[0]['line'];			
+			array_push($gsdbprofile,array('query'=>$query,'time'=>$b-$a,'file'=>$file,'line'=>$line));
+		} else {
+			array_push($gsdbprofile,array('query'=>$query,'time'=>$b-$a));
+		}
+	}
 	return $rs;
 }
 

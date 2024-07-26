@@ -52,6 +52,10 @@ header('gsuid: '.($user['userid'])); //uncomment for logging in nginx as $upstre
 header('gsfunc: '.rawurlencode($cmd));
 //header('Cache-Control: no-store'); //if an individual handler must return a cached content, add " header('Cache-Control: '); " inside the handler
 
+if (isset($enable_gs_tracer)&&$enable_gs_tracer){
+	include 'gyroscope_tracer.php';
+}
+
 try {  //comment out in older PHP versions
 	
 switch($cmd){
@@ -297,4 +301,8 @@ switch($cmd){
 	logfault($e,true);		
 } catch (Exception $e){
 	logfault($e);
+}
+
+if (isset($enable_gs_tracer)&&$enable_gs_tracer){
+	gyroscope_trace_dump();
 }
