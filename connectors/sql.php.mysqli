@@ -45,6 +45,7 @@ function sql_get_db($dbhost,$dbsource,$dbuser,$dbpass,$lazyname=null,$rlazyname=
 
 function sql_prep($query,&$db,$params=null){
 	global $gsdbprofile;
+	global $gsdbprofile_fulltrace;
 	global $SQL_READONLY;
 	global $dbdefers;
 	
@@ -117,8 +118,9 @@ function sql_prep($query,&$db,$params=null){
 		$db=sql_get_db($dbinfo['host'],$dbinfo['source'],$dbinfo['user'],$dbinfo['pass'],null,$db->lazyname);
 		return;	
 	}
-		
+			
 	if (!mysqli_stmt_execute($stmt)) {
+		
 		$backtrace=debug_backtrace();
 		$file=basename($backtrace[0]['file']);
 		$line=$backtrace[0]['line'];
@@ -139,7 +141,17 @@ function sql_prep($query,&$db,$params=null){
 	
 	$b=microtime(1);
 			
-	if (is_array($gsdbprofile)) array_push($gsdbprofile,array('query'=>$query,'time'=>$b-$a));
+	if (is_array($gsdbprofile)) {
+		if (isset($gsdbprofile_fulltrace)&&$gsdbprofile_fulltrace){
+			$backtrace=debug_backtrace();
+			$file=basename($backtrace[0]['file']);
+			if (isset($backtrace[1])) $file.='~'.basename($backtrace[1]['file']).':'.$backtrace[1]['line'];
+			$line=$backtrace[0]['line'];			
+			array_push($gsdbprofile,array('query'=>$query,'time'=>$b-$a,'file'=>$file,'line'=>$line));
+		} else {
+			array_push($gsdbprofile,array('query'=>$query,'time'=>$b-$a));
+		}
+	}
 
 	return $rs;
 		
@@ -149,6 +161,7 @@ function sql_query($query,&$db,$mode=MYSQLI_STORE_RESULT){
 	global $gsdbprofile;
 	global $SQL_READONLY;
 	global $dbdefers;
+	global $gsdbprofile_fulltrace;
 	
 	if ($SQL_READONLY){
 		$tokens=explode(' ',trim($query));
@@ -186,7 +199,17 @@ function sql_query($query,&$db,$mode=MYSQLI_STORE_RESULT){
 				
 		echo "@$file [$line] sql_error: ".$query.' '.mysqli_error($db)."\r\n";
 	}
-	if (is_array($gsdbprofile)) array_push($gsdbprofile,array('query'=>$query,'time'=>$b-$a));
+	if (is_array($gsdbprofile)) {
+		if (isset($gsdbprofile_fulltrace)&&$gsdbprofile_fulltrace){
+			$backtrace=debug_backtrace();
+			$file=basename($backtrace[0]['file']);
+			if (isset($backtrace[1])) $file.='~'.basename($backtrace[1]['file']).':'.$backtrace[1]['line'];
+			$line=$backtrace[0]['line'];			
+			array_push($gsdbprofile,array('query'=>$query,'time'=>$b-$a,'file'=>$file,'line'=>$line));
+		} else {
+			array_push($gsdbprofile,array('query'=>$query,'time'=>$b-$a));
+		}
+	}
 	return $rs;
 }
 
@@ -200,7 +223,7 @@ function sql_copy_from_query($query,$db,$omits,$table,$negs=null,$resets=null){ 
 		if (in_array(strtolower($k),$omits)) continue;
 		array_push($fields,$k);
 		array_push($values,'?');
-		if(isset($negs) && in_array($k, $negs)) $v = -1*$v;
+		if(isset($negs) && in_array($k, $negs) && is_numeric($v) ) $v = -1*$v;
 		if(isset($resets) && isset($resets[$k])) $v=$resets[$k];
 		array_push($params,$v);
 	}
@@ -210,7 +233,6 @@ function sql_copy_from_query($query,$db,$omits,$table,$negs=null,$resets=null){ 
 	$id=sql_insert_id($db,$rs);
 	return $id;
 }
-
 
 function sql_save_chunks($db,$table,$chunks){
 	
