@@ -145,6 +145,7 @@ function sql_prep($query,&$db,$params=null){
 		if (isset($gsdbprofile_fulltrace)&&$gsdbprofile_fulltrace){
 			$backtrace=debug_backtrace();
 			$file=basename($backtrace[0]['file']);
+			if (isset($backtrace[1])) $file.='~'.basename($backtrace[1]['file']).':'.$backtrace[1]['line'];
 			$line=$backtrace[0]['line'];			
 			array_push($gsdbprofile,array('query'=>$query,'time'=>$b-$a,'file'=>$file,'line'=>$line));
 		} else {
@@ -202,6 +203,7 @@ function sql_query($query,&$db,$mode=MYSQLI_STORE_RESULT){
 		if (isset($gsdbprofile_fulltrace)&&$gsdbprofile_fulltrace){
 			$backtrace=debug_backtrace();
 			$file=basename($backtrace[0]['file']);
+			if (isset($backtrace[1])) $file.='~'.basename($backtrace[1]['file']).':'.$backtrace[1]['line'];
 			$line=$backtrace[0]['line'];			
 			array_push($gsdbprofile,array('query'=>$query,'time'=>$b-$a,'file'=>$file,'line'=>$line));
 		} else {

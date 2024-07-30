@@ -378,6 +378,9 @@ input:disabled{
 
 .filterneg{display:nonea;}
 
+textarea.expandable{height:60px;transition:height 300ms;cursor:row-resize;}
+textarea.expandable:focus{height:150px;cursor:text;}
+
 .navopen, .navclose{text-align:center;margin-bottom:10px;background:#dedede;padding:2px 0;font-size:11px;}
 .navopen{border-radius:0 0 10px 10px;}
 .navopen a, .navclose a{display:block;color:#29ABE2;}

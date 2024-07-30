@@ -37,7 +37,9 @@ function gyroscope_trace_traceable(){
 function gyroscope_trace_dump(){
 	global $gsdbprofile;
 	global $gyroscope_trace_req;
+	global $gsdbprofile_fulltrace;
 	
+	if (!isset($gsdbprofile_fulltrace)||!$gsdbprofile_fulltrace) return;	
 	if (!isset($gyroscope_trace_req)||!$gyroscope_trace_req) return;
 	
 	$cmd=$gyroscope_trace_req['cmd'];
