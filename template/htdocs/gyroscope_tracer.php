@@ -52,8 +52,9 @@ function gyroscope_trace_dump(){
 	$f=fopen($fn,'at');
 	fwrite($f,date('Y-n-j H:i:s')."\r\n");
 	fwrite($f,"$cmd GS_$gsid User_$userid\r\n"); 
-	fwrite($f,print_r($gsdbprofile,1));
-	
+
+	$totaltime=0;
+		
 	$dbcalls=array();
 	foreach ($gsdbprofile as $dbcall){
 		$key=md5($dbcall['query']).'-'.md5($dbcall['file']).'-'.$dbcall['line'];
@@ -62,9 +63,13 @@ function gyroscope_trace_dump(){
 			$dbcalls[$key]['time']=0;
 			$dbcalls[$key]['count']=0;
 		}
-		$dbcalls[$key]['time']+=$dbcall['time'];	
+		$dbcalls[$key]['time']+=$dbcall['time'];
+		$totaltime+=$dbcall['time'];	
 		$dbcalls[$key]['count']++;
 	}
+	
+	fwrite($f,"Total Time: $totaltime\r\n");
+	fwrite($f,print_r($gsdbprofile,1));
 
 	$dbcalls=array_values($dbcalls);
 		
