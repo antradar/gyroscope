@@ -368,7 +368,7 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['gyroscope
 //enable one of the two headers:
 
 if ($gs_public_web){
-	include '../web_header.php'; show_web_header('../',array('page_title'=>'Sign In'));
+	include '../web_header.php'; show_web_header('../',array('pagekey'=>'login','page_title'=>'Sign In'));
 	include '../web_login_header.php'; show_web_login_header();
 } else {include 'login_header.php'; show_login_header();}
 
@@ -495,6 +495,10 @@ if ($gs_public_web){
 	<div style="display:none;"><span id="nullloader"></span><textarea name="certid" id="certid"></textarea><img src="imgs/eye.png"></div>
 	<?php } ?>
 	
+	<?php if ($gs_public_web){?>
+	<div id="logincopyright">&copy; <?php echo date('Y');?> Company Name</div>
+	<?php }?>
+	
 	</form>
 	
 
@@ -507,9 +511,10 @@ if ($gs_public_web){
 		</div>
 	</div>
 	&nbsp;
-	<?php } ?>
-	
+	<?php } ?>		
 </div>
+
+
 </div></div>
 <?php
 if ($gs_public_web){

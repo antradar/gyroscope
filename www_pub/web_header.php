@@ -17,9 +17,9 @@ function show_web_header($egress='', $opts=array()){
 <body>
 <div id="mmenu">
 	<div id="mmenu_">
-		<a class="mmenuitem<?php if ($pagekey=='home') echo ' current';?>" href="<?php echo $egress;?>/index.php">Home</a>
-		<a class="mmenuitem<?php if ($pagekey=='about') echo ' current';?>" href="<?php echo $egress;?>/about.php">About</a>
-		<a class="mmenuitem<?php if ($pagekey=='login') echo ' current';?>" href="<?php echo $egress;?>app/">Login</a>
+		<a class="mmenuitem<?php if ($pagekey=='home') echo ' current';?>" href="<?php echo $egress;?>index.php">Home</a>
+		<a class="mmenuitem<?php if ($pagekey=='about') echo ' current';?>" href="<?php echo $egress;?>about.php">About</a>
+		<a class="mmenuitem<?php if ($pagekey=='login') echo ' current';?>" href="<?php echo $egress;?>app/">Log In</a>
 	</div>
 </div><!-- mmenu -->
 <div id="page">
@@ -29,7 +29,7 @@ function show_web_header($egress='', $opts=array()){
 		<div id="menu">
 			<a class="menuitem<?php if ($pagekey=='home') echo ' current';?>" href="<?php echo $egress;?>index.php">Home</a>
 			<a class="menuitem<?php if ($pagekey=='about') echo ' current';?>" href="<?php echo $egress;?>about.php">About</a>
-			<a class="menuitem<?php if ($pagekey=='login') echo ' current';?>" href="<?php echo $egress;?>app/">Login</a>
+			<a class="menuitem<?php if ($pagekey=='login') echo ' current';?>" href="<?php echo $egress;?>app/">Log In</a>
 			<div class="clear"></div>
 		</div>
 		<a id="mtrigger" onclick="showmmenu();"><img src="<?php echo $egress;?>images/mtrigger.png"></a>		

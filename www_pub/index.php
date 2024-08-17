@@ -1,6 +1,5 @@
 <?php
 include 'web_preheader.php';
-if (!$gs_public_web){header('Location: app/'); die();}
 
 include 'web_header.php';
 include 'web_footer.php';

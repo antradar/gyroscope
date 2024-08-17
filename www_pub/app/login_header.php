@@ -1,5 +1,8 @@
 <?php
 function show_login_header(){
+	global $dict_dir;
+	global $textmode;
+	global $roundwatchframe;
 	$dark=isset($_COOKIE['userdarkmode'])?intval($_COOKIE['userdarkmode']):0;
 ?>
 <!doctype html>
