@@ -1,3 +1,7 @@
+*21.3
+- project folder structure change
+- public site template for multi-tenancy use case
+
 *21.2
 - one time trace
 

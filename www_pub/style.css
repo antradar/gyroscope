@@ -1,0 +1,161 @@
+body{padding:0;margin:0;font-size:15px;font-family:arial,sans-serif;text-align:center;}
+
+#page{width:980px;margin:0 auto;text-align:left;background:#f8f8f8;transition:margin 500ms;min-height:500px;}
+
+#header{padding:5px 0;margin-bottom:10px;border-bottom:solid 1px #dedede;position:relative;background:#ffffff;}
+
+#weblogo_light,#weblogo_dark{height:50px;margin-left:10px;}
+#weblogo_light{display:inline-block;}
+#weblogo_dark{display:none;}
+
+#logo_light,#logo_dark{display:none;}
+
+#menu{position:absolute;top:23px;right:10px;font-size:16px;}
+.menuitem{display:block;float:left;margin-right:20px;border-bottom:solid 2px transparent;padding-bottom:3px;}
+.menuitem.current{border-color:#dedede;}
+.menuitem, .menuitem:link, .menuitem:hover, .menuitem:visited{text-decoration:none;color:#666666;}
+.menuitem:hover{color:#000000;}
+
+.cwidth{padding:0 15px;}
+.wcwidth{}
+.nwidth{width:80%;margin:0 auto;}
+.clear{clear:both;}
+
+#web_login{display:table;width:100%;height:100vh;}
+#web_login_banner,#web_login_form{display:table-cell;}
+.web_login_banner_content{text-align:center;}
+#web_login_banner{width:60%;}
+#web_login_form{width:40%;}
+
+#web_login_banner{background:#ffffff;}
+#web_login_form{background:#f0f0f0;}
+
+p{line-height:1.5em;}
+p.first{padding-top:50px;}
+ul{line-height:1.8em;}
+
+#mmenu{
+	position:fixed;
+	top:0;right:-70%;
+	width:70%;
+	text-align:left;
+	transition:right 500ms;
+	background:#111111;
+	height:100%;
+}
+
+#mmenu_{
+	padding:20px 20px;padding-top:40px;
+	color:#ffffff;	
+}
+
+.mmenuitem{display:block;border-bottom:solid 1px #666666;text-align:center;padding-bottom:10px;margin-bottom:10px;transition:color 320ms;margin-left:10px;margin-right:10px;}
+.mmenuitem, .mmenuitem:hover, .mmenuitem:visited, .mmenuitem:link{text-decoration:none;color:#999999;}
+.mmenuitem:hover{color:#ffffff;}
+
+#mtrigger{position:absolute;top:14px;right:20px;display:none;cursor:pointer;}
+#mtrigger img{border:none;width:28px;}
+
+#copyright{text-align:center;padding:10px 0;background:#444444;color:#ffffff;margin-top:40px;}
+
+#yubikeysetup a, #yubikeysetup a:hover, #yubikeysetup a:link, #yubikeysetup a:visited{text-decoration:none;color:#187CA6;}
+#yubikeysetup a:hover{text-decoration:underline;}
+
+#loginbox__{margin-top:140px;margin-left:20px;margin-right:20px;}
+#loginbox_{padding:10px;}
+#loginbox{text-align:left;}
+.powered{display:none;}
+.loginbutton_,.loginbutton{color:#ffffff;background:#187CA6;padding:8px 20px;border-radius:3px;border:none;cursor:pointer;box-shadow:0px 1px 2px #c9c9c9;-webkit-appearance:none;text-decoration:none;}
+.loginbutton_:focus, .loginbutton_:hover{background:#29ABE1;}
+.loginbutton_:active, #loginbuttonbutton:active{box-shadow:1px 1px 3px #999999;}
+
+#fingerprint{cursor:pointer;vertical-align:middle;}
+#fingerprint img{width:22px;margin-right:-10px;filter:saturate(0.4);}
+#fingerprint img:hover{filter:saturate(1);}
+
+#cardlink, #passlink{display:none;text-align:center;padding-top:10px;}
+#cardlink{display:none;}
+#cardinfo{padding:5px;font-size:12px;padding-left:26px;background:#fcfcdd url(app/imgs/smartcard.png) no-repeat 5px 50%;margin-bottom:10px;display:none;}
+
+.lfinp,.lfsel{border:solid 1px #999999;display:block;margin-bottom:5px;border-radius:3px;}
+.lfinp:active, .lfinp:focus, .lfsel:active, .lfsel:focus{outline:0;border:solid 2px #29ABE1;}
+.lfinp{font-size:18px;-webkit-appearance:none;}
+.lfsel{font-size:15px;}
+
+#lang{padding:5px 0;}
+
+.passtoggle{position:absolute;top:12px;right:8px;width:18px;cursor:pointer;}
+
+/* ----------------- */
+@media screen and (min-width:20px){
+	#page{width:100%;}
+	.cwidth{padding:0 20px;margin:0 auto;max-width:1240px;}
+	.wcwidth{margin:0 auto;max-width:1480px;}
+	
+	.lfinp{padding:5px;box-sizing:border-box;height:34px;line-height:32px;font-size:15px;}
+	
+}
+
+@media screen and (max-width:1240px){
+	#page{margin-left:0;}
+}
+/* ----------------- */
+
+@media screen and (max-width:810px){
+	#web_login{display:block;height:auto;}
+	#web_login_banner,#web_login_form{display:block;}
+	.web_login_banner_content{display:none;}
+	#web_login_banner{width:auto;}
+	#web_login_form{width:auto;}
+	
+	#loginbox__{margin-top:60px;}	
+}
+
+@media screen and (max-width:630px){
+	#menu{display:none;}
+	#mtrigger{display:inline;}
+	p.first{padding-top:20px;}	
+}
+
+@media screen and (max-width:400px){
+	#loginbox__,.powered{width:90%;}
+	#loginbox__{margin-top:50px;}
+	#weblogo_light,#weblogo_dark{height:40px;}
+}
+
+@media screen and (max-width:300px){
+	.loginbutton_{width:auto;padding-left:15px;padding-right:15px;}
+}
+
+@media screen and (max-width:260px){
+	.powered{text-align:center;}
+	.powered span{display:block;padding-top:3px;}
+}
+
+@media (prefers-color-scheme:dark) {
+	body{background:#3A3632;color:#e0e0e0;}
+	#page{background:#0D1117;}
+	#header{background:#21262D;border:none;}
+	
+	#weblogo_light{display:none;}
+	#weblogo_dark{display:inline-block;}
+
+	.menuitem, .menuitem:link, .menuitem:hover, .menuitem:visited{color:#dcdcdc;}
+	.menuitem:hover{color:#ffffff;}
+	
+	#loginbox{background:#0D1117;color:#C9D1D9;}
+	input,#lang{background:#0D1117;color:#C2C3C5;}
+	.loginbutton_{box-shadow:none;border:solid 1px #388BFD;}
+	.loginbutton_:hover{background:#125B7A;}
+	.powered{color:#8B949E;}
+	#fingerprint,.passtoggle{filter:invert(1) hue-rotate(180deg);}
+	.passtoggle{filter:invert(1);}
+	#yubikeysetup a, #yubikeysetup a:hover, #yubikeysetup a:link, #yubikeysetup a:visited{text-decoration:none;color:#29ABE1;}	
+	
+	#web_login_banner{background:#21262D;}
+	#web_login_form{background:#0D1117;}
+	
+	#copyright{background:transparent;border-top:solid 1px #444444;}
+}
+
+	
