@@ -147,7 +147,8 @@ ul{line-height:1.8em;}
 }
 
 @media (prefers-color-scheme:dark) {
-	body{background:#3A3632;color:#e0e0e0;}
+	body{background:#21262D;color:#e0e0e0;}
+
 	#page{background:#0D1117;}
 	#header{background:#21262D;border:none;}
 	

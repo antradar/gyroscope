@@ -528,7 +528,7 @@ if ($gs_public_web){
 ?>
 
 <?php if (!$textmode){?>
-<div id="homeadder" onclick="this.style.top='-150px';" style="position:fixed;top:-150px;left:0;background:rgba(0,0,0,0.4);width:100%;padding:20px 0;transition:top 500ms;display:none;">
+<div id="homeadder" onclick="this.style.<?php echo $gs_public_web?'bottom':'top';?>='-150px';" style="text-align:center;position:fixed;<?php echo $gs_public_web?'bottom':'top';?>:-150px;left:0;background:rgba(0,0,0,0.4);width:100%;padding:20px 0;transition:<?php echo $gs_public_web?'bottom':'top';?> 500ms;display:none;">
 	<img src="appicons/60x60.png" width="28" style="vertical-align:middle;margin-right:20px;">
 	<button id="homeapp" style="font-size:12px;padding:4px 10px;border:solid 1px #8f8cf7;border-radius:3px;">Add to Home Screen</button>
 </div>
@@ -803,7 +803,7 @@ window.addEventListener('beforeinstallprompt',function(e){
 	if (gid('homeadder').locked) return false;
 	gid('homeadder').style.display='block';
 	setTimeout(function(){
-		gid('homeadder').style.top=0;
+		gid('homeadder').style.<?php echo $gs_public_web?'bottom':'top';?>=0;
 		e.preventDefault();
 		gid('homeapp').onclick=function(){
 			gid('homeadder').style.display='none';

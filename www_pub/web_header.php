@@ -13,6 +13,9 @@ function show_web_header($egress='', $opts=array()){
 	<meta name="theme-color" content="#9FA3A7" />	
 	<!-- link rel="shortcut icon" href="favicon.ico" type="image/x-icon" / -->
 	<link rel="stylesheet" href="<?php echo $egress;?>style.css" type="text/css" />
+	<?php if ($pagekey=='login'){?>
+	<link rel="manifest" href="manifest.php?hb=<?php echo time();?>">	
+	<?php }?>
 </head>
 <body>
 <div id="mmenu">
