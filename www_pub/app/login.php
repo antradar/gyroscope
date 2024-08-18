@@ -392,7 +392,9 @@ if ($gs_public_web){
 		
 	<div style="padding-top:10px;"><label for="login"><?php tr('username');?>:</label> <?php if ($passreset){?><b><?php echo stripslashes($_POST['gyroscope_login_'.$dkey]);?></b> &nbsp; <a href="<?php echo $_SERVER['PHP_SELF'];?>"><em><?php tr('switch_user');?></em></a><?php }?></div>
 	<div style="padding-top:5px;padding-bottom:10px;">
-	<input style="width:100%;<?php if ($passreset) echo 'display:none;';?>" class="lfinp" id="login" type="text" name="gyroscope_login_<?php echo $dkey;?>" autocomplete="off" <?php if ($passreset) echo 'readonly';?> value="<?php if ($passreset) echo stripslashes($_POST['gyroscope_login_'.$dkey]); else echo htmlspecialchars($deflogin);?>"></div>
+	<input style="width:100%;<?php if ($passreset) echo 'display:none;';?>" class="lfinp" id="login" type="text" name="gyroscope_login_<?php echo $dkey;?>" autocomplete="off" <?php if ($passreset) echo 'readonly';?> value="<?php if ($passreset) echo stripslashes($_POST['gyroscope_login_'.$dkey]); else echo htmlspecialchars($deflogin);?>"
+		<?php if ($gs_public_web) echo 'placeholder="user@company"';?>
+	></div>
 	
 	<div id="passview">
 		<div><label for="password"><?php tr('password');?>:</label></div>
@@ -495,9 +497,12 @@ if ($gs_public_web){
 	<div style="display:none;"><span id="nullloader"></span><textarea name="certid" id="certid"></textarea><img src="imgs/eye.png"></div>
 	<?php } ?>
 	
-	<?php if ($gs_public_web){?>
-	<div id="logincopyright">&copy; <?php echo date('Y');?> Company Name</div>
-	<?php }?>
+	<?php if ($gs_public_web){
+		include '../web_footerlinks.php';
+		
+		show_footer_links('../','logincopyright');
+	}
+	?>
 	
 	</form>
 	
@@ -603,19 +608,7 @@ function passview(){
 	gid('passview').style.display='block';
 }
 
-function togglepass_login(s,id){
-	var d=gid(id); if (!d) return;
-	if (!d.showing) {
-		d.type='text';
-		d.showing=true;
-		s.src='imgs/eye.png';
-	} else {
-		d.type='password';
-		d.showing=null;
-		s.src='imgs/eye-slash.png';
-	}
-	d.focus();	
-}
+
 
 function tfa_callback(rq){
 	var tfa=false;

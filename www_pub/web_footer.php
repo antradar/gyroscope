@@ -1,11 +1,9 @@
 <?php
+include_once 'web_footerlinks.php';
 
 function show_web_footer($egress=''){
+	show_footer_links($egress,'copyright');
 ?>
-
-	<div id="copyright">
-		&copy; <?php echo date('Y');?> Company Name
-	</div>
 </div><!-- page -->
 
 <script src="<?php echo $egress;?>app/nano.js?v=4_9"></script>
@@ -22,6 +20,7 @@ function showmmenu(){
 			
 	}	
 }
+function salert(msg){alert(msg);}
 </script>
 
 </body>

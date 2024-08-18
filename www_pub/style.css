@@ -63,6 +63,12 @@ ul{line-height:1.8em;}
 #copyright{text-align:center;padding:10px 0;background:#444444;color:#ffffff;margin-top:40px;}
 #logincopyright{padding:10px 0;margin-top:40px;display:none;}
 
+#footerlinks{display:inline-block;margin-left:15px;}
+
+.footerlink, .footerlink:hover, .footerlink:visited{text-decoration:underline;}
+#copyright .footerlink, #copyright .footerlink:hover, #copyright .footerlink:visited{color:#ffffff;}
+#logincopyright .footerlink, #logincopyright .footerlink:hover, #logincopyright .footerlink:visited{color:#444444;}
+
 #yubikeysetup a, #yubikeysetup a:hover, #yubikeysetup a:link, #yubikeysetup a:visited{text-decoration:none;color:#187CA6;}
 #yubikeysetup a:hover{text-decoration:underline;}
 
@@ -166,6 +172,9 @@ ul{line-height:1.8em;}
 	#web_login_form{background:#0D1117;}
 	
 	#copyright{background:transparent;border-top:solid 1px #444444;}
+	#logincopyright .footerlink, #logincopyright .footerlink:hover, #logincopyright .footerlink:visited{color:#dedede;}
+	
+	.codesnippet{background:#222222;color:#ffffff;}
 }
 
 	
