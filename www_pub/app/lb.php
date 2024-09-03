@@ -7,7 +7,7 @@ $usehttps=1; //enforcing HTTPS on production server, enable this on production s
 $stablecf=0; //set to 1 when behind CloudFlare
 $enableudf=0; //allow UDF editing, disable this on production server
 
-$gs_public_web=1; //blend with public-facing web pages
+$gs_public_web=0; //blend with public-facing web pages
 
 $enablelivechat=1;
 $livechatmode='gschat'; //ze, zopim
