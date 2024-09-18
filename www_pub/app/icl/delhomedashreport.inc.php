@@ -12,6 +12,8 @@ function delhomedashreport(){
 	if (!$userid) apperror('Error deleting report');
 		
 	$homedashreportid=SGET('homedashreportid');
+
+	checkgskey('delhomedashreport_'.$homedashreportid);
 	
 	$query="delete from ".TABLENAME_HOMEDASHREPORTS." where homedashreportid=? and userid=?";
 	sql_prep($query,$db,array($homedashreportid,$userid));

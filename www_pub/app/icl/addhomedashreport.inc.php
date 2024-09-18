@@ -10,6 +10,8 @@ function addhomedashreport(){
 	$gsid=$user['gsid'];
 	$userid=$user['userid'];
 
+	checkgskey('addhomedashreport_'.$userid);
+
 	if (!$userid) apperror('Error saving report');
 		
 	$rptname=SGET('rptname');

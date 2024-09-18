@@ -34,7 +34,7 @@ function listhomedashreports(){
 		&nbsp;
 		<acronym title="share this report"><input type="checkbox" onclick="ajxjs(self.delhomedashreport,'reports.js');sharehomedashreport(<?php echo $homedashreportid;?>,this);" <?php if ($shared) echo 'checked';?>></acronym>
 		&nbsp; &nbsp;
-		<a onclick="ajxjs(self.delhomedashreport,'reports.js');delhomedashreport(<?php echo $homedashreportid;?>);"><img src="imgs/t.gif" class="img-del"></a>
+		<a onclick="ajxjs(self.delhomedashreport,'reports.js');delhomedashreport(<?php echo $homedashreportid;?>,'<?php emitgskey('delhomedashreport_'.$homedashreportid);?>');"><img src="imgs/t.gif" class="img-del"></a>
 		<?php
 		}
 		?>

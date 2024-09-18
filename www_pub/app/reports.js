@@ -25,7 +25,7 @@ showreport=function(){
 	
 }
 
-addhomedashreport=function(rpttitle,rpttabkey,rptkey,rptlink,bingo){
+addhomedashreport=function(rpttitle,rpttabkey,rptkey,rptlink,bingo,gskey){
 	if (bingo==null) bingo=0;
 	
 	var rptname=sprompt('Custom Report Name');
@@ -39,13 +39,13 @@ addhomedashreport=function(rpttitle,rpttabkey,rptkey,rptlink,bingo){
 	ajxpgn('homedashreports',document.appsettings.codepage+'?cmd=addhomedashreport&rptname='+rptname+'&rpttabkey='+rpttabkey+'&rptkey='+rptkey+'&rpttitle='+rpttitle+'&rptlink='+rptlink+'&bingo='+bingo,0,0,null,function(){
 		//salert('Report bookmark added to the Home Tab');
 		showtab('welcome',{bookmark:'homedashreports'});
-	});
+	},null,null,gskey);
 	
 }
 
-delhomedashreport=function(homedashreportid){
+delhomedashreport=function(homedashreportid,gskey){
 	if (!sconfirm('Are you sure you want to remove this report bookmark?')) return;
-	ajxpgn('homedashreports',document.appsettings.codepage+'?cmd=delhomedashreport&homedashreportid='+homedashreportid);		
+	ajxpgn('homedashreports',document.appsettings.codepage+'?cmd=delhomedashreport&homedashreportid='+homedashreportid,0,0,null,null,null,null,gskey);		
 }
 
 sharehomedashreport=function(homedashreportid,d){
