@@ -9,6 +9,8 @@ function addyubikey(){
 
 	$user=userinfo();
 	$userid=$user['userid'];
+	
+	checkgskey('addyubikey_'.$userid);
 		
 	$attidbin=hex2bin(SQET('id'));
 	$attid=base64_encode($attidbin);

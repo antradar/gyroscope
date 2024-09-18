@@ -7,8 +7,11 @@ function updateyubikeyname(){
 	$user=userinfo();
 	$userid=$user['userid'];
 	
+	
 	$keyid=GETVAL('keyid');
 	$keyname=SQET('keyname');
+
+	checkgskey('updateyubikeyname_'.$userid.'_'.$keyid);
 	
 	$query="update ".TABLENAME_YUBIKEYS." set keyname=? where keyid=? and userid=?";
 	sql_prep($query,$db,array($keyname,$keyid,$userid));

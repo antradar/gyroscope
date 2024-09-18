@@ -8,6 +8,8 @@ function setyubikeypassless(){
 	
 	$keyid=GETVAL('keyid');
 	$passless=GETVAL('passless');
+
+	checkgskey('setyubikeypassless_'.$userid.'_'.$keyid);
 	
 	$query="update ".TABLENAME_YUBIKEYS." set passless=? where userid=? and keyid=?";
 	$rs=sql_prep($query,$db,array($passless,$userid,$keyid));

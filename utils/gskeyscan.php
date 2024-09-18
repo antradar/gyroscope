@@ -34,15 +34,15 @@ function lastcallparam($line){
 		}//switch
 	}//for
 	
-	if (!$found) return '';
+	if (!$found) return array();
 
 	$str=substr($line,0,$found+1);
 	
 	$parts=explode(',',$str);
 	$lastparam=trim(trim($parts[count($parts)-1],')'));
 		
-	$param3=$parts[2];
-	$param2=$parts[1];
+	$param3=$parts[2]??'';
+	$param2=$parts[1]??'';
 	$action='';
 	$params=explode('&',$param3);
 	
@@ -90,7 +90,7 @@ function locatekeycalls($c,$verb){
 	
 	$lines=array();
 	
-	for ($i=0;$i<count($poses);$i++){
+	for ($i=0;$i<count($poses)-1;$i++){
 
 		$a=$poses[$i];
 		$b=$poses[$i+1];
@@ -101,9 +101,9 @@ function locatekeycalls($c,$verb){
 		//echo "$a - $b / $last\r\n";
 				
 		$callinfo=lastcallparam($part);
-		$part=$callinfo['line'];
-		$lastparam=trim($callinfo['lastparam']);
-		$action=trim($callinfo['action']);
+		$part=$callinfo['line']??'';
+		$lastparam=trim($callinfo['lastparam']??'');
+		$action=trim($callinfo['action']??'');
 		if ($action==''||$lastparam=='gskey'||$callinfo['skip']) continue;
 		$count++;
 		//echo "Line $nlines: $action\r\n";
@@ -175,12 +175,14 @@ Error: cannot open directory <?php echo $dir;?>
 		$parts=explode('.',$file);
 		$ext=$parts[count($parts)-1];
 		
+		if (in_array($file,array('nano.js','wss.js','viewport.js','autocomplete.js') )) continue; //skip library files
+		
 		$type=filetype($dir.'/'.$file);
 		
 		if ($type=='dir'){
 			if ($file!='.'&&$file!='..'&&$file!='.svn'&&$file!='.git') gskeyscan($dir.'/'.$file);		
 		} else {
-			if ($ext=='php'||$ext=='js'){
+			if ($ext=='js'){ //||$ext=='php'
 				analyse($dir.'/'.$file);
 			}
 		}

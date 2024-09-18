@@ -23,7 +23,7 @@ function listyubikeys(){
 	<label for="myaccount_yubimode">security keys are optional</label>
 </div>
 <?php	
-	$challenge=sha1($userid.$saltroot);
+	$mchallenge=sha1($userid.$saltroot);
 
 	$query="select * from ".TABLENAME_YUBIKEYS." where userid=?";
 	$rs=sql_prep($query,$db,$userid);
@@ -32,6 +32,8 @@ function listyubikeys(){
 	
 	while ($myrow=sql_fetch_assoc($rs)){
 		$keyid=$myrow['keyid'];
+		$challenge=sha1($userid.$keyid.$saltroot);
+
 		$keyname=$myrow['keyname'];
 		$attid=$myrow['attid'];
 		$dattid=noapos(htmlspecialchars($attid));
@@ -39,14 +41,14 @@ function listyubikeys(){
 		array_push($attids,$attid);
 	?>
 	<div class="listtiem">
-		<input name="_" class="inpshort" onchange="ajxjs(self.updateyubikeyname,'yubikey.js');updateyubikeyname(<?php echo $keyid;?>,this);" value="<?php echo htmlspecialchars($keyname);?>">
+		<input name="_" class="inpshort" onchange="ajxjs(self.updateyubikeyname,'yubikey.js');updateyubikeyname(<?php echo $keyid;?>,this,'<?php emitgskey('updateyubikeyname_'.$userid.'_'.$keyid);?>');" value="<?php echo htmlspecialchars($keyname);?>">
 		&nbsp;
-		<button class="labelbutton" onclick="ajxjs(self.testyubikey,'yubikey.js');testyubikey('<?php echo $challenge;?>',['<?php echo $dattid;?>']);">Test</button>
+		<button class="labelbutton" onclick="ajxjs(self.testyubikey,'yubikey.js');testyubikey('<?php echo $challenge;?>',['<?php echo $dattid;?>'],'<?php emitgskey('testyubikey_'.$userid);?>');">Test</button>
 		&nbsp; &nbsp;
-		<input id="myaccount_passless<?php echo $keyid;?>" onclick="ajxjs(self.testyubikey,'yubikey.js');setyubikeypassless(<?php echo $keyid;?>,this);" <?php if ($passless) echo 'checked';?> type="checkbox"> 
+		<input id="myaccount_passless<?php echo $keyid;?>" onclick="ajxjs(self.testyubikey,'yubikey.js');setyubikeypassless(<?php echo $keyid;?>,this,'<?php emitgskey('setyubikeypassless_'.$userid.'_'.$keyid);?>');" <?php if ($passless) echo 'checked';?> type="checkbox"> 
 		<label for="myaccount_passless<?php echo $keyid;?>">password-less</label>
 		&nbsp; &nbsp;
-		<button class="labelbutton warn" onclick="ajxjs(self.delyubikey,'yubikey.js');delyubikey(<?php echo $keyid;?>);">Remove</button>
+		<button class="labelbutton warn" onclick="ajxjs(self.delyubikey,'yubikey.js');delyubikey(<?php echo $keyid;?>,'<?php emitgskey('delyubikey_'.$userid.'_'.$keyid);?>');">Remove</button>
 	</div>
 	<?php	
 	}//while
@@ -57,10 +59,10 @@ function listyubikeys(){
 	//if ($c>0) return;
 ?>
 <div class="inputrow">
-	<button onclick="ajxjs(self.addyubikey,'yubikey.js');addyubikey('<?php echo $challenge;?>','<?php echo $userid;?>','<?php echo $dlogin;?>','<?php echo $dname;?>');">Add a Credential</button>
+	<button onclick="ajxjs(self.addyubikey,'yubikey.js');addyubikey('<?php echo $mchallenge;?>','<?php echo $userid;?>','<?php echo $dlogin;?>','<?php echo $dname;?>','<?php emitgskey('addyubikey_'.$userid);?>');">Add a Credential</button>
 	<?php if ($c>1){?>
 	&nbsp; &nbsp;
-	<button onclick="ajxjs(self.testyubikey,'yubikey.js');testyubikey('<?php echo $challenge;?>',<?php echo str_replace('"',"'",json_encode($attids));?>);">Test All</button>	
+	<button onclick="ajxjs(self.testyubikey,'yubikey.js');testyubikey('<?php echo $mchallenge;?>',<?php echo str_replace('"',"'",json_encode($attids));?>,'<?php emitgskey('testyubikey_'.$userid);?>');">Test All</button>	
 	<?php }?>
 </div>
 

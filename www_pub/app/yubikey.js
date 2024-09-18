@@ -1,4 +1,4 @@
-addyubikey=function(challenge,userid,login,username){
+addyubikey=function(challenge,userid,login,username,gskey){
 	navigator.credentials.create({
 		publicKey:{
 			challenge:stringToArrayBuffer(challenge),
@@ -25,7 +25,7 @@ addyubikey=function(challenge,userid,login,username){
 				params.push('clientdata='+encodeHTML(att.clientDataJSON));
 				params.push('att='+att.attestationObject);
 				
-				ajxpgn('myaccount_yubikeys',document.appsettings.codepage+'?cmd=addyubikey',0,0,params.join('&'));
+				ajxpgn('myaccount_yubikeys',document.appsettings.codepage+'?cmd=addyubikey',0,0,params.join('&'),null,null,null,gskey);
 			} else {
 				salert('Failed to add credential');
 			}
@@ -34,7 +34,7 @@ addyubikey=function(challenge,userid,login,username){
 
 }
 
-testyubikey=function(challenge,attids){
+testyubikey=function(challenge,attids,gskey){
 	
 	var creds=[];
 	
@@ -68,14 +68,14 @@ testyubikey=function(challenge,attids){
 			params.push('signature='+ass.signature);
 			params.push('auth='+ass.authenticatorData);
 
-			ajxpgn('myaccount_yubikeytest',document.appsettings.codepage+'?cmd=testyubikey',0,0,params.join('&'));
+			ajxpgn('myaccount_yubikeytest',document.appsettings.codepage+'?cmd=testyubikey',0,0,params.join('&'),null,null,null,gskey);
 
 		}
 	);
 
 }
 
-delyubikey=function(keyid){
+delyubikey=function(keyid,gskey){
 	if (!sconfirm('Are you sure you want to remove this authentication device?')) return;
 	ajxpgn('myaccount_yubikeys',document.appsettings.codepage+'?cmd=delyubikey&keyid='+keyid,0,0,null,function(rq){
 		var disableyubi=rq.getResponseHeader('disableyubi');
@@ -83,23 +83,23 @@ delyubikey=function(keyid){
 			gid('myaccount_useyubi').checked='';
 			gid('myaccount_yubikeys').style.display='none';
 		}	
-	});	
+	},null,null,gskey);	
 }
 
-updateyubikeyname=function(keyid,d){
+updateyubikeyname=function(keyid,d,gskey){
 	if (!valstr(d)) return;
 	
 	ajxpgn('myaccount_yubikeys',document.appsettings.codepage+'?cmd=updateyubikeyname&keyid='+keyid,0,0,'keyname='+encodeHTML(d.value),function(){
 		marktabsaved('account');	
-	});	
+	},null,null,gskey);	
 }
 
-setyubikeypassless=function(keyid,d){
+setyubikeypassless=function(keyid,d,gskey){
 	var passless=0;
 	if (d.checked) passless=1;
 
 	ajxpgn('statusc',document.appsettings.codepage+'?cmd=setyubikeypassless&keyid='+keyid+'&passless='+passless,0,0,null,function(){
 		marktabsaved('account');	
-	});	
+	},null,null,gskey);	
 		
 }

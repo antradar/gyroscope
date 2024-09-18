@@ -10,6 +10,8 @@ function delyubikey(){
 	
 	$keyid=GETVAL('keyid');
 
+	checkgskey('delyubikey_'.$userid.'_'.$keyid);
+
 	$query="delete from ".TABLENAME_YUBIKEYS." where keyid=? and userid=?";
 	sql_prep($query,$db,array($keyid,$userid));
 	

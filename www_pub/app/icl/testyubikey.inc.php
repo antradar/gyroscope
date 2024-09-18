@@ -7,6 +7,7 @@ function testyubikey(){
 	
 	$user=userinfo();
 	$userid=$user['userid'];
+	checkgskey('testyubikey_'.$userid);
 	
 	$attidbin=hex2bin(SQET('id'));
 	$attid=base64_encode($attidbin);
@@ -23,7 +24,7 @@ function testyubikey(){
 		echo "Cannot find a key in the registry.";
 		return;	
 	}
-
+	
 	$keyid=$myrow['keyid'];
 	$keyname=$myrow['keyname'];
 	$kty=$myrow['kty'];
