@@ -36,7 +36,7 @@ $dbconfigs=array(
 
 
 
-$enable_db_profiler=1; //persistent db query dumper
+$enable_db_profiler=0; //persistent db query dumper
 $db_profiler='/dev/shm/gyrostart.log';
 
 if (isset($enable_db_profiler)&&$enable_db_profiler){
