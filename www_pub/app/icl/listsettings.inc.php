@@ -8,6 +8,8 @@ function listsettings(){
 	
 	global $lang;
 	global $stripe_config;
+	global $enable_db_profiler;
+	global $db_profiler;
 	
 	if (isset($stripe_config)) $stripe_pkey=$stripe_config['pkey_'.$stripe_config['mode']]; else $stripe_pkey='';
 	
@@ -82,8 +84,15 @@ function listsettings(){
 		<span style="position:absolute;top:3px;right:70px;">
 		<?php makehelp('settings_sqlcompare','this tool is used to compare the structures of databases on both local and remote servers');?>
 		</span>
+	</div>
+	<?php if (isset($enable_db_profiler)&&file_exists($db_profiler)&&file_exists('icl/gsdb_showquerysummary.inc.php')){?>
+	<div class="listitem">
+		<a onclick="addtab('querysummary','SQL Query Summary','gsdb_showquerysummary');">Query Summary
+			<?php if ($enable_db_profiler){?>&nbsp;<span class="labelbutton">On</span><?php }?>
+		</a>
 	</div>	
 	<?php
+	}
 	}
 	
 		

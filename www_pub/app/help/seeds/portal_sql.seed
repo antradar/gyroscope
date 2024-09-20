@@ -16,6 +16,7 @@ CREATE TABLE #primaryfield#actionlog (
   PRIMARY KEY (alogid),
   KEY logdate (logdate),
   KEY userid (userid),
+  KEY recid (recid),
   KEY wssdone (wssdone),
   KEY bulldozed (bulldozed),
   KEY #primarykey# (#primarykey#)

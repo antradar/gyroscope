@@ -17,7 +17,8 @@ CREATE TABLE `actionlog` (
   KEY `userid` (`userid`),
   KEY `wssdone` (`wssdone`),
   KEY `bulldozed` (`bulldozed`),
-  KEY `gsid` (`gsid`)
+  KEY `gsid` (`gsid`),
+  KEY `recid` (`recid`)
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS gss;

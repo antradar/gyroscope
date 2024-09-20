@@ -30,3 +30,23 @@ $dbconfigs=array(
 */
 
 
+//crontab
+
+// 0 */3 * * * > /dev/shm/gyrostart.log
+
+
+
+$enable_db_profiler=1; //persistent db query dumper
+$db_profiler='/dev/shm/gyrostart.log';
+
+if (isset($enable_db_profiler)&&$enable_db_profiler){
+	$f_dblog=fopen($db_profiler,'a'); //name the file with the dbname for sqldash to load
+
+	function gsconnect_exit(){
+		global $f_dblog;
+		if (isset($f_dblog)&&$f_dblog) {fclose($f_dblog);}
+	}
+	
+	register_shutdown_function('gsconnect_exit');
+
+}//profiler

@@ -43,11 +43,21 @@ function sql_get_db($dbhost,$dbsource,$dbuser,$dbpass,$lazyname=null,$rlazyname=
 	return $db;
 }
 
+function sql_profile_dump($query,$params=null){
+	global $f_dblog; //file handler pointing to an append file in a ramfs mount
+
+	$cmd=$_GET['cmd']??'';
+	if (!isset($f_dblog)) return;
+	if ($cmd=='') return;
+	fwrite($f_dblog,json_encode(array('cmd'=>$cmd,'query'=>$query,'params'=>$params))."\r\n");
+}
+
 function sql_prep($query,&$db,$params=null){
 	global $gsdbprofile;
 	global $gsdbprofile_fulltrace;
 	global $SQL_READONLY;
 	global $dbdefers;
+	global $enable_db_profiler;
 	
 	if ($SQL_READONLY){
 		$tokens=explode(' ',trim($query));
@@ -153,6 +163,10 @@ function sql_prep($query,&$db,$params=null){
 		}
 	}
 
+	if (isset($enable_db_profiler)&&$enable_db_profiler){
+		sql_profile_dump($query,$params);
+	}
+
 	return $rs;
 		
 }
@@ -162,6 +176,7 @@ function sql_query($query,&$db,$mode=MYSQLI_STORE_RESULT){
 	global $SQL_READONLY;
 	global $dbdefers;
 	global $gsdbprofile_fulltrace;
+	global $enable_db_profiler;
 	
 	if ($SQL_READONLY){
 		$tokens=explode(' ',trim($query));
@@ -210,6 +225,11 @@ function sql_query($query,&$db,$mode=MYSQLI_STORE_RESULT){
 			array_push($gsdbprofile,array('query'=>$query,'time'=>$b-$a));
 		}
 	}
+
+	if (isset($enable_db_profiler)&&$enable_db_profiler){
+		sql_profile_dump($query);
+	}
+
 	return $rs;
 }
 

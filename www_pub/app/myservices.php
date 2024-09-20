@@ -82,6 +82,11 @@ switch($cmd){
 	case 'addmsgpipeuser': include 'icl/addmsgpipeuser.inc.php'; addmsgpipeuser(); break;
 	case 'delmsgpipeuser': include 'icl/delmsgpipeuser.inc.php'; delmsgpipeuser(); break;
 	
+//db query log
+
+	case 'gsdb_showquerysummary': include 'icl/gsdb_showquerysummary.inc.php'; gsdb_showquerysummary(); break;
+	case 'gsdb_showcmdqueries': include 'icl/gsdb_showcmdqueries.inc.php'; gsdb_showcmdqueries(); break;
+	
 // SAP Explorer
 
 	case 'slv_codegen__sap': include 'icl/sap_listentitygroups.inc.php'; sap_listentitygroups(); break;
@@ -306,3 +311,4 @@ switch($cmd){
 if (isset($enable_gs_tracer)&&$enable_gs_tracer){
 	gyroscope_trace_dump();
 }
+
