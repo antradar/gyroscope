@@ -145,6 +145,8 @@ function reloadtab(key,title,params,loadfunc,data,opts,gskey){
 	if (document.tabtitles[tabid].tablock) return;
 	document.tabtitles[tabid].tablock=1;
 	
+  if (opts.bexit) opts.bexit();
+  	
   if (document.tabtitles[tabid].conflicted){
 	  params=params+'&__tabconflicted=1';		  
   }
@@ -370,6 +372,8 @@ closetab=function(key){
   if (tabid==-1) return;
   
   if (document.tabtitles[tabid].autosaver) {clearTimeout(document.tabtitles[tabid].autosaver);document.tabtitles[tabid].autosavertimer=null;}  
+  if (document.tabtitles[tabid].reloadinfo&&document.tabtitles[tabid].reloadinfo.opts&&document.tabtitles[tabid].reloadinfo.opts.bexit)
+	document.tabtitles[tabid].reloadinfo.opts.bexit();
     
   gid('tabtitles').removeChild(document.tabtitles[tabid]);
   gid('tabviews').removeChild(document.tabviews[tabid]);

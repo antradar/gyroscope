@@ -343,6 +343,8 @@ function reloadtab(key,title,params,loadfunc,data,opts,gskey){
   if (document.tabtitles[tabid].tablock) return;
   document.tabtitles[tabid].tablock=1;
   
+  if (opts.bexit) opts.bexit();
+  
   var tabbingo=document.tabtitles[tabid].bingo; 
   
   if (document.tabtitles[tabid].autosaver) {clearTimeout(document.tabtitles[tabid].autosaver);document.tabtitles[tabid].autosavertimer=null;}
@@ -509,6 +511,7 @@ function refreshtab(key,skipconfirm){
   document.tabtitles[tabid].conflicted=null;
   var tab=document.tabtitles[tabid];
   if (!tab.reloadinfo) return;
+  
   tab.style.color='#000000';
   if (document.tabviews[tabid].afloat) {
 	  document.tabviews[tabid].className='afloat'; 
@@ -697,7 +700,11 @@ function resettabs(key){
 	var tabid=gettabid(key);
 	for (var i=0;i<document.tabcount;i++){
 		if (tabid==i) continue;
-		if (document.tabtitles[i]!=null&&document.tabtitles[i].autosaver) {clearTimeout(document.tabtitles[i].autosaver);document.tabtitles[i].autosavertimer=null;}		
+		if (document.tabtitles[i]!=null&&document.tabtitles[i].autosaver) {clearTimeout(document.tabtitles[i].autosaver);document.tabtitles[i].autosavertimer=null;}
+		if (document.tabtitles[i].reloadinfo&&document.tabtitles[i].reloadinfo.opts&&document.tabtitles[i].reloadinfo.opts.bexit)
+			document.tabtitles[i].reloadinfo.opts.bexit();
+
+			
 		if (document.tabtitles[i]!=null) gid('tabtitles').removeChild(document.tabtitles[i]);
 		if (document.tabviews[i]!=null) gid('tabviews').removeChild(document.tabviews[i]);
 		
@@ -720,7 +727,9 @@ closetab=function(key){
   if (tabid==-1) return;
   
   if (document.tabtitles[tabid].autosaver) {clearTimeout(document.tabtitles[tabid].autosaver);document.tabtitles[tabid].autosavertimer=null;}
-      
+  if (document.tabtitles[tabid].reloadinfo&&document.tabtitles[tabid].reloadinfo.opts&&document.tabtitles[tabid].reloadinfo.opts.bexit)
+	document.tabtitles[tabid].reloadinfo.opts.bexit();
+              
   gid('tabtitles').removeChild(document.tabtitles[tabid]);
   gid('tabviews').removeChild(document.tabviews[tabid]);
   document.tabtitles[tabid]=null;

@@ -400,7 +400,9 @@ if ($gs_public_web){
 		<div><label for="password"><?php tr('password');?>:</label></div>
 		<div style="padding-top:5px;padding-bottom:15px;position:relative;">
 			<input style="width:100%;" class="lfinp" id="password" type="password" name="password" autocomplete="off">
-			<img class="passtoggle" onclick="togglepass_login(this,'password');" src="imgs/eye-slash.png">
+			<?php if (!$textmode){?>
+			<img class="passtoggle" onclick="togglepass_login(this,'password','');" src="imgs/eye-slash.png">
+			<?php }?>
 		</div>
 		<?php if (!$textmode){?>
 		<div id="tfa_sms" style="display:none;">
@@ -424,7 +426,7 @@ if ($gs_public_web){
 	<div><label for="password"><?php tr('new_password');?>:</label></div>
 	<div style="padding-top:5px;padding-bottom:15px;position:relative;">
 		<input class="lfinp" style="width:100%;" id="newpassword" type="password" name="newpassword" onkeyup="_checkpass(this);" onchange="checkpass(this);">
-		<img class="passtoggle" src="imgs/eye-slash.png" onclick="togglepass_login(this,'newpassword');">
+		<img class="passtoggle" src="imgs/eye-slash.png" onclick="togglepass_login(this,'newpassword','');">
 		<div style="font-weight:normal;color:#ab0200;" id="passwarn"></div>
 	</div>
 	
@@ -432,7 +434,7 @@ if ($gs_public_web){
 	<div><?php tr('repeat_password');?>:</div>
 	<div style="padding-top:5px;padding-bottom:15px;position:relative;">
 		<input class="lfinp" style="width:100%;" id="newpassword2" type="password" name="newpassword2">
-		<img class="passtoggle" src="imgs/eye-slash.png" onclick="togglepass_login(this,'newpassword2');">
+		<img class="passtoggle" src="imgs/eye-slash.png" onclick="togglepass_login(this,'newpassword2','');">
 	</div>
 	<input type="hidden" name="passreset" value="1">
 	<?php }?>

@@ -70,7 +70,8 @@ function gsdb_showcmdqueries(){
 	    foreach ($looproot as $nloop){
 	        if (!isset($nloop['table'])) continue;
 	        if (!isset($nloop['table']['possible_keys'])||count($nloop['table']['possible_keys'])==0) {
-	            array_push($badtables,$nloop['table']['table_name']);
+		        
+	            if (!isset($nloop['table']['key'])) array_push($badtables,$nloop['table']['table_name']);
 	        }
 	    }
 	}
