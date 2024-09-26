@@ -4,6 +4,14 @@ header('Content-Type: text/css');
 body{background:#f2f2f2;margin:0;padding:0;}
 body,textarea,td, .img-mg{font-family:verdana, tahoma, arial;font-size:13px;-webkit-text-size-adjust:none;}
 
+#shared_tab_closer{
+	position:fixed;top:90px;right:0;width:24px;height:24px;border:solid 1px #dedede;box-sizing:border-box;
+	background:transparent url(msprite.png) no-repeat -373px -130px;
+	border-radius:5px 0 0 5px;
+}
+
+#shared_tab_closer.irrelevant{display:none;}
+
 .img-mg,.sectiontitle,
 .listitem,.inplong, .inp, .inpmed, .inpshort, .inpxshort{font-family:Arial,serif;}
 

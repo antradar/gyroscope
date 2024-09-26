@@ -4,6 +4,8 @@ header('Content-Type: text/css');
 body{background:#f2f2f2;}
 #tooltitle{height:24px;background:#f2f2f2 url(msprite.png) no-repeat 0 0;width:150px;text-shadow:none;border-bottom:none;}
 
+#shared_tab_closer{display:none;}
+
 #lvviews{height:210px;overflow:auto;}
 #tabviews{overflow:auto;}
 #content{overflow-x:auto;}

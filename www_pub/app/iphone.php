@@ -212,6 +212,7 @@ if (isset($roundwatchframe)&&$roundwatchframe){
 	<div id="tabviews" style=""></div>
 	<div id="statusinfo" style="display:none;"><div id="statusc"></div></div>
 </div>
+<div id="shared_tab_closer" onclick="close_current_tab();"></div>
 <div id="rotate_indicator" style="display:none;position:fixed;width:100px;height:100px;top:220px;left:110px;z-index:3000;"></div>
 <div id="fsmask"></div>
 <div id="fstitlebar">

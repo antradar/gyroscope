@@ -1,6 +1,7 @@
 <?php
 header('Content-Type: text/css');
 ?>
+#shared_tab_closer,
 .activetab .tabclose,
 .dulltab .tabclose,
 .activetab, .dulltab,

@@ -7,6 +7,8 @@ body{background:#ffffff;}
 #tabviews{overflow:visible;height:auto;}
 #content{height:auto;overflow:visible;}
 
+#shared_tab_closer{display:block;}
+
 .listitem{line-height:1.5em;border-bottom:solid 1px #efefef;padding:10px 0;font-size:16px;}
 #lvviews .listitem{color:#696F7F;background:transparent url(rec_hd.gif) no-repeat center right;-webkit-background-size:17px 13px;background-size:17px 13px;}
 #lvviews .listitem a{display:block;padding-right:15px;}

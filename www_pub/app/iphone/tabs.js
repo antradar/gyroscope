@@ -26,6 +26,20 @@ navback=function(){
 	
 }
 
+close_current_tab=function(){
+	if (document.currenttab==null||document.currenttab==-1) return;
+	var tabkey=document.tabkeys[document.currenttab];
+	var tab=document.tabtitles[document.currenttab];
+	if (tab.reloadinfo&&tab.reloadinfo.opts&&tab.reloadinfo.opts.noclose==true){
+		gid('shared_tab_closer').style.filter='sepia(100%)';
+		setTimeout(function(){
+			gid('shared_tab_closer').style.filter='';			
+		},500);	
+	} else {
+		closetab(tabkey);
+	}
+}
+
 function undocktab(){
 	//for now
 }
@@ -79,6 +93,11 @@ showtab=function(key,opts){
 
   document.tabseq.push(key);
   document.viewmode=2;
+
+  if (gid('shared_tab_closer')){
+	if (opts!=null&&opts.noclose==true) gid('shared_tab_closer').className='irrelevant';
+  	else gid('shared_tab_closer').className='';
+  }
   
   for (i=0;i<document.tabcount;i++){
 	  if (i==tabid) continue;
@@ -370,7 +389,7 @@ function addtab(key,title,params,loadfunc,data,opts){
 closetab=function(key){
   var tabid=gettabid(key);
   if (tabid==-1) return;
-  
+    
   if (document.tabtitles[tabid].autosaver) {clearTimeout(document.tabtitles[tabid].autosaver);document.tabtitles[tabid].autosavertimer=null;}  
   if (document.tabtitles[tabid].reloadinfo&&document.tabtitles[tabid].reloadinfo.opts&&document.tabtitles[tabid].reloadinfo.opts.bexit)
 	document.tabtitles[tabid].reloadinfo.opts.bexit();
