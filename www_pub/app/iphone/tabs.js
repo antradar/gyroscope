@@ -164,7 +164,7 @@ function reloadtab(key,title,params,loadfunc,data,opts,gskey){
 	if (document.tabtitles[tabid].tablock) return;
 	document.tabtitles[tabid].tablock=1;
 	
-  if (opts.bexit) opts.bexit();
+  if (opts&&opts.bexit) opts.bexit();
   	
   if (document.tabtitles[tabid].conflicted){
 	  params=params+'&__tabconflicted=1';		  
