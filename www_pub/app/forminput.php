@@ -71,6 +71,53 @@ function date2stamp($date,$hour=0,$min=0,$sec=0){
 	return $stamp;	
 }
 
+function datetime2stamp($datetime){
+	$odatetime=trim($datetime);
+	$datetime=trim($odatetime,'*');
+	$parts=explode(' ',$datetime);
+	if(count($parts)<2){
+		array_push($parts,'0:00am');	//default
+	}
+	$time=strtolower($parts[1]);
+	$ampm=substr($time,-2);
+	if($ampm=='am' || $ampm=='pm'){
+		$timeonly=substr($time,0,-2);
+	}else{
+		$timeonly=$time;
+	}
+	$timeparts=explode(':',$timeonly);
+	$h=$timeparts[0]??$timeonly;
+	$m=$timeparts[1]??0;
+	$s=$timeparts[2]??0;
+	if($ampm=='pm'){
+		$h+=12;
+	}
+
+	$stamp=date2stamp($parts[0],$h,$m,$s);
+	
+	if ($odatetime[strlen($odatetime)-1]=='*') $ref=date('Y-n-j-H-i-s 1',$stamp);
+	else $ref=date('Y-n-j-H-i-s 0',$stamp);
+	$alts=array(
+		$stamp-3600,
+		$stamp,
+		$stamp+3600
+	);
+	foreach ($alts as $alt){
+		$altkey=date('Y-n-j-H-i-s I',$alt);
+		//echo "$altkey $ref $alt\r\n";
+		if ($altkey==$ref) $stamp=$alt;	
+	}			
+	return $stamp;
+}
+
+//date_default_timezone_set('America/Toronto');
+//2024-11-3 1am * => 1730610000
+//2024-11-3 1am => 1730613600
+//date_default_timezone_set('Europe/Berlin');
+//2024-10-27 2am*=> 1729987200
+//2024-10-27 2am => 1729990800
+//echo datetime2stamp('2024-11-3 1am*')."\r\n";
+
 function apperror($str,$msg=null,$clientfunc=null){		
 	header('apperror: '.tabtitle($str));
 	if (isset($clientfunc)) header('ERRFUNC: '.$clientfunc);

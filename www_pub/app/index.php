@@ -241,7 +241,7 @@ document.nanoperf=500; //in microseconds, set to null or comment out to disable
 </script>
 <script src="tabs.js?v=2"></script>
 <script src="viewport.js"></script>
-<script src="validators.js"></script>
+<script src="validators.js?v=2"></script>
 <script src="autocomplete.js?v=4"></script>
 <script>
 	setquicklist(document.appsettings.quicklist,true);

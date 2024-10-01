@@ -83,7 +83,7 @@ function listhelptopics(){
 	$rs=sql_prep($query,$db,$params);
 	$count=sql_affected_rows($db,$rs);
 	
-	$perpage=20;
+	$perpage=2000; //practically no limit
 	$maxpage=ceil($count/$perpage)-1;
 	if ($maxpage<0) $maxpage=0;
 	if ($page<0) $page=0;

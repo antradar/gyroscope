@@ -21,6 +21,13 @@ function valdate(d){
 	return true;
 }
 
+function valdatetime(d){
+	if (d.value.replace(/\d\d\d\d\-\d+\-\d+\s*\d[\d\:\a\p\m\*\s]*/ig,'')!=''||d.value==''){d.style.borderColor='red';d.style.outline=0;return false;}
+	d.style.borderColor='#999999';
+	d.style.outline='';
+	return true;
+}
+
 function valssn(d){
 	var t=d.value.replace(/[^\d\-\s]/g,'');
 	if (t==''||t!=d.value){d.style.borderColor='red';d.style.outline=0;return false;}
