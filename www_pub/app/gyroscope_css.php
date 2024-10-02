@@ -134,6 +134,7 @@ acronym.help{cursor:help;border-bottom:dotted 1px #4444ee;}
 #barcodewarn{width:16px;height:16px;background:transparent url(imgs/toolbar.gif) -48px -16px;margin-left:8px;margin-top:2px;display:none;}
 #diagwarn{width:16px;height:16px;background:transparent url(imgs/toolbar.gif) -64px -32px;margin-left:8px;margin-top:2px;display:none;cursor:pointer;}
 #sysreswarn{width:16px;height:16px;background:transparent url(imgs/toolbar.gif) -512px -16px;margin-left:8px;margin-top:2px;display:none;cursor:pointer;}
+#gsreplayicon{width:16px;height:16px;background:red;border-radius:8px;margin-left:8px;margin-top:2px;display:none;cursor:pointer;filter:saturate(0.4);}
 #lI01{width:16px;height:16px;background:transparent url(imgs/toolbar.gif) -80px -32px;margin-left:8px;margin-top:2px;display:none;cursor:pointer;}
 #imecree{width:16px;height:16px;background:transparent url(imgs/toolbar.gif) -96px -48px;margin-left:8px;margin-top:2px;display:none;cursor:pointer;}
 #gsnotesclip{width:16px;height:16px;background:transparent url(imgs/toolbar.gif) -112px -48px;margin-left:8px;margin-top:2px;display:none;cursor:pointer;}

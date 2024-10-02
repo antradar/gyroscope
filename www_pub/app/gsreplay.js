@@ -1,0 +1,185 @@
+if (navigator&&navigator.mediaDevices&&navigator.mediaDevices.getDisplayMedia&&window.MediaRecorder){
+	if (gid('gsreplayicon')) {
+		gid('gsreplayicon').style.display='inline-block';
+	}
+}
+
+gsreplay_rec_stop=function(){
+	var eventtypes=['click','scroll','keyup','keydown'];
+	for (var i=0;i<eventtypes.length;i++){
+		window.removeEventListener(eventtypes[i],gsreplay_rec_keyframe,true);
+	}
+	
+	if (document.gsreplay.frametimer) clearTimeout(document.gsreplay.frametimer);
+
+	gid('gsreplayicon').style.filter='saturate(0.4)';
+	document.gsreplay.recorder=null;
+	document.gsreplay.basetime=null;
+	
+	gsreplay_preview_frames();
+	
+}
+
+gsreplay_preview_frames=function(){
+	loadfs('Screen Capture Preview','gsreplay_fspreview',
+	function(){
+		document.gsreplay=null;
+	},
+	function(){
+		gsreplay_play('gsreplay_preview',document.gsreplay.frames,0,1);
+	});	
+}
+
+gsreplay_play_frame=function(id,timemode,loop){
+	//time mode: 0 - condense, 1 - real, 2 - fixed 500ms
+
+	var player=gid(id);
+	if (!player) return;
+	
+	var frame=player.frames[player.idx];
+	
+	player.src=frame.frame;
+	
+	if (player.frames.length<2) return;
+	
+	var wrapped=0;
+	
+	var nidx=player.idx+1;
+	if (nidx>=player.frames.length) {
+		if (!loop) return;
+		nidx=0;
+		player.toffset=0;
+		wrapped=1;
+	}
+	
+	player.idx=nidx;
+	var nframe=player.frames[nidx];
+	var delta=nframe.toffset-player.toffset;
+	player.toffset=nframe.toffset;
+	
+	if (timemode==0&&delta>3000) delta=3000;
+	if (wrapped) delta=5000;
+	
+	setTimeout(function(){
+		//console.log('next frame',nidx,delta);
+		gsreplay_play_frame(id,timemode,loop);
+	},delta);
+	
+}
+
+gsreplay_play=function(id,frames,timemode,loop){
+	var player=gid(id);
+	if (!player) return;
+	
+	if (player.itv) clearTimeout(player.itv);
+	
+	player.idx=0;
+	player.toffset=0;
+	player.frames=frames;
+
+	gsreplay_play_frame(id,timemode,loop);	
+	
+}
+
+gsreplay_rec_keyframe=function(e,itr){
+	if (document.gsreplay.frametimer) clearTimeout(document.gsreplay.frametimer);
+	document.gsreplay.frametimer=setTimeout(function(){
+		
+		if (itr==null) itr=0;
+		//console.log('Capture #'+itr);
+		var ctx=document.gsreplay.canvas.getContext('2d');
+		ctx.drawImage(document.gsreplay.video,0,0,document.gsreplay.width,document.gsreplay.height);
+
+		if (!document.gsreplay.frames) document.gsreplay.frames=[];
+		
+		if (!document.gsreplay.basetime) document.gsreplay.basetime=hb();
+		
+		var toffset=hb()-document.gsreplay.basetime;
+				
+		
+		document.gsreplay.canvas.toBlob(function(blob){
+			var frame=URL.createObjectURL(blob);
+			document.gsreplay.frames.push({toffset:toffset, file:blob, frame:frame, itr:itr});
+		});
+		
+		
+		//console.log(toffset,frame);
+		
+		
+		document.gsreplay.frametimer=null;
+		
+		if (itr<3){
+			if (document.gsreplay.frametimer) clearTimeout(document.gsreplay.frametimer);
+			document.gsreplay.frametimer=setTimeout(function(){gsreplay_rec_keyframe(e,itr+1);},400);			
+		}
+		
+	},30);
+}
+
+gsreplay_rec_start=function(d){
+	
+	if (document.gsreplay&&document.gsreplay.recorder){
+		flashsticker('The screen is already being recorded',1);
+		return;	
+	}
+		
+	var opts={
+		video:{displaySurface:'window'},
+		audio:false
+		//selfBrowserSurface: "include"
+	};
+	
+	if (document.gsreplaystream) return;
+		
+	navigator.mediaDevices.getDisplayMedia(opts).then(function(mstream){
+		ajxjs2('cropper_init','imgcropper.js');		
+		document.gsreplay={
+			stream:mstream,
+			width:window.screen.width, //cw(),
+			height:window.screen.height, //ch(),
+			recorder:new MediaRecorder(mstream),
+			video:document.createElement('video'),
+			canvas:document.createElement('canvas')
+		}
+		
+		var eventtypes=['click','scroll','keyup','keydown'];
+		for (var i=0;i<eventtypes.length;i++){
+			window.addEventListener(eventtypes[i],gsreplay_rec_keyframe,true);
+		}
+		
+		
+		document.gsreplay.video.style.width=document.gsreplay.width+'px';
+		document.gsreplay.video.style.height=document.gsreplay.height+'px';
+
+				
+		document.gsreplay.video.srcObject=document.gsreplay.stream;
+		document.gsreplay.video.play();
+		
+		document.gsreplay.canvas.width=document.gsreplay.width;
+		document.gsreplay.canvas.height=document.gsreplay.height;
+		
+		//document.body.appendChild(document.gsreplay.canvas);
+				
+				
+		document.gsreplay.recorder.onstop=function(e){
+			gsreplay_rec_stop();	
+		}
+		
+		document.gsreplay.recorder.start();
+		gid('gsreplayicon').style.filter='saturate(1)';
+	}).catch(function(err){
+		//permission denied
+		//console.log(err);
+	});
+}
+
+gsreplay_togglecrop=function(d,cropperid){
+	if (!d.cropping){
+		d.cropping=true;
+		if (!d.cropperx) d.cropperx=cropper_init(cropperid);
+	} else {
+		cropper_free(cropperid);
+		d.cropping=null;
+		d.cropperx=null;	
+	}
+}

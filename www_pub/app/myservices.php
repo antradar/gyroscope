@@ -73,6 +73,10 @@ switch($cmd){
 			vectorhelpsearch();	
 		}
 	break;
+	
+	//GS Replay
+	
+	case 'gsreplay_fspreview': include 'icl/gsreplay_fspreview.inc.php'; gsreplay_fspreview(); break;
 		
 //msgpipes
 

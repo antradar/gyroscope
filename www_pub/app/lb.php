@@ -22,7 +22,7 @@ $encclientid='pubtest'; //community key for testing only
 $encapikey='yK2aP2vE1rF8tN6m';
 $encapisecret='pG6mJ1sA6qM8oX7zW4mR4cD7qV1jH3mI'; //don't change this once it's set; do not rely on the shared key to store sensitive data as other developers might wipe out your keys!
 
-$usewss=1; //set this to 1 to activate websocket sync
+$usewss=0;//1; //set this to 1 to activate websocket sync
 $WSS_INTERNAL_KEY='asdf-changeme'; //unset this to use legacy DB-driven WSS
 $WSS_INTERNAL_HOST='127.0.0.1';
 $WSS_INTERNAL_PORT='9999';
