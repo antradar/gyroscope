@@ -12,7 +12,7 @@ gsreplay_rec_stop=function(){
 	
 	if (document.gsreplay.frametimer) clearTimeout(document.gsreplay.frametimer);
 
-	gid('gsreplayicon').style.filter='saturate(0.4)';
+	gid('gsreplayicon').style.filter='saturate(0.3)';
 	document.gsreplay.recorder=null;
 	document.gsreplay.basetime=null;
 	
@@ -21,6 +21,8 @@ gsreplay_rec_stop=function(){
 }
 
 gsreplay_preview_frames=function(){
+	if (!document.gsreplay.frames||document.gsreplay.frames.length==0) return;
+	
 	loadfs('Screen Capture Preview','gsreplay_fspreview',
 	function(){
 		document.gsreplay=null;
@@ -183,3 +185,72 @@ gsreplay_togglecrop=function(d,cropperid){
 		d.cropperx=null;	
 	}
 }
+
+gsreplay_submit=function(tcframes){
+	if (!document.gsreplay||!document.gsreplay.frames) return;
+	
+	var cframes=[];
+
+	var crop=0;
+	if (gid('gsreplay_croptrigger')&&gid('gsreplay_croptrigger').checked){
+		crop=1;
+		
+		if (!tcframes){
+			
+		var coords=cropper_coords(gid('gsreplay_cropper').cropper);
+		var width=Math.abs(coords.sx2-coords.sx1);
+		var height=Math.abs(coords.sy2-coords.sy1);
+		var x=coords.sx1;
+		var y=coords.sy1;
+		
+		var canvas=document.createElement('canvas');
+		canvas.width=width;
+		canvas.height=height;
+		
+		for (var i=0;i<document.gsreplay.frames.length;i++){
+			var ctx=canvas.getContext('2d');
+			var img=new Image();
+			img.src=document.gsreplay.frames[i].frame;
+			img.onload=function(){
+				ctx.drawImage(img,x,y,width,height);
+				canvas.toBlob(function(blob){
+					cframes.push(blob);
+					if (cframes.length==document.gsreplay.frames.length){
+						gsreplay_submit(cframes);	
+					}
+					//console.log(blob.size);
+				});
+			}
+				
+		}//for
+		
+		}//tcframes
+	}
+	
+	if (crop&&!tcframes) return;
+		
+	
+	console.log(tcframes);
+	console.log(document.gsreplay.frames);
+		
+	var fd=new FormData;
+	for (var i=0;i<document.gsreplay.frames.length;i++){
+		if (crop)
+			fd.append('frames[]',tcframes[i]);
+		else
+			fd.append('frames[]',document.gsreplay.frames[i].file);
+	}
+	
+	
+	var rq=xmlHTTPRequestObject();
+	rq.open('POST',document.appsettings.codepage+'?cmd=gsreplay_submit',true);
+	rq.onreadystatechange=function(){
+		if (rq.readyState==4){
+			
+		}		
+	}
+	rq.send(fd);
+	
+	
+}
+

@@ -17,7 +17,7 @@ function gsreplay_fspreview(){
 			<input type="checkbox" id="gsreplay_croptrigger" onclick="gsreplay_togglecrop(this,'gsreplay_cropper');"> <label for="gsreplay_croptrigger">crop content</label>
 		</div>
 		<div>
-			<button>Save Recording</button>
+			<button onclick="gsreplay_submit();">Save Recording</button>
 		</div>
 		
 	</div>
