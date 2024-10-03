@@ -180,10 +180,10 @@ gsreplay_togglecrop=function(d,cropperid){
 		d.cropping=true;
 		if (!d.cropperx) {
 			d.cropperx=cropper_init(cropperid);
-			gid(cropperid).img.style.filter='';
-			gid(cropperid).cropper.style.background='#ffffff';
-			gid(cropperid).cropper.style.opacity='0.4';
-			gid(cropperid).cropper.cimg.src='imgs/t.gif';
+			//gid(cropperid).img.style.filter='';
+			//gid(cropperid).cropper.style.background='#ffffff';
+			//gid(cropperid).cropper.style.opacity='0.4';
+			//gid(cropperid).cropper.cimg.style.visibility='hidden';
 		}
 	} else {
 		cropper_free(cropperid);
@@ -198,14 +198,33 @@ gsreplay_submit=function(tcframes){
 	var cframes=[];
 
 	var crop=0;
+	
+	var imgfunc=function(img,x,y,width,height){
+		return function(){
+			var ctx=canvas.getContext('2d');
+			ctx.drawImage(img,x,y,width,height,0,0,width,height);
+			canvas.toBlob(function(blob){
+				cframes.push(blob);
+				if (cframes.length==document.gsreplay.frames.length){
+					gsreplay_submit(cframes);	
+				}
+				console.log(blob,x,y,width,height);
+			});
+		}		
+	}
+	
+	var width=document.gsreplay.width;
+	var height=document.gsreplay.height;
+	
 	if (gid('gsreplay_croptrigger')&&gid('gsreplay_croptrigger').checked){
 		crop=1;
-		
+
+		var coords=cropper_coords(gid('gsreplay_cropper').cropper);
+		width=Math.abs(coords.sx2-coords.sx1);
+		height=Math.abs(coords.sy2-coords.sy1);
+				
 		if (!tcframes){
 			
-		var coords=cropper_coords(gid('gsreplay_cropper').cropper);
-		var width=Math.abs(coords.sx2-coords.sx1);
-		var height=Math.abs(coords.sy2-coords.sy1);
 		var x=coords.sx1;
 		var y=coords.sy1;
 		
@@ -214,19 +233,9 @@ gsreplay_submit=function(tcframes){
 		canvas.height=height;
 		
 		for (var i=0;i<document.gsreplay.frames.length;i++){
-			var ctx=canvas.getContext('2d');
 			var img=new Image();
 			img.src=document.gsreplay.frames[i].frame;
-			img.onload=function(){
-				ctx.drawImage(img,x,y,width,height);
-				canvas.toBlob(function(blob){
-					cframes.push(blob);
-					if (cframes.length==document.gsreplay.frames.length){
-						gsreplay_submit(cframes);	
-					}
-					//console.log(blob.size);
-				});
-			}
+			img.onload=imgfunc(img,x,y,width,height);
 				
 		}//for
 		
@@ -240,6 +249,10 @@ gsreplay_submit=function(tcframes){
 	console.log(document.gsreplay.frames);
 		
 	var fd=new FormData;
+	fd.append('width',width);
+	fd.append('height',height);
+	
+	
 	for (var i=0;i<document.gsreplay.frames.length;i++){
 		if (crop)
 			fd.append('frames[]',tcframes[i]);
