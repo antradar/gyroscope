@@ -178,7 +178,13 @@ gsreplay_rec_start=function(d){
 gsreplay_togglecrop=function(d,cropperid){
 	if (!d.cropping){
 		d.cropping=true;
-		if (!d.cropperx) d.cropperx=cropper_init(cropperid);
+		if (!d.cropperx) {
+			d.cropperx=cropper_init(cropperid);
+			gid(cropperid).img.style.filter='';
+			gid(cropperid).cropper.style.background='#ffffff';
+			gid(cropperid).cropper.style.opacity='0.4';
+			gid(cropperid).cropper.cimg.src='imgs/t.gif';
+		}
 	} else {
 		cropper_free(cropperid);
 		d.cropping=null;
