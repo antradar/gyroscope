@@ -1,5 +1,7 @@
 <?php
 
+include 'libnumfile.php';
+
 function gsreplay_submit(){
 	//print_r($_FILES);
 	
@@ -14,6 +16,9 @@ function gsreplay_submit(){
 	
 	$width=QETVAL('width');
 	$height=QETVAL('height');
+	
+	$toffsets=explode(',',SQET('toffsets'));
+	$itrs=explode(',',SQET('itrs'));
 	
 	$query="insert into gsreplays (
 		gsreplaydate,gsreplayuserid,gsid,gsreplaysharestatus,
@@ -31,17 +36,17 @@ function gsreplay_submit(){
 	$gsreplayid=sql_insert_id($db,$rs);
 	
 	$ffns=$_FILES['frames']['tmp_name'];
-	$framecount=count($ffns);
 	
 	$params=array();
 	$qs=array();
 	
-	for ($i=0;$i<$framecount;$i++){
-		array_push($qs,'(?)');
-		array_push($params,$gsreplayid);	
+	foreach ($toffsets as $idx=>$toffset){
+		$itr=$itrs[$idx];
+		array_push($qs,'(?,?,?)');
+		array_push($params,$gsreplayid,$toffset,$itr);	
 	}
 	
-	$query="insert into gsreplayframes (gsreplayid) values ".implode(',',$qs);
+	$query="insert into gsreplayframes (gsreplayid,frametoffset,frameitr) values ".implode(',',$qs);
 	$rs=sql_prep($query,$db,$params);
 	
 	$query="select frameid from gsreplayframes where gsreplayid=?";
@@ -49,14 +54,19 @@ function gsreplay_submit(){
 	$frameids=array();
 	while ($myrow=sql_fetch_assoc($rs)) array_push($frameids,$myrow['frameid']);
 	
-	$path='../../protected/gsreplays/';
+	//$path='../../protected/gsreplays/';
+	$basedir='../../protected/gsreplays/';
+	$ext='.gsreplay_'.$gsreplayid.'.png';
+	
 	foreach ($ffns as $ffn){
 		$frameid=array_shift($frameids);
 		$c=file_get_contents($ffn);
-		echo "$frameid $ffn\r\n";
+		echo "$frameid $ffn<br>\r\n";
 		
-		$fn=$path.$gsreplayid.'_'.$frameid.'.png';
-		file_put_contents($fn,$c);
+		//$fn=$path.$gsreplayid.'_'.$frameid.'.png';
+		//file_put_contents($fn,$c);
+		$stem=$frameid;
+		numfile_put_contents($stem,$ext,$basedir,$c);		
 	}
 		
 		

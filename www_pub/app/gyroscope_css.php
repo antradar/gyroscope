@@ -134,7 +134,7 @@ acronym.help{cursor:help;border-bottom:dotted 1px #4444ee;}
 #barcodewarn{width:16px;height:16px;background:transparent url(imgs/toolbar.gif) -48px -16px;margin-left:8px;margin-top:2px;display:none;}
 #diagwarn{width:16px;height:16px;background:transparent url(imgs/toolbar.gif) -64px -32px;margin-left:8px;margin-top:2px;display:none;cursor:pointer;}
 #sysreswarn{width:16px;height:16px;background:transparent url(imgs/toolbar.gif) -512px -16px;margin-left:8px;margin-top:2px;display:none;cursor:pointer;}
-#gsreplayicon{width:12px;height:12px;background:#F1272A;border-radius:8px;margin-top:0;margin-left:12px;display:none;cursor:pointer;outline-offset:2px;outline:solid 1px #F1272A;box-sizing:border-box;filter:saturate(0.3);}
+#gsreplayicon{width:12px;height:12px;background:#F1272A;border-radius:8px;margin-top:0;margin-left:12px;display:none;cursor:pointer;outline-offset:1px;outline:solid 1px #F1272A;box-sizing:border-box;filter:saturate(0.3);}
 #lI01{width:16px;height:16px;background:transparent url(imgs/toolbar.gif) -80px -32px;margin-left:8px;margin-top:2px;display:none;cursor:pointer;}
 #imecree{width:16px;height:16px;background:transparent url(imgs/toolbar.gif) -96px -48px;margin-left:8px;margin-top:2px;display:none;cursor:pointer;}
 #gsnotesclip{width:16px;height:16px;background:transparent url(imgs/toolbar.gif) -112px -48px;margin-left:8px;margin-top:2px;display:none;cursor:pointer;}

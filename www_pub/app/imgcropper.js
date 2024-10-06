@@ -41,8 +41,10 @@ cropper_init=function(id,opts){
 	var mask=document.createElement('div');
 	mask.style.position='absolute'; mask.style.top=0; mask.style.left=0; mask.style.background='#000000';
 	mask.style.opacity=0.2; mask.style.width='100%'; mask.style.height='100%'; mask.style.filter='alpha(opacity=20)';
-	img.style.filter='blur(1px)';
-	img.style.WebkitFilter='blur(1px)';
+	if (!opts.transparent){
+		img.style.filter='blur(1px)';
+		img.style.WebkitFilter='blur(1px)';
+	}
 	
 	c.appendChild(mask);
 	c.mask=mask;
@@ -67,7 +69,13 @@ cropper_init=function(id,opts){
 	cimg.style.WebkitUserSelect='none';
 	cimg.style.UserSelect='none';
 	
-	cimg.src=img.src;
+	if (!opts.transparent) {
+		cimg.src=img.src;
+	} else {
+		cimg.src='imgs/t.gif';
+		cropper.style.background='#ffffff';
+		cropper.style.opacity=0.4;
+	}
 	
 	
 	
@@ -389,13 +397,21 @@ cropper_drag=function(d,t,callback){return function(e){
 }}
 
 cropper_coords=function(cropper){
-	if (typeof(cropper)=='string') cropper=document.getElementById(cropper).cropper;
-	if (cropper.cimg.naturalWidth==null){
-		var timg=new Image();
-		timg.src=cropper.cimg.src;
-		cropper.cimg.naturalWidth=timg.width;
+
+	if (typeof(cropper)=='string') {
+		var cmain=document.getElementById(cropper);
+		cropper=cmain.cropper;
+	} else {
+		var cmain=cropper;
+		cropper=cmain.cropper;	
 	}
-	var scale=cropper.cimg.naturalWidth/cropper.cimg.offsetWidth;
+	
+	if (cmain.img.naturalWidth==null){
+		var timg=new Image();
+		timg.src=cmain.img.src;
+		cmain.img.naturalWidth=timg.width;
+	}
+	var scale=cmain.img.naturalWidth/cmain.img.offsetWidth;
 	var dims={
 		x1:cropper.offsetLeft, y1:cropper.offsetTop, x2:cropper.offsetLeft+cropper.offsetWidth, y2:cropper.offsetTop+cropper.offsetHeight,
 		scale:scale,

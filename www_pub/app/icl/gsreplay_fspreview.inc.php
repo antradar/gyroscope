@@ -13,6 +13,7 @@ function gsreplay_fspreview(){
 		<img id="gsreplay_preview" style="background:#000000;display:block;width:100%;">
 	</div>
 	<div id="gsreplay_controls">
+		<div id="gsreplay_saver"></div>
 		<div>
 			<input type="checkbox" id="gsreplay_croptrigger" onclick="gsreplay_togglecrop(this,'gsreplay_cropper');"> <label for="gsreplay_croptrigger">crop content</label>
 		</div>

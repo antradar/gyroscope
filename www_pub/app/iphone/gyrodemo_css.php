@@ -29,6 +29,8 @@ acronym{text-decoration:none;border:none;}
 .inpback{height:14px;position:absolute;top:5px;right:24px;cursor:pointer;}
 .kpwlink{display:none;}
 
+#gsreplayicon{width:20px;height:20px;background:#F1272A;border-radius:10px;margin-left:12px;display:none;cursor:pointer;outline-offset:2px;outline:solid 1px #F1272A;box-sizing:border-box;filter:saturate(0.3);}
+
 .medialibtile{float:left;width:24%;margin-right:1%;position:relative;overflow:hidden;margin-bottom:10px;}
 
 #mmastersearch{display:none;position:absolute;top:0;left:0;width:100%;height:50px;background:#484848;}

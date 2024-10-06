@@ -145,9 +145,9 @@ if (isset($roundwatchframe)&&$roundwatchframe){
 	?>
 	<?php if ($enablelivechat){?>
 	<div class="menuitem"><a href=# onclick="livechat_start();return false;"><img alt="live chat" id="chaticon" src="imgs/t.gif" border="0" width="28" height="28"></a></div>
-	<?php }
-	
+	<?php }	
 	?>
+	<div class="menuitem"><a href=# onclick="_gsreplay_rec_start(this);return false;"><img id="gsreplayicon" src="imgs/t.gif" border="0"></a></div>
 	
 	<?php 
 	if (isset($roundwatchframe)&&$roundwatchframe){
@@ -429,6 +429,7 @@ scaleall(document.body);
 </script>
 */
 ?>
+<script src="gsreplay_loader.js"></script>
 <script>
 if (window.Notification) Notification.requestPermission();
 

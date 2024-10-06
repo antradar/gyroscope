@@ -180,7 +180,7 @@ foreach ($toolbaritems as $modid=>$ti){
 	<!-- img id="imecree" src="imgs/t.gif" onclick="creeime();" onmouseover="hintstatus(this,'enable Cree keyboard for the current input field');" -->
 	<img id="chatindicator" src="imgs/t.gif" onclick="livechat_start();" onmouseover="hintstatus(this,document.chatstatus=='online'?'click to start live chat':'live chat unavailable');">
 	<img id="gamepadicon" src="imgs/t.gif" onmouseover="hintstatus(this,'gamepad controls');">
-	<img id="gsreplayicon" src="imgs/t.gif" onclick="gsreplay_rec_start(this);" onmouseover="hintstatus(this,'record screen');">
+	<img id="gsreplayicon" src="imgs/t.gif" onclick="_gsreplay_rec_start(this);" onmouseover="hintstatus(this,this.hint);">
 	<img id="gsnotesclip" src="imgs/t.gif" onclick="if (navigator.onLine) gsnotes_listclips(); else onlinestatuschanged();" onmouseover="hintstatus(this,'you have outstanding offline clipboard items');">
 	</span>
 	<span id="statusc"></span>
@@ -244,7 +244,7 @@ document.nanoperf=500; //in microseconds, set to null or comment out to disable
 <script src="viewport.js"></script>
 <script src="validators.js?v=2"></script>
 <script src="autocomplete.js?v=4"></script>
-<script src="gsreplay.js"></script>
+<script src="gsreplay_loader.js"></script>
 <script>
 	setquicklist(document.appsettings.quicklist,true);
 </script>

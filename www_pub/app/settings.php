@@ -61,6 +61,7 @@ $toolbaritems=array(
 	'core.reportsettings'=>array('title'=>'Report Settings','icon'=>'','modversion'=>'92','lockdown'=>1),	
 	'core.templatetypes'=>array('title'=>'System Templates','icon'=>'','modversion'=>'91','lockdown'=>1),	
 	'core.templates'=>array('title'=>_tr('icon_templates'),'icon'=>'','modversion'=>'91'),
+	'core.gsreplays'=>array('title'=>'Replay Clips'),
 
 'core.reports'=>array('title'=>_tr('icon_reports'),'icon'=>'img-reports','modversion'=>'92','lockdown'=>1),
 'core.helptopics'=>array('title'=>_tr('icon_helptopics'),'icon'=>'img-helptopics','modversion'=>1),

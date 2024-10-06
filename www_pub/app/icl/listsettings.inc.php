@@ -56,6 +56,9 @@ function listsettings(){
 	<?php
 	}
 
+	?>
+	<div class="listitem"><a onclick="showview('core.gsreplays',1);">Replay Clips</a></div>		
+	<?php
 	/*
 	if ($user['groups']['msdrive']){
 	?>
