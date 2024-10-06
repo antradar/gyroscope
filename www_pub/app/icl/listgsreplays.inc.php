@@ -12,9 +12,11 @@ function listgsreplays(){
 	$rs=sql_prep($query,$db,$gsid);
 	while ($myrow=sql_fetch_assoc($rs)){
 		$gsreplayid=$myrow['gsreplayid'];
+		$gsreplaydate=$myrow['gsreplaydate'];
+		$ddate=date('Y-n-j H:i:s',$gsreplaydate);
 	?>
 	<div class="listitem">
-	<a onclick="showgsreplay(<?php echo $gsreplayid;?>);">#<?php echo $gsreplayid;?></a>
+	<a onclick="showgsreplay(<?php echo $gsreplayid;?>);">#<?php echo $gsreplayid;?> <?php echo $ddate;?></a>
 	</div>
 	<?php	
 	}//myrow

@@ -79,7 +79,8 @@ switch($cmd){
 	case 'gsreplay_submit': include 'icl/gsreplay_submit.inc.php'; gsreplay_submit(); break;
 	
 	case 'slv_core__gsreplays': include 'icl/listgsreplays.inc.php'; listgsreplays(); break;
-			
+	case 'showgsreplay': include 'icl/showgsreplay.inc.php'; showgsreplay(); break;
+	case 'img_gsreplayframe': include 'icl/img_gsreplayframe.inc.php'; img_gsreplayframe(); break;		
 //msgpipes
 
 	case 'dashmsgpipes': include 'icl/dashmsgpipes.inc.php'; dashmsgpipes(); break;

@@ -58,7 +58,7 @@ function showhelptopic($helptopicid=null){
 		</div>
 	</div>
 </div>
-<iframe id="helptopic_sandbox_view_<?php echo $helptopicid;?>" sandbox="allow-popups allow-popups-to-escape-sandbox allow-scripts" style="width:100%;height:84%;border:none;" frameborder="no" src="<?php echo $codepage;?>?cmd=safe_showhelptopic&helptopicid=<?php echo $helptopicid;?>"></iframe>
+<iframe id="helptopic_sandbox_view_<?php echo $helptopicid;?>" sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-scripts" style="width:100%;height:84%;border:none;" frameborder="no" src="<?php echo $codepage;?>?cmd=safe_showhelptopic&helptopicid=<?php echo $helptopicid;?>"></iframe>
 
 <div class="section" style="padding-top:0;margin-top:0;">
 	<?php if (isset($previd)){?>

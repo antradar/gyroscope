@@ -1,6 +1,6 @@
 <?php
 
-//include 'tmpl.php';
+include 'tmpl.php';
 
 function safe_showhelptopic($helptopicid=null){
 	if (!isset($helptopicid)) $helptopicid=SGET('helptopicid');

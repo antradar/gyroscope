@@ -42,8 +42,9 @@ function gsreplay_submit(){
 	
 	foreach ($toffsets as $idx=>$toffset){
 		$itr=$itrs[$idx];
+		//todo: skip corrupt frames
 		array_push($qs,'(?,?,?)');
-		array_push($params,$gsreplayid,$toffset,$itr);	
+		array_push($params,$gsreplayid,$toffset,$itr);
 	}
 	
 	$query="insert into gsreplayframes (gsreplayid,frametoffset,frameitr) values ".implode(',',$qs);
@@ -61,7 +62,7 @@ function gsreplay_submit(){
 	foreach ($ffns as $ffn){
 		$frameid=array_shift($frameids);
 		$c=file_get_contents($ffn);
-		echo "$frameid $ffn<br>\r\n";
+		//echo "$frameid $ffn<br>\r\n";
 		
 		//$fn=$path.$gsreplayid.'_'.$frameid.'.png';
 		//file_put_contents($fn,$c);
@@ -69,5 +70,10 @@ function gsreplay_submit(){
 		numfile_put_contents($stem,$ext,$basedir,$c);		
 	}
 		
+?>
+<div class="infobox">
+	The clip has been saved as #<?php echo $gsreplayid;?>.
+</div>
+<?php
 		
 }

@@ -1,6 +1,15 @@
 
 showgsreplay=function(gsreplayid){
-	addtab('gsreplayview_'+gsreplayid,'Replay #'+gsreplayid,'showgsreplay&gsreplayid='+gsreplayid);	
+	addtab('gsreplayview_'+gsreplayid,'Replay #'+gsreplayid,'showgsreplay&gsreplayid='+gsreplayid,function(){
+		var frames=eval('('+gid('gsreplayinfo_'+gsreplayid).value+')');
+		gid('gsreplay_'+gsreplayid).frames=frames;
+		var ff=function(){
+			flashsticker('Replay finished, click to play again.',1);				
+		}
+		gid('gsreplay_'+gsreplayid).ff=ff;
+		gsreplay_play('gsreplay_'+gsreplayid,frames,0,0,ff);
+			
+	});	
 }
 
 gsreplay_rec_stop=function(){
@@ -31,7 +40,7 @@ gsreplay_preview_frames=function(){
 	});	
 }
 
-gsreplay_play_frame=function(id,timemode,loop){
+gsreplay_play_frame=function(id,timemode,loop,onfinished){
 	//time mode: 0 - condense, 1 - real, 2 - fixed 500ms
 
 	var player=gid(id);
@@ -47,6 +56,7 @@ gsreplay_play_frame=function(id,timemode,loop){
 	
 	var nidx=player.idx+1;
 	if (nidx>=player.frames.length) {
+		if (onfinished) onfinished();
 		if (!loop) return;
 		nidx=0;
 		player.toffset=0;
@@ -63,12 +73,12 @@ gsreplay_play_frame=function(id,timemode,loop){
 	
 	setTimeout(function(){
 		//console.log('next frame',nidx,delta);
-		gsreplay_play_frame(id,timemode,loop);
+		gsreplay_play_frame(id,timemode,loop,onfinished);
 	},delta);
 	
 }
 
-gsreplay_play=function(id,frames,timemode,loop){
+gsreplay_play=function(id,frames,timemode,loop,onfinished){
 	var player=gid(id);
 	if (!player) return;
 	
@@ -78,7 +88,7 @@ gsreplay_play=function(id,frames,timemode,loop){
 	player.toffset=0;
 	player.frames=frames;
 
-	gsreplay_play_frame(id,timemode,loop);	
+	gsreplay_play_frame(id,timemode,loop,onfinished);	
 	
 }
 
@@ -252,8 +262,8 @@ gsreplay_submit=function(tcframes){
 	if (crop&&!tcframes) return;
 		
 	
-	console.log(tcframes);
-	console.log(document.gsreplay.frames);
+	//console.log(tcframes);
+	//console.log(document.gsreplay.frames);
 	
 		
 	var fd=new FormData;
