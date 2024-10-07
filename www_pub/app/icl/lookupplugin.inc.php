@@ -6,6 +6,9 @@ function lookupplugin(){
 <div class="section">
 
 
+	<div class="listitem"><a onclick="lookupentity(document.hotspot,'plugingsreplay','Replay');">Replay</a></div>
+	
+
 	<div class="listitem"><a onclick="lookupentity(document.hotspot,'pluginmention','Mention');">Mention</a></div>
 
 	<div class="listitem"><a onclick="loadfs('Image Selector','showmedialibrary&selector=1',

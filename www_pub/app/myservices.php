@@ -80,7 +80,12 @@ switch($cmd){
 	
 	case 'slv_core__gsreplays': include 'icl/listgsreplays.inc.php'; listgsreplays(); break;
 	case 'showgsreplay': include 'icl/showgsreplay.inc.php'; showgsreplay(); break;
+	case 'delgsreplay': include 'icl/delgsreplay.inc.php'; delgsreplay(); break;
 	case 'img_gsreplayframe': include 'icl/img_gsreplayframe.inc.php'; img_gsreplayframe(); break;		
+	
+	case 'lookupplugingsreplay': include 'icl/lookupplugingsreplay.inc.php'; lookupplugingsreplay(); break;
+
+	
 //msgpipes
 
 	case 'dashmsgpipes': include 'icl/dashmsgpipes.inc.php'; dashmsgpipes(); break;

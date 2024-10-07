@@ -7,6 +7,7 @@ function listgsreplays(){
 	$gsid=$user['gsid'];
 ?>
 <div class="section">
+
 <?php
 	$query="select * from gsreplays where gsid=? order by gsreplayid desc";
 	$rs=sql_prep($query,$db,$gsid);

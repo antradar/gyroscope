@@ -4,13 +4,33 @@ showgsreplay=function(gsreplayid){
 		var frames=eval('('+gid('gsreplayinfo_'+gsreplayid).value+')');
 		gid('gsreplay_'+gsreplayid).frames=frames;
 		var ff=function(){
-			flashsticker('Replay finished, click to play again.',1);				
+			gid('replayindicator_'+gsreplayid).style.visibility='visible';
 		}
 		gid('gsreplay_'+gsreplayid).ff=ff;
 		gsreplay_play('gsreplay_'+gsreplayid,frames,0,0,ff);
 			
 	});	
 }
+
+delgsreplay=function(gsreplayid){
+	if (!sconfirm('Are you sure you want to remove this replay clip?')) return;
+	reloadtab('gsreplayview_'+gsreplayid,'','delgsreplay&gsreplayid='+gsreplayid,function(){
+		closetab('gsreplayview_'+gsreplayid);
+		reloadview('core.gsreplays');
+	});
+}
+
+_inline_lookupplugingsreplay=function(d){
+	
+	if (d.timer) clearTimeout(d.timer);
+	d.timer=setTimeout(function(){
+		ajxpgn('plugingsreplaylist',document.appsettings.codepage+'?cmd=lookupplugingsreplay&mode=embed&key='+encodeHTML(d.value));
+	},300
+	);	
+}
+
+
+/////
 
 gsreplay_rec_stop=function(){
 	var eventtypes=['click','scroll','keyup','keydown'];

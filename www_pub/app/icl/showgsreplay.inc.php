@@ -10,7 +10,8 @@ function showgsreplay(){
 <div class="section">
 	<div class="sectiontitle">Replay #<?php echo $gsreplayid;?></div>
 
-	<img src="imgs/t.gif" id="gsreplay_<?php echo $gsreplayid;?>" style="max-width:70%;cursor:pointer;" onclick="if (this.frames) gsreplay_play('gsreplay_<?php echo $gsreplayid;?>',this.frames,0,0,this.ff);">
+	<div class="majorcol">
+	<img src="imgs/t.gif" id="gsreplay_<?php echo $gsreplayid;?>" style="max-width:95%;cursor:pointer;" onclick="gid('replayindicator_<?php echo $gsreplayid;?>').style.visibility='hidden';if (this.frames) gsreplay_play('gsreplay_<?php echo $gsreplayid;?>',this.frames,0,0,this.ff);">
 
 	<?php 
 	$query="select * from gsreplayframes where gsreplayid=? order by frameid";
@@ -26,6 +27,19 @@ function showgsreplay(){
 	}//while
 	?>
 	<textarea class="inplong" id="gsreplayinfo_<?php echo $gsreplayid;?>" style="height:400px;display:none;"><?php echo json_encode($frames);?></textarea>	
+	
+	</div>
+	<div class="minorcol">
+	
+		<div id="replayindicator_<?php echo $gsreplayid;?>" style="visibility:hidden;margin-bottom:10px;">
+			Replay finished. Click on the clip to play again.
+		</div>
+	
+		<div class="inputrow buttonbelt">
+		<button class="warn" onclick="delgsreplay(<?php echo $gsreplayid;?>);">Delete</button>
+		</div>
+	</div>
+	<div class="clear"></div>
 </div>
 <?php		
 }

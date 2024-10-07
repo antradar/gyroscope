@@ -303,11 +303,14 @@ create table gsreplays (
   `gsreplaysharestatus` tinyint(3) unsigned DEFAULT '0',
   `gsreplaywidth` int(10) unsigned DEFAULT NULL,
   `gsreplayheight` int(10) unsigned DEFAULT NULL,
+  `gsreplaytitle` varchar(50),
+  `gsreplaydesc` varchar(255),
   PRIMARY KEY (`gsreplayid`),
   KEY `gsid` (`gsid`),
   KEY `gsreplaydate` (`gsreplaydate`),
   KEY `gsreplayuserid` (`gsreplayuserid`),
-  KEY `gsreplaysharestatus` (`gsreplaysharestatus`)
+  KEY `gsreplaysharestatus` (`gsreplaysharestatus`),
+  KEY `gsreplaytitle` (`gsreplaytitle`)
 );
 
 create table gsreplayframes (
