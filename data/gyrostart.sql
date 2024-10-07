@@ -293,3 +293,30 @@ primary key (msgpipeuserid),
 key msgpipeid (msgpipeid),
 key userid (userid)
 );
+
+
+create table gsreplays (
+  `gsreplayid` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `gsid` bigint(20) unsigned DEFAULT NULL,
+  `gsreplaydate` bigint(20) unsigned DEFAULT NULL,
+  `gsreplayuserid` bigint(20) unsigned DEFAULT NULL,
+  `gsreplaysharestatus` tinyint(3) unsigned DEFAULT '0',
+  `gsreplaywidth` int(10) unsigned DEFAULT NULL,
+  `gsreplayheight` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`gsreplayid`),
+  KEY `gsid` (`gsid`),
+  KEY `gsreplaydate` (`gsreplaydate`),
+  KEY `gsreplayuserid` (`gsreplayuserid`),
+  KEY `gsreplaysharestatus` (`gsreplaysharestatus`)
+);
+
+create table gsreplayframes (
+  `frameid` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `gsreplayid` bigint(20) unsigned DEFAULT NULL,
+  `frametoffset` int(10) unsigned DEFAULT NULL,
+  `frameitr` tinyint(3) unsigned DEFAULT '0',
+  PRIMARY KEY (`frameid`),
+  KEY `gsreplayid` (`gsreplayid`),
+  KEY `frametoffset` (`frametoffset`),
+  KEY `frameitr` (`frameitr`)
+);

@@ -6,6 +6,11 @@ function gsreplay_fspreview(){
 	#gsreplay_cropper, #gsreplay_controls{float:left;}
 	#gsreplay_cropper{width:68%;margin-right:2%;}
 	#gsreplay_controls{width:30%;}
+	
+	@media screen and (max-width:550px){
+		#gsreplay_cropper, #gsreplay_controls{float:none;margin-bottom:20px;width:100%;}
+	}
+	
 </style>
 
 <div style="padding:20px;">

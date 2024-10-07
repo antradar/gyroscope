@@ -6,6 +6,9 @@ body{background:#f2f2f2;}
 
 #shared_tab_closer{display:none;}
 
+#gsreplayicon{margin-top:5px !important;}
+
+
 #lvviews{height:210px;overflow:auto;}
 #tabviews{overflow:auto;}
 #content{overflow-x:auto;}

@@ -180,7 +180,7 @@ foreach ($toolbaritems as $modid=>$ti){
 	<!-- img id="imecree" src="imgs/t.gif" onclick="creeime();" onmouseover="hintstatus(this,'enable Cree keyboard for the current input field');" -->
 	<img id="chatindicator" src="imgs/t.gif" onclick="livechat_start();" onmouseover="hintstatus(this,document.chatstatus=='online'?'click to start live chat':'live chat unavailable');">
 	<img id="gamepadicon" src="imgs/t.gif" onmouseover="hintstatus(this,'gamepad controls');">
-	<img id="gsreplayicon" src="imgs/t.gif" onclick="_gsreplay_rec_start(this);" onmouseover="hintstatus(this,this.hint);">
+	<img id="gsreplayicon" src="imgs/t.gif" onclick="_gsreplay_rec_start(this);" onmouseover="hintstatus(this,'record screen');">
 	<img id="gsnotesclip" src="imgs/t.gif" onclick="if (navigator.onLine) gsnotes_listclips(); else onlinestatuschanged();" onmouseover="hintstatus(this,'you have outstanding offline clipboard items');">
 	</span>
 	<span id="statusc"></span>

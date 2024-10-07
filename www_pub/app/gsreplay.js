@@ -225,7 +225,7 @@ gsreplay_submit=function(tcframes){
 				if (cframes.length==document.gsreplay.frames.length){
 					gsreplay_submit(cframes);	
 				}
-				console.log(blob,x,y,width,height);
+				//console.log(blob,x,y,width,height);
 			});
 		}		
 	}
@@ -274,6 +274,13 @@ gsreplay_submit=function(tcframes){
 	var itrs=[];
 	
 	for (var i=0;i<document.gsreplay.frames.length;i++){
+		
+		var fs=document.gsreplay.frames[i].file.size;
+		if (fs==0){
+			console.log('skipped empty frame #'+i);
+			continue;	
+		}
+		//console.log(fs);
 		
 		toffsets.push(document.gsreplay.frames[i].toffset);
 		itrs.push(document.gsreplay.frames[i].itr);
