@@ -18,17 +18,23 @@ function gsreplay_submit(){
 	$toffsets=explode(',',SQET('toffsets'));
 	$itrs=explode(',',SQET('itrs'));
 	
+	$title=SQET('title');
+	$desc=SQET('desc');
+	
 	$query="insert into gsreplays (
 		gsreplaydate,gsreplayuserid,gsid,gsreplaysharestatus,
-		gsreplaywidth,gsreplayheight
+		gsreplaywidth,gsreplayheight,
+		gsreplaytitle,gsreplaydesc
 	) values (
 		?,?,?,?,
+		?,?,
 		?,?
 	)";
 	
 	$rs=sql_prep($query,$db,array(
 		$now,$userid,$gsid,$sharestatus,
-		$width,$height)
+		$width,$height,
+		$title,$desc)
 	);
 	
 	$gsreplayid=sql_insert_id($db,$rs);
@@ -38,9 +44,10 @@ function gsreplay_submit(){
 <div class="infobox">
 	Clip #<?php echo $gsreplayid;?> has been created.
 	<br><br>
-	<div id="gsreplay_upload_vprogress_<?php echo $gsreplayid;?>" style="max-width:200px;border:solid 1px #dedede;">
+	<div id="gsreplay_upload_vprogress_<?php echo $gsreplayid;?>" style="max-width:200px;border:solid 1px #dedede;margin-bottom:20px;">
 		<div id="gsreplay_upload_progress_<?php echo $gsreplayid;?>" style="height:12px;font-size:8px;width:0%;background:#ffff00;"></div>
 	</div>
+	The clip can be accessed in Settings / Replay Clips.
 </div>
 <?php
 		

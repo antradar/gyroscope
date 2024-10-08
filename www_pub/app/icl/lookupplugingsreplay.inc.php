@@ -28,10 +28,10 @@ function lookupplugingsreplay(){
 }
 
 	$params=array($gsid);
-	$query="select * from gsreplays where gsid=? ";
+	$query="select gsreplayid,gsreplaytitle from gsreplays where gsid=? ";
 	if ($key!='') {
-		$query.=" and gsreplayid like ? ";
-		array_push($params,"%$key%");
+		$query.=" and (gsreplayid=? or gsreplaytitle like ?) ";
+		array_push($params,$key,"%$key%");
 	}
 	
 	$rs=sql_prep($query,$db,$params);
@@ -69,7 +69,7 @@ function lookupplugingsreplay(){
 		$gsreplayid=$myrow['gsreplayid'];
 		$dgsreplayid=noapos(htmlspecialchars(htmlspecialchars($gsreplayid)));
 		$gsreplayid=$myrow['gsreplayid'];
-		$gsreplaytitle='';
+		$gsreplaytitle=$myrow['gsreplaytitle'];
 		$dgsreplaytitle=noapos(htmlspecialchars($gsreplaytitle));
 	?>
 	<div class="listitem">

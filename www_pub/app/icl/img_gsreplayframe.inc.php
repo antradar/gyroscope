@@ -11,9 +11,9 @@ function img_gsreplayframe(){
 	$gsreplayid=$rs['gsreplayid'];
 	
 	$basedir='../../protected/gsreplays/';
-	$ext='.gsreplay_'.$gsreplayid.'.png';
+	$ext=$frameid.'.png';
 	
 	header('Content-Type: image/png');
-	numfile_stream_contents($frameid,$ext,$basedir);				
+	numfile_stream_contents($gsreplayid,$ext,$basedir);				
 		
 }

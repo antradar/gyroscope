@@ -1,6 +1,7 @@
 
-showgsreplay=function(gsreplayid){
-	addtab('gsreplayview_'+gsreplayid,'Replay #'+gsreplayid,'showgsreplay&gsreplayid='+gsreplayid,function(){
+showgsreplay=function(gsreplayid,name,bookmark){
+	if (name==null) name='';
+	addtab('gsreplayview_'+gsreplayid,'Replay #'+gsreplayid+' '+name,'showgsreplay&gsreplayid='+gsreplayid,function(){
 		var frames=eval('('+gid('gsreplayinfo_'+gsreplayid).value+')');
 		gid('gsreplay_'+gsreplayid).frames=frames;
 		var ff=function(){
@@ -9,16 +10,57 @@ showgsreplay=function(gsreplayid){
 		gid('gsreplay_'+gsreplayid).ff=ff;
 		gsreplay_play('gsreplay_'+gsreplayid,frames,0,0,ff);
 			
-	});	
+	},null,{bookmark:bookmark});	
+}
+
+_inline_lookupgsreplay=function(d){
+	var soundex='';
+	if (d.soundex) soundex='&soundex=1';
+	
+	if (!d.oclassname) d.oclassname=d.className;
+
+	if (d.lastkey!=null&&d.lastkey==d.value) {
+		lookupentity_completed(d);
+		return;
+	}
+	d.lastkey=d.value;
+			
+	if (d.timer) clearTimeout(d.timer);
+	d.timer=setTimeout(function(){
+		d.className=d.oclassname+' busy';
+		ajxpgn('gsreplaylist',document.appsettings.codepage+'?cmd=slv_core__gsreplays&mode=embed&key='+encodeHTML(d.value)+soundex,0,0,null,function(){
+			lookupentity_completed(d);
+		});
+	},400
+	);	
 }
 
 delgsreplay=function(gsreplayid){
 	if (!sconfirm('Are you sure you want to remove this replay clip?')) return;
 	reloadtab('gsreplayview_'+gsreplayid,'','delgsreplay&gsreplayid='+gsreplayid,function(){
 		closetab('gsreplayview_'+gsreplayid);
-		reloadview('core.gsreplays');
+		reloadview('core.gsreplays','gsreplaylist');
 	});
 }
+
+updategsreplay=function(gsreplayid,gskey){
+	var ogsreplaytitle=gid('gsreplaytitle_'+gsreplayid);
+	var ogsreplaydesc=gid('gsreplaydesc_'+gsreplayid);
+
+	var gsreplaytitle=encodeHTML(ogsreplaytitle.value);
+	var gsreplaydesc=encodeHTML(ogsreplaydesc.value);
+	
+	var params=[];
+	params.push('gsreplaytitle='+gsreplaytitle);
+	params.push('gsreplaydesc='+gsreplaydesc);
+	
+	ajxpgn('statusc',document.appsettings.codepage+'?cmd=updategsreplay&gsreplayid='+gsreplayid,0,0,params.join('&'),function(){
+		refreshtab('gsreplayview_'+gsreplayid,1);
+		reloadview('core.gsreplays','gsreplaylist');
+	},null,null,gskey);
+	
+}
+
 
 _inline_lookupplugingsreplay=function(d){
 	
@@ -311,7 +353,7 @@ gsreplay_submit=function(tcframes){
 	rq.onreadystatechange=function(){
 		if (rq.readyState==4){
 			gid('gsreplay_saver').innerHTML=rq.responseText;
-			reloadview('core.gsreplays');
+			reloadview('core.gsreplays','gsreplaylist');
 			var gsreplayid=parseInt(rq.getResponseHeader('gsreplayid'),10);
 			if (!gsreplayid){
 				salert('Failed to submit clip');
@@ -327,7 +369,7 @@ gsreplay_submit=function(tcframes){
 	
 }
 
-gsreplay_submit_frame=function(gsreplayid,idx,useframes,toffsets,itrs){
+gsreplay_submit_frame=function(gsreplayid,idx,useframes,toffsets,itrs,pctid){
 	var maxframe=useframes.length-1;
 	
 	var frame=useframes[idx];
@@ -338,14 +380,20 @@ gsreplay_submit_frame=function(gsreplayid,idx,useframes,toffsets,itrs){
 	fd.append('gsreplayid',gsreplayid);
 	fd.append('toffset',toffset);
 	fd.append('itr',itr);
-	fd.append('frame',frame.file);
+	if (frame.binstr) fd.append('binstr',frame.binstr);
+	else fd.append('frame',frame.file);
 	
 	var pct=Math.round(idx*100*10/maxframe)/10;
 	
-	if (gid('gsreplay_upload_progress_'+gsreplayid)) {
-		if (idx==0) gid('gsreplay_upload_progress_'+gsreplayid).style.background='#ffff00';
-		if (idx==maxframe) gid('gsreplay_upload_progress_'+gsreplayid).style.background='#44ff44';
-		gid('gsreplay_upload_progress_'+gsreplayid).style.width=pct+'%';
+	if (pctid==null) pctid='gsreplay_upload_progress_'+gsreplayid;
+	
+	if (gid(pctid)) {
+		if (idx==0) gid(pctid).style.background='#ffff00';
+		if (idx==maxframe) {
+			gid(pctid).style.background='#44ff44';
+			reloadview('core.gsreplays','gsreplaylist');
+		}
+		gid(pctid).style.width=pct+'%';
 	}
 	
 	var rq=xmlHTTPRequestObject();
@@ -354,7 +402,7 @@ gsreplay_submit_frame=function(gsreplayid,idx,useframes,toffsets,itrs){
 		if (rq.readyState==4){
 			if (idx<maxframe){
 				setTimeout(function(){
-					gsreplay_submit_frame(gsreplayid,idx+1,useframes,toffsets,itrs);
+					gsreplay_submit_frame(gsreplayid,idx+1,useframes,toffsets,itrs,pctid);
 				},0);	
 			}
 		}
@@ -364,3 +412,56 @@ gsreplay_submit_frame=function(gsreplayid,idx,useframes,toffsets,itrs){
 		
 }
 
+gsreplay_import=function(importerid){
+	if (gid(importerid).files.length==0) return;
+	var file=gid(importerid).files[0];
+	var reader=new FileReader();
+	reader.onloadend=function(e){
+		var content=e.target.result;
+		document.debug=content;
+		var sptr="\r\n";
+		var parts=content.split(sptr);
+		var dims=parts[0].split('x');
+		var width=dims[0];
+		var height=dims[1];
+		var title=eval('('+parts[1]+')');
+		var desc=eval('('+parts[2]+')');
+		var toffsets=parts[3].split(',');
+		var itrs=parts[4].split(',');
+
+		var fd=new FormData;
+		fd.append('width',width);
+		fd.append('height',height);
+		fd.append('title',title);
+		fd.append('desc',desc);
+
+		var frames=[];
+		for (var i=0;i<toffsets.length;i++){
+			frames.push({binstr:parts[i+5],toffset:toffsets[i],itr:itrs[i]});	
+		}		
+		
+		var pctid=importerid+'_pct';
+		if (gid(pctid)) gid(pctid).parentNode.style.display='block';
+				
+		var rq=xmlHTTPRequestObject();
+		rq.open('POST',document.appsettings.codepage+'?cmd=gsreplay_submit',true);
+		rq.onreadystatechange=function(){
+			if (rq.readyState==4){
+				var gsreplayid=parseInt(rq.getResponseHeader('gsreplayid'),10);
+				if (!gsreplayid){
+					salert('Failed to submit clip');
+					return;	
+				}
+				
+				gsreplay_submit_frame(gsreplayid,0,frames,toffsets,itrs,pctid);
+				
+			}		
+		}
+		rq.send(fd);
+		
+		
+				
+	}//reader loaded
+	reader.readAsBinaryString(file);
+	
+}
