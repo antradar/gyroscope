@@ -77,6 +77,7 @@ switch($cmd){
 	//GS Replay	
 	case 'gsreplay_fspreview': include 'icl/gsreplay_fspreview.inc.php'; gsreplay_fspreview(); break;
 	case 'gsreplay_submit': include 'icl/gsreplay_submit.inc.php'; gsreplay_submit(); break;
+	case 'gsreplay_submit_frame': include 'icl/gsreplay_submit_frame.inc.php'; gsreplay_submit_frame(); break;
 	
 	case 'slv_core__gsreplays': include 'icl/listgsreplays.inc.php'; listgsreplays(); break;
 	case 'showgsreplay': include 'icl/showgsreplay.inc.php'; showgsreplay(); break;

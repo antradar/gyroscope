@@ -1,7 +1,5 @@
 <?php
 
-include 'libnumfile.php';
-
 function gsreplay_submit(){
 	//print_r($_FILES);
 	
@@ -34,45 +32,15 @@ function gsreplay_submit(){
 	);
 	
 	$gsreplayid=sql_insert_id($db,$rs);
-	
-	$ffns=$_FILES['frames']['tmp_name'];
-	
-	$params=array();
-	$qs=array();
-	
-	foreach ($toffsets as $idx=>$toffset){
-		$itr=$itrs[$idx];
-		//todo: skip corrupt frames
-		array_push($qs,'(?,?,?)');
-		array_push($params,$gsreplayid,$toffset,$itr);
-	}
-	
-	$query="insert into gsreplayframes (gsreplayid,frametoffset,frameitr) values ".implode(',',$qs);
-	$rs=sql_prep($query,$db,$params);
-	
-	$query="select frameid from gsreplayframes where gsreplayid=?";
-	$rs=sql_prep($query,$db,$gsreplayid);
-	$frameids=array();
-	while ($myrow=sql_fetch_assoc($rs)) array_push($frameids,$myrow['frameid']);
-	
-	//$path='../../protected/gsreplays/';
-	$basedir='../../protected/gsreplays/';
-	$ext='.gsreplay_'.$gsreplayid.'.png';
-	
-	foreach ($ffns as $ffn){
-		$frameid=array_shift($frameids);
-		$c=file_get_contents($ffn);
-		//echo "$frameid $ffn<br>\r\n";
-		
-		//$fn=$path.$gsreplayid.'_'.$frameid.'.png';
-		//file_put_contents($fn,$c);
-		$stem=$frameid;
-		numfile_put_contents($stem,$ext,$basedir,$c);		
-	}
-		
+
+	header('gsreplayid: '.$gsreplayid);		
 ?>
 <div class="infobox">
-	The clip has been saved as #<?php echo $gsreplayid;?>.
+	Clip #<?php echo $gsreplayid;?> has been created.
+	<br><br>
+	<div id="gsreplay_upload_vprogress_<?php echo $gsreplayid;?>" style="max-width:200px;border:solid 1px #dedede;">
+		<div id="gsreplay_upload_progress_<?php echo $gsreplayid;?>" style="height:12px;font-size:8px;width:0%;background:#ffff00;"></div>
+	</div>
 </div>
 <?php
 		

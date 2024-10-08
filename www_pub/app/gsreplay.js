@@ -241,7 +241,7 @@ gsreplay_submit=function(tcframes){
 			var ctx=canvas.getContext('2d');
 			ctx.drawImage(img,x,y,width,height,0,0,width,height);
 			canvas.toBlob(function(blob){
-				cframes.push(blob);
+				cframes.push({file:blob});
 				if (cframes.length==document.gsreplay.frames.length){
 					gsreplay_submit(cframes);	
 				}
@@ -280,12 +280,7 @@ gsreplay_submit=function(tcframes){
 	}
 	
 	if (crop&&!tcframes) return;
-		
-	
-	//console.log(tcframes);
-	//console.log(document.gsreplay.frames);
-	
-		
+			
 	var fd=new FormData;
 	fd.append('width',width);
 	fd.append('height',height);
@@ -300,29 +295,72 @@ gsreplay_submit=function(tcframes){
 			console.log('skipped empty frame #'+i);
 			continue;	
 		}
-		//console.log(fs);
 		
 		toffsets.push(document.gsreplay.frames[i].toffset);
 		itrs.push(document.gsreplay.frames[i].itr);
 		
-		if (crop)
-			fd.append('frames[]',tcframes[i]);
-		else
-			fd.append('frames[]',document.gsreplay.frames[i].file);
-	}
+	}//for
 	
-	fd.append('toffsets',toffsets.join(','));
-	fd.append('itrs',itrs.join(','));
+	
+	var useframes;
+	if (crop) useframes=tcframes;
+	else useframes=document.gsreplay.frames;
 	
 	var rq=xmlHTTPRequestObject();
 	rq.open('POST',document.appsettings.codepage+'?cmd=gsreplay_submit',true);
 	rq.onreadystatechange=function(){
 		if (rq.readyState==4){
 			gid('gsreplay_saver').innerHTML=rq.responseText;
+			reloadview('core.gsreplays');
+			var gsreplayid=parseInt(rq.getResponseHeader('gsreplayid'),10);
+			if (!gsreplayid){
+				salert('Failed to submit clip');
+				return;	
+			}
+			
+			gsreplay_submit_frame(gsreplayid,0,useframes,toffsets,itrs);
+			
 		}		
 	}
 	rq.send(fd);
 	
 	
+}
+
+gsreplay_submit_frame=function(gsreplayid,idx,useframes,toffsets,itrs){
+	var maxframe=useframes.length-1;
+	
+	var frame=useframes[idx];
+	var toffset=toffsets[idx];
+	var itr=itrs[idx];
+	
+	var fd=new FormData;
+	fd.append('gsreplayid',gsreplayid);
+	fd.append('toffset',toffset);
+	fd.append('itr',itr);
+	fd.append('frame',frame.file);
+	
+	var pct=Math.round(idx*100*10/maxframe)/10;
+	
+	if (gid('gsreplay_upload_progress_'+gsreplayid)) {
+		if (idx==0) gid('gsreplay_upload_progress_'+gsreplayid).style.background='#ffff00';
+		if (idx==maxframe) gid('gsreplay_upload_progress_'+gsreplayid).style.background='#44ff44';
+		gid('gsreplay_upload_progress_'+gsreplayid).style.width=pct+'%';
+	}
+	
+	var rq=xmlHTTPRequestObject();
+	rq.open('POST',document.appsettings.codepage+'?cmd=gsreplay_submit_frame',true);
+	rq.onreadystatechange=function(){
+		if (rq.readyState==4){
+			if (idx<maxframe){
+				setTimeout(function(){
+					gsreplay_submit_frame(gsreplayid,idx+1,useframes,toffsets,itrs);
+				},0);	
+			}
+		}
+	}
+	
+	rq.send(fd);
+		
 }
 
