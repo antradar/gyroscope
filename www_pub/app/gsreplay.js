@@ -193,11 +193,9 @@ gsreplay_rec_keyframe=function(e,itr){
 		if (!document.gsreplay.frames) document.gsreplay.frames=[];
 		
 		if (!document.gsreplay.basetime) document.gsreplay.basetime=hb();
-		
-		var toffset=hb()-document.gsreplay.basetime;
-				
-		
+			
 		document.gsreplay.canvas.toBlob(function(blob){
+			var toffset=hb()-document.gsreplay.basetime;
 			var frame=URL.createObjectURL(blob);
 			document.gsreplay.frames.push({toffset:toffset, file:blob, frame:frame, itr:itr});
 		});

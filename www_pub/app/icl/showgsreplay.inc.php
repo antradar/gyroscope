@@ -28,7 +28,7 @@ function showgsreplay(){
 		<a class="hovlink" href="<?php echo $codepage;?>?cmd=downloadgsreplay&gsreplayid=<?php echo $gsreplayid;?>" target=_blank>download this clip</a>
 	</div>
 	<?php 
-	$query="select * from gsreplayframes where gsreplayid=? order by frameid";
+	$query="select * from gsreplayframes where gsreplayid=? order by frametoffset,frameid";
 	$rs=sql_prep($query,$db,array($gsreplayid));
 	$frames=array();
 	while ($myrow=sql_fetch_assoc($rs)){

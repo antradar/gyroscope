@@ -23,7 +23,8 @@ inithelptopictexteditor=function(helptopicid,st){
 				setTimeout(function(){document.tabviews[document.currenttab].scrollTop=otop;},300);			
 				if (st!=null) setTimeout(function(){ed.getBody().scrollTop=st;},300);
 				ed.getDoc().showqna=function(){}; //declare null function
-			},			
+			},
+			handle_event_callback:mce_event_hook,			
 			setup: function(ed) {
 				ed.onChange.add(function(){marktabchanged('helptopic_'+helptopicid)});
 				ed.onMouseUp.add(lookupselection(ed));
