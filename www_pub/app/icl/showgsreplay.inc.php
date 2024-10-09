@@ -22,7 +22,7 @@ function showgsreplay(){
 	<div class="sectiontitle">Replay #<?php echo $gsreplayid;?> &nbsp; &nbsp; <?php echo htmlspecialchars($gsreplaytitle);?></div>
 
 	<div class="majorcol">
-	<img src="imgs/t.gif" id="gsreplay_<?php echo $gsreplayid;?>" style="max-width:95%;cursor:pointer;" onclick="gid('replayindicator_<?php echo $gsreplayid;?>').style.visibility='hidden';if (this.frames) gsreplay_play('gsreplay_<?php echo $gsreplayid;?>',this.frames,0,0,this.ff);">
+	<img src="imgs/t.gif" id="gsreplay_<?php echo $gsreplayid;?>" style="max-width:95%;cursor:pointer;" onclick_x="gid('replayindicator_<?php echo $gsreplayid;?>').style.visibility='hidden';if (this.frames) gsreplay_play('gsreplay_<?php echo $gsreplayid;?>',this.frames,0,0,this.ff);">
 
 	<div style="margin-top:20px;text-align:center;">
 		<a class="hovlink" href="<?php echo $codepage;?>?cmd=downloadgsreplay&gsreplayid=<?php echo $gsreplayid;?>" target=_blank>download this clip</a>

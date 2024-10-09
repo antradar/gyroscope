@@ -109,23 +109,33 @@ gsreplay_play_frame=function(id,timemode,loop,onfinished){
 
 	var player=gid(id);
 	if (!player) return;
-	
+
+	if (player.paused){
+		setTimeout(function(){
+			gsreplay_play_frame(id,timemode,loop,onfinished);
+		},300);
+		return;	
+	}
+		
 	var frame=player.frames[player.idx];
 	
 	player.src=frame.frame;
 	
 	if (player.frames.length<2) return;
 	
+	
 	var wrapped=0;
 	
 	var nidx=player.idx+1;
+	
 	if (nidx>=player.frames.length) {
 		if (onfinished) onfinished();
 		if (!loop) return;
 		nidx=0;
 		player.toffset=0;
 		wrapped=1;
-	}
+	} else player.ended=true;
+
 	
 	player.idx=nidx;
 	var nframe=player.frames[nidx];
@@ -146,11 +156,21 @@ gsreplay_play=function(id,frames,timemode,loop,onfinished){
 	var player=gid(id);
 	if (!player) return;
 	
+	player.paused=null;
+	player.ended=null;
+	
 	if (player.itv) clearTimeout(player.itv);
 	
 	player.idx=0;
 	player.toffset=0;
 	player.frames=frames;
+	player.onclick=function(){
+		if (!player.paused) player.paused=true;
+		else {
+			player.paused=null;
+			if (player.ended) gsreplay_play(id,frames,timemode,loop,onfinished);
+		}
+	}
 
 	gsreplay_play_frame(id,timemode,loop,onfinished);	
 	
