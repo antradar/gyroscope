@@ -130,12 +130,17 @@ gsreplay_play_frame=function(id,timemode,loop,onfinished){
 	
 	if (nidx>=player.frames.length) {
 		if (onfinished) onfinished();
-		if (!loop) return;
+		if (!loop) {
+			player.ended=true;
+			player.style.filter='saturate(0)';
+			return;
+		}
 		nidx=0;
 		player.toffset=0;
 		wrapped=1;
-	} else player.ended=true;
-
+		
+		
+	}
 	
 	player.idx=nidx;
 	var nframe=player.frames[nidx];
@@ -158,6 +163,7 @@ gsreplay_play=function(id,frames,timemode,loop,onfinished){
 	
 	player.paused=null;
 	player.ended=null;
+	player.style.filter='';
 	
 	if (player.itv) clearTimeout(player.itv);
 	
@@ -165,9 +171,12 @@ gsreplay_play=function(id,frames,timemode,loop,onfinished){
 	player.toffset=0;
 	player.frames=frames;
 	player.onclick=function(){
-		if (!player.paused) player.paused=true;
-		else {
+		if (!player.paused&&!player.ended) {
+			player.paused=true;
+			player.style.filter='saturate(0.2)';
+		} else {
 			player.paused=null;
+			player.style.filter='';
 			if (player.ended) gsreplay_play(id,frames,timemode,loop,onfinished);
 		}
 	}

@@ -342,7 +342,9 @@ lkv_remount=function(){
 		
 		gid('lkv').style.width='258px';
 		gid('lkv').style.top='40px';
-		gid('lkv').style.left='0px';	
+		
+		if (gid('lkv').showing) gid('lkv').style.left='0px';	
+		else gid('lkv').style.left='-280px';
 		
 		document.lkvdismounted=null;
 		//console.log('lkv remounted');
