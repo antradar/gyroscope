@@ -3,12 +3,12 @@ include 'icl/listgsreplays.inc.php';
 
 function dashgsreplays(){
 	header("newloadfunc: ajxjs(self.showgsreplay,'gsreplays.js');");
-	header('newtitle: '._tr('icon_gsreplays'));
+	header('newtitle: Replay Clips');
 	header('tabctx: subdash');	
 
 ?>
 <div class="section">
-	<div class="sectiontitle"><?php tr('icon_gsreplays');?></div>
+	<div class="sectiontitle">Replay Clips</div>
 	
 	
 		<?php listgsreplays(); ?>

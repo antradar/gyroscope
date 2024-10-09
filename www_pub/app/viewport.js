@@ -63,7 +63,7 @@ function scaleall(root){
   	  }
 	  gid('lkv').style.height=(idh-40)+'px';
       gid('lkvc').style.height=(idh-40-33)+'px';
-      
+
       if (gid('lkv').showing) {
 	      if (!gid('lkv').moved){
 		      gid('lkv').style.top='20px';
@@ -77,6 +77,8 @@ function scaleall(root){
   } else {
 	  gid('lkv').style.height=(idh-187)+'px';
       gid('lkvc').style.height=(idh-187-33)+'px';
+	
+      
   }
   
   if (document.appsettings.uiconfig.toolbar_position=='top') {
@@ -230,7 +232,8 @@ function closefs(){
 	
 	if (!document.tabafloat&&document.appsettings.quicklist) lkv_remount();
 
-	if (gid('fsclose').closeaction) gid('fsclose').closeaction();	
+	if (gid('fsclose').closeaction) gid('fsclose').closeaction();
+	
 }
 
 function loadfs(title,cmd,func,initfunc,bingo){

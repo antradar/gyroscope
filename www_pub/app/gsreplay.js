@@ -96,6 +96,8 @@ gsreplay_preview_frames=function(){
 	loadfs('Screen Capture Preview','gsreplay_fspreview',
 	function(){
 		document.gsreplay=null;
+		gid('fsview').innerHTML='';
+		gid('fstitle').innerHTML='';
 	},
 	function(){
 		gsreplay_play('gsreplay_preview',document.gsreplay.frames,0,1);

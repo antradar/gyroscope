@@ -296,30 +296,30 @@ key userid (userid)
 
 
 create table gsreplays (
-  `gsreplayid` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `gsid` bigint(20) unsigned DEFAULT NULL,
-  `gsreplaydate` bigint(20) unsigned DEFAULT NULL,
-  `gsreplayuserid` bigint(20) unsigned DEFAULT NULL,
-  `gsreplaysharestatus` tinyint(3) unsigned DEFAULT '0',
-  `gsreplaywidth` int(10) unsigned DEFAULT NULL,
-  `gsreplayheight` int(10) unsigned DEFAULT NULL,
-  `gsreplaytitle` varchar(50),
-  `gsreplaydesc` varchar(255),
-  PRIMARY KEY (`gsreplayid`),
-  KEY `gsid` (`gsid`),
-  KEY `gsreplaydate` (`gsreplaydate`),
-  KEY `gsreplayuserid` (`gsreplayuserid`),
-  KEY `gsreplaysharestatus` (`gsreplaysharestatus`),
-  KEY `gsreplaytitle` (`gsreplaytitle`)
+  gsreplayid bigint(20) unsigned not null auto_increment,
+  gsid bigint(20) unsigned,
+  gsreplaydate bigint(20) unsigned,
+  gsreplayuserid bigint(20) unsigned,
+  gsreplaysharestatus tinyint(3) unsigned default '0',
+  gsreplaywidth int(10) unsigned,
+  gsreplayheight int(10) unsigned,
+  gsreplaytitle varchar(50),
+  gsreplaydesc varchar(255),
+  primary key (gsreplayid),
+  key gsid (gsid),
+  key gsreplaydate (gsreplaydate),
+  key gsreplayuserid (gsreplayuserid),
+  key gsreplaysharestatus (gsreplaysharestatus),
+  key gsreplaytitle (gsreplaytitle)
 );
 
 create table gsreplayframes (
-  `frameid` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `gsreplayid` bigint(20) unsigned DEFAULT NULL,
-  `frametoffset` int(10) unsigned DEFAULT NULL,
-  `frameitr` tinyint(3) unsigned DEFAULT '0',
-  PRIMARY KEY (`frameid`),
-  KEY `gsreplayid` (`gsreplayid`),
-  KEY `frametoffset` (`frametoffset`),
-  KEY `frameitr` (`frameitr`)
+  frameid bigint(20) unsigned not null auto_increment,
+  gsreplayid bigint(20) unsigned,
+  frametoffset int(10) unsigned,
+  frameitr tinyint(3) unsigned default '0',
+  primary key (frameid),
+  key gsreplayid (gsreplayid),
+  key frametoffset (frametoffset),
+  key frameitr (frameitr)
 );

@@ -339,6 +339,11 @@ lkv_remount=function(){
 		gid('lkv').parentNode.removeChild(gid('lkv'));
 		gid('lkv_origin').id='lkv';
 		gid('lkvc').style.height=(ch()-187-33)+'px';
+		
+		gid('lkv').style.width='258px';
+		gid('lkv').style.top='40px';
+		gid('lkv').style.left='0px';	
+		
 		document.lkvdismounted=null;
 		//console.log('lkv remounted');
 	}	

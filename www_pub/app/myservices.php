@@ -80,6 +80,7 @@ switch($cmd){
 	case 'gsreplay_submit_frame': include 'icl/gsreplay_submit_frame.inc.php'; gsreplay_submit_frame(); break;
 	
 	case 'slv_core__gsreplays': include 'icl/listgsreplays.inc.php'; listgsreplays(); break;
+	case 'dash_core__gsreplays': include 'icl/dashgsreplays.inc.php'; dashgsreplays(); break;
 	case 'showgsreplay': include 'icl/showgsreplay.inc.php'; showgsreplay(); break;
 	case 'delgsreplay': include 'icl/delgsreplay.inc.php'; delgsreplay(); break;
 	case 'updategsreplay': include 'icl/updategsreplay.inc.php'; updategsreplay(); break;

@@ -1,3 +1,6 @@
+21.5*
+- gsreplay: built-in screen recording and replay utils
+
 21.4
 - contextual sql profiler
 
