@@ -4,11 +4,7 @@ showgsreplay=function(gsreplayid,name,bookmark){
 	addtab('gsreplayview_'+gsreplayid,'Replay #'+gsreplayid+' '+name,'showgsreplay&gsreplayid='+gsreplayid,function(){
 		var frames=eval('('+gid('gsreplayinfo_'+gsreplayid).value+')');
 		gid('gsreplay_'+gsreplayid).frames=frames;
-		var ff=function(){
-			gid('replayindicator_'+gsreplayid).style.visibility='visible';
-		}
-		gid('gsreplay_'+gsreplayid).ff=ff;
-		gsreplay_play('gsreplay_'+gsreplayid,frames,0,0,ff);
+		gsreplay_play('gsreplay_'+gsreplayid,frames,0,0);
 			
 	},null,{bookmark:bookmark});	
 }
