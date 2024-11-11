@@ -21,8 +21,8 @@ $userroles=array(
 	'admins'=>_tr('rights_standardadmin'),
 	'reportsettings'=>_tr('rights_managereports'),
 	'faultlog'=>'view fault log',	
-	'devreports'=>_tr('rights_implementreports'),
 	'systemplate'=>_tr('rights_managetemplates'),
+	'devreports'=>' '._tr('rights_implementreports'),
 	'systemplateuse'=>_tr('rights_configtemplates'),
 	'accounts'=>_tr('rights_accounts'),
 	'creditcards'=>'manage credit cards and subscription',
@@ -30,12 +30,12 @@ $userroles=array(
 	//'msdrive'=>'access all Microsoft drives',
 	//'upgrademods'=>_tr('rights_upgrademodules'),
 	'helpedit'=>'edit help topics',
-	'chatsettings'=>'manage chat settings',
 	'chats'=>'respond to support chats',
+	'chatsettings'=>' manage chat settings',
 	'sharedashreports'=>'share custom reports on the home tab',
 	'sapadmin'=>'view SAP data',
 	'msgpipe'=>'provision notification lists',
-	'msgpipeuse'=>'modify notification list recipients',
+	'msgpipeuse'=>' modify notification list recipients',
 );
 
 //a user can grant the following rights only if the user also has the right themselves
