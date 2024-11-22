@@ -6,7 +6,6 @@ include 'auth.php';
 
 $ip=$_SERVER['REMOTE_ADDR'];
 if (isset($_SERVER['REMOTE_ADDR6'])) $ip=$_SERVER['REMOTE_ADDR6'];
-
 ?>
 <!doctype html>
 <html>
@@ -127,6 +126,11 @@ $now=time();
 $enc=encstr('test'.$now,$dbsalt);
 $dec=decstr($enc,$dbsalt);
 
+//a static test
+$hash_xyz='$2y$12$sTs3OjcO9zZKSqRWltIhpeDtrNEoC1GJD3b70Xc.JYWm8P7GpHpjq'; //password_hash($dbsalt.'xyz',PASSWORD_DEFAULT,array('cost'=>PASSWORD_COST));
+
+$badsalt=password_verify($dbsalt.'abc'.time(), $hash_xyz);
+
 $infostr='';
 ob_start();
 phpinfo();
@@ -161,6 +165,7 @@ $tests=array(
 'SQL Read Only'=>array('res'=>2,'message'=>$SQL_READONLY?'Yes':'No'),
 'EncDec'=>array('res'=>2,'message'=>ENC_DEC),
 'EncDec_Remote'=>array('res'=>$org==$orgdec),
+'Effective DB Salt'=>array('res'=>$badsalt?0:1),
 'MCrypt'=>array('res'=>is_callable('mcrypt_get_iv_size')),
 'Cipher'=>array('res'=>in_array('rijndael-128',$ciphers)),
 'OpenSSL'=>array('res'=>is_callable('openssl_encrypt')),
@@ -189,6 +194,7 @@ $tests=array(
 'Direct IP'=>array('res'=>$_SERVER['REMOTE_ADDR']==$_SERVER['RAW_IP'],'message'=>$_SERVER['RAW_IP'].(($_SERVER['REMOTE_ADDR']==$_SERVER['RAW_IP'])?'':' vs. '.$_SERVER['REMOTE_ADDR'])),
 'Protected IP'=>array('res'=>2,'message'=>$_SERVER['O_IP']),
 'Proxy via'=>array('res'=>2,'message'=>isset($_SERVER['HTTP_VIA'])?$_SERVER['HTTP_VIA']:''),
+'CF IP Override'=>array('res'=>2,'message'=>(isset($_SERVER['O_FORWARD'])&&$_SERVER['O_FORWARD']!=$_SERVER['HTTP_CF_PSEUDO_IPV4'])?$_SERVER['O_FORWARD'].' to '.$_SERVER['HTTP_CF_PSEUDO_IPV4']:'-'),
 'IPv6 Socket'=>array('res'=>strpos($ip,':')!==false,'message'=>$ip),
 'Server'=>array('res'=>2,'message'=>$_SERVER['SERVER_SOFTWARE']),
 'PHP Version'=>array('res'=>2,'message'=>str_replace('+',' + ',phpversion())),
@@ -233,6 +239,11 @@ if (!isset($user['login'])||$user['login']==''){
 	$tests['Native Redis Client']=array('res'=>2,'message'=>'****');
 	$tests['Server']=array('res'=>2,'message'=>'****');		
 	$tests['PHP Version']=array('res'=>2,'message'=>'****');
+	
+	unset($tests['BCrypt']);
+	unset($tests['&nbsp; &nbsp; &nbsp; &nbsp; Emulated']);
+		
+	unset($tests['Effective DB Salt']);
 	
 	unset($tests['&nbsp; &nbsp; &nbsp; &nbsp; JIT']);
 }

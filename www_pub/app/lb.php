@@ -93,6 +93,12 @@ if (isset($_SERVER['HTTP_X_REAL_IP'])) {
 	$_SERVER['RAW_IP']=ip_strip_port($_SERVER['HTTP_X_REAL_IP']);
 }
 if (isset($_SERVER['HTTP_X_FORWARDED_SSL'])&&$_SERVER['HTTP_X_FORWARDED_SSL']==='on') $_SERVER['HTTPS']='on';
+
+if (isset($_SERVER['HTTP_CF_PSEUDO_IPV4'])){
+	$_SERVER['O_FORWARD']=$_SERVER['HTTP_X_FORWARDED_FOR'];
+	$_SERVER['HTTP_X_FORWARDED_FOR']=$_SERVER['HTTP_CF_PSEUDO_IPV4'];	
+}
+
 if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])){
 	$fparts=explode(',',ip_strip_port($_SERVER['HTTP_X_FORWARDED_FOR']));
 	$_SERVER['REMOTE_ADDR']=$fparts[0];	
