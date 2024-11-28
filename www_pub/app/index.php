@@ -191,7 +191,9 @@ $tabbase=122;
 if ($uiconfig['toolbar_position']=='left') $tabbase=57;
 ?>
 <!-- right panel -->
-<div id="tabtitles" scale:cw="225"> <a id="closeall" onclick="resettabs('welcome');"><b><img src="imgs/t.gif" class="img-closeall" width="10" height="10"><?php tr('close_all_tabs');?></b></a> </div>
+<div id="tabtitles" scale:cw="225"> <a id="closeall" onclick="resettabs('welcome');"><b><img src="imgs/t.gif" class="img-closeall" width="10" height="10"><?php tr('close_all_tabs');?></b></a> 
+	<span class="activetab" id="tabshadow" style="position:absolute;top:0;left:0;display:none;"></span>
+</div>
 <div id="tabviews" class="<?php if ($uiconfig['toolbar_position']=='left') echo 'boundless';?>" style="overflow:auto;position:absolute;left:295px;height:30px;top:<?php echo $tabbase;?>px;" scale:cw="225" scale:ch="105"></div>
 
 <div id="tabexpander" onclick="toggletabdock();"></div>

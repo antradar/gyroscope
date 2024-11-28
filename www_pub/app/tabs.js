@@ -593,6 +593,67 @@ function addtab(key,title,params,loadfunc,data,opts){
   t.innerHTML=tabhtml;
   if (document.appsettings.uiconfig.closeall_button=='after'&&key=='welcome') gid('tabtitles').insertBefore(t,gid('closeall')); else gid('tabtitles').appendChild(t);
   gid('tabviews').appendChild(c);
+  
+  t.onmousedown=function(e){
+	var metakey=0;
+	if (document.keyboard['key_17']||document.keyboard['key_91']||document.keyboard['key_224']) metakey=1;
+	if (!metakey) return;
+	  
+	var shadow=gid('tabshadow');
+	shadow.style.left=t.offsetLeft+'px';
+	shadow.style.top=(t.offsetTop-t.offsetHeight)+'px';
+	shadow.innerHTML=t.innerHTML;
+	shadow.style.display='block';
+	shadow.style.opacity=0.5;
+	shadow.style.overflow='hidden';
+	shadow.style.width='80px';
+	var ox=e?e.clientX:event.clientX;
+	var oy=e?e.clientY:event.clientY;
+	
+	var posx=t.offsetLeft;
+	var posy=t.offsetTop-t.offsetHeight;
+		
+	document.tabmovesrc=t;
+	t.onmousemove=function(e){
+		var x=e?e.clientX:event.clientX;
+		var y=e?e.clientY:event.clientY;
+		var nx=posx+x-ox;
+		var ny=posy+y-oy;
+		shadow.style.left=nx+'px';
+		shadow.style.top=ny+'px';
+		
+	}
+		
+	t.onmouseup=function(){
+		if (document.tabmovedst) document.tabmovedst.style.border='none';
+		if (document.tabmovesrc&&document.tabmovedst){
+			var p=document.tabmovedst.parentNode;
+			p.removeChild(document.tabmovesrc);
+			p.insertBefore(document.tabmovesrc,document.tabmovedst);
+		}
+		shadow.style.display='none';
+		t.onmousemove=null;
+		document.onmousemove=null;
+		document.tabmovesrc=null;
+		document.tabmovedst=null;
+		
+	}
+	document.onmousemove=t.onmousemove;
+	document.onmouseup=t.onmouseup;
+	
+  }
+  
+  t.onmouseover=function(e){
+	  if (document.tabmovedst) document.tabmovedst.style.border='none';
+	  document.tabmovedst=null;
+	  
+	  if (!document.tabmovesrc) return;
+	  if (t==document.tabmovesrc) return;
+	  if (t.reloadinfo&&t.reloadinfo.opts&&t.reloadinfo.opts.noclose) return;
+	  document.tabmovedst=t;
+	  t.style.borderLeft='solid 2px #ffab00';
+	  
+  }
 
 /*
   if (key=='welcome'){
