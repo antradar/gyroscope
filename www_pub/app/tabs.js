@@ -598,6 +598,8 @@ function addtab(key,title,params,loadfunc,data,opts){
 	var metakey=0;
 	if (document.keyboard['key_17']||document.keyboard['key_91']||document.keyboard['key_224']) metakey=1;
 	if (!metakey) return;
+	
+	if (t.reloadinfo&&t.reloadinfo.opts&&t.reloadinfo.opts.noclose) return;
 	  
 	var shadow=gid('tabshadow');
 	shadow.style.left=t.offsetLeft+'px';
