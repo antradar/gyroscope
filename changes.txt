@@ -1,3 +1,6 @@
+21.6
+- hold Ctrl/Cmd to drag tabs
+
 21.5*
 - gsreplay: built-in screen recording and replay utils
 

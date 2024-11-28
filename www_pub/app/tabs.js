@@ -603,17 +603,18 @@ function addtab(key,title,params,loadfunc,data,opts){
 	  
 	var shadow=gid('tabshadow');
 	shadow.style.left=t.offsetLeft+'px';
-	shadow.style.top=(t.offsetTop-t.offsetHeight)+'px';
+	shadow.style.top=(t.offsetTop)+'px'; //-t.offsetHeight
 	shadow.innerHTML=t.innerHTML;
 	shadow.style.display='block';
-	shadow.style.opacity=0.5;
+	shadow.style.opacity=0.6;
+	shadow.style.filter='sepia(1)';
 	shadow.style.overflow='hidden';
-	shadow.style.width='80px';
+	//shadow.style.width='80px';
 	var ox=e?e.clientX:event.clientX;
 	var oy=e?e.clientY:event.clientY;
 	
 	var posx=t.offsetLeft;
-	var posy=t.offsetTop-t.offsetHeight;
+	var posy=t.offsetTop;//-t.offsetHeight;
 		
 	document.tabmovesrc=t;
 	t.onmousemove=function(e){
@@ -623,6 +624,27 @@ function addtab(key,title,params,loadfunc,data,opts){
 		var ny=posy+y-oy;
 		shadow.style.left=nx+'px';
 		shadow.style.top=ny+'px';
+		
+		if (document.tabmovedst){
+			document.tabmovedst.style.border='none';
+			document.tabmovedst=null;	
+		}
+
+		var mybox=shadow.getBoundingClientRect();
+				
+		for (var i=0;i<document.tabkeys.length;i++){
+			var dst=document.tabtitles[i];
+			if (t==dst) continue; //skip self
+			if (dst.reloadinfo&&dst.reloadinfo.opts&&dst.reloadinfo.opts.noclose) continue;
+			
+			var box=document.tabtitles[i].getBoundingClientRect();
+
+			if (mybox.x>box.x&&mybox.x<box.x+box.width && mybox.y>box.y&&mybox.y<box.y+box.height){
+	  			document.tabmovedst=dst;
+	  			dst.style.borderLeft='solid 3px #ffab00';
+				break;
+			}
+		}
 		
 	}
 		
@@ -643,18 +665,6 @@ function addtab(key,title,params,loadfunc,data,opts){
 	document.onmousemove=t.onmousemove;
 	document.onmouseup=t.onmouseup;
 	
-  }
-  
-  t.onmouseover=function(e){
-	  if (document.tabmovedst) document.tabmovedst.style.border='none';
-	  document.tabmovedst=null;
-	  
-	  if (!document.tabmovesrc) return;
-	  if (t==document.tabmovesrc) return;
-	  if (t.reloadinfo&&t.reloadinfo.opts&&t.reloadinfo.opts.noclose) return;
-	  document.tabmovedst=t;
-	  t.style.borderLeft='solid 2px #ffab00';
-	  
   }
 
 /*
