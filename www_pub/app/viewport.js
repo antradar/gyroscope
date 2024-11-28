@@ -256,6 +256,8 @@ function autosize(){
 	  }
 	  if (document.tabcount>0){
 	  var t=document.tabtitles[document.tabcount-1];
+	  if (document.lasttab) t=document.lasttab;
+	  
 	  var topmargin=0; //change this if changing tab style
 	  var tabbase=122;
 	  var tabviewheight=147;

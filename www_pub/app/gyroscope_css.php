@@ -179,7 +179,7 @@ acronym.help{cursor:help;border-bottom:dotted 1px #4444ee;}
 .noclose{width:8px;}
 .activetab a, .dulltab a{float:left;}
 .tt{min-width:30px;padding-top:9px;padding-bottom:5px;font-size:12px;padding-left:10px;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none;}
-.tt img{vertical-align:middle;}
+.tt img{vertical-align:middle;user-select:none;-webkit-user-select:none;-moz-user-select:none;-webkit-user-drag:none;}
 .activetab .tabclose{background:transparent url(imgs/sprite.png) no-repeat -369px -174px;}
 .dulltab .tabclose, .img-close{background:transparent url(imgs/sprite.png) no-repeat -325px -174px;}
 

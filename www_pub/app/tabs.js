@@ -20,13 +20,18 @@ tab_reflow=function(){
 	var rowcap=idw-212-gid('logoutlink').offsetWidth-closeall_width-20; //total width - first tab position - right panel - closeall - comfort_20
 	var rowsum=0;
  	
-	for (i=0;i<document.tabcount;i++){
-		rowsum+=document.tabtitles[i].offsetWidth+8; //tab_gap=8
+	//for (i=0;i<document.tabcount;i++){
+	var os=gid('tabtitles').getElementsByTagName('span');
+	for (var idx=0;idx<os.length;idx++){
+		var tab=os[idx];	
+		if (!tab.reloadinfo) continue;
+		rowsum+=tab.offsetWidth+8; //tab_gap=8
 		if (rowsum>rowcap){
 			rowcap=idw;
 		  	rowsum=0;
-		  	document.tabtitles[i].style.clear='left';  
-		} else document.tabtitles[i].style.clear='none';	
+		  	tab.style.clear='left';
+		  	//console.log('snapped at',tab);  
+		} else tab.style.clear='none';	
 	}
 	
 }
@@ -64,6 +69,7 @@ showtab=function(key,opts){
 
 //wrapping
   var t=document.tabtitles[document.tabcount-1];
+  if (document.lasttab) t=document.lasttab;
   var topmargin=0; //change this if changing tab style
   
   var tabbase=122;
@@ -661,6 +667,13 @@ function addtab(key,title,params,loadfunc,data,opts){
 		document.tabmovesrc=null;
 		document.tabmovedst=null;
 		
+		document.lasttab=null;
+		var os=gid('tabtitles').getElementsByTagName('span');
+		for (var i=0;i<os.length;i++) if (os[i].reloadinfo) document.lasttab=os[i];
+
+		if (document.appsettings.uiconfig.toolbar_position=='left') tab_reflow(); 
+				
+				
 	}
 	document.onmousemove=t.onmousemove;
 	document.onmouseup=t.onmouseup;
