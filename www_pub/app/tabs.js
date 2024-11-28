@@ -640,12 +640,13 @@ function addtab(key,title,params,loadfunc,data,opts){
 				
 		for (var i=0;i<document.tabkeys.length;i++){
 			var dst=document.tabtitles[i];
+			if (dst==null) continue;
 			if (t==dst) continue; //skip self
 			if (dst.reloadinfo&&dst.reloadinfo.opts&&dst.reloadinfo.opts.noclose) continue;
 			
 			var box=document.tabtitles[i].getBoundingClientRect();
 
-			if (mybox.x>box.x&&mybox.x<box.x+box.width && mybox.y>box.y&&mybox.y<box.y+box.height){
+			if (mybox.x>box.x&&mybox.x<box.x+box.width && mybox.y+mybox.height>box.y&&mybox.y<box.y+box.height){
 	  			document.tabmovedst=dst;
 	  			dst.style.borderLeft='solid 3px #ffab00';
 				break;
@@ -689,6 +690,7 @@ function addtab(key,title,params,loadfunc,data,opts){
 */      
 
   t.reloadinfo={params:params,loadfunc:loadfunc,data:data,opts:opts};
+  document.lasttab=null;
 
   document.tabviews[document.tabcount]=c;
   document.tabtitles[document.tabcount]=t;
