@@ -98,7 +98,10 @@ function sql_prep($query,&$db,$params=null){
 		
 	if ($stmt->error!=''){
 		if (stripos($stmt->error,'keyring')!==false) echo "Keyring error";
-		else echo "sql syntax error: ".$query.' '.$stmt->error;
+		else {
+			echo "sql syntax error: ".$query.' '.$stmt->error;
+			error_log("sql_prep syntax error: ".$query.' '.$stmt->error);
+		}
 		return;
 	}
 	
@@ -213,6 +216,7 @@ function sql_query($query,&$db,$mode=MYSQLI_STORE_RESULT){
 		$line=$backtrace[0]['line'];
 				
 		echo "@$file [$line] sql_error: ".$query.' '.mysqli_error($db)."\r\n";
+		error_log("sql_query error: @$file [$line] ".$query.' '.mysqli_error($db));
 	}
 	if (is_array($gsdbprofile)) {
 		if (isset($gsdbprofile_fulltrace)&&$gsdbprofile_fulltrace){

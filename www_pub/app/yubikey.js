@@ -2,7 +2,7 @@ addyubikey=function(challenge,userid,login,username,gskey){
 	navigator.credentials.create({
 		publicKey:{
 			challenge:stringToArrayBuffer(challenge),
-			pubKeyCredParams:[{'type':'public-key','alg':-7}],
+			pubKeyCredParams:[{'type':'public-key','alg':-7},{'type':'public-key','alg':-257}],
 			rp:{name:location.protocol+'//'+location.hostname},
 			timeout: 30000,
 			user:{
@@ -48,7 +48,7 @@ testyubikey=function(challenge,attids,gskey){
 	navigator.credentials.get({
 		publicKey:{
 			challenge:stringToArrayBuffer(challenge),
-			pubKeyCredParams:[{'type':'public-key','alg':-7}],
+			pubKeyCredParams:[{'type':'public-key','alg':-7},{'type':'public-key','alg':-257}],
 			timeout: 30000,
 			allowCredentials:creds
 		}

@@ -70,12 +70,10 @@ function listusers(){
 	user_shownavs('userlist','slv_core__users');
 	
 	$sqlfilters=user_sqlfilters();
-	
 	$params=array($gsid);
 	$basequery=" from ".TABLENAME_USERS." where ".COLNAME_GSID."=? ".$sqlfilters['clauses'];
 	$params=array_merge($params,$sqlfilters['params']);	
 
-	
 	//vendor auth 2
 	
 	$sel='*';	
