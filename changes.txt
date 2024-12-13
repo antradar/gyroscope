@@ -1,3 +1,7 @@
+21.7
+- convenient key_meta indicator
+- meta key state expressed by status bar color change
+
 21.6
 - hold Ctrl/Cmd to drag tabs
 

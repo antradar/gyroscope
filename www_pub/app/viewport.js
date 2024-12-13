@@ -566,7 +566,8 @@ if (document.createEvent){
 	
 	window.onblur=function(){
 		document.keyboard=[];
-		document.gamepadlock=true;	
+		document.gamepadlock=true;
+		if (gid('statusinfo')) gid('statusinfo').style.filter='';	
 	}	
 	
 	document.onkeyup=function(e){
@@ -574,6 +575,12 @@ if (document.createEvent){
 		if (e) keycode=e.keyCode; else keycode=event.keyCode;	
 		document.keyboard['key_'+keycode]=null;
 		delete document.keyboard['key_'+keycode];
+		
+		if (keycode==17||keycode==91||keycode==224) delete document.keyboard['key_meta'];
+		
+		if (!document.keyboard['key_meta']&&gid('statusinfo')){
+			gid('statusinfo').style.filter='';			
+		}
 	}
 	
 	document.onkeydown=function(e){
@@ -583,6 +590,11 @@ if (document.createEvent){
 		
 		var metakey=0;
 		if (document.keyboard['key_17']||document.keyboard['key_91']||document.keyboard['key_224']) metakey=1;
+		
+		if (metakey){
+			document.keyboard['key_meta']=1;
+			if (gid('statusinfo')) gid('statusinfo').style.filter='sepia(0.6)';
+		}
 		
 		if (document.keyboard['key_13']&&metakey){
 			picktop();	

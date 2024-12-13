@@ -1,3 +1,7 @@
+v5.3
+----
+container arg "c" in ajxpgn(c... accepts direct reference to container
+
 v4.9
 ----
 - array buffer functions for webauthn

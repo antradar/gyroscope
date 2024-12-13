@@ -7,7 +7,7 @@ Documentation: www.antradar.com/docs-nano-ajax-manual
 
 Warning: this copy of Nano Ajax Library is modified for running in Gyroscope. Use the public version for general purpose applications.
 
-ver g5.2
+ver g5.3
 */
 
 function gid(d){return document.getElementById(d);}
@@ -65,7 +65,8 @@ runonce modes:
 */
 
 function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce,gskey,creds,headless){
-	var ct=gid(c);
+	var ct=c;
+	if (typeof c === 'string') ct=gid(c);	
 	if (ct==null){
 		if (headless) ct=document.body;
 		else return;

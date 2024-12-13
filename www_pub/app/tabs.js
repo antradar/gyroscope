@@ -601,9 +601,9 @@ function addtab(key,title,params,loadfunc,data,opts){
   gid('tabviews').appendChild(c);
   
   t.onmousedown=function(e){
-	var metakey=0;
-	if (document.keyboard['key_17']||document.keyboard['key_91']||document.keyboard['key_224']) metakey=1;
-	if (!metakey) return;
+	//var metakey=0;
+	//if (document.keyboard['key_17']||document.keyboard['key_91']||document.keyboard['key_224']) metakey=1;
+	if (!document.keyboard['key_meta']) return; //since v21.7
 	
 	if (t.reloadinfo&&t.reloadinfo.opts&&t.reloadinfo.opts.noclose) return;
 	  
