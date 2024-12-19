@@ -20,7 +20,11 @@ function rptactionlog_fulltext(){
 	global $paytypes;
 	global $paymethods;
 	global $lang;
-	
+
+	$key=SGET('key');
+	$opairs=SGET('pairs');
+	$pairs=explode(';',$opairs);
+		
 	//override date stamp
 	$ds=explode('-',SGET('date'));
 	if (count($ds)==3){
@@ -39,6 +43,33 @@ function rptactionlog_fulltext(){
 	$myrow=sql_fetch_assoc($rs);
 	$reportgroupnames=$myrow['reportgroupnames'];
 	authreport($reportgroupnames);
+	
+	$facets='';
+	$dims=array();
+	
+	if ($key!=''||$opairs!=''){
+		$dims=array(
+			'rectype'=>array('label'=>'Type','field'=>'rectype','sort'=>'rectype asc','limit'=>5+1),
+			'logdate_year'=>array('label'=>'Year','field'=>'year(logdate)','sort'=>'logdate asc'),
+			'logdate_month'=>array('label'=>'Month','field'=>'month(logdate)','sort'=>'logdate asc', 'parent'=>'logdate_year'),
+		);
+		
+		$navfilters=array();
+		//remove pinned dims from dims
+		if (isset($_GET['rectype'])){
+			$navfilters['rectype']=$_GET['rectype'];
+			if (isset($dims['rectype'])) unset($dims['rectype']);
+		}
+		
+		foreach ($dims as $dk=>$dim){
+			if (isset($dim['parent'])&&isset($dims[$dim['parent']])) continue;
+			$facets.=" FACET ".$dim['field'].' as '.$dk.' ';
+			if (isset($dim['sort'])) $facets.=' order by '.$dim['sort'].' ';
+			if (isset($dim['limit'])) $facets.=' limit '.$dim['limit'].' ';
+		}
+	}//facets are only for filtered results
+
+	//echo "$facets<hr>";	
 
 	$ta=microtime(1);	
 ?>
@@ -49,9 +80,6 @@ function rptactionlog_fulltext(){
 <?php	
 	////
 	
-	$key=SGET('key');
-	$opairs=SGET('pairs');
-	$pairs=explode(';',$opairs);
 
 	$start=mktime(0,0,0,$mon,$day,$year);
 	$end=mktime(23,59,59,$mon,$day,$year);
@@ -122,16 +150,21 @@ function rptactionlog_fulltext(){
 	$query.=$filter;
 	$cquery.=$filter;	
 	
-	$query.=" order by logdate desc, alogid desc ";
+	$count=-1;
 	
-	$rs=sql_query($cquery,$manticore);
-	$myrow=sql_fetch_assoc($rs);
-	$count=$myrow['c'];
+	if ($key!=''||$opairs!=''){
+		$rs=sql_query($cquery,$manticore);
+		$myrow=sql_fetch_assoc($rs);
+		$count=$myrow['c'];
 		
+	} else {	
+		//daily page, no need to count at all
+	}
+
+	$query.=" order by logdate desc, alogid desc ";
+			
 	$rs=sql_query($query,$manticore);
 	
-
-				
 	if ($key!=''||$opairs!=''){
 		$perpage=10;
 		$page=isset($_GET['page'])?intval($_GET['page']):0;
@@ -141,15 +174,44 @@ function rptactionlog_fulltext(){
 		if ($page>$maxpage) $page=$maxpage;
 		$start=$page*$perpage;
 		
-		$query.=" limit $start,$perpage ";
-		$rs=sql_query($query,$manticore);
+		$query.=" limit $start,$perpage ".$facets;
+		//$rs=sql_query($query,$manticore);
+		
+		$rss=array();
+		if ($manticore->multi_query($query)){
+			do {
+				if ($rs = $manticore->store_result()){
+					array_push($rss,$rs);
+				}
+			} while ($manticore->next_result());
+		} else {
+			echo 'Error executing query: '.$db->error."<hr>";	
+		}
+
+		$rsidx=0;
+		foreach ($dims as $dkey=>$dim){
+			$rsidx++;
+			if (!isset($rss[$rsidx])) break;
+			$rs=$rss[$rsidx];
+			if (!isset($dims[$dkey]['counts'])) $dims[$dkey]['counts']=array();
+			while ($myrow=sql_fetch_assoc($rs)){
+				//echo '<pre>'; print_r($myrow); echo '</pre>';
+				if ($myrow[$dkey]!='') $dims[$dkey]['counts'][$myrow[$dkey]]=$myrow['count(*)'];
+			}//while	
+		}	
+
+		
+		$rs=$rss[0];
+		
+		//echo '<pre>'; print_r($dims); echo '</pre>';
 		
 	}
 	
 	$recs=array();
+	
 	while ($myrow=sql_fetch_assoc($rs)){
 		$alogid=$myrow['alogid'];
-		$recs[$alogid]=$myrow;	
+		$recs[$alogid]=$myrow;
 	}
 			
 	$chunksize=100;
@@ -173,6 +235,19 @@ Search: <input autocomplete="off" class="inp" style="width:30%;" id="actionlog_k
 	<input autocomplete="off" class="inp" style="width:30%;" id="actionlog_pairs" placeholder="Advanced: key= ; key=val; key=val; ..." value="<?php echo htmlspecialchars($opairs);?>"> <input class="button" type="submit" value="Go">
 </form>
 <?php
+
+	foreach ($dims as $dkey=>$dim){
+		if (!isset($dim['counts'])) continue;
+	?>
+	<div class="listitem smallertext" style="margin-left:45px;">
+		<b><?php echo $dim['label'];?>:</b> 
+		<?php foreach ($dim['counts'] as $label=>$c){?>
+			<nobr><?php echo htmlspecialchars($label);?> <em class="diminished">(<?php echo $c;?>)</em></nobr> &nbsp; &nbsp;
+		<?php }?>
+	</div>
+	<?php	
+	}
+
 	$pager='';
 	
 	if ($key!=''||$opairs!=''){
@@ -220,7 +295,7 @@ Search: <input autocomplete="off" class="inp" style="width:30%;" id="actionlog_k
 
 </style>
 
-<?php if ($count==0){
+<?php if (count($recs)==0){
 ?>
 <div class="infobox">
 	No activities on this day

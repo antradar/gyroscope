@@ -29,7 +29,8 @@ while ($processed<$c){
 	$n=sql_affected_rows($db,$rs);
 	
 	if ($n==0){
-		break;	
+		$lastid=$b;
+		continue;
 	}
 	
 	$subdelta=0;
@@ -64,8 +65,8 @@ function insert_record($myrow){
 	$userid=$myrow['userid'];
 	$logdate=$myrow['logdate'];
 	$rectype=addslashes($myrow['rectype']);
-	$recid=$myrow['recid'];
-	$bulldozed=$myrow['bulldozed'];
+	$recid=intval($myrow['recid']);
+	$bulldozed=intval($myrow['bulldozed']??0);
 	$rawobj=addslashes($myrow['rawobj']);
 	
 	$logmessage=addslashes($myrow['logmessage']);

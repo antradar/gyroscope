@@ -28,7 +28,6 @@ $WSS_INTERNAL_HOST='127.0.0.1';
 $WSS_INTERNAL_PORT='9999';
 
 $use_doc_search=0; //enable full text search; manticore must be set up separately
-$doc_search_base='../../protected/actionlog/';
 
 $wssecret='asdf'; //sync this value in wss.php or wsss.php
 

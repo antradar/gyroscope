@@ -406,7 +406,6 @@ function logaction($message,$rawobj=null,$syncobj=null,$gsid=0,$trace=null){
 	global $WSS_INTERNAL_KEY; //defined in lb.php
 	global $vdb;
 	global $use_doc_search;
-	global $doc_search_base;
 	global $manticore;
 		
 	$bulldozed=0;
@@ -489,8 +488,6 @@ function logaction($message,$rawobj=null,$syncobj=null,$gsid=0,$trace=null){
 	}
 	
 	if (isset($alogid)&&$use_doc_search&&$message!=''){
-		//if (!is_callable('numfile_put_contents')) include_once 'libnumfile.php';
-		//numfile_put_contents($alogid,'.json',$doc_search_base,$oobj);
 		$drectype=addslashes($rectype);
 		$drecid=intval($recid);
 		$dlogname=addslashes($logname);
