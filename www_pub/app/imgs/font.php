@@ -18,6 +18,7 @@ $backbg='#CCCCCC';//'#2D3239';//'#0D1117';//'#CCCCCC';//'#0D1117';//'#2D3239';//
 $icons=array(
 	array('name'=>'user','adjust'=>-6),
 	array('name'=>'cog','adjust'=>-6),
+	array('name'=>'life-ring','adjust'=>-6),
 	array('name'=>'grip','adjust'=>4),
 	array('name'=>'expand','adjust'=>44),
 	array('name'=>'compress','adjust'=>44),

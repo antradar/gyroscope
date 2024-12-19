@@ -117,6 +117,12 @@ function showuser($userid=null){
 	</div>
 	
 	<div id="smscellview_<?php echo $userid;?>" style="padding-left:30px;display:none<?php if ($usesms) echo 'a';?>;">
+		<div class="warnbox">
+			By providing your phone number you agree to receive SMS notification from <b><em><?php echo DLC_COMPANY;?></em></b>.
+			Standard message and data rates may apply. Message frequency varies.
+			Text <b>HELP</b> for support. <b>STOP</b> to opt-out.
+			Mobile opt in data will not be shared with 3rd parties for marketing purposes.
+		</div>
 		<div class="inputrow">
 			Cell: <input class="inpmed" id="smscell_<?php echo $userid;?>" value="<?php echo htmlspecialchars($smscell);?>" oninput="this.onchange();" onchange="marktabchanged('user_<?php echo $userid;?>');">
 		</div>

@@ -1,3 +1,6 @@
+21.8
+- option to use full text search engine in activity log
+
 21.7
 - convenient key_meta indicator
 - meta key state expressed by status bar color change

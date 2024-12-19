@@ -14,6 +14,8 @@ if (defined('GSSERVICE')) {
 
 $vdb=vsql_get_db('127.0.0.1:8123','gyrostart','default','mnstudio','vdb'); //uncomment to enable clickhouse connection
 
+//$manticore=sql_get_db('127.0.0.1:9306','Manticore','anyone','anything','manticore');
+
 //$db=sql_get_db("gyroscope.sqlite3"); // for embedded deployments
 
 $smsuser=''; //leave blank if not applicable

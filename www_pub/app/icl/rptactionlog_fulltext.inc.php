@@ -1,17 +1,9 @@
 <?php
 
-if ($use_doc_search) include 'icl/rptactionlog_fulltext.inc.php';
-
-function rptactionlog(){
+function rptactionlog_fulltext(){
 	global $db;
 	global $codepage;
-	
-	global $use_doc_search;
-	
-	if ($use_doc_search){
-		rptactionlog_fulltext();
-		return;	
-	}
+	global $manticore;
 	
 	$user=userinfo();
 	$gsid=$user['gsid'];
@@ -47,12 +39,12 @@ function rptactionlog(){
 	$myrow=sql_fetch_assoc($rs);
 	$reportgroupnames=$myrow['reportgroupnames'];
 	authreport($reportgroupnames);
-	
-	$ta=microtime(1);
+
+	$ta=microtime(1);	
 ?>
 <div class="section">
 
-<div class="sectiontitle" style="margin-bottom:0;"><a ondblclick="toggletabdock();"><?php echo htmlspecialchars($myrow['reportname_'.$lang]);?></a></div>
+<div class="sectiontitle" style="margin-bottom:0;"><a ondblclick="toggletabdock();"><?php echo htmlspecialchars($myrow['reportname_'.$lang]);?> (Fulltext)</a></div>
 <div class="infobox"><?php echo htmlspecialchars($myrow['reportdesc_'.$lang]);?></div>
 <?php	
 	////
@@ -69,51 +61,77 @@ function rptactionlog(){
 
 	$params=array($gsid);
 	$query="select * from ".TABLENAME_ACTIONLOG." left join ".TABLENAME_USERS." on ".TABLENAME_ACTIONLOG.".userid=".TABLENAME_USERS.".userid where ".TABLENAME_ACTIONLOG.".".COLNAME_GSID."=? ";
-	$cquery="select count(*) as c from ".TABLENAME_ACTIONLOG." left join ".TABLENAME_USERS." on ".TABLENAME_ACTIONLOG.".userid=".TABLENAME_USERS.".userid where ".TABLENAME_ACTIONLOG.".".COLNAME_GSID."=? ";
+	
+	$query="select * from actionlog_rt where gsid=$gsid ";
+	$cquery="select count(*) as c from actionlog_rt where gsid=$gsid ";
 
 	$filter='';
 	
+	$terms=array();
+	
 	if ($key!=''||$opairs!='') {
-		$query.=" and alogid!=0 and logmessage!='' ";
 		if ($key!='') {
-			$filter.=" and (logmessage like ? or login like ? or rawobj like ? or logname like ?) ";
-			array_push($params,"%$key%","%$key%","%$key%","%$key%");
+			array_push($terms, addslashes($key) );
+			
 		}
+		
 		foreach ($pairs as $pair){
 			$parts=explode('=',$pair);
 			if (count($parts)<2) continue;
 			$k=trim($parts[0]);
 			$v=trim($parts[1]);
-			if ($k==''||$v=='') continue;
-			$filter.=" and rawobj like '%\"$k\":\"$v\"%' ";
+			if ($k=='') continue;
+			
+			$k=str_replace("'",'',$k);
+			
+			$pterm='@rawobj "'.$k.'":';
+			if ($v!='') $pterm.='"'.addslashes($v).'"';
+			//echo "$pterm<br>";
+
+			array_push($terms, $pterm);
 		
 		}
 
-	}  else {
-		$filter.=" and logdate>=? and logdate<=? ";
-		array_push($params,$start,$end);
+		//echo '<pre>'; print_r($terms); echo '</pre>';
 		
-		$q="select logdate from ".TABLENAME_ACTIONLOG." where ".COLNAME_GSID."=? and logdate<? order by logdate desc limit 1";
+		if (count($terms)>0){
+			$filter.=" and match ('";
+			$filter.=implode(' ', $terms);
+			$filter.=" ') ";	
+		}
+				
+		$filter.=" and gsid=$gsid ";
+		
+
+	}  else {
+				
+		$filter.=" and gsid=$gsid and logdate>=$start and logdate<=$end ";
+
+				
+		$q="select logdate from ".TABLENAME_ACTIONLOG." where ".COLNAME_GSID."=? and logmessage!='' and logdate<? order by logdate desc limit 1";
 		$rs=sql_prep($q,$db,array($gsid,$start));
 		if ($myrow=sql_fetch_array($rs)) $prevday=date('Y-n-j',$myrow['logdate']);
 
-		$q="select logdate from ".TABLENAME_ACTIONLOG." where ".COLNAME_GSID."=? and logdate>? order by logdate limit 1";
+		$q="select logdate from ".TABLENAME_ACTIONLOG." where ".COLNAME_GSID."=? and logmessage!='' and logdate>? order by logdate limit 1";
 		$rs=sql_prep($q,$db,array($gsid,$end));
 		if ($myrow=sql_fetch_array($rs)) $nextday=date('Y-n-j',$myrow['logdate']);
 				
 	}
 	
+	
 	$query.=$filter;
-	$cquery.=$filter;
-		
-	$rs=sql_prep($cquery,$db,$params);
+	$cquery.=$filter;	
+	
+	$query.=" order by logdate desc, alogid desc ";
+	
+	$rs=sql_query($cquery,$manticore);
 	$myrow=sql_fetch_assoc($rs);
 	$count=$myrow['c'];
 		
-	$query.=" order by logdate desc,alogid desc ";
-	$rs=sql_prep($query,$db,$params);
+	$rs=sql_query($query,$manticore);
 	
-		
+
+				
 	if ($key!=''||$opairs!=''){
 		$perpage=10;
 		$page=isset($_GET['page'])?intval($_GET['page']):0;
@@ -124,16 +142,35 @@ function rptactionlog(){
 		$start=$page*$perpage;
 		
 		$query.=" limit $start,$perpage ";
-		$rs=sql_prep($query,$db,$params);
+		$rs=sql_query($query,$manticore);
 		
 	}
+	
+	$recs=array();
+	while ($myrow=sql_fetch_assoc($rs)){
+		$alogid=$myrow['alogid'];
+		$recs[$alogid]=$myrow;	
+	}
+			
+	$chunksize=100;
+	$groups=array_chunk($recs,$chunksize,true);
+	foreach ($groups as $group){
+		$recids=implode(',',array_keys($group));
+		$uquery="select alogid,login from ".TABLENAME_ACTIONLOG." left join ".TABLENAME_USERS." on ".TABLENAME_ACTIONLOG.".userid=".TABLENAME_USERS.".userid where alogid in ($recids)";
+		$rs=sql_prep($uquery,$db);
+		while ($myrow=sql_fetch_assoc($rs)){
+			$alogid=$myrow['alogid'];
+			$login=$myrow['login'];
+			$recs[$alogid]['login']=$login;
+		}
+	}	
 	
 	
 ?>
 
 <form onsubmit="reloadtab('rptactionlog',null,'rptactionlog&key='+encodeHTML(gid('actionlog_key').value)+'&pairs='+encodeHTML(gid('actionlog_pairs').value),null,null,{persist:true});return false;">
 Search: <input autocomplete="off" class="inp" style="width:30%;" id="actionlog_key" placeholder="Keyword in Action" value="<?php echo htmlspecialchars($key);?>"> 
-	<input autocomplete="off" class="inp" style="width:30%;" id="actionlog_pairs" placeholder="Advanced Pattern" value="<?php echo htmlspecialchars($opairs);?>"> <input class="button" type="submit" value="Go">
+	<input autocomplete="off" class="inp" style="width:30%;" id="actionlog_pairs" placeholder="Advanced: key= ; key=val; key=val; ..." value="<?php echo htmlspecialchars($opairs);?>"> <input class="button" type="submit" value="Go">
 </form>
 <?php
 	$pager='';
@@ -208,13 +245,17 @@ Search: <input autocomplete="off" class="inp" style="width:30%;" id="actionlog_k
 	
 	$hasbulldozed=0;
 	
-	while ($myrow=sql_fetch_array($rs)){
+	foreach ($recs as $myrow){
 		$alogid=$myrow['alogid'];
-		$username=htmlspecialchars($myrow['login']);
-		if ($username=='') $username='<span style="color:#ee6666;">'.htmlspecialchars($myrow['logname']).'</span>';
+		$username=htmlspecialchars($myrow['login']??'');
+		if ($username=='') $username='<span style="color:#ee6666;">'.htmlspecialchars($myrow['logname']??'').'</span>';
 		$logdate=$myrow['logdate'];
-		$dlogdate=date('H:i:s',$logdate);
-		if ($key!=''||$opairs!='') $dlogdate=date('Y-n-j H:i:s',$logdate);
+		$dlogdate='-';
+		if (is_numeric($logdate)&&$logdate!=0) {
+			$dlogdate=date('H:i:s',$logdate);
+			if ($key!=''||$opairs!='') $dlogdate=date('Y-n-j H:i:s',$logdate);
+		}
+		
 		$logmessage=$myrow['logmessage'];
 		$extra='';
 		$obj=json_decode($myrow['rawobj'],1);
@@ -255,7 +296,8 @@ Search: <input autocomplete="off" class="inp" style="width:30%;" id="actionlog_k
 ?>
 <div style="padding:20px 0;opacity:0.6;" class="smallertext">
 	search time: <?php echo round(($tb-$ta)*1000);?> ms
-</div>
+</div>	
+
 
 </div><!-- section -->
 

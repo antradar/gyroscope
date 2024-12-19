@@ -1,9 +1,10 @@
 <?php
-define ('GYROSCOPE_VERSION', '21.7');
+define ('GYROSCOPE_VERSION', '21.8');
 
 //remember to personalize the project name
 define ('GYROSCOPE_PROJECT', 'Gyroscope Starter');
 define ('GYROSCOPE_SHORT_APP_NAME', 'GS');
+define ('DLC_COMPANY','%%Your Company%%');
 
 //ignore vendor settings if you are not a certified solution provider
 define ('VENDOR_VERSION',''); 

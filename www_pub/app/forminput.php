@@ -405,7 +405,10 @@ function logaction($message,$rawobj=null,$syncobj=null,$gsid=0,$trace=null){
 	
 	global $WSS_INTERNAL_KEY; //defined in lb.php
 	global $vdb;
-	
+	global $use_doc_search;
+	global $doc_search_base;
+	global $manticore;
+		
 	$bulldozed=0;
 	if (isset($_GET['__tabconflicted'])&&is_numeric($_GET['__tabconflicted'])&&$_GET['__tabconflicted']) $bulldozed=1;
 		
@@ -451,6 +454,12 @@ function logaction($message,$rawobj=null,$syncobj=null,$gsid=0,$trace=null){
 		
 	$obj=json_encode($cobj);
 	//$obj=str_replace("\\'","'",$obj);
+	
+	$oobj=$obj;
+	if ($use_doc_search){
+		$obj=1; //change db structure of "rawobj" to tinyint(1) unsigned not null default 0
+	}
+	
 
 	$now=time();
 	
@@ -477,6 +486,18 @@ function logaction($message,$rawobj=null,$syncobj=null,$gsid=0,$trace=null){
 		$query="insert into ".TABLENAME_ACTIONLOG." (userid,".COLNAME_GSID.",logname,logdate,logmessage,rawobj,bulldozed) values (?,?,?,?,?,?,?)";
 		$rs=sql_prep($query,$db,array($userid,$gsid,$logname,$now,$message,$obj,$bulldozed));
 		$alogid=sql_insert_id($db,$rs);
+	}
+	
+	if (isset($alogid)&&$use_doc_search&&$message!=''){
+		//if (!is_callable('numfile_put_contents')) include_once 'libnumfile.php';
+		//numfile_put_contents($alogid,'.json',$doc_search_base,$oobj);
+		$drectype=addslashes($rectype);
+		$drecid=intval($recid);
+		$dlogname=addslashes($logname);
+		$dlogmessage=addslashes($message);
+		$drawobj=addslashes($oobj);
+		sql_query("insert into actionlog_rt(alogid,gsid,userid,rectype,recid,bulldozed,logdate,logname,logmessage,rawobj) values ($alogid,$gsid,$userid,'$drectype',$drecid,$bulldozed,$now,'$dlogname','$dlogmessage','$drawobj')"
+		, $manticore);
 	}
 	
 	
