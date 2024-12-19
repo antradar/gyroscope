@@ -5,6 +5,8 @@ function rptactionlog_fulltext(){
 	global $codepage;
 	global $manticore;
 	
+	global $dict_mons;
+	
 	$user=userinfo();
 	$gsid=$user['gsid'];
 
@@ -47,22 +49,50 @@ function rptactionlog_fulltext(){
 	$facets='';
 	$dims=array();
 	
+	$filter='';
+	
+	
 	if ($key!=''||$opairs!=''){
 		$dims=array(
-			'rectype'=>array('label'=>'Type','field'=>'rectype','sort'=>'rectype asc','limit'=>5+1),
+			'rectype'=>array('label'=>'Type','field'=>'rectype','sort'=>'rectype asc','limit'=>10+1),
 			'logdate_year'=>array('label'=>'Year','field'=>'year(logdate)','sort'=>'logdate asc'),
 			'logdate_month'=>array('label'=>'Month','field'=>'month(logdate)','sort'=>'logdate asc', 'parent'=>'logdate_year'),
+			'userid'=>array('label'=>'User','field'=>'userid','sort'=>null),
 		);
 		
 		$navfilters=array();
+				
 		//remove pinned dims from dims
 		if (isset($_GET['rectype'])){
 			$navfilters['rectype']=$_GET['rectype'];
-			if (isset($dims['rectype'])) unset($dims['rectype']);
+			if (isset($dims['rectype'])) $dims['rectype']['selected']=1;
+			$filter.=" and rectype='".addslashes($_GET['rectype'])."'";
 		}
 		
+		if (isset($_GET['logdate_year'])){
+			$navfilters['logdate_year']=$_GET['logdate_year'];
+			if (isset($dims['logdate_year'])) $dims['logdate_year']['selected']=1;
+			$filter.=" and yr=".intval($_GET['logdate_year']).' ';
+			
+			if (isset($_GET['logdate_month'])){
+				$navfilters['logdate_month']=$_GET['logdate_month'];
+				if (isset($dims['logdate_month'])) $dims['logdate_month']['selected']=1;
+				$filter.=" and mon=".intval($_GET['logdate_month']).' ';
+			}			
+		}//year
+		
+		if (isset($_GET['userid'])){
+			$navfilters['userid']=$_GET['userid'];
+			if (isset($dims['userid'])) $dims['userid']['selected']=1;
+			$filter.=" and userid=".intval($_GET['userid'])." ";
+		}
+		
+		///		
+						
+		
 		foreach ($dims as $dk=>$dim){
-			if (isset($dim['parent'])&&isset($dims[$dim['parent']])) continue;
+			if (isset($dim['parent'])&&isset($dims[$dim['parent']])&&!isset($dims[$dim['parent']]['selected'])) continue;
+			if (isset($dim['selected'])) continue;
 			$facets.=" FACET ".$dim['field'].' as '.$dk.' ';
 			if (isset($dim['sort'])) $facets.=' order by '.$dim['sort'].' ';
 			if (isset($dim['limit'])) $facets.=' limit '.$dim['limit'].' ';
@@ -90,10 +120,9 @@ function rptactionlog_fulltext(){
 	$params=array($gsid);
 	$query="select * from ".TABLENAME_ACTIONLOG." left join ".TABLENAME_USERS." on ".TABLENAME_ACTIONLOG.".userid=".TABLENAME_USERS.".userid where ".TABLENAME_ACTIONLOG.".".COLNAME_GSID."=? ";
 	
-	$query="select * from actionlog_rt where gsid=$gsid ";
-	$cquery="select count(*) as c from actionlog_rt where gsid=$gsid ";
+	$query="select *,year(logdate) as yr,month(logdate) as mon from actionlog_rt where gsid=$gsid ";
+	$cquery="select count(*) as c,year(logdate) as yr,month(logdate) as mon from actionlog_rt where gsid=$gsid ";
 
-	$filter='';
 	
 	$terms=array();
 	
@@ -190,6 +219,9 @@ function rptactionlog_fulltext(){
 
 		$rsidx=0;
 		foreach ($dims as $dkey=>$dim){
+			if (isset($dim['parent'])&&isset($dims[$dim['parent']])&&!isset($dims[$dim['parent']]['selected'])) continue;
+			if (isset($dim['selected'])) continue;
+			
 			$rsidx++;
 			if (!isset($rss[$rsidx])) break;
 			$rs=$rss[$rsidx];
@@ -227,6 +259,22 @@ function rptactionlog_fulltext(){
 		}
 	}	
 	
+	$usermap=array();
+	$userids=array();
+
+	if (isset($dims)&&isset($dims['userid'])&&isset($dims['userid']['counts'])){
+		
+		foreach ($dims['userid']['counts'] as $uid=>$_){
+			array_push($userids,$uid);	
+		}	
+		
+	}
+	if (isset($navfilters['userid'])) array_push($userids,$navfilters['userid']);
+	if (count($userids)>0){
+		$query="select userid,login from ".TABLENAME_USERS." where userid in (".implode(',',$userids).") and ".COLNAME_GSID.'=?';
+		$rs=sql_prep($query,$db,$gsid);
+		while ($myrow=sql_fetch_assoc($rs)) $usermap[$myrow['userid']]=$myrow['login'];
+	}
 	
 ?>
 
@@ -237,16 +285,40 @@ Search: <input autocomplete="off" class="inp" style="width:30%;" id="actionlog_k
 <?php
 
 	foreach ($dims as $dkey=>$dim){
-		if (!isset($dim['counts'])) continue;
+		if (!isset($dim['counts'])&&!isset($dim['selected'])) continue;
+		if (isset($dim['counts'])&&count($dim['counts'])==0&&!isset($dim['selected'])){
+			//display removal link
+			continue;	
+		}
+		
 	?>
 	<div class="listitem smallertext" style="margin-left:45px;">
 		<b><?php echo $dim['label'];?>:</b> 
-		<?php foreach ($dim['counts'] as $label=>$c){?>
-			<nobr><?php echo htmlspecialchars($label);?> <em class="diminished">(<?php echo $c;?>)</em></nobr> &nbsp; &nbsp;
+		<?php
+			$subfilters=rptactionlog_strfilters($navfilters,$dkey);
+			
+			if (!isset($dim['counts'])) {
+				$dim['counts']=array();
+				$dv=$_GET[$dkey];
+				if ($dkey=='userid'&&isset($usermap[$dv])) $dv=$usermap[$dv];
+				if ($dkey=='logdate_month') $dv=$dict_mons[$dv];
+			?>
+			<nobr><?php echo htmlspecialchars($dv);?>&nbsp;<a onclick="reloadtab('rptactionlog',null,'rptactionlog&key='+encodeHTML(gid('actionlog_key').value)+'<?php echo $subfilters;?>&pairs='+encodeHTML(gid('actionlog_pairs').value),null,null,{persist:true});return false;"><img src="imgs/t.gif" class="img-del"></a></nobr>
+			<?php	
+			}
+		?>
+		<?php foreach ($dim['counts'] as $label=>$c){			
+			$dimfilters=$subfilters.'&'.$dkey.'='.urlencode($label);
+			$dv=$label;
+			if ($dkey=='userid'&&isset($usermap[$dv])) $dv=$usermap[$dv];
+			if ($dkey=='logdate_month') $dv=$dict_mons[$dv];
+		?>
+			<nobr><a class="hovlink" onclick="reloadtab('rptactionlog',null,'rptactionlog&key='+encodeHTML(gid('actionlog_key').value)+'<?php echo $dimfilters;?>&pairs='+encodeHTML(gid('actionlog_pairs').value),null,null,{persist:true});return false;"><?php echo htmlspecialchars($dv);?></a> <em class="diminished">(<?php echo $c;?>)</em></nobr> &nbsp; &nbsp;
 		<?php }?>
+		<?php if (isset($dim['limit'])&&count($dim['counts'])>=$dim['limit']-1) echo '<b>...</b>';?>
 	</div>
 	<?php	
-	}
+	}//foreach dim
 
 	$pager='';
 	
@@ -298,7 +370,7 @@ Search: <input autocomplete="off" class="inp" style="width:30%;" id="actionlog_k
 <?php if (count($recs)==0){
 ?>
 <div class="infobox">
-	No activities on this day
+	<?php if ($key!=''||$opairs!='') echo 'No records found'; else echo 'No activities on this day';?>
 </div>
 <?php
 }
@@ -379,4 +451,12 @@ Search: <input autocomplete="off" class="inp" style="width:30%;" id="actionlog_k
 
 <?php
 	
+}
+
+function rptactionlog_strfilters($navfilters,$minus=null){
+	if (isset($minus)&&isset($navfilters[$minus])) unset($navfilters[$minus]);
+	
+	$filters='';
+	foreach ($navfilters as $k=>$v) $filters.='&'.$k.'='.urlencode($v);
+	return $filters;
 }
