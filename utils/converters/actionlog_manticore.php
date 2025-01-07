@@ -3,7 +3,15 @@
 include '../../www_pub/app/connect.php'; //adjust this when applicable
 include '../progressbar.php';
 
-$query="select count(*) as c, min(alogid) as min from actionlog";
+$lastmax=0;
+$query="select max(alogid) as lastmax from actionlog_rt";
+$rs=sql_query($query,$manticore);
+if ($myrow=sql_fetch_assoc($rs)) $lastmax=intval($myrow['lastmax']);
+
+echo "Last Max: $lastmax\r\n";
+
+$query="select count(*) as c, min(alogid) as min from actionlog where alogid>$lastmax";
+
 $rs=sql_prep($query,$db);
 $myrow=sql_fetch_assoc($rs);
 

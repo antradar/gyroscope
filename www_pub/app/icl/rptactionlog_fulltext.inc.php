@@ -284,6 +284,8 @@ Search: <input autocomplete="off" class="inp" style="width:30%;" id="actionlog_k
 </form>
 <?php
 
+	$basefilters=rptactionlog_strfilters($navfilters,'');
+	
 	foreach ($dims as $dkey=>$dim){
 		if (!isset($dim['counts'])&&!isset($dim['selected'])) continue;
 		if (isset($dim['counts'])&&count($dim['counts'])==0&&!isset($dim['selected'])){
@@ -296,7 +298,6 @@ Search: <input autocomplete="off" class="inp" style="width:30%;" id="actionlog_k
 		<b><?php echo $dim['label'];?>:</b> 
 		<?php
 			$subfilters=rptactionlog_strfilters($navfilters,$dkey);
-			
 			if (!isset($dim['counts'])) {
 				$dim['counts']=array();
 				$dv=$_GET[$dkey];
@@ -319,7 +320,7 @@ Search: <input autocomplete="off" class="inp" style="width:30%;" id="actionlog_k
 	</div>
 	<?php	
 	}//foreach dim
-
+	
 	$pager='';
 	
 	if ($key!=''||$opairs!=''){
@@ -327,11 +328,11 @@ Search: <input autocomplete="off" class="inp" style="width:30%;" id="actionlog_k
 			ob_start();
 ?>
 <div class="listpager">
-	<a onclick="reloadtab('rptactionlog',null,'rptactionlog&key=<?php echo urlencode($key);?>&pairs=<?php echo urlencode($opairs);?>&page=<?php echo $page-1;?>',null,null,{persist:true});return false;" class="hovlink" href=#><img src="imgs/t.gif" class="img-pageleft">Prev</a>
+	<a onclick="reloadtab('rptactionlog',null,'rptactionlog&key=<?php echo urlencode($key);?>&pairs=<?php echo urlencode($opairs).$basefilters;?>&page=<?php echo $page-1;?>',null,null,{persist:true});return false;" class="hovlink" href=#><img src="imgs/t.gif" class="img-pageleft">Prev</a>
 	&nbsp; &nbsp;
-	<a onclick="var pagenum=sprompt('Go to page:',<?php echo $page+1;?>);if (pagenum==null||parseInt(pagenum,0)!=pagenum) return false;reloadtab('rptactionlog',null,'rptactionlog&key=<?php echo urlencode($key);?>&pairs=<?php echo urlencode($opairs);?>&page='+(pagenum-1),null,null,{persist:true});" class="pageskipper"><?php echo $page+1;?></a> of <?php echo $maxpage+1;?>
+	<a onclick="var pagenum=sprompt('Go to page:',<?php echo $page+1;?>);if (pagenum==null||parseInt(pagenum,0)!=pagenum) return false;reloadtab('rptactionlog',null,'rptactionlog&key=<?php echo urlencode($key).$basefilters;?>&pairs=<?php echo urlencode($opairs);?>&page='+(pagenum-1),null,null,{persist:true});" class="pageskipper"><?php echo $page+1;?></a> of <?php echo $maxpage+1;?>
 	&nbsp; &nbsp;
-	<a onclick="reloadtab('rptactionlog',null,'rptactionlog&key=<?php echo urlencode($key);?>&pairs=<?php echo urlencode($opairs);?>&page=<?php echo $page+1;?>',null,null,{persist:true});return false;" class="hovlink" href=#>Next<img src="imgs/t.gif" class="img-pageright"></a>
+	<a onclick="reloadtab('rptactionlog',null,'rptactionlog&key=<?php echo urlencode($key);?>&pairs=<?php echo urlencode($opairs).$basefilters;?>&page=<?php echo $page+1;?>',null,null,{persist:true});return false;" class="hovlink" href=#>Next<img src="imgs/t.gif" class="img-pageright"></a>
 </div>
 <?php			$pager=ob_get_clean();
 		}
@@ -357,6 +358,7 @@ Search: <input autocomplete="off" class="inp" style="width:30%;" id="actionlog_k
 }
 
 	echo $pager;
+	
 ?>
 <style>
 .alogcol1,.alogcol2,.alogcol3,.alogcol4{float:left;overflow:hidden;}
