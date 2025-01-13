@@ -128,7 +128,11 @@ function rptactionlog_fulltext(){
 	
 	if ($key!=''||$opairs!='') {
 		if ($key!='') {
-			array_push($terms, addslashes($key) );
+			$tokens=explode(' ',$key);
+			foreach ($tokens as $token) {
+				$token=str_replace('"','',$token);
+				array_push($terms, '"'.addslashes($token).'"' );
+			}
 			
 		}
 		
