@@ -187,6 +187,10 @@ function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce,gskey,creds,headless){
 	ct.reqobj=rq;
 	if (!slowtimer) slowtimer=800;
 	
+	if (callback&&typeof(callback)=='object'&&callback.length>1&&callback[2]!=null){
+		rq.onprogress=callback[2];	
+	}	
+	
 	if (runonce!=2){
 		ct.slowtimer=setTimeout(function(){
 	

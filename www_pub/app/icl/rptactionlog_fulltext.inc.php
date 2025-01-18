@@ -54,10 +54,10 @@ function rptactionlog_fulltext(){
 	
 	if ($key!=''||$opairs!=''){
 		$dims=array(
-			'rectype'=>array('label'=>'Type','field'=>'rectype','sort'=>'rectype asc','limit'=>10+1),
+			'rectype'=>array('label'=>'Type','field'=>'rectype','sort'=>'rectype asc','limit'=>20+1),
 			'logdate_year'=>array('label'=>'Year','field'=>'year(logdate)','sort'=>'logdate asc'),
 			'logdate_month'=>array('label'=>'Month','field'=>'month(logdate)','sort'=>'logdate asc', 'parent'=>'logdate_year'),
-			'userid'=>array('label'=>'User','field'=>'userid','sort'=>null),
+			'userid'=>array('label'=>'User','field'=>'userid','sort'=>'count(*) desc','limit'=>500+1),
 		);
 		
 		$navfilters=array();
@@ -127,11 +127,30 @@ function rptactionlog_fulltext(){
 	$terms=array();
 	
 	if ($key!=''||$opairs!='') {
+		$haspositive=0;
+		if ($opairs!='') $haspositive=1;
+		
 		if ($key!='') {
 			$tokens=explode(' ',$key);
 			foreach ($tokens as $token) {
 				$token=str_replace('"','',$token);
-				array_push($terms, '"'.addslashes($token).'"' );
+				$neg='';
+				$usetoken=$token;
+				if ($token[0]=='-'){
+					if ($haspositive){
+						$usetoken=ltrim($token,'-');
+						$neg='-';
+					} else {
+					?>
+					<div class="warnbox">exclusion search term ignored without any inclusive terms.</div>
+					<?php
+						continue;	
+					}
+				} else {
+					$haspositive=1;	
+				}
+				
+				array_push($terms, $neg.'"'.addslashes($token).'"' );
 			}
 			
 		}
