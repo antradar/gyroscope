@@ -28,9 +28,9 @@ function addhelptopic(){
 	
 	logaction("added Help #$helptopicid $helptopictitle",array('helptopicid'=>$helptopicid,'helptopictitle'=>"$helptopictitle"));
 	
-	header('newrecid:'.$helptopicid);
-	header('newkey:helptopic_'.$helptopicid);
-	header('newparams:showhelptopic&helptopicid='.$helptopicid);
+	header('newrecid: '.$helptopicid);
+	header('newkey: helptopic_'.$helptopicid);
+	header('newparams: showhelptopic&helptopicid='.$helptopicid);
 	header('newloadfunc: inithelptopictexteditor('.$helptopicid.');reloadview("core.helptopics","helptopiclist");');
 	
 	edithelptopic($helptopicid);

@@ -99,8 +99,8 @@ function embed#primaryfield##record#uploader(){
 				fwrite($f,file_get_contents($realfn));
 				fclose($f);
 				clearstatcache();
-				header('GS-CHUNK-ID:'.$#lookupkey#);				
-				header('GS-SEND-MORE:'.filesize($partdst));
+				header('GS-CHUNK-ID: '.$#lookupkey#);				
+				header('GS-SEND-MORE: '.filesize($partdst));
 				return;
 			} else {
 				if (file_exists($partdst)){

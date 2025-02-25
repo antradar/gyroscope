@@ -39,10 +39,10 @@ function addtemplate(){
 			)
 		));
 	
-	header('newrecid:'.$templateid);
-	header('newkey:template_'.$templateid);
+	header('newrecid: '.$templateid);
+	header('newkey: template_'.$templateid);
 	header('newloadfunc: inittemplatetexteditor("'.$templateid.'");reloadview("codegen.templates","templatelist");refreshtab("templatetype_'.$templatetypeid.'",1);');
-	header('newparams:showtemplate&templateid='.$templateid);
+	header('newparams: showtemplate&templateid='.$templateid);
 	
 	showtemplate($templateid);
 }

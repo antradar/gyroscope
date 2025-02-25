@@ -11,9 +11,9 @@ function list#records#(){
 	
 	$page=isset($_GET['page'])?intval($_GET['page']):0;
 	
-	header('listviewtitle:'.tabtitle(_tr('icon_#records#')));
+	header('listviewtitle:  '.tabtitle(_tr('icon_#records#')));
 	header('listviewflag:'._jsflag('show#record#'));
-	header('listviewjs:#records#.js');
+	header('listviewjs: #records#.js');
 		
 	if ($mode!='embed'){
 

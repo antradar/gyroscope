@@ -19,7 +19,7 @@ function show#record#($#primarykey#=null){
 	$recordtitle="$#master_dispfield#"; //change this
 	$dbrecordtitle=htmlspecialchars(noapos(htmlspecialchars($recordtitle)));
 	
-	header('newtitle:'.tabtitle(htmlspecialchars($#dispfield#)));
+	header('newtitle: '.tabtitle(htmlspecialchars($#dispfield#)));
 	header('parenttab: #master_record#_'.$#masterkey#);
 	makechangebar('#record#_'.$#primarykey#,"update#record#($#primarykey#,$#foreignkey#,'".makegskey('update#record#_'.$#primarykey#)."');");
 	makesavebar('#record#_'.$#primarykey#);	

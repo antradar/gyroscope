@@ -33,6 +33,8 @@ $userroles=array(
 	'chats'=>'respond to support chats',
 	'chatsettings'=>' manage chat settings',
 	'sharedashreports'=>'share custom reports on the home tab',
+	'botchat'=>'use AI chatbot',
+	'kbman'=>' manage AI knowledge base',
 	'sapadmin'=>'view SAP data',
 	'msgpipe'=>'provision notification lists',
 	'msgpipeuse'=>' modify notification list recipients',
@@ -62,9 +64,13 @@ $toolbaritems=array(
 	'core.templatetypes'=>array('title'=>'System Templates','icon'=>'','modversion'=>'91','lockdown'=>1),	
 	'core.templates'=>array('title'=>_tr('icon_templates'),'icon'=>'','modversion'=>'91'),
 	'core.gsreplays'=>array('title'=>'Replay Clips'),
+	'core.kbman'=>array('title'=>'AI Knowledge Base'),
+	'core.kbmanrecs'=>array('title'=>'AI KB Items'),
 
+	
 'core.reports'=>array('title'=>_tr('icon_reports'),'icon'=>'img-reports','modversion'=>'92','lockdown'=>1),
 'core.helptopics'=>array('title'=>_tr('icon_helptopics'),'icon'=>'img-helptopics','modversion'=>1),
+'codegen.botchats'=>array('title'=>'AI Chat','icon'=>'img-botchats','modversion'=>1),
 //'codegen.chats'=>array('title'=>'Chats','icon'=>'img-chats','modversion'=>1,'bingo'=>1),
 
 );
@@ -75,5 +81,10 @@ if (!isset($user['groups']['sapadmin'])){
 	unset($toolbaritems['codegen.sapentitysets']);	
 	unset($toolbaritems['codegen.sapentities']);	
 }
+
+if (!isset($user['groups']['botchat'])){
+	unset($toolbaritems['codegen.botchats']);	
+}
+
 
 foreach ($toolbaritems as $idx=>$item) if (!$item) unset($toolbaritems[$idx]);

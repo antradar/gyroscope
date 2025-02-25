@@ -27,7 +27,7 @@ $WSS_INTERNAL_KEY='asdf-changeme'; //unset this to use legacy DB-driven WSS
 $WSS_INTERNAL_HOST='127.0.0.1';
 $WSS_INTERNAL_PORT='9999';
 
-$use_doc_search=0; //enable full text search; manticore must be set up separately
+$use_doc_search=1; //enable full text search; manticore must be set up separately
 
 $wssecret='asdf'; //sync this value in wss.php or wsss.php
 

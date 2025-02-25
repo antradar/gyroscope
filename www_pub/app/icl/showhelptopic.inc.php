@@ -44,7 +44,7 @@ function showhelptopic($helptopicid=null){
 		$prevtitle=$myrow['helptopictitle'];
 	}
 
-	header('newtitle:'.tabtitle('<img src="imgs/t.gif" class="ico-helptopic">'.htmlspecialchars($helptopictitle)));
+	header('newtitle: '.tabtitle('<img src="imgs/t.gif" class="ico-helptopic">'.htmlspecialchars($helptopictitle)));
 	
 ?>
 <div id="helptopic_sandbox_warning_<?php echo $helptopicid;?>" style="display:none;">

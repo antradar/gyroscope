@@ -17,9 +17,9 @@ function listhelptopics(){
 	
 	$page=isset($_GET['page'])?intval($_GET['page']):0;
 	
-	header('listviewtitle:'.tabtitle(_tr('icon_helptopics')));
-	header('listviewflag:'._jsflag('showhelptopic'));
-	header('listviewjs:helptopics.js');
+	header('listviewtitle: '.tabtitle(_tr('icon_helptopics')));
+	header('listviewflag: '._jsflag('showhelptopic'));
+	header('listviewjs: helptopics.js');
 		
 	if ($mode!='embed'){
 

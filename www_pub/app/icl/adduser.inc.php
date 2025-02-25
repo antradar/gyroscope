@@ -76,9 +76,9 @@ function adduser(){
 		)
 	));
 	
-	header('newrecid:'.$userid);
-	header('newkey:user_'.$userid);
-	header('newparams:showuser&userid='.$userid);
+	header('newrecid: '.$userid);
+	header('newkey: user_'.$userid);
+	header('newparams: showuser&userid='.$userid);
 
 	$loadfuncs='';
 

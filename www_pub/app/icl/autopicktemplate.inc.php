@@ -20,7 +20,7 @@ function autopicktemplate(){
 	}
 	
 	header('recid:'.$recid);
-	header('recname:'.tabtitle($recname));
+	header('recname: '.tabtitle($recname));
 	
 	
 }

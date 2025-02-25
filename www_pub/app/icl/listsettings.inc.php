@@ -11,9 +11,11 @@ function listsettings(){
 	global $enable_db_profiler;
 	global $db_profiler;
 	
+	global $manticore;
+	
 	if (isset($stripe_config)) $stripe_pkey=$stripe_config['pkey_'.$stripe_config['mode']]; else $stripe_pkey='';
 	
-	header('listviewtitle:'.tabtitle(_tr('icon_settings')));
+	header('listviewtitle: '.tabtitle(_tr('icon_settings')));
 ?>
 <div class="section">
 	<div class="listitem <?php if (isset($user['groups']['accounts'])) echo ' mobileonly';?>"><a onclick="ajxjs2('setaccountpass','accounts.js',function(){reloadtab('account','<?php tr('account_settings');?>','showaccount');addtab('account','<?php tr('account_settings');?>','showaccount');});return false;"><?php tr('account_settings');?></a></div>
@@ -78,6 +80,12 @@ function listsettings(){
 	?>
 	<div class="listitem"><a onclick="ajxjs2('dashmsgpipes','msgpipes.js',function(){dashmsgpipes()});">Notification Lists</a></div>			
 	<?php
+	}
+	
+	if (isset($manticore)&&isset($user['groups']['kbman'])){
+	?>
+	<div class="listitem"><a onclick="ajxjs2('kbman_showtopic','kbman.js');showview('core.kbman',1,1);">AI Knowledge Base</a></div>				
+	<?php	
 	}
 			
 	if (isset($user['groups']['dbadmin'])){

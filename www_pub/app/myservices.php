@@ -123,6 +123,39 @@ switch($cmd){
 	case 'slv_codegen__chats': die('<div class="section">Commercial License Required</div>'); break;
 	case 'setcanchat': die('commercial license required'); break;
 	
+//AI Bot Chats
+
+	case 'slv_codegen__botchats': include 'icl/listbotchats.inc.php'; listbotchats(); break;
+	case 'dash_codegen__botchats': include 'icl/dashbotchats.inc.php'; dashbotchats(); break;
+	case 'showbotchat': include 'icl/showbotchat.inc.php'; showbotchat(); break;
+	case 'newbotchat': include 'icl/newbotchat.inc.php'; newbotchat(); break;
+	case 'addbotchat': include 'icl/addbotchat.inc.php'; addbotchat(); break;
+	case 'delbotchat': include 'icl/delbotchat.inc.php'; delbotchat(); break;
+	case 'updatebotchat': include 'icl/updatebotchat.inc.php'; updatebotchat(); break;
+	case 'updatebotchat_rectitle': include 'icl/updatebotchat_rectitle.inc.php'; updatebotchat_rectitle(); break;
+
+	case 'botchat_resolve': include 'icl/botchat_resolve.inc.php'; botchat_resolve(); break;
+	case 'addbotchatmsg': include 'icl/addbotchatmsg.inc.php'; addbotchatmsg(); break;
+	case 'lookupbotchatfunc': include 'icl/lookupbotchatfunc.inc.php'; lookupbotchatfunc(); break;
+		
+// AI Knowledge Base
+
+	case 'slv_core__kbman': include 'icl/kbman_listtopics.inc.php'; kbman_listtopics(); break;
+		case 'dash_core__kbman': include 'icl/kbman_dashtopics.inc.php'; kbman_dashtopics(); break;
+	case 'slv_core__kbmanrecs': include 'icl/kbman_listrecs.inc.php'; kbman_listrecs(); break;
+		case 'dash_core__kbmanrecs': include 'icl/kbman_dashrecs.inc.php'; kbman_dashrecs(); break;
+	
+	case 'kbman_newrec': include 'icl/kbman_newrec.inc.php'; kbman_newrec(); break;
+	case 'kbman_addrec': include 'icl/kbman_addrec.inc.php'; kbman_addrec(); break;
+	case 'kbman_delrec': include 'icl/kbman_delrec.inc.php'; kbman_delrec(); break;
+	case 'kbman_showrec': include 'icl/kbman_showrec.inc.php'; kbman_showrec(); break;
+	case 'kbman_updaterec': include 'icl/kbman_updaterec.inc.php'; kbman_updaterec(); break;
+	
+	case 'lookupkbmanrec': include 'icl/kbman_lookuprec.inc.php'; kbman_lookuprec(); break;
+	case 'kbman_addrelrec': include 'icl/kbman_addrelrec.inc.php'; kbman_addrelrec(); break;
+	case 'kbman_delrelrec': include 'icl/kbman_delrelrec.inc.php'; kbman_delrelrec(); break;
+	
+	
 //Yubi Key / NFC / Fingerprint
 
 	case 'addyubikey': include 'icl/addyubikey.inc.php'; addyubikey(); break;

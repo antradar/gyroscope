@@ -39,6 +39,12 @@ use toolbar.psp to generate toolbar.gif
 
 .watchonly{display:none;}
 
+.botchatbubble{width:55%;border:solid 1px #99de99;margin-top:10px;margin-bottom:10px;padding:10px;box-sizing:border-box;line-height:1.5em;}
+.botchatbubble.from_agent{margin-right:45%;border-radius:10px 10px 10px 0;}
+.botchatbubble.from_user{margin-left:45%;border-radius:10px 10px 0 10px;border-color:#dedede;}
+
+.botchatbubble .codesnippet{margin:10px;padding:5px;border:dotted 1px #66ff66;color:#008800;}
+
 .list_to_dash, .dash_to_list{
 	cursor:pointer;font-size:24px;
 	color:#6096AC;opacity:0.6;transition:color 100ms,opacity 100ms;
@@ -161,6 +167,9 @@ input:disabled{
 
 .img-reports{background:transparent url(imgs/toolbar.gif) no-repeat -224px 0;}
 .img-reports-light{background:transparent url(imgs/toolbar.gif) no-repeat -224px -32px;}
+
+.img-botchats{background:transparent url(imgs/toolbar.gif) no-repeat -672px 0;}
+.img-botchats-light{background:transparent url(imgs/toolbar.gif) no-repeat -672px -32px;}
 
 .img-helptopics{background:transparent url(imgs/toolbar.gif) no-repeat -576px 0;}
 .img-helptopics-light{background:transparent url(imgs/toolbar.gif) no-repeat -576px -32px;}
@@ -401,6 +410,13 @@ svg > g > g.google-visualization-tooltip { pointer-events: none }
 .mainsearchitem:hover{background:#dedede;}
 .mainsearchitem a{display:block;cursor:pointer;padding:5px;}
 
+@media screen and (max-width:1140px){
+	.botchatbubble{width:60%;}
+	.botchatbubble.from_agent{margin-right:40%;}
+	.botchatbubble.from_user{margin-left:40%;}
+	
+}
+
 @media screen and (max-width:1080px){
 	.dashbuttons .listitem{width:20%;}
 }
@@ -408,6 +424,13 @@ svg > g > g.google-visualization-tooltip { pointer-events: none }
 @media screen and (max-width:1040px){
 	.grid,.chatmarch{width:110%;}	
 }
+
+@media screen and (max-width:980px){
+	.botchatbubble{width:70%;}
+	.botchatbubble.from_agent{margin-right:30%;}
+	.botchatbubble.from_user{margin-left:30%;}	
+}
+
 
 @media screen and (max-width:920px){
 	.grid,.chatmarch{width:120%;}	
@@ -433,6 +456,11 @@ svg > g > g.google-visualization-tooltip { pointer-events: none }
 	.dashbuttons .listitem{width:70%;}
 }
 
+@media screen and (max-width:680px){
+	.botchatbubble{width:90%;}
+	.botchatbubble.from_agent{margin-right:10%;}
+	.botchatbubble.from_user{margin-left:10%;}	
+}
 
 @media screen and (max-width:660px){
 	.grid,.chatmarch{width:240%;}	
@@ -466,6 +494,8 @@ if ($dark==0||$dark==1){
 	.sectiontitle a:hover .edithover{filter:invert(1);}
 	
 	.calledout{background:#35292E;}
+	
+	.botchatbubble .codesnippet{margin:10px;padding:5px;border:dotted 1px #448844;color:#88ff88;}	
 	
 	.inp.busy, .inpmed.busy, .inplong.busy, .inpshort.busy, .inpxshort.busy, .img-mg.busy{opacity:0.6;text-shadow:0 0 4px #ffffff;}
 	
@@ -567,6 +597,9 @@ if ($dark==0||$dark==1){
 	.img-helptopics-light{background-position: -576px 0;}
 	.img-salesforce-light{background-position: -736px 0;}
 	.img-sap-light{background-position: -608px 0;}
+	
+	.img-botchats-light{background-position: -672px 0;}
+	
 	
 	.stable::-webkit-scrollbar-track {
 		border-radius: 2px;

@@ -27,7 +27,7 @@ function showtemplatetype($templatetypeid=null){
 	$classes=$myrow['classes'];
 	
 
-	header('newtitle:'.tabtitle(htmlspecialchars($templatetypename)));
+	header('newtitle: '.tabtitle(htmlspecialchars($templatetypename)));
 	
 	makechangebar('templatetype_'.$templatetypeid,"updatetemplatetype('$templatetypeid','".makegskey('updatetemplatetype_'.$templatetypeid)."');");
 	makesavebar('templatetype_'.$templatetypeid);

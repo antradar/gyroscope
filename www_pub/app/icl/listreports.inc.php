@@ -30,9 +30,9 @@ function listreports(){
 	$rs=sql_prep($query,$db,$params);
 	$found=0;
 	
-	header('listviewtitle:'.tabtitle(_tr('icon_reports')));
-	header('listviewflag:'._jsflag('showreport'));
-	header('listviewjs:reports.js');
+	header('listviewtitle: '.tabtitle(_tr('icon_reports')));
+	header('listviewflag: '._jsflag('showreport'));
+	header('listviewjs: reports.js');
 		
 	if ($mode!='embed'){
 ?>

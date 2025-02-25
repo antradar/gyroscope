@@ -43,9 +43,9 @@ function addreportsetting(){
 	
 	logaction("added Report Settings #$reportid $reportname",array('reportid'=>$reportid,'reportname'=>"$reportname"));
 	
-	header('newrecid:'.$reportid);
-	header('newkey:reportsetting_'.$reportid);
-	header('newparams:showreportsetting&reportid='.$reportid);
+	header('newrecid: '.$reportid);
+	header('newkey: reportsetting_'.$reportid);
+	header('newparams: showreportsetting&reportid='.$reportid);
 	
 	showreportsetting($reportid);
 }

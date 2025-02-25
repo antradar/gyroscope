@@ -40,7 +40,7 @@ function showreportsetting($reportid=null){
 	
 	$bingo=$myrow['bingo'];
 	
-	header('newtitle:'.tabtitle('<img src="imgs/t.gif" class="ico-setting">'.htmlspecialchars($reportname)));
+	header('newtitle: '.tabtitle('<img src="imgs/t.gif" class="ico-setting">'.htmlspecialchars($reportname)));
 ?>
 <div class="section">
 	<div class="sectiontitle"><?php echo htmlspecialchars($reportname);?></div>

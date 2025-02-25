@@ -31,9 +31,9 @@ function addtemplatetype(){
 	
 	logaction("added Template Class #$templatetypeid $templatetypename",array('templatetypeid'=>$templatetypeid,'templatetypename'=>"$templatetypename"));
 	
-	header('newrecid:'.$templatetypeid);
-	header('newkey:templatetype_'.$templatetypeid);
-	header('newparams:showtemplatetype&templatetypeid='.$templatetypeid);
+	header('newrecid: '.$templatetypeid);
+	header('newkey: templatetype_'.$templatetypeid);
+	header('newparams: showtemplatetype&templatetypeid='.$templatetypeid);
 	
 	showtemplatetype($templatetypeid);
 }

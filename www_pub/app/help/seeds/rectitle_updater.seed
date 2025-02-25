@@ -25,7 +25,7 @@ function update#record#_rectitle($#primarykey#=null){
 			'after'=>$after,
 			'diffs'=>$diffs
 		);
-		header('newtitle:'.tabtitle($#dispfield#));
+		header('newtitle: '.tabtitle($#dispfield#));
 		logaction("changed #dispfield# of #record#_$#primarykey#",$dbchanges,array('rectype'=>'#record#','recid'=>$#primarykey#),0,$trace);
 	
 	} else {

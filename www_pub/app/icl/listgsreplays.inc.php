@@ -12,8 +12,8 @@ function listgsreplays(){
 	$page=isset($_GET['page'])?intval($_GET['page']):0;
 	
 	header('listviewtitle: Replay Clips');
-	header('listviewflag:'._jsflag('showgsreplay'));
-	header('listviewjs:gsreplay.js');
+	header('listviewflag: '._jsflag('showgsreplay'));
+	header('listviewjs: gsreplay.js');
 		
 	if ($mode!='embed'){
 

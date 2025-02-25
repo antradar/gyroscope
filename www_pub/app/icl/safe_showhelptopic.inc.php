@@ -28,7 +28,7 @@ function safe_showhelptopic($helptopicid=null){
 	
 
 
-	header('newtitle:'.tabtitle(htmlspecialchars($helptopictitle)));
+	header('newtitle: '.tabtitle(htmlspecialchars($helptopictitle)));
 	
 ?>
 <!doctype html>

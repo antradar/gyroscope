@@ -17,7 +17,10 @@ document.dict={
 'confirm_reportsetting_delete':'Are you sure you want to remove this report setting?',
 	
 'confirm_helptopic_delete':'Are you sure you want to remove this help topic?',
+
+'confirm_kbmanrec_delete':'Are you sure you want to remove this KB entry?',
 	
+'confirm_botchat_delete':'Are you sure you want to remove this chat?',	
 
 
 

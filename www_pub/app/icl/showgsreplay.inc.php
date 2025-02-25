@@ -13,7 +13,7 @@ function showgsreplay(){
 	$gsreplaytitle=$replay['gsreplaytitle'];
 	$gsreplaydesc=$replay['gsreplaydesc'];
 	
-	header('newtitle:'.tabtitle(htmlspecialchars('#'.$gsreplayid.' '.$gsreplaytitle)));
+	header('newtitle: '.tabtitle(htmlspecialchars('#'.$gsreplayid.' '.$gsreplaytitle)));
 	makechangebar('gsreplayview_'.$gsreplayid,"updategsreplay('$gsreplayid','".makegskey('updategsreplay_'.$gsreplayid)."');");
 	makesavebar('gsreplayview_'.$gsreplayid);
 		

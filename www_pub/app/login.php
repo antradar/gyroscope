@@ -331,7 +331,7 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['gyroscope
 					  $from=str_replace(array("\r","\n",':'),'-',$from);
 					  if ($from===$_GET['from']) header('Location: '.$from);
 					  else header('Location: index.php');
-					} else header('Location:index.php');
+					} else header('Location: index.php');
 					die();
 				} else {
 					$error_message=trim(implode('<br>',array($gaerror,$smserror,$keyfileerror,$certerror)),'<br>');

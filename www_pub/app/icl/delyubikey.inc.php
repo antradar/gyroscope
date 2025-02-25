@@ -23,7 +23,7 @@ function delyubikey(){
 	if ($kcount==0){//unset useyubi key
 		$query="update ".TABLENAME_USERS." set useyubi=0 where userid=?";
 		sql_prep($query,$db,array($userid));
-		header('disableyubi:1');
+		header('disableyubi: 1');
 		logaction("disabled Yubikey/2FA because all devices were removed",array('userid'=>$userid));
 	}
 		

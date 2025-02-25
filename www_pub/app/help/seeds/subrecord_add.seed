@@ -24,9 +24,9 @@ function add#record#(){
 		array('#primarykey#'=>$#primarykey#,'#dispfield#'=>"$#dispfield#"),
 		array('rectype'=>'#master_record##records#','recid'=>$#masterkey#));
 	
-	header('newrecid:'.$#primarykey#);
-	header('newkey:#record#_'.$#primarykey#);
-	header('newparams:show#record#&#primarykey#='.$#primarykey#);
+	header('newrecid: '.$#primarykey#);
+	header('newkey: #record#_'.$#primarykey#);
+	header('newparams: show#record#&#primarykey#='.$#primarykey#);
 	
 	show#record#($#primarykey#);
 }

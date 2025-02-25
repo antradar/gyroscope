@@ -22,7 +22,7 @@ function edithelptopic($helptopicid=null){
 	$helptopictext=$myrow['helptopictext'];
 	
 
-	header('newtitle:'.tabtitle('<img src="imgs/t.gif" class="ico-setting">'.htmlspecialchars($helptopictitle)));
+	header('newtitle: '.tabtitle('<img src="imgs/t.gif" class="ico-setting">'.htmlspecialchars($helptopictitle)));
 	makechangebar('helptopic_'.$helptopicid,"updatehelptopic('$helptopicid','".makegskey('updatehelptopic_'.$helptopicid)."');");
 	makesavebar('helptopic_'.$helptopicid);
 ?>

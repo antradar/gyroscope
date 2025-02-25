@@ -50,7 +50,7 @@ function reauth(){
 		setcookie('auth',NULL,time()-3600,null,null,$usehttps,true);
 		setcookie('groupnames',NULL,time()-3600,null,null,$usehttps,true);		
 	} else {
-		header('wsskey:'.$wsskey);
+		header('wsskey: '.$wsskey);
 		setcookie('auth',$auth,null,null,null,$usehttps,true);
 		setcookie('userid',$userid,null,null,null,$usehttps,true);
 		setcookie('gsid',$gsid,null,null,null,$usehttps,true);

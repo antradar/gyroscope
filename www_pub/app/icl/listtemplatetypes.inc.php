@@ -10,9 +10,9 @@ function listtemplatetypes(){
 	$user=userinfo();
 	$gsid=$user['gsid'];
 	
-	header('listviewtitle:'.tabtitle(_tr('icon_templatetypes')));
-	header('listviewflag:showtemplatetype');
-	header('listviewjs:templatetypes.js');	
+	header('listviewtitle: '.tabtitle(_tr('icon_templatetypes')));
+	header('listviewflag: showtemplatetype');
+	header('listviewjs: templatetypes.js');	
 	
 	if ($mode!='embed'){
 

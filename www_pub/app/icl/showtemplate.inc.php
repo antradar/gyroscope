@@ -24,7 +24,7 @@ function showtemplate($templateid=null){
 	$recordtitle="$templatetypename"; //change this
 	$dbrecordtitle=htmlspecialchars(noapos(htmlspecialchars($recordtitle)));
 	
-	header('newtitle:'.tabtitle(htmlspecialchars($templatename)));
+	header('newtitle: '.tabtitle(htmlspecialchars($templatename)));
 	header('parenttab: templatetype_'.$templatetypeid);
 	
 	makechangebar('template_'.$templateid,"updatetemplate('$templateid','$templatetypeid','".makegskey('updatetemplate_'.$templateid)."');");

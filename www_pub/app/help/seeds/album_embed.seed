@@ -69,7 +69,7 @@ function embed#primaryfield##record#uploader(){
 				if ($firstchunk) {
 					if (file_exists($partdst)) {
 						if (!isset($_POST['X-CHUNK-RESET'])||$_POST['X-CHUNK-RESET']!=1){
-							header('GS-RESUME-START:'.filesize($partdst));
+							header('GS-RESUME-START: '.filesize($partdst));
 							die('upload-resume');
 						}
 					}
@@ -83,7 +83,7 @@ function embed#primaryfield##record#uploader(){
 				fclose($f);
 				clearstatcache();
 								
-				header('GS-SEND-MORE:'.filesize($partdst));
+				header('GS-SEND-MORE: '.filesize($partdst));
 				return;
 			} else {
 				if (file_exists($partdst)){

@@ -70,6 +70,23 @@ $dict=array(
 	'rights_dbadmin'=>'db admin',
 	'rights_upgrademodules'=>'upgrade modules',
 	
+	'icon_botchats'=>'Chats',
+	'list_botchat_stab'=>'Chat',
+	'button_botchat_add'=>'Add Chat',
+	'list_botchat_add_tab'=>'New Chat',
+	'list_botchat_add'=>'start a new chat',	
+	'botchat_label_chatname'=>'Chat Title',
+		
+	'icon_kbmanrecs'=>'KB Recs',
+	'list_kbmanrec_stab'=>'KB Rec',
+	'button_kbmanrec_add'=>'Add Entry',
+	'list_kbmanrec_add_tab'=>'New Entry',
+	'list_kbmanrec_add'=>'add an entry',	
+	'kbmanrec_label_recname'=>'Record Title',
+	'kbmanrec_label_recdate'=>'Date',
+	'kbmanrec_label_recsummary'=>'Brief Summary',
+	'kbmanrec_label_recdesc'=>'Full Description',	
+	
 	'icon_reports'=>'Reports',
 
 	'close_all_tabs'=>'Close All',

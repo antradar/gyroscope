@@ -27,7 +27,7 @@ function updatetemplatetype_rectitle($templatetypeid=null){
 			'after'=>$after,
 			'diffs'=>$diffs
 		);
-		header('newtitle:'.tabtitle($templatetypename));
+		header('newtitle: '.tabtitle($templatetypename));
 		logaction("changed templatetypename of templatetype_$templatetypeid",$dbchanges,array('rectype'=>'templatetype','recid'=>$templatetypeid),0,$trace);
 	
 	} else {
