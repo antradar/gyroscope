@@ -87,7 +87,7 @@ function listtemplatetypes(){
 		
 		$templatetypetitle="$templatetypename"; //change this if needed
 		
-		$dbtemplatetypetitle=htmlspecialchars(noapos(htmlspecialchars($templatetypetitle)));
+		$dbtemplatetypetitle=noapos(htmlspecialchars(htmlspecialchars($templatetypetitle)));
 ?>
 <div class="listitem"><a onclick="showtemplatetype('<?php echo $templatetypeid;?>','<?php echo $dbtemplatetypetitle;?>');"><?php echo htmlspecialchars($templatetypetitle);?></a></div>
 <?php		

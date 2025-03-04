@@ -2,6 +2,7 @@
 
 //include 'encdec.php';
 //include 'bcrypt.php';
+include 'backcompat.php';
 
 $usehttps=1; //enforcing HTTPS on production server, enable this on production server
 $stablecf=0; //set to 1 when behind CloudFlare
@@ -68,6 +69,12 @@ define ('TABLENAME_FAULTS','faults');
 
 define ('REDIS_PORT', '6379');
 define ('REDIS_PREFIX', ''); //vendor specific
+
+if (false){ //legacy fallback in case reverse proxy cannot set headers without prepending "HTTP_"; use with caution.
+        if ($_SERVER['REMOTE_ADDR']=='127.0.0.1'&&isset($_SERVER['HTTP_REMOTE_ADDR'])) $_SERVER['REMOTE_ADDR']=$_SERVER['HTTP_REMOTE_ADDR'];
+        if (isset($_SERVER['HTTP_HTTPS'])) $_SERVER['HTTPS']=$_SERVER['HTTP_HTTPS'];
+}
+
 
 if (isset($_SERVER['HTTP_GSXIP'])&&$_SERVER['HTTP_GSXIP']!=''){
 	$gsxauth=md5($gsxkey.'-'.$_GET['cmd'].'-'.date('Y-n-j-H'));

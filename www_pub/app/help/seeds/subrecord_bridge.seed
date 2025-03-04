@@ -17,7 +17,7 @@ function list#master_record##records#($#masterkey#=null){
 		$#primarykey#=$myrow['#primarykey#'];
 		$#dispfield#=$myrow['#dispfield#'];
 		$recordtitle="$#dispfield#"; //change this
-		$dbrecordtitle=htmlspecialchars(noapos(htmlspecialchars($recordtitle)));
+		$dbrecordtitle=noapos(htmlspecialchars(htmlspecialchars($recordtitle)));
 		
 	?>
 	<tr>

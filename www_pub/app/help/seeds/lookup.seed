@@ -82,7 +82,7 @@ function lookup#record#(){
 		
 		$#record#title="$#dispfield#"; //change this if needed
 		
-		$db#record#title=noapos(htmlspecialchars($#record#title));
+		$db#record#title=htmlspecialchars(noapos($#record#title));
 
 ?>
 <div class="listitem" style="position:relative;">

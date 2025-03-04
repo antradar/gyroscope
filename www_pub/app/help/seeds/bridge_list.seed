@@ -26,7 +26,7 @@ function list#primaryfield##records#($#primarykey#=null){
 #iterator-fieldlist-myrow#	 	
 	 	$#dispfield#=$myrow['#dispfield#'];
 	 	$title="$#dispfield#"; //change if necessary
-	 	$dbtitle=htmlspecialchars(noapos(htmlspecialchars($title)));
+	 	$dbtitle=noapos(htmlspecialchars(htmlspecialchars($title)));
 	 ?>
 	 <tr>
 	 	<td valign="top">

@@ -24,7 +24,7 @@ function lookuptemplate(){
 	while ($myrow=sql_fetch_assoc($rs)){
 		$templateid=$myrow['templateid'];
 		$templatename=$myrow['templatename'];
-		$dbname=noapos(htmlspecialchars($templatename));
+		$dbname=htmlspecialchars(noapos($templatename));
 		
 ?>
 <div class="listitem"><a onclick="picklookup('<?php echo $dbname;?>','<?php echo $templateid;?>');"><?php echo htmlspecialchars($templatename);?></a></div>

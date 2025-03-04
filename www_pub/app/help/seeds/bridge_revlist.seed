@@ -20,7 +20,7 @@ function list#record##primaryrecords#($#lookupkey#=null){
 	 	
 	 	$#primarydispfield#=$myrow['#primarydispfield#'];
 	 	$title="$#primarydispfield#";
-	 	$dbtitle=htmlspecialchars(noapos(htmlspecialchars($title)));
+	 	$dbtitle=noapos(htmlspecialchars(htmlspecialchars($title)));
 	 ?>
 	 <tr>
 	 	<td>

@@ -22,7 +22,7 @@ function showtemplate($templateid=null){
 	
 	$templatetypeid=$myrow['templatetypeid'];
 	$recordtitle="$templatetypename"; //change this
-	$dbrecordtitle=htmlspecialchars(noapos(htmlspecialchars($recordtitle)));
+	$dbrecordtitle=noapos(htmlspecialchars(htmlspecialchars($recordtitle)));
 	
 	header('newtitle: '.tabtitle(htmlspecialchars($templatename)));
 	header('parenttab: templatetype_'.$templatetypeid);

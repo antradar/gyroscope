@@ -17,7 +17,7 @@ function show#record#($#primarykey#=null){
 	$#masterkey#=$myrow['#masterkey#'];
 	$#master_dispfield#=$myrow['#master_dispfield#'];
 	$recordtitle="$#master_dispfield#"; //change this
-	$dbrecordtitle=htmlspecialchars(noapos(htmlspecialchars($recordtitle)));
+	$dbrecordtitle=noapos(htmlspecialchars(htmlspecialchars($recordtitle)));
 	
 	header('newtitle: '.tabtitle(htmlspecialchars($#dispfield#)));
 	header('parenttab: #master_record#_'.$#masterkey#);

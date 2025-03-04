@@ -9,8 +9,8 @@ function listyubikeys(){
 	$login=$user['login'];
 	$dispname=$user['dispname'];
 	
-	$dlogin=noapos(htmlspecialchars($login));
-	$dname=noapos(htmlspecialchars($dispname));
+	$dlogin=htmlspecialchars(noapos($login));
+	$dname=htmlspecialchars(noapos($dispname));
 	
 	$query="select yubimode from ".TABLENAME_USERS." where userid=?";
 	$rs=sql_prep($query,$db,$userid);
@@ -36,7 +36,7 @@ function listyubikeys(){
 
 		$keyname=$myrow['keyname'];
 		$attid=$myrow['attid'];
-		$dattid=noapos(htmlspecialchars($attid));
+		$dattid=htmlspecialchars(noapos($attid));
 		$passless=intval($myrow['passless']);
 		array_push($attids,$attid);
 	?>

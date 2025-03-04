@@ -29,6 +29,7 @@ function sql_select_db($db,$name){
 }
 
 function sql_get_db($dbhost,$dbsource,$dbuser,$dbpass,$lazyname=null,$rlazyname=null){
+	if ($dbhost=='localhost') $dbhost='127.0.0.1'; //mysql uses localhost as a cue to use unix socket, which may cause complications
 	if (isset($lazyname)){
 		global $dbdefers;
 		if (!isset($dbdefers)) $dbdefers=array();

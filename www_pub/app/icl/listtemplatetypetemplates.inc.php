@@ -13,13 +13,13 @@ function listtemplatetypetemplates($templatetypeid=null){
 	
 	?>
 	<table>
-	<?php
+	<?php	
 	
 	while ($myrow=sql_fetch_array($rs)){
 		$templateid=$myrow['templateid'];
 		$templatename=$myrow['templatename'];
 		$recordtitle="$templatename"; //change this
-		$dbrecordtitle=htmlspecialchars(htmlspecialchars(noapos($recordtitle)));
+		$dbrecordtitle=noapos(htmlspecialchars(htmlspecialchars($recordtitle)));
 		
 	?>
 	<tr>

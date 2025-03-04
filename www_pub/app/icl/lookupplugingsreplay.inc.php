@@ -70,7 +70,7 @@ function lookupplugingsreplay(){
 		$dgsreplayid=noapos(htmlspecialchars(htmlspecialchars($gsreplayid)));
 		$gsreplayid=$myrow['gsreplayid'];
 		$gsreplaytitle=$myrow['gsreplaytitle'];
-		$dgsreplaytitle=noapos(htmlspecialchars($gsreplaytitle));
+		$dgsreplaytitle=htmlspecialchars(noapos($gsreplaytitle));
 	?>
 	<div class="listitem">
 		<a onclick="if (document.hotspot&&document.hotspot.onChange) document.hotspot.onChange.dispatch();document.hotspot.selection.setContent('<div class=&quot;plugincontainer plugingsreplay&quot;><p>{{gsreplay id=<?php echo $gsreplayid;?> <?php echo $dgsreplaytitle;?>}}</p></div>');"><?php echo '#'.$gsreplayid.' '.$gsreplaytitle;?></a>
