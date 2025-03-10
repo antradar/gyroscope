@@ -488,8 +488,8 @@ function logaction($message,$rawobj=null,$syncobj=null,$gsid=0,$trace=null){
 	}
 	
 	if (isset($alogid)&&$use_doc_search&&$message!=''){
-		$drectype=addslashes($rectype);
-		$drecid=intval($recid);
+		$drectype=addslashes($rectype??'');
+		$drecid=intval($recid??0);
 		$dlogname=addslashes($logname);
 		$dlogmessage=addslashes($message);
 		$drawobj=addslashes($oobj);

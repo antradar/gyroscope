@@ -39,9 +39,34 @@ use toolbar.psp to generate toolbar.gif
 
 .watchonly{display:none;}
 
-.botchatbubble{width:55%;border:solid 1px #99de99;margin-top:10px;margin-bottom:10px;padding:10px;box-sizing:border-box;line-height:1.5em;}
+.botchatbubble{width:55%;border:solid 1px #99de99;margin-top:10px;margin-bottom:10px;padding:10px;box-sizing:border-box;line-height:1.5em;clear:both;}
 .botchatbubble.from_agent{margin-right:45%;border-radius:10px 10px 10px 0;}
 .botchatbubble.from_user{margin-left:45%;border-radius:10px 10px 0 10px;border-color:#dedede;}
+
+.botchat_wait{width:24px;height:24px;vertical-align:middle;filter:hue-rotate(200deg);}
+
+.botchatresolver{display:block;border:solid 1px #848cf7;border-radius:100%;cursor:pointer;text-align:center;box-sizing:border-box;float:left;margin-bottom:5px;margin-right:5px;width:27px;height:27px;}
+.botchatresolver_{
+	font-size:8px;display:block;margin:3px;border-radius:100%;width:20px;height:20px;overflow:hidden;box-sizing:border-box;
+	background:transparent url(imgs/chaticons.gif) no-repeat 0 0;
+	background-size:640px 40px;
+}
+.botchatresolver:hover .botchatresolver_{margin:0;width:26px;height:26px; background-size:832px 52px;background-position:0 0;}
+
+.botchatresolver_.func_who_am_i{background-position:-80px 0;}
+.botchatresolver_:hover.func_who_am_i{background-position:-104px 0;}
+
+.botchatresolver_.func_my_order_info{background-position:-100px 0;}
+.botchatresolver_:hover.func_my_order_info{background-position:-130px 0;}
+
+.botchatresolver_.func_product_finder{background-position:-40px 0;}
+.botchatresolver_:hover.func_product_finder{background-position:-52px 0;}
+
+.botchatresolver_.func_product_knowledge{background-position:-60px 0;}
+.botchatresolver_:hover.func_product_knowledge{background-position:-78px 0;}
+
+.botchatresolver_.func_topic_details{background-position:-20px 0;}
+.botchatresolver_:hover.func_topic_details{background-position:-26px 0;}
 
 .botchatbubble .codesnippet{margin:10px;padding:5px;border:dotted 1px #66ff66;color:#008800;}
 
@@ -498,6 +523,20 @@ if ($dark==0||$dark==1){
 	.botchatbubble .codesnippet{margin:10px;padding:5px;border:dotted 1px #448844;color:#88ff88;}	
 	
 	.inp.busy, .inpmed.busy, .inplong.busy, .inpshort.busy, .inpxshort.busy, .img-mg.busy{opacity:0.6;text-shadow:0 0 4px #ffffff;}
+	
+	.botchatresolver{border-color:#dedede;}
+	
+	.botchatresolver_.func_who_am_i{background-position:-80px -20px;}
+	.botchatresolver_:hover.func_who_am_i{background-position:-104px -26px;}
+	
+	.botchatresolver_.func_my_order_info{background-position:-100px -20px;}
+	.botchatresolver_:hover.func_my_order_info{background-position:-130px -26px;}
+	
+	.botchatresolver_.func_product_finder{background-position:-40px -20px;}
+	.botchatresolver_:hover.func_product_finder{background-position:-52px -26px;}
+	
+	.botchatresolver_.func_product_knowledge{background-position:-60px -20px;}
+	.botchatresolver_:hover.func_product_knowledge{background-position:-78px -26px;}
 	
 	
 	.charttoolbar{

@@ -7,7 +7,7 @@ Documentation: www.antradar.com/docs-nano-ajax-manual
 
 Warning: this copy of Nano Ajax Library is modified for running in Gyroscope. Use the public version for general purpose applications.
 
-ver g5.3
+ver g5.4
 */
 
 function gid(d){return document.getElementById(d);}
@@ -185,7 +185,19 @@ function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce,gskey,creds,headless){
 		cancelgswi(ct);
 	}
 	ct.reqobj=rq;
-	if (!slowtimer) slowtimer=800;
+	
+	var timeout=800;
+	var waitsrc='imgs/hourglass.gif';
+	var waitclass='';
+	
+	if (slowtimer!=null) {
+		if (typeof slowtimer === 'number') timeout=slowtimer;
+		if (typeof slowtimer === 'object') {
+			if (slowtimer.timeout!=null) timeout=slowtimer.timeout;
+			if (slowtimer.waitsrc!=null) waitsrc=slowtimer.waitsrc;
+			if (slowtimer.waitclass!=null) waitclass=slowtimer.waitclass;
+		}
+	}
 	
 	if (callback&&typeof(callback)=='object'&&callback.length>1&&callback[2]!=null){
 		rq.onprogress=callback[2];	
@@ -197,12 +209,19 @@ function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce,gskey,creds,headless){
 			if (ct.style.display=='none') ct.style.display='block';
 			var first=ct.firstChild;
 			if (ct.gswi) return;
-			var wi=document.createElement('img'); wi.src='imgs/hourglass.gif'; ct.gswi=wi;
-			if (gid('statusc')!=ct) wi.style.margin='10px';
+			var wi=document.createElement('img'); 
+			wi.src=waitsrc;
+			if (waitclass!='') wi.className=waitclass;
+			
+			ct.gswi=wi;
+			
+			if (gid('statusc')!=ct) {
+				if (waitclass=='') wi.style.margin='10px';
+			}
 			if (first==null) ct.appendChild(wi); else ct.insertBefore(wi,first);
 			ct.style.opacity=0.5; ct.style.filter='alpha(50)'; ct.style.color='#999999';
 			//ct.innerHTML='<img src="imgs/hourglass.gif" class="hourglass"><span style="opacity:0.5;filter:alpha(opacity=50);color:#999999;">'+ct.innerHTML+'</span>';
-		},slowtimer);
+		},timeout);
 	}
 
 	ajxnb(rq,u,f(c),data);
