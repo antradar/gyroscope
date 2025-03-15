@@ -144,6 +144,8 @@ switch($cmd){
 		case 'dash_core__kbman': include 'icl/kbman_dashtopics.inc.php'; kbman_dashtopics(); break;
 	case 'slv_core__kbmanrecs': include 'icl/kbman_listrecs.inc.php'; kbman_listrecs(); break;
 		case 'dash_core__kbmanrecs': include 'icl/kbman_dashrecs.inc.php'; kbman_dashrecs(); break;
+		
+	case 'kbman_lookuptopicrec': include 'icl/kbman_lookuptopicrec.inc.php'; kbman_lookuptopicrec(); break;
 	
 	case 'kbman_newrec': include 'icl/kbman_newrec.inc.php'; kbman_newrec(); break;
 	case 'kbman_addrec': include 'icl/kbman_addrec.inc.php'; kbman_addrec(); break;
@@ -155,6 +157,12 @@ switch($cmd){
 	case 'kbman_addrelrec': include 'icl/kbman_addrelrec.inc.php'; kbman_addrelrec(); break;
 	case 'kbman_delrelrec': include 'icl/kbman_delrelrec.inc.php'; kbman_delrelrec(); break;
 	
+	case 'kbman_showmedialibrary': include 'icl/kbman_showmedialibrary.inc.php'; kbman_showmedialibrary(); break;
+	case 'kbman_embedmediauploader': include 'icl/kbman_embedmediauploader.inc.php'; kbman_embedmediauploader(); break;
+	case 'kbman_delmedia': include 'icl/kbman_delmedia.inc.php'; kbman_delmedia(); break;
+	case 'kbman_renamemedia': include 'icl/kbman_renamemedia.inc.php'; kbman_renamemedia(); break;
+	case 'kbman_lookupimageoption': include 'icl/kbman_lookupimageoption.inc.php'; kbman_lookupimageoption(); break;
+	case 'img_kbman_media': include 'icl/img_kbman_media.inc.php'; img_kbman_media(); break;
 	
 //Yubi Key / NFC / Fingerprint
 

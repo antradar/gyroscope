@@ -7,7 +7,7 @@ Documentation: www.antradar.com/docs-nano-ajax-manual
 
 Warning: this copy of Nano Ajax Library is modified for running in Gyroscope. Use the public version for general purpose applications.
 
-ver g5.4
+ver g5.5
 */
 
 function gid(d){return document.getElementById(d);}
@@ -507,3 +507,4 @@ ajxblobimg=function(imgid,url_get,url_post,data){
 	
 }
 
+attn={} //pseudo commenter, e.g. attn.server_takeover

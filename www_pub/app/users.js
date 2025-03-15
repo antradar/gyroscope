@@ -91,7 +91,7 @@ adduser=function(roles,gskey){
 	params.push('groupnames='+groupnames);	
 	
 	
-	reloadtab('user_new','','adduser&'+params.join('&'),null,'newpass='+newpass,null,gskey);
+	reloadtab('user_new','','adduser&'+params.join('&'),attn.server_takeover,'newpass='+newpass,null,gskey);
 	
 }
 

@@ -477,6 +477,7 @@ if ($dark==0||$dark==1){
 	
 	.img-mg{border-color:##21262D;background:#0D1117 url(imgs/dsprite.png) no-repeat 100% -330px;}	
 	
+	.mediaimg-mg{border-color:#cccccc;background:#0D1117 url(imgs/sprite.png) no-repeat 100% -330px;}
 
 	.afloat{background:#0D1117;}
 	.tabchanged{background:#291313;}	

@@ -1,9 +1,14 @@
+v5.5
+----
+- pseudo "attn" marker for evaluating to null's
+
 v5.4
 ----
-ajxpgn wait timeout can be an object for specifying timeout, loading image, and style
+- ajxpgn wait timeout can be an object for specifying timeout, loading image, and style
+
 v5.3
 ----
-container arg "c" in ajxpgn(c... accepts direct reference to container
+- container arg "c" in ajxpgn(c... accepts direct reference to container
 
 v4.9
 ----
