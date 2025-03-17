@@ -26,6 +26,11 @@ function listsettings(){
 	<div class="listitem"><a onclick="ajxjs2('showuser','users.js');ajxjs2('setaccountpass','accounts.js');showview('core.users',1,null,null,null,null,true);"><?php tr('icon_accounts');?></a></div>	
 	<?php
 	}
+	if (isset($manticore)&&isset($user['groups']['kbman'])){
+	?>
+	<div class="listitem"><a onclick="ajxjs2('kbman_showtopic','kbman.js');showview('core.kbman',1,1);">AI Knowledge Base <span class="botchatresolver_ func_topic_selector" style="display:inline-block;"></span></a></div>				
+	<?php	
+	}
 	?>
 		
 	<?php
@@ -82,11 +87,6 @@ function listsettings(){
 	<?php
 	}
 	
-	if (isset($manticore)&&isset($user['groups']['kbman'])){
-	?>
-	<div class="listitem"><a onclick="ajxjs2('kbman_showtopic','kbman.js');showview('core.kbman',1,1);">AI Knowledge Base <span class="botchatresolver_ func_topic_selector" style="display:inline-block;"></span></a></div>				
-	<?php	
-	}
 			
 	if (isset($user['groups']['dbadmin'])){
 	?>

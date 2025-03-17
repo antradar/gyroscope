@@ -40,7 +40,7 @@ use toolbar.psp to generate toolbar.gif
 .watchonly{display:none;}
 
 .botchat_screenshot{margin:10px 0;}
-.botchat_screenshot img{border:solid 1px #dedede;}
+.botchat_screenshot img{border:solid 1px #dedede;width:100%;}
 
 .botchatbubble{width:55%;border:solid 1px #99de99;margin-top:10px;margin-bottom:10px;padding:10px;box-sizing:border-box;line-height:1.5em;clear:both;}
 .botchatbubble.from_agent{margin-right:45%;border-radius:10px 10px 10px 0;}

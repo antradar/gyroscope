@@ -1,6 +1,9 @@
+22.0
+- myservices.php entries for kb media library
+
 21.9
 - style changes for running kb and ai chatbot
-- myservice.php entries for running kb and ai chatbot
+- myservices.php entries for running kb and ai chatbot
 - nano.js update
 
 21.8

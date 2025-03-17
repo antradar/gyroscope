@@ -322,7 +322,7 @@ input,textarea{border:solid 1px #999999;}
 #leftviewcloser img{dislay:block;width:9px;height:9px;background:transparent url(imgs/sprite.png) -301px -31px;}
 
 .clear{clear:both;}
-.col{width:450px;margin-right:20px;float:left;}
+.col{width:48%;margin-right:2%;max-width:500px;float:left;}
 .majorcol, .minorcol, .rmajorcol, .rminorcol{float:left;}
 .majorcol{width:580px;}
 .minorcol{width:380px;margin-right:20px;}

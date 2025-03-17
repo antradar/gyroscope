@@ -177,7 +177,7 @@ function listusers(){
 	<?php }?>
 
 	<br>
-	<?php echo htmlspecialchars($usertitle!=$dispname?$dispname:'');?>
+	<?php echo $usertitle!=$dispname?$dispname:'';?>
 </a></div>
 <?php		
 		$pageleadidx++;
