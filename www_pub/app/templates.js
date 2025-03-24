@@ -160,7 +160,7 @@ updatetemplate_rectitle=function(templateid){
 		gid('mrectitle_templatename_'+templateid).style.display='none';
 		var newtitle=rq.getResponseHeader('newtitle');
 		if (newtitle==null||newtitle=='') newtitle=otitle.value; else newtitle=decodeHTML(newtitle);
-		gid('vrectitle_templatename_'+templateid).innerHTML=newtitle+' <span class="edithover"></span>';
+		gid('vrectitle_templatename_'+templateid).innerHTML=newtitle.replace(/(<([^>]+)>)/gi,'')+' <span class="edithover"></span>';
 		settabtitle('template_'+templateid,newtitle);
 	});
 }

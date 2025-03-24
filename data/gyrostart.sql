@@ -21,6 +21,14 @@ CREATE TABLE `actionlog` (
   KEY `recid` (`recid`)
 ) ENGINE=InnoDB;
 
+create table actionctxs(
+ctxid int unsigned not null auto_increment,
+ctxname varchar(255),
+primary key (ctxid),
+key ctxname (ctxname)
+);
+
+
 DROP TABLE IF EXISTS gss;
 CREATE TABLE gss (
   gsid bigint(20) unsigned NOT NULL AUTO_INCREMENT,

@@ -56,6 +56,7 @@ define ('COLNAME_GSID','gsid');
 define ('TABLENAME_USERS','users');
 define ('TABLENAME_USERHELPSPOTS','userhelpspots');
 define ('TABLENAME_ACTIONLOG','actionlog');
+define ('TABLENAME_ACTIONCTXS','actionctxs');
 define ('TABLENAME_REPORTS','reports');
 define ('TABLENAME_TEMPLATETYPES','templatetypes');
 define ('TABLENAME_TEMPLATES','templates');

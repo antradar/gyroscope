@@ -62,7 +62,7 @@ function updatereportsetting(){
 
 	logaction("updated Report Settings #$reportid $reportname",
 		array('reportid'=>$reportid,'reportname'=>"$reportname"),
-		array('rectype'=>'reportsetting','recid'=>$reportid));
+		array('rectype'=>'reportsetting','recid'=>$reportid),0,null,2);
 
 	showreportsetting($reportid);
 }

@@ -172,7 +172,7 @@ updatetemplatetype_rectitle=function(templatetypeid){
 		gid('mrectitle_templatetypename_'+templatetypeid).style.display='none';
 		var newtitle=rq.getResponseHeader('newtitle');
 		if (newtitle==null||newtitle=='') newtitle=otitle.value; else newtitle=decodeHTML(newtitle);
-		gid('vrectitle_templatetypename_'+templatetypeid).innerHTML=newtitle+' <span class="edithover"></span>';
+		gid('vrectitle_templatetypename_'+templatetypeid).innerHTML=newtitle.replace(/(<([^>]+)>)/gi,'')+' <span class="edithover"></span>';
 		settabtitle('templatetype_'+templatetypeid,newtitle);
 	});
 }

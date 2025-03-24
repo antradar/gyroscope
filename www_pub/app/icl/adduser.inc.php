@@ -74,7 +74,7 @@ function adduser(){
 		'diffs'=>array(
 			'login'=>$login
 		)
-	));
+	),1);
 	
 	header('newrecid: '.$userid);
 	header('newkey: user_'.$userid);

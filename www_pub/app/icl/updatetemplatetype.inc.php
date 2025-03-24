@@ -65,7 +65,7 @@ function updatetemplatetype(){
 		
 		logaction("updated Template Class #$templatetypeid $templatetypename",
 			$dbchanges,
-			array('rectype'=>'templatetype','recid'=>$templatetypeid),0,$trace);
+			array('rectype'=>'templatetype','recid'=>$templatetypeid),0,$trace,4);
 	}
 	
 	showtemplatetype($templatetypeid);

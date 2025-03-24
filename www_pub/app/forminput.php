@@ -6,8 +6,8 @@ function noapos($val,$trimnl=1){$val=addslashes($val); if ($trimnl) $val=str_rep
 function GETSTR($key,$trim=1){$val=isset($_GET[$key])?$_GET[$key]:'';if ($trim) $val=trim($val);return noapos($val,0);}
 function QETSTR($key,$trim=1){$val=isset($_POST[$key])?$_POST[$key]:'';if ($trim) $val=trim($val);return noapos($val,0);}
 
-function GETCUR($key){$val=trim(isset($_GET[$key])?$_GET[$key]:''); $val=str_replace(_tr('currency_separator_thousands'),'',$val); $val=str_replace(_tr('currency_separator_decimal'),'.',$val); if (!is_numeric($val)) apperror('apperror:invalid parameter '.$key); return $val; }
-function QETCUR($key){$val=trim(isset($_POST[$key])?$_POST[$key]:''); $val=str_replace(_tr('currency_separator_thousands'),'',$val); $val=str_replace(_tr('currency_separator_decimal'),'.',$val); if (!is_numeric($val)) apperror('apperror:invalid parameter '.$key); return $val; }
+function GETCUR($key){$val=trim(isset($_GET[$key])?$_GET[$key]:''); $val=implode('',explode(' ',$val)); $val=str_replace(_tr('currency_separator_thousands'),'',$val); $val=str_replace(_tr('currency_separator_decimal'),'.',$val); if (!is_numeric($val)) apperror('apperror:invalid parameter '.$key); return $val; }
+function QETCUR($key){$val=trim(isset($_POST[$key])?$_POST[$key]:''); $val=implode('',explode(' ',$val)); $val=str_replace(_tr('currency_separator_thousands'),'',$val); $val=str_replace(_tr('currency_separator_decimal'),'.',$val); if (!is_numeric($val)) apperror('apperror:invalid parameter '.$key); return $val; }
 
 function SGET($key,$trim=1){$val=isset($_GET[$key])?$_GET[$key]:'';if ($trim&&is_string($val)) $val=trim($val);return $val;}
 function SQET($key,$trim=1){$val=isset($_POST[$key])?$_POST[$key]:'';if ($trim&&is_string($val)) $val=trim($val);return $val;}
@@ -401,7 +401,7 @@ function logfault($e,$gsfault=false){
 	
 }
 
-function logaction($message,$rawobj=null,$syncobj=null,$gsid=0,$trace=null){
+function logaction($message,$rawobj=null,$syncobj=null,$gsid=0,$trace=null,$ctxid=0){
 	
 	global $WSS_INTERNAL_KEY; //defined in lb.php
 	global $vdb;
@@ -493,7 +493,7 @@ function logaction($message,$rawobj=null,$syncobj=null,$gsid=0,$trace=null){
 		$dlogname=addslashes($logname);
 		$dlogmessage=addslashes($message);
 		$drawobj=addslashes($oobj);
-		sql_query("insert into actionlog_rt(alogid,gsid,userid,rectype,recid,bulldozed,logdate,logname,logmessage,rawobj) values ($alogid,$gsid,$userid,'$drectype',$drecid,$bulldozed,$now,'$dlogname','$dlogmessage','$drawobj')"
+		sql_query("insert into actionlog_rt(alogid,gsid,userid,rectype,recid,bulldozed,logdate,logname,logmessage,rawobj,ctxid) values ($alogid,$gsid,$userid,'$drectype',$drecid,$bulldozed,$now,'$dlogname','$dlogmessage','$drawobj',$ctxid)"
 		, $manticore);
 	}
 	

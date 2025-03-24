@@ -21,7 +21,7 @@ function deluser(){
 	$query="delete from ".TABLENAME_USERS." where userid=? and ".COLNAME_GSID."=?";
 	sql_prep($query,$db,array($userid,$gsid));
 	
-	logaction("deleted User #$userid $login",array('userid'=>$userid,'login'=>"$login"),array('rectype'=>'reauth','recid'=>$userid));
+	logaction("deleted User #$userid $login",array('userid'=>$userid,'login'=>"$login"),array('rectype'=>'reauth','recid'=>$userid),0,null,1);
 	reauth();
 	
 	cache_delete(TABLENAME_GSS.'gyroscopeblockedids_'.$gsid);

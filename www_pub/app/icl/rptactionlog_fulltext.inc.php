@@ -54,6 +54,7 @@ function rptactionlog_fulltext(){
 	
 	if ($key!=''||$opairs!=''){
 		$dims=array(
+			'ctxid'=>array('label'=>'Context','field'=>'ctxid','sort'=>'ctxid asc','limit'=>20+1),
 			'rectype'=>array('label'=>'Type','field'=>'rectype','sort'=>'rectype asc','limit'=>20+1),
 			'logdate_year'=>array('label'=>'Year','field'=>'year(logdate)','sort'=>'logdate asc'),
 			'logdate_month'=>array('label'=>'Month','field'=>'month(logdate)','sort'=>'logdate asc', 'parent'=>'logdate_year'),
@@ -86,6 +87,12 @@ function rptactionlog_fulltext(){
 			if (isset($dims['userid'])) $dims['userid']['selected']=1;
 			$filter.=" and userid=".intval($_GET['userid'])." ";
 		}
+		
+		if (isset($_GET['ctxid'])){
+			$navfilters['ctxid']=$_GET['ctxid'];
+			if (isset($dims['ctxid'])) $dims['ctxid']['selected']=1;
+			$filter.=" and ctxid=".intval($_GET['ctxid'])." ";
+		}		
 		
 		///		
 						
@@ -214,7 +221,7 @@ function rptactionlog_fulltext(){
 	}
 
 	$query.=" order by logdate desc, alogid desc ";
-			
+
 	$rs=sql_query($query,$manticore);
 	
 	if ($key!=''||$opairs!=''){
@@ -228,7 +235,6 @@ function rptactionlog_fulltext(){
 		
 		$query.=" limit $start,$perpage ".$facets;
 		//$rs=sql_query($query,$manticore);
-		
 		$rss=array();
 		if ($manticore->multi_query($query)){
 			do {
@@ -262,6 +268,9 @@ function rptactionlog_fulltext(){
 		
 	}
 	
+
+	$dctxmap=array();
+	
 	$recs=array();
 	
 	while ($myrow=sql_fetch_assoc($rs)){
@@ -271,26 +280,41 @@ function rptactionlog_fulltext(){
 			
 	$chunksize=100;
 	$groups=array_chunk($recs,$chunksize,true);
+
 	foreach ($groups as $group){
 		$recids=implode(',',array_keys($group));
 		$uquery="select alogid,login from ".TABLENAME_ACTIONLOG." left join ".TABLENAME_USERS." on ".TABLENAME_ACTIONLOG.".userid=".TABLENAME_USERS.".userid where alogid in ($recids)";
 		$rs=sql_prep($uquery,$db);
+			
 		while ($myrow=sql_fetch_assoc($rs)){
 			$alogid=$myrow['alogid'];
 			$login=$myrow['login'];
 			$recs[$alogid]['login']=$login;
 		}
+		
+		$dctxids=array();
+		
+		foreach ($group as $item){
+			$dctxids[$item['ctxid']]=$item['ctxid'];	
+		}
+
+		if (count($dctxids)>0){
+			$query="select ctxid, ctxname from ".TABLENAME_ACTIONCTXS." where ctxid in (".implode(',',$dctxids).")";
+			$rs=sql_prep($query,$db);
+			while ($myrow=sql_fetch_assoc($rs)) $dctxmap[$myrow['ctxid']]=$myrow['ctxname'];	
+		}		
+
+				
 	}	
+	
 	
 	$usermap=array();
 	$userids=array();
 
-	if (isset($dims)&&isset($dims['userid'])&&isset($dims['userid']['counts'])){
-		
+	if (isset($dims)&&isset($dims['userid'])&&isset($dims['userid']['counts'])){		
 		foreach ($dims['userid']['counts'] as $uid=>$_){
 			array_push($userids,$uid);	
 		}	
-		
 	}
 	if (isset($navfilters['userid'])) array_push($userids,$navfilters['userid']);
 	if (count($userids)>0){
@@ -298,6 +322,20 @@ function rptactionlog_fulltext(){
 		$rs=sql_prep($query,$db,$gsid);
 		while ($myrow=sql_fetch_assoc($rs)) $usermap[$myrow['userid']]=$myrow['login'];
 	}
+	
+	$ctxids=array();
+	$ctxmap=array();
+	if (isset($dims)&&isset($dims['ctxid'])&&isset($dims['ctxid']['counts'])){		
+		foreach ($dims['ctxid']['counts'] as $ctxid=>$_){
+			array_push($ctxids,$ctxid);	
+		}	
+	}
+	if (isset($navfilters['ctxid'])) array_push($ctxids,$navfilters['ctxid']);
+	if (count($ctxids)>0){
+		$query="select ctxid,ctxname from ".TABLENAME_ACTIONCTXS." where ctxid in (".implode(',',$ctxids).")";
+		$rs=sql_prep($query,$db);
+		while ($myrow=sql_fetch_assoc($rs)) $ctxmap[$myrow['ctxid']]=$myrow['ctxname'];
+	}	
 	
 ?>
 
@@ -324,6 +362,7 @@ Search: <input autocomplete="off" class="inp" style="width:30%;" id="actionlog_k
 				$dv=$_GET[$dkey];
 				if ($dkey=='userid'&&isset($usermap[$dv])) $dv=$usermap[$dv];
 				if ($dkey=='logdate_month') $dv=$dict_mons[$dv];
+				if ($dkey=='ctxid') $dv=$ctxmap[$dv]??'n/a';
 			?>
 			<nobr><?php echo htmlspecialchars($dv);?>&nbsp;<a onclick="reloadtab('rptactionlog',null,'rptactionlog&key='+encodeHTML(gid('actionlog_key').value)+'<?php echo $subfilters;?>&pairs='+encodeHTML(gid('actionlog_pairs').value),null,null,{persist:true});return false;"><img src="imgs/t.gif" class="img-del"></a></nobr>
 			<?php	
@@ -333,6 +372,11 @@ Search: <input autocomplete="off" class="inp" style="width:30%;" id="actionlog_k
 			$dimfilters=$subfilters.'&'.$dkey.'='.urlencode($label);
 			$dv=$label;
 			if ($dkey=='userid'&&isset($usermap[$dv])) $dv=$usermap[$dv];
+			if ($dkey=='ctxid') {
+				if ($dv==0) continue; //uncommit to skip n/a type
+				$dv=$ctxmap[$dv]??'n/a';
+			}
+			
 			if ($dkey=='logdate_month') $dv=$dict_mons[$dv];
 		?>
 			<nobr><a class="hovlink" onclick="reloadtab('rptactionlog',null,'rptactionlog&key='+encodeHTML(gid('actionlog_key').value)+'<?php echo $dimfilters;?>&pairs='+encodeHTML(gid('actionlog_pairs').value),null,null,{persist:true});return false;"><?php echo htmlspecialchars($dv);?></a> <em class="diminished">(<?php echo $c;?>)</em></nobr> &nbsp; &nbsp;
@@ -382,11 +426,12 @@ Search: <input autocomplete="off" class="inp" style="width:30%;" id="actionlog_k
 	
 ?>
 <style>
-.alogcol1,.alogcol2,.alogcol3,.alogcol4{float:left;overflow:hidden;}
-.alogcol1{width:11%;margin-right:1%;}
-.alogcol2{width:14%;margin-right:1%;}
-.alogcol3{width:33%;margin-right:1%;}
-.alogcol4{width:31%;}
+.alogcol1,.alogcol2,.alogcol3,.alogcol4,.alogcol5{float:left;overflow:hidden;}
+.alogcol1{width:8%;margin-right:1%;}
+.alogcol2{width:11%;margin-right:1%;}
+.alogcol3{width:28%;margin-right:1%;}
+.alogcol4{width:16%;margin-right:1%;font-style:italic;overflow-wrap:break-word;}
+.alogcol5{width:32%;overflow-wrap:break-word;}
 
 </style>
 
@@ -406,7 +451,8 @@ Search: <input autocomplete="off" class="inp" style="width:30%;" id="actionlog_k
 		<div class="alogcol1">Time</div>
 		<div class="alogcol2">User</div>
 		<div class="alogcol3">Action</div>
-		<div class="alogcol4">Extra</div>
+		<div class="alogcol4">Context</div>
+		<div class="alogcol5">Extra</div>
 		<div class="clear"></div>
 	</div></div>
 
@@ -419,6 +465,9 @@ Search: <input autocomplete="off" class="inp" style="width:30%;" id="actionlog_k
 		$alogid=$myrow['alogid'];
 		$username=htmlspecialchars($myrow['login']??'');
 		if ($username=='') $username='<span style="color:#ee6666;">'.htmlspecialchars($myrow['logname']??'').'</span>';
+		
+		$ctxname=$dctxmap[$myrow['ctxid']]??'';
+		
 		$logdate=$myrow['logdate'];
 		$dlogdate='-';
 		if (is_numeric($logdate)&&$logdate!=0) {
@@ -439,7 +488,8 @@ Search: <input autocomplete="off" class="inp" style="width:30%;" id="actionlog_k
 		<div class="alogcol1"><?php echo $dlogdate;?>&nbsp;</div>
 		<div class="alogcol2"><?php echo $username;?>&nbsp;</div>
 		<div class="alogcol3"><?php if ($bulldozed){?><span style="color:#cc0000;">*</span> <?php }?><?php echo htmlspecialchars($logmessage);?>&nbsp;</div>
-		<div class="alogcol4"><?php echo $extra;?>&nbsp;</div>
+		<div class="alogcol4"><?php echo $ctxname;?>&nbsp;</div>
+		<div class="alogcol5"><?php echo $extra;?>&nbsp;</div>
 		<div class="clear"></div>
 	</div>
 <?php

@@ -58,5 +58,8 @@ function setaccountpass(){
 	array_push($params,$needkeyfile,$usesms,$smscell,$usega,$usegamepad,$useyubi,$yubimode, $quicklist, $darkmode, $dowoffset, $userid);
 	sql_prep($query,$db,$params);
 
-	if ($_POST['oldpass']=='') echo 'Account settings updated'; else tr('password_changed'); 
+	if ($_POST['oldpass']=='') echo 'Account settings updated'; else tr('password_changed');
+	
+	logaction("changed own password",array(),array('rectype'=>'account','recid'=>0),0,null,1);
+	 
 }

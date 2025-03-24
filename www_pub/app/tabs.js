@@ -321,6 +321,8 @@ function tab_setdoctitle(t,title){
 function settabtitle(key,title,opts){
 	var tabid=gettabid(key);
 	if (tabid==-1) return;
+	if (title) title=title.replace(/(<([^>]+)>)/gi,'');
+
 	var tabhtml="<nobr><a class=\"tt\" ondblclick=\"refreshtab('"+key+"');\" onclick=\"showtab('"+key+"');\">"+title+"</a><a onclick=\"closetab('"+key+"')\"><span class=\"tabclose\"></span></a></nobr>";
     if (opts!=null&&opts.noclose) {
 	    tabhtml="<nobr><a class=\"tt\" ondblclick=\"refreshtab('"+key+"');\" onclick=\"showtab('"+key+"');\">"+title+"</a><span class=\"noclose\"></span></nobr>";

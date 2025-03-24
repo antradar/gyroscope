@@ -29,5 +29,5 @@ function deltemplatetype(){
 	
 	logaction("deleted Template Class #$templatetypeid $templatetypename",
 		array('templatetypeid'=>$templatetypeid,'templatetypename'=>$templatetypename),
-		array('rectype'=>'templatetype','recid'=>$templatetypeid));
+		array('rectype'=>'templatetype','recid'=>$templatetypeid),0,null,4);
 }

@@ -29,7 +29,7 @@ function addtemplatetype(){
 		apperror(_tr('error_creating_record '.$err));
 	}
 	
-	logaction("added Template Class #$templatetypeid $templatetypename",array('templatetypeid'=>$templatetypeid,'templatetypename'=>"$templatetypename"));
+	logaction("added Template Class #$templatetypeid $templatetypename",array('templatetypeid'=>$templatetypeid,'templatetypename'=>"$templatetypename"),null,0,null,4);
 	
 	header('newrecid: '.$templatetypeid);
 	header('newkey: templatetype_'.$templatetypeid);

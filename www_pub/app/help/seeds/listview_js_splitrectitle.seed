@@ -10,7 +10,7 @@ update#record#_rectitle=function(#primarykey#){
 		gid('mrectitle_#dispfield#_'+#primarykey#).style.display='none';
 		var newtitle=rq.getResponseHeader('newtitle');
 		if (newtitle==null||newtitle=='') newtitle=otitle.value; else newtitle=decodeHTML(newtitle);
-		gid('vrectitle_#dispfield#_'+#primarykey#).innerHTML=newtitle+' <span class="edithover"></span>';
+		gid('vrectitle_#dispfield#_'+#primarykey#).innerHTML=newtitle.replace(/(<([^>]+)>)/gi,'')+' <span class="edithover"></span>';
 		settabtitle('#record#_'+#primarykey#,newtitle);
 		reloadview('#viewindex#','#record#list');
 	});
