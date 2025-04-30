@@ -13,7 +13,7 @@ inittemplatetexteditor=function(templateid,st){
 			plugins: 'paste, advimage',
 			theme_advanced_buttons1:"bold,italic,underline,strikethrough,|,forecolor,backcolor,|,bullist,numlist,"+alignment+"|,outdent,indent,blockquote,|,link,unlink",
 			//theme_advanced_buttons2:"fontselect,fontsizeselect,|,justifyleft,justifycenter,justifyright,justifyfull,|,code",
-			theme_advanced_buttons2:plugins+",systemplatevars,sourceedit,removeformat", //imecree
+			theme_advanced_buttons2:plugins+",systemplatevars,vartoc,sourceedit,removeformat", //imecree
 			editor_selector:'templatetexteditor_'+templateid,
 			extended_valid_elements : 'img[class|ampwidth|ampheight|src|title|alt'+anysize+'],table[nobr|class|border|cellpadding|cellspacing|width|style],tr[nobr|class|bgcolor|style]',
 			paste_preprocess:function(pl,o){paste_clean_image(o);},		
@@ -42,6 +42,7 @@ inittemplatetexteditor=function(templateid,st){
 				    function(){gid('fsview').sels=[]});
 				}});
 			    ed.addButton('systemplatevars',{title:'Template Variables',image:'tiny_mce/icons/magic.gif',onclick:function(){tinyMCE.activeEditor=ed;lookupentity(ed,'templatevar&templateid='+templateid,'Template Variables');}});
+			    ed.addButton('vartoc',{title:'Variables TOC',image:'tiny_mce/icons/var_toc.gif',onclick:function(){tinyMCE.activeEditor=ed;lookupentity(ed,'templatevartoc&templateid='+templateid,'Variables TOC',null,null,mce_findvars);}});
 			    ed.addButton('styles',{title:'Styles',image:'tiny_mce/icons/brush.gif',onclick:function(){tinyMCE.activeEditor=ed;lookupentity(ed,'styles&mode=systemplate&id='+templateid,'Styles');}});
 			    ed.addButton('imecree',{title:'Enter Cree Text',image:'tiny_mce/icons/cree.gif',onclick:function(){tinyMCE.activeEditor=ed;loadfs('Enter Cree Text','imecree',null,initimecree);}});
 			    ed.addButton('sourceedit',{title:'Source Editor',image:'tiny_mce/icons/code.gif',onclick:function(){tinyMCE.activeEditor=ed;loadfs('Source Editor','mceeditsource',null,initsourceeditor);}});

@@ -2,7 +2,7 @@
 
 function tmpl($content,$amp=0,$orglink=''){
 	//pattern {{shortcode params}}
-	$content=preg_replace('/{[\{(\S+?)\}\}/',"{{$1 noparam=1}}",$content);
+	$content=preg_replace('/\{\{(\S+?)\}\}/','{{$1 noparam=1}}',$content);
 	
 	if ($amp){
 		$noampcontent='<div class="noampcontent"><div class="noamplabel">The following content is not available on the AMP page.</div><a class="noampbutton" href="'.$orglink.'">View full site &raquo;</a></div>';

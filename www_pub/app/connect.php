@@ -37,6 +37,7 @@ $dbconfigs=array(
 // 0 */3 * * * > /dev/shm/gyrostart.log
 
 define('KB_PREFIX',''); //split Manticore namespace
+//define('KB_EMBEDDINGS_SUFFIX','_1024'); //different embeddings have different dimensions
 
 $enable_db_profiler=0; //persistent db query dumper
 $db_profiler='/dev/shm/gyrostart.log';

@@ -1,5 +1,5 @@
 <?php
-include '../template/htdocs/memcache.php';
+include '../www_pub/app/memcache.php';
 cache_init();
 
 $test=cache_get('gyroscope_trace_req');

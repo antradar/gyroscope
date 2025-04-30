@@ -71,6 +71,96 @@ function paste_clean_image(o){
 	
 }
 
+function mce_findvars(e,ed,viewmode){
+	if (viewmode==null||viewmode=='') viewmode='list';
+	var body=tinyMCE.activeEditor.getBody();
+	var re=/\%\%(\S+?)\%\%/g;
+	
+	var vargroups=[];
+	var varlist=[];
+	
+	var d=gid('lookuptemplatevar_toc');
+	if (!d) return;
+	
+	var varidx=0;
+	
+	walker = document.createTreeWalker(body, NodeFilter.SHOW_TEXT, null, false);
+	var lastnode=null;
+
+	while (walker.nextNode()){
+		var node=walker.currentNode;	
+		var o=node.parentNode;
+		if (o.innerHTML==null||o.innerHTML=='') continue;
+		
+		if (lastnode==null||lastnode!=o){
+			varidx++;
+			lastnode=o;
+		}
+		
+		o.innerHTML.matchAll(re).forEach(function(ms){
+			var varname=ms[1];
+			varlist.push({name:varname,pidx:varidx,ref:o});
+			if (!vargroups[varname]) vargroups[varname]={};
+			vargroups[varname]['var_'+varidx]={pidx:varidx,ref:o};	
+		});
+			
+	}//while walker
+	
+	d.innerHTML='';
+	
+	var varbookmark=function(m){return function(){
+		m.scrollIntoView({behavior: "smooth"});
+		setTimeout(function(){
+			var oclass=m.className;
+			m.className='var_found';
+			setTimeout(function(){
+				m.className=oclass;
+			},500);
+		},500);
+	}};
+		
+	switch (viewmode){
+	case 'list':
+	for (var i=0;i<varlist.length;i++){
+		var varitem=varlist[i];
+		var itemshell=document.createElement('div');
+		itemshell.className='listitem';
+		var item=document.createElement('a');
+		item.innerHTML='<b>'+varitem.name+'</b> &nbsp; <em class="diminished">&para;'+varitem.pidx+'</em>';
+		item.onclick=varbookmark(varitem.ref);
+		itemshell.appendChild(item);
+		d.appendChild(itemshell);
+	}	
+	break;
+	case 'group':
+	for (varname in vargroups){
+		var title=document.createElement('div');
+		title.className='sectionheader';
+		title.innerHTML=varname;
+		d.appendChild(title);
+		var varlist=vargroups[varname];
+		var itemshell=document.createElement('div');
+		itemshell.className='listitem';
+		for (var i in varlist){
+			var varitem=varlist[i];
+			var item=document.createElement('a');
+			item.style.marginRight='10px';
+			item.className='hovlink';
+			item.innerHTML='&para;'+varitem.pidx;
+			item.onclick=varbookmark(varitem.ref);
+			itemshell.appendChild(item);
+		}//for
+		d.appendChild(itemshell);			
+	}//foreach
+	
+	break;
+	
+	}//switch
+		
+		
+}
+
+
 mcetemplates={
 	'headline':function(ed){return '<div class="headline"><p>'+(ed.selection.getContent()==''?'Headline':ed.selection.getContent())+'</p></div>';},	
 	'noamp':function(ed){return '<div class="noamp"><!-- noampstart --><p>'+(ed.selection.getContent()==''?'AMP Excluded Content':ed.selection.getContent())+'</p><!-- noampend --></div>';},	

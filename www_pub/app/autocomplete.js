@@ -104,7 +104,7 @@ selectpickup=function(sf,title){
 	if (sf!=null&&d.onchage) d.onchange();
 }
 
-pickupalllookups=function(sf){
+pickupalllookups=function(sf,subgroup){
 	if (!document.hotspot) return;
 
 	if (document.hotspot.id) document.hotspot=gid(document.hotspot.id);
@@ -122,19 +122,24 @@ pickupalllookups=function(sf){
 	if (document.iphone_portrait&&d.id&&gid(d.id+'_lookup')) os=gid(d.id+'_lookup').getElementsByTagName('input');
 	
 	if (!sf.allchecked){
-		for (var i=0;i<os.length;i++) if (os[i].className=='lksel') {os[i].checked='checked';sels.push(os[i].value);}
+		for (var i=0;i<os.length;i++) if (os[i].className=='lksel') {if (subgroup==null||os[i].attributes.subsel.value==subgroup) os[i].checked='checked'; if (os[i].checked) sels.push(os[i].value);}
 		sf.allchecked=true;
 		sf.innerHTML='unselect all items';
+		if (subgroup!=null) sf.innerHTML='uncheck';
 	} else {
 		sf.allchecked=null;
-		for (var i=0;i<os.length;i++) if (os[i].className=='lksel') {os[i].checked='';}
+		for (var i=0;i<os.length;i++) if (os[i].className=='lksel') {if (subgroup==null||os[i].attributes.subsel.value==subgroup) os[i].checked=''; if (os[i].checked) sels.push(os[i].value);}
 		sf.innerHTML='select all items';
+		if (subgroup!=null) sf.innerHTML='check';
 	}
 	
 	if (sels.length==0) {cancelpickup(d.id,true);return;}
 	
 	d.value='('+sels.length+' items selected)';
 	d.value2=sels.join(',');
+	
+	if (!document.hotspot.picks) document.hotspot.picks={};
+	for (var i=0;i<sels.length;i++) document.hotspot.picks[sels[i]]=sels[i];
 	
 	if (document.hotspot.id) {
 		gid(document.hotspot.id).valuecount=1;

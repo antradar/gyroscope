@@ -147,6 +147,8 @@ switch($cmd){
 		
 	case 'kbman_lookuptopicrec': include 'icl/kbman_lookuptopicrec.inc.php'; kbman_lookuptopicrec(); break;
 	
+	case 'kbman_summarize': include 'icl/kbman_summarize.inc.php'; kbman_summarize(); break;
+	
 	case 'kbman_newrec': include 'icl/kbman_newrec.inc.php'; kbman_newrec(); break;
 	case 'kbman_addrec': include 'icl/kbman_addrec.inc.php'; kbman_addrec(); break;
 	case 'kbman_delrec': include 'icl/kbman_delrec.inc.php'; kbman_delrec(); break;
@@ -273,6 +275,7 @@ switch($cmd){
 	case 'updatetemplate': include 'icl/updatetemplate.inc.php'; updatetemplate(); break;
 	case 'updatetemplate_rectitle': include 'icl/updatetemplate_rectitle.inc.php'; updatetemplate_rectitle(); break;
 	case 'lookuptemplatevar': include 'icl/lookuptemplatevar.inc.php'; lookuptemplatevar(); break;
+	case 'lookuptemplatevartoc': include 'icl/lookuptemplatevartoc.inc.php'; lookuptemplatevartoc(); break;
 	case 'lookupstyles': include 'icl/lookupstyles.inc.php'; lookupstyles(); break;
 	
 	case 'listtemplatetypetemplates': include 'icl/listtemplatetypetemplates.inc.php'; listtemplatetypetemplates(); break;
