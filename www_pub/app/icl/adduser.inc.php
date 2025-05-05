@@ -80,6 +80,8 @@ function adduser(){
 	header('newkey: user_'.$userid);
 	header('newparams: showuser&userid='.$userid);
 
+	cache_inc_entity_ver('user_'.$gsid);
+	
 	$loadfuncs='';
 
 	//vendor auth 3

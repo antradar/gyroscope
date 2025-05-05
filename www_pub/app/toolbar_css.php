@@ -12,6 +12,7 @@ use toolbar.psp to generate toolbar.gif
 .scal_head .scal_hcell{width:14%;}
 .scal_view .scal_cell{width:14%;}
 
+.objcacheinfo{font-size:12px;padding-top:10px;opacity:0.4;visibility:hidden;}
 
 .scal_view .scal_cell{border:solid 1px #444444;}
 .scal_view .scal_cell.today{border:solid 3px #ffab00;}

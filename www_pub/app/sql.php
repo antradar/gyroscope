@@ -60,6 +60,9 @@ function sql_prep($query,&$db,$params=null){
 	global $dbdefers;
 	global $enable_db_profiler;
 	
+	error_log("Query [$query]");
+	
+	
 	if ($SQL_READONLY){
 		$tokens=explode(' ',trim($query));
 		$verb=strtolower($tokens[0]);

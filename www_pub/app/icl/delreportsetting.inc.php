@@ -19,6 +19,8 @@ function delreportsetting(){
 	$query="delete from ".TABLENAME_REPORTS." where reportid=? and gyrosys=0 and gsid=?";
 	sql_prep($query,$db,array($reportid,$gsid));
 	
+	cache_inc_entity_ver('reports_list_'.$gsid);
+	
 	logaction("deleted Report Settings #$reportid $reportname",
 		array('reportid'=>$reportid,'reportname'=>$reportname),
 		array('rectype'=>'reportsetting','recid'=>$reportid));

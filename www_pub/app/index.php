@@ -19,12 +19,13 @@ evict_check();
 
 login();
 
+include 'models/user.meta.php';
 
 $user=userinfo();
 $userid=$user['userid'];
-$query="select * from ".TABLENAME_USERS." where userid=?";
-$rs=sql_prep($query,$db,$userid);
-$usermeta=sql_fetch_assoc($rs);
+$gsid=$user['gsid'];
+
+$usermeta=user_meta($userid,$gsid);
 $quicklist=isset($usermeta['quicklist'])&&$usermeta['quicklist']?1:0;
 $dark=isset($usermeta['darkmode'])?intval($usermeta['darkmode']):0;
 
@@ -55,7 +56,7 @@ if ($uiconfig['toolbar_position']=='left') $quicklist=0;
 	<link href="rtl.css" type="text/css" rel="stylesheet" />
 	<?php }?>
 	<link rel="manifest" href="manifest.php?hb=<?php echo time();?>">
-	<?php if ($SQL_READONLY){
+	<?php if (isset($SQL_READONLY)&&$SQL_READONLY){
 	?>
 	<style>
 	/* readonly mode */

@@ -1,4 +1,5 @@
 <?php
+include 'models/myuser.reauth.php';
 
 function reauth(){
 	
@@ -15,15 +16,8 @@ function reauth(){
 	$gstier=0;
 	
 	//every portalized table should have its own gsexpiry and gstier
-	
-	$query="select gsexpiry,gstier,login,dispname,active,virtualuser,groupnames from 
-	".TABLENAME_USERS.",".TABLENAME_GSS." 
-	where userid=? and ".TABLENAME_USERS.".".COLNAME_GSID."=?
-	and ".TABLENAME_USERS.".".COLNAME_GSID."=".TABLENAME_GSS.".".COLNAME_GSID;
-	
-	$rs=sql_prep($query,$db,array($userid,$gsid));
-		
-	$myrow=sql_fetch_assoc($rs);
+
+	$myrow=myuser_reauth($userid,$gsid);	
 	
 	$gsexpiry=intval($myrow['gsexpiry']);
 	$gstier=intval($myrow['gstier']);

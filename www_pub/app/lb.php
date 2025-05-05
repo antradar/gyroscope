@@ -71,6 +71,8 @@ define ('TABLENAME_FAULTS','faults');
 define ('REDIS_PORT', '6379');
 define ('REDIS_PREFIX', ''); //vendor specific
 
+define ('MEMCACHE_PREFIX','GS'); //change this
+
 if (false){ //legacy fallback in case reverse proxy cannot set headers without prepending "HTTP_"; use with caution.
         if ($_SERVER['REMOTE_ADDR']=='127.0.0.1'&&isset($_SERVER['HTTP_REMOTE_ADDR'])) $_SERVER['REMOTE_ADDR']=$_SERVER['HTTP_REMOTE_ADDR'];
         if (isset($_SERVER['HTTP_HTTPS'])) $_SERVER['HTTPS']=$_SERVER['HTTP_HTTPS'];

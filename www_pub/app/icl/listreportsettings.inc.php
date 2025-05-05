@@ -1,5 +1,7 @@
 <?php
 
+include 'models/reports.list.php';
+
 function listreportsettings(){
 	global $db; 
 	global $lang;
@@ -38,30 +40,12 @@ function listreportsettings(){
 <?php		
 	}
 
-	$params=array($gsid,$syslevel);
-	$query="select * from ".TABLENAME_REPORTS." where (gsid=? or gsid=?) ";
-	if (TABLENAME_GSS!='gss') $query="select * from ".TABLENAME_REPORTS." where (".COLNAME_GSID."=? or ".COLNAME_GSID."=?)";
-	
 	$soundex=intval(SGET('soundex'));
-	$sxsearch='';
-	if ($soundex&&$key!='') $sxsearch=" or concat(soundex(reportname_$lang),'') like concat(soundex(?),'%') ";
 	
-	if ($key!='') {
-		$query.=" and (lower(reportname_$lang) like lower(?) or lower(reportgroup_$lang) like lower(?) $sxsearch) ";
-		array_push($params,"%$key%","%$key%");
-		if ($sxsearch){
-			array_push($params,$key);	
-		}
-	}
-	$rs=sql_prep($query,$db,$params);
-	$count=sql_affected_rows($db,$rs);
-	
-	$perpage=20;
-	$maxpage=ceil($count/$perpage)-1;
-	if ($maxpage<0) $maxpage=0;
-	if ($page<0) $page=0;
-	if ($page>$maxpage) $page=$maxpage;
-	$start=$perpage*$page;
+	$res=reports_list($gsid,$key,$lang,$page,$syslevel,$soundex);
+	$maxpage=$res['maxpage'];
+	$page=$res['page'];
+	$recs=$res['recs'];
 
 	if ($maxpage>0){
 ?>
@@ -75,12 +59,10 @@ function listreportsettings(){
 <?php		
 	}
 	
-	$query.=" order by reportgroup_$lang, reportname_$lang limit $start,$perpage";	
-	$rs=sql_prep($query,$db,$params);
 
 	$lastgroup='';
 			
-	while ($myrow=sql_fetch_array($rs)){
+	foreach ($recs as $myrow){
 		$reportid=$myrow['reportid'];
 		$reportname=$myrow['reportname_'.$lang];
 		if ($reportname=='') $reportname=$myrow['reportname_'.$deflang];
@@ -101,6 +83,8 @@ function listreportsettings(){
 <div class="listitem"><a onclick="showreportsetting('<?php echo $reportid;?>','<?php echo $dbreportsettingtitle;?>');"><?php echo htmlspecialchars($reportsettingtitle);?></a></div>
 <?php		
 	}//while
+	
+	showobjcacheinfo($res);
 	
 	if ($mode!='embed'){
 ?>

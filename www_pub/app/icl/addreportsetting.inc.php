@@ -41,6 +41,8 @@ function addreportsetting(){
 		apperror(_tr('error_creating_record '.$err));
 	}
 	
+	cache_inc_entity_ver('reports_list_'.$gsid);	
+	
 	logaction("added Report Settings #$reportid $reportname",array('reportid'=>$reportid,'reportname'=>"$reportname"));
 	
 	header('newrecid: '.$reportid);

@@ -6,6 +6,7 @@ function rptactionlog_fulltext(){
 	global $manticore;
 	
 	global $dict_mons;
+	if (!defined('KB_PREFIX')) define('KB_PREFIX','');
 	
 	$user=userinfo();
 	$gsid=$user['gsid'];
@@ -127,8 +128,8 @@ function rptactionlog_fulltext(){
 	$params=array($gsid);
 	$query="select * from ".TABLENAME_ACTIONLOG." left join ".TABLENAME_USERS." on ".TABLENAME_ACTIONLOG.".userid=".TABLENAME_USERS.".userid where ".TABLENAME_ACTIONLOG.".".COLNAME_GSID."=? ";
 	
-	$query="select *,year(logdate) as yr,month(logdate) as mon from actionlog_rt where gsid=$gsid ";
-	$cquery="select count(*) as c,year(logdate) as yr,month(logdate) as mon from actionlog_rt where gsid=$gsid ";
+	$query="select *,year(logdate) as yr,month(logdate) as mon from ".KB_PREFIX."actionlog_rt where gsid=$gsid ";
+	$cquery="select count(*) as c,year(logdate) as yr,month(logdate) as mon from ".KB_PREFIX."actionlog_rt where gsid=$gsid ";
 
 	
 	$terms=array();

@@ -9,7 +9,7 @@ function setaccountpass(){
 		
 	$user=userinfo();
 	$userid=$user['userid'];
-	
+	$gsid=$user['gsid'];
 
 	$needkeyfile=GETVAL('needkeyfile');
 	$usesms=GETVAL('usesms');
@@ -58,6 +58,9 @@ function setaccountpass(){
 	array_push($params,$needkeyfile,$usesms,$smscell,$usega,$usegamepad,$useyubi,$yubimode, $quicklist, $darkmode, $dowoffset, $userid);
 	sql_prep($query,$db,$params);
 
+	cache_delete(TABLENAME_GSS.'_'.$userid.'-'.$gsid);
+	cache_inc_entity_ver('user_'.$gsid);
+	
 	if ($_POST['oldpass']=='') echo 'Account settings updated'; else tr('password_changed');
 	
 	logaction("changed own password",array(),array('rectype'=>'account','recid'=>0),0,null,1);

@@ -53,7 +53,39 @@ function cache_init(){
 		//die('cannot connect to aux database');
 	}
 	
+	/*
+	memcache_add_server($cache,'memcache_server_2',11211);
+	*/
+	
 	memcache_set($cache,'memcache_keepalive','stayalive',null,3600);
+}
+
+function cache_get_entity_ver($entity){
+	global $cache;
+	if (!defined('MEMCACHE_PREFIX')){
+		define('MEMCACHE_PREFIX','');	
+	}
+	$verkey=MEMCACHE_PREFIX.':'.$entity.':ver';
+	$ver=memcache_get($cache,$verkey);
+	if (!$ver){
+		$ver=1;
+		memcache_set($cache,$verkey,$ver,null,3600*6);
+	}
+	return $ver;	
+}
+
+function cache_inc_entity_ver($entity){
+	global $cache;
+	if (!defined('MEMCACHE_PREFIX')){
+		define('MEMCACHE_PREFIX','');	
+	}
+	$verkey=MEMCACHE_PREFIX.':'.$entity.':ver';
+	$ver=memcache_increment($cache,$verkey);
+	if (!$ver){
+		$ver=1;
+		memcache_set($cache,$verkey,$ver,null,3600*6);
+	}
+	return $ver;	
 }
 
 function cache_flush(){
@@ -82,7 +114,13 @@ function cache_set($key,$obj,$expiry){
 
 	global $cache;
 	global $cachetest;
+
+	if (!defined('MEMCACHE_PREFIX')){
+		define('MEMCACHE_PREFIX','');	
+	}
 	
+	$key=MEMCACHE_PREFIX.$key;
+		
 	if ($cachetest){
 		$f=fopen('cache/'.$key,'wb');
 		fwrite($f,serialize($obj));
@@ -101,6 +139,13 @@ function cache_delete($key){
 	global $cache;
 	global $cachetest;
 	
+	if (!defined('MEMCACHE_PREFIX')){
+		define('MEMCACHE_PREFIX','');	
+	}
+	
+	$key=MEMCACHE_PREFIX.$key;
+	
+	
 	if ($cachetest){
 		if (file_exists('cache/'.$key)) unlink('cache/'.$key);
 		return;	
@@ -115,7 +160,13 @@ function cache_get($key){
 
 	global $cache;
 	global $cachetest;
-
+	
+	if (!defined('MEMCACHE_PREFIX')){
+		define('MEMCACHE_PREFIX','');	
+	}
+	
+	$key=MEMCACHE_PREFIX.$key;
+	
 	if ($cachetest){
 		if (!file_exists('cache/'.$key)) return null;
 		$f=fopen('cache/'.$key,'rb');

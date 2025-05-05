@@ -327,6 +327,16 @@ function streamaction($wssid,$rectype,$recid,$gsid,$userid,$extra=null,$rdprefix
 	fclose($sock);		
 }
 
+function showobjcacheinfo($obj){
+?>
+<div class="objcacheinfo">
+	<?php if (isset($obj['ver'])) echo 'ver: '.$obj['ver'];?>
+	&nbsp;
+	cached: <?php echo $obj['cached']?'yes':'no';?>
+</div>
+<?php	
+}
+
 class FaultException extends Exception{
 	protected $_diagdata;
 	public function __construct($message='',$diagdata='',$code=0,Exception $previous=NULL){
@@ -486,14 +496,16 @@ function logaction($message,$rawobj=null,$syncobj=null,$gsid=0,$trace=null,$ctxi
 		$rs=sql_prep($query,$db,array($userid,$gsid,$logname,$now,$message,$obj,$bulldozed));
 		$alogid=sql_insert_id($db,$rs);
 	}
-	
+
+	if (!defined('KB_PREFIX')) define('KB_PREFIX','');
+		
 	if (isset($alogid)&&$use_doc_search&&$message!=''){
 		$drectype=addslashes($rectype??'');
 		$drecid=intval($recid??0);
 		$dlogname=addslashes($logname);
 		$dlogmessage=addslashes($message);
 		$drawobj=addslashes($oobj);
-		sql_query("insert into actionlog_rt(alogid,gsid,userid,rectype,recid,bulldozed,logdate,logname,logmessage,rawobj,ctxid) values ($alogid,$gsid,$userid,'$drectype',$drecid,$bulldozed,$now,'$dlogname','$dlogmessage','$drawobj',$ctxid)"
+		sql_query("insert into ".KB_PREFIX."actionlog_rt(alogid,gsid,userid,rectype,recid,bulldozed,logdate,logname,logmessage,rawobj,ctxid) values ($alogid,$gsid,$userid,'$drectype',$drecid,$bulldozed,$now,'$dlogname','$dlogmessage','$drawobj',$ctxid)"
 		, $manticore);
 	}
 	

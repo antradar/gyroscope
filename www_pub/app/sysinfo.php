@@ -297,6 +297,49 @@ foreach ($tests as $test=>$result){
 	}
 	
 	if (isset($user['login'])&&$user['login']!=''){
+		
+		if (isset($cache)){
+			$cachestats=memcache_get_extended_stats($cache);
+			$cacheres=array('servers'=>array(),'used_all'=>0,'total_all'=>0);
+			foreach ($cachestats as $serverkey=>$cinfo){
+				$cacheres['servers'][$serverkey]=array('used'=>$cinfo['bytes'],'total'=>$cinfo['limit_maxbytes']);
+				$cacheres['used_all']+=$cinfo['bytes'];
+				$cacheres['total_all']+=$cinfo['limit_maxbytes'];
+			}
+			
+			//echo '<pre>'; print_r($cacheres); echo '</pre>';
+			if ($cacheres['total_all']>0){
+				$cachepct=round($cacheres['used_all']*100/$cacheres['total_all'],2);
+				$cachemb=$cacheres['total_all']/1024/1024;
+				$cachemulti=count($cacheres['servers'])>1;
+			?>
+			<div class="cache_section">
+				<div><b><?php if ($cachemulti) echo 'Total ';?>Object Cache Utilization</b></div>
+				<div class="cache_bar">
+					<div class="cache_progress" style="width:<?php echo $cachepct;?>%;"><?php echo $cachepct;?>%</div>
+				</div> <?php echo $cachemb;?>MB
+			</div>
+			<?php	
+				if ($cachemulti){
+				foreach ($cacheres['servers'] as $skey=>$server){
+				$cachepct=round($server['used']*100/$server['total'],2);
+				$cachemb=$server['total']/1024/1024;
+			?>
+			<div class="cache_section sub">
+				<div><?php echo $skey;?></div>
+				<div class="cache_bar">
+					<div class="cache_progress" style="width:<?php echo $cachepct;?>%;"><?php echo $cachepct;?>%</div>
+				</div> <?php echo $cachemb;?>MB
+			</div>
+			<?php
+					
+				}//foreach memcache server
+				}
+			
+			}//cached total>0
+		}
+
+			
 		$res=opcache_get_status();
 		$preload=isset($res['preload_statistics'])?$res['preload_statistics']:null;
 		if ($preload){
@@ -337,7 +380,9 @@ foreach ($tests as $test=>$result){
 			}			
 		
 		}//preload	
-	}
+		
+		
+	}//signed in
 	
 	
 	if (isset($dbconfigs)&&$user['login']){
@@ -401,7 +446,7 @@ foreach ($tests as $test=>$result){
 	}
 	*/
 ?>	
-	<div class="clear"></div>
+	<div class="clear" style="padding-bottom:60px;"></div>
 </div>
 <script src="nano.js"></script>
 <script>

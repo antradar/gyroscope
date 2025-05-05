@@ -167,8 +167,12 @@ function updateuser(){
 		header('newdispname: '.tabtitle(stripslashes($dispname)));
 	}
 
+	cache_delete(TABLENAME_GSS.'_'.$userid.'-'.$gsid);
+	
 	reauth();
 	showuser($userid);
+	
+	cache_inc_entity_ver('user_'.$gsid);
 	
 	cache_delete(TABLENAME_GSS.'gyroscopeblockedids_'.$gsid);
 	cache_delete(TABLENAME_GSS.'gyroscopebinblockedids_'.$gsid);

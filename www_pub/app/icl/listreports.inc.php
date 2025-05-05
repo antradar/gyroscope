@@ -1,4 +1,5 @@
 <?php
+include 'models/reports.list.php';
 
 function listreports(){
 	$user=userinfo();
@@ -14,20 +15,14 @@ function listreports(){
 	$syslevel=0;
 	if (!is_numeric($gsid)) $syslevel=NULL_UUID;
 	
-	$query="select * from ".TABLENAME_REPORTS." where (gsid=? or gsid=?) ";
+	$page=isset($_GET['page'])?intval($_GET['page']):0;
+	$soundex=intval(SGET('soundex'));
 	
-	if (TABLENAME_GSS!='gss') $query="select * from ".TABLENAME_REPORTS." where (".COLNAME_GSID."=? or ".COLNAME_GSID."=?)";
+	$res=reports_list($gsid,$key,$lang,$page,$syslevel,$soundex);
+	$maxpage=$res['maxpage'];
+	$page=$res['page'];
+	$recs=$res['recs'];
 	
-	$params=array($gsid,$syslevel);
-	
-	if ($key!='') {
-		$query.=" and (lower(reportgroup_$lang) like lower(?) or lower(reportname_$lang) like lower(?)) ";
-		array_push($params,'%'.$key.'%','%'.$key.'%');
-	}
-	
-	$query.=" order by reportgroup_$lang,reportname_$lang";
-	
-	$rs=sql_prep($query,$db,$params);
 	$found=0;
 	
 	header('listviewtitle: '.tabtitle(_tr('icon_reports')));
@@ -48,12 +43,28 @@ function listreports(){
 	<?php makehelp('reportlistlookup','listviewlookup',1);?>
 	</form>
 </div>
+<?php
+
+?>
 <div id="reportlist">
 <?php
 }
+
+	if ($maxpage>0){
+?>
+<div class="listpager">
+<?php echo $page+1;?> of <?php echo $maxpage+1;?>
+&nbsp;
+<a href=# onclick="ajxpgn('reportlist',document.appsettings.codepage+'?cmd=slv_core__reports&key='+encodeHTML(gid('reportkey').value)+'&page=<?php echo $page-1;?>&mode=embed');return false;">&laquo; Prev</a>
+|
+<a href=# onclick="ajxpgn('reportlist',document.appsettings.codepage+'?cmd=slv_core__reports&key='+encodeHTML(gid('reportkey').value)+'&page=<?php echo $page+1;?>&mode=embed');return false;">Next &raquo;</a>
+</div>
+<?php		
+	}
+	
 	$lastgroup='';
 	
-	while ($myrow=sql_fetch_assoc($rs)){
+	foreach ($recs as $myrow){
 		$reportkey=$myrow['reportkey'];
 		$reportname=$myrow['reportname_'.$lang];
 		if ($reportname=='') $reportname=$myrow['reportname_'.$deflang];
@@ -88,6 +99,8 @@ function listreports(){
 	<em style="color:#666666;">You cannot see any reports.</em>
 <?php		
 	}
+	
+	showobjcacheinfo($res);
 	
 	if ($mode!='embed'){
 ?>

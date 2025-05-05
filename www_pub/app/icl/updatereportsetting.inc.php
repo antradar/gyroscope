@@ -60,6 +60,8 @@ function updatereportsetting(){
 	
 	sql_prep($query,$db,$params);
 
+	cache_inc_entity_ver('reports_list_'.$gsid);
+	
 	logaction("updated Report Settings #$reportid $reportname",
 		array('reportid'=>$reportid,'reportname'=>"$reportname"),
 		array('rectype'=>'reportsetting','recid'=>$reportid),0,null,2);

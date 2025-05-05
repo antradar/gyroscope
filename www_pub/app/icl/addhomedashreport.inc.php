@@ -24,6 +24,8 @@ function addhomedashreport(){
 	$query="insert into ".TABLENAME_HOMEDASHREPORTS." (gsid,userid,rpttabkey,rptkey,rpttitle,rptlink,rptname,bingo) values (?,?,?,?,?,?,?,?)";
 	sql_prep($query,$db,array($gsid,$userid,$rpttabkey,$rptkey,$rpttitle,$rptlink,$rptname,$bingo));
 
+	cache_delete('homedashreports_'.$userid.'_'.$gsid);
+	
 	listhomedashreports();		
 }
 
