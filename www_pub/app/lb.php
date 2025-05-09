@@ -51,7 +51,8 @@ define ('YUBIHELP','security-key-guide.php'); //https://www.antradar.com/blog-us
 
 define ('NULL_UUID','00000000-0000-0000-0000-000000000000');
 
-define ('SYS_RESOURCE_CAP',20); //weighted system resource, can be approximated by fpm max children
+define ('SYS_RESOURCE_CAP',10); //weighted system resource, can be approximated by fpm max children
+define ('GS_HOST_ID','H1');
 define ('TABLENAME_GSS','gss');
 define ('COLNAME_GSID','gsid');
 define ('TABLENAME_USERS','users');

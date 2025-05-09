@@ -91,13 +91,17 @@ function cache_inc_entity_ver($entity,$offset=1){
 
 function cache_ratelimit($unit, $limit, $resgroup='general'){
 	global $cache;
-	$ckey='host_ratelimit_'.$resgroup;
+	$ounit=$unit;
+	if ($unit==0) $unit=1; //still count, but do not block
+	$hostid='';
+	if (defined('GS_HOST_ID')) $hostid='_'.GS_HOST_ID;
+	$ckey='host_ratelimit_'.$hostid.$resgroup;
 	$used=memcache_increment($cache,$ckey,$unit);
 	if (!$used){
 		$used=memcache_set($cache,$ckey,$unit,null,1800);
 	}
 	
-	if ($used>$limit){
+	if ($used>$limit&&$ounit!=0){
 		memcache_decrement($cache,$ckey,$unit);
 		header('HTTP/1.0 429 Too many requests. Slow down!');
 		die();
@@ -107,7 +111,10 @@ function cache_ratelimit($unit, $limit, $resgroup='general'){
 
 function cache_ratelimit_release($unit, $resgroup='general'){
 	global $cache;
-	$ckey='host_ratelimit_'.$resgroup;
+	if ($unit==0) $unit=1;
+	
+	if (defined('GS_HOST_ID')) $hostid='_'.GS_HOST_ID;	
+	$ckey='host_ratelimit_'.$hostid.$resgroup;
 	
 	memcache_decrement($cache,$ckey,$unit);
 	
