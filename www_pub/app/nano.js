@@ -109,7 +109,16 @@ function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce,gskey,creds,headless){
 				showgssubscription();
 			    return;
 			}
-				
+
+			if (rq.status==429){
+			  ct.style.opacity=0.4;
+			  setTimeout(function(){
+				ct.style.opacity=1;
+				ajxpgn(c,u,d,e,data,callback,slowtimer,runonce,gskey,creds,headless);
+			  },2000);
+			  return;
+			}
+							
 			if (rq.status==504||rq.status==404){
 				if (self.flashsticker) {
 					flashsticker('Server error '+rq.status,2);
@@ -471,6 +480,9 @@ function togglepass(s,id){
 	}
 	d.focus();	
 }
+
+
+
 
 if (window.Blob){
 	ajxblob=function(url,data,mode,func){

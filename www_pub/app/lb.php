@@ -51,6 +51,7 @@ define ('YUBIHELP','security-key-guide.php'); //https://www.antradar.com/blog-us
 
 define ('NULL_UUID','00000000-0000-0000-0000-000000000000');
 
+define ('SYS_RESOURCE_CAP',20); //weighted system resource, can be approximated by fpm max children
 define ('TABLENAME_GSS','gss');
 define ('COLNAME_GSID','gsid');
 define ('TABLENAME_USERS','users');
@@ -72,6 +73,7 @@ define ('REDIS_PORT', '6379');
 define ('REDIS_PREFIX', ''); //vendor specific
 
 define ('MEMCACHE_PREFIX','GS'); //change this
+
 
 if (false){ //legacy fallback in case reverse proxy cannot set headers without prepending "HTTP_"; use with caution.
         if ($_SERVER['REMOTE_ADDR']=='127.0.0.1'&&isset($_SERVER['HTTP_REMOTE_ADDR'])) $_SERVER['REMOTE_ADDR']=$_SERVER['HTTP_REMOTE_ADDR'];

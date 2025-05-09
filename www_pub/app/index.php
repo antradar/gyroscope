@@ -68,6 +68,7 @@ if ($uiconfig['toolbar_position']=='left') $quicklist=0;
 	</style>
 	<?php	
 	}?>
+	<script src="img_retry.js"></script>
 </head>
 
 <body onload="setTimeout(scrollTo, 0, 0, 1);">
@@ -102,7 +103,7 @@ document.appsettings={codepage:'<?php echo $codepage;?>',binpages:<?php echo jso
 <span class="iconbuttons">
 <!-- usually there is one entity icon per list view -->
 <input id="anchor_top" title="Top View" style="position:absolute;top:-60px;left:-100px;width:20px;">
-<a class="noblink" id="applogo" ondblclick="window.open('./','','width=768,height=568,left=300,top=50,popup=yes,titlebar=no,menubar=no,location=no,toolbar=no,status=no');"><img src="<?php echo $codepage;?>?cmd=clogo" border="0" width="157"></a>
+<a class="noblink" id="applogo" ondblclick="window.open('./','','width=768,height=568,left=300,top=50,popup=yes,titlebar=no,menubar=no,location=no,toolbar=no,status=no');"><img src="<?php echo $codepage;?>?cmd=clogo" onerror="img_retry(this);" border="0" width="157"></a>
 
 <a id="beltprev" onclick="beltprev();"><img class="beltprev" src="imgs/t.gif" width="16" height="32"></a>
 

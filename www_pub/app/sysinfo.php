@@ -2,6 +2,7 @@
 
 include 'lb.php';
 include 'auth.php'; 
+
 //login(); //uncomment in production
 
 $ip=$_SERVER['REMOTE_ADDR'];
@@ -13,7 +14,7 @@ if (isset($_SERVER['REMOTE_ADDR6'])) $ip=$_SERVER['REMOTE_ADDR6'];
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta id="viewport" name="viewport" content="width=device-width" />
 	<title>Gyroscope Fitness Test</title>
-	<link rel="stylesheet" href="sysinfo_sd.css" type="text/css" />
+	<link rel="stylesheet" href="sysinfo_sd.css?v=2" type="text/css" />
 	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 </head>
 <body>
@@ -299,6 +300,24 @@ foreach ($tests as $test=>$result){
 	if (isset($user['login'])&&$user['login']!=''){
 		
 		if (isset($cache)){
+			
+		?>
+		<div class="cache_section">
+			<div><b>Resource Cap:</b></div>
+			<?php
+			$used=memcache_get($cache,'host_ratelimit_general');
+			if (!$used) $used=0;
+			
+			$pct=$used*100/SYS_RESOURCE_CAP;
+		?>	
+				<div class="cache_bar">
+					<div class="cache_progress" style="width:<?php echo $pct;?>%;"><?php echo round($pct,2);?>%</div>
+				</div> <?php echo $used;?>/<?php echo SYS_RESOURCE_CAP;?> &nbsp; <a href=# onclick="ajxpgn('sysinfo_metrics','sysinfo_metrics.php?');return false;">Explore</a>	
+				
+				<div id="sysinfo_metrics"></div>
+		</div>
+		<?php	
+			
 			$cachestats=memcache_get_extended_stats($cache);
 			$cacheres=array('servers'=>array(),'used_all'=>0,'total_all'=>0);
 			foreach ($cachestats as $serverkey=>$cinfo){

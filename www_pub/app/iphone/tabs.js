@@ -233,6 +233,21 @@ function reloadtab(key,title,params,loadfunc,data,opts,gskey){
 	      return;
 	  }            
   
+	  if (rq.status==429){
+		  ct.style.opacity=0.5;
+		  setTimeout(function(){
+			ct.style.opacity=1;
+			document.tabtitles[tabid].tablock=null;
+			reloadtab(key,title,params,loadfunc,data,opts,gskey);
+		  },2000);
+		  return;
+	  }
+	  	  
+		if (rq.status==504||rq.status==404){
+			if (self.flashsticker) flashsticker('Server error '+rq.status,2);
+			document.tabtitles[tabid].tablock=null;
+			return;   
+		}	  
 	    
       document.tabtitles[tabid].tablock=null;
       
@@ -354,6 +369,31 @@ function addtab(key,title,params,loadfunc,data,opts){
 		  	window.location.href='login.php';
 		    return;
       }
+      
+      
+	  if (rq.status==401||(xtatus|0)==401){
+		  ajxjs(self.showgssubscription,'gssubscriptions.js');
+		  showgssubscription();
+	      return;
+	  }            
+	  
+	  if (rq.status==429){
+		  c.style.opacity=0.4;
+		  setTimeout(function(){
+			c.style.opacity=1;
+			document.tablock=null;
+			reloadtab(key,title,params,loadfunc,data,opts);
+		  },2000);
+		  return;
+	  }
+	  
+		if (rq.status==504||rq.status==404){
+			
+			if (self.flashsticker) flashsticker('Server error '+rq.status,2);
+			document.tablock=null;
+			return;   
+		}
+		      
 
 	var apperror=rq.getResponseHeader('apperror');
 	if (apperror!=null&&apperror!=''){

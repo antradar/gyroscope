@@ -413,10 +413,23 @@ function reloadtab(key,title,params,loadfunc,data,opts,gskey){
 		    return;
       }
       
+	  if (rq.status==429){
+		  ct.style.opacity=0.4;
+		  setTimeout(function(){
+			  ct.style.opacity=1;
+			document.tabtitles[tabid].tablock=null;
+			reloadtab(key,title,params,loadfunc,data,opts,gskey);
+		  },2000);
+		  return;
+	  }
+	        
       if (rq.status==504||rq.status==404){
 	      
 		if (self.flashsticker) flashsticker('Server error '+rq.status,2);
 		else c.innerHTML='Server error '+rq.status;
+		
+		document.tabtitles[tabid].tablock=null;
+		
 	    return;   
       }
       
@@ -728,11 +741,21 @@ function addtab(key,title,params,loadfunc,data,opts){
 	      return;
 	  }            
 	  
+	  if (rq.status==429){
+		  c.style.opacity=0.4;
+		  setTimeout(function(){
+			c.style.opacity=1;
+			document.tablock=null;
+			reloadtab(key,title,params,loadfunc,data,opts);
+		  },2000);
+		  return;
+	  }
+	  
 		if (rq.status==504||rq.status==404){
 			
 			if (self.flashsticker) flashsticker('Server error '+rq.status,2);
 			else c.innerHTML='Server error '+rq.status;
-			
+			document.tablock=null;
 			return;   
 		}
 	  

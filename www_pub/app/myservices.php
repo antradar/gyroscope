@@ -56,6 +56,20 @@ if (isset($enable_gs_tracer)&&$enable_gs_tracer){
 	include 'gyroscope_tracer.php';
 }
 
+$ratelimit_unit=1;
+$ratelimit_units=array(
+'pump'=>0,
+//	'wk'=>200,
+// 'slv_core__users'=>200,
+//'clogo'=>200,
+);
+
+$gyroscope_timer_start=microtime(1);
+if (isset($ratelimit_units[$cmd])) $ratelimit_unit=$ratelimit_units[$cmd];
+if (is_callable('cache_ratelimit')) cache_ratelimit($ratelimit_unit,SYS_RESOURCE_CAP); //see lb.php
+
+register_shutdown_function('gyroscope_shutdown'); //register AFTER the rate limit check
+
 try {  //comment out in older PHP versions
 	
 switch($cmd){
@@ -359,7 +373,9 @@ switch($cmd){
 	
 	default: 
 	header('gsfunc: !invalid');
-	apperror('unspecified interface:'.preg_replace('/[^A-Za-z0-9-_]/','',$cmd));	
+	$dcmd=$cmd;
+	$cmd='';
+	apperror('unspecified interface:'.preg_replace('/[^A-Za-z0-9-_]/','',$dcmd));	
 }
 
 } catch (FaultException $e){ //comment out in older PHP versions
@@ -371,4 +387,31 @@ switch($cmd){
 if (isset($enable_gs_tracer)&&$enable_gs_tracer){
 	gyroscope_trace_dump();
 }
+
+function gyroscope_shutdown(){
+	global $ratelimit_unit;
+	global $cmd;
+	global $gyroscope_timer_start;
+	
+	$ta=$gyroscope_timer_start;
+	$tb=microtime(1);
+	
+	if (!isset($ratelimit_unit)) $ratelimit_unit=1;
+	if (is_callable('cache_ratelimit_release')) {
+		
+		if ($cmd!=''){
+			$memx=intval(memory_get_usage(1)/1024/1024);
+			$time=round(($tb-$ta)*1000);
+			
+			cache_inc_entity_ver('metric_hit_'.$cmd);
+			cache_inc_entity_ver('metric_memx_'.$cmd,$memx);
+			cache_inc_entity_ver('metric_time_'.$cmd,$time);
+			
+		}
+		
+		
+		cache_ratelimit_release($ratelimit_unit);		
+	}
+}
+
 

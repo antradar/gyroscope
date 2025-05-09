@@ -60,13 +60,14 @@ function cache_init(){
 	memcache_set($cache,'memcache_keepalive','stayalive',null,3600);
 }
 
-function cache_get_entity_ver($entity){
+function cache_get_entity_ver($entity,$skip_setting=0){
 	global $cache;
 	if (!defined('MEMCACHE_PREFIX')){
 		define('MEMCACHE_PREFIX','');	
 	}
 	$verkey=MEMCACHE_PREFIX.':'.$entity.':ver';
 	$ver=memcache_get($cache,$verkey);
+	if ($skip_setting) return $ver;
 	if (!$ver){
 		$ver=1;
 		memcache_set($cache,$verkey,$ver,null,3600*6);
@@ -74,19 +75,44 @@ function cache_get_entity_ver($entity){
 	return $ver;	
 }
 
-function cache_inc_entity_ver($entity){
+function cache_inc_entity_ver($entity,$offset=1){
 	global $cache;
 	if (!defined('MEMCACHE_PREFIX')){
 		define('MEMCACHE_PREFIX','');	
 	}
 	$verkey=MEMCACHE_PREFIX.':'.$entity.':ver';
-	$ver=memcache_increment($cache,$verkey);
+	$ver=memcache_increment($cache,$verkey,$offset);
 	if (!$ver){
-		$ver=1;
-		memcache_set($cache,$verkey,$ver,null,3600*6);
+		$ver=$offset;
+		memcache_set($cache,$verkey,$ver,null,3600*24*2+10);
 	}
 	return $ver;	
 }
+
+function cache_ratelimit($unit, $limit, $resgroup='general'){
+	global $cache;
+	$ckey='host_ratelimit_'.$resgroup;
+	$used=memcache_increment($cache,$ckey,$unit);
+	if (!$used){
+		$used=memcache_set($cache,$ckey,$unit,null,1800);
+	}
+	
+	if ($used>$limit){
+		memcache_decrement($cache,$ckey,$unit);
+		header('HTTP/1.0 429 Too many requests. Slow down!');
+		die();
+	}
+		
+}
+
+function cache_ratelimit_release($unit, $resgroup='general'){
+	global $cache;
+	$ckey='host_ratelimit_'.$resgroup;
+	
+	memcache_decrement($cache,$ckey,$unit);
+	
+}
+
 
 function cache_flush(){
 	global $usecache;
