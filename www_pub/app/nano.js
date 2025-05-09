@@ -112,8 +112,10 @@ function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce,gskey,creds,headless){
 
 			if (rq.status==429){
 			  ct.style.opacity=0.4;
+			  if (gid('serverbusy')) gid('serverbusy').style.display='inline';
 			  setTimeout(function(){
 				ct.style.opacity=1;
+				if (gid('serverbusy')) gid('serverbusy').style.display='none';
 				ajxpgn(c,u,d,e,data,callback,slowtimer,runonce,gskey,creds,headless);
 			  },2000);
 			  return;

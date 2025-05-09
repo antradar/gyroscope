@@ -38,6 +38,11 @@ header('Content-Type: text/css');
 .sectionheader.close{background:#dedede url(imgs/title_close_hd.gif) no-repeat 0 50%;}
 .sectionheader.open, .sectionheader.close{background-size:16px 16px;}
 
+#serverbusy{
+	background-image:url(imgs/sysicons_hd.gif);background-size:240px 64px;
+}
+	
+
 /*
 #applogo img{visibility:hidden;}
 #applogo{background:transparent url(imgs/clogo_hd.gif) no-repeat 0 0; background-size:157px 56px;}
@@ -56,7 +61,7 @@ if ($dark==0){
 if ($dark==0||$dark==1){
 ?>
 
-	.daylightsaving, #wsswarn, #barcodewarn, #diagwarn, #sysreswarn, #imecree, #lI01, 
+	.daylightsaving, #wsswarn, #barcodewarn, #diagwarn, #sysreswarn, #imecree, #lI01, #serverbusy,
 	#gamepadicon, #gsnotesclip, #chatindicator, #chatindicator.offline,
 	.img-addrec, .img-speechrecog,
 	.img-speechrecog,

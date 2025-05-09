@@ -134,6 +134,7 @@ acronym.help{cursor:help;border-bottom:dotted 1px #4444ee;}
 #barcodewarn{width:16px;height:16px;background:transparent url(imgs/toolbar.gif) -48px -16px;margin-left:8px;margin-top:2px;display:none;}
 #diagwarn{width:16px;height:16px;background:transparent url(imgs/toolbar.gif) -64px -32px;margin-left:8px;margin-top:2px;display:none;cursor:pointer;}
 #sysreswarn{width:16px;height:16px;background:transparent url(imgs/toolbar.gif) -512px -16px;margin-left:8px;margin-top:2px;display:none;cursor:pointer;}
+#serverbusy{width:16px;height:8px;background:transparent url(imgs/sysicons.gif) -144px 0;margin-left:8px;margin-top:2px;display:none;cursor:pointer;}
 #gsreplayicon{width:12px;height:12px;background:#F1272A;border-radius:8px;margin-top:0;margin-left:12px;display:none;cursor:pointer;outline-offset:1px;outline:solid 1px #F1272A;box-sizing:border-box;filter:saturate(0.3);}
 #lI01{width:16px;height:16px;background:transparent url(imgs/toolbar.gif) -80px -32px;margin-left:8px;margin-top:2px;display:none;cursor:pointer;}
 #imecree{width:16px;height:16px;background:transparent url(imgs/toolbar.gif) -96px -48px;margin-left:8px;margin-top:2px;display:none;cursor:pointer;}
@@ -472,7 +473,9 @@ if ($dark==0||$dark==1){
 	#statusinfo{background-image:url(imgs/dsprite.png);}
 	
 	#lkvc{border-right:solid 1px #2F5464;}
-	
+
+	#serverbusy{background-position:-144px -8px;}
+		
 	.wideviewmenu .listitem.current{border-left:solid 6px #294B70;background:#10233B;color:#68A7EA;}
 	
 	.img-mg{border-color:##21262D;background:#0D1117 url(imgs/dsprite.png) no-repeat 100% -330px;}	

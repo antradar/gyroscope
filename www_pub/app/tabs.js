@@ -415,8 +415,10 @@ function reloadtab(key,title,params,loadfunc,data,opts,gskey){
       
 	  if (rq.status==429){
 		  ct.style.opacity=0.4;
+		  if (gid('serverbusy')) gid('serverbusy').style.display='inline';
 		  setTimeout(function(){
-			  ct.style.opacity=1;
+			ct.style.opacity=1;
+			if (gid('serverbusy')) gid('serverbusy').style.display='none';
 			document.tabtitles[tabid].tablock=null;
 			reloadtab(key,title,params,loadfunc,data,opts,gskey);
 		  },2000);
@@ -743,8 +745,10 @@ function addtab(key,title,params,loadfunc,data,opts){
 	  
 	  if (rq.status==429){
 		  c.style.opacity=0.4;
+		  if (gid('serverbusy')) gid('serverbusy').style.display='inline';
 		  setTimeout(function(){
 			c.style.opacity=1;
+			if (gid('serverbusy')) gid('serverbusy').style.display='none';
 			document.tablock=null;
 			reloadtab(key,title,params,loadfunc,data,opts);
 		  },2000);
