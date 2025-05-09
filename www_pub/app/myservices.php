@@ -58,6 +58,8 @@ if (isset($enable_gs_tracer)&&$enable_gs_tracer){
 
 $ratelimit_unit=1;
 $ratelimit_units=array(
+'embeduserprofileuploader'=>0, //do not block iframe sources
+'kbman_embedmediauploader'=>0,
 //	'wk'=>200,
 // 'slv_core__users'=>200,
 //'clogo'=>200,
