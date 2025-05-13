@@ -305,7 +305,8 @@ foreach ($tests as $test=>$result){
 		<div class="cache_section">
 			<div><b>Resource Cap:</b></div>
 			<?php
-			$used=memcache_get($cache,'host_ratelimit_general');
+			if (defined('GS_HOST_ID')) $hostid='_'.GS_HOST_ID;
+			$used=memcache_get($cache,'host_ratelimit'.$hostid.'_general');
 			if (!$used) $used=0;
 			
 			$pct=$used*100/SYS_RESOURCE_CAP;

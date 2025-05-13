@@ -91,19 +91,38 @@ function cache_inc_entity_ver($entity,$offset=1){
 
 function cache_ratelimit($unit, $limit, $resgroup='general'){
 	global $cache;
+	global $WSS_INTERNAL_HOST;
+	global $redis;
+	
 	$ounit=$unit;
 	if ($unit==0) $unit=1; //still count, but do not block
 	$hostid='';
 	if (defined('GS_HOST_ID')) $hostid='_'.GS_HOST_ID;
-	$ckey='host_ratelimit_'.$hostid.$resgroup;
+	$ckey='host_ratelimit'.$hostid.'_'.$resgroup;
 	$used=memcache_increment($cache,$ckey,$unit);
-	if (!$used){
-		$used=memcache_set($cache,$ckey,$unit,null,1800);
+	
+	if (defined('SYS_RESOURCE_PID_WATCHER')&&SYS_RESOURCE_PID_WATCHER==1){
+		$pid=getmypid();
+		if (!isset($redis)){
+			$redis=new Redis();
+			$redis->connect($WSS_INTERNAL_HOST,REDIS_PORT);	
+		}
+		
+		$redis->sadd($ckey.'_pids',$pid);
+		$redis->incr($ckey.'_pid_'.$pid,$unit);
 	}
 	
+	if (!$used){
+		$used=memcache_set($cache,$ckey,$unit,null,0);
+	}
 	if ($used>$limit&&$ounit!=0){
 		memcache_decrement($cache,$ckey,$unit);
 		header('HTTP/1.0 429 Too many requests. Slow down!');
+		if (defined('SYS_RESOURCE_PID_WATCHER')&&SYS_RESOURCE_PID_WATCHER==1){
+			$redis->srem($ckey.'_pids',$pid);
+			$count=$redis->decr($ckey.'_pid_'.$pid,$unit);
+			if ($count<=0) $redis->del($ckey.'_pid_'.$pid);
+		}
 		die();
 	}
 		
@@ -111,12 +130,26 @@ function cache_ratelimit($unit, $limit, $resgroup='general'){
 
 function cache_ratelimit_release($unit, $resgroup='general'){
 	global $cache;
+	global $WSS_INTERNAL_HOST;
+	global $redis;
 	if ($unit==0) $unit=1;
 	
 	if (defined('GS_HOST_ID')) $hostid='_'.GS_HOST_ID;	
-	$ckey='host_ratelimit_'.$hostid.$resgroup;
+	$ckey='host_ratelimit'.$hostid.'_'.$resgroup;
 	
 	memcache_decrement($cache,$ckey,$unit);
+	
+	if (defined('SYS_RESOURCE_PID_WATCHER')&&SYS_RESOURCE_PID_WATCHER==1){
+		$pid=getmypid();	
+		if (!isset($redis)){
+			$redis=new Redis();
+			$redis->connect($WSS_INTERNAL_HOST,REDIS_PORT);
+		}
+		
+		$redis->srem($ckey.'_pids',$pid);
+		$count=$redis->decr($ckey.'_pid_'.$pid,$unit);
+		if ($count<=0) $redis->del($ckey.'_pid_'.$pid);		
+	}
 	
 }
 

@@ -1,5 +1,4 @@
 <?php
-
 include 'icl/showgyroscopeupdater.inc.php';
 include 'icl/showguide.inc.php';
 include 'icl/listhomedashreports.inc.php';
@@ -10,7 +9,7 @@ include 'icl/listhomedashreports.inc.php';
 //include 'gsx.php'; //uncomment this to see gsx in action
 //include 'gsx_hello.inc.php'; //uncomment this to see gsx in bypass mode, remember to modify gsx.php
 
-function showwelcome(){	
+function showwelcome(){
 	makechangebar('welcome',"if (gid('codegen_button')) gid('codegen_button').onclick();");
 		
 ?>
