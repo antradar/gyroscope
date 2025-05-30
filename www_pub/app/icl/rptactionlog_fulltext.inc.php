@@ -210,6 +210,7 @@ function rptactionlog_fulltext(){
 	$query.=$filter;
 	$cquery.=$filter;	
 	
+	
 	$count=-1;
 	
 	if ($key!=''||$opairs!=''){
@@ -222,6 +223,8 @@ function rptactionlog_fulltext(){
 	}
 
 	$query.=" order by logdate desc, alogid desc ";
+	
+	if ($key==''&&$opairs=='') $query.=" limit 1000";
 
 	$rs=sql_query($query,$manticore);
 	
@@ -269,7 +272,6 @@ function rptactionlog_fulltext(){
 		
 	}
 	
-
 	$dctxmap=array();
 	
 	$recs=array();

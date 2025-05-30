@@ -65,6 +65,11 @@ $ratelimit_units=array(
 //'clogo'=>200,
 );
 
+if (preg_match('/^embed/',$cmd)) $ratelimit_unit=0;
+if (preg_match('/^pdf/',$cmd)) $ratelimit_unit=0;
+if (preg_match('/^download/',$cmd)) $ratelimit_unit=0;
+
+
 $gyroscope_timer_start=microtime(1);
 if (isset($ratelimit_units[$cmd])) $ratelimit_unit=$ratelimit_units[$cmd];
 if (is_callable('cache_ratelimit')) cache_ratelimit($ratelimit_unit,SYS_RESOURCE_CAP); //see lb.php
@@ -403,10 +408,14 @@ function gyroscope_shutdown(){
 		if ($cmd!=''){
 			$memx=intval(memory_get_usage(1)/1024/1024);
 			$time=round(($tb-$ta)*1000);
-			
+			$data=getrusage();
+			$cputime=($data["ru_utime.tv_sec"] * 1000 + intval($data["ru_utime.tv_usec"] / 1000)) +
+           		($data["ru_stime.tv_sec"] * 1000 + intval($data["ru_stime.tv_usec"] / 1000));
+           
 			cache_inc_entity_ver('metric_hit_'.$cmd);
 			cache_inc_entity_ver('metric_memx_'.$cmd,$memx);
 			cache_inc_entity_ver('metric_time_'.$cmd,$time);
+			cache_inc_entity_ver('metric_cputime_'.$cmd,$cputime);
 			
 		}
 		

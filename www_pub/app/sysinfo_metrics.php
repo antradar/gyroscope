@@ -22,7 +22,9 @@ $sort=$_GET['sort']??'time_avg';
 $sorts=array(
 	'cmd'=>'cmd',
 	'time_avg'=>'time',
+	'cputime_avg'=>'cpu_time',
 	'memx_avg'=>'mem',
+	'ir'=>'i_r',
 	'hit'=>'hits',
 	//'memx'=>'mem_total',
 	//'time'=>'time_total',
@@ -35,14 +37,18 @@ foreach ($switches as $switch){
 	
 	$memx=cache_get_entity_ver('metric_memx_'.$switch,1);
 	$time=cache_get_entity_ver('metric_time_'.$switch,1);
+	$cputime=cache_get_entity_ver('metric_cputime_'.$switch,1);
 	
 	$cmds[$switch]=array(
 		'cmd'=>$switch,
 		'hit'=>$hit,
 		'memx'=>$memx,
 		'time'=>$time,
+		'cputime'=>$cputime,
+		'ir'=>$cputime>0?($time*100/$cputime):'-',
 		'memx_avg'=>$memx/$hit,
 		'time_avg'=>$time/$hit,
+		'cputime_avg'=>$cputime/$hit,
 	);
 }
 
@@ -74,8 +80,10 @@ Sort by:
 <table width="100%" cellpadding="3">
 <tr>
 	<td><b>cmd</b></td>
-	<td><b>time</b></td>
-	<td><b>mem</b></td>
+	<td><b>time/ms</b></td>
+	<td><b>cpu/&mu;s</b></td>
+	<td><b>mem/mb</b></td>
+	<td><b><acronym title="idle ratio">i.r.</acronym></b></td>
 	<td><b>hits</b></td>
 
 </tr>
@@ -85,7 +93,9 @@ Sort by:
 <tr>
 	<td><?php echo $cmd['cmd'];?></td>
 	<td><?php echo round($cmd['time_avg']);?></td>
+	<td><?php echo round($cmd['cputime_avg']);?></td>
 	<td><?php echo round($cmd['memx_avg']);?></td>
+	<td><?php echo round($cmd['ir']);?></td>
 	<td><?php echo $cmd['hit'];?></td>
 
 </tr>

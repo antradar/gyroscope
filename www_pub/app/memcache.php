@@ -101,6 +101,11 @@ function cache_ratelimit($unit, $limit, $resgroup='general'){
 	$ckey='host_ratelimit'.$hostid.'_'.$resgroup;
 	$used=memcache_increment($cache,$ckey,$unit);
 	
+	if (!$used){
+		$used=$unit;
+		memcache_set($cache,$ckey,$unit,null,0);
+	}	
+	
 	if (defined('SYS_RESOURCE_PID_WATCHER')&&SYS_RESOURCE_PID_WATCHER==1){
 		$pid=getmypid();
 		if (!isset($redis)){
@@ -112,9 +117,7 @@ function cache_ratelimit($unit, $limit, $resgroup='general'){
 		$redis->incr($ckey.'_pid_'.$pid,$unit);
 	}
 	
-	if (!$used){
-		$used=memcache_set($cache,$ckey,$unit,null,0);
-	}
+
 	if ($used>$limit&&$ounit!=0){
 		memcache_decrement($cache,$ckey,$unit);
 		header('HTTP/1.0 429 Too many requests. Slow down!');

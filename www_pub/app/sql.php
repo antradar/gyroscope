@@ -58,10 +58,7 @@ function sql_prep($query,&$db,$params=null){
 	global $gsdbprofile_fulltrace;
 	global $SQL_READONLY;
 	global $dbdefers;
-	global $enable_db_profiler;
-	
-	error_log("Query [$query]");
-	
+	global $enable_db_profiler;	
 	
 	if ($SQL_READONLY){
 		$tokens=explode(' ',trim($query));

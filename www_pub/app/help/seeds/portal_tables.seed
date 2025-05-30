@@ -4,6 +4,7 @@ define ('COLNAME_GSID','#primarykey#');
 define ('TABLENAME_USERS','#primaryfield#users');
 define ('TABLENAME_USERHELPSPOTS','#primaryfield#userhelpspots');
 define ('TABLENAME_ACTIONLOG','#primaryfield#actionlog');
+define ('TABLENAME_ACTIONCTXS','#primaryfield#actionctxs');
 define ('TABLENAME_REPORTS','#primaryfield#reports');
 define ('TABLENAME_TEMPLATETYPES','#primaryfield#templatetypes');
 define ('TABLENAME_TEMPLATES','#primaryfield#templates');
