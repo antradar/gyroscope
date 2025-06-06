@@ -323,7 +323,7 @@ input,textarea{border:solid 1px #999999;}
 #leftviewcloser img{dislay:block;width:9px;height:9px;background:transparent url(imgs/sprite.png) -301px -31px;}
 
 .clear{clear:both;}
-.col{width:48%;margin-right:2%;max-width:500px;float:left;}
+.col{width:48%;margin-right:2%;max-width:560px;float:left;}
 .majorcol, .minorcol, .rmajorcol, .rminorcol{float:left;}
 .majorcol{width:580px;}
 .minorcol{width:380px;margin-right:20px;}
@@ -335,10 +335,10 @@ input,textarea{border:solid 1px #999999;}
 .formlabel{color:#444444;padding-right:10px;margin-bottom:5px;font-weight:bold;}
 .inplong, .inp, .inpmed, .inpshort, .inpxshort{padding:5px 0;padding-left:5px;margin-bottom:5px;border-color:#cccccc;}
 .inplong{width:98%;}
-.inp{width:350px;}
-.inpmed{width:280px;}
-.inpshort{width:80px;}
-.inpxshort{width:40px;}
+.inp{width:80%;min-width:350px;max-width:525px;}
+.inpmed{width:60%;min-width:280px;max-width:420px;}
+.inpshort{width:25%;min-width:120px;max-width:180px;}
+.inpxshort{width:15%;min-width:60px;max-width:90px;}
 
 .inplong.num, .inp.num, .inpmed.num, .inpshort.num, .inpxshort.num{padding-left:0;padding-right:2px;text-align:right;}
 
