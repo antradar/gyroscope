@@ -345,7 +345,7 @@ input,textarea{border:solid 1px #999999;}
 .inputrow{margin-bottom:10px;}
 
 textarea.inplong, textarea.inp, textarea.inpmed{height:150px;}
-select.inp, select.inplong, select.inpmed, select.inpshort, select.inpxshort{width:auto;}
+select.inp, select.inplong, select.inpmed, select.inpshort, select.inpxshort{width:auto;min-width:0;max-width:none;}
 
 .stable{overflow-x:auto;}
 .stable td{padding:0 5px;font-size:12px;}
