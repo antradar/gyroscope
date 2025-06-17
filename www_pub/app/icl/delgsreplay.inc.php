@@ -1,10 +1,10 @@
 <?php
 include 'libnumfile.php';
 
-function delgsreplay(){
-	global $db;
-	$gsreplayid=GETVAL('gsreplayid');
-	gsguard($gsreplayid,'gsreplays','gsreplayid');
+function delgsreplay($ctx=null){
+	if (isset($ctx)) $db=$ctx->db; else global $db;
+	$gsreplayid=GETVAL('gsreplayid',$ctx);
+	gsguard($ctx,$gsreplayid,'gsreplays','gsreplayid');
 
 	$basedir='../../protected/gsreplays/';
 		

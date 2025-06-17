@@ -10,7 +10,7 @@ function addmsgpipe(){
 	$user=userinfo();
 	$gsid=$user['gsid'];
 	
-	if (!isset($user['groups']['msgpipe'])) apperror('Access denied');
+	if (!isset($user['groups']['msgpipe'])) apperror('Access denied',null,null,$ctx);
 	
 	$msgpipekey=SQET('msgpipekey');
 	$msgpipename=SQET('msgpipename');

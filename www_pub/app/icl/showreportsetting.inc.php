@@ -1,9 +1,9 @@
 <?php
 
-function showreportsetting($reportid=null){
+function showreportsetting($ctx=null, $reportid=null){
 	if (!isset($reportid)) $reportid=SGET('reportid');
 	
-	global $db;
+	if (isset($ctx)) $db=$ctx->db; else global $db;
 	global $userroles;
 	global $lang;
 	global $deflang;
@@ -11,7 +11,7 @@ function showreportsetting($reportid=null){
 	
 	//vendor auth 1
 	
-	$user=userinfo();
+	$user=userinfo($ctx);
 	$gsid=$user['gsid'];
 
 	$syslevel=0;
@@ -24,7 +24,7 @@ function showreportsetting($reportid=null){
 	
 	$rs=sql_prep($query,$db,array($gsid,$syslevel,$reportid));
 	
-	if (!$myrow=sql_fetch_array($rs)) die(_tr('record_removed'));
+	if (!$myrow=sql_fetch_array($rs)) apperror(_tr('record_removed'),null,null,$ctx);
 	
 	$reportname=$myrow['reportname_'.$lang];
 	$reportgroup=$myrow['reportgroup_'.$lang];
@@ -40,7 +40,7 @@ function showreportsetting($reportid=null){
 	
 	$bingo=$myrow['bingo'];
 	
-	header('newtitle: '.tabtitle('<img src="imgs/t.gif" class="ico-setting">'.htmlspecialchars($reportname)));
+	gs_header($ctx,'newtitle',tabtitle('<img src="imgs/t.gif" class="ico-setting">'.htmlspecialchars($reportname)));
 ?>
 <div class="section">
 	<div class="sectiontitle"><?php echo htmlspecialchars($reportname);?></div>
@@ -120,10 +120,10 @@ function showreportsetting($reportid=null){
 	
 
 	<div class="inputrow buttonbelt">
-		<button <?php if ($rptgsid==0) echo 'class="disabled"';?>onclick<?php if ($rptgsid==0) echo 'a';?>="updatereportsetting('<?php echo $reportid;?>',<?php echo $jsroles;?>,'<?php emitgskey('updatereportsetting_'.$reportid);?>');"><?php tr('button_update');?></button>
+		<button <?php if ($rptgsid==0) echo 'class="disabled"';?>onclick<?php if ($rptgsid==0) echo 'a';?>="updatereportsetting('<?php echo $reportid;?>',<?php echo $jsroles;?>,'<?php emitgskey('updatereportsetting_'.$reportid,'',$ctx);?>');"><?php tr('button_update');?></button>
 	<?php if (!$gyrosys&&$user['groups']['devreports']){?>
 		&nbsp; &nbsp;
-		<button class="warn" onclick="delreportsetting('<?php echo $reportid;?>','<?php emitgskey('delreportsetting_'.$reportid);?>');"><?php tr('button_delete');?></button>
+		<button class="warn" onclick="delreportsetting('<?php echo $reportid;?>','<?php emitgskey('delreportsetting_'.$reportid,'',$ctx);?>');"><?php tr('button_delete');?></button>
 	<?php }?>
 	</div>	
 	

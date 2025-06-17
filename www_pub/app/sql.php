@@ -317,19 +317,15 @@ function sql_affected_rows($db,$rs){
 }
 
 function sql_begin_transaction($db){
-	$query="begin";
-	mysqli_query($query,$db);	
-	
+	mysqli_begin_transaction($db);	
 }
 
 function sql_commit($db){
-	$query="commit";
-	mysqli_query($query,$db);	
+	mysqli_commit($db);	
 }
 
-function sql_rollback(){
-	$query="rollback";
-	mysqli_query($query,$db);	
+function sql_rollback($db){
+	mysqli_rollback($db);	
 }
 
 /* Sample Connection

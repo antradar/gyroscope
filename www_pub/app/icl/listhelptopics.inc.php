@@ -32,7 +32,7 @@ function listhelptopics(){
 			<img src="imgs/inpback.gif" class="inpback" onclick="inpbackspace('helptopickey');_inline_lookuphelptopic(gid('helptopickey'));">
 		</div>
 		<input type="image" src="imgs/mg.gif" class="searchsubmit" value=".">
-		<?php makehelp('helptopiclistlookup','listviewlookup',1);?>
+		<?php makehelp(null,'helptopiclistlookup','listviewlookup',1);?>
 	</form>
 	
 	<?php if ($user['groups']['helpedit']){?>

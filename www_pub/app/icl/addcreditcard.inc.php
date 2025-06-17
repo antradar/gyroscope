@@ -2,29 +2,29 @@
 
 include 'icl/showcreditcards.inc.php';
 
-function addcreditcard(){
-	global $db;
+function addcreditcard($ctx=null){
+	if (isset($ctx)) $db=$ctx->db; else global $db;
 	
-	$user=userinfo();
+	$user=userinfo($ctx);
 	$gsid=$user['gsid'];
 	
-	checkgskey('addcreditcard');
+	checkgskey('addcreditcard',$ctx);
 		
 	$query="select * from ".TABLENAME_GSS." where ".COLNAME_GSID."=?";
 	$rs=sql_prep($query,$db,$gsid);
-	if (!$myrow=sql_fetch_assoc($rs)) apperror('Invalid GS instance');
+	if (!$myrow=sql_fetch_assoc($rs)) apperror('Invalid GS instance',null,null,$ctx);
 	
 	$customerid=$myrow['stripecustomerid'];	
 	
-	$token=SQET('token');
+	$token=SQET('token',1,$ctx);
 	
 	
 	$res=stripe_addmembercardtoken($customerid,$token);
-	if (isset($res['error'])) apperror($res['error']['message']);
+	if (isset($res['error'])) apperror($res['error']['message'],null,null,$ctx);
 	
-	logaction('added credit card',array('type'=>'creditcard'),array('rectype'=>'creditcards','recid'=>0));
+	logaction($ctx,'added credit card',array('type'=>'creditcard'),array('rectype'=>'creditcards','recid'=>0));
 	
-	showcreditcards();	
+	showcreditcards($ctx);	
 	
 	
 }

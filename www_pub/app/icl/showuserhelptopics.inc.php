@@ -1,11 +1,11 @@
 <?php
 
-function showuserhelptopics(){
+function showuserhelptopics($ctx=null){
 	
-	$user=userinfo();
+	$user=userinfo($ctx);
 	$userid=$user['userid'];
 
-	global $db;
+	if (isset($ctx)) $db=$ctx->db; else global $db;
 	
 	$query="select * from ".TABLENAME_USERHELPSPOTS." where userid=? limit 1";
 	$rs=sql_prep($query,$db,$userid);
@@ -14,9 +14,9 @@ function showuserhelptopics(){
 	<?php
 	if ($myrow=sql_fetch_assoc($rs)){
 ?>
-	<a class="button warn" onclick="resethelpspots('<?php echo $userid;?>','<?php emitgskey('resethelpspots_'.$userid);?>');">Reset Help Tips</a>
+	<a class="button warn" onclick="resethelpspots('<?php echo $userid;?>','<?php emitgskey('resethelpspots_'.$userid,'',$ctx);?>');">Reset Help Tips</a>
 	&nbsp;
-	<?php makehelp('account_resethelp','This resets the help dots that you have dismissed. You may need a full page reload to pick up all the tips.');?>
+	<?php makehelp(null,'account_resethelp','This resets the help dots that you have dismissed. You may need a full page reload to pick up all the tips.');?>
 	
 <?php		
 	}

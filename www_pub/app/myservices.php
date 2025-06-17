@@ -10,6 +10,9 @@ if (!isset($_SERVER['HTTPS'])||($_SERVER['HTTPS']!='on'&&$_SERVER['HTTPS']!=1)){
 
 include 'connect.php';
 include 'settings.php';
+
+include 'forminput.php';
+
 include 'xss.php';
 
 xsscheck();	
@@ -22,7 +25,6 @@ $cmd=isset($_GET['cmd'])?$_GET['cmd']:'';
 
 login(true);
 
-include 'forminput.php';
 include 'uiconfig.php';
 
 //enforcing gs expiry
@@ -75,6 +77,8 @@ if (isset($ratelimit_units[$cmd])) $ratelimit_unit=$ratelimit_units[$cmd];
 if (is_callable('cache_ratelimit')) cache_ratelimit($ratelimit_unit,SYS_RESOURCE_CAP); //see lb.php
 
 register_shutdown_function('gyroscope_shutdown'); //register AFTER the rate limit check
+
+$ctx=null;
 
 try {  //comment out in older PHP versions
 	
@@ -381,7 +385,7 @@ switch($cmd){
 	header('gsfunc: !invalid');
 	$dcmd=$cmd;
 	$cmd='';
-	apperror('unspecified interface:'.preg_replace('/[^A-Za-z0-9-_]/','',$dcmd));	
+	apperror('unspecified interface:'.preg_replace('/[^A-Za-z0-9-_]/','',$dcmd),null,null,$ctx);	
 }
 
 } catch (FaultException $e){ //comment out in older PHP versions

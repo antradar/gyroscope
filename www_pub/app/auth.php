@@ -1,5 +1,5 @@
 <?php
-define ('GYROSCOPE_VERSION', '22.0');
+define ('GYROSCOPE_VERSION', '23.0');
 
 //remember to personalize the project name
 define ('GYROSCOPE_PROJECT', 'Gyroscope Starter');
@@ -19,6 +19,9 @@ define ('MOD_KEY','mod_demo123');
 	a passphrase (or a "salt") has to be set
 	comment out the timestamp for permanent login;
 */
+
+global $saltroot;
+global $salt;
 
 $saltroot='gyroscope_demo';
 $salt=$saltroot.$_SERVER['REMOTE_ADDR'].'-'.$_SERVER['O_IP'].date('Y-m-j-H');
@@ -53,25 +56,35 @@ if (!is_callable('hash_equals')){
 	if the user is forced to login
 */
 
-function login($silent=false){
+function login($silent=false,$ctx=null){
 	global $usehttps;
-	
-	global $salt;
-	global $saltroot;
-	$salt2=$saltroot.$_SERVER['REMOTE_ADDR'].'-'.$_SERVER['O_IP'].date('Y-m-j-H',time()-3600);
-	global $_COOKIE;
-	global $_SERVER;
-		
-	//check cookie authenticity
-	$login=isset($_COOKIE['login'])?$_COOKIE['login']:null;
-	$dispname=isset($_COOKIE['dispname'])?$_COOKIE['dispname']:null;
-	$userid=isset($_COOKIE['userid'])?$_COOKIE['userid']:null;
-	$gsid=isset($_COOKIE['gsid'])?$_COOKIE['gsid']:null;
-	$gsexpiry=isset($_COOKIE['gsexpiry'])?$_COOKIE['gsexpiry']:null;
-	$gstier=isset($_COOKIE['gstier'])?$_COOKIE['gstier']:null;
-	$auth=isset($_COOKIE['auth'])?$_COOKIE['auth']:null;
 
-	$groupnames=isset($_COOKIE['groupnames'])?$_COOKIE['groupnames']:null;
+	global $saltroot;
+		
+	if (isset($ctx)) {
+		$salt=$ctx->salt;
+		$cookie=$ctx->request->cookie;
+		$server=$ctx->server; 
+	} else {
+		global $salt;
+		global $_COOKIE; $cookie=$_COOKIE;
+		$server=$_SERVER;
+	}
+	
+	
+	$salt2=$saltroot.$server['REMOTE_ADDR'].'-'.$server['O_IP'].date('Y-m-j-H',time()-3600);
+	
+			
+	//check cookie authenticity
+	$login=isset($cookie['login'])?$cookie['login']:null;
+	$dispname=isset($cookie['dispname'])?$cookie['dispname']:null;
+	$userid=isset($cookie['userid'])?$cookie['userid']:null;
+	$gsid=isset($cookie['gsid'])?$cookie['gsid']:null;
+	$gsexpiry=isset($cookie['gsexpiry'])?$cookie['gsexpiry']:null;
+	$gstier=isset($cookie['gstier'])?$cookie['gstier']:null;
+	$auth=isset($cookie['auth'])?$cookie['auth']:null;
+
+	$groupnames=isset($cookie['groupnames'])?$cookie['groupnames']:null;
 	
 	$auth_=md5($salt.$userid.$groupnames.$salt.$login.$salt.$dispname.$salt.$gsid.$salt.$gsexpiry.$salt.$gstier);
 	$auth2_=md5($salt2.$userid.$groupnames.$salt2.$login.$salt2.$dispname.$salt2.$gsid.$salt2.$gsexpiry.$salt2.$gstier);
@@ -81,33 +94,65 @@ function login($silent=false){
 		$tail='';
 		if (isset($_GET['keynav'])) $tail='?keynav';
 				
-		if (!$silent) header('location: login.php?from='.$_SERVER['PHP_SELF'].$tail); else {header('HTTP/1.0 403 Forbidden');header('X-STATUS: 403');die('.');}
-		die();
+		if (isset($ctx)){
+			if (!$silent){
+				$ctx->response->header('location','login.php?from='.$_SERVER['PHP_SELF'].$tail);
+			} else {
+				$ctx->response->status(403);
+				$ctx->response->header('X-STATUS',403);
+				$ctx->response->_ended=true;
+				$ctx->response->end('.');
+				return;	
+			}
+			
+			$ctx->response->_ended=true;
+			$ctx->response->end();
+			return;
+			
+		} else {
+			if (!$silent) header('location: login.php?from='.$_SERVER['PHP_SELF'].$tail); else {header('HTTP/1.0 403 Forbidden');header('X-STATUS: 403');die('.');}
+			die();
+		}
 	}
 	
 	if ($auth===$auth2_){
-		setcookie('auth',$auth_,null,null,null,$usehttps,true);
+		if ($ctx){
+			$ctx->response->cookie('auth',$auth_,null,null,null,$usehttps,true);
+		} else {
+			setcookie('auth',$auth_,null,null,null,$usehttps,true);
+		}
 	}
 
 }
 
 
-function userinfo(){
-	global $salt;
+function userinfo($ctx=null){
+		
 	global $saltroot;
-	global $_COOKIE;
-		
+	
+	if (isset($ctx)) {
+		$salt=$ctx->salt;
+		$cookie=$ctx->request->cookie;
+		$server=$ctx->server; 
+	} else {
+		global $salt;
+		global $_COOKIE; $cookie=$_COOKIE;
+		$server=$_SERVER;
+	}
+	
+	
+	
 	//check cookie authenticity
-	$login=isset($_COOKIE['login'])?$_COOKIE['login']:null;
-	$dispname=isset($_COOKIE['dispname'])?$_COOKIE['dispname']:null;
-	$userid=isset($_COOKIE['userid'])?$_COOKIE['userid']:null;
-	$gsid=isset($_COOKIE['gsid'])?$_COOKIE['gsid']:null;
-	$gsexpiry=isset($_COOKIE['gsexpiry'])?$_COOKIE['gsexpiry']:null;	
-	$gstier=isset($_COOKIE['gstier'])?$_COOKIE['gstier']:null;	
-	$auth=isset($_COOKIE['auth'])?$_COOKIE['auth']:null;
+	$login=isset($cookie['login'])?$cookie['login']:null;
+	$dispname=isset($cookie['dispname'])?$cookie['dispname']:null;
+	$userid=isset($cookie['userid'])?$cookie['userid']:null;
+	$gsid=isset($cookie['gsid'])?$cookie['gsid']:null;
+	$gsexpiry=isset($cookie['gsexpiry'])?$cookie['gsexpiry']:null;	
+	$gstier=isset($cookie['gstier'])?$cookie['gstier']:null;	
+	$auth=isset($cookie['auth'])?$cookie['auth']:null;
 		
-	$groupnames=isset($_COOKIE['groupnames'])?$_COOKIE['groupnames']:null;
-	$salt2=$saltroot.$_SERVER['REMOTE_ADDR'].'-'.$_SERVER['O_IP'].date('Y-m-j-H',time()-3600);
+	$groupnames=isset($cookie['groupnames'])?$cookie['groupnames']:null;
+	$salt2=$saltroot.$server['REMOTE_ADDR'].'-'.$server['O_IP'].date('Y-m-j-H',time()-3600);
 		
 	$auth_=md5($salt.$userid.$groupnames.$salt.$login.$salt.$dispname.$salt.$gsid.$salt.$gsexpiry.$salt.$gstier);
 	$auth2_=md5($salt2.$userid.$groupnames.$salt2.$login.$salt2.$dispname.$salt2.$gsid.$salt2.$gsexpiry.$salt2.$gstier);
@@ -117,28 +162,28 @@ function userinfo(){
 	if (!isset($login)||!isset($auth)||(!hash_equals($auth,$auth_)&&!hash_equals($auth,$auth2_))) return array('groups'=>array());
 	
 	$info=array(
-		'login'=>stripslashes($_COOKIE['login']),
-		'dispname'=>$_COOKIE['dispname'],
-		'userid'=>$_COOKIE['userid'],
-		'gsid'=>$_COOKIE['gsid'],
-		'gsexpiry'=>$_COOKIE['gsexpiry'],
-		'gstier'=>$_COOKIE['gstier'],
+		'login'=>stripslashes($cookie['login']),
+		'dispname'=>$cookie['dispname'],
+		'userid'=>$cookie['userid'],
+		'gsid'=>$cookie['gsid'],
+		'gsexpiry'=>$cookie['gsexpiry'],
+		'gstier'=>$cookie['gstier'],
 		'groups'=>array()
 	);	
 	
-	$groups=explode('|',($_COOKIE['groupnames']??''));
+	$groups=explode('|',($cookie['groupnames']??''));
 	foreach ($groups as $group) $info['groups'][$group]=true;
 	
 	return $info;
 }
 
-function gsguard($val,$tables,$keys,$extfields='',$nocache=0,$rootgskey=COLNAME_GSID){
+function gsguard($ctx=null,$val,$tables,$keys,$extfields='',$nocache=0,$rootgskey=COLNAME_GSID){
 		
-	global $db;
-	global $gsguard_cache;
+	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $gsguard_cache=$ctx->gsguard_cache; else global $gsguard_cache;
 	if (!isset($gsguard_cache)) $gsguard_cache=array();
 	
-	$user=userinfo();
+	$user=userinfo($ctx);
 	$gsid=$user['gsid'];
 	
 	if (!is_numeric($val)) $val="'$val'";
@@ -146,7 +191,7 @@ function gsguard($val,$tables,$keys,$extfields='',$nocache=0,$rootgskey=COLNAME_
 	if (!is_array($tables)) $tables=array($tables);
 	if (!is_array($keys)) $keys=array($keys);
 	
-	if (count($tables)!=count($keys)) apperror('gsguard: parameter count mismatch');
+	if (count($tables)!=count($keys)) apperror('gsguard: parameter count mismatch',null,null,$ctx);
 	
 	$cachekey=$val.'-T-'.implode(',',$tables).'-K-'.implode(',',$keys);//.'-E-'.$extfields;
 	$hit=0;$res=isset($gsguard_cache[$cachekey])?$gsguard_cache[$cachekey]:array();
@@ -197,17 +242,27 @@ function gsguard($val,$tables,$keys,$extfields='',$nocache=0,$rootgskey=COLNAME_
 		
 }
 
-function makegskey($verb,$groupnames=''){
+function makegskey($verb,$groupnames='',$ctx=null){
 	global $gsreqkey;
+	
 	global $_SERVER;
 	global $_COOKIE;
 	
-	$user=userinfo();
+	$cookie=$_COOKIE;
+	$server=$_SERVER;
+	
+	if (isset($ctx)) {
+		$cookie=$ctx->request->cookie;
+		$post=$ctx->request->post;
+		$server=$ctx->server;
+	}	
+	
+	$user=userinfo($ctx);
 	$userid=$user['userid'];
 	
-	$gsfrac=preg_replace('/[^A-Za-z0-9-]/','',$_COOKIE['gsfrac']);
+	$gsfrac=preg_replace('/[^A-Za-z0-9-]/','',$cookie['gsfrac']);
 		
-	$key=md5($gsfrac.$gsreqkey.'_'.$userid.'_'.$verb.'_'.$_SERVER['REMOTE_ADDR'].'-'.$_SERVER['O_IP']);
+	$key=md5($gsfrac.$gsreqkey.'_'.$userid.'_'.$verb.'_'.$server['REMOTE_ADDR'].'-'.$server['O_IP']);
 	if ($groupnames!=''){
 		$found=0;
 		
@@ -223,38 +278,48 @@ function makegskey($verb,$groupnames=''){
 	return $key;
 }
 
-function emitgskey($verb,$groupnames=''){
-	echo makegskey($verb,$groupnames);	
+function emitgskey($verb,$groupnames='',$ctx=null){
+	echo makegskey($verb,$groupnames,$ctx);	
 }
 
-function checkgskey($verb){
+function checkgskey($verb,$ctx=null){
 	global $gsreqkey;
 	global $_SERVER;
 
-	$user=userinfo();
-	$userid=$user['userid'];	
+	$user=userinfo($ctx);
+	$userid=$user['userid'];
+	
+	$cookie=$_COOKIE;
+	$post=$_POST;
+	$server=$_SERVER;
+	
+	if (isset($ctx)) {
+		$cookie=$ctx->request->cookie;
+		$post=$ctx->request->post;
+		$server=$ctx->server;
+	}
 		
 	//$key=$_SERVER['HTTP_X_GSREQ_KEY'];
-	$key=isset($_POST['X-GSREQ-KEY'])?$_POST['X-GSREQ-KEY']:'';
+	$key=isset($post['X-GSREQ-KEY'])?$post['X-GSREQ-KEY']:'';
 
 		
-	$gsfrac=preg_replace('/[^A-Za-z0-9-]/','',$_COOKIE['gsfrac']);
+	$gsfrac=preg_replace('/[^A-Za-z0-9-]/','',$cookie['gsfrac']);
 	
-	$key_=md5($gsfrac.$gsreqkey.'_'.$userid.'_'.$verb.'_'.$_SERVER['REMOTE_ADDR'].'-'.$_SERVER['O_IP']);
-	if ($key!==$key_) apperror('gskey: request denied');
+	$key_=md5($gsfrac.$gsreqkey.'_'.$userid.'_'.$verb.'_'.$server['REMOTE_ADDR'].'-'.$server['O_IP']);
+	if ($key!==$key_) apperror('gskey: request denied',null,null,$ctx);
 }
 
-function authreport($groupnames){
+function authreport($groupnames,$ctx=null){
 	$rawgroups=explode('|',$groupnames);
 	$groups=array();
 	foreach ($rawgroups as $group) $groups[$group]=1;
 	
-	$user=userinfo();
+	$user=userinfo($ctx);
 		
 	foreach ($user['groups'] as $ugroup=>$val){
 		if (isset($groups[$ugroup])&&$groups[$ugroup]) return;	
 	}
 	
-	apperror('Report access denied');
+	apperror('Report access denied',null,null,$ctx);
 	
 }

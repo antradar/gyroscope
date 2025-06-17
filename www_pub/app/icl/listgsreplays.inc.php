@@ -26,7 +26,7 @@ function listgsreplays(){
 			<img src="imgs/inpback.gif" class="inpback" onclick="inpbackspace('gsreplaykey');_inline_lookupgsreplay(gid('gsreplaykey'));">
 		</div>
 		<input type="image" src="imgs/mg.gif" class="searchsubmit" value=".">
-		<?php makehelp('gsreplaylistlookup','listviewlookup',1);?>
+		<?php makehelp(null,'gsreplaylistlookup','listviewlookup',1);?>
 	</form>
 
 </div>

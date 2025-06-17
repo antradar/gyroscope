@@ -1,19 +1,19 @@
 <?php
 
-include 'icl/dashmsgpipes.inc.php';
+include_once 'icl/dashmsgpipes.inc.php';
 
-function delmsgpipe(){
-	$msgpipeid=QETVAL('msgpipeid');
-	checkgskey('delmsgpipe_'.$msgpipeid);
+function delmsgpipe($ctx=null){
+	$msgpipeid=QETVAL('msgpipeid',$ctx);
+	checkgskey('delmsgpipe_'.$msgpipeid,$ctx);
 	
-	global $db;
+	if (isset($ctx)) $db=$ctx->db; else global $db;
 	
-	$user=userinfo();
+	$user=userinfo($ctx);
 	$gsid=$user['gsid'];
 	
-	if (!isset($user['groups']['msgpipe'])) apperror('Access denied');
+	if (!isset($user['groups']['msgpipe'])) apperror('Access denied',null,null,$ctx);
 	
-	gsguard($msgpipeid,'msgpipes','msgpipeid');
+	gsguard($ctx,$msgpipeid,'msgpipes','msgpipeid');
 	
 	$query="delete from msgpipeusers where msgpipeid=?";
 	sql_prep($query,$db,$msgpipeid);
@@ -21,6 +21,6 @@ function delmsgpipe(){
 	$query="delete from msgpipes where msgpipeid=?";
 	sql_prep($query,$db,$msgpipeid);	
 	
-	dashmsgpipes();
+	dashmsgpipes($ctx);
 	
 }

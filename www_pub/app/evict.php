@@ -1,22 +1,23 @@
 <?php
 
-function evict_check(){
+function evict_check($ctx=null){
 	
-	$blockedids=evict_getblockedids();
+	$blockedids=evict_getblockedids($ctx);
 	
-	$user=userinfo();
-	
+	$user=userinfo($ctx);
+		
 	if (!isset($user)||!isset($user['login'])) return;
 	$userid=$user['userid'];
 	
-	if (is_array($blockedids)&&in_array($userid,$blockedids)) evict_user();
+	if (is_array($blockedids)&&in_array($userid,$blockedids)) evict_user($ctx);
 
 	//uncomment to enable forced nightly flush
 	//if ((date('H')==23&&date('i')>=55) || (date('H')==0&&date('i')<=5)) evict_user();	
 		
 }
 
-function evict_user(){
+function evict_user($ctx=null){
+	
 	global $_COOKIE;
 	global $usehttps;
 	
@@ -33,13 +34,13 @@ function evict_user(){
 }
 
 
-function evict_getblockedids(){
-	global $db;
+function evict_getblockedids($ctx=null){
+	if (isset($ctx)) $db=$ctx->db; else global $db;
 	
-	$user=userinfo();
+	$user=userinfo($ctx);
 	$gsid=isset($user['gsid'])?$user['gsid']:0;
 	
-	$blockedids=cache_get(TABLENAME_GSS.'gyroscopeblockedids_'.$gsid);
+	$blockedids=cache_get(TABLENAME_GSS.'gyroscopeblockedids_'.$gsid,$ctx);
 	if (!is_array($blockedids)){
 		$blockedids=array();
 		array_push($blockedids,'0');

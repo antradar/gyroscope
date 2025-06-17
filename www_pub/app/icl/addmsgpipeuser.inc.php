@@ -1,19 +1,19 @@
 <?php
 
-include 'icl/listmsgpipeusers.inc.php';
+include_once 'icl/listmsgpipeusers.inc.php';
 
-function addmsgpipeuser(){
+function addmsgpipeuser($ctx=null){
 	$msgpipeid=GETVAL('msgpipeid');
 	$userid=GETVAL('userid');
 	
-	global $db;
+	if (isset($ctx)) $db=$ctx->db; else global $db;
 	
-	$user=userinfo();
-	if (!isset($user['groups']['msgpipe'])&&!isset($user['groups']['msgpipeuse'])) apperror('Access denied');
+	$user=userinfo($ctx);
+	if (!isset($user['groups']['msgpipe'])&&!isset($user['groups']['msgpipeuse'])) apperror('Access denied',null,null,$ctx);
 	
-	checkgskey('addmsgpipeuser_'.$msgpipeid);
+	checkgskey('addmsgpipeuser_'.$msgpipeid,$ctx);
 	
-	gsguard($msgpipeid,'msgpipes','msgpipeid');
+	gsguard($ctx,$msgpipeid,'msgpipes','msgpipeid');
 	$query="select msgpipeuserid from msgpipeusers where msgpipeid=? and userid=?";
 	$rs=sql_prep($query,$db,array($msgpipeid,$userid));
 	if (!$myrow=sql_fetch_assoc($rs)){
@@ -21,5 +21,5 @@ function addmsgpipeuser(){
 		sql_prep($query,$db,array($msgpipeid,$userid));
 	}
 	
-	listmsgpipeusers($msgpipeid);
+	listmsgpipeusers($ctx,$msgpipeid);
 }

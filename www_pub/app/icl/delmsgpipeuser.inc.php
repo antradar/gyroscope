@@ -1,21 +1,21 @@
 <?php
 
-include 'icl/listmsgpipeusers.inc.php';
+include_once 'icl/listmsgpipeusers.inc.php';
 
-function delmsgpipeuser(){
+function delmsgpipeuser($ctx=null){
 	$msgpipeid=GETVAL('msgpipeid');
 	$userid=GETVAL('userid');
 	
-	global $db;
+	if (isset($ctx)) $db=$ctx->db; else global $db;
 	
-	$user=userinfo();
+	$user=userinfo($ctx);
 	if (!isset($user['groups']['msgpipe'])&&!isset($user['groups']['msgpipeuse'])) apperror('Access denied');	
 	
-	checkgskey('delmsgpipeuser_'.$userid);
+	checkgskey('delmsgpipeuser_'.$userid,$ctx);
 	
-	gsguard($msgpipeid,'msgpipes','msgpipeid');
+	gsguard($ctx,$msgpipeid,'msgpipes','msgpipeid');
 	$query="delete from msgpipeusers where msgpipeid=? and msgpipeuserid=?";
 	sql_prep($query,$db,array($msgpipeid,$userid));
 	
-	listmsgpipeusers($msgpipeid);
+	listmsgpipeusers($ctx,$msgpipeid);
 }

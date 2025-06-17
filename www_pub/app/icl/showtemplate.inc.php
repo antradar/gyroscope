@@ -1,13 +1,13 @@
 <?php
 
-function showtemplate($templateid=null){
+function showtemplate($ctx=null, $templateid=null){
 	if (!isset($templateid)) $templateid=SGET('templateid');
 	
-	global $db;
+	if (isset($ctx)) $db=$ctx->db; else global $db;
 
-	gsguard($templateid,array(TABLENAME_TEMPLATETYPES,TABLENAME_TEMPLATES),array('templatetypeid-templatetypeid','templateid'));
+	gsguard($ctx,$templateid,array(TABLENAME_TEMPLATETYPES,TABLENAME_TEMPLATES),array('templatetypeid-templatetypeid','templateid'));
 	
-	$user=userinfo();
+	$user=userinfo($ctx);
 	$gsid=$user['gsid'];
 		
 	$query="select * from ".TABLENAME_TEMPLATES.",".TABLENAME_TEMPLATETYPES." where ".TABLENAME_TEMPLATES.".templatetypeid=".TABLENAME_TEMPLATETYPES.".templatetypeid and templateid=? and ".COLNAME_GSID."=? ";
@@ -24,10 +24,10 @@ function showtemplate($templateid=null){
 	$recordtitle="$templatetypename"; //change this
 	$dbrecordtitle=noapos(htmlspecialchars(htmlspecialchars($recordtitle)));
 	
-	header('newtitle: '.tabtitle(htmlspecialchars($templatename)));
-	header('parenttab: templatetype_'.$templatetypeid);
+	gs_header($ctx, 'newtitle', ''.tabtitle(htmlspecialchars($templatename)));
+	gs_header($ctx, 'parenttab', 'templatetype_'.$templatetypeid);
 	
-	makechangebar('template_'.$templateid,"updatetemplate('$templateid','$templatetypeid','".makegskey('updatetemplate_'.$templateid)."');");
+	makechangebar('template_'.$templateid,"updatetemplate('$templateid','$templatetypeid','".makegskey('updatetemplate_'.$templateid,'',$ctx)."');");
 	makesavebar('template_'.$templateid);
 ?>
 <div class="section">
@@ -71,15 +71,15 @@ function showtemplate($templateid=null){
 		//makelookup('templatetext_'.$templateid);
 		?>
 		<textarea class="templatetexteditor_<?php echo $templateid;?>" id="templatetext_<?php echo $templateid;?>" style="width:100%;height:500px;"><?php echo htmlspecialchars($templatetext);?></textarea>
-		<?php makehelp('editortip'.$templateid,'richtexteditor',1);?>
+		<?php makehelp(null,'editortip'.$templateid,'richtexteditor',1);?>
 	</div>
 
 	
 	<div class="inputrow buttonbelt">
-		<button onclick="updatetemplate('<?php echo $templateid;?>','<?php echo $templatetypeid;?>','<?php emitgskey('updatetemplate_'.$templateid);?>');"><?php tr('button_update');?></button>
+		<button onclick="updatetemplate('<?php echo $templateid;?>','<?php echo $templatetypeid;?>','<?php emitgskey('updatetemplate_'.$templateid,'',$ctx);?>');"><?php tr('button_update');?></button>
 
 		&nbsp; &nbsp;
-		<button class="warn" onclick="deltemplate('<?php echo $templateid;?>','<?php echo $templatetypeid;?>','<?php emitgskey('deltemplate_'.$templateid);?>');"><?php tr('button_delete');?></button>
+		<button class="warn" onclick="deltemplate('<?php echo $templateid;?>','<?php echo $templatetypeid;?>','<?php emitgskey('deltemplate_'.$templateid,'',$ctx);?>');"><?php tr('button_delete');?></button>
 
 
 	</div>

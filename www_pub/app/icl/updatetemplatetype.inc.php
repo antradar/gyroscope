@@ -1,30 +1,30 @@
 <?php
 
-include 'icl/showtemplatetype.inc.php';
+include_once 'icl/showtemplatetype.inc.php';
 
-function updatetemplatetype(){
-	$templatetypeid=SGET('templatetypeid');	
-	$templatetypename=SQET('templatetypename');
-	$templatetypekey=SQET('templatetypekey');
-	$activetemplateid=SQET('activetemplateid');
-	$plugins=SQET('templatetypeplugins');
-	$classes=SQET('templatetypeclasses');
+function updatetemplatetype($ctx=null){
+	$templatetypeid=SGET('templatetypeid',1,$ctx);	
+	$templatetypename=SQET('templatetypename',1,$ctx);
+	$templatetypekey=SQET('templatetypekey',1,$ctx);
+	$activetemplateid=SQET('activetemplateid',1,$ctx);
+	$plugins=SQET('templatetypeplugins',1,$ctx);
+	$classes=SQET('templatetypeclasses',1,$ctx);
 
 	if ($activetemplateid==-1) {
 		$activetemplateid=null;
 		if (!is_numeric($templatetypeid)) $activetemplateid=NULL_UUID;
 	}
 
-	$user=userinfo();
+	$user=userinfo($ctx);
 	$gsid=$user['gsid'];
 	
-	checkgskey('updatetemplatetype_'.$templatetypeid);
+	checkgskey('updatetemplatetype_'.$templatetypeid,$ctx);
 	
-	global $db;
+	if (isset($ctx)) $db=$ctx->db; else global $db;
 
 	$query="select * from templatetypes where templatetypekey=? and templatetypeid!=? and gsid=? ";
 	$rs=sql_prep($query,$db,array($templatetypekey,$templatetypeid,$gsid));
-	if ($myrow=sql_fetch_assoc($rs)) apperror('Duplicate key. Pick a different key.');
+	if ($myrow=sql_fetch_assoc($rs)) apperror('Duplicate key. Pick a different key.',null,null,$ctx);
 	
 	$query="select * from templatetypes where templatetypeid=?";
 	$rs=sql_prep($query,$db,array($templatetypeid));
@@ -63,10 +63,10 @@ function updatetemplatetype(){
 			'diffs'=>$diffs
 		);
 		
-		logaction("updated Template Class #$templatetypeid $templatetypename",
+		logaction($ctx, "updated Template Class #$templatetypeid $templatetypename",
 			$dbchanges,
 			array('rectype'=>'templatetype','recid'=>$templatetypeid),0,$trace,4);
 	}
 	
-	showtemplatetype($templatetypeid);
+	showtemplatetype($ctx, $templatetypeid);
 }

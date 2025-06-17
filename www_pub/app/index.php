@@ -92,9 +92,9 @@ document.appsettings={codepage:'<?php echo $codepage;?>',binpages:<?php echo jso
 			
 		</div>
 		<div id="lkvc"></div>
-		<?php makehelp('lookupview','lookupview',1);?>
+		<?php makehelp(null,'lookupview','lookupview',1);?>
 	</div>
-	<?php makehelp('mainleftview','listviewpos',1);?>
+	<?php makehelp(null,'mainleftview','listviewpos',1);?>
 	
 	<div id="leftviewcloser" onclick="resetleftviews();"><img src="imgs/t.gif"></div>
 </div></div>
@@ -150,7 +150,7 @@ foreach ($toolbaritems as $modid=>$ti){
 </div><!-- iconbelt -->
 <div id="bookmarkview" style="<?php if ($uiconfig['toolbar_position']=='top') echo 'display:none;'?>;position:absolute;top:56px;left:0;width:260px;z-index:360;overflow:auto;">
 </div><!-- bookmarkview -->
-<?php makehelp('maintopicons','topicons',1);?>
+<?php makehelp(null,'maintopicons','topicons',1);?>
 
 <a id="beltnext" onclick="beltnext();"><img class="beltnext" src="imgs/t.gif" width="16" height="32"></a>
 
@@ -219,7 +219,7 @@ if ($uiconfig['toolbar_position']=='left') $tabbase=57;
 <?php }?>
 
 <div style="position:absolute;top:25px;right:20px;width:160px;">
-	<?php makehelp('myaccountlink','mysettings',1,-120);?>
+	<?php makehelp(null,'myaccountlink','mysettings',1,-120);?>
 </div>
 
 <?php

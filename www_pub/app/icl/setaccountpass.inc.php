@@ -2,29 +2,29 @@
 include 'bcrypt.php';
 include 'passtest.php';
 
-function setaccountpass(){
+function setaccountpass($ctx=null){
 	global $dbsalt;
-	global $db;
+	if (isset($ctx)) $db=$ctx->db; else global $db;
 	global $usehttps;
 		
-	$user=userinfo();
+	$user=userinfo($ctx);
 	$userid=$user['userid'];
 	$gsid=$user['gsid'];
 
-	$needkeyfile=GETVAL('needkeyfile');
-	$usesms=GETVAL('usesms');
-	$smscell=SGET('smscell');
+	$needkeyfile=GETVAL('needkeyfile',$ctx);
+	$usesms=GETVAL('usesms',$ctx);
+	$smscell=SGET('smscell',1,$ctx);
 	
-	$usega=GETVAL('usega');
-	$usegamepad=GETVAL('usegamepad');
-	$useyubi=GETVAL('useyubi');
-	$yubimode=GETVAL('yubimode');
+	$usega=GETVAL('usega',$ctx);
+	$usegamepad=GETVAL('usegamepad',$ctx);
+	$useyubi=GETVAL('useyubi',$ctx);
+	$yubimode=GETVAL('yubimode',$ctx);
 	
-	$quicklist=GETVAL('quicklist');
-	$darkmode=GETVAL('darkmode');
-	$dowoffset=GETVAL('dowoffset');
+	$quicklist=GETVAL('quicklist',$ctx);
+	$darkmode=GETVAL('darkmode',$ctx);
+	$dowoffset=GETVAL('dowoffset',$ctx);
 	
-	setcookie('dowoffset',$dowoffset,time()+3600*24*30*6,null,null,$usehttps,true); //6 months
+	gs_setcookie($ctx,'dowoffset',$dowoffset,time()+3600*24*30*6,null,null,$usehttps,true); //6 months
 	
 	//set useyubi to 0 if no devices are enrolled
 	$query="select count(*) as kcount from ".TABLENAME_YUBIKEYS." where userid=?";
@@ -33,11 +33,11 @@ function setaccountpass(){
 	$kcount=$myrow['kcount'];
 	if (!$kcount) $useyubi=0;	
 	
-	$rawpass=$_POST['pass'];
+	$rawpass=SQET('pass',0,$ctx);
 	
-	if ($_POST['oldpass']!=''){
+	if (SQET('oldpass',0,$ctx)!=''){
 		$passcheck=passtest($rawpass);
-		if ($passcheck['grade']==0) apperror('A weak password cannot be used.');	
+		if ($passcheck['grade']==0) apperror('A weak password cannot be used.',null,null,$ctx);	
 	}
 	
 
@@ -45,7 +45,7 @@ function setaccountpass(){
 	$rs=sql_prep($query,$db,$userid);
 	$myrow=sql_fetch_assoc($rs);
 	
-	if ($_POST['oldpass']!=''&&!password_verify($dbsalt.$_POST['oldpass'],$myrow['password'])) die('invalid password');
+	if (SQET('oldpass',0,$ctx)!=''&&!password_verify($dbsalt.SQET('oldpass',0,$ctx),$myrow['password'])) apperror('invalid password',null,null,$ctx);
 
 	$params=array();
 	$query="update ".TABLENAME_USERS." set ";
@@ -61,8 +61,8 @@ function setaccountpass(){
 	cache_delete(TABLENAME_GSS.'_'.$userid.'-'.$gsid);
 	cache_inc_entity_ver('user_'.$gsid);
 	
-	if ($_POST['oldpass']=='') echo 'Account settings updated'; else tr('password_changed');
+	if (SQET('oldpass',0,$ctx)=='') echo 'Account settings updated'; else tr('password_changed');
 	
-	logaction("changed own password",array(),array('rectype'=>'account','recid'=>0),0,null,1);
+	logaction($ctx,"changed own password",array(),array('rectype'=>'account','recid'=>0),0,null,1);
 	 
 }

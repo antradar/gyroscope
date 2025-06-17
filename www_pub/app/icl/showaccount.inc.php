@@ -8,16 +8,16 @@ include 'icl/showgaqr.inc.php';
 include 'icl/showuserprofile.inc.php';
 include 'icl/listyubikeys.inc.php';
 
-function showaccount(){
+function showaccount($ctx=null){
 		
 	global $smskey;
 	global $dict_weekdays;
 	
 	//ob_start();
 	
-	$user=userinfo();
+	$user=userinfo($ctx);
 
-	global $db;
+	if (isset($ctx)) $db=$ctx->db; else global $db;
 		
 	$userid=$user['userid'];
 	$gsid=$user['gsid'];
@@ -129,7 +129,7 @@ if (isset($user['groups']['chats'])){
 	</div>
 	
 	<div id="myaccount_yubikeys" style="padding-left:30px;padding-bottom:10px;display:none<?php if ($useyubi) echo 'a';?>;">
-		<?php listyubikeys();?>
+		<?php listyubikeys($ctx);?>
 	</div>
 
 		
@@ -242,7 +242,7 @@ if (isset($user['groups']['chats'])){
 
 
 	<div id="userhelptopics_<?php echo $userid;?>">
-		<?php showuserhelptopics();?>
+		<?php showuserhelptopics($ctx);?>
 	</div>
 	
 <div style="padding-top:20px;"></div>

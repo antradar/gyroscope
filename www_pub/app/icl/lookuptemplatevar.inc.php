@@ -61,7 +61,7 @@ function lookuptemplatevar(){
 ?>
 <?php
 	
-	makehelp('templatevar','templatevar',1);
+	makehelp(null,'templatevar','templatevar',1);
 ?>
 	</div>
 </div>

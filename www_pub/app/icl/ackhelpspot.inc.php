@@ -1,17 +1,17 @@
 <?php
 
-function ackhelpspot(){
-	global $db;
+function ackhelpspot($ctx=null){
+	if (isset($ctx)) $db=$ctx-db; else global $db;
 	$topic=SGET('topic');
-	$user=userinfo();
+	$user=userinfo($ctx);
 	$userid=$user['userid'];
 
 			
-	checkgskey('ackhelpspot_'.$topic);
+	checkgskey('ackhelpspot_'.$topic,$ctx);
 	
 	global $helpspots;
 	
-	if (!isset($helpspots[$topic])) apperror('invalid help topic');
+	if (!isset($helpspots[$topic])) apperror('invalid help topic',null,null,$ctx);
 	
 	
 	cache_delete(TABLENAME_GSS.'userhelpspots_'.$userid);

@@ -2,11 +2,11 @@
 
 include 'icl/user_nav.inc.php';
 
-function listusers(){
+function listusers($ctx=null){
 	
-	global $db;
+	if (isset($ctx)) $db=$ctx->db; else global $db;
 	global $WSS_INTERNAL_HOST;
-	$user=userinfo();
+	$user=userinfo($ctx);
 	$myuserid=$user['userid'];
 	$gsid=$user['gsid'];	
 	
@@ -32,8 +32,8 @@ function listusers(){
 	    
     }
 		
-	$mode=SGET('mode');
-	$key=SGET('key',0);
+	$mode=SGET('mode',1,$ctx);
+	$key=SGET('key',0,$ctx);
 		
 	$page=isset($_GET['page'])?intval($_GET['page']):0;
 	
@@ -54,7 +54,7 @@ function listusers(){
 			<img src="imgs/inpback.gif" class="inpback" onclick="inpbackspace('userkey');_inline_lookupuser(gid('userkey'));">
 		</div>
 		<input type="image" src="imgs/mg.gif" class="searchsubmit" value=".">
-		<?php makehelp('userlistlookup','listviewlookup',1);?>
+		<?php makehelp($ctx,'userlistlookup','listviewlookup',1);?>
 	</form>
 
 	<div style="padding-top:10px;position:relative;">

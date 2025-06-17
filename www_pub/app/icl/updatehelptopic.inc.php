@@ -5,23 +5,23 @@ if (file_exists('vectorhelp.ext.php')){
 	include 'vectorhelp.ext.php';
 }
 
-function updatehelptopic(){
-	$helptopicid=SGET('helptopicid');	
-	$helptopictitle=SQET('helptopictitle');
-	$helptopickeywords=SQET('helptopickeywords');
-	$helptopictext=SQET('helptopictext');
+function updatehelptopic($ctx=null){
+	$helptopicid=SGET('helptopicid',1,$ctx);	
+	$helptopictitle=SQET('helptopictitle',1,$ctx);
+	$helptopickeywords=SQET('helptopickeywords',1,$ctx);
+	$helptopictext=SQET('helptopictext',1,$ctx);
 	$helptopictext=str_replace('<p>&nbsp;</p>','',$helptopictext); // '>&nbsp;</' -> '></'
 
-	global $db;
+	if (isset($ctx)) $db=$ctx->db; else global $db;
 	global $vdb;
 	global $enable_vectorhelp;
 	
-	$user=userinfo();
+	$user=userinfo($ctx);
 	$gsid=$user['gsid'];
 	
 	if (!$user['groups']['helpedit']) die('access denied');
 	
-	checkgskey('updatehelptopic_'.$helptopicid);
+	checkgskey('updatehelptopic_'.$helptopicid,$ctx);
 
 	$query="select * from ".TABLENAME_HELPTOPICS." where helptopicid=?"; //gsid=? and 
 	$rs=sql_prep($query,$db,array($helptopicid)); //$gsid,
@@ -41,9 +41,9 @@ function updatehelptopic(){
 	$dbchanges=array('helptopicid'=>$helptopicid,'helptopictitle'=>"$helptopictitle");
 	$dbchanges=array_merge($dbchanges,diffdbchanges($before,$after,array('helptopictext'))); //arg3-masks, arg4-omits
 	
-	logaction("updated Help #$helptopicid $helptopictitle",
+	logaction($ctx, "updated Help #$helptopicid $helptopictitle",
 		$dbchanges,
 		array('rectype'=>'helptopic','recid'=>$helptopicid));
 
-	edithelptopic($helptopicid);
+	edithelptopic($ctx, $helptopicid);
 }

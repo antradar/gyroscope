@@ -11,14 +11,14 @@ $usecache=1;
 $cache=null;
 $cachetest=0; //set to 1 to use file-based cache
 
-function cache_keepalive(){
+function cache_keepalive($ctx=null){
 	
 	//return;
 	
 	global $usecache;
-	if (!$usecache) return 0;
-
-	global $cache;
+	global $cachetest;
+	
+	if (isset($ctx)) {$cache=$ctx->memcache;$usecache=1;$cachetest=0;} else global $cache;
 
 	set_error_handler(function($en,$msg,$file,$line){
 		global $cache;
@@ -26,7 +26,10 @@ function cache_keepalive(){
 		memcache_close($cache);
 		usleep(10000);
 		$cache=null;
-		cache_init();		
+		if (isset($ctx)) {
+			$ctx->memcache=cache_init();
+			$cache=$ctx->memcache;
+		} else cache_init();		
 	},E_ALL);
 	memcache_get($cache,'memcache_keepalive');
 	restore_error_handler();
@@ -60,8 +63,12 @@ function cache_init(){
 	memcache_set($cache,'memcache_keepalive','stayalive',null,3600);
 }
 
-function cache_get_entity_ver($entity,$skip_setting=0){
-	global $cache;
+function cache_get_entity_ver($entity,$skip_setting=0,$ctx=null){
+	global $usecache;
+	global $cachetest;
+	
+	if (isset($ctx)) {$cache=$ctx->memcache;$usecache=1;$cachetest=0;} else global $cache;
+		
 	if (!defined('MEMCACHE_PREFIX')){
 		define('MEMCACHE_PREFIX','');	
 	}
@@ -75,8 +82,12 @@ function cache_get_entity_ver($entity,$skip_setting=0){
 	return $ver;	
 }
 
-function cache_inc_entity_ver($entity,$offset=1){
-	global $cache;
+function cache_inc_entity_ver($entity,$offset=1,$ctx=null){
+	global $usecache;
+	global $cachetest;
+	
+	if (isset($ctx)) {$cache=$ctx->memcache;$usecache=1;$cachetest=0;} else global $cache;
+	
 	if (!defined('MEMCACHE_PREFIX')){
 		define('MEMCACHE_PREFIX','');	
 	}
@@ -89,8 +100,12 @@ function cache_inc_entity_ver($entity,$offset=1){
 	return $ver;	
 }
 
-function cache_ratelimit($unit, $limit, $resgroup='general'){
-	global $cache;
+function cache_ratelimit($unit, $limit, $resgroup='general', $ctx=null){
+	global $usecache;
+	global $cachetest;
+	
+	if (isset($ctx)) {$cache=$ctx->memcache;$usecache=1;$cachetest=0;} else global $cache;
+		
 	global $WSS_INTERNAL_HOST;
 	global $redis;
 	
@@ -131,8 +146,12 @@ function cache_ratelimit($unit, $limit, $resgroup='general'){
 		
 }
 
-function cache_ratelimit_release($unit, $resgroup='general'){
-	global $cache;
+function cache_ratelimit_release($unit, $resgroup='general', $ctx=null){
+	global $usecache;
+	global $cachetest;
+	
+	if (isset($ctx)) {$cache=$ctx->memcache;$usecache=1;$cachetest=0;} else global $cache;
+		
 	global $WSS_INTERNAL_HOST;
 	global $redis;
 	if ($unit==0) $unit=1;
@@ -157,11 +176,11 @@ function cache_ratelimit_release($unit, $resgroup='general'){
 }
 
 
-function cache_flush(){
+function cache_flush($ctx=null){
 	global $usecache;
-	if (!$usecache) return;
-	global $cache;
 	global $cachetest;
+	
+	if (isset($ctx)) {$cache=$ctx->memcache;$usecache=1;$cachetest=0;} else global $cache;
 
 	$dir='cache/';
 	if ($cachetest){
@@ -172,17 +191,16 @@ function cache_flush(){
 		closedir($dh);
 		}		
 	} else {
-		cache_keepalive();
+		cache_keepalive($ctx);
 		memcache_flush($cache);
 	}
 }
 
-function cache_set($key,$obj,$expiry){
+function cache_set($key,$obj,$expiry,$ctx=null){
 	global $usecache;
-	if (!$usecache) return;
-
-	global $cache;
 	global $cachetest;
+	
+	if (isset($ctx)) {$cache=$ctx->memcache;$usecache=1;$cachetest=0;} else global $cache;
 
 	if (!defined('MEMCACHE_PREFIX')){
 		define('MEMCACHE_PREFIX','');	
@@ -195,18 +213,17 @@ function cache_set($key,$obj,$expiry){
 		fwrite($f,serialize($obj));
 		fclose($f);
 	} else {
-		cache_keepalive();
+		cache_keepalive($ctx);
 		memcache_set($cache,$key,$obj,null,$expiry);
 	}	
 
 }
 
-function cache_delete($key){
+function cache_delete($key,$ctx=null){
 	global $usecache;
-	if (!$usecache) return null;
-	
-	global $cache;
 	global $cachetest;
+	
+	if (isset($ctx)) {$cache=$ctx->memcache;$usecache=1;$cachetest=0;} else global $cache;
 	
 	if (!defined('MEMCACHE_PREFIX')){
 		define('MEMCACHE_PREFIX','');	
@@ -219,16 +236,18 @@ function cache_delete($key){
 		if (file_exists('cache/'.$key)) unlink('cache/'.$key);
 		return;	
 	}	
-	cache_keepalive();
+	cache_keepalive($ctx);
 	return memcache_delete($cache,$key);
 }
 
-function cache_get($key){
+function cache_get($key,$ctx=null){
 	global $usecache;
+	global $cachetest;
+	
+	if (isset($ctx)) {$cache=$ctx->memcache;$usecache=1;$cachetest=0;} else global $cache;
+	
 	if (!$usecache) return null;
 
-	global $cache;
-	global $cachetest;
 	
 	if (!defined('MEMCACHE_PREFIX')){
 		define('MEMCACHE_PREFIX','');	

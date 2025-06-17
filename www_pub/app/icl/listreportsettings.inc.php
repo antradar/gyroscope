@@ -2,19 +2,19 @@
 
 include 'models/reports.list.php';
 
-function listreportsettings(){
-	global $db; 
+function listreportsettings($ctx=null){
+	if (isset($ctx)) $db=$ctx->db; else global $db; 
 	global $lang;
 	global $deflang;
 	
-	$user=userinfo();
+	$user=userinfo($ctx);
 	$gsid=$user['gsid'];
 
 	$syslevel=0;
 	if (!is_numeric($gsid)) $syslevel=NULL_UUID;		
 
-	$mode=SGET('mode');
-	$key=SGET('key',0);
+	$mode=SGET('mode',1,$ctx);
+	$key=SGET('key',0,$ctx);
 	
 	$page=isset($_GET['page'])?intval($_GET['page']):0;
 	
@@ -42,7 +42,7 @@ function listreportsettings(){
 
 	$soundex=intval(SGET('soundex'));
 	
-	$res=reports_list($gsid,$key,$lang,$page,$syslevel,$soundex);
+	$res=reports_list($ctx,$gsid,$key,$lang,$page,$syslevel,$soundex);
 	$maxpage=$res['maxpage'];
 	$page=$res['page'];
 	$recs=$res['recs'];

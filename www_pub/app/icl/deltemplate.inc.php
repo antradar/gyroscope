@@ -1,13 +1,13 @@
 <?php
 
-function deltemplate(){
-	$templateid=SGET('templateid');
+function deltemplate($ctx=null){
+	$templateid=GETVAL('templateid',$ctx);
 	global $db;
 	
-	$user=userinfo();
+	$user=userinfo($ctx);
 	$gsid=$user['gsid'];
 	
-	checkgskey('deltemplate_'.$templateid);
+	checkgskey('deltemplate_'.$templateid,$ctx);
 	
 	$query="select * from ".TABLENAME_TEMPLATES.",".TABLENAME_TEMPLATETYPES." where ".TABLENAME_TEMPLATES.".templateid=? and ".TABLENAME_TEMPLATES.".templatetypeid=".TABLENAME_TEMPLATETYPES.".templatetypeid and ".COLNAME_GSID."=?";
 	$rs=sql_prep($query,$db,array($templateid,$gsid));
@@ -25,7 +25,7 @@ function deltemplate(){
 	$query="update ".TABLENAME_TEMPLATETYPES." set activetemplateid=null where activetemplateid=?";
 	sql_prep($query,$db,$templateid);
 	
-	logaction("deleted Template #$templateid $templatename",
+	logaction($ctx, "deleted Template #$templateid $templatename",
 		array('templateid'=>$templateid,'templatename'=>$templatename),
 		array('rectype'=>'templatetypetemplates','recid'=>$templatetypeid)
 		);

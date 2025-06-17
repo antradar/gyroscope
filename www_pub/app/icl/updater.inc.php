@@ -72,6 +72,6 @@ function updategyroscope(){
 </div>
 <?php	
 
-	makehelp('helpfsview','fsview',1);
+	makehelp(null,'helpfsview','fsview',1);
 
 }

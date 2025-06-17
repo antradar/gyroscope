@@ -7,51 +7,51 @@ include 'bcrypt.php';
 
 include 'passtest.php';
 
-function updateuser(){
+function updateuser($ctx=null){
 	global $userroles;
 	global $userrolelocks;
 	global $dbsalt;
 	
 	//vendor auth 1
 	
-	$user=userinfo();
+	$user=userinfo($ctx);
 	$gsid=$user['gsid'];
 	
-	if (!$user['groups']['accounts']) apperror('Access denied');
+	if (!$user['groups']['accounts']) apperror('Access denied',null,null,$ctx);
 	
 	$myuserid=$user['userid'];
 	
-	$userid=SGET('userid');
-	checkgskey('updateuser_'.$userid);
+	$userid=SGET('userid',1,$ctx);
+	checkgskey('updateuser_'.$userid,$ctx);
 	
-	$login=SGET('login');
-	$dispname=strip_tags(SGET('dispname'));
-	$active=GETVAL('active');
-	$virtual=GETVAL('virtual');
-	$passreset=GETVAL('passreset');
+	$login=SGET('login',1,$ctx);
+	$dispname=strip_tags(SGET('dispname',1,$ctx));
+	$active=GETVAL('active',$ctx);
+	$virtual=GETVAL('virtual',$ctx);
+	$passreset=GETVAL('passreset',$ctx);
 	
-	$unlockga=GETVAL('unlockga');
+	$unlockga=GETVAL('unlockga',$ctx);
 
-	$newpass=$_POST['pass'];
+	$newpass=SQET('pass',0,$ctx);
 	//$np=encstr(md5($dbsalt.$newpass),$newpass.$dbsalt);
 
-	$certname=SQET('certname');
+	$certname=SQET('certname',1,$ctx);
 		
-	$needcert=GETVAL('needcert');
-	$needkeyfile=GETVAL('needkeyfile');
-	$cert=strtoupper(SQET('cert'));
+	$needcert=GETVAL('needcert',$ctx);
+	$needkeyfile=GETVAL('needkeyfile',$ctx);
+	$cert=strtoupper(SQET('cert',1,$ctx));
 	
-	$usesms=GETVAL('usesms');
-	$smscell=SGET('smscell');
+	$usesms=GETVAL('usesms',$ctx);
+	$smscell=SGET('smscell',1,$ctx);
 	
-	$usegamepad=GETVAL('usegamepad');
+	$usegamepad=GETVAL('usegamepad',$ctx);
 
 	$certhash=md5($dbsalt.$cert);
 		
-	$groupnames=SGET('groupnames');
+	$groupnames=SGET('groupnames',1,$ctx);
 	
 
-	global $db;
+	if (isset($ctx)) $db=$ctx->db; else global $db;
 	
 	$query="select * from ".TABLENAME_USERS." where login=? and userid!=?";
 	$rs=sql_prep($query,$db,array($login,$userid));
@@ -94,7 +94,7 @@ function updateuser(){
 	}
 
 	if ($lastvirtual&&!$virtual&&$newpass==''){
-			apperror('A new set of passwords must be specified');
+			apperror('A new set of passwords must be specified',null,null,$ctx);
 	}
 
 	$query="update ".TABLENAME_USERS." set login=?, dispname=?, active=?, virtualuser=?, usesms=?,smscell=?, usegamepad=?, needcert=?, needkeyfile=?, passreset=?, groupnames=? ";
@@ -102,7 +102,7 @@ function updateuser(){
 	if (!$virtual&&$newpass!='') {
 		
 		$passcheck=passtest($newpass);
-		if ($passcheck['grade']==0) apperror('A weak password cannot be used.');
+		if ($passcheck['grade']==0) apperror('A weak password cannot be used.',null,null,$ctx);
 				
 		$np=password_hash($dbsalt.$newpass,PASSWORD_DEFAULT,array('cost'=>PASSWORD_COST));
 		$query.=", password=? ";
@@ -158,19 +158,19 @@ function updateuser(){
 			'diffs'=>$diffs
 		);
 								
-		logaction("updated User #$userid $login",$dbchanges,array('rectype'=>'reauth','recid'=>$userid),0,$trace);
-		logaction(null,null,array('rectype'=>'user','recid'=>$userid));
+		logaction($ctx, "updated User #$userid $login",$dbchanges,array('rectype'=>'reauth','recid'=>$userid),0,$trace);
+		logaction($ctx, null,null,array('rectype'=>'user','recid'=>$userid));
 	}
 	
 	if ($userid==$myuserid){
-		header('newlogin: '.tabtitle(stripslashes($login)));
-		header('newdispname: '.tabtitle(stripslashes($dispname)));
+		gs_header($ctx, 'newlogin', tabtitle(stripslashes($login)));
+		gs_header($ctx, 'newdispname', tabtitle(stripslashes($dispname)));
 	}
 
 	cache_delete(TABLENAME_GSS.'_'.$userid.'-'.$gsid);
 	
-	reauth();
-	showuser($userid);
+	reauth($ctx);
+	showuser($ctx, $userid);
 	
 	cache_inc_entity_ver('user_'.$gsid);
 	

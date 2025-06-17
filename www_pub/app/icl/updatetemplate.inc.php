@@ -2,16 +2,16 @@
 
 include 'icl/showtemplate.inc.php';
 
-function updatetemplate(){
-	$templateid=SGET('templateid');	
-	$templatename=SQET('templatename');
-	$templatetext=SQET('templatetext');
+function updatetemplate($ctx=null){
+	$templateid=SGET('templateid',1,$ctx);	
+	$templatename=SQET('templatename',1,$ctx);
+	$templatetext=SQET('templatetext',1,$ctx);
 	
-	gsguard($templateid,array(TABLENAME_TEMPLATETYPES,TABLENAME_TEMPLATES),array('templatetypeid-templatetypeid','templateid'));
+	gsguard($ctx,$templateid,array(TABLENAME_TEMPLATETYPES,TABLENAME_TEMPLATES),array('templatetypeid-templatetypeid','templateid'));
 	
-	checkgskey('updatetemplate_'.$templateid);
+	checkgskey('updatetemplate_'.$templateid,$ctx);
 
-	global $db;
+	if (isset($ctx)) $db=$ctx->db; else global $db;
 	
 	$query="select * from ".TABLENAME_TEMPLATES." where templateid=?";
 	$rs=sql_prep($query,$db,$templateid);
@@ -36,9 +36,9 @@ function updatetemplate(){
 	);
 
 			
-	logaction("updated Template #$templateid $templatename",
+	logaction($ctx, "updated Template #$templateid $templatename",
 		$dbchanges,
 		array('rectype'=>'template','recid'=>$templateid),0,$trace);
 
-	showtemplate($templateid);
+	showtemplate($ctx, $templateid);
 }

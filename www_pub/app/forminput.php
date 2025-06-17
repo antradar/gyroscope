@@ -1,22 +1,42 @@
 <?php
 
-function GETVAL($key){ $val=trim(isset($_GET[$key])?$_GET[$key]:''); if (!is_numeric($val)) apperror('apperror:invalid parameter '.$key); return $val;}
-function QETVAL($key){ $val=trim(isset($_POST[$key])?$_POST[$key]:''); if (!is_numeric($val)) apperror('apperror:invalid parameter '.$key); return $val;}
+function GETVAL($key,$ctx=null){$get=$_GET; if (isset($ctx)) $get=$ctx->request->get; $val=trim(isset($get[$key])?$get[$key]:''); if (!is_numeric($val)) apperror('apperror:invalid parameter '.$key); return $val;}
+function QETVAL($key,$ctx=null){$post=$_POST; if (isset($ctx)) $post=$ctx->request->post; $val=trim(isset($post[$key])?$post[$key]:''); if (!is_numeric($val)) apperror('apperror:invalid parameter '.$key); return $val;}
 function noapos($val,$trimnl=1){$val=addslashes($val); if ($trimnl) $val=str_replace(array("\n","\r","\r\n"),' ',$val); return $val;}
-function GETSTR($key,$trim=1){$val=isset($_GET[$key])?$_GET[$key]:'';if ($trim) $val=trim($val);return noapos($val,0);}
-function QETSTR($key,$trim=1){$val=isset($_POST[$key])?$_POST[$key]:'';if ($trim) $val=trim($val);return noapos($val,0);}
+function GETSTR($key,$trim=1,$ctx=null){$get=$_GET; if (isset($ctx)) $get=$ctx->request->get; $val=isset($get[$key])?$get[$key]:'';if ($trim) $val=trim($val);return noapos($val,0);}
+function QETSTR($key,$trim=1,$ctx=null){$post=$_POST; if (isset($ctx)) $post=$ctx->request->post; $val=isset($post[$key])?$post[$key]:'';if ($trim) $val=trim($val);return noapos($val,0);}
 
-function GETCUR($key){$val=trim(isset($_GET[$key])?$_GET[$key]:''); $val=implode('',explode(' ',$val)); $val=str_replace(_tr('currency_separator_thousands'),'',$val); $val=str_replace(_tr('currency_separator_decimal'),'.',$val); if (!is_numeric($val)) apperror('apperror:invalid parameter '.$key); return $val; }
-function QETCUR($key){$val=trim(isset($_POST[$key])?$_POST[$key]:''); $val=implode('',explode(' ',$val)); $val=str_replace(_tr('currency_separator_thousands'),'',$val); $val=str_replace(_tr('currency_separator_decimal'),'.',$val); if (!is_numeric($val)) apperror('apperror:invalid parameter '.$key); return $val; }
+function GETCUR($key){$get=$_GET; if (isset($ctx)) $get=$ctx->request->get; $val=trim(isset($get[$key])?$get[$key]:''); $val=implode('',explode(' ',$val)); $val=str_replace(_tr('currency_separator_thousands'),'',$val); $val=str_replace(_tr('currency_separator_decimal'),'.',$val); if (!is_numeric($val)) apperror('apperror:invalid parameter '.$key); return $val; }
+function QETCUR($key){$post=$_POST; if (isset($ctx)) $post=$ctx->request->post; $val=trim(isset($post[$key])?$post[$key]:''); $val=implode('',explode(' ',$val)); $val=str_replace(_tr('currency_separator_thousands'),'',$val); $val=str_replace(_tr('currency_separator_decimal'),'.',$val); if (!is_numeric($val)) apperror('apperror:invalid parameter '.$key); return $val; }
 
-function SGET($key,$trim=1){$val=isset($_GET[$key])?$_GET[$key]:'';if ($trim&&is_string($val)) $val=trim($val);return $val;}
-function SQET($key,$trim=1){$val=isset($_POST[$key])?$_POST[$key]:'';if ($trim&&is_string($val)) $val=trim($val);return $val;}
+function SGET($key,$trim=1,$ctx=null){$get=$_GET; if (isset($ctx)) $get=$ctx->request->get; $val=isset($get[$key])?$get[$key]:'';if ($trim&&is_string($val)) $val=trim($val);return $val;}
+function SQET($key,$trim=1,$ctx=null){$post=$_POST; if (isset($ctx)) $post=$ctx->request->post; $val=isset($post[$key])?$post[$key]:'';if ($trim&&is_string($val)) $val=trim($val);return $val;}
 
 function hspc($str){if (!is_string($str)) return $str;return htmlspecialchars($str,ENT_SUBSTITUTE|ENT_COMPAT);}
 
 //array with nullable nodes
 function narray_val($arr,$key){if (!isset($arr[$key])) return null; return $arr[$key];}
 
+function gs_setcookie($ctx=null,$key, $value='', $expire=0, $path='', $domain='', $secure=false, $httponly=false, $samesite='', $priority=''){
+	if (isset($ctx)){
+		$ctx->response->cookie($key, $value, $expire, $path, $domain, $secure, $httponly, $samesite, $priority);
+	} else {
+		setcookie($key, $value, $expire, $path, $domain, $secure, $httponly);	
+	}
+}
+
+function gs_setrawcookie($ctx=null,$key, $value='', $expire=0, $path='', $domain='', $secure=false, $httponly=false, $samesite='', $priority=''){
+	if (isset($ctx)){
+		$ctx->response->rawcookie($key, $value, $expire, $path, $domain, $secure, $httponly, $samesite, $priority);
+	} else {
+		setrawcookie($key, $value, $expire, $path, $domain, $secure, $httponly);	
+	}
+}
+
+function gs_header($ctx=null,$key,$val){
+	if (isset($ctx)) $ctx->response->header($key,$val);
+	else header($key.': '.$val);
+}
 
 function tzconvert($stamp,$src,$dst){
 	
@@ -118,12 +138,22 @@ function datetime2stamp($datetime){
 //2024-10-27 2am => 1729990800
 //echo datetime2stamp('2024-11-3 1am*')."\r\n";
 
-function apperror($str,$msg=null,$clientfunc=null){		
+function apperror($str,$msg=null,$clientfunc=null,$ctx=null){
+	if (isset($ctx)){
+		$ctx->response->header('apperror',tabtitle($str));
+		$ctx->response->_ended=true;
+		$ctx->response->end();
+		return;	
+	}		
 	header('apperror: '.tabtitle($str));
 	if (isset($clientfunc)) header('ERRFUNC: '.$clientfunc);
 	if (isset($msg)) {
-		echo $msg;die(); //display custom message in the error body
-	} else die('apperror - '.$str); //display default message as error body
+		echo $msg;
+		die(); //display custom message in the error body
+	} else {
+		die('apperror - '.$str);
+ 		//display default message as error body		
+	}
 }
 
 function tabtitle($str) {return rawurlencode($str);}
@@ -173,12 +203,11 @@ function makesavebar($key,$title=null){
 <?php	
 }
 
-function makehelp($id,$text,$once=0,$dx=0){
-	global $db;
+function makehelp($ctx=null,$id,$text,$once=0,$dx=0){
+	if (isset($ctx)) $db=$ctx->db; else global $db;
 	global $helpspots; //defined in dict.[lang].php
 	global $userhelpspots;
-	
-
+		
 	$topic='';
 	if ($once){
 		if (!isset($helpspots[$text])) {
@@ -187,7 +216,7 @@ function makehelp($id,$text,$once=0,$dx=0){
 		}
 		
 		if (!isset($userhelpsposts)){
-			$user=userinfo();
+			$user=userinfo($ctx);
 			$userid=$user['userid'];
 			$userhelpspots=cache_get(TABLENAME_GSS.'userhelpspots_'.$userid);
 			if (!is_array($userhelpspots)){
@@ -411,7 +440,7 @@ function logfault($e,$gsfault=false){
 	
 }
 
-function logaction($message,$rawobj=null,$syncobj=null,$gsid=0,$trace=null,$ctxid=0){
+function logaction($ctx,$message,$rawobj=null,$syncobj=null,$gsid=0,$trace=null,$ctxid=0){
 	
 	global $WSS_INTERNAL_KEY; //defined in lb.php
 	global $vdb;
@@ -422,7 +451,7 @@ function logaction($message,$rawobj=null,$syncobj=null,$gsid=0,$trace=null,$ctxi
 	if (isset($_GET['__tabconflicted'])&&is_numeric($_GET['__tabconflicted'])&&$_GET['__tabconflicted']) $bulldozed=1;
 		
 	if (is_callable('userinfo')) {
-		$user=userinfo();
+		$user=userinfo($ctx);
 		$userid=$user['userid'];
 		$gsid=$user['gsid'];
 		$logname=$user['login'];
@@ -431,7 +460,7 @@ function logaction($message,$rawobj=null,$syncobj=null,$gsid=0,$trace=null,$ctxi
 		$userid=0; $logname='';
 	}
 
-	global $db;
+	if (isset($ctx)) $db=$ctx->db; else global $db;
 	$wssid=isset($_GET['wssid_'])?intval($_GET['wssid_']):0;
 
 	if (!isset($rawobj)) $rawobj=array();

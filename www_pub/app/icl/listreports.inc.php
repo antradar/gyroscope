@@ -1,14 +1,14 @@
 <?php
 include 'models/reports.list.php';
 
-function listreports(){
-	$user=userinfo();
+function listreports($ctx=null){
+	$user=userinfo($ctx);
 	$gsid=$user['gsid'];
 	$groupnames=$user['groups'];
-	$key=SGET('key',0);
-	$mode=SGET('mode');
+	$key=SGET('key',0,$ctx);
+	$mode=SGET('mode',1,$ctx);
 	
-	global $db;
+	if (isset($ctx)) $db=$ctx->db; else global $db;
 	global $lang;
 	global $deflang;
 
@@ -18,16 +18,16 @@ function listreports(){
 	$page=isset($_GET['page'])?intval($_GET['page']):0;
 	$soundex=intval(SGET('soundex'));
 	
-	$res=reports_list($gsid,$key,$lang,$page,$syslevel,$soundex);
+	$res=reports_list($ctx,$gsid,$key,$lang,$page,$syslevel,$soundex);
 	$maxpage=$res['maxpage'];
 	$page=$res['page'];
 	$recs=$res['recs'];
 	
 	$found=0;
 	
-	header('listviewtitle: '.tabtitle(_tr('icon_reports')));
-	header('listviewflag: '._jsflag('showreport'));
-	header('listviewjs: reports.js');
+	gs_header($ctx, 'listviewtitle',tabtitle(_tr('icon_reports')));
+	gs_header($ctx, 'listviewflag', _jsflag('showreport'));
+	gs_header($ctx, 'listviewjs', 'reports.js');
 		
 	if ($mode!='embed'){
 ?>
@@ -40,7 +40,7 @@ function listreports(){
 		<img src="imgs/inpback.gif" class="inpback" onclick="inpbackspace('reportkey');_inline_lookupreport(gid('reportkey'));">
 	</div>
 	<input type="image" src="imgs/mg.gif" class="searchsubmit" value=".">
-	<?php makehelp('reportlistlookup','listviewlookup',1);?>
+	<?php makehelp($ctx,'reportlistlookup','listviewlookup',1);?>
 	</form>
 </div>
 <?php

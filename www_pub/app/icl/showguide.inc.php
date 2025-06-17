@@ -1,4 +1,6 @@
 <?php
+global $codegen_seeds;
+
 include 'help/seeds/seeds.php';
 
 function showguide(){

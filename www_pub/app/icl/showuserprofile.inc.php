@@ -1,9 +1,9 @@
 <?php
 
-function showuserprofile($userid=null){
+function showuserprofile($ctx=null,$userid=null){
 	if (!isset($userid)) $userid=GETVAL('userid');
 	
-	global $db;
+	if (isset($ctx)) $db=$ctx->db; else global $db;
 	global $codepage;
 	
 	$query="select * from ".TABLENAME_USERS." where userid=?";

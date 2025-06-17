@@ -1,21 +1,21 @@
 <?php
 
-include 'libnumfile.php';
-include 'makeslug.php';
+include_once 'libnumfile.php';
+include_once 'makeslug.php';
 
-function downloadgsreplay(){
-	global $db;
+function downloadgsreplay($ctx=null){
+	if (isset($ctx)) $db=$ctx->db; else global $db;
 	
-	$gsreplayid=GETVAL('gsreplayid');
-	$rs=gsguard($gsreplayid,'gsreplays','gsreplayid','gsreplaytitle,gsreplaydesc,gsreplaywidth,gsreplayheight');
+	$gsreplayid=GETVAL('gsreplayid',$ctx);
+	$rs=gsguard($ctx,$gsreplayid,'gsreplays','gsreplayid','gsreplaytitle,gsreplaydesc,gsreplaywidth,gsreplayheight');
 
 	$title=$rs['gsreplaytitle'];
 	
 	$slug=makeslug($title);
 	$dfn=trim("$gsreplayid-$slug",'-');
 		
-	header('Content-Type: binary/octet-stream');
-	header("Content-disposition: attachment; filename=\"$dfn.gsreplay\"");
+	gs_header($ctx,'Content-Type', 'binary/octet-stream');
+	gs_header($ctx, "Content-disposition", "attachment; filename=\"$dfn.gsreplay\"");
 
 
 	$width=$rs['gsreplaywidth'];	

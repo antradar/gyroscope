@@ -10,7 +10,7 @@ function delhomedashreport(){
 	$userid=$user['userid'];
 	$gsid=$user['gsid'];
 
-	if (!$userid) apperror('Error deleting report');
+	if (!$userid) apperror('Error deleting report',null,null,$ctx);
 		
 	$homedashreportid=SGET('homedashreportid');
 

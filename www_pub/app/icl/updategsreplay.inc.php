@@ -1,19 +1,19 @@
 <?php
 
-function updategsreplay(){
-	$gsreplayid=GETVAL('gsreplayid');
+function updategsreplay($ctx=null){
+	$gsreplayid=GETVAL('gsreplayid',$ctx);
 
-	gsguard($gsreplayid,'gsreplays','gsreplayid');
+	gsguard($ctx,$gsreplayid,'gsreplays','gsreplayid');
 
-	$gsreplaytitle=SQET('gsreplaytitle');
-	$gsreplaydesc=SQET('gsreplaydesc');
+	$gsreplaytitle=SQET('gsreplaytitle',1,$ctx);
+	$gsreplaydesc=SQET('gsreplaydesc',1,$ctx);
 
 
-	global $db;
-	$user=userinfo();
+	if (isset($ctx)) $db=$ctx->db; else global $db;
+	$user=userinfo($ctx);
 	$gsid=$user['gsid'];
 	
-	checkgskey('updategsreplay_'.$gsreplayid);
+	checkgskey('updategsreplay_'.$gsreplayid,$ctx);
 
 	$query="select * from gsreplays where gsreplayid=?"; 
 	$rs=sql_prep($query,$db,array($gsreplayid));
@@ -30,7 +30,7 @@ function updategsreplay(){
 	$diffs=diffdbchanges($before,$after,array('gsreplaydesc'));
 	$dbchanges=array_merge($dbchanges,$diffs); //arg3-masks, arg4-omits
 				
-	logaction("updated Replay Clip #$gsreplayid $gsreplaytitle",
+	logaction($ctx, "updated Replay Clip #$gsreplayid $gsreplaytitle",
 		$dbchanges,
 		array('rectype'=>'gsreplay','recid'=>$gsreplayid));
 

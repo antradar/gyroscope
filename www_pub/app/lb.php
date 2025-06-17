@@ -4,6 +4,9 @@
 //include 'bcrypt.php';
 include 'backcompat.php';
 
+global $usehttps;
+global $stablecf;
+
 $usehttps=1; //enforcing HTTPS on production server, enable this on production server
 $stablecf=0; //set to 1 when behind CloudFlare
 $enableudf=0; //allow UDF editing, disable this on production server

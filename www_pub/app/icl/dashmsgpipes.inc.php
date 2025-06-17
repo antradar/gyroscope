@@ -1,16 +1,16 @@
 <?php
 
-include 'icl/listmsgpipeusers.inc.php';
+include_once 'icl/listmsgpipeusers.inc.php';
 
-function dashmsgpipes(){
-	global $db;
+function dashmsgpipes($ctx=null){
+	if (isset($ctx)) $db=$ctx->db; else global $db;
 	
-	$user=userinfo();
+	$user=userinfo($ctx);
 	$gsid=$user['gsid'];
 
 	$msgpipeadmin=isset($user['groups']['msgpipe']);
 	
-	if (!isset($user['groups']['msgpipe'])&&!isset($user['groups']['msgpipeuse'])) apperror('Access denied');
+	if (!isset($user['groups']['msgpipe'])&&!isset($user['groups']['msgpipeuse'])) apperror('Access denied',null,null,$ctx);
 	
 	
 ?>
@@ -44,11 +44,11 @@ function dashmsgpipes(){
 	<div class="listitem">
 		<b><?php echo htmlspecialchars($msgpipe['name']);?></b> &nbsp; <span class="labelbutton"><?php echo htmlspecialchars($msgpipe['key']);?></span>
 		<div id="msgpipeusers_<?php echo $msgpipeid;?>" style="padding-top:5px;margin-left:25px;">
-			<?php listmsgpipeusers($msgpipeid,$msgpipe['users']);?>
+			<?php listmsgpipeusers($ctx,$msgpipeid,$msgpipe['users']);?>
 		</div>
 		<?php if ($msgpipeadmin){?>
 		<div class="inputrow buttonbelt" style="margin-left:25px;">
-		<button class="warn" onclick="delmsgpipe(<?php echo $msgpipeid;?>,'<?php emitgskey('delmsgpipe_'.$msgpipeid);?>');">Remove List</button>
+		<button class="warn" onclick="delmsgpipe(<?php echo $msgpipeid;?>,'<?php emitgskey('delmsgpipe_'.$msgpipeid,'',$ctx);?>');">Remove List</button>
 		</div>
 		<?php }?>
 	</div>

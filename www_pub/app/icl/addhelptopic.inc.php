@@ -2,38 +2,38 @@
 
 include 'icl/edithelptopic.inc.php';
 
-function addhelptopic(){
+function addhelptopic($ctx=null){
 	
-	$helptopictitle=SQET('helptopictitle');
-	$helptopickeywords=SQET('helptopickeywords');
+	$helptopictitle=SQET('helptopictitle',1,$ctx);
+	$helptopickeywords=SQET('helptopickeywords',1,$ctx);
 	
-	global $db;
-	$user=userinfo();
+	if (isset($ctx)) $db=$ctx->db; else global $db;
+	$user=userinfo($ctx);
 	$gsid=$user['gsid'];
 	
-	checkgskey('addhelptopic');
+	checkgskey('addhelptopic',$ctx);
 	
-	if (!$user['groups']['helpedit']) die('access denied');	
+	if (!$user['groups']['helpedit']) apperror('access denied',null,null,$ctx);	
 	
 	$query="insert into ".TABLENAME_HELPTOPICS." (helptopictitle,helptopickeywords) values (?,?) ";
 	$rs=sql_prep($query,$db,array($helptopictitle,$helptopickeywords));
 	$helptopicid=sql_insert_id($db,$rs);
 
 	if (!$helptopicid) {
-		apperror(_tr('error_creating_record'));
+		apperror(_tr('error_creating_record'),null,null,$ctx);
 	}
 	
 	$query="update ".TABLENAME_HELPTOPICS." set helptopicsort=helptopicid where helptopicid=$helptopicid";
 	sql_query($query,$db);
 	
-	logaction("added Help #$helptopicid $helptopictitle",array('helptopicid'=>$helptopicid,'helptopictitle'=>"$helptopictitle"));
+	logaction($ctx,"added Help #$helptopicid $helptopictitle",array('helptopicid'=>$helptopicid,'helptopictitle'=>"$helptopictitle"));
 	
-	header('newrecid: '.$helptopicid);
-	header('newkey: helptopic_'.$helptopicid);
-	header('newparams: showhelptopic&helptopicid='.$helptopicid);
-	header('newloadfunc: inithelptopictexteditor('.$helptopicid.');reloadview("core.helptopics","helptopiclist");');
+	gs_header($ctx, 'newrecid', $helptopicid);
+	gs_header($ctx, 'newkey', 'helptopic_'.$helptopicid);
+	gs_header($ctx, 'newparams', 'showhelptopic&helptopicid='.$helptopicid);
+	gs_header($ctx, 'newloadfunc', 'inithelptopictexteditor('.$helptopicid.');reloadview("core.helptopics","helptopiclist");');
 	
-	edithelptopic($helptopicid);
+	edithelptopic($ctx,$helptopicid);
 	
 }
 

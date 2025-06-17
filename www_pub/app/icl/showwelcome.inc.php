@@ -9,13 +9,19 @@ include 'icl/listhomedashreports.inc.php';
 //include 'gsx.php'; //uncomment this to see gsx in action
 //include 'gsx_hello.inc.php'; //uncomment this to see gsx in bypass mode, remember to modify gsx.php
 
-function showwelcome(){
+function showwelcome($ctx=null){
+	/*
+	if (isset($ctx)){
+		apperror('test',null,null,$ctx);	
+	}
+	*/
+	
 	makechangebar('welcome',"if (gid('codegen_button')) gid('codegen_button').onclick();");
 		
 ?>
-<div style="position:relative;margin-left:60px;"><?php makehelp('welcometab2','maxtab',1);?></div>
+<div style="position:relative;margin-left:60px;"><?php makehelp($ctx,'welcometab2','maxtab',1);?></div>
 <div class="section" style="position:relative;">
-	<?php makehelp('welcometab','tabview',1);?>
+	<?php makehelp($ctx,'welcometab','tabview',1);?>
 	<div class="sectiontitle"><a ondblclick="toggletabdock();"><?php tr('hometab_welcome');?></a></div>
 	
 <?php
@@ -95,20 +101,19 @@ SCal Test
 ?>
 <div id="homedashreports">
 <?php
-		listhomedashreports();
+		listhomedashreports($ctx);
 ?>
 </div>
 <?php
 		//lazy way to generate a starter screen, but better than nothing
 		
-		auto_welcome();		
+		auto_welcome($ctx);		
 			
 		showgyroscopeupdater();
 		
 		if ($_SERVER['REMOTE_ADDR']==='127.0.0.1'&&($_SERVER['O_IP']==='127.0.0.1'||$_SERVER['O_IP']==='::1')) showguide(); else echo '<div style="padding-bottom:100px;"></div>';
 		
-	?>			
-
+	?>
 
 	
 </div><!-- section -->
@@ -117,8 +122,9 @@ SCal Test
 
 }
 
-function auto_welcome(){
-	$user=userinfo();
+function auto_welcome($ctx=null){
+	$user=userinfo($ctx);
+	
 	global $toolbaritems;
 	?>
 	<div class="section">

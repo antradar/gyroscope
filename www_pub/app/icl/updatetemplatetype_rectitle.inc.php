@@ -1,12 +1,12 @@
 <?php
 
-function updatetemplatetype_rectitle($templatetypeid=null){
-	if (!isset($templatetypeid)) $templatetypeid=GETVAL('templatetypeid');
-	global $db;
+function updatetemplatetype_rectitle($ctx=null,$templatetypeid=null){
+	if (!isset($templatetypeid)) $templatetypeid=GETVAL('templatetypeid',$ctx);
+	if (isset($ctx)) $db=$ctx->db; else global $db;
 
-	gsguard($templatetypeid,'templatetypes','templatetypeid');
+	gsguard($ctx,$templatetypeid,'templatetypes','templatetypeid');
 
-	$templatetypename=SGET('templatetypename');
+	$templatetypename=SGET('templatetypename',1,$ctx);
 	
 	$query="select templatetypename from templatetypes where templatetypeid=?";
 	$rs=sql_prep($query,$db,array($templatetypeid));
@@ -27,8 +27,8 @@ function updatetemplatetype_rectitle($templatetypeid=null){
 			'after'=>$after,
 			'diffs'=>$diffs
 		);
-		header('newtitle: '.tabtitle($templatetypename));
-		logaction("changed templatetypename of templatetype_$templatetypeid",$dbchanges,array('rectype'=>'templatetype','recid'=>$templatetypeid),0,$trace);
+		gs_header($ctx,'newtitle',tabtitle($templatetypename));
+		logaction($ctx,"changed templatetypename of templatetype_$templatetypeid",$dbchanges,array('rectype'=>'templatetype','recid'=>$templatetypeid),0,$trace);
 	
 	} else {
 		echo "No changes made";

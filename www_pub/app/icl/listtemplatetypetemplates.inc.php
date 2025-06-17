@@ -1,11 +1,11 @@
 <?php
 
-function listtemplatetypetemplates($templatetypeid=null){
+function listtemplatetypetemplates($ctx=null,$templatetypeid=null){
 	if (!isset($templatetypeid)) $templatetypeid=SGET('templatetypeid');
 	
 	global $db;
 	
-	gsguard($templatetypeid,TABLENAME_TEMPLATETYPES,'templatetypeid');
+	gsguard($ctx,$templatetypeid,TABLENAME_TEMPLATETYPES,'templatetypeid');
 		
 	$query="select * from ".TABLENAME_TEMPLATES.",".TABLENAME_TEMPLATETYPES." where ".TABLENAME_TEMPLATES.".templatetypeid=? and ".TABLENAME_TEMPLATES.".templatetypeid=".TABLENAME_TEMPLATETYPES.".templatetypeid order by templatename";
 	

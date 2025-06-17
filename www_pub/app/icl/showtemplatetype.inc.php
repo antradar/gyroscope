@@ -1,14 +1,14 @@
 <?php
 
-include 'icl/listtemplatetypetemplates.inc.php';
-include 'icl/listtemplatetypetemplatevars.inc.php';
+include_once 'icl/listtemplatetypetemplates.inc.php';
+include_once 'icl/listtemplatetypetemplatevars.inc.php';
 
-function showtemplatetype($templatetypeid=null){
+function showtemplatetype($ctx=null,$templatetypeid=null){
 	if (!isset($templatetypeid)) $templatetypeid=SGET('templatetypeid');
 	
-	global $db;
+	if (isset($ctx)) $db=$ctx->db; else global $db;
 	
-	$user=userinfo();
+	$user=userinfo($ctx);
 	$gsid=$user['gsid'];
 	
 	$query="select * from ".TABLENAME_TEMPLATETYPES." left join templates on activetemplateid=templateid where ".TABLENAME_TEMPLATETYPES.".templatetypeid=? and ".COLNAME_GSID."=? ";
@@ -27,9 +27,9 @@ function showtemplatetype($templatetypeid=null){
 	$classes=$myrow['classes'];
 	
 
-	header('newtitle: '.tabtitle(htmlspecialchars($templatetypename)));
+	gs_header($ctx, 'newtitle', tabtitle(htmlspecialchars($templatetypename)));
 	
-	makechangebar('templatetype_'.$templatetypeid,"updatetemplatetype('$templatetypeid','".makegskey('updatetemplatetype_'.$templatetypeid)."');");
+	makechangebar('templatetype_'.$templatetypeid,"updatetemplatetype('$templatetypeid','".makegskey('updatetemplatetype_'.$templatetypeid,'',$ctx)."');");
 	makesavebar('templatetype_'.$templatetypeid);
 ?>
 <div class="section hasqnav">
@@ -95,13 +95,13 @@ function showtemplatetype($templatetypeid=null){
 
 		<div class="sectionheader"><?php tr('icon_templates');?></div>
 		<div id="templatetypetemplates_<?php echo $templatetypeid;?>">
-			<?php listtemplatetypetemplates($templatetypeid);?>
+			<?php listtemplatetypetemplates($ctx,$templatetypeid);?>
 		</div>
 		
 		<?php if ($user['groups']['systemplate']){?>
 		<div class="sectionheader">Variables / Macros</div>
 		<div id="templatetypetemplatevars_<?php echo $templatetypeid;?>">
-			<?php listtemplatetypetemplatevars($templatetypeid);?>
+			<?php listtemplatetypetemplatevars($ctx,$templatetypeid);?>
 		</div>
 		<?php }?>
 	

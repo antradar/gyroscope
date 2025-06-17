@@ -2,12 +2,12 @@
 
 include 'icl/showuserprofile.inc.php';
 
-function removeuserprofilepic(){
-	$user=userinfo();
+function removeuserprofilepic($ctx=null){
+	$user=userinfo($ctx);
 	$userid=$user['userid']+0;
 	global $db;
 	
-	checkgskey('removeuserprofilepic_'.$userid);	
+	checkgskey('removeuserprofilepic_'.$userid,$ctx);	
 		
 	$query="update ".TABLENAME_USERS." set haspic=0 where userid=?";
 	sql_prep($query,$db,$userid);
@@ -15,9 +15,9 @@ function removeuserprofilepic(){
 	$fn='../../protected/userpics/'.$userid.'.png';
 	if (file_exists($fn)) unlink($fn);
 		
-	logaction("removed profile picture of user #$userid",array('userid'=>$userid));
+	logaction($ctx,"removed profile picture of user #$userid",array('userid'=>$userid));
 		
 	
-	showuserprofile($userid);
+	showuserprofile($ctx,$userid);
 		
 }

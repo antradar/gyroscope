@@ -1,18 +1,18 @@
 <?php
 
-include 'icl/listtemplatetypetemplatevars.inc.php';
+include_once 'icl/listtemplatetypetemplatevars.inc.php';
 
-function batchsavetemplatevars(){
+function batchsavetemplatevars($ctx=null){
 	
-	$templatetypeid=SGET('templatetypeid');
+	$templatetypeid=SGET('templatetypeid',1,$ctx);
 	
 	$quickvars=explode("\n",$_POST['quickvars']);
 		
-	global $db;
+	if (isset($ctx)) $db=$ctx->db; else global $db;
 	
-	checkgskey('batchsavetemplatevars_'.$templatetypeid);
+	checkgskey('batchsavetemplatevars_'.$templatetypeid,$ctx);
 
-	gsguard($templatetypeid,TABLENAME_TEMPLATETYPES,'templatetypeid');
+	gsguard($ctx,$templatetypeid,TABLENAME_TEMPLATETYPES,'templatetypeid');
 			
 	$query="delete from ".TABLENAME_TEMPLATEVARS." where templatetypeid=?";
 	sql_prep($query,$db,$templatetypeid);
@@ -33,5 +33,5 @@ function batchsavetemplatevars(){
 	
 
 
-	listtemplatetypetemplatevars($templatetypeid);
+	listtemplatetypetemplatevars($ctx,$templatetypeid);
 }

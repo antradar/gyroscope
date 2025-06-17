@@ -93,7 +93,7 @@ function listsettings(){
 	<div class="listitem" style="position:relative;">
 		<a onclick="addtab('rptsqlcomp','SQL Compare','rptsqlcomp');"><?php tr('icon_sqlcompare');?></a>
 		<span style="position:absolute;top:3px;right:70px;">
-		<?php makehelp('settings_sqlcompare','this tool is used to compare the structures of databases on both local and remote servers');?>
+		<?php makehelp(null,'settings_sqlcompare','this tool is used to compare the structures of databases on both local and remote servers');?>
 		</span>
 	</div>
 	<?php if (isset($enable_db_profiler)&&file_exists($db_profiler)&&file_exists('icl/gsdb_showquerysummary.inc.php')){?>

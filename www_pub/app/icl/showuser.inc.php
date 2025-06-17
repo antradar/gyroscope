@@ -2,19 +2,21 @@
 include 'icl/showkeyfilepad.inc.php';
 include 'icl/showuserhelptopics.inc.php';
 
-function showuser($userid=null){
+function showuser($ctx=null,$userid=null){
 	global $smskey;
 	global $userrolelocks;
 	
 	if (!isset($userid)) $userid=SGET('userid');
+		
+	$user=userinfo($ctx);
 	
-	$user=userinfo();
-	if (!isset($user['groups']['accounts'])) die('Access denied');
+	if (!isset($user['groups']['accounts'])) apperror('Access denied',null,null,$ctx);
 	$gsid=$user['gsid'];
 		
 	$myuserid=$user['userid'];
+
+	if (isset($ctx))$db=$ctx->db; else global $db;
 	
-	global $db;
 	global $userroles;
 		
 	//vendor auth 1
@@ -22,7 +24,7 @@ function showuser($userid=null){
 	$query="select * from ".TABLENAME_USERS." where userid=? and ".COLNAME_GSID."=? ";
 	$rs=sql_prep($query,$db,array($userid,$gsid));
 	
-	if (!$myrow=sql_fetch_array($rs)) die('This user record has been removed');
+	if (!$myrow=sql_fetch_array($rs)) apperror('This user record has been removed');
 	
 	$login=$myrow['login'];
 	$dispname=$myrow['dispname'];
@@ -49,9 +51,10 @@ function showuser($userid=null){
 	
 	$jsroles=str_replace('"',"'",json_encode(array_keys($userroles)));
 		
-	header('newtitle: '.tabtitle('<img src="imgs/t.gif" class="ico-user">'.htmlspecialchars($login)));
+	if (isset($ctx)) $ctx->response->header('newtitle', tabtitle('<img src="imgs/t.gif" class="ico-user">'.htmlspecialchars($login)));
+	else header('newtitle: '.tabtitle('<img src="imgs/t.gif" class="ico-user">'.htmlspecialchars($login)));
 	
-	makechangebar('user_'.$userid,"updateuser('$userid',$jsroles,'".makegskey('updateuser_'.$userid)."');",'');
+	makechangebar('user_'.$userid,"updateuser('$userid',$jsroles,'".makegskey('updateuser_'.$userid,'',$ctx)."');",'');
 	makesavebar('user_'.$userid);
 	
 ?>
@@ -138,7 +141,7 @@ function showuser($userid=null){
 	
 	<div class="inputrow">
 		<input onclick="marktabchanged('user_<?php echo $userid;?>');if (this.checked) {gid('keyfileview_<?php echo $userid;?>').style.display='block';gid('bmkeyfile_<?php echo $userid;?>').style.display='block';} else {gid('keyfileview_<?php echo $userid;?>').style.display='none';gid('bmkeyfile_<?php echo $userid;?>').style.display='none';}" type="checkbox" id="userneedkeyfile_<?php echo $userid;?>" <?php if ($needkeyfile) echo 'checked';?>> <label for="userneedkeyfile_<?php echo $userid;?>">enhance login with a key file</label>
-		<?php makehelp('helpuserneedkeyfile_'.$userid,'once set, the generated key file has to be attached each time you sign in.');?>
+		<?php makehelp(null,'helpuserneedkeyfile_'.$userid,'once set, the generated key file has to be attached each time you sign in.');?>
 	</div>
 		
 	<div class="inputrow">
@@ -178,9 +181,9 @@ function showuser($userid=null){
 	}?>
 	
 	<div class="inputrow buttonbelt">
-		<button onclick="updateuser('<?php echo $userid;?>',<?php echo $jsroles;?>,'<?php emitgskey('updateuser_'.$userid,'accounts');?>');"><?php tr('button_update');?></button>
+		<button onclick="updateuser('<?php echo $userid;?>',<?php echo $jsroles;?>,'<?php emitgskey('updateuser_'.$userid,'accounts',$ctx);?>');"><?php tr('button_update');?></button>
 		&nbsp; &nbsp;
-		<button class="warn" onclick="deluser('<?php echo $userid;?>','<?php emitgskey('deluser_'.$userid,'accounts');?>');"><?php tr('button_delete');?></button>
+		<button class="warn" onclick="deluser('<?php echo $userid;?>','<?php emitgskey('deluser_'.$userid,'accounts',$ctx);?>');"><?php tr('button_delete');?></button>
 	</div>
 
 
@@ -189,7 +192,7 @@ function showuser($userid=null){
 	<div class="col">
 		<div id="keyfileview_<?php echo $userid;?>" style="display:none<?php if ($needkeyfile) echo 'a';?>;">
 			<div class="sectionheader">Key File</div>
-			<?php showkeyfilepad('keyfileeditor_'.$userid,$userid);?>
+			<?php showkeyfilepad($ctx,'keyfileeditor_'.$userid,$userid);?>
 		</div>
 	</div>
 
@@ -197,7 +200,7 @@ function showuser($userid=null){
 
 	<?php if ($userid==$myuserid){?>
 	<div id="muserhelptopics_<?php echo $userid;?>">
-		<?php showuserhelptopics();?>
+		<?php showuserhelptopics($ctx);?>
 	</div>
 	<?php }
 	
@@ -213,4 +216,5 @@ function showuser($userid=null){
 	</div>
 </div>
 <?php
+
 }

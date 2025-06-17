@@ -1,10 +1,10 @@
 <?php
 
-function showgsreplay(){
-	global $db;
+function showgsreplay($ctx=null){
+	if (isset($ctx)) $db=$ctx->db; else global $db;
 	global $codepage;
-	$gsreplayid=GETVAL('gsreplayid');
-	gsguard($gsreplayid,'gsreplays','gsreplayid');
+	$gsreplayid=GETVAL('gsreplayid',$ctx);
+	gsguard($ctx,$gsreplayid,'gsreplays','gsreplayid');
 
 	$query="select * from gsreplays where gsreplayid=?";
 	$rs=sql_prep($query,$db,$gsreplayid);
@@ -13,8 +13,8 @@ function showgsreplay(){
 	$gsreplaytitle=$replay['gsreplaytitle'];
 	$gsreplaydesc=$replay['gsreplaydesc'];
 	
-	header('newtitle: '.tabtitle(htmlspecialchars('#'.$gsreplayid.' '.$gsreplaytitle)));
-	makechangebar('gsreplayview_'.$gsreplayid,"updategsreplay('$gsreplayid','".makegskey('updategsreplay_'.$gsreplayid)."');");
+	gs_header($ctx, 'newtitle', tabtitle(htmlspecialchars('#'.$gsreplayid.' '.$gsreplaytitle)));
+	makechangebar('gsreplayview_'.$gsreplayid,"updategsreplay('$gsreplayid','".makegskey('updategsreplay_'.$gsreplayid,'',$ctx)."');");
 	makesavebar('gsreplayview_'.$gsreplayid);
 		
 ?>
@@ -55,7 +55,7 @@ function showgsreplay(){
 		</div>
 		
 		<div class="inputrow buttonbelt">
-			<button onclick="updategsreplay('<?php echo $gsreplayid;?>','<?php emitgskey('updategsreplay_'.$gsreplayid);?>');">Update</button>
+			<button onclick="updategsreplay('<?php echo $gsreplayid;?>','<?php emitgskey('updategsreplay_'.$gsreplayid,'',$ctx);?>');">Update</button>
 			&nbsp; &nbsp;
 			<button class="warn" onclick="delgsreplay(<?php echo $gsreplayid;?>);">Delete</button>
 		</div>

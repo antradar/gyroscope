@@ -1,4 +1,15 @@
 <?php
+global $deflang;
+global $langs;
+global $lang;
+
+global $dict;
+global $dict_mons;
+global $dict_wdays;
+global $dict_weekdays;
+global $dict_dir;
+global $helpspots;
+
 $deflang='en';
 
 $langs=array(
@@ -20,20 +31,22 @@ if (!in_array($lang,array_keys($langs))) $lang=$deflang;
 
 include 'lang/dict.'.$lang.'.php';
 
-
-function _tr($strkey,$reps=null){
-	global $dict;
-	
-	$str=isset($dict[$strkey])?$dict[$strkey]:'['.$strkey.']';
-	
-	if (is_array($reps)){
-		foreach ($reps as $k=>$v){
-			$str=str_replace('%%'.$k.'%%',$v,$str);	
-		} 	
+if (!is_callable('_tr')){
+	function _tr($strkey,$reps=null){
+		global $dict;
+		
+		$str=isset($dict[$strkey])?$dict[$strkey]:'['.$strkey.']';
+		
+		if (is_array($reps)){
+			foreach ($reps as $k=>$v){
+				$str=str_replace('%%'.$k.'%%',$v,$str);	
+			} 	
+		}
+		
+		return $str;
 	}
-	
-	return $str;
 }
 
-function tr($strkey,$reps=null){echo _tr($strkey,$reps);}
-
+if (!is_callable('tr')){
+	function tr($strkey,$reps=null){echo _tr($strkey,$reps);}
+}

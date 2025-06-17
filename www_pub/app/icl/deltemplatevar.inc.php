@@ -1,19 +1,19 @@
 <?php
 
-include 'icl/listtemplatetypetemplatevars.inc.php';
+include_once 'icl/listtemplatetypetemplatevars.inc.php';
 
-function deltemplatevar(){
+function deltemplatevar($ctx=null){
 	$templatetypeid=SGET('templatetypeid');
 	$templatevarid=SGET('templatevarid');
 	
-	global $db;
+	if (isset($ctx)) $db=$ctx->db; else global $db;
 	
-	checkgskey('deltemplatevar-'.$templatevarid);
+	checkgskey('deltemplatevar-'.$templatevarid,$ctx);
 	
-	gsguard($templatetypeid,TABLENAME_TEMPLATETYPES,'templatetypeid');
+	gsguard($ctx,$templatetypeid,TABLENAME_TEMPLATETYPES,'templatetypeid');
 
 	$query="delete from ".TABLENAME_TEMPLATEVARS." where templatevarid=? and templatetypeid=?";
 	sql_prep($query,$db,array($templatevarid,$templatetypeid));	
 	
-	listtemplatetypetemplatevars($templatetypeid);
+	listtemplatetypetemplatevars($ctx,$templatetypeid);
 }

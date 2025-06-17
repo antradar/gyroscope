@@ -1,20 +1,20 @@
 <?php
 
-function deltemplatetype(){
-	$user=userinfo();
-	if (!$user['groups']['systemplate']) apperror('Access denied');
+function deltemplatetype($ctx=null){
+	$user=userinfo($ctx);
+	if (!$user['groups']['systemplate']) apperror('Access denied',null,null,$ctx);
 	
-	$templatetypeid=SGET('templatetypeid');
-	global $db;
+	$templatetypeid=GETVAL('templatetypeid',$ctx);
+	if (isset($ctx)) $db=$ctx->db; else global $db;
 	
-	$user=userinfo();
+	$user=userinfo($ctx);
 	$gsid=$user['gsid'];
 	
-	checkgskey('deltemplatetype_'.$templatetypeid);
+	checkgskey('deltemplatetype_'.$templatetypeid, $ctx);
 	
 	$query="select * from templatetypes where templatetypeid=? and gsid=?";
 	$rs=sql_prep($query,$db,array($templatetypeid,$gsid));
-	if (!$myrow=sql_fetch_array($rs)) apperror('Invalid templatetype record');
+	if (!$myrow=sql_fetch_array($rs)) apperror('Invalid templatetype record',null,null,$ctx);
 	
 	$templatetypename=$myrow['templatetypename'];
 	
@@ -27,7 +27,7 @@ function deltemplatetype(){
 	$query="delete from templates where templatetypeid=?";
 	sql_prep($query,$db,$templatetypeid);
 	
-	logaction("deleted Template Class #$templatetypeid $templatetypename",
+	logaction($ctx, "deleted Template Class #$templatetypeid $templatetypename",
 		array('templatetypeid'=>$templatetypeid,'templatetypename'=>$templatetypename),
 		array('rectype'=>'templatetype','recid'=>$templatetypeid),0,null,4);
 }

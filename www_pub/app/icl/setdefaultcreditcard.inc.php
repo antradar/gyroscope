@@ -2,12 +2,12 @@
 
 include 'icl/showcreditcards.inc.php';
 
-function setdefaultcreditcard(){
+function setdefaultcreditcard($ctx=null){
 	
-	$user=userinfo();
+	$user=userinfo($ctx);
 	$gsid=$user['gsid'];
 	
-	global $db;	
+	if (isset($ctx)) $db=$ctx->db; else global $db;	
 	
 	$query="select * from ".TABLENAME_GSS." where ".COLNAME_GSID."=?";
 	$rs=sql_prep($query,$db,$gsid);
@@ -15,15 +15,15 @@ function setdefaultcreditcard(){
 	
 	$customerid=$myrow['stripecustomerid'];
 	
-	$cardid=SQET('cardid');	
+	$cardid=SQET('cardid',1,$ctx);	
 	
-	checkgskey('setdefaultcreditcard_'.$cardid);
+	checkgskey('setdefaultcreditcard_'.$cardid,$ctx);
 	
 	$res=stripe_setdefaultmembercard($customerid,$cardid);
-	if (isset($res['error'])) apperror($res['error']['message']);
+	if (isset($res['error'])) apperror($res['error']['message'],null,null,$ctx);
 	
-	logaction('update default credit card',array('type'=>'creditcard'),array('rectype'=>'creditcards','recid'=>0));
+	logaction($ctx,'update default credit card',array('type'=>'creditcard'),array('rectype'=>'creditcards','recid'=>0));
 
-	showcreditcards();	
+	showcreditcards($ctx);	
 	
 }

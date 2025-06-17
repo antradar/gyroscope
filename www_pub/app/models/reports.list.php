@@ -1,7 +1,7 @@
 <?php
 
-function reports_list($gsid,$key,$lang,$page,$syslevel,$soundex=0){
-	global $db;
+function reports_list($ctx=null, $gsid,$key,$lang,$page,$syslevel,$soundex=0){
+	if (isset($ctx)) $db=$ctx->db; else global $db;
 	
 	if ($page<0) $page=0;
 	

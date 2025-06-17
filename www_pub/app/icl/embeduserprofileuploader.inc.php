@@ -3,11 +3,11 @@ set_time_limit(0);
 
 //include 'libresize.php'; //available with commercial license
 
-function embeduserprofileuploader(){
+function embeduserprofileuploader($ctx=null){
 	header('Cache-Control: no-store');
 	
-	global $db;
-	$user=userinfo();
+	if (isset($ctx)) $db=$ctx->db; else global $db;
+	$user=userinfo($ctx);
 	$userid=intval($user['userid']);
 
 	$query="select darkmode from ".TABLENAME_USERS." where userid=?";
@@ -31,7 +31,7 @@ function embeduserprofileuploader(){
 		
 	
 	if (isset($_FILES['file'])&&$_FILES['file']&&$_FILES['file']['name']){
-		checkgskey('embeduserprofileuploader_'.$userid);
+		checkgskey('embeduserprofileuploader_'.$userid,$ctx);
 		//echo '<pre>';print_r($_FILES);echo '</pre>'; return;
 			
 		$file=$_FILES['file'];
@@ -91,7 +91,7 @@ function embeduserprofileuploader(){
 					sql_prep($query,$db,array($userid)); //$w,$h
 			
 						
-					logaction("uploaded $ofn to user #$userid",array('userid'=>$userid,'file'=>$ofn));
+					logaction($ctx,"uploaded $ofn to user #$userid",array('userid'=>$userid,'file'=>$ofn));
 				}
 			}
 								
@@ -125,7 +125,7 @@ function embeduserprofileuploader(){
 </div>
 <input type="hidden" name="userid" value="<?php echo $userid;?>">
 <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $maxsize;?>">
-<input type="hidden" name="X-GSREQ-KEY" value="<?php emitgskey('embeduserprofileuploader_'.$userid);?>">
+<input type="hidden" name="X-GSREQ-KEY" value="<?php emitgskey('embeduserprofileuploader_'.$userid,'',$ctx);?>">
 <input type="file" name="file" id="file" onchange="upload(this);return false;">
 </form>
 <div id="cancel" style="display:none;font-size:12px;padding:5px 0;"><a href=# onclick="cancelupload();return false;"><u>cancel</u></a></div>
@@ -162,7 +162,7 @@ function upload(d,dfiles){
 	}
 
 	fd.append('file',binfile);
-	fd.append('X-GSREQ-KEY','<?php emitgskey('embeduserprofileuploader_'.$userid);?>');
+	fd.append('X-GSREQ-KEY','<?php emitgskey('embeduserprofileuploader_'.$userid,'',$ctx);?>');
 	
 	fd.append('userid',<?php echo $userid;?>);
 	rq.open('POST','<?php echo $codepage;?>?cmd=embeduserprofileuploader&userid=<?php echo $userid;?>&diag=1',true);

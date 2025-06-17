@@ -1,10 +1,10 @@
 <?php
 
-function listtemplatetypetemplatevars($templatetypeid=null){
-	if (!isset($templatetypeid)) $templatetypeid=SGET('templatetypeid');
-	global $db;
+function listtemplatetypetemplatevars($ctx=null,$templatetypeid=null){
+	if (!isset($templatetypeid)) $templatetypeid=SGET('templatetypeid',1,$ctx);
+	if (isset($ctx)) $db=$ctx->db; else global $db;
 
-	gsguard($templatetypeid,TABLENAME_TEMPLATETYPES,'templatetypeid');
+	gsguard($ctx,$templatetypeid,TABLENAME_TEMPLATETYPES,'templatetypeid');
 			
 	$query="select * from ".TABLENAME_TEMPLATETYPES." where templatetypeid=?";
 	$rs=sql_prep($query,$db,$templatetypeid);
@@ -23,7 +23,7 @@ function listtemplatetypetemplatevars($templatetypeid=null){
 	?>
 	<div style="margin-bottom:10px;">
 		<span class="labelbutton"><?php echo $varname;?></span>
-		&nbsp; &nbsp; <a onclick="deltemplatevar('<?php echo $templatevarid;?>','<?php echo $templatetypeid;?>','<?php emitgskey('deltemplatevar-'.$templatevarid);?>');"><img src="imgs/t.gif" class="img-del spdy"></a> &nbsp; 
+		&nbsp; &nbsp; <a onclick="deltemplatevar('<?php echo $templatevarid;?>','<?php echo $templatetypeid;?>','<?php emitgskey('deltemplatevar-'.$templatevarid,'',$ctx);?>');"><img src="imgs/t.gif" class="img-del spdy"></a> &nbsp; 
 		<span><?php echo $vardesc;?></span>
 		
 	</div>
@@ -35,7 +35,7 @@ function listtemplatetypetemplatevars($templatetypeid=null){
 	<div id="quickvars_<?php echo $templatetypeid;?>_" style="display:none;margin-bottom:20px;">
 		<textarea class="inplong" id="quickvars_<?php echo $templatetypeid;?>"><?php foreach ($vars as $var){echo $var['templatevarname'].'|'.$var['templatevardesc']."\r\n";}?></textarea>
 		<div class="buttonbelt">
-			<button onclick="batchsavetemplatevars('<?php echo $templatetypeid;?>','<?php emitgskey('batchsavetemplatevars_'.$templatetypeid);?>');">Update</button>
+			<button onclick="batchsavetemplatevars('<?php echo $templatetypeid;?>','<?php emitgskey('batchsavetemplatevars_'.$templatetypeid,'',$ctx);?>');">Update</button>
 		</div>
 	</div>
 	<div class="inputrow">

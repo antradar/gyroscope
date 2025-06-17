@@ -1,7 +1,8 @@
 <?php
 
-function showkeyfilepad($container,$userid){
-	global $db;
+function showkeyfilepad($ctx=null,$container,$userid){
+	
+	if (isset($ctx)) $db=$ctx->db; else global $db;
 	global $codepage;
 	
 	$query="select * from users where userid=?";
@@ -34,7 +35,7 @@ function showkeyfilepad($container,$userid){
 <form method="POST" id="keyfileform_<?php echo $container;?>" target=_blank action="<?php echo $codepage;?>?cmd=downloadgskeyfile">
 <textarea style="width:100%;height:100px;display:none;" name="keyfileinfo" id="keyfileinfo_<?php echo $container;?>"></textarea>
 <input type="hidden" name="keyfileuserid" value="<?php echo $userid;?>">
-<input type="hidden" name="X-GSREQ-KEY" value="<?php emitgskey('downloadgskeyfile_'.$userid);?>">
+<input type="hidden" name="X-GSREQ-KEY" value="<?php emitgskey('downloadgskeyfile_'.$userid,'',$ctx);?>">
 </form>
 <?php	
 		

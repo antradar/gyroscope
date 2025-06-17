@@ -2,28 +2,28 @@
 
 include 'icl/showreportsetting.inc.php';
 
-function updatereportsetting(){
+function updatereportsetting($ctx=null){
 	global $userrolelocks;
 	
-	$reportid=SGET('reportid');	
-	$reportname=SQET('reportname');
-	$reportgroup=SQET('reportgroup');
-	$reportfunc=SQET('reportfunc');
-	$reportkey=SQET('reportkey');
-	$reportdesc=SQET('reportdesc');
+	$reportid=SGET('reportid',1,$ctx);	
+	$reportname=SQET('reportname',1,$ctx);
+	$reportgroup=SQET('reportgroup',1,$ctx);
+	$reportfunc=SQET('reportfunc',1,$ctx);
+	$reportkey=SQET('reportkey',1,$ctx);
+	$reportdesc=SQET('reportdesc',1,$ctx);
 
-	$reportgroupnames=SQET('reportgroupnames');
+	$reportgroupnames=SQET('reportgroupnames',1,$ctx);
 	
-	$user=userinfo();
+	$user=userinfo($ctx);
 	if (!$user['groups']['reportsettings']&&!$user['groups']['devreports']) apperror('access denied');
 	$gsid=$user['gsid'];
 
 	$syslevel=0;
 	if (!is_numeric($gsid)) $syslevel=NULL_UUID;
 	
-	checkgskey('updatereportsetting_'.$reportid);
+	checkgskey('updatereportsetting_'.$reportid,$ctx);
 
-	global $db;
+	if ($ctx) $db=$ctx->db; else global $db;
 	global $lang;
 	
 	$query="select * from ".TABLENAME_REPORTS." where (gsid=? or gsid=?) and reportkey=? and reportid!=?";
@@ -62,9 +62,9 @@ function updatereportsetting(){
 
 	cache_inc_entity_ver('reports_list_'.$gsid);
 	
-	logaction("updated Report Settings #$reportid $reportname",
+	logaction($ctx,"updated Report Settings #$reportid $reportname",
 		array('reportid'=>$reportid,'reportname'=>"$reportname"),
 		array('rectype'=>'reportsetting','recid'=>$reportid),0,null,2);
 
-	showreportsetting($reportid);
+	showreportsetting($ctx,$reportid);
 }

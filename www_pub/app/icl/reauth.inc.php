@@ -1,14 +1,14 @@
 <?php
 include 'models/myuser.reauth.php';
 
-function reauth(){
+function reauth($ctx=null){
 	
-	global $db;
+	if (isset($ctx)) $db=$ctx->db; else global $db;
 	global $salt;
 	global $wssecret;
 	global $usehttps;
 	
-	$user=userinfo();
+	$user=userinfo($ctx);
 	$userid=$user['userid'];
 	$gsid=$user['gsid'];
 	
@@ -17,7 +17,7 @@ function reauth(){
 	
 	//every portalized table should have its own gsexpiry and gstier
 
-	$myrow=myuser_reauth($userid,$gsid);	
+	$myrow=myuser_reauth($ctx,$userid,$gsid);	
 	
 	$gsexpiry=intval($myrow['gsexpiry']);
 	$gstier=intval($myrow['gstier']);
@@ -35,23 +35,24 @@ function reauth(){
 	$wsskey=md5($wssecret.$gsid.date('Y-n-j-H').$userid).'-'.$gsid.'-'.$userid;
 	
 	if (!$active||$virtual){
-		setcookie('userid',NULL,time()-3600,null,null,$usehttps,true);
-		setcookie('gsid',NULL,time()-3600,null,null,$usehttps,true);
-		setcookie('gsexpiry',NULL,time()-3600,null,null,$usehttps,true);
-		setcookie('gstier',NULL,time()-3600,null,null,$usehttps,true);
-		setcookie('login',NULL,time()-3600,null,null,$usehttps,true);
-		setcookie('dispname',NULL,time()-3600,null,null,$usehttps,true);		
-		setcookie('auth',NULL,time()-3600,null,null,$usehttps,true);
-		setcookie('groupnames',NULL,time()-3600,null,null,$usehttps,true);		
+		gs_setcookie($ctx, 'userid',NULL,time()-3600,null,null,$usehttps,true);
+		gs_setcookie($ctx, 'gsid',NULL,time()-3600,null,null,$usehttps,true);
+		gs_setcookie($ctx, 'gsexpiry',NULL,time()-3600,null,null,$usehttps,true);
+		gs_setcookie($ctx, 'gstier',NULL,time()-3600,null,null,$usehttps,true);
+		gs_setcookie($ctx, 'login',NULL,time()-3600,null,null,$usehttps,true);
+		gs_setcookie($ctx, 'dispname',NULL,time()-3600,null,null,$usehttps,true);		
+		gs_setcookie($ctx, 'auth',NULL,time()-3600,null,null,$usehttps,true);
+		gs_setcookie($ctx, 'groupnames',NULL,time()-3600,null,null,$usehttps,true);		
 	} else {
 		header('wsskey: '.$wsskey);
-		setcookie('auth',$auth,null,null,null,$usehttps,true);
-		setcookie('userid',$userid,null,null,null,$usehttps,true);
-		setcookie('gsid',$gsid,null,null,null,$usehttps,true);
-		setcookie('gsexpiry',$gsexpiry,null,null,null,$usehttps,true);
-		setcookie('gstier',$gstier,null,null,null,$usehttps,true);
-		setcookie('login',$login,null,null,null,$usehttps,true);
-		setrawcookie('dispname',rawurlencode($dispname),null,null,null,$usehttps,true);
-		setcookie('groupnames',$groupnames,null,null,null,$usehttps,true);
-	}
+		gs_setcookie($ctx, 'auth',$auth,null,null,null,$usehttps,true);
+		gs_setcookie($ctx, 'userid',$userid,null,null,null,$usehttps,true);
+		gs_setcookie($ctx, 'gsid',$gsid,null,null,null,$usehttps,true);
+		gs_setcookie($ctx, 'gsexpiry',$gsexpiry,null,null,null,$usehttps,true);
+		gs_setcookie($ctx, 'gstier',$gstier,null,null,null,$usehttps,true);
+		gs_setcookie($ctx, 'login',$login,null,null,null,$usehttps,true);
+		gs_setrawcookie($ctx, 'dispname',rawurlencode($dispname),null,null,null,$usehttps,true);
+		gs_setcookie($ctx, 'groupnames',$groupnames,null,null,null,$usehttps,true);
+	}		
+
 }

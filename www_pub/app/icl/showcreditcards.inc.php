@@ -2,8 +2,8 @@
 
 include_once 'stripe.inc.php';
 
-function showcreditcards(){
-	global $db;
+function showcreditcards($ctx=null){
+	if (isset($ctx)) $db=$ctx->db; else global $db;
 	global $stripe_name;
 		
 	global $lang;
@@ -11,7 +11,7 @@ function showcreditcards(){
 
 	if (isset($stripe_config)) $stripe_pkey=$stripe_config['pkey_'.$stripe_config['mode']]; else $stripe_pkey='';
 		
-	$user=userinfo();
+	$user=userinfo($ctx);
 	$gsid=$user['gsid'];
 		
 	$query="select * from ".TABLENAME_GSS." where ".COLNAME_GSID."=?";
@@ -102,12 +102,12 @@ function showcreditcards(){
 	<?php if ($default){?>
 	        <span class="labelbutton">default</span>
 	<?php }else{?>
-	        <a class="hovlink" onclick="setdefaultcreditcard('<?php echo $cardid;?>','<?php echo $lang;?>','<?php echo $stripe_pkey;?>','<?php emitgskey('setdefaultcreditcard_'.$cardid);?>');">set as default</a>
+	        <a class="hovlink" onclick="setdefaultcreditcard('<?php echo $cardid;?>','<?php echo $lang;?>','<?php echo $stripe_pkey;?>','<?php emitgskey('setdefaultcreditcard_'.$cardid,'',$ctx);?>');">set as default</a>
 	<?php }?>
 	</td>
 	<td>&nbsp;</td>
 	<td>
-		<a href=# onclick="delcreditcard('<?php echo $cardid;?>','<?php echo $lang;?>','<?php echo $stripe_pkey;?>','<?php emitgskey('delcreditcard_'.$cardid);?>');return false;"><img src="imgs/t.gif" class="img-del"></a>
+		<a href=# onclick="delcreditcard('<?php echo $cardid;?>','<?php echo $lang;?>','<?php echo $stripe_pkey;?>','<?php emitgskey('delcreditcard_'.$cardid);?>','',$ctx);return false;"><img src="imgs/t.gif" class="img-del"></a>
 	</td>
 	</tr>
 	<?php
@@ -134,7 +134,7 @@ function showcreditcards(){
 	</div>	
 	<div class="inputrow">
 	<div class="formlookup">
-		<button onclick="addcreditcard('<?php echo $lang;?>','<?php echo $stripe_pkey;?>','<?php emitgskey('addcreditcard');?>');">Add Card</button>
+		<button onclick="addcreditcard('<?php echo $lang;?>','<?php echo $stripe_pkey;?>','<?php emitgskey('addcreditcard','',$ctx);?>');">Add Card</button>
 	</div>
 	</div>
 	

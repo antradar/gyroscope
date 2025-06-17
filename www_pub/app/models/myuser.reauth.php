@@ -1,7 +1,7 @@
 <?php
 
-function myuser_reauth($userid,$gsid){
-	global $db;
+function myuser_reauth($ctx=null,$userid,$gsid){
+	if (isset($ctx)) $db=$ctx->db; else global $db;
 	
 	$ckey=TABLENAME_GSS.'_'.$userid.'-'.$gsid;
 	$myrow=cache_get($ckey);
