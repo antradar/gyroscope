@@ -8,7 +8,7 @@ function batchsavetemplatevars($ctx=null){
 	
 	$quickvars=explode("\n",$_POST['quickvars']);
 		
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	
 	checkgskey('batchsavetemplatevars_'.$templatetypeid,$ctx);
 

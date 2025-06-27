@@ -1,7 +1,7 @@
 <?php
 
 function listmsgpipeusers($ctx=null,$msgpipeid=null,$users=null){
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	$user=userinfo($ctx);
 	
 	if (!isset($user['groups']['msgpipe'])&&!isset($user['groups']['msgpipeuse'])) return;

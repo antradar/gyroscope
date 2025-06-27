@@ -1,7 +1,7 @@
 <?php
 
 function showgsreplay($ctx=null){
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	global $codepage;
 	$gsreplayid=GETVAL('gsreplayid',$ctx);
 	gsguard($ctx,$gsreplayid,'gsreplays','gsreplayid');

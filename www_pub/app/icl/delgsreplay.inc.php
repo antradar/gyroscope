@@ -2,7 +2,7 @@
 include 'libnumfile.php';
 
 function delgsreplay($ctx=null){
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	$gsreplayid=GETVAL('gsreplayid',$ctx);
 	gsguard($ctx,$gsreplayid,'gsreplays','gsreplayid');
 

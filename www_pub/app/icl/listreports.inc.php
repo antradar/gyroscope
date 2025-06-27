@@ -8,7 +8,7 @@ function listreports($ctx=null){
 	$key=SGET('key',0,$ctx);
 	$mode=SGET('mode',1,$ctx);
 	
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	global $lang;
 	global $deflang;
 

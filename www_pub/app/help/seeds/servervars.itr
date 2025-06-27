@@ -1,1 +1,1 @@
-	$#fld0#=SQET('#fld0#');
+	$#fld0#=SQET('#fld0#',1,$ctx);

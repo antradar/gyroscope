@@ -7,7 +7,7 @@ function addtemplatetype($ctx=null){
 	$templatetypename=SQET('templatetypename',1,$ctx);
 	$templatetypekey=SQET('templatetypekey'1,$ctx);
 	
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	
 	$user=userinfo($ctx);
 	$gsid=$user['gsid'];

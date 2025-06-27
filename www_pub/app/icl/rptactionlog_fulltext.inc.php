@@ -1,14 +1,15 @@
 <?php
 
-function rptactionlog_fulltext(){
-	global $db;
+function rptactionlog_fulltext($ctx=null){
 	global $codepage;
-	global $manticore;
+	
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
+	if (isset($ctx)) $manticore=&$ctx->manticore; else global $manticore;	
 	
 	global $dict_mons;
 	if (!defined('KB_PREFIX')) define('KB_PREFIX','');
 	
-	$user=userinfo();
+	$user=userinfo($ctx);
 	$gsid=$user['gsid'];
 
 	$syslevel=0;
@@ -24,12 +25,12 @@ function rptactionlog_fulltext(){
 	global $paymethods;
 	global $lang;
 
-	$key=SGET('key');
-	$opairs=SGET('pairs');
+	$key=SGET('key',1,$ctx);
+	$opairs=SGET('pairs',1,$ctx);
 	$pairs=explode(';',$opairs);
 		
 	//override date stamp
-	$ds=explode('-',SGET('date'));
+	$ds=explode('-',SGET('date',1,$ctx));
 	if (count($ds)==3){
 		$day=$ds[2];
 		$mon=$ds[1];

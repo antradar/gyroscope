@@ -1,12 +1,12 @@
 <?php
 
-include 'icl/show#record#.inc.php';
+include_once 'icl/show#record#.inc.php';
 
-function add#record#(){
+function add#record#($ctx=null){
 	
 #iterator-fieldlist-servervars#	
-	global $db;
-	$user=userinfo();
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
+	$user=userinfo($ctx);
 	
 	checkgskey('add#record#');
 	
@@ -19,7 +19,7 @@ function add#record#(){
 		apperror(_tr('error_creating_record').': '.$err);
 	}
 	
-	logaction("added #c_record# #$#primarykey# $#dispfield#",array('#primarykey#'=>$#primarykey#,'#dispfield#'=>"$#dispfield#"),null,0,array(
+	logaction($ctx,"added #c_record# #$#primarykey# $#dispfield#",array('#primarykey#'=>$#primarykey#,'#dispfield#'=>"$#dispfield#"),null,0,array(
 		'table'=>'#tablename#',
 		'recid'=>$#primarykey#,
 		'after'=>array(
@@ -30,9 +30,9 @@ function add#record#(){
 		)
 	));
 	
-	header('newrecid: '.$#primarykey#);
-	header('newkey: #record#_'.$#primarykey#);
-	header('newparams: show#record#&#primarykey#='.$#primarykey#);
+	gs_header($ctx,'newrecid', $#primarykey#);
+	gs_header($ctx,'newkey', '#record#_'.$#primarykey#);
+	gs_header($ctx,'newparams', 'show#record#&#primarykey#='.$#primarykey#);
 	
-	show#record#($#primarykey#);
+	show#record#($ctx, $#primarykey#);
 }

@@ -4,7 +4,7 @@ include_once 'libnumfile.php';
 include_once 'makeslug.php';
 
 function downloadgsreplay($ctx=null){
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	
 	$gsreplayid=GETVAL('gsreplayid',$ctx);
 	$rs=gsguard($ctx,$gsreplayid,'gsreplays','gsreplayid','gsreplaytitle,gsreplaydesc,gsreplaywidth,gsreplayheight');

@@ -1,13 +1,13 @@
 <?php
 
-function GETVAL($key,$ctx=null){$get=$_GET; if (isset($ctx)) $get=$ctx->request->get; $val=trim(isset($get[$key])?$get[$key]:''); if (!is_numeric($val)) apperror('apperror:invalid parameter '.$key); return $val;}
-function QETVAL($key,$ctx=null){$post=$_POST; if (isset($ctx)) $post=$ctx->request->post; $val=trim(isset($post[$key])?$post[$key]:''); if (!is_numeric($val)) apperror('apperror:invalid parameter '.$key); return $val;}
+function GETVAL($key,$ctx=null){$get=$_GET; if (isset($ctx)) $get=$ctx->request->get; $val=trim(isset($get[$key])?$get[$key]:''); if (!is_numeric($val)) apperror('apperror:invalid parameter '.$key,null,null,$ctx); return $val;}
+function QETVAL($key,$ctx=null){$post=$_POST; if (isset($ctx)) $post=$ctx->request->post; $val=trim(isset($post[$key])?$post[$key]:''); if (!is_numeric($val)) apperror('apperror:invalid parameter '.$key,null,null,$ctx); return $val;}
 function noapos($val,$trimnl=1){$val=addslashes($val); if ($trimnl) $val=str_replace(array("\n","\r","\r\n"),' ',$val); return $val;}
 function GETSTR($key,$trim=1,$ctx=null){$get=$_GET; if (isset($ctx)) $get=$ctx->request->get; $val=isset($get[$key])?$get[$key]:'';if ($trim) $val=trim($val);return noapos($val,0);}
 function QETSTR($key,$trim=1,$ctx=null){$post=$_POST; if (isset($ctx)) $post=$ctx->request->post; $val=isset($post[$key])?$post[$key]:'';if ($trim) $val=trim($val);return noapos($val,0);}
 
-function GETCUR($key){$get=$_GET; if (isset($ctx)) $get=$ctx->request->get; $val=trim(isset($get[$key])?$get[$key]:''); $val=implode('',explode(' ',$val)); $val=str_replace(_tr('currency_separator_thousands'),'',$val); $val=str_replace(_tr('currency_separator_decimal'),'.',$val); if (!is_numeric($val)) apperror('apperror:invalid parameter '.$key); return $val; }
-function QETCUR($key){$post=$_POST; if (isset($ctx)) $post=$ctx->request->post; $val=trim(isset($post[$key])?$post[$key]:''); $val=implode('',explode(' ',$val)); $val=str_replace(_tr('currency_separator_thousands'),'',$val); $val=str_replace(_tr('currency_separator_decimal'),'.',$val); if (!is_numeric($val)) apperror('apperror:invalid parameter '.$key); return $val; }
+function GETCUR($key){$get=$_GET; if (isset($ctx)) $get=$ctx->request->get; $val=trim(isset($get[$key])?$get[$key]:''); $val=implode('',explode(' ',$val)); $val=str_replace(_tr('currency_separator_thousands'),'',$val); $val=str_replace(_tr('currency_separator_decimal'),'.',$val); if (!is_numeric($val)) apperror('apperror:invalid parameter '.$key,null,null,$ctx); return $val; }
+function QETCUR($key){$post=$_POST; if (isset($ctx)) $post=$ctx->request->post; $val=trim(isset($post[$key])?$post[$key]:''); $val=implode('',explode(' ',$val)); $val=str_replace(_tr('currency_separator_thousands'),'',$val); $val=str_replace(_tr('currency_separator_decimal'),'.',$val); if (!is_numeric($val)) apperror('apperror:invalid parameter '.$key,null,null,$ctx); return $val; }
 
 function SGET($key,$trim=1,$ctx=null){$get=$_GET; if (isset($ctx)) $get=$ctx->request->get; $val=isset($get[$key])?$get[$key]:'';if ($trim&&is_string($val)) $val=trim($val);return $val;}
 function SQET($key,$trim=1,$ctx=null){$post=$_POST; if (isset($ctx)) $post=$ctx->request->post; $val=isset($post[$key])?$post[$key]:'';if ($trim&&is_string($val)) $val=trim($val);return $val;}
@@ -82,11 +82,11 @@ function _utf8_fix($str){
 }
 
 
-function date2stamp($date,$hour=0,$min=0,$sec=0){
+function date2stamp($date,$hour=0,$min=0,$sec=0,$ctx=null){
 	$parts=explode('-',trim($date));
 	if (count($parts)!=3) return null;
 	$stamp=mktime($hour,$min,$sec,$parts[1],$parts[2],$parts[0]);
-	if (date('Y-n-j',$stamp)!=(intval($parts[0])).'-'.(intval($parts[1])).'-'.(intval($parts[2])) ) apperror('Invalid date');
+	if (date('Y-n-j',$stamp)!=(intval($parts[0])).'-'.(intval($parts[1])).'-'.(intval($parts[2])) ) apperror('Invalid date',null,null,$ctx);
 	
 	return $stamp;	
 }
@@ -138,11 +138,19 @@ function datetime2stamp($datetime){
 //2024-10-27 2am => 1729990800
 //echo datetime2stamp('2024-11-3 1am*')."\r\n";
 
+function gs_die($ctx=null,$msg=null){
+	if (isset($ctx)){
+		$ctx->_flush=ob_get_clean().$msg;
+		throw new Exception("gsapperror");
+	} else die($msg);
+}
+
 function apperror($str,$msg=null,$clientfunc=null,$ctx=null){
 	if (isset($ctx)){
 		$ctx->response->header('apperror',tabtitle($str));
-		$ctx->response->_ended=true;
-		$ctx->response->end();
+		ob_end_clean();
+		$ctx->_flush=$msg;
+		throw new Exception("gsapperror");
 		return;	
 	}		
 	header('apperror: '.tabtitle($str));
@@ -275,7 +283,7 @@ function diffdbchanges($before,$after,$masks=null,$omits=null){
 }
 
 
-function streamaction($wssid,$rectype,$recid,$gsid,$userid,$extra=null,$rdprefix=null){
+function streamaction($ctx=null,$wssid,$rectype,$recid,$gsid,$userid,$extra=null,$rdprefix=null){
 	global $WSS_INTERNAL_HOST;
 		
 	$prefix=REDIS_PREFIX;
@@ -283,7 +291,7 @@ function streamaction($wssid,$rectype,$recid,$gsid,$userid,$extra=null,$rdprefix
 	
 	if (class_exists('Redis')){	
 	
-	    global $redis;
+	    if (isset($ctx)) $redis=&$ctx->redis; else global $redis;
 	    $valid=0;
 	    if (!isset($redis)){
 		    try{
@@ -295,7 +303,7 @@ function streamaction($wssid,$rectype,$recid,$gsid,$userid,$extra=null,$rdprefix
 	         	echo "warn: cannot connect to Redis server";
             }
 	    } else $valid=1;
-	    	    
+	    	    	    
 	    if (!$valid) return;
 
 	    $obj=array(
@@ -377,7 +385,7 @@ class FaultException extends Exception{
 	}
 }
 
-function logfault($e,$gsfault=false){
+function logfault($e,$gsfault=false,$ctx=null){
 	global $db;
 
 	$msg=$e->getMessage();
@@ -436,7 +444,7 @@ function logfault($e,$gsfault=false){
 	$diagdata,$callfile,$callline,$callfunc,$callargs
 	));
 		
-	apperror($msg);
+	apperror($msg,null,null,$ctx);
 	
 }
 
@@ -445,7 +453,7 @@ function logaction($ctx,$message,$rawobj=null,$syncobj=null,$gsid=0,$trace=null,
 	global $WSS_INTERNAL_KEY; //defined in lb.php
 	global $vdb;
 	global $use_doc_search;
-	global $manticore;
+	if (isset($ctx)) $manticore=&$ctx->manticore; else global $manticore;
 		
 	$bulldozed=0;
 	if (isset($_GET['__tabconflicted'])&&is_numeric($_GET['__tabconflicted'])&&$_GET['__tabconflicted']) $bulldozed=1;
@@ -517,7 +525,7 @@ function logaction($ctx,$message,$rawobj=null,$syncobj=null,$gsid=0,$trace=null,
 				$rs=sql_prep($query,$db,array($userid,$gsid,$logname,$now,$message,$obj,1,$bulldozed,$rectype,$recid));
 				$alogid=sql_insert_id($db,$rs);
 			}	
-			streamaction($sid,$rectype,$recid,$gsid,$userid);
+			streamaction($ctx,$sid,$rectype,$recid,$gsid,$userid);
 			
 		}
 	} else {

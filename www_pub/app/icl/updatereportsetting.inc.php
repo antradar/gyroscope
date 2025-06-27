@@ -23,7 +23,7 @@ function updatereportsetting($ctx=null){
 	
 	checkgskey('updatereportsetting_'.$reportid,$ctx);
 
-	if ($ctx) $db=$ctx->db; else global $db;
+	if ($ctx) $db=&$ctx->db; else global $db;
 	global $lang;
 	
 	$query="select * from ".TABLENAME_REPORTS." where (gsid=? or gsid=?) and reportkey=? and reportid!=?";

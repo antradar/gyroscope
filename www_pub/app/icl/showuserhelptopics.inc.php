@@ -5,7 +5,7 @@ function showuserhelptopics($ctx=null){
 	$user=userinfo($ctx);
 	$userid=$user['userid'];
 
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	
 	$query="select * from ".TABLENAME_USERHELPSPOTS." where userid=? limit 1";
 	$rs=sql_prep($query,$db,$userid);

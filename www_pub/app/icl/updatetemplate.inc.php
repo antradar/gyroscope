@@ -11,7 +11,7 @@ function updatetemplate($ctx=null){
 	
 	checkgskey('updatetemplate_'.$templateid,$ctx);
 
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	
 	$query="select * from ".TABLENAME_TEMPLATES." where templateid=?";
 	$rs=sql_prep($query,$db,$templateid);

@@ -1,18 +1,18 @@
 <?php
 
-function show#record#($#primarykey#=null){
-	if (!isset($#primarykey#)) $#primarykey#=SGET('#primarykey#');
+function show#record#($ctx=null, $#primarykey#=null){
+	if (!isset($#primarykey#)) $#primarykey#=GETVAL('#primarykey#', $ctx);
 	
-	global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	
-	$user=userinfo();
+	$user=userinfo($ctx);
 #include-detailview_nogs-when-gslock-is-0##include-detailview_gs-when-gslock-is-1#
 	
 	if (!$myrow=sql_fetch_assoc($rs)) die(_tr('record_removed'));
 	
 #iterator-fieldlist-myrowlist#	
 
-	header('newtitle: '.tabtitle(htmlspecialchars($#dispfield#)));
+	gs_header($ctx, 'newtitle', tabtitle(htmlspecialchars($#dispfield#)));
 	makechangebar('#record#_'.$#primarykey#,"update#record#('$#primarykey#','".makegskey('update#record#_'.$#primarykey#)."');");
 	makesavebar('#record#_'.$#primarykey#);
 ?>

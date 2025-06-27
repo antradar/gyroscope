@@ -1,16 +1,16 @@
 <?php
 
-include 'icl/list#primaryfield##records#.inc.php';
+include_once 'icl/list#primaryfield##records#.inc.php';
 
-function del#primaryfield##record#(){
-	$#bridgekey#=SGET('#bridgekey#');
-	$#primarykey#=SGET('#primarykey#');
+function del#primaryfield##record#($ctx=null){
+	$#bridgekey#=SGET('#bridgekey#',1,$ctx);
+	$#primarykey#=SGET('#primarykey#',1,$ctx);
 
-	checkgskey('del#primaryfield##record#_'.$#bridgekey#);
+	checkgskey('del#primaryfield##record#_'.$#bridgekey#,$ctx);
 	
 	//todo: gsguard if applicable
 	
-	global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	
 	$query="select * from #bridgetable# where #bridgekey#=? and #primarykey#=?";
 	$rs=sql_prep($query,$db,array($#bridgekey#,$#primarykey#));
@@ -21,7 +21,7 @@ function del#primaryfield##record#(){
 	$query="delete from #bridgetable# where #bridgekey#=? and #primarykey#=?";
 	$rs=sql_prep($query,$db,array($#bridgekey#,$#primarykey#));
 	
-	logaction("unlinked #c_record# #$#lookupkey# from #primaryfield# #$#primarykey#",array('#primarykey#'=>$#primarykey#,'#lookupkey#'=>$#lookupkey#,'#bridgekey#'=>$#bridgekey#));
+	logaction($ctx, "unlinked #c_record# #$#lookupkey# from #primaryfield# #$#primarykey#",array('#primarykey#'=>$#primarykey#,'#lookupkey#'=>$#lookupkey#,'#bridgekey#'=>$#bridgekey#));
 	
-	list#primaryfield##records#($#primarykey#);
+	list#primaryfield##records#($ctx, $#primarykey#);
 }

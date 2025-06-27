@@ -2,7 +2,7 @@
 
 function listhomedashreports($ctx=null){
 
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	$user=userinfo($ctx);
 	$gsid=$user['gsid'];
 	$userid=$user['userid'];

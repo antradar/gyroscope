@@ -4,7 +4,7 @@ include 'passtest.php';
 
 function setaccountpass($ctx=null){
 	global $dbsalt;
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	global $usehttps;
 		
 	$user=userinfo($ctx);

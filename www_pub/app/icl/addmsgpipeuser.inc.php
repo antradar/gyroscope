@@ -6,7 +6,7 @@ function addmsgpipeuser($ctx=null){
 	$msgpipeid=GETVAL('msgpipeid');
 	$userid=GETVAL('userid');
 	
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	
 	$user=userinfo($ctx);
 	if (!isset($user['groups']['msgpipe'])&&!isset($user['groups']['msgpipeuse'])) apperror('Access denied',null,null,$ctx);

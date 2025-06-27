@@ -1,1 +1,1 @@
-			$#fld0#=noapos(urldecode($_POST['#fld0#']));
+			$#fld0#=noapos(urldecode(SQET('#fld0#',1,$ctx)));

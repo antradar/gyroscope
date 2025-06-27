@@ -6,7 +6,7 @@ set_time_limit(0);
 function embeduserprofileuploader($ctx=null){
 	header('Cache-Control: no-store');
 	
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	$user=userinfo($ctx);
 	$userid=intval($user['userid']);
 

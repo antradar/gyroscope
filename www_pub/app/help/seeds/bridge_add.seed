@@ -1,23 +1,23 @@
 <?php
 
-include 'icl/list#primaryfield##records#.inc.php';
+include_once 'icl/list#primaryfield##records#.inc.php';
 
-function add#primaryfield##record#(){
-	$#primarykey#=SGET('#primarykey#');
-	$#lookupkey#=SGET('#lookupkey#');
+function add#primaryfield##record#($ctx=null){
+	$#primarykey#=SGET('#primarykey#',1,$ctx);
+	$#lookupkey#=SGET('#lookupkey#',1,$ctx);
 	
-	checkgskey('add#primaryfield##record#_'.$#primarykey#);
+	checkgskey('add#primaryfield##record#_'.$#primarykey#,$ctx);
 
 	//todo: gsguard if applicable
 	
 #iterator-fieldlist-servervars#
-	global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	
 	$query="insert into #bridgetable# (#primarykey#,#lookupkey#,#iterator-fieldlist-sqlflist#) values (?,?,#iterator-fieldlist-sqlqlist#)";
 	$rs=sql_prep($query,$db,array($#primarykey#,$#lookupkey#,#iterator-fieldlist-sqlplist#));
 	$#bridgekey#=sql_insert_id($db,$rs);
 	
-	logaction("linked #primaryfield# #$#primarykey# with #c_record# #$#lookupkey#",array('#primarykey#'=>$#primarykey#,'#lookupkey#'=>$#lookupkey#,'#bridgekey#'=>$#bridgekey#));
+	logaction($ctx, "linked #primaryfield# #$#primarykey# with #c_record# #$#lookupkey#",array('#primarykey#'=>$#primarykey#,'#lookupkey#'=>$#lookupkey#,'#bridgekey#'=>$#bridgekey#));
 	
-	list#primaryfield##records#($#primarykey#);
+	list#primaryfield##records#($ctx, $#primarykey#);
 }

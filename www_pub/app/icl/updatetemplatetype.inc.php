@@ -20,7 +20,7 @@ function updatetemplatetype($ctx=null){
 	
 	checkgskey('updatetemplatetype_'.$templatetypeid,$ctx);
 	
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 
 	$query="select * from templatetypes where templatetypekey=? and templatetypeid!=? and gsid=? ";
 	$rs=sql_prep($query,$db,array($templatetypekey,$templatetypeid,$gsid));

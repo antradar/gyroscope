@@ -2,7 +2,7 @@
 
 function listyubikeys($ctx){
 	global $saltroot;
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	
 	$user=userinfo($ctx);
 	$userid=$user['userid'];

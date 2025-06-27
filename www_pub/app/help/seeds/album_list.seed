@@ -1,9 +1,9 @@
 <?php
 
-function list#primaryfield##records#($#primarykey#=null){
+function list#primaryfield##records#($ctx=null, $#primarykey#=null){
 	if (!isset($#primarykey#)) $#primarykey#=SGET('#primarykey#');
 	
-	global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	global $codepage;
 	
 	$query="select * from #lookuptable# where #primarykey#=?";

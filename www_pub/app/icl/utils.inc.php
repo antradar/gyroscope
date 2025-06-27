@@ -1,11 +1,11 @@
 <?php
-include 'icl/reauth.inc.php';
+include_once 'icl/reauth.inc.php';
 
 function authpump($ctx=null){
 	reauth($ctx);
-	$hb=$_GET['hb'];
+	$hb=SGET('hb',1,$ctx);
 	$ret=preg_replace('/[^\d]/','',$hb);
 	if (strlen($ret)>40) $ret=substr($ret,0,40);
 	echo $ret;
-	die();
+	gs_die($ctx);
 }

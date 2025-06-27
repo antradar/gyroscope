@@ -7,7 +7,7 @@ function setdefaultcreditcard($ctx=null){
 	$user=userinfo($ctx);
 	$gsid=$user['gsid'];
 	
-	if (isset($ctx)) $db=$ctx->db; else global $db;	
+	if (isset($ctx)) $db=&$ctx->db; else global $db;	
 	
 	$query="select * from ".TABLENAME_GSS." where ".COLNAME_GSID."=?";
 	$rs=sql_prep($query,$db,$gsid);

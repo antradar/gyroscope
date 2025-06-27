@@ -180,6 +180,8 @@ switch($cmd){
 	case 'kbman_updaterec': include 'icl/kbman_updaterec.inc.php'; kbman_updaterec(); break;
 	
 	case 'lookupkbmanrec': include 'icl/kbman_lookuprec.inc.php'; kbman_lookuprec(); break;
+	case 'lookupkbmanchannel': include 'icl/lookupkbmanchannel.inc.php'; lookupkbmanchannel(); break;
+	
 	case 'kbman_addrelrec': include 'icl/kbman_addrelrec.inc.php'; kbman_addrelrec(); break;
 	case 'kbman_delrelrec': include 'icl/kbman_delrelrec.inc.php'; kbman_delrelrec(); break;
 	

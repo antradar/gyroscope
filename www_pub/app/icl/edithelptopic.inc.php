@@ -3,7 +3,7 @@
 function edithelptopic($ctx=null,$helptopicid=null){
 	if (!isset($helptopicid)) $helptopicid=SGET('helptopicid');
 	
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	
 	$user=userinfo($ctx);
 	$gsid=$user['gsid'];

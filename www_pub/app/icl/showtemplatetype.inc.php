@@ -6,7 +6,7 @@ include_once 'icl/listtemplatetypetemplatevars.inc.php';
 function showtemplatetype($ctx=null,$templatetypeid=null){
 	if (!isset($templatetypeid)) $templatetypeid=SGET('templatetypeid');
 	
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	
 	$user=userinfo($ctx);
 	$gsid=$user['gsid'];

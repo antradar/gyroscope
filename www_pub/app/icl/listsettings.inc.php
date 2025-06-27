@@ -1,9 +1,10 @@
 <?php
 include 'stripe.inc.php';
 
-function listsettings(){
-	global $db;
-	$user=userinfo();
+function listsettings($ctx=null){
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
+	
+	$user=userinfo($ctx);
 	$gsexpiry=intval($user['gsexpiry']);
 	
 	global $lang;
@@ -11,11 +12,11 @@ function listsettings(){
 	global $enable_db_profiler;
 	global $db_profiler;
 	
-	global $manticore;
+	if (isset($ctx)) $manticore=&$ctx->manticore; else global $manticore;
 	
 	if (isset($stripe_config)) $stripe_pkey=$stripe_config['pkey_'.$stripe_config['mode']]; else $stripe_pkey='';
 	
-	header('listviewtitle: '.tabtitle(_tr('icon_settings')));
+	gs_header($ctx,'listviewtitle', tabtitle(_tr('icon_settings')));
 ?>
 <div class="section">
 	<div class="listitem <?php if (isset($user['groups']['accounts'])) echo ' mobileonly';?>"><a onclick="ajxjs2('setaccountpass','accounts.js',function(){reloadtab('account','<?php tr('account_settings');?>','showaccount');addtab('account','<?php tr('account_settings');?>','showaccount');});return false;"><?php tr('account_settings');?></a></div>

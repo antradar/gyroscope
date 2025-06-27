@@ -51,7 +51,7 @@ function updateuser($ctx=null){
 	$groupnames=SGET('groupnames',1,$ctx);
 	
 
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	
 	$query="select * from ".TABLENAME_USERS." where login=? and userid!=?";
 	$rs=sql_prep($query,$db,array($login,$userid));
@@ -158,7 +158,7 @@ function updateuser($ctx=null){
 			'diffs'=>$diffs
 		);
 								
-		logaction($ctx, "updated User #$userid $login",$dbchanges,array('rectype'=>'reauth','recid'=>$userid),0,$trace);
+		logaction($ctx, "updated User #$userid $login",$dbchanges,array('rectype'=>'reauth','recid'=>$userid),0,$trace,1);
 		logaction($ctx, null,null,array('rectype'=>'user','recid'=>$userid));
 	}
 	

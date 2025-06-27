@@ -2,7 +2,7 @@
 
 function showkeyfilepad($ctx=null,$container,$userid){
 	
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	global $codepage;
 	
 	$query="select * from users where userid=?";

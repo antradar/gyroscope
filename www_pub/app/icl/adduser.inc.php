@@ -55,12 +55,12 @@ function adduser($ctx){
 		if ($passcheck['grade']==0) apperror('A weak password cannot be used.',null,null,$ctx);		
 	}
 			
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	
 	
 	$query="select * from ".TABLENAME_USERS." where lower(login)=lower(?)";
 	$rs=sql_prep($query,$db,$login);
-	if ($myrow=sql_fetch_assoc($rs)) apperror('User already exists. Use a different login.',null,null,$ctx);
+	if ($myrow=sql_fetch_assoc($rs)) apperror('User already exists. Use a different login.',null,null,$ctx);	
 	
 	//vendor auth 2
 
@@ -91,7 +91,7 @@ function adduser($ctx){
 	$loadfuncs='';
 
 	gs_header($ctx, "newloadfunc", "if (!document.smartcard) gid('cardsettings_".$userid."').style.display='none';reloadview('core.users','userlist');$loadfuncs");
-	
+		
 	showuser($ctx,$userid);
 }
 

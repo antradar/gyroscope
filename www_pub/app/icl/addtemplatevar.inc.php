@@ -10,7 +10,7 @@ function addtemplatevar($ctx=null){
 	
 	checkgskey('addtemplatevar_'.$templatetypeid,$ctx);
 	
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	
 	gsguard($ctx,$templatetypeid,TABLENAME_TEMPLATETYPES,'templatetypeid');
 		

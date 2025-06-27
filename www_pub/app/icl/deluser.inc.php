@@ -4,7 +4,7 @@ include 'icl/reauth.inc.php';
 function deluser($ctx=null){
 	$userid=SGET('userid');
 	
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	
 	$user=userinfo($ctx);
 	$gsid=$user['gsid'];

@@ -1,19 +1,19 @@
 <?php
 
-if ($use_doc_search) include 'icl/rptactionlog_fulltext.inc.php';
+if ($use_doc_search) include_once 'icl/rptactionlog_fulltext.inc.php';
 
-function rptactionlog(){
-	global $db;
-	global $codepage;
-	
+function rptactionlog($ctx=null){
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
+	if (isset($ctx)) $manticore=&$ctx->manticore; else global $manticore;
+		
 	global $use_doc_search;
 	
 	if ($use_doc_search){
-		rptactionlog_fulltext();
+		rptactionlog_fulltext($ctx);
 		return;	
 	}
 	
-	$user=userinfo();
+	$user=userinfo($ctx);
 	$gsid=$user['gsid'];
 
 	$syslevel=0;
@@ -57,8 +57,8 @@ function rptactionlog(){
 <?php	
 	////
 	
-	$key=SGET('key');
-	$opairs=SGET('pairs');
+	$key=SGET('key',1,$ctx);
+	$opairs=SGET('pairs',1,$ctx);
 	$pairs=explode(';',$opairs);
 
 	$start=mktime(0,0,0,$mon,$day,$year);

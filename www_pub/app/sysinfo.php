@@ -327,7 +327,8 @@ foreach ($tests as $test=>$result){
 				$cacheres['total_all']+=$cinfo['limit_maxbytes'];
 			}
 			
-			//echo '<pre>'; print_r($cacheres); echo '</pre>';
+			//echo '<pre>'; print_r($cachestats); echo '</pre>';
+			
 			if ($cacheres['total_all']>0){
 				$cachepct=round($cacheres['used_all']*100/$cacheres['total_all'],2);
 				$cachemb=$cacheres['total_all']/1024/1024;

@@ -3,8 +3,8 @@ include 'models/myuser.reauth.php';
 
 function reauth($ctx=null){
 	
-	if (isset($ctx)) $db=$ctx->db; else global $db;
-	global $salt;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
+	if (isset($ctx)) $salt=$ctx->salt; else global $salt;
 	global $wssecret;
 	global $usehttps;
 	
@@ -34,6 +34,7 @@ function reauth($ctx=null){
 	
 	$wsskey=md5($wssecret.$gsid.date('Y-n-j-H').$userid).'-'.$gsid.'-'.$userid;
 	
+	
 	if (!$active||$virtual){
 		gs_setcookie($ctx, 'userid',NULL,time()-3600,null,null,$usehttps,true);
 		gs_setcookie($ctx, 'gsid',NULL,time()-3600,null,null,$usehttps,true);
@@ -44,7 +45,7 @@ function reauth($ctx=null){
 		gs_setcookie($ctx, 'auth',NULL,time()-3600,null,null,$usehttps,true);
 		gs_setcookie($ctx, 'groupnames',NULL,time()-3600,null,null,$usehttps,true);		
 	} else {
-		header('wsskey: '.$wsskey);
+		gs_header($ctx, 'wsskey', $wsskey);
 		gs_setcookie($ctx, 'auth',$auth,null,null,null,$usehttps,true);
 		gs_setcookie($ctx, 'userid',$userid,null,null,null,$usehttps,true);
 		gs_setcookie($ctx, 'gsid',$gsid,null,null,null,$usehttps,true);
@@ -53,6 +54,8 @@ function reauth($ctx=null){
 		gs_setcookie($ctx, 'login',$login,null,null,null,$usehttps,true);
 		gs_setrawcookie($ctx, 'dispname',rawurlencode($dispname),null,null,null,$usehttps,true);
 		gs_setcookie($ctx, 'groupnames',$groupnames,null,null,null,$usehttps,true);
-	}		
+	}
+	
+	
 
 }

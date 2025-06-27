@@ -18,18 +18,23 @@ function evict_check($ctx=null){
 
 function evict_user($ctx=null){
 	
-	global $_COOKIE;
+	if (isset($ctx)) $cookie=$ctx->request->cookie; else {global $_COOKIE; $cookie=$_COOKIE;}
 	global $usehttps;
 	
+	if (isset($ctx)){
+		$ctx->request->cookie=array();
+		$cookie=array();
+	}
+		
 	unset($_COOKIE['login']);
 	unset($_COOKIE['userid']);
 	unset($_COOKIE['auth']);
 	unset($_COOKIE['groupnames']);
 	
-	setcookie('userid',NULL,time()-3600,null,null,$usehttps,true);
-	setcookie('login',NULL,time()-3600,null,null,$usehttps,true);
-	setcookie('auth',NULL,time()-3600,null,null,$usehttps,true);
-	setcookie('groupnames',NULL,time()-3600,null,null,$usehttps,true);
+	gs_setcookie($ctx, 'userid',NULL,time()-3600,null,null,$usehttps,true);
+	gs_setcookie($ctx, 'login',NULL,time()-3600,null,null,$usehttps,true);
+	gs_setcookie($ctx, 'auth',NULL,time()-3600,null,null,$usehttps,true);
+	gs_setcookie($ctx, 'groupnames',NULL,time()-3600,null,null,$usehttps,true);
 	
 }
 
@@ -48,7 +53,7 @@ function evict_getblockedids($ctx=null){
 		$rs=sql_prep($query,$db,$gsid);
 		while ($myrow=sql_fetch_assoc($rs)) array_push($blockedids,$myrow['userid'].'');
 	
-		cache_set(TABLENAME_GSS.'gyroscopeblockedids_'.$gsid,$blockedids,3600*24*7);	
+		cache_set(TABLENAME_GSS.'gyroscopeblockedids_'.$gsid,$blockedids,3600*24*7,$ctx);	
 	}
 	return $blockedids;	
 }

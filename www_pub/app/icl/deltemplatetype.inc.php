@@ -5,7 +5,7 @@ function deltemplatetype($ctx=null){
 	if (!$user['groups']['systemplate']) apperror('Access denied',null,null,$ctx);
 	
 	$templatetypeid=GETVAL('templatetypeid',$ctx);
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	
 	$user=userinfo($ctx);
 	$gsid=$user['gsid'];

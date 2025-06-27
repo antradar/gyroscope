@@ -10,7 +10,7 @@ function addreportsetting($ctx=null){
 	$reportkey=SQET('reportkey',1,$ctx);
 	$reportdesc=SQET('reportdesc',1,$ctx);
 	
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	
 	global $lang;
 	

@@ -3,7 +3,7 @@
 include_once 'stripe.inc.php';
 
 function showcreditcards($ctx=null){
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	global $stripe_name;
 		
 	global $lang;

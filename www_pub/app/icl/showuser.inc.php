@@ -15,7 +15,7 @@ function showuser($ctx=null,$userid=null){
 		
 	$myuserid=$user['userid'];
 
-	if (isset($ctx))$db=$ctx->db; else global $db;
+	if (isset($ctx))$db=&$ctx->db; else global $db;
 	
 	global $userroles;
 		

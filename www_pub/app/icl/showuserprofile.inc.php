@@ -3,7 +3,7 @@
 function showuserprofile($ctx=null,$userid=null){
 	if (!isset($userid)) $userid=GETVAL('userid');
 	
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	global $codepage;
 	
 	$query="select * from ".TABLENAME_USERS." where userid=?";

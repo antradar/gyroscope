@@ -6,7 +6,7 @@ function deltemplatevar($ctx=null){
 	$templatetypeid=SGET('templatetypeid');
 	$templatevarid=SGET('templatevarid');
 	
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	
 	checkgskey('deltemplatevar-'.$templatevarid,$ctx);
 	

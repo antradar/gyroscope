@@ -12,7 +12,7 @@ function updatehelptopic($ctx=null){
 	$helptopictext=SQET('helptopictext',1,$ctx);
 	$helptopictext=str_replace('<p>&nbsp;</p>','',$helptopictext); // '>&nbsp;</' -> '></'
 
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	global $vdb;
 	global $enable_vectorhelp;
 	

@@ -3,7 +3,7 @@
 include 'icl/showcreditcards.inc.php';
 
 function delcreditcard($ctx=null){
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	
 	$user=userinfo($ctx);
 	$gsid=$user['gsid'];

@@ -1,19 +1,19 @@
 <?php
 set_time_limit(0);
-include 'libresize.php';
+include_once 'libresize.php';
 
-function embed#primaryfield##record#uploader(){
+function embed#primaryfield##record#uploader($ctx=null){
 	
-	$#primarykey#=SGET('#primarykey#');
+	$#primarykey#=SGET('#primarykey#',1,$ctx);
 
 	$dmaxsize=20; //20 MB
 	$maxsize=1024*1024*$dmaxsize; 
 	$maxfiles=20; //20 files
 	
-	global $db;
+	global $db; //unpatched for bookmarking
 	global $codepage;
 
-	$user=userinfo();
+	$user=userinfo($ctx);
 	$userid=$user['userid'];
 	$query="select darkmode from ".TABLENAME_USERS." where userid=?";
 	$rs=sql_prep($query,$db,$userid);
@@ -30,6 +30,7 @@ function embed#primaryfield##record#uploader(){
 	$myrow=sql_fetch_array($rs);
 	$#primarydispfield#=$myrow['#primarydispfield#'];
 	
+	//todo: use $ctx->request->files
 	
 	if ($_FILES['file']&&$_FILES['file']['name']){
 		checkgskey('embed#primaryfield##record#uploader_'.$#primarykey#);
@@ -138,7 +139,7 @@ function embed#primaryfield##record#uploader(){
 		
 	}
 	
-	if ($_GET['diag']) {echo $msg;return;}
+	if (SGET('diag',1,$ctx)=='1') {echo $msg;return;}
 	
 ?>
 <html>

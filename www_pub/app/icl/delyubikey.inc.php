@@ -3,7 +3,7 @@
 include 'icl/listyubikeys.inc.php';
 
 function delyubikey($ctx=null){
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 
 	$user=userinfo($ctx);
 	$userid=$user['userid'];

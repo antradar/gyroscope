@@ -7,7 +7,7 @@ function addhelptopic($ctx=null){
 	$helptopictitle=SQET('helptopictitle',1,$ctx);
 	$helptopickeywords=SQET('helptopickeywords',1,$ctx);
 	
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	$user=userinfo($ctx);
 	$gsid=$user['gsid'];
 	

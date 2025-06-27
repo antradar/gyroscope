@@ -3,7 +3,7 @@
 function showreportsetting($ctx=null, $reportid=null){
 	if (!isset($reportid)) $reportid=SGET('reportid');
 	
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	global $userroles;
 	global $lang;
 	global $deflang;

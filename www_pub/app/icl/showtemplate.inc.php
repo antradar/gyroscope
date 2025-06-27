@@ -3,7 +3,7 @@
 function showtemplate($ctx=null, $templateid=null){
 	if (!isset($templateid)) $templateid=SGET('templateid');
 	
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 
 	gsguard($ctx,$templateid,array(TABLENAME_TEMPLATETYPES,TABLENAME_TEMPLATES),array('templatetypeid-templatetypeid','templateid'));
 	

@@ -3,7 +3,7 @@
 include 'models/reports.list.php';
 
 function listreportsettings($ctx=null){
-	if (isset($ctx)) $db=$ctx->db; else global $db; 
+	if (isset($ctx)) $db=&$ctx->db; else global $db; 
 	global $lang;
 	global $deflang;
 	

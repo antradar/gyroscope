@@ -1,14 +1,14 @@
 <?php
 
-include 'icl/list#primaryfield##records#.inc.php';
+include_once 'icl/list#primaryfield##records#.inc.php';
 
-function del#primaryfield##record#(){
-	$#lookupkey#=SGET('#lookupkey#');
-	$#primarykey#=SGET('#primarykey#');
+function del#primaryfield##record#($ctx=null){
+	$#lookupkey#=SGET('#lookupkey#',1,$ctx);
+	$#primarykey#=SGET('#primarykey#',1,$ctx);
 	
-	global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	
-	checkgskey('del#primaryfield##record#_'.$#lookupkey#);
+	checkgskey('del#primaryfield##record#_'.$#lookupkey#,$ctx);
 	
 	$query="select * from #mastertable#,#lookuptable# where #mastertable#.#primarykey#=? and #mastertable#.#primarykey#=#lookuptable#.#primarykey# and #lookuptable#.#lookupkey#=?";
 	$rs=sql_prep($query,$db,array($#primarykey#,$#lookupkey#));
@@ -27,10 +27,10 @@ function del#primaryfield##record#(){
 		#iterator-sizes-delpic#
 		
 				
-		logaction("removed #c_record# #$#lookupkey# from <u>$#primarydispfield#</u>",array('#primarykey#'=>$#primarykey#,'#lookupkey#'=>$#lookupkey#));
+		logaction($ctx,"removed #c_record# #$#lookupkey# from <u>$#primarydispfield#</u>",array('#primarykey#'=>$#primarykey#,'#lookupkey#'=>$#lookupkey#));
 		
 	}
 	
-	list#primaryfield##records#($#primarykey#);
+	list#primaryfield##records#($ctx,$#primarykey#);
 		
 }

@@ -6,7 +6,7 @@ function addtemplate($ctx=null){
 	$templatetypeid=SGET('templatetypeid',1,$ctx);
 	$templatename=SQET('templatename',1,$ctx);
 		
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	
 	checkgskey('addtemplate_'.$templatetypeid,$ctx);
 	gsguard($ctx,$templatetypeid,TABLENAME_TEMPLATETYPES,'templatetypeid');

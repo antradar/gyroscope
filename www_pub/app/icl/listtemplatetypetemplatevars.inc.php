@@ -2,7 +2,7 @@
 
 function listtemplatetypetemplatevars($ctx=null,$templatetypeid=null){
 	if (!isset($templatetypeid)) $templatetypeid=SGET('templatetypeid',1,$ctx);
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 
 	gsguard($ctx,$templatetypeid,TABLENAME_TEMPLATETYPES,'templatetypeid');
 			

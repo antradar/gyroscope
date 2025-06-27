@@ -4,7 +4,7 @@ include 'icl/user_nav.inc.php';
 
 function listusers($ctx=null){
 	
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	global $WSS_INTERNAL_HOST;
 	$user=userinfo($ctx);
 	$myuserid=$user['userid'];

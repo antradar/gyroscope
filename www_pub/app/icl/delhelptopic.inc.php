@@ -6,7 +6,7 @@ if (file_exists('vectorhelp.ext.php')){
 
 function delhelptopic($ctx=null){
 	$helptopicid=SGET('helptopicid',1,$ctx);
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	global $vdb;
 	global $enable_vectorhelp;
 	

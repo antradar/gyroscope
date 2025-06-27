@@ -2,7 +2,7 @@
 
 function updatetemplate_rectitle($ctx=null, $templateid=null){
 	if (!isset($templateid)) $templateid=GETVAL('templateid',$ctx);
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 
 	gsguard($ctx, $templateid,array('templatetypes','templates'),array('templatetypeid-templatetypeid','templateid'));
 

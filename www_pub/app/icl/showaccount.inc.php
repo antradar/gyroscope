@@ -17,7 +17,7 @@ function showaccount($ctx=null){
 	
 	$user=userinfo($ctx);
 
-	if (isset($ctx)) $db=$ctx->db; else global $db;
+	if (isset($ctx)) $db=&$ctx->db; else global $db;
 		
 	$userid=$user['userid'];
 	$gsid=$user['gsid'];
