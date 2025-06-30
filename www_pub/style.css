@@ -178,6 +178,14 @@ ul{line-height:1.8em;}
 	#logincopyright .footerlink, #logincopyright .footerlink:hover, #logincopyright .footerlink:visited{color:#dedede;}
 	
 	.codesnippet{background:#222222;color:#ffffff;}
+	
+	@media screen and (max-width:810px){
+		#header{background:#21262D !important;padding-bottom:0;}
+		#weblogo_light, #weblogo_dark{height:38px;}
+		#web_login_banner{background:transparent url(images/login_cover.svg) no-repeat 50% 50%;background-size:cover;background-attachment:fixed;}
+		.web_login_banner_content{padding-top:120px;background:linear-gradient(to bottom,rgba(33,38,45,1) 0%,rgba(33,38,45,1) 15%,rgba(33,38,45,0.84) 30%,rgba(33,38,45,0.2) 100%);}
+	
+	}
 }
 
 	
