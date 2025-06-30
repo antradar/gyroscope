@@ -38,7 +38,10 @@ CREATE TABLE gss (
   gstier tinyint(3) unsigned NOT NULL DEFAULT '0',
   maxchats int unsigned default 10,
   chatsperagent int unsigned default 1,
-  msgraphanchor text,  
+  msgraphanchor text,
+  botchat_credits bigint default 0,
+  botchat_free_topup bigint unsigned default 0,
+  botchat_auth_topup bigint unsigned default 0,  
   PRIMARY KEY (gsid),
   KEY gsname (gsname),
   KEY gsexpiry (gsexpiry)  

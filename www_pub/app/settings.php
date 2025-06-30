@@ -48,7 +48,6 @@ $userrolelocks=array('devreports','accounts','dbadmin','creditcards','systemplat
 //$userrolelocks=array_keys($userroles);
 
 
-$user=userinfo();
 
 
 $toolbaritems=array(
@@ -75,16 +74,34 @@ $toolbaritems=array(
 
 );
 
-
-if (!isset($user['groups']['sapadmin'])){
-	unset($toolbaritems['codegen.sap']);	
-	unset($toolbaritems['codegen.sapentitysets']);	
-	unset($toolbaritems['codegen.sapentities']);	
-}
-
-if (!isset($user['groups']['botchat'])){
-	unset($toolbaritems['codegen.botchats']);	
-}
-
+global $original_toolbaritems;
+$original_toolbaritems=$toolbaritems;
 
 foreach ($toolbaritems as $idx=>$item) if (!$item) unset($toolbaritems[$idx]);
+
+if (!is_callable('settings_process_toolbaritems')){
+function settings_process_toolbaritems($ctx=null,$base){
+	if (isset($ctx)) {
+		$toolbaritems=&$ctx->toolbaritems;
+		$toolbaritems=$base; 
+	} else global $toolbaritems;
+	
+	$user=userinfo($ctx);
+
+	if (!isset($user['groups']['sapadmin'])){
+		unset($toolbaritems['codegen.sap']);	
+		unset($toolbaritems['codegen.sapentitysets']);	
+		unset($toolbaritems['codegen.sapentities']);	
+	}
+	
+	if (!isset($user['groups']['botchat'])){
+		unset($toolbaritems['codegen.botchats']);	
+	}
+	
+	
+}//func
+}//callable
+
+settings_process_toolbaritems($ctx??null,$original_toolbaritems);
+
+

@@ -119,8 +119,7 @@ SCal Test
 
 function auto_welcome($ctx=null){
 	$user=userinfo($ctx);
-	
-	global $toolbaritems;
+	if (isset($ctx)) $toolbaritems=$ctx->toolbaritems; else global $toolbaritems;
 	?>
 	<div class="section">
 

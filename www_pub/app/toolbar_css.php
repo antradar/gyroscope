@@ -27,6 +27,14 @@ use toolbar.psp to generate toolbar.gif
 
 */
 
+.aip_button{transition:background 200ms;display:inline-block;border:solid 1px #495866;border-radius:6px;overflow:hidden;margin-top:15px;background:#F7F4F1;}
+.aip_button, .aip_button:hover, .aip_button:link, .aip_button:visited{text-decoration:none;}
+.aip_badge{transition:background 200ms;display:inline-block;vertical-align:middle;background:#62809B;border-top:solid 1px #839EB8;border-right:solid 1px #495866;border-radius:6px 0 0 0;padding:4px;padding-bottom:0;}
+.aip_badge img{height:24px;}
+.aip_fn{display:inline-block;vertical-align:middle;padding:0 5px;color:#3D5061;}
+.aip_button:hover{background:#FFFEFD;}
+.aip_button:hover .aip_badge{background:#598CB7;}
+
 .chatbubble_client, .chatbubble_server{padding:10px;width:70%;border:solid 1px #dedede;border-radius:10px;margin-bottom:10px;}
 .chatbubble_server{margin-left:30%;}
 

@@ -1,6 +1,10 @@
 <?php
-include 'icl/showkeyfilepad.inc.php';
-include 'icl/showuserhelptopics.inc.php';
+include_once 'icl/showkeyfilepad.inc.php';
+include_once 'icl/showuserhelptopics.inc.php';
+
+if (file_exists('icl/kbman_listuserchannels.inc.php')){
+	include_once 'icl/kbman_listuserchannels.inc.php';	
+}
 
 function showuser($ctx=null,$userid=null){
 	global $smskey;
@@ -190,6 +194,14 @@ function showuser($ctx=null,$userid=null){
 	</div>
 	
 	<div class="col">
+		<div id="kbman_userchannels_<?php echo $userid;?>" style="">
+			<?php
+			if (is_callable('kbman_listuserchannels')){
+				kbman_listuserchannels($ctx,$userid);	
+			}
+			?>
+		</div>
+	
 		<div id="keyfileview_<?php echo $userid;?>" style="display:none<?php if ($needkeyfile) echo 'a';?>;">
 			<div class="sectionheader">Key File</div>
 			<?php showkeyfilepad($ctx,'keyfileeditor_'.$userid,$userid);?>

@@ -117,12 +117,15 @@ ul{line-height:1.8em;}
 @media screen and (max-width:810px){
 	#web_login{display:block;height:auto;}
 	#web_login_banner,#web_login_form{display:block;}
-	#app_tagline{padding-bottom:30px;}
+	#app_tagline{padding-bottom:60px;}
 	#app_cover{display:none;}
 	#web_login_banner{width:auto;}
 	#web_login_form{width:auto;}
 	
-	#loginbox__{margin-top:60px;}	
+	#loginbox__{margin-top:0px;}	
+	#loginbox{padding-bottom:120px;}
+	#web_login_banner{background:transparent url(images/login_cover.svg) no-repeat 50% 50%;background-size:cover;background-attachment:fixed;}
+	.web_login_banner_content{padding-top:100px;background:linear-gradient(to bottom,rgba(255,255,255,1) 0%,rgba(255,255,255,0.84) 92%,rgba(255,255,255,0.5) 100%);}
 }
 
 @media screen and (max-width:630px){
@@ -133,7 +136,6 @@ ul{line-height:1.8em;}
 
 @media screen and (max-width:400px){
 	#loginbox__,.powered{width:90%;}
-	#loginbox__{margin-top:50px;}
 	#weblogo_light,#weblogo_dark{height:40px;}
 }
 

@@ -181,6 +181,10 @@ switch($cmd){
 	
 	case 'lookupkbmanrec': include 'icl/kbman_lookuprec.inc.php'; kbman_lookuprec(); break;
 	case 'lookupkbmanchannel': include 'icl/lookupkbmanchannel.inc.php'; lookupkbmanchannel(); break;
+	case 'kbman_addrecchannels': include 'icl/kbman_addrecchannels.inc.php'; kbman_addrecchannels(); break;
+	case 'kbman_delrecchannel': include 'icl/kbman_delrecchannel.inc.php'; kbman_delrecchannel(); break;
+	case 'kbman_adduserchannels': include 'icl/kbman_adduserchannels.inc.php'; kbman_adduserchannels(); break;
+	case 'kbman_deluserchannel': include 'icl/kbman_deluserchannel.inc.php'; kbman_deluserchannel(); break;
 	
 	case 'kbman_addrelrec': include 'icl/kbman_addrelrec.inc.php'; kbman_addrelrec(); break;
 	case 'kbman_delrelrec': include 'icl/kbman_delrelrec.inc.php'; kbman_delrelrec(); break;
