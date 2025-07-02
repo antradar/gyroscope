@@ -4,7 +4,7 @@ include 'icl/showuser.inc.php';
 include 'bcrypt.php';
 include 'passtest.php';
 
-function adduser($ctx){
+function adduser($ctx=null){
 	global $userroles;
 	global $userrolelocks;
 	global $dbsalt;

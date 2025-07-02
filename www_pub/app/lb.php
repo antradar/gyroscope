@@ -2,7 +2,7 @@
 
 //include 'encdec.php';
 //include 'bcrypt.php';
-include 'backcompat.php';
+include_once 'backcompat.php';
 
 global $usehttps;
 global $stablecf;
@@ -11,7 +11,7 @@ $usehttps=1; //enforcing HTTPS on production server, enable this on production s
 $stablecf=0; //set to 1 when behind CloudFlare
 $enableudf=0; //allow UDF editing, disable this on production server
 
-$gs_public_web=1; //blend with public-facing web pages
+$gs_public_web=0; //blend with public-facing web pages
 
 $enablelivechat=1;
 $livechatmode='gschat'; //ze, zopim
@@ -85,6 +85,45 @@ if (false){ //legacy fallback in case reverse proxy cannot set headers without p
         if (isset($_SERVER['HTTP_HTTPS'])) $_SERVER['HTTPS']=$_SERVER['HTTP_HTTPS'];
 }
 
+if (!is_callable('_jsflag')){
+function _jsflag($flag){
+	global $forceajxjs;
+	
+	if ($forceajxjs) return 'null';
+	
+	return $flag;	
+}
+}
+
+if (!is_callable('jsflag')){
+function jsflag($flag){
+	global $forceajxjs;
+	
+	if ($forceajxjs) echo 'null';
+	else echo 'self.'.$flag;
+}
+}
+
+if (!is_callable('ip_strip_port')){
+function ip_strip_port($ip){
+	if (preg_match('/(\d+\.\d+\.\d+\.\d+):\d+/',$ip,$matches)) return $matches[1];
+	if (preg_match('/\[(\S+?)\]\:\d+/',$ip,$matches)) return $matches[1];
+
+	return $ip;		
+}
+}
+
+if (!is_callable('map_ip_aliases')){
+function map_ip_aliases(){
+	global $db;
+	global $gs_ipmap;
+		
+		
+	if (isset($gs_ipmap[$_SERVER['REMOTE_ADDR']])) $_SERVER['REMOTE_ADDR']=$gs_ipmap[$_SERVER['REMOTE_ADDR']];
+	if (isset($gs_ipmap[$_SERVER['O_IP']])) $_SERVER['O_IP']=$gs_ipmap[$_SERVER['O_IP']];	
+		
+}
+}
 
 if (isset($_SERVER['HTTP_GSXIP'])&&$_SERVER['HTTP_GSXIP']!=''){
 	$gsxauth=md5($gsxkey.'-'.$_GET['cmd'].'-'.date('Y-n-j-H'));
@@ -156,42 +195,10 @@ if ($stablecf) $_SERVER['O_IP']=ip_strip_port($_SERVER['REMOTE_ADDR']);
 if (trim($_SERVER['PHP_SELF'])=='') $_SERVER['PHP_SELF']=$_SERVER['SCRIPT_NAME'];
 
 //replace the following with memcache.php in production
-include 'memcache.php'; //'memcache_stub.php'; 
+include_once 'memcache.php'; //'memcache_stub.php'; 
 cache_init();
 
 //include 'ipmap.php';
 //map_ip_aliases();
 
-
-function _jsflag($flag){
-	global $forceajxjs;
-	
-	if ($forceajxjs) return 'null';
-	
-	return $flag;	
-}
-
-function jsflag($flag){
-	global $forceajxjs;
-	
-	if ($forceajxjs) echo 'null';
-	else echo 'self.'.$flag;
-}
-
-function ip_strip_port($ip){
-	if (preg_match('/(\d+\.\d+\.\d+\.\d+):\d+/',$ip,$matches)) return $matches[1];
-	if (preg_match('/\[(\S+?)\]\:\d+/',$ip,$matches)) return $matches[1];
-
-	return $ip;		
-}
-
-function map_ip_aliases(){
-	global $db;
-	global $gs_ipmap;
-		
-		
-	if (isset($gs_ipmap[$_SERVER['REMOTE_ADDR']])) $_SERVER['REMOTE_ADDR']=$gs_ipmap[$_SERVER['REMOTE_ADDR']];
-	if (isset($gs_ipmap[$_SERVER['O_IP']])) $_SERVER['O_IP']=$gs_ipmap[$_SERVER['O_IP']];	
-		
-}
 

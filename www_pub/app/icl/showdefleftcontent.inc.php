@@ -1,7 +1,6 @@
 <?php
 
-function showdefleftcontent($quicklist=null){
-	if (!isset($quicklist)) $quicklist=GETVAL('quicklist');
+function showdefleftcontent(){
 	
 ?>
 <div class="section">
