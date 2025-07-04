@@ -11,7 +11,6 @@ function updateuser($ctx=null){
 	global $userroles;
 	global $userrolelocks;
 	global $dbsalt;
-	
 	//vendor auth 1
 	
 	$user=userinfo($ctx);

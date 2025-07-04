@@ -2,7 +2,6 @@
 
 function showgyroscopeupdater(){
 	
-	global $db;
 	global $dict_dir;
 	
 ?>

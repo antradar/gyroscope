@@ -197,7 +197,7 @@ function ajxpgn(c,u,d,e,data,callback,slowtimer,runonce,gskey,creds,headless){
 	}
 	ct.reqobj=rq;
 	
-	var timeout=800;
+	var timeout=1200; //also statically set in tabs.js
 	var waitsrc='imgs/hourglass.gif';
 	var waitclass='';
 	

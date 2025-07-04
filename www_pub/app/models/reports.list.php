@@ -8,7 +8,7 @@ function reports_list($ctx=null, $gsid,$key,$lang,$page,$syslevel,$soundex=0){
 	$ver=cache_get_entity_ver('reports_list_'.$gsid);
 	$ckey='reports_list_'.$ver.'_'.$gsid.'_'.strtolower($key).'_'.$lang.'_'.$page.'_'.$syslevel.'_'.$soundex;
 	
-	$res=cache_get($ckey);
+	$res=cache_get($ckey,$ctx);
 	if (!$res){
 		$params=array($gsid,$syslevel);
 		$query="select * from ".TABLENAME_REPORTS." where (gsid=? or gsid=?) ";
@@ -53,7 +53,7 @@ function reports_list($ctx=null, $gsid,$key,$lang,$page,$syslevel,$soundex=0){
 			'cached'=>0
 		);
 		
-		cache_set($ckey,$res,3600);
+		cache_set($ckey,$res,3600,$ctx);
 	} else {
 		$res['cached']=1;	
 	}

@@ -20,30 +20,29 @@ function cache_keepalive($ctx=null){
 	
 	if (isset($ctx)) {$cache=&$ctx->memcache;$usecache=1;$cachetest=0;} else global $cache;
 
-	set_error_handler(function($en,$msg,$file,$line){
-		global $cache;
+	set_error_handler(function($en,$msg,$file,$line) use (&$cache,$ctx){
 		error_log("memcache disconnected. attempting to reconnect $file:$line $msg");
 		memcache_close($cache);
-		usleep(10000);
 		$cache=null;
-		if (isset($ctx)) {
-			$ctx->memcache=cache_init();
-			$cache=&$ctx->memcache;
-		} else cache_init();		
+		usleep(10000);
+		cache_init($ctx);
+		if (isset($ctx)) $cache=&$ctx->memcache;
 	},E_ALL);
 	memcache_get($cache,'memcache_keepalive');
 	restore_error_handler();
 
 }
 
-function cache_init(){
+function cache_init($ctx=null){
 	global $usecache;
 	if (!$usecache) return;
 
-	global $cache;
 	global $cachetest;
 
 	if ($cachetest) return;
+	
+	if (isset($ctx)) $cache=&$ctx->memcache; else global $cache;
+	
 	
 	if (is_object($cache)){
 		error_log('duplicate memcache connection ignored');
@@ -262,7 +261,7 @@ function cache_get($key,$ctx=null){
 		fclose($f);
 		return unserialize($c);
 	} else {
-		cache_keepalive();
+		cache_keepalive($ctx);
 		return memcache_get($cache,$key);
 	}
 
@@ -282,3 +281,13 @@ function cache_clearnav($swapkey,$objkey){
 //print_r(cache_get('test'));
 
 //cache_clearnav('swaps','gnavobj');
+
+/*
+$ctx=new StdClass();
+$ctx->memcache=@memcache_connect('127.0.0.1',11211);
+sleep(10);
+cache_keepalive($ctx);
+cache_set('test',array(123),600,$ctx);
+
+print_r(cache_get('test',$ctx));
+*/

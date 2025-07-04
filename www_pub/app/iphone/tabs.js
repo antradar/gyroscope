@@ -203,6 +203,9 @@ function reloadtab(key,title,params,loadfunc,data,opts,gskey){
 	  
   }
   	
+ 	var slowtimeout=1200;
+	if (opts&&opts.slowtimeout) slowtimeout=opts.slowtimeout;
+ 
 	var ct=document.tabviews[tabid];
 	ct.slowtimer=setTimeout(function(){
 		var first=ct.firstChild;
@@ -211,7 +214,7 @@ function reloadtab(key,title,params,loadfunc,data,opts,gskey){
 		if (gid('statusc')!=ct) wi.style.margin='10px';
 		if (first==null) ct.appendChild(wi); else ct.insertBefore(wi,first);
 		ct.style.opacity=0.5; ct.style.filter='alpha(50)'; ct.style.color='#999999';
-	},800);
+	},slowtimeout);
   
 
   

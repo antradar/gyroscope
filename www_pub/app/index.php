@@ -25,7 +25,7 @@ $user=userinfo();
 $userid=$user['userid'];
 $gsid=$user['gsid'];
 
-$usermeta=user_meta($userid,$gsid);
+$usermeta=user_meta(null,$userid,$gsid);
 $quicklist=isset($usermeta['quicklist'])&&$usermeta['quicklist']?1:0;
 $dark=isset($usermeta['darkmode'])?intval($usermeta['darkmode']):0;
 
