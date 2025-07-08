@@ -82,8 +82,8 @@ foreach ($toolbaritems as $idx=>$item) if (!$item) unset($toolbaritems[$idx]);
 if (!is_callable('settings_process_toolbaritems')){
 function settings_process_toolbaritems($ctx=null,$base){
 	if (isset($ctx)) {
+		$ctx->toolbaritems=$base;
 		$toolbaritems=&$ctx->toolbaritems;
-		$toolbaritems=$base; 
 	} else global $toolbaritems;
 	
 	$user=userinfo($ctx);

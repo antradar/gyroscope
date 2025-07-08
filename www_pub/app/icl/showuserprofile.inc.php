@@ -1,7 +1,8 @@
 <?php
 
 function showuserprofile($ctx=null,$userid=null){
-	if (!isset($userid)) $userid=GETVAL('userid');
+
+	if (!isset($userid)) $userid=GETVAL('userid',$ctx);
 	
 	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	global $codepage;
@@ -23,7 +24,7 @@ function showuserprofile($ctx=null,$userid=null){
 	
 	<img src="<?php echo $codepage;?>?cmd=imguserprofile&v=<?php echo $imgv;?>" style="width:80px;margin-left:10px;border-radius:200px;background:#dedede;">
 	<div style="padding:10px 0;text-align:center;">
-		<a onclick="removeuserprofilepic(<?php echo $userid;?>,'<?php emitgskey('removeuserprofilepic_'.$userid);?>')">reset <img src="imgs/t.gif" class="img-del"></a>
+		<a onclick="removeuserprofilepic(<?php echo $userid;?>,'<?php emitgskey('removeuserprofilepic_'.$userid,'',$ctx);?>')">reset <img src="imgs/t.gif" class="img-del"></a>
 	</div>
 	<?php	
 		} else {

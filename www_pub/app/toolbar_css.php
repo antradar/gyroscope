@@ -562,7 +562,15 @@ if ($dark==0){
 <?php	
 }
 
-if ($dark==0||$dark==1){
+if ($dark==0||$dark==1||$dark==3){
+	
+	if ($dark==3){
+?>
+	.section,#listviews,#vsptr,#sptr,#fsview,#fstitlebar,#lkv,.qnav_,
+	#tabexpander,#statusinfo,#tooltitle,#tabtitles,#lefticons,
+	.reloader,#toolicons,#backlist{filter:sepia(1) hue-rotate(120deg) !important; image-rendering:pixelated !important;}
+<?php		
+	}
 ?>
 
 	.passtoggle,.passtoggle_show{filter:invert(1);}

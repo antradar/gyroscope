@@ -176,7 +176,10 @@ if (isset($user['groups']['chats'])){
 
 		<input type="radio" name="myaccount_darkmode" id="myaccount_darkmode_2" onclick="sv('myaccount_darkmode',2);marktabchanged('account');" <?php if ($darkmode==2) echo 'checked';?>>
 		<label for="myaccount_darkmode_2">use light theme</label> <br>
-				
+
+		<input type="radio" name="myaccount_darkmode" id="myaccount_darkmode_3" onclick="sv('myaccount_darkmode',3);marktabchanged('account');" <?php if ($darkmode==3) echo 'checked';?>>
+		<label for="myaccount_darkmode_3">monochrome</label> <br>
+						
 		<input id="myaccount_darkmode" value="<?php echo $darkmode;?>" type="hidden">
 	</div>
 	
@@ -191,7 +194,7 @@ if (isset($user['groups']['chats'])){
 	
 	<div class="sectionheader">Profile Photo (270x270)</div>
 	<div id="userprofile_<?php echo $userid;?>">
-		<?php showuserprofile($userid);?>
+		<?php showuserprofile($ctx,$userid);?>
 	</div>
 	
 	<div id="keyfilecontainer" style="display:none<?php if ($needkeyfile) echo 'a';?>;">

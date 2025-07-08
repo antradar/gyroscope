@@ -33,10 +33,12 @@ function sql_get_db($dbhost,$dbsource,$dbuser,$dbpass,$lazyname=null,$rlazyname=
 	if (isset($lazyname)){
 		global $dbdefers;
 		if (!isset($dbdefers)) $dbdefers=array();
+		if (!isset($dbdefers[$lazyname])){
 		$dbdefers[$lazyname]=array(
 			'host'=>$dbhost,'source'=>$dbsource,
 			'user'=>$dbuser,'pass'=>$dbpass,'lazyname'=>$lazyname
 		);
+		}
 		return $lazyname;
 	}
 

@@ -53,7 +53,7 @@ if ($dark==0){
 <?php	
 }
 
-if ($dark==0||$dark==1){
+if ($dark==0||$dark==1||$dark==3){
 ?>
 
 	body{background:#0D1117;}
