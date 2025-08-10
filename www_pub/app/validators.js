@@ -84,6 +84,13 @@ function valcurrency(d){
 	return true;
 }
 
+function format_to_currency(d){
+	if (!valcurrency(d)) return;
+	var val=currencyvalue(d.value);
+	d.value=val.toLocaleString();
+}
+
+
 function valrate(d){
 	if (parseFloat(d.value.replace(/%/g,''))!=d.value.replace(/%/g,'')){d.style.borderColor='red';d.style.outline=0;return false;}
 	d.style.borderColor='#999999';

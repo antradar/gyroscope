@@ -568,7 +568,7 @@ if ($dark==0||$dark==1||$dark==3){
 ?>
 	.section,#listviews,#vsptr,#sptr,#fsview,#fstitlebar,#lkv,.qnav_,
 	#tabexpander,#statusinfo,#tooltitle,#tabtitles,#lefticons,
-	.reloader,#toolicons,#backlist{filter:sepia(1) hue-rotate(120deg) !important; image-rendering:pixelated !important;}
+	.reloader,#toolicons,#backlist,#gsstickerview,.changebar_view,.savebar_view,#shared_tab_closer{filter:sepia(1) hue-rotate(120deg) !important; image-rendering:pixelated !important;}
 <?php		
 	}
 ?>

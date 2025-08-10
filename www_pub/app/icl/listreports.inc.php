@@ -79,7 +79,6 @@ function listreports($ctx=null){
 		$bingo=intval($myrow['bingo']);
 		$params=$myrow['reportparams'];
 		if ($params!='') $params='&'.trim(trim($params),'&');
-				
 		if ($lastgroup!=$reportgroup){
 ?>
 <div class="clear"></div>

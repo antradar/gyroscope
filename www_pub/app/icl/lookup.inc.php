@@ -192,6 +192,7 @@ for ($i=0;$i<$w;$i++){?>
 
 for ($i=$ia;$i<=$ib;$i++){
 	$calekey="$y-$m-$i";
+	$daystamp=mktime(23,59,59,$m,$i,$y);	
 	
 	$di=$i;
 	$dy=$y; $dm=$m;
@@ -200,21 +201,23 @@ for ($i=$ia;$i<=$ib;$i++){
 		$di=$i-$ld;
 		$calekey="$ny-$nm-$di";
 		$dy=$ny; $dm=$nm;
+		$daystamp=mktime(23,59,59,$nm,$di,$ny);		
 	}
 	if ($i<=0){
 		$di=$pld+$i;
 		$calekey="$py-$pm-$di";
 		$dy=$py; $dm=$pm;		
+		$daystamp=mktime(23,59,59,$pm,$di,$py);
 	}
 
-		
+			
 	$block=0;
 	if (isset($yesdays)&&is_array($yesdays)&&(!isset($yesdays[$calekey])||!$yesdays[$calekey])) $block=1;	
 	
 	$dbackground='';
 	if (isset($colormaps)&&isset($colormaps[$calekey])&&$colormaps[$calekey]) $dbackground='background:'.$colormaps[$calekey].';';
 ?>
-<div onclick<?php if ($block) echo 'a';?>="<?php if ($mode!='datetime'){?>if (document.hotspot) {document.hotspot.value='<?php echo $calekey?>';if (document.hotspot.onchange) document.hotspot.onchange();if (document.hotspot.lookupview) document.hotspot.lookupview.style.display='none';if (gid(document.hotspot.id+'_lookup')) gid(document.hotspot.id+'_lookup').style.display='none';}else showday('<?php echo $calekey;?>');<?php } else {?>gid('cale_daypicker').style.display='none';ajxpgn('timepicker',document.appsettings.codepage+'?cmd=showtimepicker&y=<?php echo $dy;?>&m=<?php echo $dm;?>&d=<?php echo $di;?>&start=<?php echo $hstart;?>&end=<?php echo $hend;?>&res=60&tz=<?php echo $tz;?><?php echo $tailparams;?>',1);<?php }?>" style="cursor:pointer;width:14%;float:left;">
+<div onclick<?php if ($block) echo 'a';?>="<?php if ($mode!='datetime'){?>if (document.hotspot) {document.hotspot.value='<?php echo $calekey?>';document.hotspot.value2='<?php echo $daystamp;?>';document.hotspot.value3='<?php echo time();?>';if (document.hotspot.onchange) document.hotspot.onchange();if (document.hotspot.lookupview) document.hotspot.lookupview.style.display='none';if (gid(document.hotspot.id+'_lookup')) gid(document.hotspot.id+'_lookup').style.display='none';}else showday('<?php echo $calekey;?>');<?php } else {?>gid('cale_daypicker').style.display='none';ajxpgn('timepicker',document.appsettings.codepage+'?cmd=showtimepicker&y=<?php echo $dy;?>&m=<?php echo $dm;?>&d=<?php echo $di;?>&start=<?php echo $hstart;?>&end=<?php echo $hend;?>&res=60&tz=<?php echo $tz;?><?php echo $tailparams;?>',1);<?php }?>" style="cursor:pointer;width:14%;float:left;">
 <div class="calecell" style="<?php if ($i>$ld||$i<=0) echo 'opacity:0.55;filter:blur(0.5px);font-style:italic;';?><?php echo $dbackground;?><?php if ($today==$calekey&&!$block) echo 'font-weight:bold;color:#ab0200';?><?php if ($block) echo 'opacity:0.4;cursor:not-allowed;filter:alpha(opacity=40);';?>"><?php echo $di;?>
 </div></div>
 <?php
