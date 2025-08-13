@@ -51,7 +51,7 @@ CREATE TABLE gss (
 # Dumping data for table `gss`
 #
 
-INSERT INTO `gss` VALUES (1, 'Default Instance', '', 0, 0,5,1,null);
+INSERT INTO gss(gsid,gsname,gsexpiry,gstier,maxchats,chatsperagent) VALUES (1, 'Default Instance', 0, 0,5,1);
 
 DROP TABLE IF EXISTS `users`;
 
