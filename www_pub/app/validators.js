@@ -87,7 +87,7 @@ function valcurrency(d){
 function format_to_currency(d){
 	if (!valcurrency(d)) return;
 	var val=currencyvalue(d.value);
-	d.value=val.toLocaleString();
+	d.value=val.toLocaleString(document.dict.speechlang);
 }
 
 

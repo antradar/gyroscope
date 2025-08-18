@@ -24,6 +24,7 @@ $icons=array(
 	
 	array('name'=>'calendar-alt','adjust'=>0,'dx'=>-1,'dy'=>-4,'style'=>'s'),
 	
+	array('name'=>'arrows-split-up-and-left','adjust'=>0,'dx'=>-5,'dy'=>-3),
 	
 	array('name'=>'life-ring','adjust'=>0,'dx'=>-3,'dy'=>-3),
 	array('name'=>'chart-bar','adjust'=>0,'dx'=>-2,'dy'=>-3),

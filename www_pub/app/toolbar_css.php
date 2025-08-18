@@ -58,12 +58,19 @@ use toolbar.psp to generate toolbar.gif
 .botchat_wait{width:24px;height:24px;vertical-align:middle;filter:hue-rotate(200deg);}
 
 .botchatresolver{display:block;border:solid 1px #848cf7;border-radius:100%;cursor:pointer;text-align:center;box-sizing:border-box;float:left;margin-bottom:5px;margin-right:5px;width:27px;height:27px;}
-.botchatresolver_{
+.botchatresolver_, .sidereelresolver_{
 	font-size:8px;display:block;margin:3px;border-radius:100%;width:20px;height:20px;overflow:hidden;box-sizing:border-box;
 	background:transparent url(imgs/chaticons.gif) no-repeat 0 0;
 	background-size:640px 40px;
 	transition:all 300ms;
 }
+
+.sidereelresolver{display:block;border:solid 1px #ffab00;border-radius:100%;cursor:pointer;text-align:center;box-sizing:border-box;float:left;margin-bottom:3px;margin-top:2px;margin-right:2px;width:24px;height:24px;background:rgba(250,250,250,0.6);}
+.sidereelresolver .sidereelresolver_{transform:scale(0.9);margin:1.5px;}
+.sidereelresolver:hover .sidereelresolver_{transform:scale(0.95) rotate(-70deg);}
+
+.sidereelresolver_.sidereel{background-position:-240px 0;}
+
 .botchatresolver:hover .botchatresolver_{margin:0;width:26px;height:26px; background-size:832px 52px;background-position:0 0;}
 
 .botchatresolver_.func_who_am_i{background-position:-80px 0;}
@@ -588,7 +595,13 @@ if ($dark==0||$dark==1||$dark==3){
 	
 	.botchatresolver_{border-color:#dedede;background-position:0 -20px;}
 	.botchatresolver:hover .botchatresolver_{background-position:0 -26px;}
-	
+
+	.botchatresolver_.func_topic_details{background-position:-20px -20px;}
+	.botchatresolver:hover .botchatresolver_.func_topic_details{background-position:-26px -26px;}
+
+	.sidereelresolver{background:rgba(20,20,40,0.8);}
+	.sidereelresolver_.sidereel{background-position:-240px -20px;}
+				
 	.botchatresolver_.func_who_am_i{background-position:-80px -20px;}
 	.botchatresolver:hover .botchatresolver_.func_who_am_i{background-position:-104px -26px;}
 	

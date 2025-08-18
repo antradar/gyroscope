@@ -161,6 +161,11 @@ switch($cmd){
 	case 'botchat_resolve': include 'icl/botchat_resolve.inc.php'; botchat_resolve(); break;
 	case 'addbotchatmsg': include 'icl/addbotchatmsg.inc.php'; addbotchatmsg(); break;
 	case 'lookupbotchatfunc': include 'icl/lookupbotchatfunc.inc.php'; lookupbotchatfunc(); break;
+	
+	case 'lookupbotchat_sidereel_showsidereel': include 'icl/lookupbotchat_sidereel_showsidereel.inc.php'; lookupbotchat_sidereel_showsidereel(); break;
+	case 'botchat_sidereel_showroute': include 'icl/botchat_sidereel_showroute.inc.php'; botchat_sidereel_showroute(); break;
+	case 'botchat_sidereel_convert': include 'icl/botchat_sidereel_convert.inc.php'; botchat_sidereel_convert(); break;
+	case 'botchat_sidereel_execute': include 'icl/botchat_sidereel_execute.inc.php'; botchat_sidereel_execute(); break;
 		
 // AI Knowledge Base
 

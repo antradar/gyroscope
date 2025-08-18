@@ -5,7 +5,7 @@ include 'icl/showtemplatetype.inc.php';
 function addtemplatetype($ctx=null){
 	
 	$templatetypename=SQET('templatetypename',1,$ctx);
-	$templatetypekey=SQET('templatetypekey'1,$ctx);
+	$templatetypekey=SQET('templatetypekey',1,$ctx);
 	
 	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	
@@ -31,9 +31,9 @@ function addtemplatetype($ctx=null){
 	
 	logaction($ctx, "added Template Class #$templatetypeid $templatetypename",array('templatetypeid'=>$templatetypeid,'templatetypename'=>"$templatetypename"),null,0,null,4);
 	
-	gs_header($ctx, 'newrecid: '.$templatetypeid);
-	gs_header($ctx, 'newkey: templatetype_'.$templatetypeid);
-	gs_header($ctx, 'newparams: showtemplatetype&templatetypeid='.$templatetypeid);
+	gs_header($ctx, 'newrecid', $templatetypeid);
+	gs_header($ctx, 'newkey' ,'templatetype_'.$templatetypeid);
+	gs_header($ctx, 'newparams', 'showtemplatetype&templatetypeid='.$templatetypeid);
 	
 	showtemplatetype($ctx, $templatetypeid);
 }
