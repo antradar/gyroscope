@@ -35,6 +35,7 @@ $userroles=array(
 	'sharedashreports'=>'share custom reports on the home tab',
 	'botchat'=>'use AI chatbot',
 	'kbman'=>' manage AI knowledge base',
+	'srr'=>'  reroute AI requests with SideReel&trade;',
 	'sapadmin'=>'view SAP data',
 	'msgpipe'=>'provision notification lists',
 	'msgpipeuse'=>' modify notification list recipients',

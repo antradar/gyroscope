@@ -51,8 +51,14 @@ function newuser(){
 		<div class="inputrow">
 			<div class="formlabel"><?php tr('account_roles');?>:</div>
 			<?php foreach ($userroles as $role=>$label){
+				$padding=10;
+				$olen=strlen($label);
+				$label=ltrim($label);
+				$len=strlen($label);
+				$padding+=20*($olen-$len);
+				
 			?>
-			<div style="padding-left:10px;margin-bottom:3px;<?php if (in_array($role,$userrolelocks)&&(!isset($user['groups'][$role])||!$user['groups'][$role])) echo 'display:none;';?>">
+			<div style="padding-left:<?php echo $padding;?>px;margin-bottom:3px;<?php if (in_array($role,$userrolelocks)&&(!isset($user['groups'][$role])||!$user['groups'][$role])) echo 'display:none;';?>">
 				<input <?php if (in_array($role,$userrolelocks)&&(!isset($user['groups'][$role])||!$user['groups'][$role])) echo 'disabled';?>  type="checkbox" id="userrole_<?php echo $role;?>_new"> <label for="userrole_<?php echo $role;?>_new"><?php echo $label;?></label>
 			</div>
 			<?php	
