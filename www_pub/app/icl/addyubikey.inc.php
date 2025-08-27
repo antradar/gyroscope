@@ -3,7 +3,7 @@
 include 'libcbor.php';
 include 'icl/listyubikeys.inc.php';
 
-function addyubikey(){
+function addyubikey($ctx=null){
 	global $db;
 	global $saltroot;
 
@@ -58,5 +58,5 @@ function addyubikey(){
 	$query="insert into ".TABLENAME_YUBIKEYS."(userid,keyname,attid,credid,kty,alg,crv,x,y,n,e) values (?,?,?,?,?,?,?,?,?,?,?)";
 	sql_prep($query,$db,array($userid,$keyname,$attid,$credid,$kty,$alg,$crv,$x,$y,$n,$e));
 		
-	listyubikeys();
+	listyubikeys($ctx);
 }

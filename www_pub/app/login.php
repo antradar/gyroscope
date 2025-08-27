@@ -48,7 +48,7 @@ $deflogin=isset($_COOKIE['fingername'])?$_COOKIE['fingername']:'';
 
 if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['gyroscope_login_'.$dkey])&&$_POST['gyroscope_login_'.$dkey]) ){	
 	
-	if (!isset($fedbypass)) xsscheck();
+	if (!isset($fedbypass)) xsscheck(0);
 
 	$cfk=$_POST['cfk'];
 	if (!isset($fedbypass)&&$cfk!=$csrfkey&&$cfk!=$csrfkey2){
@@ -97,11 +97,11 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['gyroscope
 				$c=$myrow2['c'];
 				if ($c==0) $error_message='no security devices were found ';
 				else {
-					$attidbin=hex2bin($_POST['attid']);
+					$attidbin=@hex2bin($_POST['attid']);
 					$attid=base64_encode($attidbin);
 					$clientdata=$_POST['clientdata'];
-					$signature=base64_encode(hex2bin($_POST['signature']));
-					$clientauth=base64_encode(hex2bin($_POST['clientauth']));
+					$signature=@base64_encode(hex2bin($_POST['signature']));
+					$clientauth=@base64_encode(hex2bin($_POST['clientauth']));
 					
 					$query="select * from ".TABLENAME_YUBIKEYS." where userid=? and attid=?";
 					$rs2=sql_prep($query,$db,array($userid,$attid));
@@ -329,7 +329,13 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['gyroscope
 					  $from=str_replace('//','',$from);
 					  $from=str_ireplace(array('%2f%2f','%5c','\\'),'',$from);
 					  $from=str_replace(array("\r","\n",':'),'-',$from);
-					  if ($from===$_GET['from']) header('Location: '.$from);
+					  $allowed_links=array(
+					  	'/app/index.php',
+					  	'/app/',
+					  );
+					  //if (!in_array($from,$allowed_links)) die("invalid from link: ".$from); //debug
+					  
+					  if (in_array($from,$allowed_links)) header('Location: '.$from);
 					  else header('Location: index.php');
 					} else header('Location: index.php');
 					die();
@@ -351,7 +357,7 @@ if ( (isset($_POST['password'])&&$_POST['password']) || (isset($_POST['gyroscope
 	}//csrf
 	
 } else {
-	if (!isset($fedbypass)) xsscheck(1);
+	if (!isset($fedbypass)) xsscheck(1,null,1);
 	setcookie('userid',NULL,time()-3600,null,null,$usehttps,true);
 	setcookie('gsid',NULL,time()-3600,null,null,$usehttps,true);
 	setcookie('gsexpiry',NULL,time()-3600,null,null,$usehttps,true);	

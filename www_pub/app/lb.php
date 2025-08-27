@@ -13,7 +13,7 @@ $enableudf=0; //allow UDF editing, disable this on production server
 
 $gs_public_web=0; //blend with public-facing web pages
 
-$enablelivechat=1;
+$enablelivechat=0;
 $livechatmode='gschat'; //ze, zopim
 $chatkey='gyroscope-support';//zopim:'5BjFWzJY4yRiXVg7j5pDcHVJvtn1HLjN'; //default to Developer Support
 $portalchannel=5; //Channel 5 on Antradar's chat server

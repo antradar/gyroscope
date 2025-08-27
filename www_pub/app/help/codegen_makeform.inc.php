@@ -4,10 +4,16 @@ include 'help/seeds/seeds.php';
 function codegen_makeform($seed=null){
 	global $toolbaritems;
 	if (!isset($seed)) $seed=SGET('seed');
+	
+	$oseed=$seed;
+	$seed=basename($seed);
+	
+	if ($oseed!=$seed) return;
+		
 	global $codegen_seeds;
 	
 	$seedobj=null;
-	
+
 	foreach ($codegen_seeds as $k=>$v){
 		if ($seed==$k) {
 			$seedobj=$v;

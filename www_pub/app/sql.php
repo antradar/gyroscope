@@ -55,6 +55,22 @@ function sql_profile_dump($query,$params=null){
 	fwrite($f_dblog,json_encode(array('cmd'=>$cmd,'query'=>$query,'params'=>$params))."\r\n");
 }
 
+function sql_debug_stmt($query,$params){
+	$idx=0;
+	$query=preg_replace_callback('/\?/',function($matches) use (&$idx,$params){
+		$repl=$params[$idx]??null;
+		if (!isset($repl)) $repl='null';
+		else {
+			if (is_string($repl)) $repl="'".addslashes($repl)."'";
+		}
+		$idx++;
+		return $repl;
+		
+	},$query);
+	
+	return $query;
+}
+
 function sql_prep($query,&$db,$params=null){
 	global $gsdbprofile;
 	global $gsdbprofile_fulltrace;

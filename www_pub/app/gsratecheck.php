@@ -5,6 +5,8 @@ function gsratecheck_verify($ip,$login){
 	global $usecache;
 	if (!$usecache) return array(1,0);
 	
+	//return array(1,0); //uncommet this to allow securiy scanners to sign in more often
+	
 	$fkey=$ip.strtolower(trim($login));
 	
 	$threshold=5*2;

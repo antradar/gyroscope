@@ -9,6 +9,14 @@ function scal_rptcale_data(){
 	
 	$calid=SGET('calid');
 	
+	$allowed_calids=array(
+		'rptcale'
+	);
+	
+	if (!in_array($calid,$allowed_calids)){
+		apperror('calid not in the allowed list in scal_rptcale_data.inc.php');	
+	}
+	
 	$start=mktime(0,0,0,$mon-1,1,$year);
 	$end=mktime(0,0,0,$mon+2,0,$year);
 			

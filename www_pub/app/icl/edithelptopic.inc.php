@@ -1,7 +1,7 @@
 <?php
 
 function edithelptopic($ctx=null,$helptopicid=null){
-	if (!isset($helptopicid)) $helptopicid=SGET('helptopicid');
+	if (!isset($helptopicid)) $helptopicid=GETVAL('helptopicid',$ctx);
 	
 	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	

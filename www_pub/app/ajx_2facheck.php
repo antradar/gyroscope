@@ -21,6 +21,8 @@ xsscheck();
 $login=SQET('login');
 $nopass=intval(SQET('nopass'));
 
+header('Cache-Control: no-store');
+
 if ($login==''){header('HTTP/1.0 403');die('.');}
 
 header('gsfunc: ajx_2facheck');

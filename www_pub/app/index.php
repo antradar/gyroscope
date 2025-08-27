@@ -12,7 +12,7 @@ include 'settings.php';
 include 'forminput.php';
 
 include 'xss.php';
-xsscheck(1);
+xsscheck(1,null,1);
 
 include 'evict.php';
 evict_check();
@@ -34,6 +34,7 @@ setcookie('userdarkmode',$dark,time()+3600*24*30*6,null,null,$usehttps,true); //
 header('gsfunc: gs_index');
 header(COLNAME_GSID.': '.($user['gsid'])); //uncomment for logging in nginx as $upstream_http_gsid
 header('gsuid: '.($user['userid']));
+header('Cache-Control: no-store');
 
 include 'uiconfig.php';
 include 'icl/showdefleftcontent.inc.php';

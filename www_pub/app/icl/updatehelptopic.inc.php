@@ -6,7 +6,7 @@ if (file_exists('vectorhelp.ext.php')){
 }
 
 function updatehelptopic($ctx=null){
-	$helptopicid=SGET('helptopicid',1,$ctx);	
+	$helptopicid=GETVAL('helptopicid',$ctx);	
 	$helptopictitle=SQET('helptopictitle',1,$ctx);
 	$helptopickeywords=SQET('helptopickeywords',1,$ctx);
 	$helptopictext=SQET('helptopictext',1,$ctx);

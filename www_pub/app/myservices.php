@@ -394,9 +394,10 @@ switch($cmd){
 	
 	default: 
 	header('gsfunc: !invalid');
-	$dcmd=$cmd;
+	$dcmd=preg_replace('/[^A-Za-z0-9-_]/','',$cmd);
+	$dcmd=preg_replace('/(\w)/',"#$1",$dcmd);
 	$cmd='';
-	apperror('unspecified interface:'.preg_replace('/[^A-Za-z0-9-_]/','',$dcmd),null,null,$ctx);	
+	apperror('unspecified interface:'.$dcmd,null,null,$ctx);	
 }
 
 } catch (FaultException $e){ //comment out in older PHP versions

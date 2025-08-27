@@ -3,7 +3,7 @@
 include 'icl/safe_showhelptopic.inc.php';
 
 function showhelptopic($helptopicid=null){
-	if (!isset($helptopicid)) $helptopicid=SGET('helptopicid');
+	if (!isset($helptopicid)) $helptopicid=GETVAL('helptopicid');
 	
 	global $db;
 	global $codepage;

@@ -3,6 +3,8 @@ include 'lb.php';
 include 'connect.php';
 include 'forminput.php';
 
+header('Cache-Control: no-store');
+
 $login=SGET('login');
 if ($login==''){header('HTTP/1.0 403');die('.');}
 

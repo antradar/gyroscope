@@ -43,7 +43,7 @@ function listyubikeys($ctx){
 	<div class="listtiem">
 		<input name="_" class="inpshort" onchange="ajxjs(self.updateyubikeyname,'yubikey.js');updateyubikeyname(<?php echo $keyid;?>,this,'<?php emitgskey('updateyubikeyname_'.$userid.'_'.$keyid,'',$ctx);?>');" value="<?php echo htmlspecialchars($keyname);?>">
 		&nbsp;
-		<button class="labelbutton" onclick="ajxjs(self.testyubikey,'yubikey.js');testyubikey('<?php echo $challenge;?>',['<?php echo $dattid;?>'],'<?php emitgskey('testyubikey_'.$userid);?>','',$ctx);">Test</button>
+		<button class="labelbutton" onclick="ajxjs(self.testyubikey,'yubikey.js');testyubikey('<?php echo $challenge;?>',['<?php echo $dattid;?>'],'<?php emitgskey('testyubikey_'.$userid,'',$ctx);?>','');">Test</button>
 		&nbsp; &nbsp;
 		<input id="myaccount_passless<?php echo $keyid;?>" onclick="ajxjs(self.testyubikey,'yubikey.js');setyubikeypassless(<?php echo $keyid;?>,this,'<?php emitgskey('setyubikeypassless_'.$userid.'_'.$keyid,'',$ctx);?>');" <?php if ($passless) echo 'checked';?> type="checkbox"> 
 		<label for="myaccount_passless<?php echo $keyid;?>">password-less</label>
