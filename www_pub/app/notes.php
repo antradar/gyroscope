@@ -11,6 +11,11 @@ $notetypes=array(
 	'user'=>'User',
 );
 
+header('X-Frame-Options: SAMEORIGIN');
+header('X-XSS-Protection: 1; mode=block');
+header('X-Content-Type-Options: nosniff');
+
+
 $mode=isset($_GET['mode'])?$_GET['mode']:'';
 if ($mode!='embed'){
 ?>

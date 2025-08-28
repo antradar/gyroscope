@@ -27,7 +27,7 @@ function showreclog($rectype,$recid=null){
 		<?php
 			foreach ($obj as $k=>$v){
 				if ($k==$rectype.'id') continue;
-				$v=str_replace('->','<span style="color:#ffab00;">&rArr;</span>',$v);
+				$v=str_replace('-&gt;','<span style="color:#ffab00;">&rArr;</span>',htmlspecialchars($v));
 			?>
 			<li><?php echo htmlspecialchars($k);?>: <?php echo $v;?></li>
 			<?php
