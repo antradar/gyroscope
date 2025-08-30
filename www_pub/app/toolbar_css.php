@@ -76,6 +76,9 @@ use toolbar.psp to generate toolbar.gif
 .botchatresolver_.func_who_am_i{background-position:-80px 0;}
 .botchatresolver:hover .botchatresolver_.func_who_am_i{background-position:-104px 0;}
 
+.botchatresolver_.func_format_entity{background-position:-280px 0;}
+.botchatresolver:hover .botchatresolver_.func_format_entity{background-position:-364px 0;}
+
 .botchatresolver_.func_my_order_info{background-position:-100px 0;}
 .botchatresolver:hover .botchatresolver_.func_my_order_info{background-position:-130px 0;}
 
@@ -604,7 +607,10 @@ if ($dark==0||$dark==1||$dark==3){
 				
 	.botchatresolver_.func_who_am_i{background-position:-80px -20px;}
 	.botchatresolver:hover .botchatresolver_.func_who_am_i{background-position:-104px -26px;}
-	
+
+	.botchatresolver_.func_format_entity{background-position:-280px -20px;}
+	.botchatresolver:hover .botchatresolver_.func_format_entity{background-position:-364px -26px;}
+		
 	.botchatresolver_.func_my_order_info{background-position:-100px -20px;}
 	.botchatresolver:hover .botchatresolver_.func_my_order_info{background-position:-130px -26px;}
 	

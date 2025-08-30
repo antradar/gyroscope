@@ -32,6 +32,13 @@ function listsettings($ctx=null){
 	<div class="listitem"><a onclick="ajxjs2('kbman_showtopic','kbman.js');showview('core.kbman',1,1);">AI Knowledge Base <span class="botchatresolver_ func_topic_selector" style="display:inline-block;"></span></a></div>				
 	<?php	
 	}
+	
+	if (isset($user['groups']['srr'])){
+	?>
+	<div class="listitem"><a onclick="ajxjs2('botchat_updatemodel','botchats.js');addtab('dashbotchatmodels','AI Chat Models','dashbotchatmodels');">AI Chat Models</a></div>				
+	<?php	
+	}
+	
 	?>
 		
 	<?php

@@ -151,6 +151,10 @@ switch($cmd){
 
 	case 'slv_codegen__botchats': include 'icl/listbotchats.inc.php'; listbotchats(); break;
 	case 'dash_codegen__botchats': include 'icl/dashbotchats.inc.php'; dashbotchats(); break;
+	
+	case 'dashbotchatmodels': include 'icl/botchat_dashmodels.inc.php'; botchat_dashmodels(); break;
+	case 'botchat_setdefmodel': include 'icl/botchat_setdefmodel.inc.php'; botchat_setdefmodel(); break;
+	
 	case 'showbotchat': include 'icl/showbotchat.inc.php'; showbotchat(); break;
 	case 'newbotchat': include 'icl/newbotchat.inc.php'; newbotchat(); break;
 	case 'addbotchat': include 'icl/addbotchat.inc.php'; addbotchat(); break;

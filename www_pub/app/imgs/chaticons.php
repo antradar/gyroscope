@@ -21,7 +21,10 @@ $icons=array(
 	array('name'=>'file-lines','adjust'=>0,'dx'=>1,'dy'=>-4),
 	array('name'=>'user','adjust'=>-4,'dx'=>-1,'dy'=>-3),
 	array('name'=>'magnifying-glass','adjust'=>0,'dx'=>-4,'dy'=>-3),
-	
+
+	array('name'=>'brush','adjust'=>-4,'dx'=>0,'dy'=>-1),
+	array('name'=>'paint-roller','adjust'=>-2,'dx'=>-1,'dy'=>0),
+		
 	array('name'=>'calendar-alt','adjust'=>0,'dx'=>-1,'dy'=>-4,'style'=>'s'),
 	
 	array('name'=>'arrows-split-up-and-left','adjust'=>0,'dx'=>-5,'dy'=>-3),
