@@ -53,6 +53,17 @@ CREATE TABLE gss (
 
 INSERT INTO gss(gsid,gsname,gsexpiry,gstier,maxchats,chatsperagent) VALUES (1, 'Default Instance', 0, 0,5,1);
 
+DROP TABLE IF EXISTS gsx;
+CREATE TABLE `gsx` (
+  `gsxid` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `gsid` bigint(20) unsigned NOT NULL,
+  `botchat_modelkey` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`gsxid`),
+  UNIQUE KEY `gsid` (`gsid`)
+) ENGINE=InnoDB;
+
+INSERT INTO gsx(gsid,botchat_modelkey) values (1,'gpt');
+
 DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE `users` (
