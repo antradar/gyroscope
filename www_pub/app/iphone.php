@@ -8,7 +8,7 @@ include 'retina.php';
 include 'forminput.php';
 
 include 'xss.php';
-xsscheck(1);
+xsscheck(1,null,1);
 
 include 'evict.php';
 evict_check();

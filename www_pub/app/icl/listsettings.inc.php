@@ -114,6 +114,10 @@ function listsettings($ctx=null){
 	}
 	}
 	
+	?>
+	<div class="listitem mobileonly"><a onclick="window.location.reload();"><em>Refresh App</em></a></div>
+	<?php
+	
 		
 ?>	
 </div>

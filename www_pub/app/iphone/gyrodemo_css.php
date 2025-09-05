@@ -1,6 +1,7 @@
 <?php
 header('Content-Type: text/css');
 ?>
+html,body{overscroll-behavior:contain;}
 body{background:#f2f2f2;margin:0;padding:0;}
 body,textarea,td, .img-mg{font-family:verdana, tahoma, arial;font-size:13px;-webkit-text-size-adjust:none;}
 

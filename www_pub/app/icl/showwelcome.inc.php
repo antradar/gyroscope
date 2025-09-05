@@ -109,6 +109,10 @@ SCal Test
 		if ($_SERVER['REMOTE_ADDR']==='127.0.0.1'&&($_SERVER['O_IP']==='127.0.0.1'||$_SERVER['O_IP']==='::1')) showguide(); else echo '<div style="padding-bottom:100px;"></div>';
 		
 	?>
+	
+	<div style="text-align:center;" class="mobileonly">
+	<a class="hovlink" onclick="window.location.reload();">&circlearrowleft;</a>
+	</div>
 
 	
 </div><!-- section -->
@@ -149,7 +153,7 @@ function auto_welcome($ctx=null){
 	
 ?>	
 	<div class="welcometile">
-	<a onclick="<?php echo $action;?>"><img alt="<?php echo $ti['title'];?>" style="vertical-align:middle;margin-right:5px;" class="<?php echo $ti['icon'];?>-light" src="imgs/t.gif"> <span style="vertical-align:middle;"><?php echo $ti['title'];?></span></a>
+		<a onclick="<?php echo $action;?>"><img alt="<?php echo $ti['title'];?>" style="vertical-align:middle;margin-right:5px;" class="<?php echo $ti['icon'];?>-light" src="imgs/t.gif"> <span style="vertical-align:middle;"><?php echo $ti['title'];?></span></a>
 	</div>
 	
 <?php }//foreach
