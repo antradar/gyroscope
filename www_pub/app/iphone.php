@@ -233,7 +233,7 @@ if (isset($roundwatchframe)&&$roundwatchframe){
 document.appsettings={codepage:'<?php echo $codepage;?>',binpages:<?php echo json_encode($binpages);?>,quicklist:<?php echo $quicklist?'true':'false';?>,beepnewchat:<?php echo $usermeta['canchat']?'true':'false';?>,fastlane:'<?php echo $fastlane;?>',autosave:null, viewmode:'iphone',uiconfig:<?php echo json_encode($uiconfig);?>,views:<?php echo json_encode(array_keys($toolbaritems));?>};
 </script>
 <script src="lang/dict.<?php echo $lang;?>.js"></script>
-<script src="nano.js?v=5_5"></script>
+<script src="nano.js?v=5_6"></script>
 <script>
 hdpromote('toolbar_hd_css.php?dark=<?php echo $dark;?>');
 hdpromote('iphone/gyrodemo_hd_css.php?dark=<?php echo $dark;?>');

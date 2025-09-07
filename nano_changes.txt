@@ -1,3 +1,7 @@
+v5.6
+----
+- sending FormData directly with ajxpgn
+
 v5.5
 ----
 - pseudo "attn" marker for evaluating to null's

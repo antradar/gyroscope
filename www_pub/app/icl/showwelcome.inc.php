@@ -12,7 +12,6 @@ include 'icl/listhomedashreports.inc.php';
 function showwelcome($ctx=null){
 	
 	makechangebar('welcome',"if (gid('codegen_button')) gid('codegen_button').onclick();");
-		
 ?>
 <div style="position:relative;margin-left:60px;"><?php makehelp($ctx,'welcometab2','maxtab',1);?></div>
 <div class="section" style="position:relative;">

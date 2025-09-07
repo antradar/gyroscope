@@ -7,7 +7,7 @@ Documentation: www.antradar.com/docs-nano-ajax-manual
 
 Warning: this copy of Nano Ajax Library is modified for running in Gyroscope. Use the public version for general purpose applications.
 
-ver g5.5
+ver g5.6
 */
 
 function gid(d){return document.getElementById(d);}
@@ -24,7 +24,12 @@ function ajxb(u,data,callback,myhb){
 	if (myhb==null) myhb=hb();
 		
 	rq.open(method, u+'&hb='+myhb,false);
-	rq.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
+	if (window.FormData&&data instanceof FormData){
+		//the multipart/form-data content type will be set automatically by the browser
+		//it's important NOT to encodeHTML the components
+	} else {
+		rq.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');	
+	}	
 	rq.send(data);
 	if (callback) callback(rq);
 	return rq.responseText;	
