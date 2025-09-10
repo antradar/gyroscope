@@ -40,17 +40,31 @@ showtab=function(key,opts){
   var i;
   var pasttab=document.currenttab;
   var tabid=gettabid(key);
-  if (tabid==-1) return;
+  if (tabid==-1) return false;
   
   if (gid('gamepadspot')) gid('gamepadspot').widx=null;  
   document.currenttab=tabid;
   
   if (!document.tabhistory) document.tabhistory=[];
   
+  
   var lasttab=null;
   if (document.tabhistory.length>0) lasttab=document.tabhistory[document.tabhistory.length-1];
   
-  if (lasttab!=key) document.tabhistory.push(key);
+  if (lasttab!=key) {
+	  document.tabhistory.push(key);
+	  var bintail='';
+	  if (opts&&opts.bingo) bintail=':'+opts.bingo;
+	  if (document.appsettings.uiconfig.singletab){
+		  if (lasttab!='welcome'){
+			  closetab(lasttab);
+			  history.replaceState({depth:document.tabhistory.length,tab:key},'',window.location.href.split('#')[0]+'#'+key+':'+(document.tabtitles[tabid].reloadinfo?document.tabtitles[tabid].reloadinfo.params:'-')+bintail);
+		  }
+		  
+	  } else {
+		  if (!document.historylock) history.pushState({depth:document.tabhistory.length,tab:key},'',window.location.href.split('#')[0]+'#'+key+':'+(document.tabtitles[tabid].reloadinfo?document.tabtitles[tabid].reloadinfo.params:'-')+bintail);
+  	  }
+  }
 
   if (document.appsettings.uiconfig.toolbar_position=='left') tab_reflow();  
   
@@ -184,6 +198,7 @@ showtab=function(key,opts){
 	
   }    
       
+  return true;
 }
 
 function tab_syncbookmarks(){

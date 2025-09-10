@@ -5,6 +5,8 @@ $uiconfig=array(
 	'closeall_button'=>'before', //default: place CloseAll button before all the tabs; "after" places the CloseAll button after the Home tab.
 	'enable_master_search'=>false, //default: false; when enabled, the tab list takes over the tool bar and share the space with a master searchbox
 	'force_inline_lookup'=>false, //default: false; use side lookup panel when possible
+	'singletab'=>false, //default: false; simulates a single page app on a desktop
+	'mobile_singletab'=>false, //default false: simulates single page app on mobile
 );
 
 if ($uiconfig['toolbar_position']=='left') {

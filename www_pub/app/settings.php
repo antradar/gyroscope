@@ -10,6 +10,7 @@ $binpages=array(
 	1=>'myservices.gsb', //bingo bridge to Go
 	2=>'myservices.pyb', //python
 	3=>'myservices.njs', //nodejs
+	4=>'myservices.cfw', //cloudflare worker //stablecf must be set to 1
 );
 $fastlane='phpx-services.php'; //change this name if HAProxy is set up to route by filename to a dedicated server
 

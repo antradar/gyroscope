@@ -246,7 +246,7 @@ hdpromote('gyroscope_hd_css.php?dark=<?php echo $dark;?>');
 hddemote('legacy.css');
 document.nanoperf=500; //in microseconds, set to null or comment out to disable
 </script>
-<script src="tabs.js?v=2"></script>
+<script src="tabs.js?v=3"></script>
 <script src="viewport.js"></script>
 <script src="validators.js?v=2"></script>
 <script src="autocomplete.js?v=4"></script>
@@ -270,9 +270,9 @@ if ($usermeta['usegamepad']){
 window.onresize=autosize;
 autosize();
 setTimeout(function(){scaleall(document.body);},100);
-
+document.initurl=window.location.href;
 <?php if ($uiconfig['toolbar_position']=='left'){?>
-addtab('welcome','<img src="imgs/t.gif" class="ico-homedash"><span style="display:none;">Home</span>','dash_default',function(){showmainmenu();},null,{noclose:1,bingo:false,tabctx:'dash'});
+addtab('welcome','<img src="imgs/t.gif" class="ico-homedash"><span style="display:none;">Home</span>','dash_default',function(){showmainmenu();resume_current_tab(document.initurl);},null,{noclose:1,bingo:false,tabctx:'dash'});
 tabviewfunc_welcome=function(){
 	showmainmenu();
 }
@@ -282,6 +282,7 @@ addtab('welcome','<?php tr('tab_welcome');?>','wk',function(){
 	//set this func block to null later
 	//ajxjs(null,'scal.js');
 	//scal_init('test',2023,12);
+	resume_current_tab(document.initurl);
 },null,{noclose:1,bingo:false});
 <?php }?>
 
@@ -303,7 +304,45 @@ window.onbeforeunload=function(){
 	return document.dict['confirm_exit'];
 }
 
+window.onpopstate=function(e){
+	var depth=0;
+	if (e.state&&e.state.depth) depth=e.state.depth;
+	if (!document.lasthist) document.lasthist=depth;
+	
+	document.historylock=1;
+	resume_current_tab(null,depth);
+	document.historylock=null;
+		
+	document.lasthist=depth;
+}
 
+resume_current_tab=function(initurl,depth){
+	//console.log(document.lasthist??0,depth);
+	var url=initurl||window.location.href;
+	var parts=url.split('#');
+	if (parts.length<2) return;
+	var hashparts=parts[1].split(':');
+	var binmode=0;
+	var opts=null;
+	if (hashparts.length==3) {
+		binmode=parseInt(hashparts[2],10);
+		opts={bingo:binmode};
+	}
+	
+	if (initurl) addtab(hashparts[0],'',hashparts[1],null,null,opts);
+	else {
+		var res=showtab(hashparts[0],'',hashparts[1]);
+		if (!res) {
+			if (document.lasthist!=null&&depth!=null&&depth>document.lasthist) {
+				//console.log("Forwarding");
+				history.forward();
+				var state=history.state;
+				var tabid=gettabid(state.tab);
+				//console.log('skipped tab ',state.tab);				
+			} else history.back();
+		}
+	}		
+}
 </script>
 
 <?php include 'ws_js.php';?>
