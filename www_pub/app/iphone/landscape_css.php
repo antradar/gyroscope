@@ -1,5 +1,6 @@
 <?php
 header('Content-Type: text/css');
+include '../uiconfig.php';
 ?>
 body{background:#f2f2f2;}
 #tooltitle{height:24px;background:#f2f2f2 url(msprite.png) no-repeat 0 0;width:150px;text-shadow:none;border-bottom:none;}
@@ -25,6 +26,13 @@ body{background:#f2f2f2;}
 .inp{width:90%;}
 .inpmed{width:80%;}
 .inpshort{width:50%;}
+
+<?php
+if (isset($uiconfig['mobile'])&&$uiconfig['mobile']['toolbar_position']=='bottom'){
+?>
+#toolicons{bottom:0 !important;}
+#tooltitle{top:10px;}
+<?php } ?>
 #toolicons a img{margin:0;}
 #toollist{height:35px;}
 #backlist{top:40px;}
@@ -40,7 +48,7 @@ body{background:#f2f2f2;}
 
 .savebar_content{padding:10px 235px 10px 5px;text-align:center;}
 
-#homeicon{display:none;}
+#homeicon{display:nonea;}
 
 #lkv.dismounted{z-index:auto;}
 

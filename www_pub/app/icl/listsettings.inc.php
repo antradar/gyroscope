@@ -1,5 +1,6 @@
 <?php
 include 'stripe.inc.php';
+include_once 'uiconfig.php';
 
 function listsettings($ctx=null){
 	if (isset($ctx)) $db=&$ctx->db; else global $db;
@@ -11,6 +12,8 @@ function listsettings($ctx=null){
 	global $stripe_config;
 	global $enable_db_profiler;
 	global $db_profiler;
+	
+	global $uiconfig;
 	
 	if (isset($ctx)) $manticore=&$ctx->manticore; else global $manticore;
 	
@@ -117,7 +120,11 @@ function listsettings($ctx=null){
 	?>
 	<div class="listitem mobileonly"><a onclick="window.location.reload();"><em>Refresh App</em></a></div>
 	<?php
-	
+	if (!$uiconfig['mobile']['power']){
+	?>
+	<div class="listitem mobileonly"><a href="login.php?from=<?php echo $_SERVER['PHP_SELF'];?>">Sign Out</a></div>	
+	<?php 
+	}
 		
 ?>	
 </div>

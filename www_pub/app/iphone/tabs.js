@@ -327,7 +327,10 @@ function addtab(key,title,params,loadfunc,data,opts){
 	if (document.tabkeys[i]==key) {
         showtab(key,opts);
         document.tablock=null;
-		return;
+		if (!document.appsettings.uiconfig.mobile.singletab) return;
+	} else {
+		if (document.appsettings.uiconfig.mobile.singletab)
+			if (document.tabkeys[i]!='welcome') closetab(document.tabkeys[i]);
 	}
   }
   
@@ -571,7 +574,6 @@ function scrollcoldash(container,colkey){
 
 function gototabbookmark(id,callout){
 	var d,delta;
-	
 	if (!document.iphone_portrait){
 		if (!gid(id)||!gid('tabviews')) return;
 		d=gid('tabviews'); delta=90;
@@ -579,7 +581,10 @@ function gototabbookmark(id,callout){
 		if (!gid(id)) return;
 		d=document.body; delta=130;
 	}
-	
+
+	if (document.iphone_portrait){
+		d=document.documentElement;	
+	}	
 	//d.scrollTop=gid(id).offsetTop-delta; return; //uncomment this line to disable animation
 	
 	var diff=gid(id).offsetTop-delta-d.scrollTop;

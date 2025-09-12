@@ -30,10 +30,14 @@ function scaleall(root){
   var idh=ch();
   var idw=cw();
   
+  var stretch=0;
+  
+  if (document.appsettings.uiconfig&&document.appsettings.uiconfig.mobile&&document.appsettings.uiconfig.mobile.toolbar_position=='bottom') stretch=35;
+  
   var os=root.getElementsByTagName('div'); //AKB#2
   
-	gid('tabviews').style.height=(idh-105)+'px';
-	gid('lvviews').style.height=(idh-105)+'px';
+	gid('tabviews').style.height=(idh-105+stretch)+'px';
+	gid('lvviews').style.height=(idh-105+stretch)+'px';
 
   if (document.rowcount){
 		gid('tabtitleshadow').style.height=(28*document.rowcount-1)	  

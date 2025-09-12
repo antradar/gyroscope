@@ -1,5 +1,6 @@
 <?php
 header('Content-Type: text/css');
+include '../uiconfig.php';
 ?>
 body{background:#ffffff;}
 #tooltitle{height:25px;background:transparent url(tbbg.png) repeat top left;border-bottom:solid 1px #6f6e6e;width:320px;text-shadow:0 1px 0 #000000;}
@@ -7,7 +8,11 @@ body{background:#ffffff;}
 #tabviews{overflow:visible;height:auto;}
 #content{height:auto;overflow:visible;}
 
+<?php if ($uiconfig['mobile']['singletab']){?>
+#shared_tab_closer{display:none;}
+<?php } else {?>
 #shared_tab_closer{display:block;}
+<?php }?>
 
 #gsreplayicon{margin-top:10px !important;}
 
@@ -32,14 +37,20 @@ body{background:#ffffff;}
 
 #homeicon{display:block;}
 .qnav_{position:fixed;left:0;top:0px;height:100%;overflow:hidden;}
-.qnav{padding-top:160px;}
+.qnav{padding-top:<?php if (isset($uiconfig['mobile'])&&$uiconfig['mobile']['toolbar_position']=='bottom') echo '120'; else echo '160';?>px;}
 
 #lkv_origin{display:none;}
 #lkv.dismounted{z-index:1000;}
 
 #toolicons a img{margin:5px 3px;}
 #toollist{height:45px;}
-#backlist{top:50px;}
+#backlist{
+<?php if (isset($uiconfig['mobile'])&&$uiconfig['mobile']['toolbar_position']=='bottom'){?>
+	top:0;
+<?php } else {?>	
+	top:50px;
+<?php } ?>
+}
 #toolbg{height:50px;}
 #pusher{height:50px;}
 #backlistshadow{height:43px;}

@@ -19,11 +19,11 @@ function showwelcome($ctx=null){
 	<div class="sectiontitle"><a ondblclick="toggletabdock();"><?php tr('hometab_welcome');?></a></div>
 	
 	<?php
-	/* 
-	// cloudflare worker demo
+	/* // cloudflare worker demo
 	<button onclick="ajxpgn('cfwtest',document.appsettings.binpages[4]+'?cmd=showtest');">Show My IP</button>
 	<div id="cfwtest" style="padding:10px 0;"></div>
 <?php
+
 	*/
 
 

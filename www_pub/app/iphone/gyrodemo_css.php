@@ -1,5 +1,6 @@
 <?php
 header('Content-Type: text/css');
+include '../uiconfig.php';
 ?>
 html,body{overscroll-behavior:contain;}
 body{background:#f2f2f2;margin:0;padding:0;}
@@ -63,6 +64,9 @@ button.trivial:hover, .button.trivial:hover{background:none;}
 .phelpspot button, .phelpspot .button{border:solid 1px #999999;}
 
 #lvviews, #tabviews{background:#ffffff;}
+.lvview{
+<?php if (isset($uiconfig['mobile'])&&$uiconfig['mobile']['toolbar_position']=='bottom'){?>padding-bottom:50px;<?php }?>
+}
 
 .welcometile img{width:32px;height:32px;}
 .recadder img{width:18px;height:18px;}
@@ -150,6 +154,19 @@ height:22px;
 #backlist{top:40px;}
 #toolbg{height:40px;}
 #backlistshadow{height:43px;}
+
+<?php
+if (!$uiconfig['mobile']['back_bar']){
+?>
+#backlist, #backlistshadow{display:none !important;}
+<?php }?>
+
+<?php
+if (!$uiconfig['mobile']['list_bar']){
+?>
+#tooltitle, #tooltitleshadow{display:none;}
+<?php }?>
+
 .img-calel{background:transparent url(msprite.png) no-repeat -69px -114px;width:5px;height:12px;} /* 5x12 */
 .img-caler{background:transparent url(msprite.png) no-repeat -92px -114px;width:5px;height:12px;}
 
@@ -341,7 +358,13 @@ input:disabled{color:#000000;-webkit-appearance: none;}
  
 .stable::-webkit-scrollbar-thumb { background-color:rgba(200,200,200,0.2); border-radius:2px;}
 
-.reloader{text-align:center;padding:8px 10px;background:#dedede;color:#444444;margin-bottom:5px;}
+.reloader{
+	text-align:center;padding:8px 10px;
+	background:#dedede;color:#444444;margin-bottom:5px;
+	<?php if (isset($uiconfig['mobile'])&&!$uiconfig['mobile']['reload_bar']){?>
+	visibility:hidden;padding:0;
+	<?php }?>
+}
 .reloader a{display:block;}
 
 .listsearch_ input{display:block;}

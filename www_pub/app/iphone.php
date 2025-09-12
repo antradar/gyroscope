@@ -74,7 +74,18 @@ button.warn, .button.warn{display:none;}
 </head>
 <body onload="setTimeout(scrollTo, 0, 0, 1);">
 <div id="watchframe_outer">
-<div id="toolbg" style="position:fixed;width:100%;z-index:1000;top:0;background:#333333;opacity:0.9"></div>
+<?php
+$ui_anchor='top';
+$ui_bump=0;
+if (isset($uiconfig['mobile'])&&isset($uiconfig['mobile']['toolbar_position'])) {
+	$ui_anchor=$uiconfig['mobile']['toolbar_position'];
+}
+
+if ($ui_anchor=='bottom'){
+	$ui_bump='10px';	
+}
+?>
+<div id="toolbg" style="position:fixed;width:100%;z-index:1000;<?php echo $ui_anchor;?>:0;background:#333333;<?php if ($ui_anchor=='top') echo 'opacity:0.9;';?>"></div>
 <?php
 if (isset($roundwatchframe)&&$roundwatchframe){
 ?>
@@ -84,7 +95,7 @@ if (isset($roundwatchframe)&&$roundwatchframe){
 <?php
 }
 ?>
-<div id="toolicons" style="position:fixed;width:100%;z-index:1900;top:0;">
+<div id="toolicons" style="position:fixed;width:100%;z-index:1900;<?php echo $ui_anchor;?>:<?php echo $ui_bump;?>;">
 
 	<?php
 	$tcount=1;
@@ -161,7 +172,7 @@ if (isset($roundwatchframe)&&$roundwatchframe){
 	
 	</div></div>
 	<span id="labellogin" style="display:none;"><?php echo htmlspecialchars($user['login']);?></span><span id="labeldispname" style="display:none;"><?php echo htmlspecialchars($user['dispname']);?></span>	
-	<a id="adminlogout" onclick="if (document.websocket) document.websocket.onclose=null;" href="login.php?from=<?php echo $_SERVER['PHP_SELF'];?>" style="position:absolute;top:10px;right:10px;"><img alt="sign out" border="0" width="16" height="16" src="imgs/t.gif" class="admin-logout"></a>
+	<a id="adminlogout" onclick="if (document.websocket) document.websocket.onclose=null;" href="login.php?from=<?php echo $_SERVER['PHP_SELF'];?>" style="position:absolute;top:10px;right:10px;"><img alt="sign out" border="0" width="16" height="16" src="imgs/t.gif" class="admin-logout" <?php if (isset($uiconfig['mobile'])&&$uiconfig['mobile']['power']==false) echo 'style="display:none;"';?>></a>
 
 	<div id="mmastersearch">
 		<div class="mastersearchshell">
@@ -176,7 +187,8 @@ if (isset($roundwatchframe)&&$roundwatchframe){
 	<div id="mainsearchview"></div>
 </div>
 	
-<div id="pusher" style="width:100%;height:50px;"></div>
+
+<div id="pusher" style="width:100%;height:50px;<?php if ($ui_anchor!='top') echo 'display:none;';?>"></div>
 
 <div style="display:none;">
 	<img src="imgs/t.gif"><img src="imgs/hourglass.gif">
@@ -188,7 +200,7 @@ if (isset($roundwatchframe)&&$roundwatchframe){
 	<audio id="gschatsound_newchat"><source src="chatsounds/newchat.mp3"></audio>
 </div>
 <div id="leftview" style="float:left;margin-left:10px;width:210px;margin-right:10px;">
-	<div id="tooltitle" ontouchstart="toggle_easyread_start();" ontouchend="toggle_easyread_end();" onclick="if (document.viewindex) reloadview(document.viewindex,0,1);" style="width:150px;position:fixed;top:50px;z-index:1000;height:25px;"></div>
+	<div id="tooltitle" ontouchstart="toggle_easyread_start();" ontouchend="toggle_easyread_end();" onclick="if (document.viewindex) reloadview(document.viewindex,0,1);" style="width:150px;position:fixed;top:<?php if ($ui_anchor=='top') echo '50px;';?>;z-index:1000;height:25px;"></div>
 	<div id="tooltitleshadow" style="width:150px;height:25px;"></div>
 	<div id="lvviews">
 	<?php foreach ($toolbaritems as $modid=>$ti){?>
@@ -206,7 +218,7 @@ if (isset($roundwatchframe)&&$roundwatchframe){
 	<div id="backlist" ontouchstart="toggle_easyread_start();" ontouchend="toggle_easyread_end();" style="display:none;position:fixed;width:100%;z-index:1000;"><a id="backlistbutton"><img class="mtback_light" alt="back button" onclick="navback();" src="iphone/bb_<?php echo $lang;?>.png"><img class="mtback_dark" alt="back button" onclick="navback();" src="iphone/dbb_<?php echo $lang;?>.png"></a></div>
 	<div id="backlistshadow" style="display:none;width:100%;"></div>
 
-	<div id="tabtitles" style="width:325px;position:fixed;z-index:1000;"></div>
+	<div id="tabtitles" style="width:325px;position:fixed;z-index:1000;<?php if ($ui_anchor=='bottom') echo 'top:10px;';?>"></div>
 	<div id="tabtitleshadow" style="height:25px;width:100px;display:none;"></div>
 
 	<div id="tabviews" style=""></div>
