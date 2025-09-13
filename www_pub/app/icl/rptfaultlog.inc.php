@@ -20,6 +20,9 @@ function rptfaultlog(){
 	global $paymethods;
 	global $lang;
 	
+	header('newtitle: '.tabtitle('<img src="imgs/t.gif" class="ico-report">Fault Log'));
+	
+	
 	//override date stamp
 	$ds=explode('-',SGET('date'));
 	if (count($ds)==3){

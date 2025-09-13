@@ -8,6 +8,7 @@ function rptcale(){
 	if (isset($_COOKIE['dowoffset'])) $woffset=intval($_COOKIE['dowoffset']);
 	if ($woffset<0||$woffset>6) $woffset=0;
 	
+	header('newtitle: '.tabtitle('<img src="imgs/t.gif" class="ico-report">Event Calendar'));
 ?>
 <div class="section">
 	<div class="sectiontitle">Event Calendar</div>

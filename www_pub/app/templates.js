@@ -54,6 +54,7 @@ inittemplatetexteditor=function(templateid,st){
 
 
 showtemplate=function(templateid,name){
+	if (name==null) name='';
 	addtab('template_'+templateid,name,'showtemplate&templateid='+templateid, function(){inittemplatetexteditor(templateid);});	
 }
 

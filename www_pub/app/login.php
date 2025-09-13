@@ -554,7 +554,7 @@ if ($gs_public_web){
 	
 	<?php if (!$textmode){?>
 	
-	<script src="nano.js?v=4_9"></script>
+	<script src="nano.js?v=5_6"></script>
 	<script>
 		function checkform(){
 			if (gid('yubikeysetup')) gid('yubikeysetup').style.display='none';

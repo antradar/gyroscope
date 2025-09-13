@@ -8,7 +8,9 @@ function rptactionlog_fulltext($ctx=null){
 	
 	global $dict_mons;
 	if (!defined('KB_PREFIX')) define('KB_PREFIX','');
-	
+
+	header('newtitle: '.tabtitle('<img src="imgs/t.gif" class="ico-report">Activity Log'));
+		
 	$user=userinfo($ctx);
 	$gsid=$user['gsid'];
 

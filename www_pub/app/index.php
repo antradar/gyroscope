@@ -317,6 +317,21 @@ window.onpopstate=function(e){
 }
 
 resume_current_tab=function(initurl,depth){
+	var jsmap={
+		'welcome':[],
+		'user':['users.js'],
+		'botchat':['botchats.js'],
+		'templatetype':['templatetypes.js'],
+		'template':['templatetypes.js','templates.js:showtemplate'],
+		'reportsetting':['reportsettings.js'],
+		'viewhelptopic':['helptopics.js'],
+		'helptopic':['helptopics.js:edithelptopic'],
+		'kbmanrec':['kbman.js'],
+		'rptcale':['reports.js:rptinit_cale'],
+		
+		//add app specific mapping here
+		
+	}
 	//console.log(document.lasthist??0,depth);
 	var url=initurl||window.location.href;
 	var parts=url.split('#');
@@ -328,6 +343,25 @@ resume_current_tab=function(initurl,depth){
 		binmode=parseInt(hashparts[2],10);
 		opts={bingo:binmode};
 	}
+	var tabkeyparts=hashparts[0].split('_');
+	var tabkey=tabkeyparts[0];
+	var recid=0; if (tabkeyparts.length>1) recid=tabkeyparts[1];
+	
+	var tabjs=jsmap[tabkey];
+	if (!tabjs&&tabkey.length>3&&tabkey.substr(0,3)=='rpt') tabjs=['reports.js'];
+	if (!tabjs){
+		console.log('cannot resume tab for '+tabkey);
+		return;	
+	}
+	
+	for (var i=0;i<tabjs.length;i++) {
+		var jsparts=tabjs[i].split(':');
+		ajxjs(null,jsparts[0]);
+		if (jsparts.length>1){
+			for (j=1;j<jsparts.length;j++) self[jsparts[j]](recid);
+		}
+	}
+	
 	
 	if (initurl) addtab(hashparts[0],'',hashparts[1],null,null,opts);
 	else {
