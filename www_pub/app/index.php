@@ -343,28 +343,30 @@ resume_current_tab=function(initurl,depth){
 		binmode=parseInt(hashparts[2],10);
 		opts={bingo:binmode};
 	}
-	var tabkeyparts=hashparts[0].split('_');
-	var tabkey=tabkeyparts[0];
-	var recid=0; if (tabkeyparts.length>1) recid=tabkeyparts[1];
 	
-	var tabjs=jsmap[tabkey];
-	if (!tabjs&&tabkey.length>3&&tabkey.substr(0,3)=='rpt') tabjs=['reports.js'];
-	if (!tabjs){
-		console.log('cannot resume tab for '+tabkey);
-		return;	
-	}
 	
-	for (var i=0;i<tabjs.length;i++) {
-		var jsparts=tabjs[i].split(':');
-		ajxjs(null,jsparts[0]);
-		if (jsparts.length>1){
-			for (j=1;j<jsparts.length;j++) self[jsparts[j]](recid);
+	if (initurl) {
+		var tabkeyparts=hashparts[0].split('_');
+		var tabkey=tabkeyparts[0];
+		var recid=0; if (tabkeyparts.length>1) recid=tabkeyparts[1];
+		
+		var tabjs=jsmap[tabkey];
+		if (!tabjs&&tabkey.length>3&&tabkey.substr(0,3)=='rpt') tabjs=['reports.js'];
+		if (!tabjs){
+			console.log('cannot resume tab for '+tabkey);
+			return;	
 		}
-	}
 	
-	
-	if (initurl) addtab(hashparts[0],'',hashparts[1],null,null,opts);
-	else {
+		for (var i=0;i<tabjs.length;i++) {
+			var jsparts=tabjs[i].split(':');
+			ajxjs(null,jsparts[0]);
+			if (jsparts.length>1){
+				for (j=1;j<jsparts.length;j++) self[jsparts[j]](recid);
+			}
+		}
+		
+		addtab(hashparts[0],'',hashparts[1],null,null,opts);
+	} else {
 		var res=showtab(hashparts[0],'',hashparts[1]);
 		if (!res) {
 			if (document.lasthist!=null&&depth!=null&&depth>document.lasthist) {
