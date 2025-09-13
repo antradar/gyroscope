@@ -16,6 +16,9 @@
 	{"template":"tinymce_jsreload","filename":"#records#.js &nbsp; update#record# callback:"},
 	{"template":"tinymce_getter","filename":"#records#.js &nbsp; update field getters:<br>&nbsp; &nbsp; &nbsp; remove validators and param pushers for <em>#editfield#</em>"},
 	{"template":"tinymce_hook","filename":"icl/list#records#.inc.php add callback to adder:"},
+	
+	{"template":"tinymce_jsmap","filename":"index.php <em>add to jsmap{...}</em>"},
+	
 	{"template":"tinymce_saver","nocopy":1,"filename":"icl/update#record#.inc.php, icl/add#record#.inc.php &nbsp; localize images before saving:"},	
 	{"template":"tinymce_localicl","filename":"include the localizer for icl/update#record#.inc.php, icl/add#record#.inc.php"}	
 ]

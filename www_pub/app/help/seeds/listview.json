@@ -39,6 +39,7 @@
 	{"template":"delrecord","filename":"icl/del#record#.inc.php"},	
 	{"template":"updaterecord","filename":"icl/update#record#.inc.php"},
 	{"template":"listview_switch","filename":"myservices.php <em>switch ($cmd){</em>"},
+	{"template":"jsmap","filename":"index.php <em>add to jsmap{...}</em>"},
 	{"template":"listview_gsnotes","filename":"add to gsnotes.js <em>(optional: offline mode)</em>"}
 ]
 }
