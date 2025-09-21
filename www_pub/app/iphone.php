@@ -36,6 +36,7 @@ include 'uiconfig.php';
 	<link id="ajxcss_gyrodemo" href="iphone/gyrodemo_css.php?dark=<?php echo $dark;?>&v=2" type="text/css" rel="stylesheet" />
 	<link href="gsnotes.css" type="text/css" rel="stylesheet" />
 	<link id="ajxcss_toolbar" href="toolbar_css.php?dark=<?php echo $dark;?>&v=4" type="text/css" rel="stylesheet" />
+	<link id="ajxcss_passrules" href="passrules_css.php?v=3&dark=<?php echo $dark;?>" type="text/css" rel="stylesheet" />
 <?php 
 	if (isset($_GET['watch'])&&$_GET['watch']==1||preg_match('/sm\-r\d+/i',$_SERVER['HTTP_USER_AGENT'])){
 		$roundwatchframe=1;

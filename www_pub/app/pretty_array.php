@@ -37,8 +37,11 @@ function pretty_array($items,$stem='unique_container_name',$showall=0,$depth=0,$
 			}
 			
 			if (is_object($v)) var_dump($v); else {
+				$dv=htmlspecialchars($v);
+				if ($v===true) $dv='<em style="color:#22ab00;">true</em>';
+				if ($v===false) $dv='<em style="color:#ffab00;">false</em>';
 		?>
-			<acronym title="<?php echo htmlspecialchars($vinfo);?>" style="cursor:pointer;"><?php echo htmlspecialchars($v);?></acronym>
+			<acronym title="<?php echo htmlspecialchars($vinfo);?>" style="cursor:pointer;"><?php echo $dv;?></acronym>
 		<?php	
 			}
 		

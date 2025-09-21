@@ -740,7 +740,11 @@ function resetdarkmode(darkmode){
 	if (gid('ajxcss_toolbar')){
 		ajxcss(null,'toolbar_css.php?dark='+darkmode,'toolbar','toolbar');
 		hdpromote('toolbar_hd_css.php?dark='+darkmode);
-	}		
+	}
+	
+	if (gid('ajxcss_passrules')){
+		ajxcss(null,'passrules_css.php?dark='+darkmode,'pssrules','passrules');		
+	}
 
 	
 }

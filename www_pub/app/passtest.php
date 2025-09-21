@@ -26,17 +26,23 @@ function passtest($pass){
 	
 	$strength=pow($base,$netlen);
 	
-	if ($strength<=1) $rawgrade=0; else $rawgrade=log($strength);
+	$reqs=array();
+	
+	if ($strength<=1) {$rawgrade=0;$reqs['var']='lacks variation';} else $rawgrade=log($strength);
 	
 	$grade=floor($rawgrade/10);
 	
 	if ($grade>2) $grade=2; //0 - weak, 1 - okay, 2- strong
 	
+	//if (strlen($pass)<15) {$grade=0;$reqs['length']='too short';} //at least 15 characters
+	//if (!preg_match('/[\s\^\*\!\@\#\$\%\`\&\~\?\(\)\_\-\+\=\[\]\{\}\|\;\:\"\'\<\>\,\.]/', $pass)) {$grade=0;$reqs['symbol']='missing symbools';} //need a special character
+	//if (!preg_match('/\d/',$pass)) {$grade=0;$reqs['numeric']='missing digits';} //need a number
+	
 	//echo $strength.' '.$rawgrade.' '.$grade; return;
 	
 	//return array('grade'=>1,'found'=>0); //uncomment to fully bypass
 	
-	//return array('grade'=>$grade,'found'=>0); //uncomment to bypass lookup
+	//return array('grade'=>$grade,'found'=>0, 'reqs'=>$reqs); //uncomment to bypass lookup
 		
 	$hash=sha1($pass);
 	$seed=substr($hash,0,5);
@@ -67,9 +73,11 @@ function passtest($pass){
 		}	
 	}
 	
-	if ($found>1) $grade=0;
+	if ($found>1) {$grade=0;$reqs['comp']='compromised '.number_format($found).' time'.($found==1?'':'s');}
 	
-	return array('grade'=>$grade,'found'=>$found);
+	if ($grade==0&&count($reqs)==0) $reqs['var']='lacks variation';
+
+	return array('grade'=>$grade,'found'=>$found,'reqs'=>$reqs);
 	
 		
 }

@@ -51,6 +51,7 @@ if ($uiconfig['toolbar_position']=='left') $quicklist=0;
 	<meta name="theme-color" content="#454242" />	
 	<link id="ajxcss_gyroscope" href="gyroscope_css.php?dark=<?php echo $dark;?>&v=2" type="text/css" rel="stylesheet" />
 	<link id="ajxcss_toolbar" href="toolbar_css.php?v=3&dark=<?php echo $dark;?>" type="text/css" rel="stylesheet" />
+	<link id="ajxcss_passrules" href="passrules_css.php?v=3&dark=<?php echo $dark;?>" type="text/css" rel="stylesheet" />
 	<link href="gsnotes.css" type="text/css" rel="stylesheet" />
 	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 	<?php if ($dict_dir==='rtl'){?>
@@ -319,6 +320,7 @@ window.onpopstate=function(e){
 resume_current_tab=function(initurl,depth){
 	var jsmap={
 		'welcome':[],
+		'account':['accounts.js'],
 		'user':['users.js'],
 		'botchat':['botchats.js'],
 		'templatetype':['templatetypes.js'],

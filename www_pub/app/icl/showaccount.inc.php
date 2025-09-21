@@ -18,6 +18,8 @@ function showaccount($ctx=null){
 	$user=userinfo($ctx);
 
 	if (isset($ctx)) $db=&$ctx->db; else global $db;
+	
+	gs_header($ctx,'newtitle','My Account');
 		
 	$userid=$user['userid'];
 	$gsid=$user['gsid'];

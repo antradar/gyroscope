@@ -16,7 +16,8 @@ function show_login_header(){
 	
 	<?php include 'appicon.php';?>
 	<link rel="manifest" href="manifest.php?hb=<?php echo time();?>">
-	
+	<link href="passrules_css.php?v=3&dark=<?php echo $dark;?>" type="text/css" rel="stylesheet" />
+
 <style>
 <?php
 $framecolor='rgba(200,200,200,0.4)';
