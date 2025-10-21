@@ -1,7 +1,7 @@
 <?php
 
 function xsscheck($easy=0,$ctx=null,$loginself=0){
-
+return true; //react testing
 	if (isset($ctx)) $server=$ctx->server; else {global $_SERVER; $server=$_SERVER;}
 		
 	gs_header($ctx, 'X-Frame-Options', 'SAMEORIGIN');

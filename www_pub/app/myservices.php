@@ -170,6 +170,7 @@ switch($cmd){
 	case 'botchat_sidereel_showroute': include 'icl/botchat_sidereel_showroute.inc.php'; botchat_sidereel_showroute(); break;
 	case 'botchat_sidereel_convert': include 'icl/botchat_sidereel_convert.inc.php'; botchat_sidereel_convert(); break;
 	case 'botchat_sidereel_execute': include 'icl/botchat_sidereel_execute.inc.php'; botchat_sidereel_execute(); break;
+	case 'botchat_sidereel_flush': include 'icl/botchat_sidereel_flush.inc.php'; botchat_sidereel_flush(); break;
 		
 // AI Knowledge Base
 

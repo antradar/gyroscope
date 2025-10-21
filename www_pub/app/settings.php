@@ -11,6 +11,7 @@ $binpages=array(
 	2=>'myservices.pyb', //python
 	3=>'myservices.njs', //nodejs
 	4=>'myservices.cfw', //cloudflare worker //stablecf must be set to 1
+	5=>'cs/', //dotnet
 );
 $fastlane='phpx-services.php'; //change this name if HAProxy is set up to route by filename to a dedicated server
 
@@ -40,6 +41,7 @@ $userroles=array(
 	'sapadmin'=>'view SAP data',
 	'msgpipe'=>'provision notification lists',
 	'msgpipeuse'=>' modify notification list recipients',
+	'view_history'=>'test',
 );
 
 //a user can grant the following rights only if the user also has the right themselves

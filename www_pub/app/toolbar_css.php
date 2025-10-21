@@ -94,7 +94,13 @@ use toolbar.psp to generate toolbar.gif
 .botchatresolver_.func_date_time{background-position:-220px 0;}
 .botchatresolver:hover .botchatresolver_.func_date_time{background-position:-286px 0;}
 
-.botchatbubble .codesnippet{margin:10px;padding:5px;border:dotted 1px #66ff66;color:#008800;}
+.botchatbubble .codesnippet, .botchatbubble code{
+	margin:2px 5px;padding:5px;border:dotted 1px #66ff66;color:#008800;
+	display:inline-block;
+	max-width:98%;overflow:auto;box-sizing:border-box;
+	vertical-align:middle;
+}
+.botchatbubble h2{opacity:0.8;font-size:16px;}
 
 .kbman_toolbar{background:#F0F0EE;border:solid 1px #CCCCCC;padding:5px;border-bottom:none;}
 .kbman_toolbar_icon{border:solid 1px #CCCCCC;display:inline-block;font-size:1px;}
