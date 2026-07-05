@@ -5,6 +5,7 @@ document.dict={
 
 'edit':'edit',
 'confirm_refresh_tab':'Are you sure you want to refresh this tab?',
+'confirm_close_tab':'Are you sure you want to close this tab?',
 'confirm_close_all_tabs':'Are you sure you want to close all the tabs?',
 'tab_reload':'reload view',
 'mismatching_password':'Password mismatch',

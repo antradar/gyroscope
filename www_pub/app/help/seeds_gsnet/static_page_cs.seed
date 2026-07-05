@@ -1,0 +1,20 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+
+namespace gsnet.Pages;
+
+public class #page_key#Model : PageModel
+{
+    private readonly ILogger<#page_key#Model> _logger;
+
+    public #page_key#Model(ILogger<#page_key#Model> logger)
+    {
+        _logger = logger;
+    }
+
+    public void OnGet()
+    {
+        // No-op: This page has no server-side logic
+    }
+}
+

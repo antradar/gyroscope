@@ -16,6 +16,8 @@ $lightback='#ffffff';
 $backbg='#CCCCCC';//'#2D3239';//'#0D1117';//'#CCCCCC';//'#0D1117';//'#2D3239';//'#CCCCCC';
 
 $icons=array(
+	array('name'=>'house','adjust'=>-12),
+	array('name'=>'circle-user','adjust'=>-6),
 	array('name'=>'user','adjust'=>-6),
 	array('name'=>'cog','adjust'=>-6),
 	array('name'=>'life-ring','adjust'=>-6),

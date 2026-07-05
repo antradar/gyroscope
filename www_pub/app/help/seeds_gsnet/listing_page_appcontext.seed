@@ -1,0 +1,23 @@
+//// add public member:
+
+	public DbSet<Public#record_titlecase#> Public#record_pl_titlecase# { get; set; } = null!;
+
+//// add to protected override void OnModelCreating(ModelBuilder modelBuilder):
+	
+	modelBuilder.Entity<Public#record_titlecase#>(entity =>
+	{
+		entity.ToTable("#record_table#");
+		
+		entity.HasKey(e => e.Id);
+		
+		entity.Property(e => e.Id)
+		.HasColumnName("#primary_key#");
+		
+		entity.Property(e => e.DisplayNameBytes)
+		.HasColumnName("#display_field#")
+		.HasMaxLength(100)
+		.HasConversion(latin1ToUtf8Converter)
+		.Metadata.SetValueComparer(byteArrayComparer);
+	
+	});
+	 

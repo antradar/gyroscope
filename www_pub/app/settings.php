@@ -4,6 +4,7 @@ include 'lang.php';
 
 //comment out the following lines to disable authentication
 include 'auth.php';
+include_once 'uiconfig.php';
 
 $codepage='myservices.php';
 $binpages=array(
@@ -29,6 +30,7 @@ $userroles=array(
 	'accounts'=>_tr('rights_accounts'),
 	'creditcards'=>'manage credit cards and subscription',
 	'dbadmin'=>_tr('rights_dbadmin'),
+	'srvops'=>'conduct server operations',
 	//'msdrive'=>'access all Microsoft drives',
 	//'upgrademods'=>_tr('rights_upgrademodules'),
 	'helpedit'=>'edit help topics',
@@ -41,11 +43,11 @@ $userroles=array(
 	'sapadmin'=>'view SAP data',
 	'msgpipe'=>'provision notification lists',
 	'msgpipeuse'=>' modify notification list recipients',
-	'view_history'=>'test',
+	//'view_history'=>'test',
 );
 
 //a user can grant the following rights only if the user also has the right themselves
-$userrolelocks=array('devreports','accounts','dbadmin','creditcards','systemplate','msdrive','helpedit','chatsettings','chats','sharedashreports','faultlog','sapadmin','msgpipe','msgpipeuse');
+$userrolelocks=array('devreports','accounts','dbadmin','srvops','creditcards','systemplate','msdrive','helpedit','chatsettings','chats','sharedashreports','faultlog','sapadmin','msgpipe','msgpipeuse');
 
 //to quickly force every role to be inherited, uncomment the following:
 
@@ -60,7 +62,7 @@ $toolbaritems=array(
 	'codegen.sapentitysets'=>array('title'=>'SAP Entity Sets','icon'=>'','modversion'=>'91','lockdown'=>1),
 	'codegen.sapentities'=>array('title'=>'SAP Entities','icon'=>'','modversion'=>'91','lockdown'=>1),
 
-'lv.welcome'=>array('title'=>'Main Menu','icon'=>''),
+'lv.welcome'=>array('title'=>'Dashboard','icon'=>'img-dash'),
 'core.settings'=>array('title'=>_tr('icon_settings'),'icon'=>'img-settings','modversion'=>'91','lockdown'=>1),
 	'core.users'=>array('title'=>'Users','icon'=>'','modversion'=>'78','lockdown'=>1),
 	'core.reportsettings'=>array('title'=>'Report Settings','icon'=>'','modversion'=>'92','lockdown'=>1),	
@@ -80,6 +82,10 @@ $toolbaritems=array(
 
 global $original_toolbaritems;
 $original_toolbaritems=$toolbaritems;
+
+if ($uiconfig['toolbar_position']=='top'){
+	$toolbaritems['lv.welcome']['icon']='';
+}
 
 foreach ($toolbaritems as $idx=>$item) if (!$item) unset($toolbaritems[$idx]);
 

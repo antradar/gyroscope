@@ -9,12 +9,13 @@ header('Content-Type: text/css');
 .ico-helptopic, .dulltab .ico-helptopic,.ico-salesforce, .dulltab .ico-salesforce,
 .img-addrec, .img-del, .img-save, .img-tick, .img-xls, .img-pdf, .img-speechrecog, .img-home, .img-gsclip,
 .img-tracker,.img-tracker-light,.img-clock, .img-settings, .img-settings-light, .img-chats, .img-chats-light,
+.img-dash, .img-dash-light, .img-account, .img-account-light, .mainuserprofile,
 .img-helptopics, .img-helptopics-light,.img-salesforce, .img-salesforce-light, .img-sap, .img-sap-light,
 .img-botchats, .img-botchats-light,
 .sectiontitle a:hover .edithover,
 .img-closeall, .img-speechrecog, .img-reports, .img-reports-light, .img-xls, .img-pdf,
 .img-pageleft, .img-pageright, .img-search, #tabexpander, #tabexpander.afloat
-{background-image:url(imgs/toolbar_hd.gif);background-size:768px 64px;}	
+{background-image:url(imgs/toolbar_hd.gif);background-size:1024px 64px;}	
 
 .msgraph-drive,.msgraph-folder,.msgraph-file,.msgraph-site{background-size:48px 32px;}
 .msgraph-drive{background-position:0 0;}

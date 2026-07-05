@@ -5,6 +5,8 @@ include 'icl/showuserprofile.inc.php';
 function removeuserprofilepic($ctx=null){
 	$user=userinfo($ctx);
 	$userid=$user['userid']+0;
+	$gsid=$user['gsid'];
+	
 	global $db;
 	
 	checkgskey('removeuserprofilepic_'.$userid,$ctx);	
@@ -17,7 +19,8 @@ function removeuserprofilepic($ctx=null){
 		
 	logaction($ctx,"removed profile picture of user #$userid",array('userid'=>$userid));
 		
-	
+	cache_inc_entity_ver('user_'.$gsid);
+		
 	showuserprofile($ctx,$userid);
 		
 }

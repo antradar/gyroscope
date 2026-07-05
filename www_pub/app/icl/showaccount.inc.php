@@ -8,6 +8,8 @@ include 'icl/showgaqr.inc.php';
 include 'icl/showuserprofile.inc.php';
 include 'icl/listyubikeys.inc.php';
 
+include 'icl/listusermcpkeys.inc.php';
+
 function showaccount($ctx=null){
 		
 	global $smskey;
@@ -202,8 +204,14 @@ if (isset($user['groups']['chats'])){
 	<div id="keyfilecontainer" style="display:none<?php if ($needkeyfile) echo 'a';?>;">
 
 		<div class="sectionheader">Key File</div>
-		<?php showkeyfilepad('mykeyfile',$userid);?>
+		<?php showkeyfilepad($ctx,'mykeyfile',$userid);?>
 	</div>
+
+	<div class="sectionheader">MCP Keys</div>
+	<div id="usermcpkeys_<?php echo $userid;?>">
+		<?php listusermcpkeys($ctx);?>
+	</div>
+		
 </div>
 <div class="clear"></div>
 

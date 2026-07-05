@@ -44,15 +44,16 @@ function scaleall(root){
   var tabviewheight=147;
   
   if (document.appsettings.uiconfig.toolbar_position=='left') tabviewheight=82;
+  if (document.appsettings.uiconfig.statusbar_hide) tabviewheight-=25;
     
   gid('lefticons').style.width=idw+'px';
-  gid('leftview').style.height=(idh-147)+'px';
-  gid('leftview_').style.height=(idh-147)+'px';
-  gid('vsptr').style.height=idh-146+'px';
+  gid('leftview').style.height=(idh-tabviewheight)+'px';
+  gid('leftview_').style.height=(idh-tabviewheight)+'px';
+  gid('vsptr').style.height=idh-tabviewheight+1+'px';
   
   if (gid('tabexpander')&&document.currenttab&&!document.tabafloat) gid('tabexpander').style.top=document.tabviews[document.currenttab].offsetParent.offsetTop+'px';
   
-  if (document.tabafloat||!document.appsettings.quicklist||document.fsshowing){
+  if (document.tabafloat||(!document.appsettings.quicklist&&!document.appsettings.uiconfig.vertical_nav_persist)||document.fsshowing){
 	  var w=idw;
 	  if (w>400) w=400;
 	  gid('lkv').style.width=w+'px';
@@ -61,9 +62,10 @@ function scaleall(root){
   	  } else {
 	  	if (gid('lkv').offsetLeft+w+5>idw) gid('lkv').style.left=idw-w-5+'px';	  
   	  }
+  	  
 	  gid('lkv').style.height=(idh-40)+'px';
       gid('lkvc').style.height=(idh-40-33)+'px';
-
+      
       if (gid('lkv').showing) {
 	      if (!gid('lkv').moved){
 		      gid('lkv').style.top='20px';
@@ -75,9 +77,13 @@ function scaleall(root){
       }
       
   } else {
-	  gid('lkv').style.height=(idh-187)+'px';
-      gid('lkvc').style.height=(idh-187-33)+'px';
-	
+	  gid('lkv').style.height=(idh-tabviewheight+40)+'px';
+      gid('lkvc').style.height=(idh-tabviewheight+40-33)+'px';
+      
+      if (document.appsettings.uiconfig.vertical_nav_persist){
+		  gid('lkv').style.height=(idh-tabviewheight+40+90)+'px';
+    	  gid('lkvc').style.height=(idh-tabviewheight+40+90-33)+'px';  
+      }
       
   }
   
@@ -85,15 +91,36 @@ function scaleall(root){
 	  if (document.appsettings.quicklist) {
 		  gid('tabtitles').style.left='295px';
 		  gid('tabtitles').style.width=(idw-296)+'px';
+		  
   	  } else {
 		  gid('tabtitles').style.left='20px';
 	  	  gid('tabtitles').style.width=(idw-20)+'px';
   	  }
-  }
+  }//top
+  
+  if (document.appsettings.uiconfig.toolbar_position=='left'&&document.appsettings.uiconfig.vertical_nav_persist) {
+	  if (!document.appsettings.uiconfig.tabs_stretch){
+		  if (document.appsettings.quicklist) {
+			  
+			  gid('tabtitles').style.left=(295-100)+'px';
+			  gid('tabtitles').style.width=(idw-296+100)+'px';
+			  
+	  	  } else {
+			  gid('tabtitles').style.left='160px';
+		  	  gid('tabtitles').style.width=(idw-160)+'px';
+	  	  }
+	  }
+  }//top  
   
   if (!document.widen) {
-	  if (document.appsettings.uiconfig.toolbar_position=='left') gid('tabviews').style.width=(idw-261)+'px';
-	  else {
+	  if (document.appsettings.uiconfig.toolbar_position=='left') {
+		  gid('tabviews').style.width=(idw-261)+'px';
+		  if (document.appsettings.uiconfig.vertical_nav_persist){
+		  	if (document.appsettings.quicklist) gid('tabviews').style.width=(idw-261+65)+'px';
+		  	else gid('tabviews').style.width=(idw-261+65+135)+'px';			  
+		  }
+		  		  
+  	  } else {
 		  if (document.appsettings.quicklist) gid('tabviews').style.width=(idw-296)+'px';
 		  else gid('tabviews').style.width=(idw-20)+'px';
 	  }
@@ -104,13 +131,31 @@ function scaleall(root){
 
   gid('tabviews').style.height=(idh-tabviewheight)+'px';
   gid('mainmenu').style.height=(idh-tabviewheight)+'px';
+
+  var vnav_account=gid('vnav_account');
+  var vnav=gid('mainmenuitems');
+  
+  if (vnav){
+	var vnavh=0;
+	if (vnav_account) vnavh=vnav_account.offsetHeight;
+	vnav.style.height=(idh-tabviewheight-20-5-vnavh)+'px'; //20 fix top margin, 5 grace bottom margin
+	  
+  }
+  
   gid('bookmarkview').style.height=(idh-tabviewheight)+'px';
-  
-  gid('statusinfo').style.top=(idh-25)+'px';
-  gid('statusinfo').style.width=idw+'px';
-  
+
+  var statusBarOffset=24;
+  if (document.appsettings.uiconfig.statusbar_hide) statusBarOffset=0;
+
+  if (!document.appsettings.uiconfig.statusbar_hide){
+	  gid('statusinfo').style.top=(idh-25)+'px';
+	  gid('statusinfo').style.width=idw+'px';
+  } else {
+	  gid('sptr').style.bottom='0';
+  }
+
   gid('fsmask').style.width=idw+'px';
-  gid('fsmask').style.height=idh-25+'px';
+  gid('fsmask').style.height=(idh-1-statusBarOffset)+'px';
   gid('fsview').style.width=idw-20+'px';
   gid('fsview').style.height=idh-70+'px';
   
@@ -170,15 +215,86 @@ function scaleall(root){
   }
   
   rescaletabs();
-  
+  resizeall_corner();
+
+}
+
+function listmenu_setcurrent(d){
+	var menu=gid('mainmenu');
+	if (!menu) return;
+	var os=menu.getElementsByTagName('div');
+	for (var i=0;i<os.length;i++){
+		var o=os[i];
+		if (o.className=='listmenuitem'||o.className=='listmenuitem current') o.className='listmenuitem';	
+	}
+	d.parentNode.className='listmenuitem current';
 }
 
 function rescaletabs(){
   if (!document.resizefuncs) return;
   for (func in document.resizefuncs){
 	var f='tabresizefunc_'+func;
-	if (self[f]) self[f](document.resizefuncs[func]);	  
-  }	
+	if (self[f]) self[f](document.resizefuncs[func]);
+  }
+}
+
+function resizeall_corner(){
+  var corner = gid('cornertab');
+  var btn = gid('cornerbutton');
+
+  var idw = cw();
+  var idh = ch();
+
+  // Calculate bottom margin to avoid covering the tab list
+  var tablistHeight = 38; // default single row tab height
+  if (gid('tabtitles')) {
+    tablistHeight = gid('tabtitles').offsetHeight || 38;
+  }
+  var bottomMargin = tablistHeight + 8;
+
+  // Corner tab dimensions - responsive sizing
+  var cornerWidth = 400;
+  var cornerHeight = 400;
+  var rightMargin = 20;
+
+  // On smaller screens, use smaller corner tab
+  if (idw < 800) {
+    cornerWidth = Math.min(320, idw - 40);
+    cornerHeight = 320;
+    rightMargin = 10;
+  }
+  if (idw < 500) {
+    cornerWidth = idw - 20;
+    cornerHeight = 280;
+    rightMargin = 10;
+  }
+
+  // Ensure corner tab doesn't exceed viewport (leaving space for tabs at bottom)
+  var maxHeight = idh - bottomMargin;
+  if (gid('tabexpander')) maxHeight-=gid('tabexpander').offsetTop+gid('tabexpander').offsetHeight;
+  else maxHeight-=60; // 60px top padding;
+  
+  if (cornerHeight > maxHeight) cornerHeight = maxHeight;
+  if (cornerHeight < 150) cornerHeight = 150;
+
+  if (corner) {
+    corner.style.width = cornerWidth + 'px';
+    corner.style.height = cornerHeight + 'px';
+    corner.style.right = rightMargin + 'px';
+    corner.style.bottom = bottomMargin + 'px';
+
+    // Update content height
+    var header = gid('cornertab_header');
+    if (header && gid('cornertab_content')) {
+      gid('cornertab_content').style.height = (cornerHeight - header.offsetHeight) + 'px';
+    }
+  }
+
+  // Also update corner button position
+  if (btn) {
+    btn.style.right = rightMargin + 'px';
+    btn.style.bottom = bottomMargin + 'px';
+  }
 }
 
 function warnsyslow(syslow){
@@ -265,6 +381,7 @@ function autosize(){
 		  tabbase=57;
 		  tabviewheight=82;
 	  }
+		  if (document.appsettings.uiconfig.statusbar_hide) tabviewheight-=25;
 	  
 	  if (document.appsettings.uiconfig.toolbar_position=='left') tab_reflow();  
 	  
@@ -277,7 +394,7 @@ function autosize(){
 	        gid('tabviews').style.top=tabbase+38*(document.rowcount-1)+'px';
 	        gid('tabviews').scalech=tabviewheight+38*(document.rowcount-1);
 
-	        if (document.appsettings.uiconfig.toolbar_position=='left'){
+	        if (document.appsettings.uiconfig.toolbar_position=='left'&&document.appsettings.uiconfig.tabs_stretch){
 	         gid('mainmenu').style.top=tabbase+38*(document.rowcount-1)+'px';
    		     gid('bookmarkview').style.top=tabbase+38*(document.rowcount-1)+'px';
 		   	 gid('mainmenu').style.height=38*document.rowcount+'px';
@@ -385,8 +502,13 @@ function showview(idx,lazy,force,params,func,bingo,submenu){
   if (!params) params='';
       
   if (document.appsettings.uiconfig.toolbar_position=='left'){
-	  if (!submenu) reloadtab('welcome','','dash_'+idx.replace(/\./g,'__')+'&'+params,func);
-	  else addtab('dash_'+idx.replace(/\./g,'__'),idx,'dash_'+idx.replace(/\./g,'__')+'&'+params,func);
+	  if (!submenu) {
+		  reloadtab('welcome','','dash_'+idx.replace(/\./g,'__')+'&'+params,func,null,{evaljs:true});
+		  if (document.appsettings.uiconfig.vertical_nav_persist) showtab('welcome');
+  	  } else {
+	  	  addtab('dash_'+idx.replace(/\./g,'__'),idx,'dash_'+idx.replace(/\./g,'__')+'&'+params,func,null,{evaljs:true});
+  	  }
+	  
 	  return; 
   }
   
@@ -463,7 +585,7 @@ function showview(idx,lazy,force,params,func,bingo,submenu){
   gid('lv'+idx).viewloaded=1;
   document.viewindex=idx;
   
-  if (document.appsettings.uiconfig.toolbar_position=='left'){
+  if (!document.appsettings.uiconfig.vertical_nav_persist&&document.appsettings.uiconfig.toolbar_position=='left'){
     gid('leftview').className='promoted bgflash';
     setTimeout(function(){gid('leftview').className='promoted bgready';},250);  
   } else {
@@ -489,8 +611,7 @@ function showlookup(){
 
 	//gid('lkvc').style.background='#ffffc0';
 	//setTimeout(function(){gid('lkvc').style.background='#ffffff';},200);
-	
-	if (document.tabafloat||document.fsshowing||!document.appsettings.quicklist){
+	if (document.tabafloat||document.fsshowing||(!document.appsettings.quicklist&&!document.appsettings.uiconfig.vertical_nav_persist)){
 		if (!lkv.moved){
 			var w=400;
 			if (w>cw()) w=cw();
@@ -502,7 +623,16 @@ function showlookup(){
 	} else {
 		lkv.style.width='258px';
 		lkv.style.top='40px';
-		lkv.style.left='0px';	
+		lkv.style.left='0px';
+		
+		if (document.appsettings.uiconfig.vertical_nav_persist){
+			lkv.style.top='-50px';
+			gid('leftview').style.zIndex=1001;
+			lkv.style.width='252px';
+			gid('lkvs').style.display='none';
+			if (document.appsettings.quicklist) lkv.style.left='-20px';	
+		}
+			
 	}				
 }
 
@@ -513,7 +643,7 @@ function hidelookup(keep_position){
 	
 	lkv.showing=null;
 	if (!keep_position) lkv.moved=null;
-	if (document.tabafloat||document.fsshowing||!document.appsettings.quicklist){
+	if (document.tabafloat||document.fsshowing||(!document.appsettings.quicklist&&!document.appsettings.uiconfig.vertical_nav_persist)){
 		h=ch()-40;
 		lkv.style.top=-1*h-20+'px';
 	} else {
@@ -567,8 +697,13 @@ if (document.createEvent){
 	window.onblur=function(){
 		document.keyboard=[];
 		document.gamepadlock=true;
-		if (gid('statusinfo')) gid('statusinfo').style.filter='';	
-	}	
+		if (document.appsettings.uiconfig.statusbar_hide){
+			gid('sptr').style.opacity='';
+			gid('sptr').style.background='';
+		} else {
+			if (gid('statusinfo')) gid('statusinfo').style.filter='';
+		}
+	}
 	
 	document.onkeyup=function(e){
 		var keycode;
@@ -578,9 +713,14 @@ if (document.createEvent){
 		
 		if (keycode==17||keycode==91||keycode==224) delete document.keyboard['key_meta'];
 		
-		if (!document.keyboard['key_meta']&&gid('statusinfo')){
-			gid('statusinfo').style.filter='';			
+		if (!document.keyboard['key_meta']){
+		if (document.appsettings.uiconfig.statusbar_hide){
+			gid('sptr').style.opacity='';
+			gid('sptr').style.background='';
+		} else {
+			if (gid('statusinfo')) gid('statusinfo').style.filter='';
 		}
+	}
 	}
 	
 	document.onkeydown=function(e){
@@ -593,7 +733,12 @@ if (document.createEvent){
 		
 		if (metakey){
 			document.keyboard['key_meta']=1;
-			if (gid('statusinfo')) gid('statusinfo').style.filter='sepia(0.6)';
+			if (document.appsettings.uiconfig.statusbar_hide){
+				gid('sptr').style.opacity='0.8';
+				gid('sptr').style.background='#F0A830';
+			} else {
+				if (gid('statusinfo')) gid('statusinfo').style.filter='sepia(0.6)';
+			}
 		}
 		
 		if (document.keyboard['key_13']&&metakey){
@@ -611,7 +756,13 @@ if (document.createEvent){
 		}		
 		
 		if (metakey&&document.keyboard['key_190']&&document.keyboard['key_188']) toggletabdock();
-		
+
+		// Meta+Shift+; - toggle corner tab (Chrome: keyCode 186, Firefox: keyCode 59)
+		if (metakey&&document.keyboard['key_16']&&(document.keyboard['key_186']||document.keyboard['key_59'])) {
+			if (self.toggletabcorner) toggletabcorner();
+			return false;
+		}
+
 		if (metakey&&document.keyboard['key_16']&&document.keyboard['key_82']) {refreshtab(document.tabkeys[document.currenttab]);return false;}
 		if (!document.fsshowing&&metakey&&document.keyboard['key_16']&&document.keyboard['key_52']&&document.tabtitles[document.currenttab]!=null&&!document.tabtitles[document.currenttab].noclose) {
 			if (!sconfirm('Are you sure you want to CLOSE the current tab?')) return;
@@ -625,21 +776,39 @@ if (document.createEvent){
 	}
 
 	function savecurrenttab(){
+		// Check corner first if it's active
+		if (document.corneractive && document.cornertabkey && gid('cornertab_content')) {
+			var bts=gid('cornertab_content').getElementsByTagName('button');
+			var bt=null;
+			for (var i=0;i<bts.length;i++){
+				if (bts[i].className&&bts[i].className=='changebar_button'){
+					bt=bts[i];
+				}
+			}
+			if (bt) {
+				var event=document.createEvent('Events');
+				event.initEvent('click',true,false);
+				bt.dispatchEvent(event);
+				return;
+			}
+		}
+
+		// Fall back to current tab
 		if (document.currenttab==null||document.currenttab==-1) return;
 		if (!document.tabviews[document.currenttab]) return;
 		var bts=document.tabviews[document.currenttab].getElementsByTagName('button');
 		var bt=null;
 		for (var i=0;i<bts.length;i++){
 			if (bts[i].className&&bts[i].className=='changebar_button'){
-				bt=bts[i];	
+				bt=bts[i];
 			}
 		}
 		if (!bt) return;
-		
+
 		var event=document.createEvent('Events');
 		event.initEvent('click',true,false);
-		bt.dispatchEvent(event);		
-		
+		bt.dispatchEvent(event);
+
 	}
 	
 	function picktop(){
@@ -695,7 +864,13 @@ function hidehelpspot(id,topic,once,gskey){
 
 function showmainmenu(){
 	gid('tooltitle').style.display='none';
-	gid('leftview').style.display='none';
+	if (document.appsettings.uiconfig.vertical_nav_persist){
+		gid('leftview').style.width=0;
+		gid('leftview').style.height=0;
+		gid('leftview_').style.border='none';
+	} else {
+		gid('leftview').style.display='none';
+	}
 	gid('mainmenu').style.visibility='visible';
 	
 	if (!document.mainmenuloaded){	
@@ -729,21 +904,23 @@ function resetleftviews(){
 	document.viewindex=null;
 }
 
-function resetdarkmode(darkmode){
+function resetdarkmode(darkmode,csstail){
+	if (!csstail) csstail='.php';
+	
 	//reloading the desktop css
 	
 	if (gid('ajxcss_gyroscope')){
-		ajxcss(null,'gyroscope_css.php?dark='+darkmode,'gyroscope','gyroscope');
-		hdpromote('gyroscope_hd_css.php?dark='+darkmode);
+		ajxcss(null,'gyroscope_css'+csstail+'?dark='+darkmode,'gyroscope','gyroscope');
+		hdpromote('gyroscope_hd_css'+csstail+'?dark='+darkmode);
 	}
 	
 	if (gid('ajxcss_toolbar')){
-		ajxcss(null,'toolbar_css.php?dark='+darkmode,'toolbar','toolbar');
-		hdpromote('toolbar_hd_css.php?dark='+darkmode);
+		ajxcss(null,'toolbar_css'+csstail+'?dark='+darkmode,'toolbar','toolbar');
+		hdpromote('toolbar_hd_css'+csstail+'?dark='+darkmode);
 	}
 	
 	if (gid('ajxcss_passrules')){
-		ajxcss(null,'passrules_css.php?dark='+darkmode,'pssrules','passrules');		
+		ajxcss(null,'passrules_css'+csstail+'?dark='+darkmode,'pssrules','passrules');		
 	}
 
 	
@@ -753,8 +930,21 @@ function setquicklist(quicklist,noupdate){
 	//if (document.lastquicklist!=null&&document.lastquicklist==quicklist) return;
 	//if (!document.lastquicklist) document.lastquicklist=quicklist;
 	document.appsettings.quicklist=quicklist;
+	
 	if (!quicklist) {
-		lkv_dismount();
+		
+		if (document.appsettings.uiconfig.toolbar_position=='left'&&document.appsettings.uiconfig.vertical_nav_persist){
+			if (gid('vnavside_show')) gid('vnavside_show').style.display='block';
+			if (gid('vnavside_hide')) gid('vnavside_hide').style.display='none';
+			if (gid('mainmenu')) gid('mainmenu').className='collapsed';
+		}
+
+		if (!document.appsettings.uiconfig.vertical_nav_persist){
+			lkv_dismount();
+		} else {
+			
+		}
+
 		
 		if (document.appsettings.uiconfig.toolbar_position=='top'){
 			gid('tooltitle').style.left='-261px';
@@ -767,17 +957,45 @@ function setquicklist(quicklist,noupdate){
 			gid('vsptr').style.width='16px';
 			gid('vsptr').className='rexpand';
 		}
+		
+		if (document.appsettings.uiconfig.vertical_nav_persist){
+			//gid('tooltitle').style.left='-261px';
+			//gid('leftview').style.left='-261px';
+			
+			if (document.appsettings.uiconfig.tabs_stretch) {
+				gid('tabtitles').style.left=0;
+			}
+			gid('tabviews').style.left='60px';
+			gid('leftview').style.left=0;
+			
+			//gid('vsptr').style.left='0px';
+			//gid('vsptr').style.width='16px';
+			//gid('vsptr').className='rexpand';
+		}		
 				
 	} else {
-		if (document.appsettings.uiconfig.toolbar_position=='top'){
+		if (document.appsettings.uiconfig.toolbar_position=='left'&&document.appsettings.uiconfig.vertical_nav_persist){		
+			if (gid('vnavside_show')) gid('vnavside_show').style.display='none';
+			if (gid('vnavside_hide')) gid('vnavside_hide').style.display='block';
+			if (gid('mainmenu')) gid('mainmenu').className='';
+		}
+		
+		if (document.appsettings.uiconfig.toolbar_position=='top'||document.appsettings.uiconfig.vertical_nav_persist){
+			
 			gid('tooltitle').style.left='20px';
 			gid('leftview').style.left='20px';
 	
-			gid('tabtitles').style.left='295px';
+			if (document.appsettings.uiconfig.tabs_stretch){
+				gid('tabtitles').style.left=0;
+			}
 			gid('tabviews').style.left='295px';
 			gid('vsptr').style.left='280px';
 			gid('vsptr').style.width='12px';
 			gid('vsptr').className='';
+			
+			if (document.appsettings.uiconfig.vertical_nav_persist){
+				gid('tabviews').style.left='195px';
+			}
 		}
 				
 		if (!document.tabafloat&&!document.fsshowing) lkv_remount();

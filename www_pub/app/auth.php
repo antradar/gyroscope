@@ -88,7 +88,6 @@ function login($silent=false,$ctx=null){
 	
 	$auth_=md5($salt.$userid.$groupnames.$salt.$login.$salt.$dispname.$salt.$gsid.$salt.$gsexpiry.$salt.$gstier);
 	$auth2_=md5($salt2.$userid.$groupnames.$salt2.$login.$salt2.$dispname.$salt2.$gsid.$salt2.$gsexpiry.$salt2.$gstier);
-			
 	if (!isset($login)||(!hash_equals($auth,$auth_)&&!hash_equals($auth,$auth2_))||$auth===''||$auth===null) {
 				
 		$tail='';

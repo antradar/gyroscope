@@ -13,7 +13,7 @@ gettabid=function(key){
 }
 
 tab_reflow=function(){
-		
+
 	var idw=cw();
 	var closeall_width=gid('closeall').offsetWidth;
 	if (closeall_width>0) closeall_width+=4+10+8; //+margin_left + margin_right + tab_gap
@@ -41,8 +41,22 @@ showtab=function(key,opts){
   var pasttab=document.currenttab;
   var tabid=gettabid(key);
   if (tabid==-1) return false;
-  
-  if (gid('gamepadspot')) gid('gamepadspot').widx=null;  
+
+  // Check if the tab is in the corner
+  if (document.cornertabkey == key) {
+    if (document.cornerminimized) {
+      // Corner is minimized, restore it
+      corner_maximize();
+    } else {
+      // Corner is visible, use callout to point to it
+      if (self.callout_section && gid('cornertab')) {
+        callout_section(gid('cornertab'), true);
+      }
+    }
+    return true;
+  }
+
+  if (gid('gamepadspot')) gid('gamepadspot').widx=null;
   document.currenttab=tabid;
   
   if (!document.tabhistory) document.tabhistory=[];
@@ -92,6 +106,7 @@ showtab=function(key,opts){
 	  tabbase=57;
 	  tabviewheight=82;
   }
+  if (document.appsettings.uiconfig.statusbar_hide) tabviewheight-=25;
 
 
       document.rowcount=(t.offsetTop-topmargin)/38+1;
@@ -103,7 +118,7 @@ showtab=function(key,opts){
         //gid('tabviews').setAttribute("scale:ch",105+30*(document.rowcount-1));
 		gid('tabviews').scalech=tabviewheight+38*(document.rowcount-1);
 		
-        if (document.appsettings.uiconfig.toolbar_position=='left'){
+        if (document.appsettings.uiconfig.toolbar_position=='left'&&document.appsettings.uiconfig.tabs_stretch){
          gid('mainmenu').style.top=tabbase+38*(document.rowcount-1)+'px';
          gid('bookmarkview').style.top=tabbase+38*(document.rowcount-1)+'px';
 	   	 gid('mainmenu').style.height=38*document.rowcount+'px';
@@ -149,16 +164,25 @@ showtab=function(key,opts){
 		gid('leftview').style.visibility='hidden';
 		document.widen=true;
 	} else {
-		if (document.appsettings.uiconfig.toolbar_position=='left'){
+		if (document.appsettings.uiconfig.toolbar_position=='left'&&!document.appsettings.uiconfig.vertical_nav_persist){
 			gid('tabviews').style.width=(idw-261)+'px';
 			gid('tabviews').style.left='260px';			
 		} else {
 			if (document.appsettings.quicklist){
+				
 				gid('tabviews').style.width=(idw-296)+'px';
 				gid('tabviews').style.left='295px';
+				
+				if (document.appsettings.uiconfig.vertical_nav_persist){
+					gid('tabviews').style.left='195px';
+					gid('tabviews').style.width=(idw-261+65)+'px';
+				}
+								
 			} else {
-				gid('tabviews').style.width=(idw-21)+'px';
-				gid('tabviews').style.left='20px';
+				if (document.appsettings.uiconfig.toolbar_position=='left'&&!document.appsettings.uiconfig.vertical_nav_persist){
+					gid('tabviews').style.width=(idw-21)+'px';
+					gid('tabviews').style.left='20px';
+				}
 				
 			}
 		}
@@ -173,7 +197,7 @@ showtab=function(key,opts){
 		
 		gid('bookmarkview').innerHTML='';
 		
-		if (key=='welcome'||(document.tabtitles[tabid].reloadinfo&&document.tabtitles[tabid].reloadinfo.opts&&document.tabtitles[tabid].reloadinfo.opts.tabctx=='dash')){
+		if (document.appsettings.uiconfig.vertical_nav_persist||key=='welcome'||(document.tabtitles[tabid].reloadinfo&&document.tabtitles[tabid].reloadinfo.opts&&document.tabtitles[tabid].reloadinfo.opts.tabctx=='dash')){
 			gid('mainmenu').style.visibility='visible';
 			gid('bookmarkview').style.display='none';
 			
@@ -356,26 +380,29 @@ function reloadtab(key,title,params,loadfunc,data,opts,gskey){
 
   var tabid=gettabid(key);
   if (tabid==-1) return;
-		
+
+  // Check if this tab is cornered
+  var isCornered = (document.cornertabkey == key);
+
   if (document.tabtitles[tabid].conflicted){
-  
+
 	  if (!sconfirm("Are you sure you want to override the edit conflict\n and save your version regardless?")){
 		  return;
 	  }
-  }	
-  
+  }
+
   if (document.tabtitles[tabid].tablock) return;
   document.tabtitles[tabid].tablock=1;
-  
+
   if (opts&&opts.bexit) opts.bexit();
-  
-  var tabbingo=document.tabtitles[tabid].bingo; 
-  
+
+  var tabbingo=document.tabtitles[tabid].bingo;
+
   if (document.tabtitles[tabid].autosaver) {clearTimeout(document.tabtitles[tabid].autosaver);document.tabtitles[tabid].autosavertimer=null;}
-  
+
   var rq=xmlHTTPRequestObject();
-  
-  
+
+
   var scn=document.appsettings.codepage+'?cmd=';
   if (opts&&opts.fastlane) scn=document.appsettings.fastlane+'?cmd=';
   if (opts&&opts.bingo) {
@@ -385,30 +412,31 @@ function reloadtab(key,title,params,loadfunc,data,opts,gskey){
   if (tabbingo){
 	  scn=document.appsettings.binpages[tabbingo+'']+'?cmd=';
   }
-  
+
   if (document.tabtitles[tabid].conflicted){
-	  params=params+'&__tabconflicted=1';		  
+	  params=params+'&__tabconflicted=1';
   }
-  
+
   document.tabtitles[tabid].conflicted=null;
-	    
+
   if (document.wssid) params=params+'&wssid_='+document.wssid;
-  
+
   rq.open('POST',scn+params+'&hb='+hb(),true);
   rq.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
-  
+
   if (gskey!=null) {
 	  //rq.setRequestHeader('X-GSREQ-KEY',gskey);
 	  if (data==null) data='X-GSREQ-KEY='+gskey;
 	  else data+='&X-GSREQ-KEY='+gskey;
-	  
+
   }
-  
-	var ct=document.tabviews[tabid];
-	
+
+	// Use corner content if tab is cornered, otherwise use tabviews
+	var ct = isCornered && gid('cornertab_content') ? gid('cornertab_content') : document.tabviews[tabid];
+
 	var slowtimeout=1200;
 	if (opts&&opts.slowtimeout) slowtimeout=opts.slowtimeout;
-	
+
 	ct.slowtimer=setTimeout(function(){
 		var first=ct.firstChild;
 		if (ct.gswi) return;
@@ -467,75 +495,88 @@ function reloadtab(key,title,params,loadfunc,data,opts,gskey){
 	
 	var newkey=rq.getResponseHeader('newkey');
 	var tabctx=rq.getResponseHeader('tabctx');
+	var oldkey=key;
 
 	if ((newkey!=null&&newkey!='')||(tabctx=='dash')) {
-		
-		if (newkey!=null&&newkey!=''){		
+
+		if (newkey!=null&&newkey!=''){
 			var newparams=rq.getResponseHeader('newparams');
 			if (newparams==null||newparams==''){
 				salert('Incomplete key change');
-				return;	
+				return;
 			}
 		}
-		
+
 		var newloadfunc=rq.getResponseHeader('newloadfunc');
 		if (newloadfunc!=null&&newloadfunc!='') loadfunc=function(){eval(newloadfunc)};
-		
+
 		document.tabtitles[tabid].reloadinfo={params:newparams?newparams:params,loadfunc:loadfunc,data:null,opts:null};
-		
+
 		if (newkey!=null&&newkey!=''){
-		
+
 			document.tabkeys[tabid]=newkey;
-			
+
+			// Update cornertabkey if this tab is cornered
+			if (isCornered) {
+				document.cornertabkey = newkey;
+			}
+
 			if (document.tabhistory){
 				for (i=0;i<document.tabcount;i++) if (document.tabkeys[i]==key) {console.warn('key collision; new key ignored');newkey=key;}
-				
+
 				for (var i=0;i<document.tabhistory.length;i++){
 					if (document.tabhistory[i]==key) document.tabhistory[i]=newkey;
 				}
 			}
 			key=newkey;
 		}
-		
-	}  
-	
+
+	}
+
 	var parenttab=rq.getResponseHeader('parenttab');
-	if (parenttab!=null&&parenttab!='') {		
+	if (parenttab!=null&&parenttab!='') {
 		document.tabviews[tabid].parenttab=parenttab;
 	}
-	
+
 	var newtitle=rq.getResponseHeader('newtitle');
 	if (newtitle!=null&&newtitle!=''){
-		title=decodeURIComponent(newtitle);	
-	}	       
-	
+		title=decodeURIComponent(newtitle);
+	}
+
 	if (opts&&opts.persist) document.tabtitles[tabid].reloadinfo={params:params,loadfunc:loadfunc,data:data,opts:opts};
-		
+
 	var tabhtml="<nobr><a class=\"tt\" ondblclick=\"refreshtab('"+key+"');\" onclick=\"showtab('"+key+"');\">"+title+"</a><a onclick=\"closetab('"+key+"')\"><span class=\"tabclose\"></span></a></nobr>";
 	if (opts!=null&&opts.noclose) {
 		tabhtml="<nobr><a class=\"tt\" ondblclick=\"refreshtab('"+key+"');\" onclick=\"showtab('"+key+"');\">"+title+"</a><span class=\"noclose\"></span></nobr>";
 		document.tabtitles[tabid].noclose=true;
 	}
-	
+
 	if (title) {
 		document.tabtitles[tabid].innerHTML=tabhtml;
 		tab_setdoctitle(document.tabtitles[tabid],title);
+		// Update corner tab title if this tab is cornered
+		if (isCornered && gid('cornertab_title')) {
+			gid('cornertab_title').innerHTML = title.replace(/(<([^>]+)>)/gi,'');
+		}
 	}
-	
+
 	var ta=0;
 	if (document.nanoperf) ta=hb();
-		
-	document.tabviews[tabid].innerHTML=rq.responseText;
+
+	// Load content into corner or main tab view
+	ct.innerHTML=rq.responseText;
+    if (opts&&opts.evaljs) eval_tab_script(ct,rq,loadfunc);
 	
+
 	if (document.nanoperf){
 		var delta=hb()-ta;
 		if (document.nanoavg==null) document.nanoavg=0;
 		document.nanoavg=document.nanoavg*0.8+delta*0.2;
 		if (self.warnsyslow){
 			if (document.nanoavg>document.nanoperf) warnsyslow(true); else warnsyslow(false);
-		}	
+		}
 	}
-	
+
 	if (loadfunc!=null) loadfunc(rq);
 	if (opts&&opts.bookmark) gototabbookmark(opts.bookmark);
 	autosize();
@@ -573,19 +614,40 @@ function resizetabs(){
 	
 	if (count>6) {
 		if (document.appsettings.uiconfig.toolbar_position=='top') gid('tabtitles').className='compact';
-		if (document.appsettings.uiconfig.toolbar_position=='left') gid('tabtitles').className='moveup compact';
+		if (document.appsettings.uiconfig.toolbar_position=='left') {
+			gid('tabtitles').className='moveup compact';
+			if (document.appsettings.uiconfig.tabs_stretch) gid('tabtitles').className='moveup edge_to_edge compact';
+		}
 	} else {
 		if (document.appsettings.uiconfig.toolbar_position=='top') gid('tabtitles').className='';
-		if (document.appsettings.uiconfig.toolbar_position=='left') gid('tabtitles').className='moveup';
+		if (document.appsettings.uiconfig.toolbar_position=='left') {
+			gid('tabtitles').className='moveup';
+			if (document.appsettings.uiconfig.tabs_stretch) gid('tabtitles').className='moveup edge_to_edge';			
+		}
 	}
 }
 
-function addtab(key,title,params,loadfunc,data,opts){	
+function addtab(key,title,params,loadfunc,data,opts){
   var i;
 
   if (document.tablock!=null) return;
   document.tablock=true;
-  
+
+  // Check if the tab is already in the corner
+  if (document.cornertabkey == key) {
+    if (document.cornerminimized) {
+      // Corner is minimized, restore it
+      corner_maximize();
+    } else {
+      // Corner is visible, use callout to point to it
+      if (self.callout_section && gid('cornertab')) {
+        callout_section(gid('cornertab'), true);
+      }
+    }
+    document.tablock=null;
+    return;
+  }
+
   for (i=0;i<document.tabcount;i++) {
 
 	if (document.tabkeys[i]==key) {
@@ -596,7 +658,7 @@ function addtab(key,title,params,loadfunc,data,opts){
   }
 
   
-  if (document.appsettings.uiconfig.toolbar_position=='left'){
+  if (document.appsettings.uiconfig.toolbar_position=='left'&&!document.appsettings.uiconfig.vertical_nav_persist){
 	  gid('tabviews').className='boundless bgflash';
   	  setTimeout(function(){gid('tabviews').className='boundless bgready'},250);	  
   } else {
@@ -807,6 +869,8 @@ function addtab(key,title,params,loadfunc,data,opts){
 	if (document.nanoperf) ta=hb();
       
       c.innerHTML=rq.responseText; //'<input id="rightview_'+key+'" style="position:absolute;top:-60px;left:0;" title='+encodeHTML(title)+'>'+
+
+      if (opts&&opts.evaljs) eval_tab_script(c,rq,loadfunc);
       
       tab_loadbookmark(c);
       
@@ -828,6 +892,21 @@ function addtab(key,title,params,loadfunc,data,opts){
   rq.send(data);
 }
 
+function eval_tab_script(c,rq,func){
+	//legacy script tag
+	var scripts=c.getElementsByTagName('script');
+	for (var i=0;i<scripts.length;i++) eval(scripts[i].innerHTML);
+	
+	//server response header
+	var flag=rq.getResponseHeader('listviewflag');
+	var js=rq.getResponseHeader('listviewjs');
+	if (flag!=null&&js!=null&&js!=''){
+		ajxjs2(flag,js,function(){
+			if (func!=null) func();					
+		});
+	}
+					
+}
 
 function resettabs(key){
 	if (!sconfirm(document.dict['confirm_close_all_tabs'])) return;
@@ -861,11 +940,18 @@ function resettabs(key){
 closetab=function(key){
   var tabid=gettabid(key);
   if (tabid==-1) return;
-  
+
+  // If this tab is cornered, undock it first
+  if (document.cornertabkey == key) {
+    gid('cornertab').style.display = 'none';
+    gid('cornertab_content').innerHTML = '';
+    document.cornertabkey = null;
+  }
+
   if (document.tabtitles[tabid].autosaver) {clearTimeout(document.tabtitles[tabid].autosaver);document.tabtitles[tabid].autosavertimer=null;}
   if (document.tabtitles[tabid].reloadinfo&&document.tabtitles[tabid].reloadinfo.opts&&document.tabtitles[tabid].reloadinfo.opts.bexit)
 	document.tabtitles[tabid].reloadinfo.opts.bexit();
-              
+
   gid('tabtitles').removeChild(document.tabtitles[tabid]);
   gid('tabviews').removeChild(document.tabviews[tabid]);
   document.tabtitles[tabid]=null;
@@ -1024,7 +1110,7 @@ function redocktab(){
 		else tab.className='';
 		tab.afloat=null;
 		document.tabafloat=null;
-		if (!document.fsshowing&&document.appsettings.quicklist) lkv_remount();
+		if ((!document.fsshowing&&document.appsettings.quicklist)||document.appsettings.uiconfig.vertical_nav_persist) lkv_remount();
 		rescaletabs();
 		if (gid('tabexpander')) {
 			gid('tabexpander').style.display='block';
@@ -1061,7 +1147,513 @@ function toggletabdock(){
 			}
 		}
 	},210);
-  	 
+
+}
+
+// Corner tab (Picture-in-Picture style) functions
+// document.cornertabkey - key of the tab currently mounted in the corner
+// document.cornerminimized - true if corner tab is minimized to button
+// document.corner_on_init - initialization function called when corner session ends (restore/close/button) or button is clicked
+// document.corner_closemode - determines corner fate when X is clicked ('resume', 'close', 'button')
+// mode: 'remove' - remove any existing corner tab, 'restore' - restore existing corner tab to main tab list
+
+function tab_dock_corner(tabkey, mode) {
+	if (!tabkey) return false;
+	if (!gid('cornertab')) return false;
+
+	var tabid = gettabid(tabkey);
+	if (tabid == -1) return false;
+
+	// Initialize focus tracking on first use
+	if (self.corner_focus_init) corner_focus_init();
+
+	var existingKey = null;
+
+	// Handle existing corner tab
+	if (document.cornertabkey) {
+		existingKey = document.cornertabkey;
+		var existingId = gettabid(existingKey);
+
+		if (mode == 'restore' && existingId != -1) {
+			// Restore existing corner tab to main tab list by moving DOM nodes
+			var cornerContent = gid('cornertab_content');
+			var existingTab = document.tabviews[existingId];
+			while (cornerContent.firstChild) {
+				existingTab.appendChild(cornerContent.firstChild);
+			}
+			existingTab.style.display = 'none';
+			existingTab.cornered = null;
+			// Show the tab title again
+			document.tabtitles[existingId].style.display = '';
+		}
+		// else mode == 'remove' or default - just unmount, content stays in tabviews
+
+		document.cornertabkey = null;
+	}
+
+	// Don't corner the same tab twice
+	if (tabkey == existingKey && mode != 'restore') return false;
+
+	var tab = document.tabviews[tabid];
+	var tabTitle = document.tabtitles[tabid];
+
+	// Capture scroll position before moving (proportional to scrollable height)
+	var scrollRatio = 0;
+	if (tab.scrollHeight > tab.clientHeight) {
+		scrollRatio = tab.scrollTop / (tab.scrollHeight - tab.clientHeight);
+	}
+
+	// Get tab title text - try innerText of the .tt element first
+	var ttElem = tabTitle.querySelector('.tt');
+	var titleText = ttElem ? ttElem.innerText : (tabTitle.tabname || tabkey);
+
+	// Move tab content to corner container by moving DOM nodes (not innerHTML copy)
+	// This preserves event listeners, chart instances, and other JavaScript state
+	gid('cornertab_title').innerHTML = titleText;
+	var cornerContent = gid('cornertab_content');
+	cornerContent.innerHTML = ''; // Clear any existing content
+	while (tab.firstChild) {
+		cornerContent.appendChild(tab.firstChild);
+	}
+	tab.cornered = true;
+
+	// Apply proportional scroll position to corner after DOM settles
+	if (scrollRatio > 0) {
+		setTimeout(function() {
+			var newScrollable = cornerContent.scrollHeight - cornerContent.clientHeight;
+			if (newScrollable > 0) {
+				cornerContent.scrollTop = Math.round(scrollRatio * newScrollable);
+			}
+		}, 10);
+	}
+
+	// Hide the tab title from the tab bar
+	tabTitle.style.display = 'none';
+
+	// Switch to another tab if this one was current
+	// Use tabhistory stack like closetab does for proper tab navigation
+	if (document.currenttab == tabid) {
+		var nextTab = null;
+
+		// Try to get the last tab from history stack (like closetab)
+		if (document.tabhistory) {
+			// First nullify this tab in history
+			for (var i = 0; i < document.tabhistory.length; i++) {
+				if (document.tabhistory[i] == tabkey) document.tabhistory[i] = null;
+			}
+			// Pop from history until we find a valid non-cornered tab
+			while (nextTab == null && document.tabhistory.length > 0) {
+				var candidate = document.tabhistory.pop();
+				if (candidate != null) {
+					var candidateId = gettabid(candidate);
+					if (candidateId != -1 && document.tabviews[candidateId] && !document.tabviews[candidateId].cornered) {
+						nextTab = candidate;
+					}
+				}
+			}
+		}
+
+		// Fallback: find first non-cornered tab
+		if (!nextTab) {
+			for (var i = 0; i < document.tabcount; i++) {
+				if (i != tabid && document.tabviews[i] && !document.tabviews[i].cornered) {
+					nextTab = document.tabkeys[i];
+					break;
+				}
+			}
+		}
+
+		if (nextTab) showtab(nextTab);
+	}
+
+	// Hide corner button if visible, show corner tab
+	if (gid('cornerbutton')) gid('cornerbutton').style.display = 'none';
+	document.cornerminimized = false;
+
+	// Show corner container with animation
+	var corner = gid('cornertab');
+	corner.style.display = 'block';
+	corner.style.opacity = '0';
+	corner.style.transform = 'scale(0.8)';
+	corner.style.transition = 'opacity 200ms, transform 200ms';
+
+	setTimeout(function() {
+		corner.style.opacity = '1';
+		corner.style.transform = 'scale(1)';
+	}, 10);
+
+	document.cornertabkey = tabkey;
+
+	// Resize corner tab
+	if (self.resizeall_corner) resizeall_corner();
+
+	resizetabs();
+
+	return true;
+}
+
+function tab_undock_corner(tabkey, force_restore) {
+	// If no tabkey provided, undock the current corner tab
+	if (!tabkey && document.cornertabkey) tabkey = document.cornertabkey;
+	if (!tabkey) return false;
+	if (!gid('cornertab')) return false;
+
+	// Only undock if it matches the current corner tab
+	if (document.cornertabkey != tabkey) return false;
+
+	// force_restore: if true, restore tab to main tab list (used by toggle hotkey)
+	// Otherwise (X button): always close/destroy the tab
+	//   - closemode 'button': show corner button after closing
+	//   - closemode 'close' or default: hide corner button after closing
+
+	if (force_restore) {
+		// Restore tab to main tab list (toggle hotkey behavior)
+		var tabid = gettabid(tabkey);
+		if (tabid == -1) {
+			// Tab was closed while cornered, just hide corner
+			gid('cornertab').style.display = 'none';
+			if (gid('cornerbutton')) gid('cornerbutton').style.display = 'none';
+			gid('cornertab_content').innerHTML = '';
+			document.cornertabkey = null;
+			document.cornerminimized = false;
+			return true;
+		}
+
+		var tab = document.tabviews[tabid];
+		var tabTitle = document.tabtitles[tabid];
+
+		// Capture scroll position from corner before moving (proportional to scrollable height)
+		var cornerContent = gid('cornertab_content');
+		var scrollRatio = 0;
+		if (cornerContent.scrollHeight > cornerContent.clientHeight) {
+			scrollRatio = cornerContent.scrollTop / (cornerContent.scrollHeight - cornerContent.clientHeight);
+		}
+
+		// Restore content to main tab by moving DOM nodes (not innerHTML copy)
+		// This preserves event listeners, chart instances, and other JavaScript state
+		while (cornerContent.firstChild) {
+			tab.appendChild(cornerContent.firstChild);
+		}
+		tab.cornered = null;
+
+		// Show the tab title again
+		tabTitle.style.display = '';
+
+		// Hide corner container with animation
+		var corner = gid('cornertab');
+		corner.style.opacity = '0';
+		corner.style.transform = 'scale(0.8)';
+
+		setTimeout(function() {
+			corner.style.display = 'none';
+			corner.style.transform = 'scale(1)';
+		}, 200);
+
+		// Hide corner button too
+		if (gid('cornerbutton')) gid('cornerbutton').style.display = 'none';
+
+		document.cornertabkey = null;
+		document.cornerminimized = false;
+
+		// Show the tab
+		showtab(tabkey);
+
+		resizetabs();
+
+		// Apply proportional scroll position to restored tab after DOM settles
+		if (scrollRatio > 0) {
+			setTimeout(function() {
+				var newScrollable = tab.scrollHeight - tab.clientHeight;
+				if (newScrollable > 0) {
+					tab.scrollTop = Math.round(scrollRatio * newScrollable);
+				}
+			}, 50);
+		}
+
+		return true;
+	}
+
+	// X button behavior: always close/destroy the tab
+	var closemode = document.corner_closemode;
+
+	var corner = gid('cornertab');
+	corner.style.opacity = '0';
+	corner.style.transform = 'scale(0.8)';
+	setTimeout(function() {
+		corner.style.display = 'none';
+		corner.style.transform = 'scale(1)';
+		gid('cornertab_content').innerHTML = '';
+	}, 200);
+
+	// Show or hide corner button based on closemode
+	if (closemode == 'button' && gid('cornerbutton')) {
+		var btn = gid('cornerbutton');
+		btn.style.display = 'block';
+		btn.style.opacity = '0';
+		btn.style.transform = 'scale(0.5)';
+		btn.style.transition = 'opacity 200ms, transform 200ms';
+		setTimeout(function() {
+			btn.style.opacity = '1';
+			btn.style.transform = 'scale(1)';
+		}, 10);
+	} else if (gid('cornerbutton')) {
+		gid('cornerbutton').style.display = 'none';
+	}
+
+	// Close the actual tab
+	var savedTabkey = tabkey;
+	document.cornertabkey = null;
+	document.cornerminimized = false;
+	// Keep corner_closemode and corner_on_init for button mode
+	if (closemode != 'button') {
+		document.corner_closemode = null;
+		document.corner_on_init = null;
+	}
+	closetab(savedTabkey);
+
+	return true;
+}
+
+function toggletabcorner(tabkey) {
+	// If no tabkey specified: toggle the corner state
+	// - If corner exists, undock it (restore to main tab list)
+	// - If no corner, dock the current tab
+	if (!tabkey) {
+		if (document.cornertabkey) {
+			// Corner exists - undock it (force_restore bypasses closemode)
+			tab_undock_corner(null, true);
+			return;
+		}
+		// No corner - dock current tab
+		if (document.currenttab == null || document.currenttab >= document.tabcount) return;
+		tabkey = document.tabkeys[document.currenttab];
+	}
+
+	// Check if tab has noclose or nocorner attribute - ignore the request
+	var tabid = gettabid(tabkey);
+	if (tabid != -1) {
+		var tabTitle = document.tabtitles[tabid];
+		if (tabTitle && (tabTitle.noclose || tabTitle.nocorner)) return;
+	}
+
+	// If we came from the no-tabkey branch, dock current tab
+	if (document.cornertabkey != tabkey) {
+		tab_dock_corner(tabkey, 'restore');
+	} else {
+		// Tabkey specified and matches corner: undock (force_restore bypasses closemode)
+		tab_undock_corner(tabkey, true);
+	}
+}
+
+// Minimize corner tab to a small button
+function corner_minimize() {
+	if (!gid('cornertab') || !gid('cornerbutton')) return;
+	if (!document.cornertabkey) return;
+
+	var corner = gid('cornertab');
+	var btn = gid('cornerbutton');
+
+	corner.style.opacity = '0';
+	corner.style.transform = 'scale(0.5)';
+
+	setTimeout(function() {
+		corner.style.display = 'none';
+		btn.style.display = 'block';
+		btn.style.opacity = '0';
+		btn.style.transform = 'scale(0.5)';
+		btn.style.transition = 'opacity 200ms, transform 200ms';
+		setTimeout(function() {
+			btn.style.opacity = '1';
+			btn.style.transform = 'scale(1)';
+		}, 10);
+	}, 150);
+
+	document.cornerminimized = true;
+}
+
+// Maximize corner tab from button
+function corner_maximize() {
+	if (!gid('cornertab') || !gid('cornerbutton')) return;
+	if (!document.cornertabkey) return;
+
+	var corner = gid('cornertab');
+	var btn = gid('cornerbutton');
+
+	btn.style.opacity = '0';
+	btn.style.transform = 'scale(0.5)';
+
+	setTimeout(function() {
+		btn.style.display = 'none';
+		corner.style.display = 'block';
+		corner.style.opacity = '0';
+		corner.style.transform = 'scale(0.8)';
+		corner.style.transition = 'opacity 200ms, transform 200ms';
+		setTimeout(function() {
+			corner.style.opacity = '1';
+			corner.style.transform = 'scale(1)';
+		}, 10);
+	}, 150);
+
+	document.cornerminimized = false;
+
+	// Resize corner tab
+	if (self.resizeall_corner) resizeall_corner();
+}
+
+// Corner button click handler
+function corner_button_click() {
+	// If corner is minimized, maximize it (restore existing session)
+	if (document.cornerminimized && document.cornertabkey) {
+		corner_maximize();
+		return;
+	}
+	// No existing session - if there's an on_init handler, use it to start a new corner session
+	if (document.corner_on_init) {
+		document.corner_on_init();
+		return;
+	}
+}
+
+// Show corner button with optional initialization handler
+// icon: optional icon character/HTML for the button
+// on_init: initialization function called when:
+//   - button is clicked (to start a new corner session)
+//   - corner X is clicked and closemode is 'resume', 'close', or 'button'
+//   - NOT called when corner is minimized (session continues)
+// closemode: determines corner fate when X is clicked:
+//   - null/undefined/'resume' (default): restore tab to main tab list, call on_init
+//   - 'close': permanently close the tab and corner, call on_init
+//   - 'button': minimize to corner button, call on_init, preserve button settings
+function show_corner_button(icon, on_init, closemode) {
+	if (!gid('cornerbutton')) return;
+
+	var btn = gid('cornerbutton');
+
+	if (icon) {
+		btn.innerHTML = icon;
+	}
+
+	if (on_init) {
+		document.corner_on_init = on_init;
+	} else {
+		document.corner_on_init = null;
+	}
+
+	// Set corner close mode
+	document.corner_closemode = closemode || null;
+
+	// Only show button if corner tab is not visible
+	if (gid('cornertab').style.display == 'none' || gid('cornertab').style.display == '') {
+		btn.style.display = 'block';
+		btn.style.opacity = '0';
+		btn.style.transform = 'scale(0.8)';
+		btn.style.transition = 'opacity 200ms, transform 200ms';
+		setTimeout(function() {
+			btn.style.opacity = '1';
+			btn.style.transform = 'scale(1)';
+		}, 10);
+	}
+}
+
+// Hide corner button
+function hide_corner_button() {
+	if (!gid('cornerbutton')) return;
+
+	var btn = gid('cornerbutton');
+	btn.style.opacity = '0';
+	btn.style.transform = 'scale(0.5)';
+
+	setTimeout(function() {
+		btn.style.display = 'none';
+	}, 150);
+
+	document.corner_on_init = null;
+}
+
+// Corner focus tracking
+// document.corneractive - true if corner is the active view for scrolling/interaction
+// This is used to determine which view to scroll when both corner and main tab are visible
+
+// Initialize corner focus tracking - call once on page load
+function corner_focus_init() {
+	// Skip if already initialized or no corner element
+	if (document.corner_focus_initialized) return;
+	if (!gid('cornertab')) return;
+
+	document.corner_focus_initialized = true;
+	document.corneractive = false;
+
+	// Use delegated event on document for low overhead
+	// Only check for corner focus when corner is actually in use
+	document.addEventListener('mousedown', function(e) {
+		// Skip if no corner tab is mounted - zero overhead when not in use
+		if (!document.cornertabkey) return;
+		if (document.cornerminimized) return;
+
+		var corner = gid('cornertab');
+		if (!corner) return;
+
+		// Check if click is inside corner
+		var inCorner = corner.contains(e.target);
+		corner_setfocus(inCorner);
+	}, true); // Use capture phase for early detection
+
+	// Also track focus events for keyboard navigation
+	document.addEventListener('focusin', function(e) {
+		if (!document.cornertabkey) return;
+		if (document.cornerminimized) return;
+
+		var corner = gid('cornertab');
+		if (!corner) return;
+
+		var inCorner = corner.contains(e.target);
+		corner_setfocus(inCorner);
+	}, true);
+}
+
+// Set corner as active or inactive, with visual indicator
+function corner_setfocus(active) {
+	if (document.corneractive == active) return; // No change
+	document.corneractive = active;
+
+	var corner = gid('cornertab');
+	if (!corner) return;
+
+	// Visual indicator: subtle border/shadow change (inline styles for zero CSS overhead)
+	if (active) {
+		corner.style.boxShadow = '0 0 0 2px #4a90d9, 0 4px 12px rgba(0,0,0,0.15)';
+		corner.style.borderColor = '#4a90d9';
+	} else {
+		corner.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+		corner.style.borderColor = '#cccccc';
+	}
+}
+
+// Get the correct scroll container based on where the target element is located
+// If targetElement is provided and is inside the corner, return corner content
+// If targetElement is provided and is in main tab, return main tab
+// If no targetElement, use document.corneractive to decide
+function getActiveScrollContainer(targetElement) {
+	var cornerContent = gid('cornertab_content');
+
+	// If a target element is specified, use its location to determine container
+	if (targetElement && cornerContent) {
+		if (cornerContent.contains(targetElement)) {
+			return cornerContent;
+		}
+	}
+
+	// If corner is active and has content, use corner
+	if (document.corneractive && document.cornertabkey && cornerContent && !document.cornerminimized) {
+		return cornerContent;
+	}
+
+	// Default: use main tab view
+	if (document.currenttab != null && document.tabviews && document.tabviews[document.currenttab]) {
+		return document.tabviews[document.currenttab];
+	}
+
+	return null;
 }
 
 
@@ -1138,9 +1730,18 @@ function scrollcoldash(container,colkey){
 }
 
 function gototabbookmark(id,callout){
-	
-	if (!gid(id)||document.currenttab==null||!document.tabviews||!document.tabviews[document.currenttab]) return;
-	var d=document.tabviews[document.currenttab];
+
+	if (!gid(id)) return;
+
+	// Use getActiveScrollContainer to find the correct scroll target
+	// Pass the target element so it can detect if it's inside the corner
+	var d = getActiveScrollContainer(gid(id));
+	if (!d) {
+		// Fallback to old behavior if getActiveScrollContainer fails
+		if (document.currenttab==null||!document.tabviews||!document.tabviews[document.currenttab]) return;
+		d=document.tabviews[document.currenttab];
+	}
+
 	//d.scrollTop=gid(id).offsetTop-30; return; //uncomment this line to disable animation
 	var diff=gid(id).offsetTop-30-d.scrollTop;
 	var seq=[];
@@ -1155,20 +1756,23 @@ function gototabbookmark(id,callout){
 		if (d.animidx>=seq.length){
 			clearInterval(d.animitv);
 			d.animitv=null;
-			return;	
+			return;
 		}
 	},30);
-	
+
 	if (callout){
 	    setTimeout(function(){
 		    callout_section(gid(id));
 	    },300);
 	}
-      	
+
 }
 
 function pullupeditor(d){
-	document.tabviews[document.currenttab].scrollTop=d.parentNode.parentNode.offsetTop-5;	
+	var container = getActiveScrollContainer(d);
+	if (container) container.scrollTop=d.parentNode.parentNode.offsetTop-5;
+	else if (document.tabviews && document.tabviews[document.currenttab])
+		document.tabviews[document.currenttab].scrollTop=d.parentNode.parentNode.offsetTop-5;
 }
 
 function marktabchanged(tabkey,hide){

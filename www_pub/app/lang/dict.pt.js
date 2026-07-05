@@ -4,6 +4,7 @@ document.dict={
 'speechlang':'pt-PT',
 'edit':'edit',
 'confirm_refresh_tab':'Tem certeza de que deseja atualizar esta guia?',
+'confirm_close_tab':'Tem certeza de que deseja fechar esta guia?',
 'confirm_close_all_tabs':'Tem certeza de que deseja fechar todas as guias?',
 'tab_reload':'recarregue esta visão',
 'mismatching_password':'Password mismatch',

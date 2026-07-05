@@ -1,0 +1,13 @@
+{
+"fields":[
+	{"field":"page_key","disp":"internal page idetity key (TitleCase)","def":"About"},
+	{"field":"page_url","disp":"route relative to the domain root","def":"/about"},
+	{"field":"page_title","disp":"Page Title","def":"About Us"}
+],
+
+"templates":[
+	{"template":"static_page","filename":"create view Pages/#page_key#.cshtml"},
+	{"template":"static_page_cs","filename":"create code behind Pages/#page_key#.cshtml.cs"},
+	{"template":"static_page_layout","filename":"modify Pages/Shared/_Layout.cshtml, add to #menu, #mmenu/#menulinks, .footerlinks"}
+]
+}

@@ -28,20 +28,26 @@ function ajxb(u,data,callback,myhb){
 		//the multipart/form-data content type will be set automatically by the browser
 		//it's important NOT to encodeHTML the components
 	} else {
-		rq.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');	
-	}	
+		rq.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
+	}
+	if (document.nano_extraheaders){
+		for (var k in document.nano_extraheaders) rq.setRequestHeader(k,document.nano_extraheaders[k]);
+	}
 	rq.send(data);
 	if (callback) callback(rq);
-	return rq.responseText;	
+	return rq.responseText;
 }
 
 function ajxnb(rq,u,f,data){
-	if (document.wssid) u=u+'&wssid_='+document.wssid;	
+	if (document.wssid) u=u+'&wssid_='+document.wssid;
 	rq.onreadystatechange=f;
 	var method='POST'; if (!data) method='GET';
 	rq.open(method,u+'&hb='+hb(),true);
 	rq.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
-	rq.send(data);  	
+	if (document.nano_extraheaders){
+		for (var k in document.nano_extraheaders) rq.setRequestHeader(k,document.nano_extraheaders[k]);
+	}
+	rq.send(data);
 }
 
 function reajxpgn(c,p){

@@ -1,4 +1,4 @@
-setaccountpass=function(lastdarkmode){
+setaccountpass=function(lastdarkmode,csstail,gskey){
 	var ooldpass=gid('accountpass');
 	var opass1=gid('accountpass1');
 	var opass2=gid('accountpass2');
@@ -41,24 +41,22 @@ setaccountpass=function(lastdarkmode){
 	
 	var smscell=encodeHTML(osmscell.value);
 	
-	var quicklist=gid('myaccount_quicklist').value;
 	var darkmode=gid('myaccount_darkmode').value;
 	var dowoffset=gid('myaccount_dowoffset').value;
 	
 	if (!lastdarkmode) lastdarkmode=0;
 	
 	var rq=xmlHTTPRequestObject();
-	rq.open('POST',document.appsettings.fastlane+'?cmd=setaccount&needkeyfile='+needkeyfile+'&usesms='+usesms+'&smscell='+smscell+'&usega='+usega+'&usegamepad='+usegamepad+'&useyubi='+useyubi+'&yubimode='+yubimode+'&quicklist='+quicklist+'&darkmode='+darkmode+'&dowoffset='+dowoffset,true);
+	rq.open('POST',document.appsettings.fastlane+'?cmd=setaccount&needkeyfile='+needkeyfile+'&usesms='+usesms+'&smscell='+smscell+'&usega='+usega+'&usegamepad='+usegamepad+'&useyubi='+useyubi+'&yubimode='+yubimode+'&darkmode='+darkmode+'&dowoffset='+dowoffset,true);
 	rq.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 	rq.onreadystatechange=function(){
 		if (rq.readyState==4){
-			document.appsettings.quicklist=quicklist=='1'?true:false;
 			refreshtab('account',1);
 			setTimeout(function(){marktabsaved('account',rq.responseText);},100);
 			
 			if (usegamepad) ajxjs2(self.gamepad_register,'gamepad.js');
 			
-			if (lastdarkmode!=darkmode && self.resetdarkmode) resetdarkmode(darkmode);
+			if (lastdarkmode!=darkmode && self.resetdarkmode) resetdarkmode(darkmode,csstail);
 			
 		}	
 	}
@@ -160,6 +158,9 @@ resethelpspots=function(userid,gskey){
 }
 
 _checkpass=function(d,warnid){
+	if (d.lastkey!=null&&d.lastkey==d.value) return;
+	d.lastkey=d.value;
+	
 	if (d.timer) clearTimeout(d.timer);
 	if (d.value==''){
 		d.style.background='#ffffff';
@@ -200,8 +201,16 @@ showuserprofile=function(userid,msg){
 	}
 
 	ajxpgn('userprofile_'+userid,document.appsettings.codepage+'?cmd=showuserprofile&userid='+userid,0,0,null,function(){
-		gid('mainuserprofile').src=document.appsettings.codepage+'?cmd=imguserprofile&thumb=1&hb='+hb();
-		gid('mainuserprofile').className='';
+		var src=document.appsettings.codepage+'?cmd=imguserprofile&thumb=1&hb='+hb();
+		if (gid('mainuserprofile')){
+			gid('mainuserprofile').src=src;
+			gid('mainuserprofile').className='';
+		}
+		var os=document.getElementsByClassName('mainuserprofile');
+		for (var i=0;i<os.length;i++) {
+			os[i].src=src;
+			os[i].className='mainuserprofile loaded';
+		}
 		
 		var classname='bigprofile';
 		
@@ -216,8 +225,16 @@ removeuserprofilepic=function(userid,gskey){
 	if (!sconfirm('Are you sure you want to remove this profile picture?')) return;
 	ajxpgn('userprofile_'+userid,
 	document.appsettings.codepage+'?cmd=removeuserprofilepic&userid='+userid,0,0,null,function(){
-		gid('mainuserprofile').src='imgs/t.gif';
-		gid('mainuserprofile').className='admin-user';
+		if (gid('mainuserprofile')) {
+			gid('mainuserprofile').src='imgs/t.gif';
+			gid('mainuserprofile').className='admin-user';
+		}
+		
+		var os=document.getElementsByClassName('mainuserprofile loaded');
+		for (var i=0;i<os.length;i++) {
+			os[i].src='imgs/t.gif';
+			os[i].className='mainuserprofile';
+		}		
 
 		var classname='';
 		
@@ -227,4 +244,8 @@ removeuserprofilepic=function(userid,gskey){
 		gid('logoutlink').className=classname;
 				
 	},null,null,gskey);
+}
+
+gengakey=function(gskey){
+	ajxpgn('myaccount_gakeyview',document.appsettings.codepage+'?cmd=gengakey',0,0,null,null,null,null,gskey);
 }

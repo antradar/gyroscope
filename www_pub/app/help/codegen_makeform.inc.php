@@ -1,5 +1,5 @@
 <?php
-include 'help/seeds/seeds.php';
+include 'help/seeds'.$seedtail.'/seeds.php';
 
 function codegen_makeform($seed=null){
 	global $toolbaritems;
@@ -11,6 +11,7 @@ function codegen_makeform($seed=null){
 	if ($oseed!=$seed) return;
 		
 	global $codegen_seeds;
+	global $seedtail;
 	
 	$seedobj=null;
 
@@ -53,7 +54,7 @@ function codegen_makeform($seed=null){
 		return;	
 	}
 			
-	$fn='help/seeds/'.$seed.'.json';
+	$fn='help/seeds'.$seedtail.'/'.$seed.'.json';
 	if (!file_exists($fn)) {echo "This module is not available in the community edition of Gyroscope";return;}
 	
 ?>

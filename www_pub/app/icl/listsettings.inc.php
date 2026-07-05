@@ -32,7 +32,7 @@ function listsettings($ctx=null){
 	}
 	if (isset($manticore)&&isset($user['groups']['kbman'])){
 	?>
-	<div class="listitem"><a onclick="ajxjs2('kbman_showtopic','kbman.js');showview('core.kbman',1,1);">AI Knowledge Base <span class="botchatresolver_ func_topic_selector" style="display:inline-block;"></span></a></div>				
+	<div class="listitem"><a onclick="ajxjs2('kbman_showtopic','kbman.js');showview('core.kbman',1,1,null,null,null,true);">AI Knowledge Base <span class="botchatresolver_ func_topic_selector" style="display:inline-block;"></span></a></div>				
 	<?php	
 	}
 	
@@ -64,13 +64,13 @@ function listsettings($ctx=null){
 
 	if (isset($user['groups']['reportsettings'])){
 	?>
-	<div class="listitem"><a onclick="ajxjs2('showreportsetting','reportsettings.js');showview('core.reportsettings',1);"><?php tr('icon_reportsettings');?></a></div>	
+	<div class="listitem"><a onclick="ajxjs2('showreportsetting','reportsettings.js');showview('core.reportsettings',1,null,null,null,null,true);"><?php tr('icon_reportsettings');?></a></div>	
 	<?php
 	}
 	
 	if (isset($user['groups']['systemplate'])||isset($user['groups']['systemplateuse'])){
 	?>
-	<div class="listitem"><a onclick="ajxjs2('showtemplatetype','templatetypes.js');showview('core.templatetypes',1);"><?php tr('icon_systemplates');?></a></div>	
+	<div class="listitem"><a onclick="ajxjs2('showtemplatetype','templatetypes.js');showview('core.templatetypes',1,null,null,null,null,true);"><?php tr('icon_systemplates');?></a></div>	
 	<?php
 	}
 

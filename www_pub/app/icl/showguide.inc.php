@@ -1,7 +1,8 @@
 <?php
 global $codegen_seeds;
 
-include 'help/seeds/seeds.php';
+
+include 'help/seeds'.$seedtail.'/seeds.php';
 
 function showguide(){
 	global $codegen_seeds;

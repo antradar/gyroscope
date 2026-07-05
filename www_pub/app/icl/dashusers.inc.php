@@ -10,13 +10,7 @@ function dashusers(){
 ?>
 <div class="section userdash">
 
-	<?php
-	if ($uiconfig['toolbar_position']=='top'){
-	?>	
 	<span class="dash_to_list" onclick="dash_to_quicklist();">&mapstoleft;</span>
-	<?php
-	}
-	?>
 		
 	<div class="sectiontitle">Users</div>
 	

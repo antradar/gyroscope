@@ -1,0 +1,8 @@
+    "public_#record_lower#_version": {
+      "key": "public_#record_lower#_version",
+      "description": "Version key for public #record_pl_lower# cache.",
+      "scope": "per-tenant",
+      "relatedCacheKeys": [
+        "public_#record_pl_lower#_{keyword}_{page}_{sort}_{perpage}_{version}"
+      ]
+    },

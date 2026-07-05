@@ -92,8 +92,14 @@ if (window.WebSocket){
 		
 		if (document.wsskey) wsskey=document.wsskey;		
 		setTimeout(function(){if (document.wsskey) wsskey=document.wsskey;document.wssid=null;wss_init(userid,wsuri,wsskey,gsid);if (self.authpump) authpump();},rest);	
+
+		// WSS disconnected: start polling fallback for any active extlivechat threads
+		if (document.extlivechat_poll_timers && typeof(extlivechat_poll)==='function') {
+			for (var tid in document.extlivechat_poll_timers) {
+				extlivechat_poll(tid, 3000);
+			}
+		}
 	}
-	
 } else {
 	if (gid('wsswarn')) gid('wsswarn').style.display='inline';
 }
@@ -116,6 +122,8 @@ wss_markchanges=function(rectype,recid,corrected,msg){
 		
 		case 'reauth': ajxpgn('statusc',document.appsettings.codepage+'?cmd=reauth',0,0,'',function(){flashstatus('User credential updated',1000);authpump();});hit=1; break;
 		case 'chatschanged': markchatchanged(); break;
+		case 'extlivechatclose': if(typeof(extlivechat_stoppoll)==='function') extlivechat_stoppoll(recid); if(gid('botchatmsgs_'+recid)) closetab('extlivechat_new'); hit=1; break;
+			case 'extlivechatmsg': (function(){var _lm=0;var _a=gid('botchatmsgs_adder_'+recid);if(_a&&_a.lastmsgid)_lm=_a.lastmsgid;ajxpgn('botchatmsgs_adder_'+recid,document.appsettings.codepage+'?cmd=extlivechat_poll&threadid='+recid+'&lastmsgid='+_lm,0,0,'',function(rq){if(typeof(extlivechat_ws_update)==='function'){extlivechat_ws_update(recid,rq);}else{var nm=parseInt(rq.getResponseHeader('lastmsgid'),10);var a=gid('botchatmsgs_adder_'+recid);if(nm&&a)a.lastmsgid=nm;if(a&&gid('botchatmsgs_'+recid)){gid('botchatmsgs_'+recid).innerHTML+=a.innerHTML;a.innerHTML='';gototabbookmark('nextlivechatmsg_'+recid);}}});})(); hit=1; break;
 
 		case 'templatetypetemplates':
 			if (gid('templatetypetemplates_'+recid)) {gid('templatetypetemplates_'+recid).className=corrected?'':'listchanged';hit=1;}

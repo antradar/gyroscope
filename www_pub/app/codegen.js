@@ -1,17 +1,54 @@
 codegen=function(){}
 
-codegen_makeform=function(seed){	
-	ajxpgn('codegen_view',document.appsettings.codepage+'?cmd=codegen_makeform&seed='+seed);	
+// Current selected space
+var codegen_space='gyrosgo';
+
+// Load available spaces (framework variants) and auto-select gyrosgo
+codegen_loadspaces=function(){
+	ajxpgn('codegen_spacetabs',document.appsettings.codepage+'?cmd=codegen_listspaces',false,false,null,function(){
+		// Auto-select gyrosgo (default) after tabs are loaded
+		codegen_showspace('gyrosgo');
+	});
 }
 
-codegen_makecode=function(seed){
+// Show seeds for a specific space with tab highlighting
+codegen_showspace=function(space){
+	codegen_space=space;
+
+	// Update tab styling
+	var tabs=document.querySelectorAll('.codegen_spacetab');
+	for(var i=0;i<tabs.length;i++){
+		tabs[i].style.background='#555555';
+	}
+	var activeTab=gid('codegen_tab_'+space);
+	if(activeTab) activeTab.style.background='#222222';
+
+	// Load seeds for this space
+	ajxpgn('codegen_seeds',document.appsettings.codepage+'?cmd=codegen_listseeds&space='+space);
+}
+
+// Show form for a seed (supports both old single-arg and new two-arg calling)
+codegen_makeform=function(space,seed){
+	if (typeof seed === 'undefined') {
+		seed = space;
+		space = codegen_space || 'gyrosgo';
+	}
+	codegen_space = space;
+	ajxpgn('codegen_view',document.appsettings.codepage+'?cmd=codegen_makeform&space='+space+'&seed='+seed);
+}
+
+// Generate code from form
+codegen_makecode=function(space,seed){
+	if (typeof seed === 'undefined') {
+		seed = space;
+		space = codegen_space || 'gyrosgo';
+	}
+
 	var obj=eval('('+gid('codegen_seedobj').value+')');
 	var fields=obj.fields;
-	
 	var myfields=[];
-	
 	var valid=1;
-	
+
 	for (var i=0;i<fields.length;i++){
 		var ofield=gid('codegenfield_'+fields[i].field);
 		if (!fields[i].optional){
@@ -23,26 +60,23 @@ codegen_makecode=function(seed){
 			thisvalue=ofield.checked?1:0;
 		}
 		myfields.push(fields[i].field+'='+thisvalue);
-	}	
-	
+	}
+
 	if (gid('codegenfield_viewindex')) myfields.push('fviewindex='+encodeHTML(gid('codegenfield_viewindex').value.replace(/\./g,'__')));
-	
+
 	if (!valid) return;
-	
-	var fields=myfields.join('&');
-	
+
+	var postfields=myfields.join('&');
+
 	var rq=xmlHTTPRequestObject();
-	rq.open('POST',document.appsettings.codepage+'?cmd=codegen_makecode&seed='+seed,true);
+	rq.open('POST',document.appsettings.codepage+'?cmd=codegen_makecode&space='+space+'&seed='+seed,true);
 	rq.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	rq.onreadystatechange=function(){
 		if (rq.readyState==4){
 			gid('codegen_codes').innerHTML=rq.responseText;
-		}	
-	}	
-	
-	rq.send(fields);
-	
-	if (!valid) return;
+		}
+	}
+	rq.send(postfields);
 }
 
 codegen_copy=function(idx){

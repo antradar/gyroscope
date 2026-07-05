@@ -20,7 +20,8 @@ $query="select * from ".TABLENAME_USERS." where userid=?";
 $rs=sql_prep($query,$db,$userid);
 $usermeta=sql_fetch_assoc($rs);
 
-$quicklist=1; //always enable quick list for mobile views
+$quicklist=isset($usermeta['quicklist'])&&$usermeta['quicklist']?1:0;
+if ($uiconfig['mobile']['singletab']) $quicklist=0;
 $dark=isset($usermeta['darkmode'])?intval($usermeta['darkmode']):0;
 
 
@@ -97,6 +98,7 @@ if (isset($roundwatchframe)&&$roundwatchframe){
 }
 ?>
 <div id="toolicons" style="position:fixed;width:100%;z-index:1900;<?php echo $ui_anchor;?>:<?php echo $ui_bump;?>;">
+		<img id="applogo" src="<?php echo $codepage;?>?cmd=clogo" onclick="if(document.viewindex) reloadview(document.viewindex);else{reloadtab('welcome','','wk');showtab('welcome');}" style="display:none;height:34px;width:auto;max-width:120px;object-fit:contain;" alt="">
 
 	<?php
 	$tcount=1;
@@ -104,7 +106,7 @@ if (isset($roundwatchframe)&&$roundwatchframe){
 	foreach ($toolbaritems as $ti) if (isset($ti['icon'])&&$ti['icon']!='') $tcount++;
 	if (isset($roundwatchframe)&&$roundwatchframe) $tcount=$tcount+4;
 	?>	
-	<div id="toollist" style="overflow:auto;width:100%;"><div id="toollistcontent" style="width:<?php echo 52*($tcount+1+($uiconfig['enable_master_search']?4:0));?>px;">
+	<div id="toollist" style="overflow:auto;width:100%;"><div id="toollistcontent" style="width:<?php echo 52*($tcount+1+($uiconfig['enable_master_search']?4:0));?>px;" data-orig-width="<?php echo 52*($tcount+1+($uiconfig['enable_master_search']?4:0));?>">
 
 	<?php 
 	if (isset($roundwatchframe)&&$roundwatchframe){
@@ -120,14 +122,13 @@ if (isset($roundwatchframe)&&$roundwatchframe){
 
 	<?php 
 	
-	if ($uiconfig['enable_master_search']){
-		$toolbaritems['ui.search']=array('title'=>'Search','icon'=>'img-search','action'=>"showmmastersearch();");
-		$item=array_pop($toolbaritems);
-		array_unshift($toolbaritems,$item);
-	}
 		foreach ($toolbaritems as $modid=>$ti){
 		if (isset($ti['type'])&&$ti['type']=='break') continue;
 		if (isset($ti['noiphone'])&&$ti['noiphone']) continue;	
+		if ($modid==='lv.welcome'&&isset($uiconfig['mobile_landscape']['toolbar_position'])&&$uiconfig['mobile_landscape']['toolbar_position']!=='bottom') continue;
+		$settingsPos=$uiconfig['settings_position'];
+		if (isset($uiconfig['mobile_landscape']['settings_position'])&&$uiconfig['mobile_landscape']['settings_position']!='') $settingsPos=$uiconfig['mobile_landscape']['settings_position'];
+		if ($modid==='core.settings'&&$settingsPos==='top') continue;
 		if (isset($ti['type'])&&$ti['type']=='custom'){
 		?>
 		<?php echo isset($ti['iphone'])?$ti['iphone']:'';?>
@@ -159,7 +160,6 @@ if (isset($roundwatchframe)&&$roundwatchframe){
 	<div class="menuitem"><a href=# onclick="livechat_start();return false;"><img alt="live chat" id="chaticon" src="imgs/t.gif" border="0" width="28" height="28"></a></div>
 	<?php }	
 	?>
-	<div class="menuitem"><a href=# onclick="_gsreplay_rec_start(this);return false;"><img id="gsreplayicon" src="imgs/t.gif" border="0"></a></div>
 	
 	<?php 
 	if (isset($roundwatchframe)&&$roundwatchframe){
@@ -172,16 +172,34 @@ if (isset($roundwatchframe)&&$roundwatchframe){
 	?>	
 	
 	</div></div>
-	<span id="labellogin" style="display:none;"><?php echo htmlspecialchars($user['login']);?></span><span id="labeldispname" style="display:none;"><?php echo htmlspecialchars($user['dispname']);?></span>	
-	<a id="adminlogout" onclick="if (document.websocket) document.websocket.onclose=null;" href="login.php?from=<?php echo $_SERVER['PHP_SELF'];?>" style="position:absolute;top:10px;right:10px;"><img alt="sign out" border="0" width="16" height="16" src="imgs/t.gif" class="admin-logout" <?php if (isset($uiconfig['mobile'])&&$uiconfig['mobile']['power']==false) echo 'style="display:none;"';?>></a>
-
-	<div id="mmastersearch">
-		<div class="mastersearchshell">
-		<input id="mastersearch" onkeyup="_mastersearch();" onblur="hidemmastersearch();">
+	<div id="toolbaractions"<?php if (!empty($usermeta['haspic'])) echo ' class="hasprofile"';?>>
+		<span id="labellogin" style="display:none;"><?php echo htmlspecialchars($user['login']);?></span><span id="labeldispname" style="display:none;"><?php echo htmlspecialchars($user['dispname']);?></span>
+		<div id="mmastersearch">
+			<img id="msearchicon" onclick="showmmastersearch();" src="imgs/t.gif" class="search-icon">
+			<div class="mastersearchshell">
+			<input id="mastersearch" onfocus="showmmastersearch();" onkeyup="_mastersearch();" onblur="hidemmastersearch();">
+			<img id="msearchcloser" onclick="hidemmastersearch();" src="imgs/search-close.gif" width="20">
+			</div>
 		</div>
-		<img id="msearchcloser" onclick="hidemmastersearch();" src="imgs/search-close.gif" width="20">
+		<?php
+		$settingsPos=$uiconfig['settings_position'];
+		if (isset($uiconfig['mobile_landscape']['settings_position'])&&$uiconfig['mobile_landscape']['settings_position']!='') $settingsPos=$uiconfig['mobile_landscape']['settings_position'];
+		if ($settingsPos==='top'){
+			?><a onclick="showview('core.settings',1,1,null,null,null);return false;"><img alt="Settings" width="16" height="16" border="0" src="imgs/t.gif" class="admin-settings" style="cursor:pointer;vertical-align:middle;"></a><?php
+		}
+		$accountPos=$uiconfig['account_position'];
+		if (isset($uiconfig['mobile_landscape']['account_position'])&&$uiconfig['mobile_landscape']['account_position']!='') $accountPos=$uiconfig['mobile_landscape']['account_position'];
+		if ($accountPos!=='left'){
+			if (!empty($usermeta['haspic'])){
+				?><img id="mainuserprofile" class="mainuserprofile loaded" src="<?php echo $codepage;?>?cmd=imguserprofile&userid=<?php echo $userid;?>" alt="<?php echo htmlspecialchars($user['dispname']);?>" title="<?php echo htmlspecialchars($user['dispname']);?>" onclick="ajxjs2('setaccountpass','accounts.js',function(){reloadtab('account','My Account','showaccount');addtab('account','My Account','showaccount');});return false;" style="cursor:pointer;"><?php
+			} else {
+				?><img id="mainuserprofile" class="admin-user" alt="<?php echo htmlspecialchars($user['dispname']);?>" src="imgs/t.gif" width="16" height="16" border="0" title="<?php echo htmlspecialchars($user['dispname']);?>" onclick="ajxjs2('setaccountpass','accounts.js',function(){reloadtab('account','My Account','showaccount');addtab('account','My Account','showaccount');});return false;" style="cursor:pointer;"><?php
+			}
+		}
+		?>
+		<a id="adminlogout" onclick="if (document.websocket) document.websocket.onclose=null;" href="login.php?from=<?php echo $_SERVER['PHP_SELF'];?>" style="display:inline-block;vertical-align:middle;"><img alt="sign out" border="0" width="16" height="16" src="imgs/t.gif" class="admin-logout" <?php if (isset($uiconfig['mobile'])&&$uiconfig['mobile']['power']==false) echo 'style="display:none;"';?>></a>
 	</div>
-	
+
 </div><!-- toolicons -->
 
 <div id="mainsearchview_">
@@ -214,6 +232,9 @@ if (isset($roundwatchframe)&&$roundwatchframe){
 	</div>
 	
 </div>
+	<div id="mainmenu" style="display:none;"></div>
+	<div id="bookmarkview" style="display:none;"></div>
+	<div id="mvptr" onclick="setquicklist(document.appsettings.quicklist?0:1);"></div>
 <div id="content" style="float:left;width:320px;">
 
 	<div id="backlist" ontouchstart="toggle_easyread_start();" ontouchend="toggle_easyread_end();" style="display:none;position:fixed;width:100%;z-index:1000;"><a id="backlistbutton"><img class="mtback_light" alt="back button" onclick="navback();" src="iphone/bb_<?php echo $lang;?>.png"><img class="mtback_dark" alt="back button" onclick="navback();" src="iphone/dbb_<?php echo $lang;?>.png"></a></div>
@@ -225,7 +246,6 @@ if (isset($roundwatchframe)&&$roundwatchframe){
 	<div id="tabviews" style=""></div>
 	<div id="statusinfo" style="display:none;"><div id="statusc"></div></div>
 </div>
-<div id="shared_tab_closer" onclick="close_current_tab();"></div>
 <div id="rotate_indicator" style="display:none;position:fixed;width:100px;height:100px;top:220px;left:110px;z-index:3000;"></div>
 <div id="fsmask"></div>
 <div id="fstitlebar">
@@ -237,6 +257,16 @@ if (isset($roundwatchframe)&&$roundwatchframe){
 <div id="gsstickerview" onclick="this.style.display='none';">
 	<div id="gsstickercontent"></div>
 </div>
+
+<div id="cornertab" style="display:none;position:fixed;bottom:50px;right:10px;width:300px;height:400px;z-index:700;background:#ffffff;border:1px solid #cccccc;box-shadow:0 4px 12px rgba(0,0,0,0.15);border-radius:8px;overflow:hidden;">
+	<div id="cornertab_header" style="background:#454242;color:#ffffff;padding:8px;">
+		<span id="cornertab_title"></span>
+		<a id="cornertab_close" onclick="tab_undock_corner();" style="margin-left:8px;float:right;cursor:pointer;color:#ffffff;font-weight:bold;font-size:14px;display:inline-block;padding:0 5px;">x</a>
+		<a id="cornertab_minimize" onclick="corner_minimize();" style="float:right;cursor:pointer;color:#ffffff;font-weight:bold;font-size:14px;display:inline-block;padding:0 5px;">_</a>
+	</div>
+	<div id="cornertab_content" style="width:100%;height:calc(100% - 28px);overflow:auto;"></div>
+</div>
+<div id="cornerbutton" style="display:none;position:fixed;bottom:50px;right:10px;width:44px;height:44px;z-index:700;background:#454242;border-radius:8px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.15);text-align:center;line-height:44px;color:#ffffff;font-size:18px;" onclick="corner_button_click();">&#x2750;</div>
 
 <div id="callout" style="z-index:4000;opacity:0;transition:top 200ms,left 200ms,opacity 250ms;position:fixed;top:-80px;left:250px;"><img src="imgs/callout.png" style="width:56px;"></div>
 
@@ -257,43 +287,11 @@ hddemote('legacy.css');
 <?php }?>	
 
 <script src="iphone/tabs.js"></script>
-<script src="iphone/viewport.js"></script>
+<script src="iphone/viewport.js?v=12"></script>
 <script src="validators.js?v=2"></script>
 <script src="autocomplete.js?v=3"></script>
 
 <script>
-
-function showmmastersearch(){//mobile master search
-	gid('mmastersearch').style.display='block';
-	gid('mastersearch').focus();
-	if (gid('mastersearch').value!='') showmainsearchview();
-}
-
-function hidemmastersearch(){
-	gid('mmastersearch').style.display='none';
-	hidemainsearchview();
-}
-
-function showdeck(){
-	switch(document.viewmode){
-		
-		case 1: 
-			gid('leftview').style.display='block'; 
-			gid('tabtitles').style.display='block';
-			
-			gid('content').style.display='none';
-
-		break;
-		case 2:
-			gid('leftview').style.display='none'; 
-			gid('tabtitles').style.display='none';
-			
-			gid('content').style.display='block';
-			
-		break;
-	}
-		
-}
 
 
 function rotate(){
@@ -340,86 +338,308 @@ function rotate(){
 	var vw=document.body.clientWidth;
 	
 	switch(ori){
-	case <?php echo $ori_portrait_backward;?>: case <?php echo $ori_portrait_forward;?>: 
-		
-		//gid('panel2').style.display='block';
-		showdeck();
-		gid('leftview').style.width=vw+'px';
-		gid('leftview').style.marginLeft=0;
-		gid('backlist').style.display='block';
-		gid('backlistshadow').style.display='block';
-		//gid('leftview').style.fontSize='25px';
-		gid('tooltitle').style.width=vw+'px';
-		//gid('tooltitle').style.top='40px';
-		gid('pusher').style.height='50px';
-		gid('toollist').style.width=document.documentElement.clientWidth-50+'px';//'280px';
-		gid('tabtitleshadow').style.display='none';
-		gid('content').style.width=vw+'px';
-		
-		if (document.lastori==null||document.lastori!=ori) ajxcss(self.cssloader,'iphone/portrait_css.php?dark=<?php echo $dark;?>','portrait','landscape');
-		document.viewheight=vw+30;
-		scaleall(document.body);
-		document.iphone_portrait=1;
-		
-		hidelookup();
-
-		lkv_dismount();
-		
-	break;
-	case <?php echo $ori_landscape_forward;?>: case <?php echo $ori_landscape_backward;?>: 
-		//gid('panel2').style.display='none';
-		gid('leftview').style.display='block';
-		gid('leftview').style.width='210px';
-		gid('leftview').style.marginLeft='10px';
-		//gid('leftview').style.fontSize='14px';
-		gid('tabtitles').style.display='block';
-		gid('content').style.display='block';
-		gid('backlist').style.display='none';
-		gid('backlistshadow').style.display='none';
-		
-		gid('tooltitle').style.width=vw+'px';
-		//gid('tooltitle').style.top='50px';
-		gid('pusher').style.height='50px';
-		gid('toollist').style.width=cw-50+'px';
-		gid('tabtitleshadow').style.display='block';
-		gid('content').style.width=cw-230+'px';
-		gid('tabtitles').style.width=cw-230+'px';
-		if (document.lastori==null||document.lastori!=ori) ajxcss(self.cssloader,'iphone/landscape_css.php?dark=<?php echo $dark;?>','landscape','portrait');
-		document.viewheight=210;
-
-		scaleall(document.body);
-		document.iphone_portrait=null;
-		gid('rotate_indicator').style.display='none';
-		
-		lkv_remount();
-	break;
+	case <?php echo $ori_portrait_backward;?>: case <?php echo $ori_portrait_forward;?>:
+			showdeck();
+			gid('leftview').style.width=vw+'px';
+			gid('leftview').style.marginLeft=0;
+			gid('leftview').style.left='';
+			gid('leftview').style.position='';
+			gid('leftview').style.float='';
+			gid('leftview').style.height='';
+			gid('content').style.marginLeft='';
+			gid('content').style.float='';
+			gid('content').style.height='';
+			gid('backlist').style.display='block';
+			gid('backlistshadow').style.display='block';
+			gid('tooltitle').style.width=vw+'px';
+			gid('pusher').style.height='50px';
+				gid('applogo').style.display='none';
+				gid('toollistcontent').style.paddingLeft='0';
+				gid('mvptr').style.display='none';
+			gid('tabtitleshadow').style.display='none';
+			gid('content').style.width=vw+'px';
+			var qns=document.getElementsByClassName('qnav_');for(var qi=0;qi<qns.length;qi++){qns[qi].style.left='';qns[qi].style.top='';}
+			if (document.lastori==null||document.lastori!=ori) ajxcss(self.cssloader,'iphone/portrait_css.php?dark=<?php echo $dark;?>','portrait','landscape');
+			document.viewheight=vw+30;
+			scaleall(document.body);
+			setTimeout(function(){scaleall(document.body);},100);
+			document.iphone_portrait=1;
+			gid('tabviews').style.paddingTop='0';
+			var prls=document.querySelectorAll('.reloader[id^="tabreloader_"]');
+			for(var pri=0;pri<prls.length;pri++){prls[pri].style.top='';}
+			reposition_bar_views();
+			update_qnav_padding();
+			if (document.tabafloat) {
+				document.body.className=document.body.className.replace(/\s*tabafloat_\w+/g,'')+' tabafloat_portrait';
+				gid('tabtitles').style.display='none';
+				var qns=document.getElementsByClassName('qnav_');for(var qi=0;qi<qns.length;qi++){qns[qi].style.left='0';qns[qi].style.top='';}
+			}
+			// Reposition toolbar based on portrait orientation
+			var mob=document.appsettings.uiconfig?document.appsettings.uiconfig.mobile:null;
+			if (mob&&mob.toolbar_position=='bottom'){
+				gid('toolbg').style.bottom='0';gid('toolbg').style.top='';
+				gid('toolicons').style.bottom='10px';gid('toolicons').style.top='';
+			} else {
+				gid('toolbg').style.top='0';gid('toolbg').style.bottom='';
+				gid('toolicons').style.top='0';gid('toolicons').style.bottom='';
+			}
+			// Reset any left-toolbar positioning from landscape mode
+			gid('content').style.zIndex='';gid('toolbg').style.left='';gid('toolbg').style.width='100%';gid('toolbg').style.height='';
+			gid('toolicons').style.left='';gid('toolicons').style.width='100%';gid('toolicons').style.height='';gid('toolicons').style.flexDirection='';gid('toolicons').style.justifyContent='';gid('toolicons').style.alignItems='';
+			gid('toollist').style.display='';gid('toollist').style.position='';gid('toollist').style.left='';gid('toollist').style.width='';gid('toollist').style.height='';gid('toollistcontent').style.width=gid('toollistcontent').getAttribute('data-orig-width')+'px';gid('toollistcontent').style.paddingLeft='';gid('toollistcontent').style.display='';
+			// Hide #mainmenu in portrait (uses #toollist instead)
+			gid('mainmenu').style.display='none';gid('mainmenu').style.left='';gid('mainmenu').style.top='';gid('bookmarkview').style.display='none';gid('bookmarkview').style.visibility='';
+			gid('tabtitles').style.top='';gid('tabtitles').style.left='';gid('tabtitles').style.width='';gid('tabtitles').style.marginLeft='';gid('tabviews').style.top='';gid('tabviews').style.left='';gid('tabviews').style.width='';gid('tabviews').style.paddingTop='';gid('tabviews').style.position='';gid('tabviews').style.height='';
+			// Reserve space for toolbaractions (power button + search) in portrait toolbar
+			var ta_w=gid('toolbaractions')?(gid('toolbaractions').offsetWidth||0):0;
+			gid('toollist').style.width=ta_w>0?(vw-ta_w-20)+'px':'';
+			gid('pusher').style.display='';
+			// Hide span labels in portrait mode (no left toolbar)
+			var spans=gid('toollistcontent').getElementsByTagName('span');for(var si=0;si<spans.length;si++) spans[si].style.display='';
+			// Reset search visibility for portrait
+			var mob=document.appsettings.uiconfig?document.appsettings.uiconfig.mobile:null;
+			if (mob&&mob.enable_master_search){
+				gid('mmastersearch').style.display='inline-block';gid('adminlogout').style.display='';
+			} else {
+				gid('mmastersearch').style.display='none';gid('adminlogout').style.display='';
+			}
+			var msShell=gid('mmastersearch')?gid('mmastersearch').querySelector('.mastersearchshell'):null;
+			if (msShell) msShell.style.width='0';
+			var msIcon=gid('msearchicon');if (msIcon) msIcon.style.display='';
+			gid('mastersearch').className='';
+			var msCloser=gid('msearchcloser');if (msCloser) msCloser.style.display='none';
+			lkv_dismount();
+			if (document.vvKeyboardOpen&&document.lkvdismounted&&gid('lkv')&&gid('lkv').showing) repositionDismountedLkv();
+		break;
+		case <?php echo $ori_landscape_forward;?>: case <?php echo $ori_landscape_backward;?>:
+			gid('leftview').style.display='block';
+			gid('leftview').style.position='absolute';
+			gid('leftview').style.float='none';
+			gid('tabtitles').style.display='block';
+			gid('content').style.display='block';gid('content').style.zIndex='';
+			gid('content').style.float='none';
+			gid('backlist').style.display='none';
+			gid('backlistshadow').style.display='none';
+			gid('tooltitle').style.width=vw+'px';
+			gid('pusher').style.height='50px';
+			// Reposition toolbar based on landscape orientation
+			var mobl=document.appsettings.uiconfig?document.appsettings.uiconfig.mobile_landscape:null;
+			var mob=document.appsettings.uiconfig?document.appsettings.uiconfig.mobile:null;
+			var lscape_bottom=(mobl&&mobl.toolbar_position=='bottom')||(mob&&mob.toolbar_position=='bottom'&&!mobl);
+			var lscape_left=(mobl&&mobl.toolbar_position=='left');
+			if (lscape_left){
+				var lscape_vnp=(mobl&&mobl.vertical_nav_persist);
+				// Common left-toolbar setup
+					gid('content').style.zIndex='';
+					gid('toollist').style.display='none';gid('toollist').style.position='';gid('toollist').style.left='';
+					gid('toollistcontent').style.display='none';
+					gid('mainmenu').style.display='block';
+					gid('applogo').style.display='block';
+					gid('pusher').style.display='none';
+					gid('tabtitles').style.top='';gid('tabtitles').style.left='';gid('tabtitles').style.width='';gid('tabtitles').style.marginLeft='';
+					gid('tabviews').style.top='';gid('tabviews').style.left='';gid('tabviews').style.width='';gid('tabviews').style.paddingTop='';gid('tabviews').style.position='';gid('tabviews').style.height='';
+					// Load listwelcome content if not already loaded
+					if (!document.mainmenuloaded){
+						ajxpgn('mainmenu',document.appsettings.codepage+'?cmd=listwelcome&iphone=1',0,0,null,function(){document.mainmenuloaded=true;appendMobileMenuItems();autosize();});
+						document.mainmenuloaded=true;
+					}
+					if (lscape_vnp){
+						// vnp=true: 40px top bar + collapsible icon sidebar on left
+						gid('toolbg').style.top='0';gid('toolbg').style.bottom='';gid('toolbg').style.left='';gid('toolbg').style.width='100%';gid('toolbg').style.height='40px';
+						gid('toolicons').style.top='0';gid('toolicons').style.bottom='';gid('toolicons').style.left='';gid('toolicons').style.width='100%';gid('toolicons').style.height='40px';
+						gid('mainmenu').style.left='';gid('mainmenu').style.top='';
+						gid('mainmenu').style.height=(ch()-40)+'px';
+						var mmi=gid('mainmenuitems');var vnav_acct=gid('vnav_account');var vnav_h=(vnav_acct?vnav_acct.offsetHeight:0);if(mmi) mmi.style.height=(ch()-40-vnav_h)+'px';
+						if (document.appsettings.quicklist){
+							gid('mainmenu').className='';
+							gid('applogo').src=document.appsettings.codepage+'?cmd=clogo';
+							gid('content').style.width=(cw-210)+'px';gid('content').style.marginLeft='210px';
+							gid('tabtitles').style.left='210px';gid('tabtitles').style.width=(cw-210)+'px';gid('tabtitles').style.marginLeft='';
+							gid('tabviews').style.left='210px';gid('tabviews').style.width=(cw-210)+'px';
+							gid('tabviews').className=gid('tabviews').className.replace(/\s*boundless\s*/g,'');
+							var qns=document.getElementsByClassName('qnav_');for(var qi=0;qi<qns.length;qi++){qns[qi].style.left='210px';qns[qi].style.top='';}
+							if(gid('vnavside_hide'))gid('vnavside_hide').style.display='block';if(gid('vnavside_show'))gid('vnavside_show').style.display='none';
+						} else {
+							gid('mainmenu').className='collapsed';
+							gid('applogo').src=document.appsettings.codepage+'?cmd=clogo&mode=sqr';
+							gid('content').style.width=(cw-54)+'px';gid('content').style.marginLeft='54px';
+							gid('tabtitles').style.left='54px';gid('tabtitles').style.width=(cw-54)+'px';gid('tabtitles').style.marginLeft='';
+							gid('tabviews').style.left='54px';gid('tabviews').style.width=(cw-54)+'px';
+							gid('tabviews').className=gid('tabviews').className.replace(/\s*boundless\s*/g,'');
+							var qns=document.getElementsByClassName('qnav_');for(var qi=0;qi<qns.length;qi++){qns[qi].style.left='54px';qns[qi].style.top='';}
+							if(gid('vnavside_hide'))gid('vnavside_hide').style.display='none';if(gid('vnavside_show'))gid('vnavside_show').style.display='block';
+						}
+						if (document.appsettings.quicklist) lkv_remount(); else lkv_dismount();
+						if (document.vvKeyboardOpen&&document.lkvdismounted&&gid('lkv')&&gid('lkv').showing) repositionDismountedLkv();
+					// Search visibility for landscape vnp=true
+					var mobl=document.appsettings.uiconfig?document.appsettings.uiconfig.mobile_landscape:null;
+					if (mobl&&mobl.enable_master_search){
+						gid('mmastersearch').style.display='inline-block';
+						gid('adminlogout').style.display='';
+						var msShell2=gid('mmastersearch').querySelector('.mastersearchshell');
+						if (msShell2) msShell2.style.width='0';
+						gid('mastersearch').className='';
+						var msIcon2=gid('msearchicon');if (msIcon2) msIcon2.style.display='';
+						var msCloser2=gid('msearchcloser');if (msCloser2) msCloser2.style.display='none';
+					} else {
+						gid('mmastersearch').style.display='none';
+						gid('adminlogout').style.display='';
+					}
+					// tabviews top will be set by autosize() based on tab row count
+					gid('tabviews').style.top='43px';gid('tabviews').style.height=(ch()-43)+'px';
+				} else {
+					// vertical_nav_persist=false: top bar (logo+power) + left panel (menu or bookmark TOC)
+					gid('mvptr').style.display='none';
+					gid('leftview').style.display='none';
+					gid('toolbg').style.width='100%';gid('toolbg').style.height='40px';
+					gid('toolicons').style.width='100%';gid('toolicons').style.height='40px';
+					gid('mainmenu').style.width='180px';gid('mainmenu').style.left='0';gid('mainmenu').style.top='40px';
+					gid('mainmenu').style.display='block';
+					gid('bookmarkview').style.height=(ch()-40)+'px';
+					// Check if current tab is dash or non-dash to decide left panel content
+					var curTabId=document.currenttab;
+					var isDashRotate=(document.tabkeys[curTabId]=='welcome')||(document.tabtitles[curTabId]&&document.tabtitles[curTabId].reloadinfo&&document.tabtitles[curTabId].reloadinfo.opts&&document.tabtitles[curTabId].reloadinfo.opts.tabctx=='dash');
+					if (isDashRotate) {
+						// Dash tab: show main menu
+						gid('mainmenu').style.visibility='visible';
+						gid('bookmarkview').style.display='none';
+						gid('tabviews').className=gid('tabviews').className.replace(/\s*boundless\s*/g,'');
+						gid('tabviews').style.left='180px';gid('tabviews').style.width=(cw-180)+'px';
+						gid('content').style.width=(cw-180)+'px';gid('content').style.marginLeft='180px';gid('content').style.zIndex='2000';
+						gid('tabtitles').style.top='17px';gid('tabtitles').style.left='180px';gid('tabtitles').style.width=(cw-180)+'px';gid('tabtitles').style.marginLeft='';
+					} else {
+						// Non-dash tab: show bookmark TOC (or blank left panel)
+						gid('mainmenu').style.visibility='hidden';
+						gid('bookmarkview').style.display='block';
+						gid('tabviews').className=gid('tabviews').className.replace(/\s*boundless\s*/g,'')+' boundless';
+						gid('tabviews').style.left='180px';gid('tabviews').style.width=(cw-180)+'px';
+						gid('content').style.width=(cw-180)+'px';gid('content').style.marginLeft='180px';gid('content').style.zIndex='2000';
+						gid('tabtitles').style.top='17px';gid('tabtitles').style.left='180px';gid('tabtitles').style.width=(cw-180)+'px';gid('tabtitles').style.marginLeft='';
+						tab_loadbookmark(document.tabviews[curTabId]);
+						gid('tabviews').onscroll=tab_syncbookmarks;
+						setTimeout(tab_syncbookmarks,100);
+					}
+					// Search visibility for landscape vnp=false
+					var mobl=document.appsettings.uiconfig?document.appsettings.uiconfig.mobile_landscape:null;
+					if (mobl&&mobl.enable_master_search){
+						gid('mmastersearch').style.display='inline-block';
+						gid('adminlogout').style.display='';
+						var msShell=gid('mmastersearch').querySelector('.mastersearchshell');
+						if (msShell) msShell.style.width='0';
+						gid('mastersearch').className='';
+									var msIcon=gid('msearchicon');if (msIcon) msIcon.style.display='';
+						var msCloser=gid('msearchcloser');if (msCloser) msCloser.style.display='none';
+					} else {
+						gid('mmastersearch').style.display='none';
+						gid('adminlogout').style.display='';
+					}
+					// Compute mainmenu height: full viewport height minus 40px top bar
+					gid('mainmenu').style.height=(ch()-40)+'px';
+					var mmi=gid('mainmenuitems');if(mmi) mmi.style.height=(ch()-40)+'px';
+					// tabviews top will be set by autosize() based on tab row count
+					gid('tabviews').style.top='43px';gid('tabviews').style.height=(ch()-43)+'px';
+					var qns=document.getElementsByClassName('qnav_');for(var qi=0;qi<qns.length;qi++){qns[qi].style.left='183px';qns[qi].style.top='43px';}
+					lkv_dismount();
+					if (document.vvKeyboardOpen&&document.lkvdismounted&&gid('lkv')&&gid('lkv').showing) repositionDismountedLkv();
+				}
+			} else {
+				// Standard landscape: toolbar at top or bottom
+				// Reset any left-toolbar positioning
+				gid('content').style.zIndex='';gid('toolbg').style.left='';gid('toolbg').style.width='100%';gid('toolbg').style.height='';
+				gid('toolicons').style.left='';gid('toolicons').style.width='100%';gid('toolicons').style.height='';gid('toolicons').style.flexDirection='';gid('toolicons').style.justifyContent='';gid('toolicons').style.alignItems='';
+				gid('applogo').style.display='block';
+				// Position #toollist at left:100px (after logo), width fills remaining space minus adminlogout
+				var ta_w2=gid('toolbaractions')?(gid('toolbaractions').offsetWidth||0):0;
+				gid('toollist').style.display='';gid('toollist').style.position='absolute';gid('toollist').style.left='100px';gid('toollist').style.width=(cw-100-ta_w2-10)+'px';gid('toollist').style.height='';
+				// Hide #mainmenu in standard landscape (uses #toollist instead)
+				gid('mainmenu').style.display='none';gid('mainmenu').style.left='';gid('mainmenu').style.top='';gid('bookmarkview').style.display='none';gid('bookmarkview').style.visibility='';gid('tabtitles').style.top='';gid('tabtitles').style.left='';gid('tabtitles').style.width='';gid('tabtitles').style.marginLeft='';gid('tabviews').style.top='';gid('tabviews').style.left='';gid('tabviews').style.width='';gid('tabviews').style.paddingTop='';gid('tabviews').style.position='';gid('tabviews').style.height='';
+				gid('toollistcontent').style.width=gid('toollistcontent').getAttribute('data-orig-width')+'px';gid('toollistcontent').style.paddingLeft='0';gid('toollistcontent').style.display='';
+				// Hide span labels in standard landscape (toolbar at top/bottom)
+				var spans=gid('toollistcontent').getElementsByTagName('span');for(var si=0;si<spans.length;si++) spans[si].style.display='';
+				gid('mvptr').style.display='block';
+				if (document.appsettings.quicklist){
+					gid('leftview').style.left='5px';
+					gid('leftview').style.width='210px';
+					gid('mvptr').style.left='215px';
+					gid('mvptr').className='';
+					gid('content').style.width=cw-240+'px';
+					gid('content').style.marginLeft='240px';
+					gid('tabtitles').style.width=cw-240+'px';
+					gid('tabtitles').style.marginLeft='';
+					var qns=document.getElementsByClassName('qnav_');for(var qi=0;qi<qns.length;qi++){qns[qi].style.left='237px';qns[qi].style.top='';}
+					lkv_dismount();
+					if (document.vvKeyboardOpen&&document.lkvdismounted&&gid('lkv')&&gid('lkv').showing) repositionDismountedLkv();
+				} else {
+					gid('leftview').style.left='-230px';
+					gid('leftview').style.width='210px';
+					gid('mvptr').style.left='0';
+					gid('mvptr').className='rexpand';
+					gid('content').style.width=(cw-24)+'px';
+					gid('content').style.marginLeft='22px';
+					gid('tabtitles').style.width=(cw-24)+'px';
+					gid('tabtitles').style.marginLeft='22px';
+					var qns=document.getElementsByClassName('qnav_');for(var qi=0;qi<qns.length;qi++){qns[qi].style.left='22px';qns[qi].style.top='';}
+					lkv_dismount();
+					if (document.vvKeyboardOpen&&document.lkvdismounted&&gid('lkv')&&gid('lkv').showing) repositionDismountedLkv();
+				}
+				if (lscape_bottom){
+					gid('toolbg').style.bottom='0';gid('toolbg').style.top='';
+					gid('toolicons').style.bottom='10px';gid('toolicons').style.top='';
+				} else {
+					gid('toolbg').style.top='0';gid('toolbg').style.bottom='';
+					gid('toolicons').style.top='0';gid('toolicons').style.bottom='';
+				}
+				// Standard landscape search visibility
+				if (mobl&&mobl.enable_master_search){
+					gid('mmastersearch').style.display='inline-block';
+					gid('adminlogout').style.display='';
+					var msShell=gid('mmastersearch').querySelector('.mastersearchshell');
+					if (msShell) msShell.style.width='0';
+					gid('mastersearch').className='';
+							var msIcon=gid('msearchicon');if (msIcon) msIcon.style.display='';
+					var msCloser=gid('msearchcloser');if (msCloser) msCloser.style.display='none';
+				} else {
+					gid('mmastersearch').style.display='none';
+					gid('adminlogout').style.display='';
+				}
+			}
+			if (document.lastori==null||document.lastori!=ori) ajxcss(self.cssloader,'iphone/landscape_css.php?dark=<?php echo $dark;?>','landscape','portrait');
+			document.viewheight=210;
+			scaleall(document.body);
+			setTimeout(function(){scaleall(document.body);},100);
+			document.iphone_portrait=null;
+			reposition_bar_views();
+			update_qnav_padding();
+			if (document.tabafloat) {
+				document.body.className=document.body.className.replace(/\s*tabafloat_\w+/g,'')+' tabafloat_landscape';
+				gid('leftview').style.display='none';
+				gid('mvptr').style.display='none';
+				gid('tabtitles').style.display='none';
+				gid('tabviews').style.paddingTop='0';gid('tabviews').style.left='0';gid('tabviews').style.top='0';gid('tabviews').style.width=document.appsettings.cw+'px';gid('tabviews').style.height=document.appsettings.ch+'px';
+				gid('mainmenu').style.display='none';gid('bookmarkview').style.display='none';gid('bookmarkview').style.visibility='';
+				gid('mmastersearch').style.display='none';
+				gid('content').style.marginLeft='0';gid('content').style.zIndex='';
+				gid('content').style.width=document.appsettings.cw+'px';
+				var qns=document.getElementsByClassName('qnav_');for(var qi=0;qi<qns.length;qi++){qns[qi].style.left='0';qns[qi].style.top='0';}
+			} else {
+				gid('tabviews').style.paddingTop=(26*(document.rowcount||1))+'px';
+				var rls=document.querySelectorAll('.reloader[id^="tabreloader_"]');
+				for(var ri=0;ri<rls.length;ri++){rls[ri].style.top='';}
+			}
+			gid('rotate_indicator').style.display='none';
+			if (typeof tab_reflow==='function') tab_reflow();
+		break;
+		}
+		document.lastori=ori;
 	}
-	
-	document.lastori=ori;
 
-}
+addtab('welcome','<?php tr('tab_welcome');?>','dash_default',function(){showmainmenu();},null,{noclose:true,tabctx:'dash'});
 
-function portrait_ignore(ttl){
-	if (!ttl) ttl=2000;
-
-	document.portraitlock=1;
-
-	setTimeout(function(){document.portraitlock=null;},ttl);
-}
-
-addtab('welcome','<?php tr('tab_welcome');?>','wk',null,null,{noclose:true});
-
-function onrotate(){
-	if (document.resizetimer) clearTimeout(document.resizetimer);
-	document.resizetimer=setTimeout(function(){
-		rotate();
-		setTimeout(rotate,500);
-	},100);
-}
-
-setInterval(authpump,60000); //check if needs to re-login; comment this out to disable authentication
-
-addtab('welcome','Welcome','wk',null,null,{noclose:true});
+setInterval(authpump,60000);
+</script>
+<?php include 'ws_js.php';?>
+<script>
+showtab('welcome');
 
 if (typeof(window.onorientationchange)!='object') window.onresize=onrotate;
 else window.onorientationchange=onrotate;
@@ -427,10 +647,11 @@ else window.onorientationchange=onrotate;
 onrotate();
 
 scaleall(document.body);
-
+if (self.initViewportKeyboard) initViewportKeyboard();
+if (self.initKeyboardFocusHandlers) initKeyboardFocusHandlers();
+setquicklist(document.appsettings.quicklist,true);
 
 </script>
-<?php include 'ws_js.php';?>
 <script src="speechloader.js"></script>
 <?php
 /*
@@ -470,6 +691,11 @@ if (navigator.serviceWorker&&navigator.serviceWorker.register){
 	navigator.serviceWorker.register('service_worker.js');
 }
 </script>
+<?php
+if (isset($uiconfig['mobile']['corner_botchat'])&&$uiconfig['mobile']['corner_botchat']){
+	echo "<script>ajxjs2('botchat_showcornerbutton','botchats.js',function(){botchat_showcornerbutton();});</script>";
+}
+?>
 <?php
 include 'offline.php';
 ?>

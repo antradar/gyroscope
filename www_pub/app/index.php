@@ -39,7 +39,7 @@ header('Cache-Control: no-store');
 include 'uiconfig.php';
 include 'icl/showdefleftcontent.inc.php';
 
-if ($uiconfig['toolbar_position']=='left') $quicklist=0;
+if ($uiconfig['toolbar_position']=='left'&&(!isset($uiconfig['vertical_nav_persist'])||!$uiconfig['vertical_nav_persist'])) $quicklist=0;
 
 ?>
 <!doctype html>
@@ -58,6 +58,15 @@ if ($uiconfig['toolbar_position']=='left') $quicklist=0;
 	<link href="rtl.css" type="text/css" rel="stylesheet" />
 	<?php }?>
 	<link rel="manifest" href="manifest.php?hb=<?php echo time();?>">
+	<style>
+	<?php if ($uiconfig['vertical_nav_persist']){?>
+	#mainmenu{width:190px;}
+	<?php }?>
+	<?php if ($uiconfig['statusbar_hide']){?>
+	#statusinfo{display:none;}
+	#sptr{bottom:0;}
+	<?php }?>
+	</style>
 	<?php if (isset($SQL_READONLY)&&$SQL_READONLY){
 	?>
 	<style>
@@ -82,7 +91,7 @@ document.appsettings={codepage:'<?php echo $codepage;?>',binpages:<?php echo jso
 <!-- left panel -->
 <div id="tooltitle" class="<?php if ($uiconfig['toolbar_position']=='left') echo 'promoted';?>" title="double-click to reload the side view" ondblclick="if (document.viewindex) reloadview(document.viewindex);"></div>
 <div id="mainmenu" class="<?php if ($uiconfig['toolbar_position']=='top') echo 'silent';?>"></div>
-<div id="leftview" class="<?php if ($uiconfig['toolbar_position']=='left') echo 'promoted';?>" scale:ch="105"><div id="leftview_">
+<div id="leftview" class="<?php if ($uiconfig['toolbar_position']=='left') echo 'promoted';?>" scale:ch="<?php echo $uiconfig['statusbar_hide']?80:105;?>"><div id="leftview_">
 	<div id="defleftview" style="width:100%;height:100%;overflow:auto;position:absolute;"><?php showdefleftcontent($quicklist);?></div>
 	<?php foreach ($toolbaritems as $modid=>$ti){?>
 	<div id="lv<?php echo $modid;?>" style="display:none;width:100%;height:100%;overflow:auto;position:absolute;"></div>
@@ -158,22 +167,32 @@ foreach ($toolbaritems as $modid=>$ti){
 
 </span><!-- iconbuttons -->
 
-<div id="logoutlink" class="<?php if ($usermeta['haspic']) echo 'bigprofile';?> <?php if ($uiconfig['toolbar_position']=='left') echo 'moveup'; if ($uiconfig['enable_master_search']) echo ' hassearch';?>">
+<div id="logoutlink" class="<?php if ($usermeta['haspic']&&(!isset($uiconfig['account_position'])||$uiconfig['account_position']!='left')) echo 'bigprofile';?> <?php if ($uiconfig['toolbar_position']=='left') echo 'moveup'; if ($uiconfig['enable_master_search']) echo ' hassearch';?>">
 <?php if ($uiconfig['enable_master_search']){?>
 	<span id="mastersearchanchor">
 		<input id="mastersearchshadow" class="mastersearch" value="Search">
 		<input id="mastersearch" class="mastersearch" placeholder="Search All" onfocus="showmastersearch();" onblur="hidemastersearch();" onkeyup="_mastersearch();">
 	</span>
 <?php }?>
+
+<?php
+if (!isset($uiconfig['settings_position'])||$uiconfig['settings_position']=='top'){?>
+<acronym title="Settings"><a onclick="showview('core.settings',1,1,null,null,null);"><img src="imgs/t.gif" class="admin-settings"></a></acronym>
+&nbsp;
+<?php }
+
+if (!isset($uiconfig['account_position'])||$uiconfig['account_position']=='top'){?>
 <acronym title="<?php echo htmlspecialchars($user['dispname']);?>"><a onclick="ajxjs2('setaccountpass','accounts.js',function(){reloadtab('account','<?php tr('account_settings');?>','showaccount');addtab('account','<?php tr('account_settings');?>','showaccount');});return false;"><?php if ($usermeta['haspic']){?><img src="<?php echo $codepage;?>?cmd=imguserprofile&userid=<?php echo $userid;?>" id="mainuserprofile"><?php } else {?><img src="imgs/t.gif" id="mainuserprofile" class="admin-user"><?php }?><span id="labellogin"><?php echo htmlspecialchars($user['dispname']);?></span><span id="labeldispname" style="display:none;"><?php echo htmlspecialchars($user['dispname']);?></span></a></acronym>
-&nbsp; &nbsp;
+&nbsp; 
+<?php }?>
+&nbsp;
 <!-- acronym title="<?php tr('account_settings');?>"><a title="<?php tr('account_settings');?>" onclick="ajxjs(<?php jsflag('setaccountpass');?>,'accounts.js');reloadtab('account','<?php tr('account_settings');?>','showaccount');addtab('account','<?php tr('account_settings');?>','showaccount');return false;"><img src="imgs/t.gif" width="16" height="16" class="admin-settings"></a></acronym -->
 &nbsp;
 <acronym title="<?php tr('signout');?>"><a title="<?php tr('signout');?>" onclick="skipconfirm();" href="login.php?from=<?php echo $_SERVER['PHP_SELF'];?>" onmouseover="hintstatus(this,'Logout');"><img src="imgs/t.gif" width="16" height="16" class="admin-logout"></a></acronym>
 </div><!-- logout -->
 </div>
 </div>
-<div id="statusinfo" scale:ny="25" scale:cw="0">
+<div id="statusinfo" scale:ny="25" scale:cw="0"<?php if ($uiconfig['statusbar_hide']) echo ' style="display:none;"';?>>
 	<span id="statusicons">
 	<img id="lI01" style="display:inline;" src="imgs/t.gif" onmousedown="toggle_easyread();" onmouseup="toggle_easyread();" onmouseover="hintstatus(this,'hold to use a more legible font');">
 	<a id="speechstart" onclick="ajxjs(<?php jsflag('speech_startstop');?>,'speech.js');speech_startstop();" onmouseover="hintstatus(this,'<?php tr('speech_clicktoactivate');?>');"><img src="imgs/t.gif"></a>
@@ -199,12 +218,20 @@ if ($uiconfig['toolbar_position']=='left') $tabbase=57;
 <div id="tabtitles" scale:cw="225"> <a id="closeall" onclick="resettabs('welcome');"><b><img src="imgs/t.gif" class="img-closeall" width="10" height="10"><?php tr('close_all_tabs');?></b></a> 
 	<span class="activetab" id="tabshadow" style="position:absolute;top:0;left:0;display:none;"></span>
 </div>
-<div id="tabviews" class="<?php if ($uiconfig['toolbar_position']=='left') echo 'boundless';?>" style="overflow:auto;position:absolute;left:295px;height:30px;top:<?php echo $tabbase;?>px;" scale:cw="225" scale:ch="105"></div>
+<?php
+$viewleft=295;
+$view_cw=225;
+if ($uiconfig['vertical_nav_persist']) {
+	$viewleft=120;
+	$view_cw=190;
+}
+?>
+<div id="tabviews" class="<?php if ($uiconfig['toolbar_position']=='left') echo 'boundless';?>" style="overflow:auto;position:absolute;left:<?php echo $viewleft;?>px;height:30px;top:<?php echo $tabbase;?>px;" scale:cw="<?php echo $view_cw;?>" scale:ch="<?php echo $uiconfig['statusbar_hide']?80:105;?>"></div>
 
 <div id="tabexpander" onclick="toggletabdock();"></div>
 
 <div id="vsptr" onclick="setquicklist(document.appsettings.quicklist?0:1);" <?php if ($uiconfig['toolbar_position']=='left') echo 'style="display:none;"';?>></div>
-<div id="sptr" scale:ch="104"></div>
+<div id="sptr" scale:ch="<?php echo $uiconfig['statusbar_hide']?79:104;?>"<?php if ($uiconfig['statusbar_hide']) echo ' style="bottom:0;"';?>></div>
 
 <div id="fsmask"></div>
 <div id="fstitlebar">
@@ -236,6 +263,16 @@ if ($uiconfig['enable_master_search']){?>
 </div>
 
 <div id="gamepadspot" style="border:solid 3px #ffab00;position:absolute;width:32px;height:32px;top:0;left:0;transition:all 200ms;z-index:3002;display:none;"></div>
+
+<div id="cornertab" style="display:none;position:fixed;bottom:60px;right:20px;width:400px;height:400px;z-index:700;background:#ffffff;border:1px solid #cccccc;box-shadow:0 4px 12px rgba(0,0,0,0.15);border-radius:8px;overflow:hidden;">
+	<div id="cornertab_header" style="background:#454242;color:#ffffff;padding:8px;">
+		<span id="cornertab_title"></span>
+		<a id="cornertab_close" onclick="tab_undock_corner();" style="margin-left:8px;float:right;cursor:pointer;color:#ffffff;font-weight:bold;font-size:14px;display:inline-block;padding:0 5px;">x</a>
+		<a id="cornertab_minimize" onclick="corner_minimize();" style="float:right;cursor:pointer;color:#ffffff;font-weight:bold;font-size:14px;display:inline-block;padding:0 5px;">_</a>
+	</div>
+	<div id="cornertab_content" style="width:100%;height:calc(100% - 28px);overflow:auto;"></div>
+</div>
+<div id="cornerbutton" style="display:none;position:fixed;bottom:60px;right:20px;width:48px;height:48px;z-index:700;background:#454242;border-radius:8px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.15);text-align:center;line-height:48px;color:#ffffff;font-size:20px;" onclick="corner_button_click();">&#x2750;</div>
 
 <div id="callout" style="z-index:4000;filter:alpha(opacity=0);opacity:0;transition:top 120ms,left 120ms,opacity 180ms;position:absolute;top:-80px;left:250px;"><img src="imgs/callout.png" style="width:56px;"></div>
 
@@ -427,6 +464,11 @@ window.onload=function(){
 }
 
 </script>
+<?php
+if ($uiconfig['corner_botchat']){
+	echo "<script>ajxjs2('botchat_showcornerbutton','botchats.js',function(){botchat_showcornerbutton();});</script>";
+}
+?>
 <?php
 include 'offline.php';
 

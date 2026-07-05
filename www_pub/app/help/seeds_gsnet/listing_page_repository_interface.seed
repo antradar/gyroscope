@@ -1,0 +1,28 @@
+// See Public#record_titlecase#Repository.cs for MySQL implementation
+// See CachedPublic#record_titlecase#Repository.cs for Memcache implementation with versioning
+
+namespace GyroscopeSite.Data;
+
+public class Public#record_titlecase#QueryParams
+{
+    public string? Keyword { get; set; }
+    public int Page { get; set; } = 1;
+    public string Sort { get; set; } = "#sort_field#";
+    public int PageSize { get; set; } = 5;
+}
+
+public class Public#record_titlecase#QueryResult
+{
+    public List<Public#record_titlecase#> Public#record_pl_titlecase# { get; set; } = new();
+    public int CurrentPage { get; set; }
+    public int PageSize { get; set; }
+    public int TotalCount { get; set; }
+    public int MaxPage => (int)Math.Ceiling((double)TotalCount / PageSize);
+}
+
+public interface IPublic#record_titlecase#Repository
+{
+    Task<Public#record_titlecase#QueryResult> GetPublic#record_pl_titlecase#Async(Public#record_titlecase#QueryParams queryParams);
+    Task InvalidateCacheAsync();
+}
+

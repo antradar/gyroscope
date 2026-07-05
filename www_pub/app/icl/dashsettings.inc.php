@@ -6,7 +6,7 @@ function dashsettings(){
 	global $uiconfig;
 	
 	header('tabctx: dash');
-	if ($uiconfig['toolbar_position']=='top') header('newtitle: Settings');
+	header('newtitle: Settings');
 
 ?>
 <div class="section">

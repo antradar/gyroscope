@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: text/css');
 ?>
-#shared_tab_closer,
+.tabclose_btn, .tabreload_btn, .tabdock_btn,
 .activetab .tabclose,
 .dulltab .tabclose,
 .activetab, .dulltab,
@@ -30,7 +30,7 @@ if ($dark==0){
 <?php	
 }
 
-if ($dark==0||$dark==1){
+if ($dark==0||$dark==1||$dark==3){
 ?>
 
 	.activetab .tabclose,

@@ -13,7 +13,7 @@ function setmyquicklist($ctx=null){
 	
 	$query="update ".TABLENAME_USERS." set quicklist=? where userid=?";
 	sql_prep($query,$db,array($quicklist,$userid));
-	
+		
 	cache_inc_entity_ver('user_'.$gsid);
 	
 	if (!$silent) showdefleftcontent();

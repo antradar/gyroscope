@@ -1,0 +1,27 @@
+{
+"fields":[
+	{"field":"page_key","disp":"internal page idetity key (TitleCase)","def":"Cats"},
+	{"field":"page_url","disp":"route relative to the domain root","def":"/cats"},
+	{"field":"page_title","disp":"Page Title","def":"Browse our Cat Listings"},
+	{"field":"record_lower","disp":"record entity in lowercase","def":"cat"},
+	{"field":"record_titlecase","disp":"record entity in TitleCase","def":"Cat"},
+	{"field":"record_pl_lower","disp":"plural form of record entity in lowercase","def":"cats"},
+	{"field":"record_pl_titlecase","disp":"plural form of record entity in TitleCase","def":"Cats"},
+	{"field":"record_table","disp":"database table name","def":"cats"},
+	{"field":"primary_key","disp":"primary key in database table","def":"catid"},
+	{"field":"display_field","disp":"field for display name","def":"catname"},
+	{"field":"sort_field","disp":"field to sort","def":"catname"}
+],
+
+"templates":[
+	{"template":"listing_page_repository_interface","filename":"create or modify repository model Data/IPublic#record_titlecase#Repository.cs"},
+
+	{"template":"listing_page_repository","filename":"create or modify repository model Data/Public#record_titlecase#Repository.cs"},
+	{"template":"listing_page_repository_cached","filename":"create or modify cached repository model Data/CachedPublic#record_titlecase#Repository.cs"},
+
+	{"template":"listing_page_appcontext","filename":"merge the sections into Data/AppDbContext.cs"},
+		
+	{"template":"listing_page_version","filename":"add cache version entry to cacheversion.json, merge the relatedCacheKeys node"}
+	
+]
+}

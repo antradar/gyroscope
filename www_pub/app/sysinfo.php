@@ -161,8 +161,15 @@ $org=md5('test'.$now); //a test message for encryption
 $orgenc=encstr($org,$enckey,1); //remote encryption
 $orgdec=decstr($orgenc,$enckey,1);
 
+// BC Permanent DST Patch: unix=1793523600 must resolve to PDT (DST=1) on a patched server.
+$_bc_tz_prev=date_default_timezone_get();
+date_default_timezone_set('America/Vancouver');
+$_bc_ok=(int)date('I',1793523600)===1;
+date_default_timezone_set($_bc_tz_prev);
+
 $tests=array(
 'Gyroscope Version'=>array('res'=>2,'message'=>'<a href=# onclick="checkver();return false;">'.GYROSCOPE_VERSION.'</a> &nbsp; <nobr><span id="gsver"></span></nobr>'),
+'BC Permanent DST Patch'=>array('res'=>$_bc_ok?1:0),
 'SQL Read Only'=>array('res'=>2,'message'=>$SQL_READONLY?'Yes':'No'),
 'EncDec'=>array('res'=>2,'message'=>ENC_DEC),
 'EncDec_Remote'=>array('res'=>$org==$orgdec),

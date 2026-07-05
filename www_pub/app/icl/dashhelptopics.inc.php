@@ -5,7 +5,7 @@ function dashhelptopics(){
 	global $uiconfig;
 	header('tabctx: dash');
 	header("newloadfunc: ajxjs(self.showhelptopic,'helptopics.js');");
-	if ($uiconfig['toolbar_position']=='top') header('newtitle: '._tr('icon_helptopics'));
+	header('newtitle: '._tr('icon_helptopics'));
 	
 
 ?>

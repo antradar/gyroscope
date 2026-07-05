@@ -1,5 +1,6 @@
 <?php
 
+
 $codegen_seeds=array(
 	'listview'=>array('name'=>'Base Record','desc'=>'A base record can be directly created by the user','icon'=>'base'),
 	'subrecord'=>array('name'=>'Sub Record','desc'=>'A sub record has a detail view and a side list that is subordinate to a base record;<br>it can only be created within the context of a base record','icon'=>'sub'),

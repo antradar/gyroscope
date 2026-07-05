@@ -1,0 +1,163 @@
+// Decorator pattern wrapping Public#record_titlecase#Repository with Memcache layer
+// Key features:
+// - Cache key versioning: public_#record_pl_lower#_{keyword}_{page}_{sort}_{perpage}_{version}
+// - Thread-safe version increment using Memcache's atomic Increment() operation
+// - Version-based invalidation: increment version to invalidate all related cache entries
+
+using Enyim.Caching;
+using System.Text.Json;
+using gsnet.Services;
+
+namespace GyroscopeSite.Data;
+
+public class CachedPublic#record_titlecase#Repository : IPublic#record_titlecase#Repository
+{
+    private readonly IPublic#record_titlecase#Repository _innerRepository;
+    private readonly IMemcachedClient _memcached;
+    private readonly ILogger<CachedPublic#record_titlecase#Repository> _logger;
+    private readonly IDebugLogService _debugLog;
+
+    // Cache version key for public #record_pl_lower#" list cache
+    // Configuration: cacheversions.json -> cacheVersionKeys.public_#record_pl_lower#_cache_version
+    private const string VERSION_KEY = "public_#record_pl_lower#_cache_version";
+    private const int CACHE_EXPIRATION_SECONDS = 3600; // 1 hour
+
+    public CachedPublic#record_titlecase#Repository(
+        IPublic#record_titlecase#Repository innerRepository,
+        IMemcachedClient memcached,
+        ILogger<CachedPublic#record_titlecase#Repository> logger,
+        IDebugLogService debugLog)
+    {
+        _innerRepository = innerRepository;
+        _memcached = memcached;
+        _logger = logger;
+        _debugLog = debugLog;
+    }
+
+    public async Task<Public#record_titlecase#QueryResult> GetPublic#record_pl_titlecase#Async(Public#record_titlecase#QueryParams queryParams)
+    {
+        _logger.LogInformation("GetPublic#record_pl_titlecase#Async called with: Keyword={Keyword}, Page={Page}, Sort={Sort}, PageSize={PageSize}",
+            queryParams.Keyword ?? "(null)", queryParams.Page, queryParams.Sort, queryParams.PageSize);
+
+        // Get current cache version
+        var version = await GetCacheVersionAsync();
+
+        // Build cache key based on query parameters
+        var cacheKey = BuildCacheKey(queryParams, version);
+
+        _logger.LogInformation("Cache key: {CacheKey}", cacheKey);
+
+        // Try to get from cache
+        _debugLog.LogMemcacheActivity("GET", cacheKey);
+        var cacheResult = await _memcached.GetAsync<string>(cacheKey);
+
+        if (cacheResult.Success && !string.IsNullOrEmpty(cacheResult.Value))
+        {
+            try
+            {
+                var cachedData = JsonSerializer.Deserialize<Public#record_titlecase#QueryResult>(cacheResult.Value);
+                if (cachedData != null)
+                {
+                    _logger.LogInformation("Cache HIT for key: {CacheKey} (Page {Page}/{MaxPage}, PerPage={PerPage})",
+                        cacheKey, cachedData.CurrentPage, cachedData.MaxPage, cachedData.PageSize);
+                    _debugLog.LogMemcacheActivity("HIT", cacheKey,
+                        cacheResult.Value.Length > 100 ? cacheResult.Value.Substring(0, 100) + "..." : cacheResult.Value);
+                    return cachedData;
+                }
+            }
+            catch (JsonException ex)
+            {
+                _logger.LogWarning(ex, "Failed to deserialize cached data for key: {CacheKey}", cacheKey);
+            }
+        }
+
+        _logger.LogInformation("Cache MISS for key: {CacheKey}", cacheKey);
+        _debugLog.LogMemcacheActivity("MISS", cacheKey);
+
+        // Get from database
+        var result = await _innerRepository.GetPublic#record_pl_titlecase#Async(queryParams);
+
+        _logger.LogInformation("Database query returned {Count} #record_pl_titlecase# (Page {Page}/{MaxPage}, PerPage={PerPage})",
+            result.Public#record_pl_titlecase#.Count, result.CurrentPage, result.MaxPage, result.PageSize);
+
+        // Store in cache
+        try
+        {
+            var serialized = JsonSerializer.Serialize(result);
+            _debugLog.LogMemcacheActivity("SET", cacheKey,
+                serialized.Length > 100 ? serialized.Substring(0, 100) + "..." : serialized,
+                CACHE_EXPIRATION_SECONDS);
+            await _memcached.SetAsync(cacheKey, serialized, CACHE_EXPIRATION_SECONDS);
+            _logger.LogInformation("Cached data for key: {CacheKey}", cacheKey);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to cache data for key: {CacheKey}", cacheKey);
+        }
+
+        return result;
+    }
+
+    public async Task InvalidateCacheAsync()
+    {
+        try
+        {
+            // Use Memcache's atomic increment operation for thread-safe version increment
+            // If the key doesn't exist, it will be created with defaultValue=1, then incremented to 2
+            var newVersion = _memcached.Increment(VERSION_KEY, defaultValue: 1, delta: 1);
+
+            _logger.LogInformation("Cache invalidated. Version incremented to {NewVersion}", newVersion);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to invalidate cache");
+        }
+
+        await Task.CompletedTask;
+    }
+
+    private Task<int> GetCacheVersionAsync()
+    {
+        // IMPORTANT: Do NOT use GetAsync or Store as they corrupt the key for subsequent Increment() calls
+        // Instead, use Increment with delta=0 to read the current value without modifying it
+        // If the key doesn't exist, it will be automatically created with defaultValue=1
+        // This keeps the value as raw bytes (flag 0), which Increment() can work with
+        try
+        {
+            var currentVersion = _memcached.Increment(key: VERSION_KEY, defaultValue: 1, delta: 0);
+            return Task.FromResult((int)currentVersion);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to get cache version. Using version 1.");
+            return Task.FromResult(1);
+        }
+    }
+
+    private string BuildCacheKey(Public#record_titlecase#QueryParams queryParams, int version)
+    {
+        // Build key in format: public_#record_pl_lower#_{keyword}_{page}_{sort}_{perpage}_{version}
+        // Use empty string for missing parameters to maintain consistency
+
+        var keyword = string.IsNullOrWhiteSpace(queryParams.Keyword)
+            ? ""
+            : queryParams.Keyword.ToLower().Replace(" ", "_");
+
+        var page = queryParams.Page.ToString();
+        var sort = queryParams.Sort.ToLower();
+        var perpage = queryParams.PageSize.ToString();
+
+        // Construct the key (perpage is internal, not exposed in UI)
+        var key = $"public_#record_pl_lower#_{keyword}_{page}_{sort}_{perpage}_{version}";
+
+        // Clean up multiple underscores (when keyword is empty)
+        while (key.Contains("__"))
+        {
+            key = key.Replace("__", "_");
+        }
+
+        return key;
+    }
+
+}
+

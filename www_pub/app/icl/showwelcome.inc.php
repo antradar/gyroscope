@@ -10,7 +10,6 @@ include 'icl/listhomedashreports.inc.php';
 //include 'gsx_hello.inc.php'; //uncomment this to see gsx in bypass mode, remember to modify gsx.php
 
 function showwelcome($ctx=null){
-	
 	makechangebar('welcome',"if (gid('codegen_button')) gid('codegen_button').onclick();");
 ?>
 <div style="position:relative;margin-left:60px;"><?php makehelp($ctx,'welcometab2','maxtab',1);?></div>
@@ -127,6 +126,7 @@ SCal Test
 }
 
 function auto_welcome($ctx=null){
+	global $uiconfig;
 	$user=userinfo($ctx);
 	if (isset($ctx)) $toolbaritems=$ctx->toolbaritems; else global $toolbaritems;
 	?>
@@ -134,6 +134,7 @@ function auto_welcome($ctx=null){
 
 	<?php
 	foreach ($toolbaritems as $modid=>$ti){
+	if ($modid==='lv.welcome'&&isset($uiconfig['mobile_landscape']['toolbar_position'])&&$uiconfig['mobile_landscape']['toolbar_position']==='top') continue;
 	if (isset($ti['type'])&&$ti['type']=='custom'){
 	?>
 	<?php echo $ti['desktop'];?>

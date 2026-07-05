@@ -9,6 +9,7 @@ function embeduserprofileuploader($ctx=null){
 	if (isset($ctx)) $db=&$ctx->db; else global $db;
 	$user=userinfo($ctx);
 	$userid=intval($user['userid']);
+	$gsid=$user['gsid'];
 
 	$query="select darkmode from ".TABLENAME_USERS." where userid=?";
 	$rs=sql_prep($query,$db,$userid);
@@ -90,7 +91,8 @@ function embeduserprofileuploader($ctx=null){
 					$query="update ".TABLENAME_USERS." set haspic=1,imgv=imgv+1 where userid=?"; //,ampw=?,amph=?
 					sql_prep($query,$db,array($userid)); //$w,$h
 			
-						
+					cache_inc_entity_ver('user_'.$gsid);
+	
 					logaction($ctx,"uploaded $ofn to user #$userid",array('userid'=>$userid,'file'=>$ofn));
 				}
 			}

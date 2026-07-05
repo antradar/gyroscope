@@ -1,10 +1,12 @@
 <?php
 
 function codegen_makecode(){
+	global $seedtail;
+	
 	$seed=SGET('seed');
 	$seed=preg_replace('/[^A-Za-z0-9-_.]/','',$seed);
 	
-	$fn='help/seeds/'.$seed.'.json';
+	$fn='help/seeds'.$seedtail.'/'.$seed.'.json';
 	if (!file_exists($fn)) {echo "missing form file $seed.json";return;}	
 	
 	$c=file_get_contents($fn);
@@ -32,8 +34,9 @@ function codegen_makecode(){
 }
 
 function codegen_quotecode($seed,$filename,$opts,$midx,$nocopy,$subcall=0){
+	global $seedtail;
 
-	$fn='help/seeds/'.$seed.'.seed';
+	$fn='help/seeds'.$seedtail.'/'.$seed.'.seed';
 	if (!file_exists($fn)) {echo "missing seed file $seed.seed<br>";return;}
 	$code=file_get_contents($fn);
 	$code=htmlentities($code);
@@ -48,7 +51,7 @@ function codegen_quotecode($seed,$filename,$opts,$midx,$nocopy,$subcall=0){
 		$fields=explode("\n",$fieldlist);
 		$tmplfn=$matches[2];		
 		
-		$tmpl='help/seeds/'.$tmplfn.'.itr';
+		$tmpl='help/seeds'.$seedtail.'/'.$tmplfn.'.itr';
 		
 		
 		if (!file_exists($tmpl)) {echo '<div style="padding:10px 0;color:#ab0200;">missing iterator '.$matches[2].'.itr</div>';return '';}

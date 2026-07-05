@@ -6,7 +6,7 @@ function dashreports(){
 	global $uiconfig;
 	
 	header('tabctx: dash');
-	if ($uiconfig['toolbar_position']=='top') header('newtitle: Reports');
+	header('newtitle: Reports');
 	header('newloadfunc: '."ajxjs(self.showreport,'reports.js');");	
 ?>
 <div class="section">

@@ -166,7 +166,8 @@ scal_makemonth=function(calid,year,mon,paneltype,opts){
 	
 	var postdays=7-ld%7-fd;
 	if (postdays<0) postdays=7+postdays;
-	
+	if (postdays==7) postdays=0; // Edge case: month ends perfectly aligned with week
+
 	var ldx=ld+postdays;
 	
 	//console.log(paneltype,year,mon,fd,initday,'fd',fd,ld,ldx);

@@ -1,0 +1,9 @@
+@page
+@model #page_key#Model
+
+@{
+    ViewData["Title"] = "#page_title#";
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>place holder text</p>

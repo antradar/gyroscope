@@ -137,7 +137,7 @@ switch($cmd){
 	
 // toolbar_position:left wrappers
 	case 'listwelcome': include 'icl/listwelcome.inc.php'; listwelcome(); break;
-	case 'dash_default': include 'icl/dash_default.inc.php'; dash_default(); break;
+	case 'dash_lv__welcome': case 'dash_default': include 'icl/dash_default.inc.php'; dash_default(); break;
 	
 	case 'lookupall': include 'icl/lookupall.inc.php'; lookupall(); break;
 	
@@ -195,6 +195,7 @@ switch($cmd){
 	case 'kbman_delrecchannel': include 'icl/kbman_delrecchannel.inc.php'; kbman_delrecchannel(); break;
 	case 'kbman_adduserchannels': include 'icl/kbman_adduserchannels.inc.php'; kbman_adduserchannels(); break;
 	case 'kbman_deluserchannel': include 'icl/kbman_deluserchannel.inc.php'; kbman_deluserchannel(); break;
+	case 'kbman_setuserchannel_writable': include 'icl/kbman_setuserchannel_writable.inc.php'; kbman_setuserchannel_writable(); break;
 	
 	case 'kbman_addrelrec': include 'icl/kbman_addrelrec.inc.php'; kbman_addrelrec(); break;
 	case 'kbman_delrelrec': include 'icl/kbman_delrelrec.inc.php'; kbman_delrelrec(); break;
@@ -233,6 +234,9 @@ switch($cmd){
 	case 'imguserprofile': include 'icl/imguserprofile.inc.php'; imguserprofile(); break;
 	case 'removeuserprofilepic': include 'icl/removeuserprofilepic.inc.php'; removeuserprofilepic(); break;
 	case 'showuserprofile': include 'icl/showuserprofile.inc.php'; showuserprofile(); break;
+	
+	case 'addusermcpkey': include 'icl/addusermcpkey.inc.php'; addusermcpkey(); break;
+	case 'delusermcpkey': include 'icl/delusermcpkey.inc.php'; delusermcpkey(); break;
 	
 	case 'imgqrcode': include 'icl/imgqrcode.inc.php'; imgqrcode(); break;
 	case 'showgaqr': include 'icl/showgaqr.inc.php'; showgaqr(); break;

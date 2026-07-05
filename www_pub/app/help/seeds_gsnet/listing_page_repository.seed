@@ -1,0 +1,62 @@
+using Microsoft.EntityFrameworkCore;
+
+namespace GyroscopeSite.Data;
+
+public class Public#record_titlecase#Repository : IPublic#record_titlecase#Repository
+{
+    private readonly AppDbContext _db;
+
+    public Public#record_titlecase#Repository(AppDbContext db)
+    {
+        _db = db;
+    }
+
+    public async Task<Public#record_titlecase#QueryResult> GetPublic#record_pl_titlecase#Async(Public#record_titlecase#QueryParams queryParams)
+    {
+        // Start with IQueryable - don't materialize yet
+        IQueryable<Public#record_titlecase#> query = _db.Public#record_pl_titlecase#;
+
+        // Apply keyword filter if provided (translates to SQL WHERE clause)
+        if (!string.IsNullOrWhiteSpace(queryParams.Keyword))
+        {
+            var keyword = queryParams.Keyword.ToLower();
+            query = query.Where(u => u.DisplayName.ToLower().Contains(keyword));
+        }
+
+        // Get total count before pagination (executes COUNT query on database)
+        var totalCount = await query.CountAsync();
+
+        // Apply sorting (translates to SQL ORDER BY clause)
+        query = queryParams.Sort.ToLower() switch
+        {
+            "name" => query.OrderBy(u => u.DisplayName),
+            "name_desc" => query.OrderByDescending(u => u.DisplayName),
+            "id" => query.OrderBy(u => u.Id),
+            "id_desc" => query.OrderByDescending(u => u.Id),
+            _ => query.OrderBy(u => u.DisplayName)
+        };
+
+        // Apply pagination (translates to SQL LIMIT/OFFSET)
+        var skip = (queryParams.Page - 1) * queryParams.PageSize;
+        query = query.Skip(skip).Take(queryParams.PageSize);
+
+        // NOW materialize the query - executes the final SQL with all filters, sorting, and pagination
+        var #record_pl_titlecase# = await query.ToListAsync();
+
+        return new #record_titlecase#QueryResult
+        {
+            #record_pl_titlecase# = #record_pl_titlecase#,
+            CurrentPage = queryParams.Page,
+            PageSize = queryParams.PageSize,
+            TotalCount = totalCount
+        };
+    }
+
+    public Task InvalidateCacheAsync()
+    {
+        // No-op for direct database access
+        return Task.CompletedTask;
+    }
+
+}
+

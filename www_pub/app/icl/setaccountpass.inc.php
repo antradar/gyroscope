@@ -20,7 +20,7 @@ function setaccountpass($ctx=null){
 	$useyubi=GETVAL('useyubi',$ctx);
 	$yubimode=GETVAL('yubimode',$ctx);
 	
-	$quicklist=GETVAL('quicklist',$ctx);
+	//$quicklist=GETVAL('quicklist',$ctx);
 	$darkmode=GETVAL('darkmode',$ctx);
 	$dowoffset=GETVAL('dowoffset',$ctx);
 	
@@ -54,8 +54,8 @@ function setaccountpass($ctx=null){
 		$query.=" password=?, passreset=0, ";
 		array_push($params,$pass);
 	}
-	$query.=" needkeyfile=?,usesms=?,smscell=?, usega=?, usegamepad=?, useyubi=?, yubimode=?, quicklist=?, darkmode=?, dowoffset=? where userid=?";
-	array_push($params,$needkeyfile,$usesms,$smscell,$usega,$usegamepad,$useyubi,$yubimode, $quicklist, $darkmode, $dowoffset, $userid);
+	$query.=" needkeyfile=?,usesms=?,smscell=?, usega=?, usegamepad=?, useyubi=?, yubimode=?,  darkmode=?, dowoffset=? where userid=?";
+	array_push($params,$needkeyfile,$usesms,$smscell,$usega,$usegamepad,$useyubi,$yubimode,  $darkmode, $dowoffset, $userid);
 	sql_prep($query,$db,$params);
 
 	cache_delete(TABLENAME_GSS.'_'.$userid.'-'.$gsid);

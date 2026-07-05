@@ -2,14 +2,16 @@
 
 function lookupall(){
 	global $db;
-	
+
 	$key=SGET('key',0);
-	
+	$user=userinfo();
+	$gsid=$user['gsid'];
+
 	$dkey=$key;
 	if (strlen($dkey)>20) $dkey=substr($key,0,17).'...';
-	
-	$query="select 1 as rectype,userid as recid,dispname as rectitle from users where (login like ? or dispname like ?) limit 10";
-	$rs=sql_prep($query,$db,array("%$key%","%$key%"));
+
+	$query="select 1 as rectype,userid as recid,dispname as rectitle from ".TABLENAME_USERS." where (login like ? or dispname like ?) and ".COLNAME_GSID."=? limit 10";
+	$rs=sql_prep($query,$db,array("%$key%","%$key%",$gsid));
 	$count=sql_affected_rows($db,$rs);
 
 	if ($count==0){
